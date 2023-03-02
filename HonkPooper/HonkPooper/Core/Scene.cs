@@ -4,6 +4,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using Windows.Foundation;
@@ -15,6 +16,8 @@ namespace HonkPooper
         #region Fields
 
         private double _sceneWidth, _sceneHeight;
+
+        private Stopwatch _stopwatch;
 
         private PeriodicTimer _gameViewTimer;
         private readonly TimeSpan _frameTime = TimeSpan.FromMilliseconds(Constants.DEFAULT_FRAME_TIME);
@@ -60,6 +63,7 @@ namespace HonkPooper
         /// </summary>
         public async void Animate()
         {
+            _stopwatch = Stopwatch.StartNew();
             _gameViewTimer = new PeriodicTimer(_frameTime);
 
             while (await _gameViewTimer.WaitForNextTickAsync())
@@ -71,6 +75,7 @@ namespace HonkPooper
         /// </summary>
         public void Stop()
         {
+            _stopwatch?.Stop();
             _gameViewTimer?.Dispose();
         }
 
@@ -100,6 +105,8 @@ namespace HonkPooper
         /// </summary>
         private void SceneLoop()
         {
+            //TODO: spawn logic
+
             // run action for each construct and add to destroyable if destroyable function returns true
             foreach (Construct construct in Children.OfType<Construct>())
             {

@@ -103,7 +103,7 @@ namespace HonkPooper
                     });
 
                 _scene.AddToScene(tree);
-                tree.SetPosition(left: i * 300, top: _scene.Height / 2);
+                tree.SetPosition(left: i * 300 * _scene.Scaling, top: _scene.Height / 2);
             }
 
             _scene.Animate();
