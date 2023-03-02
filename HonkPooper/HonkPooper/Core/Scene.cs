@@ -39,7 +39,7 @@ namespace HonkPooper
 
         public double Speed { get; set; }
 
-        public double Scale { get; set; }
+        public double Scaling { get; set; }
 
         #endregion
 
@@ -50,9 +50,13 @@ namespace HonkPooper
         /// </summary>
         /// <param name="construct"></param>
         public void AddToScene(Construct construct)
-        {
-            construct.Scene = this;
+        {            
             Children.Add(construct);
+        }
+
+        public void DisposeFromScene(Construct construct)
+        {
+            _destroyables.Add(construct);
         }
 
         /// <summary>
@@ -104,21 +108,6 @@ namespace HonkPooper
             foreach (Construct construct in Children.OfType<Construct>())
             {
                 construct.Animate();
-
-                if (CheckDestructionRule(construct))
-                {
-                    switch (construct.DestructionImpact)
-                    {
-                        case DestructionImpact.Remove:
-                            _destroyables.Add(construct);
-                            break;
-                        case DestructionImpact.Recycle:
-                            construct.Recycle();
-                            break;
-                        default:
-                            break;
-                    }
-                }
             }
 
             // remove the destroyables from the scene
@@ -126,39 +115,8 @@ namespace HonkPooper
             {
                 Children.Remove(destroyable);
             }
-        }
 
-        private bool CheckDestructionRule(Construct construct)
-        {
-            switch (construct.DestructionRule)
-            {
-                case DestructionRule.ExitsRightBorder:
-                    {
-                        if (construct.GetLeft() > _windowWidth)
-                            return true;
-                    }
-                    break;
-                case DestructionRule.ExitsLeftBorder:
-                    {
-                        if (construct.GetRight() < 0)
-                            return true;
-                    }
-                    break;
-                case DestructionRule.ExitsTopBorder:
-                    {
-                        if (construct.GetBottom() < 0)
-                            return true;
-                    }
-                    break;
-                case DestructionRule.ExitsBottomBorder:
-                    {
-                        if (construct.GetTop() > _windowHeight)
-                            return true;
-                    }
-                    break;
-            }
-
-            return false;
+            _destroyables.Clear();
         }
 
         #endregion
@@ -183,12 +141,12 @@ namespace HonkPooper
 
             Console.WriteLine($"{_windowWidth}x{_windowHeight}");
 
-            Scale = GetGameObjectScale(_windowWidth);
+            Scaling = GetGameObjectScale(_windowWidth);
 
             foreach (var construct in Children.OfType<Construct>())
             {
                 var size = Constants.ELEMENT_SIZES.FirstOrDefault(x => x.ConstructType == (ConstructType)construct.Tag);
-                construct.SetSize(size.Width * Scale, size.Height * Scale);
+                construct.SetSize(size.Width * Scaling, size.Height * Scaling);
             }
         }
 

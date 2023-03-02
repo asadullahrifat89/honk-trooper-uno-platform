@@ -53,30 +53,4 @@ namespace HonkPooper
         HONKING_EMOJI,
         HONKING_BUSTED_EMOJI,
     }
-
-    public enum DestructionRule
-    {
-        None,
-
-        ExitsRightBorder,
-        ExitsTopRightBorder,
-        ExitsBottomRightBorder,
-
-        ExitsLeftBorder,
-        ExitsTopLeftBorder,
-        ExitsBottomLeftBorder,
-
-        ExitsTopBorder,
-        ExitsBottomBorder,
-
-        FadesAway,
-        Shrinks,
-        Explodes,
-    }
-
-    public enum DestructionImpact
-    {
-        Remove,
-        Recycle,
-    }
 }

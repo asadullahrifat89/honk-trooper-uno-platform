@@ -61,4 +61,7 @@
 	  <None Remove="Assets\Images\vehicle_8.png" />
 	  <None Remove="Assets\Images\vehicle_9.png" />
 	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="GameObjects\" />
+	</ItemGroup>
 </Project>

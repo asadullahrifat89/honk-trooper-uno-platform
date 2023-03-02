@@ -24,15 +24,13 @@ namespace HonkPooper
 
         #region Properties
 
-        public Scene Scene { get; set; }
-
-        private Func<bool> MovementAction { get; set; }
+        private Func<bool> AnimateAction { get; set; }
 
         private Func<bool> RecycleAction { get; set; }
 
-        public DestructionRule DestructionRule { get; set; } = DestructionRule.None;
+        public double Speed { get; set; }
 
-        public DestructionImpact DestructionImpact { get; set; } = DestructionImpact.Recycle;
+        public ConstructType ConstructType { get; set; }
 
         #endregion
 
@@ -44,8 +42,6 @@ namespace HonkPooper
 
             RenderTransform = _compositeTransform;
             CanDrag = false;
-
-
         }
 
         #endregion
@@ -54,19 +50,15 @@ namespace HonkPooper
 
         public void SetAction(
             Func<bool> movementAction,
-            Func<bool> recycleAction,
-            DestructionRule destructionRule,
-            DestructionImpact destructionImpact)
+            Func<bool> recycleAction)
         {
-            MovementAction = movementAction;
+            AnimateAction = movementAction;
             RecycleAction = recycleAction;
-            DestructionRule = destructionRule;
-            DestructionImpact = destructionImpact;
         }
 
         public void Animate()
         {
-            MovementAction();
+            AnimateAction();
         }
 
         public void Recycle()
