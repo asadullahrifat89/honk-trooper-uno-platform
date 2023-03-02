@@ -143,7 +143,7 @@ namespace HonkPooper
             foreach (var construct in Children.OfType<Construct>())
             {
                 var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == construct.ConstructType);
-                construct.SetSize(size.Width * Scaling, size.Height * Scaling);
+                construct.SetSize(width: size.Width * Scaling, height: size.Height * Scaling);
             }
         }
 
