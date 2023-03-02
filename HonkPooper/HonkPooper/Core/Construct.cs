@@ -3,6 +3,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System;
+using System.Runtime.CompilerServices;
 using Windows.Foundation;
 
 namespace HonkPooper
@@ -24,13 +25,13 @@ namespace HonkPooper
 
         #region Properties
 
-        private Func<bool> AnimateAction { get; set; }
-
-        private Func<bool> RecycleAction { get; set; }
-
         public double Speed { get; set; }
 
         public ConstructType ConstructType { get; set; }
+
+        private Func<Construct, bool> AnimateAction { get; set; }
+
+        private Func<Construct, bool> RecycleAction { get; set; }
 
         #endregion
 
@@ -44,13 +45,38 @@ namespace HonkPooper
             CanDrag = false;
         }
 
+        public Construct(
+            double speed,
+            ConstructType constructType,
+            double width,
+            double height,
+            Func<Construct, bool> animateAction,
+            Func<Construct, bool> recycleAction,
+            UIElement content = null)
+        {
+            Speed = speed;
+            ConstructType = constructType;
+            AnimateAction = animateAction;
+            RecycleAction = recycleAction;
+
+            RenderTransformOrigin = new Point(0.5, 0.5);
+
+            RenderTransform = _compositeTransform;
+            CanDrag = false;
+
+            SetSize(width: width, height: height);
+
+            if (content is not null)
+                SetChild(content);
+        }
+
         #endregion
 
         #region Methods     
 
         public void SetAction(
-            Func<bool> movementAction,
-            Func<bool> recycleAction)
+            Func<Construct, bool> movementAction,
+            Func<Construct, bool> recycleAction)
         {
             AnimateAction = movementAction;
             RecycleAction = recycleAction;
@@ -58,12 +84,12 @@ namespace HonkPooper
 
         public void Animate()
         {
-            AnimateAction();
+            AnimateAction(this);
         }
 
         public void Recycle()
         {
-            RecycleAction();
+            RecycleAction(this);
         }
 
         public void SetSize(double width, double height)

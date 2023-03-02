@@ -27,8 +27,6 @@ namespace HonkPooper
 
         public Scene()
         {
-            Speed = 1.5;
-
             Loaded += Scene_Loaded;
             Unloaded += Scene_Unloaded;
         }
@@ -36,8 +34,6 @@ namespace HonkPooper
         #endregion
 
         #region Properties
-
-        public double Speed { get; set; }
 
         public double Scaling { get; set; }
 
@@ -50,7 +46,7 @@ namespace HonkPooper
         /// </summary>
         /// <param name="construct"></param>
         public void AddToScene(Construct construct)
-        {            
+        {
             Children.Add(construct);
         }
 
@@ -108,6 +104,7 @@ namespace HonkPooper
             foreach (Construct construct in Children.OfType<Construct>())
             {
                 construct.Animate();
+                construct.Recycle();
             }
 
             // remove the destroyables from the scene
@@ -145,7 +142,7 @@ namespace HonkPooper
 
             foreach (var construct in Children.OfType<Construct>())
             {
-                var size = Constants.ELEMENT_SIZES.FirstOrDefault(x => x.ConstructType == (ConstructType)construct.Tag);
+                var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == construct.ConstructType);
                 construct.SetSize(size.Width * Scaling, size.Height * Scaling);
             }
         }

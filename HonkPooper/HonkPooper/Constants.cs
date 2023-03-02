@@ -11,12 +11,12 @@ namespace HonkPooper
         public const double DEFAULT_FRAME_TIME = 18;
         public const double TREE_SIZE = 200;
 
-        public static (ConstructType ConstructType, double Height, double Width)[] ELEMENT_SIZES = new (ConstructType, double, double)[]
+        public static (ConstructType ConstructType, double Height, double Width)[] CONSTRUCT_SIZES = new (ConstructType, double, double)[]
         {
              new (ConstructType.TREE, 200,200),
         };
 
-        public static (ConstructType ConstructType, Uri Uri)[] ELEMENT_TEMPLATES = new (ConstructType, Uri)[]
+        public static (ConstructType ConstructType, Uri Uri)[] CONSTRUCT_TEMPLATES = new (ConstructType, Uri)[]
         {
             new (ConstructType.TREE, new Uri("ms-appx:///HonkPooper/Assets/Images/tree_E.png")),
             new (ConstructType.VEHICLE, new Uri("ms-appx:///HonkPooper/Assets/Images/vehicle_1.png")),
