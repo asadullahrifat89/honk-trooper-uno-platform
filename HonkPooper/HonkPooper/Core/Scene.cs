@@ -14,7 +14,7 @@ namespace HonkPooper
     {
         #region Fields
 
-        private double _windowWidth, _windowHeight;
+        private double _sceneWidth, _sceneHeight;
 
         private PeriodicTimer _gameViewTimer;
         private readonly TimeSpan _frameTime = TimeSpan.FromMilliseconds(Constants.DEFAULT_FRAME_TIME);
@@ -133,12 +133,12 @@ namespace HonkPooper
 
         private void Scene_SizeChanged(object sender, SizeChangedEventArgs args)
         {
-            _windowWidth = args.NewSize.Width;
-            _windowHeight = args.NewSize.Height;
+            _sceneWidth = args.NewSize.Width;
+            _sceneHeight = args.NewSize.Height;
 
-            Console.WriteLine($"{_windowWidth}x{_windowHeight}");
+            Console.WriteLine($"{_sceneWidth}x{_sceneHeight}");
 
-            Scaling = GetGameObjectScale(_windowWidth);
+            Scaling = GetGameObjectScale(_sceneWidth);
 
             foreach (var construct in Children.OfType<Construct>())
             {
