@@ -103,7 +103,7 @@ namespace HonkPooper
             // run action for each construct and add to destroyable if destroyable function returns true
             foreach (Construct construct in Children.OfType<Construct>())
             {
-                construct.Run();
+                construct.Animate();
 
                 if (CheckDestructionRule(construct))
                 {

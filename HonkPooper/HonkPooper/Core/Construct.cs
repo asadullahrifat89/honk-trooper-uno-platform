@@ -64,7 +64,7 @@ namespace HonkPooper
             DestructionImpact = destructionImpact;
         }
 
-        public void Run()
+        public void Animate()
         {
             MovementAction();
         }

@@ -65,12 +65,13 @@ namespace HonkPooper
 
         private void InputView_PointerPressed(object sender, PointerRoutedEventArgs e)
         {
-            Tree tree = new(0.5);           
+            Tree tree = new(0.5);
+            _scene.AddToScene(tree);
+            tree.SetPosition(left: 0, top: _scene.Height / 2);
 
+            
             Console.WriteLine($"X:{tree.GetLeft()} Y:{tree.GetTop()}");
 
-            _scene.AddToScene(tree);
-            tree.SetPosition(0, _scene.Height / 2);
 
             _scene.Animate();
         }
