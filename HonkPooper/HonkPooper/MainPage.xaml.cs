@@ -51,7 +51,9 @@ namespace HonkPooper
             var hitBox = tree.GetHitBox();
 
             if (hitBox.Top > _scene.Height || hitBox.Left > _scene.Width)
+            {
                 tree.SetPosition(left: -300, top: _scene.Height / 2);
+            }
 
             return true;
         }
@@ -81,12 +83,12 @@ namespace HonkPooper
 
         private void InputView_PointerMoved(object sender, PointerRoutedEventArgs e)
         {
-            
+
         }
 
         private void InputView_PointerPressed(object sender, PointerRoutedEventArgs e)
         {
-            for (int i = -5; i < 0; i++)
+            for (int i = -4; i < 0; i++)
             {
                 Construct tree = new(
                     speed: 2,
