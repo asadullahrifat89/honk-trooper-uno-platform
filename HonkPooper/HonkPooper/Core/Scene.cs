@@ -51,13 +51,14 @@ namespace HonkPooper
         /// <param name="construct"></param>
         public void AddToScene(Construct construct)
         {
+            construct.Scene = this;
             Children.Add(construct);
         }
 
         /// <summary>
         /// Starts the timer for the scene and starts the scene loop.
         /// </summary>
-        public async void Play()
+        public async void Animate()
         {
             _gameViewTimer = new PeriodicTimer(_frameTime);
 
@@ -73,6 +74,11 @@ namespace HonkPooper
             _gameViewTimer?.Dispose();
         }
 
+        /// <summary>
+        /// Gets the scaling factor according to window size.
+        /// </summary>
+        /// <param name="windowWidth"></param>
+        /// <returns></returns>
         private double GetGameObjectScale(double windowWidth)
         {
             return windowWidth switch
@@ -181,14 +187,8 @@ namespace HonkPooper
 
             foreach (var construct in Children.OfType<Construct>())
             {
-                switch ((ConstructType)construct.Tag)
-                {
-                    case ConstructType.TREE:
-                        {
-                            construct.SetSize(Constants.TREE_SIZE * Scale, Constants.TREE_SIZE * Scale);
-                        }
-                        break;
-                }
+                var size = Constants.ELEMENT_SIZES.FirstOrDefault(x => x.ConstructType == (ConstructType)construct.Tag);
+                construct.SetSize(size.Width * Scale, size.Height * Scale);
             }
         }
 

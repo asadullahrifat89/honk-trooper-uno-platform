@@ -72,7 +72,7 @@ namespace HonkPooper
             _scene.AddToScene(tree);
             tree.SetPosition(0, _scene.Height / 2);
 
-            _scene.Play();
+            _scene.Animate();
         }
 
         #endregion

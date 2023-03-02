@@ -11,8 +11,6 @@ namespace HonkPooper
     {
         #region Fields
 
-       
-
         private readonly CompositeTransform _compositeTransform = new()
         {
             CenterX = 0.5,
@@ -25,6 +23,8 @@ namespace HonkPooper
         #endregion
 
         #region Properties
+
+        public Scene Scene { get; set; }
 
         private Func<bool> MovementAction { get; set; }
 
@@ -45,7 +45,7 @@ namespace HonkPooper
             RenderTransform = _compositeTransform;
             CanDrag = false;
 
-            
+
         }
 
         #endregion
@@ -72,7 +72,7 @@ namespace HonkPooper
         public void Recycle()
         {
             RecycleAction();
-        }      
+        }
 
         public void SetSize(double width, double height)
         {
