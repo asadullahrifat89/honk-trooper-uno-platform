@@ -1,0 +1,28 @@
+﻿<Page
+    x:Class="HonkPooper.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:HonkPooper"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    mc:Ignorable="d">
+    <Border
+        Margin="5"
+        Background="{ThemeResource RoadBackgroundColor}"
+        BorderBrush="#111111"
+        BorderThickness="3">
+
+        <Grid x:Name="RootGrid">
+            <Scene x:Name="MainScene" Background="Transparent" />
+            <Border
+                x:Name="InputView"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Background="Transparent"
+                PointerMoved="InputView_PointerMoved"
+                PointerPressed="InputView_PointerPressed" />
+        </Grid>
+
+    </Border>
+</Page>
