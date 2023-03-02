@@ -140,6 +140,8 @@ namespace HonkPooper
 
             Scaling = GetGameObjectScale(_sceneWidth);
 
+            Console.WriteLine($"Scaling {Scaling}");
+
             foreach (var construct in Children.OfType<Construct>())
             {
                 var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == construct.ConstructType);
