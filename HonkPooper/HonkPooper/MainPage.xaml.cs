@@ -138,8 +138,8 @@ namespace HonkPooper
 
         private void InputView_PointerPressed(object sender, PointerRoutedEventArgs e)
         {
-            Generator treeGenBottom = new(generationDelay: 50, generationAction: GenerateTreeBottom);
-            Generator treeGenTop = new(generationDelay: 50, generationAction: GenerateTreeTop);
+            Generator treeGenBottom = new(generationDelay: 40, generationAction: GenerateTreeBottom);
+            Generator treeGenTop = new(generationDelay: 40, generationAction: GenerateTreeTop);
 
             _scene.AddToScene(treeGenBottom);
             _scene.AddToScene(treeGenTop);

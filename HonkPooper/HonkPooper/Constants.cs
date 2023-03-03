@@ -13,7 +13,7 @@ namespace HonkPooper
 
         public static (ConstructType ConstructType, double Height, double Width)[] CONSTRUCT_SIZES = new (ConstructType, double, double)[]
         {
-             new (ConstructType.TREE, 200,200),
+             new (ConstructType.TREE, 150, 150),
         };
 
         public static (ConstructType ConstructType, Uri Uri)[] CONSTRUCT_TEMPLATES = new (ConstructType, Uri)[]
