@@ -14,25 +14,30 @@ namespace HonkPooper
         public static (ConstructType ConstructType, double Height, double Width)[] CONSTRUCT_SIZES = new (ConstructType, double, double)[]
         {
              new (ConstructType.TREE, 150, 150),
-             new (ConstructType.ROAD_MARK, 50, 20),
+             new (ConstructType.ROAD_MARK, 40, 15),
+             new (ConstructType.VEHICLE_SMALL, 150, 150),
+             new (ConstructType.VEHICLE_LARGE, 180, 180),
         };
 
         public static (ConstructType ConstructType, Uri Uri)[] CONSTRUCT_TEMPLATES = new (ConstructType, Uri)[]
         {
             new (ConstructType.TREE, new Uri("ms-appx:///HonkPooper/Assets/Images/tree_E.png")),
-            new (ConstructType.VEHICLE, new Uri("ms-appx:///HonkPooper/Assets/Images/vehicle_1.png")),
-            new (ConstructType.VEHICLE, new Uri("ms-appx:///HonkPooper/Assets/Images/vehicle_2.png")),
-            new (ConstructType.VEHICLE, new Uri("ms-appx:///HonkPooper/Assets/Images/vehicle_3.png")),
-            new (ConstructType.VEHICLE, new Uri("ms-appx:///HonkPooper/Assets/Images/vehicle_4.png")),
-            new (ConstructType.VEHICLE, new Uri("ms-appx:///HonkPooper/Assets/Images/vehicle_5.png")),
-            new (ConstructType.VEHICLE, new Uri("ms-appx:///HonkPooper/Assets/Images/vehicle_6.png")),
-            new (ConstructType.VEHICLE, new Uri("ms-appx:///HonkPooper/Assets/Images/vehicle_7.png")),
-            new (ConstructType.VEHICLE, new Uri("ms-appx:///HonkPooper/Assets/Images/vehicle_8.png")),
-            new (ConstructType.VEHICLE, new Uri("ms-appx:///HonkPooper/Assets/Images/vehicle_9.png")),
-            new (ConstructType.VEHICLE, new Uri("ms-appx:///HonkPooper/Assets/Images/vehicle_10.png")),
-            new (ConstructType.VEHICLE, new Uri("ms-appx:///HonkPooper/Assets/Images/vehicle_11.png")),
-            new (ConstructType.VEHICLE, new Uri("ms-appx:///HonkPooper/Assets/Images/vehicle_12.png")),
-            new (ConstructType.VEHICLE, new Uri("ms-appx:///HonkPooper/Assets/Images/vehicle_13.png")),
+
+            new (ConstructType.VEHICLE_SMALL, new Uri("ms-appx:///HonkPooper/Assets/Images/vehicle_small_1.png")),
+            new (ConstructType.VEHICLE_SMALL, new Uri("ms-appx:///HonkPooper/Assets/Images/vehicle_small_2.png")),
+            new (ConstructType.VEHICLE_SMALL, new Uri("ms-appx:///HonkPooper/Assets/Images/vehicle_small_3.png")),
+            new (ConstructType.VEHICLE_SMALL, new Uri("ms-appx:///HonkPooper/Assets/Images/vehicle_small_4.png")),
+            new (ConstructType.VEHICLE_SMALL, new Uri("ms-appx:///HonkPooper/Assets/Images/vehicle_small_5.png")),
+            new (ConstructType.VEHICLE_SMALL, new Uri("ms-appx:///HonkPooper/Assets/Images/vehicle_small_6.png")),
+            new (ConstructType.VEHICLE_SMALL, new Uri("ms-appx:///HonkPooper/Assets/Images/vehicle_small_7.png")),
+            new (ConstructType.VEHICLE_SMALL, new Uri("ms-appx:///HonkPooper/Assets/Images/vehicle_small_8.png")),
+            new (ConstructType.VEHICLE_SMALL, new Uri("ms-appx:///HonkPooper/Assets/Images/vehicle_small_9.png")),
+
+            new (ConstructType.VEHICLE_LARGE, new Uri("ms-appx:///HonkPooper/Assets/Images/vehicle_large_1.png")),
+            new (ConstructType.VEHICLE_LARGE, new Uri("ms-appx:///HonkPooper/Assets/Images/vehicle_large_2.png")),
+            new (ConstructType.VEHICLE_LARGE, new Uri("ms-appx:///HonkPooper/Assets/Images/vehicle_large_3.png")),
+            new (ConstructType.VEHICLE_LARGE, new Uri("ms-appx:///HonkPooper/Assets/Images/vehicle_large_4.png")),
+            new (ConstructType.VEHICLE_LARGE, new Uri("ms-appx:///HonkPooper/Assets/Images/vehicle_large_5.png")),
         };
     }
 
@@ -42,10 +47,8 @@ namespace HonkPooper
         PLAYER,
         PLAYER_UPWARD,
         PLAYER_DOWNWARD,
-        VEHICLE,
-        BOSS_VEHICLE,
-        BOSS_VEHICLE_UPWARD,
-        BOSS_VEHICLE_DOWNWARD,
+        VEHICLE_SMALL,
+        VEHICLE_LARGE,
         STICKER,
         POWERUP,
         ROAD_MARK,

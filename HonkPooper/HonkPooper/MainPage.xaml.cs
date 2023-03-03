@@ -21,7 +21,15 @@ namespace HonkPooper
 {
     public sealed partial class MainPage : Page
     {
+        #region Fields
+
         private Scene _scene;
+        private Random _random;
+
+        private Uri[] _vehicle_small_uris;
+        private Uri[] _vehicle_large_uris;
+
+        #endregion
 
         #region Ctor
 
@@ -31,6 +39,11 @@ namespace HonkPooper
 
             _scene = this.MainScene;
 
+            _random = new Random();
+
+            _vehicle_small_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.VEHICLE_SMALL).Select(x => x.Uri).ToArray();
+            _vehicle_large_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.VEHICLE_LARGE).Select(x => x.Uri).ToArray();
+
             Loaded += MainPage_Loaded;
             Unloaded += MainPage_Unloaded;
         }
@@ -39,27 +52,126 @@ namespace HonkPooper
 
         #region Methods
 
-        #region RoadMark
+        #region Vehicle
 
-        public bool GenerateRoadMarkMiddle()
+        public bool GenerateVehicleInScene()
         {
-            Construct roadMark = GenerateRoadMark();
+            var vehicleType = _random.Next(0, 2);
 
-            _scene.AddToScene(roadMark);
-            roadMark.SetPosition(
-              left: 0,
-              top: 0);
+            (ConstructType ConstructType, double Height, double Width) size;
+            Uri uri;
+            Construct vehicle = null;
 
-            Console.WriteLine("Road Mark generated.");
+            switch (vehicleType)
+            {
+                case 0:
+                    {
+                        size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.VEHICLE_SMALL);
+
+                        var vehicles = _vehicle_small_uris;
+                        uri = vehicles[_random.Next(0, vehicles.Length)];
+
+                        vehicle = new(
+                            constructType: ConstructType.VEHICLE_SMALL,
+                            width: size.Width * _scene.Scaling,
+                            height: size.Height * _scene.Scaling,
+                            animateAction: AnimateVehicle,
+                            recycleAction: RecycleVehicle,
+                            content: new Image()
+                            {
+                                Source = new BitmapImage(uriSource: uri)
+                            },
+                            speedOffset: _random.Next(-3, 3));
+                    }
+                    break;
+                case 1:
+                    {
+                        size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.VEHICLE_LARGE);
+
+                        var vehicles = _vehicle_large_uris;
+                        uri = vehicles[_random.Next(0, vehicles.Length)];
+
+                        vehicle = new(
+                            constructType: ConstructType.VEHICLE_LARGE,
+                            width: size.Width * _scene.Scaling,
+                            height: size.Height * _scene.Scaling,
+                            animateAction: AnimateVehicle,
+                            recycleAction: RecycleVehicle,
+                            content: new Image()
+                            {
+                                Source = new BitmapImage(uriSource: uri)
+                            },
+                            speedOffset: _random.Next(-3, 3));
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+            _scene.AddToScene(vehicle);
+
+            // generate top and left corner lane wise vehicles
+            var topOrLeft = _random.Next(0, 2);
+
+            switch (topOrLeft)
+            {
+                case 0:
+                    {
+                        var xLaneWidth = _scene.Width / 4;
+
+                        vehicle.SetPosition(
+                            left: _random.Next(0, (int)xLaneWidth - (int)vehicle.Width) * _scene.Scaling,
+                            top: vehicle.Height * -1);
+                    }
+                    break;
+                case 1:
+                    {
+                        var yLaneWidth = (_scene.Height / 2) / 2;
+
+                        vehicle.SetPosition(
+                            left: vehicle.Width * -1,
+                            top: _random.Next(0, (int)yLaneWidth - (int)vehicle.Height) * _scene.Scaling);
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+            Console.WriteLine("Vehicle generated.");
 
             return true;
         }
 
-        private Construct GenerateRoadMark()
+        private bool AnimateVehicle(Construct vehicle)
+        {
+            var speed = _scene.Speed + vehicle.SpeedOffset;
+
+            // speed offset adds variable speed
+            vehicle.SetLeft(vehicle.GetLeft() + speed);
+            vehicle.SetTop(vehicle.GetTop() + speed * 0.5);
+
+            return true;
+        }
+
+        private bool RecycleVehicle(Construct vehicle)
+        {
+            var hitBox = vehicle.GetHitBox();
+
+            if (hitBox.Top > _scene.Height || hitBox.Left > _scene.Width)
+                _scene.DisposeFromScene(vehicle);
+
+            return true;
+        }
+
+        #endregion
+
+        #region RoadMark
+
+        public bool GenerateRoadMarkInScene()
         {
             var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.ROAD_MARK);
 
-            Construct construct = new(
+            Construct roadMark = new(
                 constructType: ConstructType.ROAD_MARK,
                 width: size.Width * _scene.Scaling,
                 height: size.Height * _scene.Scaling,
@@ -70,10 +182,18 @@ namespace HonkPooper
                 CornerRadius = new CornerRadius(5),
             };
 
-            construct.SetSkewY(42);
-            construct.SetRotation(-63.5);
+            roadMark.SetSkewY(42);
+            roadMark.SetRotation(-63.5);
 
-            return construct;
+            _scene.AddToScene(roadMark);
+
+            roadMark.SetPosition(
+              left: 0,
+              top: 0);
+
+            Console.WriteLine("Road Mark generated.");
+
+            return true;
         }
 
         private bool AnimateRoadMark(Construct roadMark)
@@ -92,6 +212,7 @@ namespace HonkPooper
 
             if (hitBox.Top > _scene.Height || hitBox.Left > _scene.Width)
                 _scene.DisposeFromScene(roadMark);
+
             return true;
         }
 
@@ -99,11 +220,12 @@ namespace HonkPooper
 
         #region Tree
 
-        private bool GenerateTreeTop()
+        private bool GenerateTreeInSceneTop()
         {
             Construct tree = GenerateTree();
 
             _scene.AddToScene(tree);
+
             tree.SetPosition(
               left: _scene.Width / 2 - tree.Width * _scene.Scaling,
               top: tree.Height * -1);
@@ -113,11 +235,12 @@ namespace HonkPooper
             return true;
         }
 
-        private bool GenerateTreeBottom()
+        private bool GenerateTreeInSceneBottom()
         {
             Construct tree = GenerateTree();
 
             _scene.AddToScene(tree);
+
             tree.SetPosition(
                 left: -1 * tree.Width * _scene.Scaling,
                 top: (_scene.Height / 2 * _scene.Scaling));
@@ -140,7 +263,8 @@ namespace HonkPooper
                    content: new Image()
                    {
                        Source = new BitmapImage(uriSource: Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.TREE).Uri)
-                   });
+                   },
+                   speedOffset: 2);
 
             return tree;
         }
@@ -148,8 +272,6 @@ namespace HonkPooper
         private bool AnimateTree(Construct tree)
         {
             tree.SetLeft(tree.GetLeft() + _scene.Speed);
-
-            //if (tree.GetLeft() + tree.Width > 0)
             tree.SetTop(tree.GetTop() + _scene.Speed * 0.5);
 
             return true;
@@ -159,13 +281,9 @@ namespace HonkPooper
         {
             var hitBox = tree.GetHitBox();
 
-            //if (hitBox.Top > _scene.Height || hitBox.Left > _scene.Width)
-            //{
-            //    tree.SetPosition(left: -300, top: _scene.Height / 2);
-            //}
-
             if (hitBox.Top > _scene.Height || hitBox.Left > _scene.Width)
                 _scene.DisposeFromScene(tree);
+
             return true;
         }
 
@@ -204,13 +322,17 @@ namespace HonkPooper
 
         private void InputView_PointerPressed(object sender, PointerRoutedEventArgs e)
         {
-            Generator treeGenBottom = new(generationDelay: 40, generationAction: GenerateTreeBottom);
-            Generator treeGenTop = new(generationDelay: 40, generationAction: GenerateTreeTop);
-            Generator roadMarkGenMiddle = new(generationDelay: 30, generationAction: GenerateRoadMarkMiddle);
+            Generator treeBottom = new(generationDelay: 40, generationAction: GenerateTreeInSceneBottom);
+            Generator treeTop = new(generationDelay: 40, generationAction: GenerateTreeInSceneTop);
 
-            _scene.AddToScene(treeGenBottom);
-            _scene.AddToScene(treeGenTop);
-            _scene.AddToScene(roadMarkGenMiddle);
+            Generator roadMark = new(generationDelay: 30, generationAction: GenerateRoadMarkInScene);
+            Generator vehicle = new(generationDelay: 80, generationAction: GenerateVehicleInScene);
+
+            _scene.AddToScene(treeBottom);
+            _scene.AddToScene(treeTop);
+
+            _scene.AddToScene(roadMark);
+            _scene.AddToScene(vehicle);
 
             _scene.Speed = 5;
             _scene.Start();

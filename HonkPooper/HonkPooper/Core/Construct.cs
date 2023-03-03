@@ -31,6 +31,8 @@ namespace HonkPooper
 
         private Func<Construct, bool> RecycleAction { get; set; }
 
+        public double SpeedOffset { get; set; } = 0;
+
         #endregion
 
         #region Ctor
@@ -49,11 +51,13 @@ namespace HonkPooper
             double height,
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction,
-            UIElement content = null)
+            UIElement content = null,
+            double speedOffset = 0)
         {
             ConstructType = constructType;
             AnimateAction = animateAction;
             RecycleAction = recycleAction;
+            SpeedOffset = speedOffset;
 
             RenderTransformOrigin = new Point(0.5, 0.5);
 
