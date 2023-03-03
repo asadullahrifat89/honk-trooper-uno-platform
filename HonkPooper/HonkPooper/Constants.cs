@@ -14,6 +14,7 @@ namespace HonkPooper
         public static (ConstructType ConstructType, double Height, double Width)[] CONSTRUCT_SIZES = new (ConstructType, double, double)[]
         {
              new (ConstructType.TREE, 150, 150),
+             new (ConstructType.ROAD_MARK, 50, 20),
         };
 
         public static (ConstructType ConstructType, Uri Uri)[] CONSTRUCT_TEMPLATES = new (ConstructType, Uri)[]
@@ -47,6 +48,7 @@ namespace HonkPooper
         BOSS_VEHICLE_DOWNWARD,
         STICKER,
         POWERUP,
+        ROAD_MARK,
         HONK,
         COLLECTIBLE,
         TREE,

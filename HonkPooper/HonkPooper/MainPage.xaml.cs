@@ -1,4 +1,5 @@
-﻿using Microsoft.UI.Xaml;
+﻿using Microsoft.UI;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
@@ -37,22 +38,87 @@ namespace HonkPooper
 
         #region Methods
 
+        #region RoadMark
+
+        public bool GenerateRoadMarkMiddle()
+        {
+            Construct roadMark = GenerateRoadMark();
+
+            roadMark.SetPosition(left: (roadMark.Width / 3 * _scene.Scaling) * 9, top: /*roadMark.Height * -1*/0);
+
+            Console.WriteLine("Road Mark generated.");
+
+            return true;
+        }
+
+        private Construct GenerateRoadMark()
+        {
+            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.ROAD_MARK);
+
+            Construct construct = new(
+                constructType: ConstructType.ROAD_MARK,
+                width: size.Width * _scene.Scaling,
+                height: size.Height * _scene.Scaling,
+                animateAction: AnimateRoadMark,
+                recycleAction: RecycleRoadMark)
+            {
+                Background = new SolidColorBrush(Colors.White),
+                BorderBrush = new SolidColorBrush(Colors.Black),
+                BorderThickness = new Thickness(2),
+                CornerRadius = new CornerRadius(5),
+            };
+
+            construct.SetSkewY(42);
+            construct.SetRotation(-63.5);
+
+            _scene.AddToScene(construct);
+
+            return construct;
+        }
+
+        private bool AnimateRoadMark(Construct roadMark)
+        {
+            roadMark.SetLeft(roadMark.GetLeft() + _scene.Speed);
+
+            if (roadMark.GetLeft() + roadMark.Width > 0)
+                roadMark.SetTop(roadMark.GetTop() + _scene.Speed * 0.5);
+
+            return true;
+        }
+
+        private bool RecycleRoadMark(Construct roadMark)
+        {
+            var hitBox = roadMark.GetHitBox();
+
+            if (hitBox.Top > _scene.Height || hitBox.Left > _scene.Width)
+                _scene.DisposeFromScene(roadMark);
+            return true;
+        }
+
+        #endregion
+
         #region Tree
 
-        public bool GenerateTreeTop()
+        private bool GenerateTreeTop()
         {
             Construct tree = GenerateTree();
-            tree.SetPosition(left: (tree.Width / 3 * _scene.Scaling) * 9, top: tree.Height * -1);
+
+            tree.SetPosition(
+                left: -1 * tree.Width * _scene.Scaling,
+                top: (_scene.Height / 4 * _scene.Scaling) * -3);
 
             Console.WriteLine("Tree generated.");
 
             return true;
         }
 
-        public bool GenerateTreeBottom()
+        private bool GenerateTreeBottom()
         {
             Construct tree = GenerateTree();
-            tree.SetPosition(left: -1 * tree.Width * _scene.Scaling, top: (_scene.Height / 4 * _scene.Scaling) * 2);
+
+            tree.SetPosition(
+                left: -1 * tree.Width * _scene.Scaling,
+                top: (_scene.Height / 4 * _scene.Scaling) * 2);
 
             Console.WriteLine("Tree generated.");
 
@@ -75,11 +141,12 @@ namespace HonkPooper
                    });
 
             _scene.AddToScene(tree);
+
             return tree;
         }
 
 
-        public bool AnimateTree(Construct tree)
+        private bool AnimateTree(Construct tree)
         {
             tree.SetLeft(tree.GetLeft() + _scene.Speed);
 
@@ -89,7 +156,7 @@ namespace HonkPooper
             return true;
         }
 
-        public bool RecycleTree(Construct tree)
+        private bool RecycleTree(Construct tree)
         {
             var hitBox = tree.GetHitBox();
 
@@ -140,9 +207,11 @@ namespace HonkPooper
         {
             Generator treeGenBottom = new(generationDelay: 40, generationAction: GenerateTreeBottom);
             Generator treeGenTop = new(generationDelay: 40, generationAction: GenerateTreeTop);
+            Generator roadMarkGenMiddle = new(generationDelay: 30, generationAction: GenerateRoadMarkMiddle);
 
             _scene.AddToScene(treeGenBottom);
             _scene.AddToScene(treeGenTop);
+            _scene.AddToScene(roadMarkGenMiddle);
 
             _scene.Speed = 5;
             _scene.Start();
