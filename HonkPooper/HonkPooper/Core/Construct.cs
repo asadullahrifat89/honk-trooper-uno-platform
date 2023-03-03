@@ -34,17 +34,12 @@ namespace HonkPooper
         /// <summary>
         /// Animation function.
         /// </summary>
-        private Func<Construct, bool> AnimateAction { get; set; }
+        public Func<Construct, bool> AnimateAction { get; set; }
 
         /// <summary>
         /// Recycling function.
         /// </summary>
-        private Func<Construct, bool> RecycleAction { get; set; }
-
-        /// <summary>
-        /// Generating function.
-        /// </summary>
-        private Func<Construct, bool> GenerateAction { get; set; }
+        public Func<Construct, bool> RecycleAction { get; set; }
 
         /// <summary>
         /// Adds an offset while animating this construct with the scene speed.
@@ -79,6 +74,7 @@ namespace HonkPooper
             IDictionary<string, object> metaData = null)
         {
             ConstructType = constructType;
+
             AnimateAction = animateAction;
             RecycleAction = recycleAction;
 
@@ -118,12 +114,7 @@ namespace HonkPooper
         public void Recycle()
         {
             RecycleAction(this);
-        }
-
-        public void Generate()
-        {
-            GenerateAction(this);
-        }
+        }      
 
         public void SetSize(double width, double height)
         {

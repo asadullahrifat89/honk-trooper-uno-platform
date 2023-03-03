@@ -280,17 +280,22 @@ namespace HonkPooper
         {
             var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.TREE);
 
-            Construct tree = new(
-                   constructType: ConstructType.TREE,
-                   width: size.Width * _scene.Scaling,
-                   height: size.Height * _scene.Scaling,
-                   animateAction: AnimateTree,
-                   recycleAction: RecycleTree,
-                   content: new Image()
-                   {
-                       Source = new BitmapImage(uriSource: Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.TREE).Uri)
-                   },
-                   speedOffset: 3);
+            //Construct tree = new(
+            //       constructType: ConstructType.TREE,
+            //       width: size.Width * _scene.Scaling,
+            //       height: size.Height * _scene.Scaling,
+            //       animateAction: AnimateTree,
+            //       recycleAction: RecycleTree,
+            //       content: new Image()
+            //       {
+            //           Source = new BitmapImage(uriSource: Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.TREE).Uri)
+            //       },
+            //       speedOffset: 3);
+
+            Tree tree = new(
+                animateAction: AnimateTree,
+                recycleAction: RecycleTree,
+                scaling: _scene.Scaling);
 
             return tree;
         }
