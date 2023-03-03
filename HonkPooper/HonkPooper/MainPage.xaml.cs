@@ -103,9 +103,13 @@ namespace HonkPooper
         {
             Construct tree = GenerateTree();
 
+            //tree.SetPosition(
+            //    left: -1 * tree.Width * _scene.Scaling,
+            //    top: (_scene.Height / 4 * _scene.Scaling) * -4);
+
             tree.SetPosition(
-                left: -1 * tree.Width * _scene.Scaling,
-                top: (_scene.Height / 4 * _scene.Scaling) * -3);
+              left: _scene.Width / 2 - tree.Width * _scene.Scaling,
+              top: tree.Height * -1);
 
             Console.WriteLine("Tree generated.");
 
@@ -116,9 +120,14 @@ namespace HonkPooper
         {
             Construct tree = GenerateTree();
 
+            //tree.SetPosition(
+            //    left: -1 * tree.Width * _scene.Scaling,
+            //    top: (_scene.Height / 4 * _scene.Scaling) * 2);
+
+
             tree.SetPosition(
                 left: -1 * tree.Width * _scene.Scaling,
-                top: (_scene.Height / 4 * _scene.Scaling) * 2);
+                top: (_scene.Height / 2 * _scene.Scaling));
 
             Console.WriteLine("Tree generated.");
 
@@ -145,13 +154,12 @@ namespace HonkPooper
             return tree;
         }
 
-
         private bool AnimateTree(Construct tree)
         {
             tree.SetLeft(tree.GetLeft() + _scene.Speed);
 
-            if (tree.GetLeft() + tree.Width > 0)
-                tree.SetTop(tree.GetTop() + _scene.Speed * 0.5);
+            //if (tree.GetLeft() + tree.Width > 0)
+            tree.SetTop(tree.GetTop() + _scene.Speed * 0.5);
 
             return true;
         }
