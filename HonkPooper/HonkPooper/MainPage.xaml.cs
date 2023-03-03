@@ -154,12 +154,23 @@ namespace HonkPooper
 
             var hitHox = vehicle.GetHitBox();
 
-            if (_scene.Children.OfType<Construct>().Where(x => x.ConstructType == ConstructType.VEHICLE_SMALL || x.ConstructType == ConstructType.VEHICLE_LARGE).FirstOrDefault(x => x.GetHitBox().IntersectsWith(hitHox)) is Construct collidingVehicle)
+            if (_scene.Children.OfType<Construct>()
+                .Where(x => x.ConstructType == ConstructType.VEHICLE_SMALL || x.ConstructType == ConstructType.VEHICLE_LARGE)
+                .FirstOrDefault(x => x.GetHitBox().IntersectsWith(hitHox)) is Construct collidingVehicle)
             {
-                if (collidingVehicle.SpeedOffset > vehicle.SpeedOffset)
+                if (collidingVehicle.SpeedOffset < vehicle.SpeedOffset)
+                {
                     collidingVehicle.SpeedOffset = vehicle.SpeedOffset;
-                else if (collidingVehicle.SpeedOffset < vehicle.SpeedOffset)
+                }
+                else if (collidingVehicle.SpeedOffset > vehicle.SpeedOffset)
+                {
                     vehicle.SpeedOffset = collidingVehicle.SpeedOffset;
+                }
+                //else if (collidingVehicle.SpeedOffset == vehicle.SpeedOffset)
+                //{
+                //    if (vehicle.GetCloseHitBox().IntersectsWith(collidingVehicle.GetCloseHitBox()))
+                //        vehicle.SpeedOffset = vehicle.SpeedOffset / 2;
+                //}
             }
 
             return true;
@@ -189,7 +200,7 @@ namespace HonkPooper
                 height: size.Height * _scene.Scaling,
                 animateAction: AnimateRoadMark,
                 recycleAction: RecycleRoadMark,
-                speedOffset: 2)
+                speedOffset: 3)
             {
                 Background = new SolidColorBrush(Colors.White),
                 CornerRadius = new CornerRadius(5),
@@ -279,7 +290,7 @@ namespace HonkPooper
                    {
                        Source = new BitmapImage(uriSource: Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.TREE).Uri)
                    },
-                   speedOffset: 2);
+                   speedOffset: 3);
 
             return tree;
         }
