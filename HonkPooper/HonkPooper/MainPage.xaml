@@ -8,7 +8,6 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
     <Border
-        Margin="5"
         Background="{ThemeResource RoadBackgroundColor}"
         BorderBrush="#111111"
         BorderThickness="3">

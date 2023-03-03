@@ -133,6 +133,8 @@ namespace HonkPooper
             }
 
             _destroyables.Clear();
+
+            Console.WriteLine($"Object Count: {Children.OfType<Construct>().Count()}");
         }
 
         #endregion
