@@ -30,5 +30,10 @@ namespace HonkPooper
                 _generationDelayInCount = _generationDelay;
             }
         }
+
+        public void SetGenerationDelay(int deplay)
+        {
+            _generationDelay = deplay;
+        }
     }
 }

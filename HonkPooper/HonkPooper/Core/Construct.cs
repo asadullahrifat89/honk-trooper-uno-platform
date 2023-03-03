@@ -25,8 +25,6 @@ namespace HonkPooper
 
         #region Properties
 
-        public double Speed { get; set; }
-
         public ConstructType ConstructType { get; set; }
 
         private Func<Construct, bool> AnimateAction { get; set; }
@@ -46,7 +44,6 @@ namespace HonkPooper
         }
 
         public Construct(
-            double speed,
             ConstructType constructType,
             double width,
             double height,
@@ -54,7 +51,6 @@ namespace HonkPooper
             Func<Construct, bool> recycleAction,
             UIElement content = null)
         {
-            Speed = speed;
             ConstructType = constructType;
             AnimateAction = animateAction;
             RecycleAction = recycleAction;
@@ -88,7 +84,7 @@ namespace HonkPooper
         }
 
         public void Recycle()
-        {            
+        {
             RecycleAction(this);
         }
 

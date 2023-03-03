@@ -64,7 +64,6 @@ namespace HonkPooper
             var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.TREE);
 
             Construct tree = new(
-                   speed: 3,
                    constructType: ConstructType.TREE,
                    width: size.Width * _scene.Scaling,
                    height: size.Height * _scene.Scaling,
@@ -82,10 +81,10 @@ namespace HonkPooper
 
         public bool AnimateTree(Construct tree)
         {
-            tree.SetLeft(tree.GetLeft() + tree.Speed);
+            tree.SetLeft(tree.GetLeft() + _scene.Speed);
 
             if (tree.GetLeft() + tree.Width > 0)
-                tree.SetTop(tree.GetTop() + tree.Speed * 0.5);
+                tree.SetTop(tree.GetTop() + _scene.Speed * 0.5);
 
             return true;
         }
@@ -139,12 +138,13 @@ namespace HonkPooper
 
         private void InputView_PointerPressed(object sender, PointerRoutedEventArgs e)
         {
-            Generator treeGenBottom = new(generationDelay: 100, generationAction: GenerateTreeBottom);
-            Generator treeGenTop = new(generationDelay: 100, generationAction: GenerateTreeTop);
+            Generator treeGenBottom = new(generationDelay: 50, generationAction: GenerateTreeBottom);
+            Generator treeGenTop = new(generationDelay: 50, generationAction: GenerateTreeTop);
 
             _scene.AddToScene(treeGenBottom);
             _scene.AddToScene(treeGenTop);
 
+            _scene.Speed = 5;
             _scene.Start();
         }
 
