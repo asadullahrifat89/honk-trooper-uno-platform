@@ -56,6 +56,14 @@ namespace HonkPooper
 
         public bool GenerateVehicleInScene()
         {
+            var willHonk = _random.Next(0, 2);
+
+            Dictionary<string, object> metaData = new Dictionary<string, object>
+            {
+                { "WillHonk", willHonk },
+                { "IsHonkBusted", willHonk },
+            };
+
             var vehicleType = _random.Next(0, 2);
 
             (ConstructType ConstructType, double Height, double Width) size;
@@ -82,7 +90,8 @@ namespace HonkPooper
                             {
                                 Source = new BitmapImage(uriSource: uri)
                             },
-                            speedOffset: speedOffset);
+                            speedOffset: speedOffset,
+                            metaData: metaData);
                     }
                     break;
                 case 1:
@@ -102,7 +111,8 @@ namespace HonkPooper
                             {
                                 Source = new BitmapImage(uriSource: uri)
                             },
-                            speedOffset: speedOffset);
+                            speedOffset: speedOffset,
+                            metaData: metaData);
                     }
                     break;
                 default:
@@ -141,7 +151,6 @@ namespace HonkPooper
             }
 
             Console.WriteLine("Vehicle generated.");
-
             return true;
         }
 
@@ -300,6 +309,15 @@ namespace HonkPooper
             if (hitBox.Top > _scene.Height || hitBox.Left > _scene.Width)
                 _scene.DisposeFromScene(tree);
 
+            return true;
+        }
+
+        #endregion
+
+        #region Honk
+
+        public bool GenerateHonkInScene()
+        {
             return true;
         }
 

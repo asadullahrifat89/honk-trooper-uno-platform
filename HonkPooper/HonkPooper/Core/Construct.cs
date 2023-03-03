@@ -3,6 +3,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Windows.Foundation;
 
@@ -25,13 +26,35 @@ namespace HonkPooper
 
         #region Properties
 
+        /// <summary>
+        /// Type of the construct.
+        /// </summary>
         public ConstructType ConstructType { get; set; }
 
+        /// <summary>
+        /// Animation function.
+        /// </summary>
         private Func<Construct, bool> AnimateAction { get; set; }
 
+        /// <summary>
+        /// Recycling function.
+        /// </summary>
         private Func<Construct, bool> RecycleAction { get; set; }
 
+        /// <summary>
+        /// Generating function.
+        /// </summary>
+        private Func<Construct, bool> GenerateAction { get; set; }
+
+        /// <summary>
+        /// Adds an offset while animating this construct with the scene speed.
+        /// </summary>
         public double SpeedOffset { get; set; } = 0;
+
+        /// <summary>
+        /// Custom Meta data.
+        /// </summary>
+        public IDictionary<string, object> MetaData { get; set; } = new Dictionary<string, object>();
 
         #endregion
 
@@ -52,11 +75,13 @@ namespace HonkPooper
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction,
             UIElement content = null,
-            double speedOffset = 0)
+            double speedOffset = 0,
+            IDictionary<string, object> metaData = null)
         {
             ConstructType = constructType;
             AnimateAction = animateAction;
             RecycleAction = recycleAction;
+
             SpeedOffset = speedOffset;
 
             RenderTransformOrigin = new Point(0.5, 0.5);
@@ -68,6 +93,9 @@ namespace HonkPooper
 
             if (content is not null)
                 SetChild(content);
+
+            if (metaData is not null)
+                MetaData = metaData;
         }
 
         #endregion
@@ -90,6 +118,11 @@ namespace HonkPooper
         public void Recycle()
         {
             RecycleAction(this);
+        }
+
+        public void Generate()
+        {
+            GenerateAction(this);
         }
 
         public void SetSize(double width, double height)

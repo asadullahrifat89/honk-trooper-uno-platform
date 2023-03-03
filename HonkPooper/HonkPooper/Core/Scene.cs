@@ -123,6 +123,7 @@ namespace HonkPooper
             foreach (Construct construct in Children.OfType<Construct>())
             {
                 construct.Animate();
+                construct.Generate();
                 construct.Recycle();
             }
 
