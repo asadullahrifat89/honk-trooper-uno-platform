@@ -114,6 +114,8 @@ namespace HonkPooper
             // generate top and left corner lane wise vehicles
             var topOrLeft = _random.Next(0, 2);
 
+            var lane = _random.Next(0, 2);
+
             switch (topOrLeft)
             {
                 case 0:
@@ -121,7 +123,7 @@ namespace HonkPooper
                         var xLaneWidth = _scene.Width / 4;
 
                         vehicle.SetPosition(
-                            left: _random.Next(0, (int)xLaneWidth - (int)vehicle.Width) * _scene.Scaling,
+                            left: lane == 0 ? 0 : xLaneWidth - vehicle.Width * _scene.Scaling,
                             top: vehicle.Height * -1);
                     }
                     break;
@@ -131,7 +133,7 @@ namespace HonkPooper
 
                         vehicle.SetPosition(
                             left: vehicle.Width * -1,
-                            top: _random.Next(0, (int)yLaneWidth - (int)vehicle.Height) * _scene.Scaling);
+                            top: lane == 0 ? 0 : yLaneWidth * _scene.Scaling);
                     }
                     break;
                 default:
