@@ -28,6 +28,7 @@ namespace HonkPooper
             this.InitializeComponent();
 
             _scene = this.MainScene;
+
             Loaded += MainPage_Loaded;
             Unloaded += MainPage_Unloaded;
         }
@@ -35,6 +36,28 @@ namespace HonkPooper
         #endregion
 
         #region Methods
+
+        public bool GenerateTree()
+        {
+            Construct tree = new(
+                   speed: 2,
+                   constructType: ConstructType.TREE,
+                   width: Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.TREE).Width,
+                   height: Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.TREE).Height,
+                   animateAction: AnimateTree,
+                   recycleAction: RecycleTree,
+                   content: new Image()
+                   {
+                       Source = new BitmapImage(uriSource: Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.TREE).Uri)
+                   });
+
+            _scene.AddToScene(tree);
+            tree.SetPosition(left: -1 * tree.Width * _scene.Scaling, top: _scene.Height / 2);
+
+            Console.WriteLine("Tree generated.");
+
+            return true;
+        }
 
         public bool AnimateTree(Construct tree)
         {
@@ -50,11 +73,13 @@ namespace HonkPooper
         {
             var hitBox = tree.GetHitBox();
 
-            if (hitBox.Top > _scene.Height || hitBox.Left > _scene.Width)
-            {
-                tree.SetPosition(left: -300, top: _scene.Height / 2);
-            }
+            //if (hitBox.Top > _scene.Height || hitBox.Left > _scene.Width)
+            //{
+            //    tree.SetPosition(left: -300, top: _scene.Height / 2);
+            //}
 
+            if (hitBox.Top > _scene.Height || hitBox.Left > _scene.Width)
+                _scene.DisposeFromScene(tree);
             return true;
         }
 
@@ -88,25 +113,10 @@ namespace HonkPooper
 
         private void InputView_PointerPressed(object sender, PointerRoutedEventArgs e)
         {
-            for (int i = -4; i < 0; i++)
-            {
-                Construct tree = new(
-                    speed: 2,
-                    constructType: ConstructType.TREE,
-                    width: Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.TREE).Width,
-                    height: Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.TREE).Height,
-                    animateAction: AnimateTree,
-                    recycleAction: RecycleTree,
-                    content: new Image()
-                    {
-                        Source = new BitmapImage(uriSource: Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.TREE).Uri)
-                    });
+            Generator generator = new(generationDelay: 500, generationAction: GenerateTree);
+            _scene.AddToScene(generator);
 
-                _scene.AddToScene(tree);
-                tree.SetPosition(left: i * 300 * _scene.Scaling, top: _scene.Height / 2);
-            }
-
-            _scene.Animate();
+            _scene.Start();
         }
 
         #endregion

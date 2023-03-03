@@ -23,6 +23,7 @@ namespace HonkPooper
         private readonly TimeSpan _frameTime = TimeSpan.FromMilliseconds(Constants.DEFAULT_FRAME_TIME);
 
         private readonly List<Construct> _destroyables = new();
+        private readonly List<Generator> _generators = new();
 
         #endregion
 
@@ -53,6 +54,11 @@ namespace HonkPooper
             Children.Add(construct);
         }
 
+        public void AddToScene(Generator generator)
+        {
+            _generators.Add(generator);
+        }
+
         public void DisposeFromScene(Construct construct)
         {
             _destroyables.Add(construct);
@@ -61,13 +67,13 @@ namespace HonkPooper
         /// <summary>
         /// Starts the timer for the scene and starts the scene loop.
         /// </summary>
-        public async void Animate()
+        public async void Start()
         {
             _stopwatch = Stopwatch.StartNew();
             _gameViewTimer = new PeriodicTimer(_frameTime);
 
             while (await _gameViewTimer.WaitForNextTickAsync())
-                SceneLoop();
+                Animate();
         }
 
         /// <summary>
@@ -103,9 +109,13 @@ namespace HonkPooper
         /// <summary>
         /// Executes actions of the constructs.
         /// </summary>
-        private void SceneLoop()
+        private void Animate()
         {
-            //TODO: spawn logic
+            // generate new constructs in scene from generators
+            foreach (Generator generator in _generators)
+            {
+                generator.Generate();
+            }
 
             // run action for each construct and add to destroyable if destroyable function returns true
             foreach (Construct construct in Children.OfType<Construct>())
