@@ -149,10 +149,11 @@ namespace HonkPooper
         {
             var speed = _scene.Speed + vehicle.SpeedOffset;
 
-            vehicle.SetLeft(vehicle.GetLeft() + speed);
-            vehicle.SetTop(vehicle.GetTop() + speed * 0.5);
+            MoveConstruct(vehicle, speed);
 
             var hitHox = vehicle.GetHitBox();
+
+            // prevent overlapping
 
             if (_scene.Children.OfType<Construct>()
                 .Where(x => x.ConstructType == ConstructType.VEHICLE_SMALL || x.ConstructType == ConstructType.VEHICLE_LARGE)
@@ -166,11 +167,6 @@ namespace HonkPooper
                 {
                     vehicle.SpeedOffset = collidingVehicle.SpeedOffset;
                 }
-                //else if (collidingVehicle.SpeedOffset == vehicle.SpeedOffset)
-                //{
-                //    if (vehicle.GetCloseHitBox().IntersectsWith(collidingVehicle.GetCloseHitBox()))
-                //        vehicle.SpeedOffset = vehicle.SpeedOffset / 2;
-                //}
             }
 
             return true;
@@ -223,12 +219,7 @@ namespace HonkPooper
         private bool AnimateRoadMark(Construct roadMark)
         {
             var speed = _scene.Speed + roadMark.SpeedOffset;
-
-            roadMark.SetLeft(roadMark.GetLeft() + speed);
-
-            if (roadMark.GetLeft() + roadMark.Width > 0)
-                roadMark.SetTop(roadMark.GetTop() + speed * 0.5);
-
+            MoveConstruct(roadMark, speed);
             return true;
         }
 
@@ -298,10 +289,7 @@ namespace HonkPooper
         private bool AnimateTree(Construct tree)
         {
             var speed = _scene.Speed + tree.SpeedOffset;
-
-            tree.SetLeft(tree.GetLeft() + speed);
-            tree.SetTop(tree.GetTop() + speed * 0.5);
-
+            MoveConstruct(tree, speed);
             return true;
         }
 
@@ -313,6 +301,16 @@ namespace HonkPooper
                 _scene.DisposeFromScene(tree);
 
             return true;
+        }
+
+        #endregion
+
+        #region Construct
+
+        private void MoveConstruct(Construct construct, double speed)
+        {
+            construct.SetLeft(construct.GetLeft() + speed);
+            construct.SetTop(construct.GetTop() + speed * 0.5);
         }
 
         #endregion
