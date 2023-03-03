@@ -15,7 +15,7 @@ namespace HonkPooper
     {
         #region Fields
 
-        //private double _sceneWidth, _sceneHeight;
+        private double _sceneWidth, _sceneHeight;
 
         private Stopwatch _stopwatch;
 
@@ -154,8 +154,8 @@ namespace HonkPooper
 
         private void Scene_SizeChanged(object sender, SizeChangedEventArgs args)
         {
-            var _sceneWidth = args.NewSize.Width;
-            var _sceneHeight = args.NewSize.Height;
+            _sceneWidth = args.NewSize.Width;
+            _sceneHeight = args.NewSize.Height;
 
             Console.WriteLine($"{_sceneWidth}x{_sceneHeight}");
 

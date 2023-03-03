@@ -10,8 +10,6 @@
 
     <Grid x:Name="RootGrid">
         <Border
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
             Background="{ThemeResource RoadBackgroundColor}"
             BorderBrush="#111111"
             BorderThickness="3">
