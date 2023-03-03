@@ -61,6 +61,7 @@ namespace HonkPooper
             (ConstructType ConstructType, double Height, double Width) size;
             Uri uri;
             Construct vehicle = null;
+            double speedOffset = _random.Next(-3, 2);
 
             switch (vehicleType)
             {
@@ -81,7 +82,7 @@ namespace HonkPooper
                             {
                                 Source = new BitmapImage(uriSource: uri)
                             },
-                            speedOffset: _random.Next(-3, 3));
+                            speedOffset: speedOffset);
                     }
                     break;
                 case 1:
@@ -101,7 +102,7 @@ namespace HonkPooper
                             {
                                 Source = new BitmapImage(uriSource: uri)
                             },
-                            speedOffset: _random.Next(-3, 3));
+                            speedOffset: speedOffset);
                     }
                     break;
                 default:
