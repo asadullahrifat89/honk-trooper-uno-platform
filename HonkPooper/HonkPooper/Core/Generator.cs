@@ -8,14 +8,23 @@ namespace HonkPooper
 {
     public partial class Generator
     {
+        #region Fields
+        
         private int _generationDelay;
         private int _generationDelayInCount;
-        private Func<bool> _generationAction;
+
+        #endregion
+
+        #region Properties
+
+        private Func<bool> GenerationAction { get; set; }
+
+        #endregion
 
         public Generator(int generationDelay, Func<bool> generationAction)
         {
             _generationDelay = generationDelay;
-            _generationAction = generationAction;
+            GenerationAction = generationAction;
 
             _generationDelayInCount = _generationDelay;
         }
@@ -26,7 +35,7 @@ namespace HonkPooper
 
             if (_generationDelayInCount <= 0)
             {
-                _generationAction();
+                GenerationAction();
                 _generationDelayInCount = _generationDelay;
             }
         }

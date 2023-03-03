@@ -92,18 +92,19 @@ namespace HonkPooper
         /// </summary>
         /// <param name="windowWidth"></param>
         /// <returns></returns>
-        private double GetGameObjectScale(double windowWidth)
+        private double GetScalingFactor(double windowWidth)
         {
             return windowWidth switch
             {
-                <= 300 => 0.60,
-                <= 400 => 0.65,
-                <= 500 => 0.70,
-                <= 700 => 0.75,
-                <= 900 => 0.80,
-                <= 1000 => 0.85,
-                <= 1400 => 0.90,
-                <= 2000 => 0.95,
+                <= 300 => 0.50,
+                <= 400 => 0.55,
+                <= 500 => 0.60,
+                <= 700 => 0.65,
+                <= 900 => 0.70,
+                <= 950 => 0.75,
+                <= 1000 => 0.80,
+                <= 1400 => 0.85,
+                <= 2000 => 0.90,
                 _ => 1,
             };
         }
@@ -134,7 +135,7 @@ namespace HonkPooper
 
             _destroyables.Clear();
 
-            //Console.WriteLine($"Object Count: {Children.OfType<Construct>().Count()}");
+            //// Console.WriteLine($"Object Count: {Children.OfType<Construct>().Count()}");
         }
 
         #endregion
@@ -157,11 +158,11 @@ namespace HonkPooper
             _sceneWidth = args.NewSize.Width;
             _sceneHeight = args.NewSize.Height;
 
-            Console.WriteLine($"{_sceneWidth}x{_sceneHeight}");
+            // Console.WriteLine($"{_sceneWidth}x{_sceneHeight}");
 
-            Scaling = GetGameObjectScale(_sceneWidth);
+            Scaling = GetScalingFactor(_sceneWidth);
 
-            Console.WriteLine($"Scaling {Scaling}");
+            // Console.WriteLine($"Scaling {Scaling}");
 
             foreach (var construct in Children.OfType<Construct>())
             {

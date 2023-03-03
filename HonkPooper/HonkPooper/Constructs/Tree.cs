@@ -11,6 +11,8 @@ namespace HonkPooper
 {
     public partial class Tree : Construct
     {
+        #region Ctor
+
         public Tree(
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction,
@@ -34,8 +36,10 @@ namespace HonkPooper
             };
 
             SetChild(content);
-            SpeedOffset = 3;
-            Displacement = 0.5;
+            SpeedOffset = 3 * scaling;
+            IsometricDisplacement = 0.5;
         }
+
+        #endregion
     }
 }

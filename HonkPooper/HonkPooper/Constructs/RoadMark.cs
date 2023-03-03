@@ -12,6 +12,8 @@ namespace HonkPooper
 {
     public partial class RoadMark : Construct
     {
+        #region Ctor
+
         public RoadMark(
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction,
@@ -28,7 +30,7 @@ namespace HonkPooper
             RecycleAction = recycleAction;
 
             SetSize(width: width, height: height);
-            SpeedOffset = 3;
+            SpeedOffset = 3 * scaling;
 
             Background = new SolidColorBrush(Colors.White);
             CornerRadius = new CornerRadius(5);
@@ -36,7 +38,9 @@ namespace HonkPooper
             SetSkewY(42);
             SetRotation(-63.5);
 
-            Displacement = 0.5;
-        }
+            IsometricDisplacement = 0.5;
+        } 
+
+        #endregion
     }
 }

@@ -85,7 +85,7 @@ namespace HonkPooper
                     break;
             }
 
-            Console.WriteLine("Vehicle generated.");
+            // Console.WriteLine("Vehicle generated.");
             return true;
         }
 
@@ -94,6 +94,8 @@ namespace HonkPooper
             var speed = _scene.Speed + vehicle.SpeedOffset;
 
             MoveConstruct(vehicle, speed);
+
+            // TODO: fix hitbox for safe distance between vehicles
 
             var hitHox = vehicle.GetCloseHitBox();
 
@@ -148,7 +150,7 @@ namespace HonkPooper
               left: 0,
               top: 0);
 
-            Console.WriteLine("Road Mark generated.");
+            // Console.WriteLine("Road Mark generated.");
 
             return true;
         }
@@ -184,7 +186,7 @@ namespace HonkPooper
               left: _scene.Width / 2 - tree.Width * _scene.Scaling,
               top: tree.Height * -1);
 
-            Console.WriteLine("Tree generated.");
+            // Console.WriteLine("Tree generated.");
 
             return true;
         }
@@ -199,7 +201,7 @@ namespace HonkPooper
                 left: -1 * tree.Width * _scene.Scaling,
                 top: (_scene.Height / 2 * _scene.Scaling));
 
-            Console.WriteLine("Tree generated.");
+            // Console.WriteLine("Tree generated.");
 
             return true;
         }
@@ -285,7 +287,7 @@ namespace HonkPooper
         private void MoveConstruct(Construct construct, double speed)
         {
             construct.SetLeft(construct.GetLeft() + speed);
-            construct.SetTop(construct.GetTop() + speed * construct.Displacement);
+            construct.SetTop(construct.GetTop() + speed * construct.IsometricDisplacement);
         }
 
         #endregion

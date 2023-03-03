@@ -14,12 +14,18 @@ namespace HonkPooper
 {
     public partial class Vehicle : Construct
     {
+        #region Fields
+
         private Random _random;
 
         private Uri[] _vehicle_small_uris;
         private Uri[] _vehicle_large_uris;
 
         private int _honkDelay;
+
+        #endregion
+
+        #region Ctor
 
         public Vehicle(
             Func<Construct, bool> animateAction,
@@ -65,7 +71,7 @@ namespace HonkPooper
                         };
                         SetChild(content);
 
-                        SpeedOffset = speedOffset;
+                        SpeedOffset = speedOffset * scaling;
                     }
                     break;
                 case 1:
@@ -91,22 +97,30 @@ namespace HonkPooper
                         };
                         SetChild(content);
 
-                        SpeedOffset = speedOffset;
+                        SpeedOffset = speedOffset * scaling;
                     }
                     break;
                 default:
                     break;
             }
 
-            Displacement = 0.5;
+            IsometricDisplacement = 0.5;
 
             if (WillHonk)
                 SetHonkDelay();
         }
 
+        #endregion
+
+        #region Properties
+
         public bool WillHonk { get; set; }
 
         public bool IsHonkBusted { get; set; }
+
+        #endregion
+
+        #region Methods
 
         public bool Honk()
         {
@@ -120,7 +134,7 @@ namespace HonkPooper
                     return true;
                 }
             }
-            
+
             return false;
 
         }
@@ -129,5 +143,7 @@ namespace HonkPooper
         {
             _honkDelay = _random.Next(55 - (int)Math.Floor(0.2), 125 - (int)Math.Floor(0.4));
         }
+
+        #endregion
     }
 }

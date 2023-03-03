@@ -49,8 +49,11 @@ namespace HonkPooper
         /// <summary>
         /// Displacement value that determines isometric movement.
         /// </summary>
-        public double Displacement { get; set; }
+        public double IsometricDisplacement { get; set; }
 
+        /// <summary>
+        /// Returns true if faded.
+        /// </summary>
         public bool IsFadingComplete => Opacity <= 0;
 
         #endregion

@@ -7,8 +7,14 @@ namespace HonkPooper
 {
     public partial class Honk : Construct
     {
+        #region Fields
+
         private Random _random;
-        private Uri[] _honk_uris;
+        private Uri[] _honk_uris; 
+
+        #endregion
+
+        #region Ctor
 
         public Honk(
             Func<Construct, bool> animateAction,
@@ -40,8 +46,9 @@ namespace HonkPooper
 
             SetChild(content);
 
-            //Displacement = _random.NextDouble();
-            Displacement = 0.6;
-        }
+            IsometricDisplacement = 0.6;
+        } 
+
+        #endregion
     }
 }
