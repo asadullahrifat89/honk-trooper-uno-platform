@@ -44,7 +44,13 @@ namespace HonkPooper
         {
             Construct roadMark = GenerateRoadMark();
 
-            roadMark.SetPosition(left: (roadMark.Width / 3 * _scene.Scaling) * 9, top: /*roadMark.Height * -1*/0);
+            //roadMark.SetPosition(
+            //    left: (roadMark.Width / 3 * _scene.Scaling) * 9,
+            //    top: /*roadMark.Height * -1*/0);
+
+            roadMark.SetPosition(
+              left: 0,
+              top: 0);
 
             Console.WriteLine("Road Mark generated.");
 
