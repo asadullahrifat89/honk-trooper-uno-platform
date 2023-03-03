@@ -114,7 +114,8 @@ namespace HonkPooper
 
             Vehicle vehicle1 = vehicle as Vehicle;
 
-            if (hitHox.Right > 0 && hitHox.Bottom > 0 && vehicle1.Honk())
+            // only honk when vehicle is fully inside view
+            if (hitHox.Left > 0 && hitHox.Top > 0 && vehicle1.Honk())
                 GenerateHonkInScene(vehicle1);
 
             return true;
