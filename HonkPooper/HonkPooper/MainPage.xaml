@@ -7,21 +7,23 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
-    <Border
-        Background="{ThemeResource RoadBackgroundColor}"
-        BorderBrush="#111111"
-        BorderThickness="3">
 
-        <Grid x:Name="RootGrid">
+    <Grid x:Name="RootGrid">
+        <Border
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Background="{ThemeResource RoadBackgroundColor}"
+            BorderBrush="#111111"
+            BorderThickness="3">
             <Scene x:Name="MainScene" Background="Transparent" />
-            <Border
-                x:Name="InputView"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch"
-                Background="Transparent"
-                PointerMoved="InputView_PointerMoved"
-                PointerPressed="InputView_PointerPressed" />
-        </Grid>
+        </Border>
+        <Border
+            x:Name="InputView"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            Background="Transparent"
+            PointerMoved="InputView_PointerMoved"
+            PointerPressed="InputView_PointerPressed" />
+    </Grid>
 
-    </Border>
 </Page>

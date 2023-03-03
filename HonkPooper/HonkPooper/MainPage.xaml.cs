@@ -117,11 +117,16 @@ namespace HonkPooper
 
         private void MainPage_SizeChanged(object sender, SizeChangedEventArgs args)
         {
-            var _windowWidth = args.NewSize.Width;
-            var _windowHeight = args.NewSize.Height;
+            //var _windowWidth = args.NewSize.Width;
+            //var _windowHeight = args.NewSize.Height;
 
-            _scene.Width = _windowWidth;
-            _scene.Height = _windowHeight;
+            //_scene.Width = _windowWidth;
+            //_scene.Height = _windowHeight;
+
+            _scene.Width = 1920;
+            _scene.Height = 1080;
+
+
         }
 
         private void MainPage_Unloaded(object sender, RoutedEventArgs e)
