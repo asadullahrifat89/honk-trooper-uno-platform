@@ -9,6 +9,7 @@ using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Navigation;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.IO;
 using System.Linq;
 using System.Reflection.Metadata;
@@ -44,10 +45,7 @@ namespace HonkPooper
         {
             Construct roadMark = GenerateRoadMark();
 
-            //roadMark.SetPosition(
-            //    left: (roadMark.Width / 3 * _scene.Scaling) * 9,
-            //    top: /*roadMark.Height * -1*/0);
-
+            _scene.AddToScene(roadMark);
             roadMark.SetPosition(
               left: 0,
               top: 0);
@@ -69,15 +67,11 @@ namespace HonkPooper
                 recycleAction: RecycleRoadMark)
             {
                 Background = new SolidColorBrush(Colors.White),
-                BorderBrush = new SolidColorBrush(Colors.Black),
-                BorderThickness = new Thickness(2),
                 CornerRadius = new CornerRadius(5),
             };
 
             construct.SetSkewY(42);
             construct.SetRotation(-63.5);
-
-            _scene.AddToScene(construct);
 
             return construct;
         }
@@ -109,10 +103,7 @@ namespace HonkPooper
         {
             Construct tree = GenerateTree();
 
-            //tree.SetPosition(
-            //    left: -1 * tree.Width * _scene.Scaling,
-            //    top: (_scene.Height / 4 * _scene.Scaling) * -4);
-
+            _scene.AddToScene(tree);
             tree.SetPosition(
               left: _scene.Width / 2 - tree.Width * _scene.Scaling,
               top: tree.Height * -1);
@@ -126,11 +117,7 @@ namespace HonkPooper
         {
             Construct tree = GenerateTree();
 
-            //tree.SetPosition(
-            //    left: -1 * tree.Width * _scene.Scaling,
-            //    top: (_scene.Height / 4 * _scene.Scaling) * 2);
-
-
+            _scene.AddToScene(tree);
             tree.SetPosition(
                 left: -1 * tree.Width * _scene.Scaling,
                 top: (_scene.Height / 2 * _scene.Scaling));
@@ -154,8 +141,6 @@ namespace HonkPooper
                    {
                        Source = new BitmapImage(uriSource: Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.TREE).Uri)
                    });
-
-            _scene.AddToScene(tree);
 
             return tree;
         }
