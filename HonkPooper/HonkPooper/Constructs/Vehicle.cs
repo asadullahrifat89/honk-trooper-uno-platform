@@ -19,6 +19,8 @@ namespace HonkPooper
         private Uri[] _vehicle_small_uris;
         private Uri[] _vehicle_large_uris;
 
+        private int _honkDelay;
+
         public Vehicle(
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction,
@@ -95,10 +97,37 @@ namespace HonkPooper
                 default:
                     break;
             }
+
+            Displacement = 0.5;
+
+            if (WillHonk)
+                SetHonkDelay();
         }
 
         public bool WillHonk { get; set; }
 
         public bool IsHonkBusted { get; set; }
+
+        public bool Honk()
+        {
+            if (!IsHonkBusted && WillHonk)
+            {
+                _honkDelay--;
+
+                if (_honkDelay < 0)
+                {
+                    SetHonkDelay();
+                    return true;
+                }
+            }
+            
+            return false;
+
+        }
+
+        private void SetHonkDelay()
+        {
+            _honkDelay = _random.Next(55 - (int)Math.Floor(0.2), 125 - (int)Math.Floor(0.4));
+        }
     }
 }

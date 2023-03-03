@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace HonkPooper
 {
     public partial class Tree : Construct
-    {       
+    {
         public Tree(
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction,
@@ -34,7 +34,8 @@ namespace HonkPooper
             };
 
             SetChild(content);
-            SpeedOffset = 3;          
+            SpeedOffset = 3;
+            Displacement = 0.5;
         }
     }
 }

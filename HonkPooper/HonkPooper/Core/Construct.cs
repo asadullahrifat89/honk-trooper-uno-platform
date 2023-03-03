@@ -46,6 +46,13 @@ namespace HonkPooper
         /// </summary>
         public double SpeedOffset { get; set; } = 0;
 
+        /// <summary>
+        /// Displacement value that determines isometric movement.
+        /// </summary>
+        public double Displacement { get; set; }
+
+        public bool IsFadingComplete => Opacity <= 0;
+
         #endregion
 
         #region Ctor
@@ -209,6 +216,17 @@ namespace HonkPooper
         public void SetChild(UIElement uIElement)
         {
             Child = uIElement;
+        }
+
+        public void Fade()
+        {
+            Opacity -= 0.005;
+        }
+
+        public void Shrink()
+        {
+            _compositeTransform.ScaleX -= 0.1;
+            _compositeTransform.ScaleY -= 0.1;
         }
 
         #endregion

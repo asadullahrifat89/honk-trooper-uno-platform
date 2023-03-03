@@ -26,9 +26,6 @@ namespace HonkPooper
         private Scene _scene;
         private Random _random;
 
-        private Uri[] _vehicle_small_uris;
-        private Uri[] _vehicle_large_uris;
-
         #endregion
 
         #region Ctor
@@ -38,11 +35,7 @@ namespace HonkPooper
             this.InitializeComponent();
 
             _scene = this.MainScene;
-
             _random = new Random();
-
-            _vehicle_small_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.VEHICLE_SMALL).Select(x => x.Uri).ToArray();
-            _vehicle_large_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.VEHICLE_LARGE).Select(x => x.Uri).ToArray();
 
             Loaded += MainPage_Loaded;
             Unloaded += MainPage_Unloaded;
@@ -106,7 +99,7 @@ namespace HonkPooper
 
             // prevent overlapping
 
-            if (_scene.Children.OfType<Vehicle>()                
+            if (_scene.Children.OfType<Vehicle>()
                 .FirstOrDefault(x => x.GetCloseHitBox().IntersectsWith(hitHox)) is Construct collidingVehicle)
             {
                 if (collidingVehicle.SpeedOffset < vehicle.SpeedOffset)
@@ -118,6 +111,11 @@ namespace HonkPooper
                     vehicle.SpeedOffset = collidingVehicle.SpeedOffset;
                 }
             }
+
+            Vehicle vehicle1 = vehicle as Vehicle;
+
+            if (hitHox.Right > 0 && hitHox.Bottom > 0 && vehicle1.Honk())
+                GenerateHonkInScene(vehicle1);
 
             return true;
         }
@@ -207,8 +205,6 @@ namespace HonkPooper
 
         private Construct GenerateTree()
         {
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.TREE);
-
             Tree tree = new(
                 animateAction: AnimateTree,
                 recycleAction: RecycleTree,
@@ -238,8 +234,46 @@ namespace HonkPooper
 
         #region Honk
 
-        public bool GenerateHonkInScene()
+        public bool GenerateHonkInScene(Vehicle vehicle)
         {
+            Honk honk = new(
+                animateAction: AnimateHonk,
+                recycleAction: RecycleHonk,
+                scaling: _scene.Scaling)
+            {
+                SpeedOffset = vehicle.SpeedOffset * 1.3
+            };
+
+            var hitBox = vehicle.GetCloseHitBox();
+
+            honk.SetPosition(
+                left: hitBox.Left - vehicle.Width / 2,
+                top: hitBox.Top - (25 * _scene.Scaling));
+
+            honk.SetRotation(_random.Next(-30, 30));
+            honk.SetZ(vehicle.GetZ() + 1);
+
+            _scene.AddToScene(honk);
+
+            return true;
+        }
+
+        public bool AnimateHonk(Construct honk)
+        {
+            var speed = _scene.Speed + honk.SpeedOffset;
+            MoveConstruct(honk, speed);
+            return true;
+        }
+
+        private bool RecycleHonk(Construct honk)
+        {
+            Honk honk1 = honk as Honk;
+
+            honk1.Fade();
+
+            if (honk1.IsFadingComplete)
+                _scene.DisposeFromScene(honk);
+
             return true;
         }
 
@@ -250,7 +284,7 @@ namespace HonkPooper
         private void MoveConstruct(Construct construct, double speed)
         {
             construct.SetLeft(construct.GetLeft() + speed);
-            construct.SetTop(construct.GetTop() + speed * 0.5);
+            construct.SetTop(construct.GetTop() + speed * construct.Displacement);
         }
 
         #endregion

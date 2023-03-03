@@ -35,6 +35,8 @@ namespace HonkPooper
 
             SetSkewY(42);
             SetRotation(-63.5);
+
+            Displacement = 0.5;
         }
     }
 }
