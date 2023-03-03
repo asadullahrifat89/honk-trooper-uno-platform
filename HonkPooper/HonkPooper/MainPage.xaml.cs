@@ -61,7 +61,7 @@ namespace HonkPooper
             (ConstructType ConstructType, double Height, double Width) size;
             Uri uri;
             Construct vehicle = null;
-            double speedOffset = _random.Next(-3, 2);
+            double speedOffset = _random.Next(-4, 2);
 
             switch (vehicleType)
             {
@@ -177,7 +177,8 @@ namespace HonkPooper
                 width: size.Width * _scene.Scaling,
                 height: size.Height * _scene.Scaling,
                 animateAction: AnimateRoadMark,
-                recycleAction: RecycleRoadMark)
+                recycleAction: RecycleRoadMark,
+                speedOffset: 2)
             {
                 Background = new SolidColorBrush(Colors.White),
                 CornerRadius = new CornerRadius(5),
@@ -199,10 +200,12 @@ namespace HonkPooper
 
         private bool AnimateRoadMark(Construct roadMark)
         {
-            roadMark.SetLeft(roadMark.GetLeft() + _scene.Speed);
+            var speed = _scene.Speed + roadMark.SpeedOffset;
+
+            roadMark.SetLeft(roadMark.GetLeft() + speed);
 
             if (roadMark.GetLeft() + roadMark.Width > 0)
-                roadMark.SetTop(roadMark.GetTop() + _scene.Speed * 0.5);
+                roadMark.SetTop(roadMark.GetTop() + speed * 0.5);
 
             return true;
         }
@@ -272,8 +275,10 @@ namespace HonkPooper
 
         private bool AnimateTree(Construct tree)
         {
-            tree.SetLeft(tree.GetLeft() + _scene.Speed);
-            tree.SetTop(tree.GetTop() + _scene.Speed * 0.5);
+            var speed = _scene.Speed + tree.SpeedOffset;
+
+            tree.SetLeft(tree.GetLeft() + speed);
+            tree.SetTop(tree.GetTop() + speed * 0.5);
 
             return true;
         }
