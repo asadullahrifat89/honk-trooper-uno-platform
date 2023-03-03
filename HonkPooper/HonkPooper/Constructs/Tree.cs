@@ -19,6 +19,7 @@ namespace HonkPooper
             var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.TREE);
 
             ConstructType = ConstructType.TREE;
+
             var width = size.Width * scaling;
             var height = size.Height * scaling;
 
@@ -33,7 +34,6 @@ namespace HonkPooper
             };
 
             SetChild(content);
-
             SpeedOffset = 3;          
         }
     }

@@ -46,11 +46,6 @@ namespace HonkPooper
         /// </summary>
         public double SpeedOffset { get; set; } = 0;
 
-        /// <summary>
-        /// Custom Meta data.
-        /// </summary>
-        public IDictionary<string, object> MetaData { get; set; } = new Dictionary<string, object>();
-
         #endregion
 
         #region Ctor
@@ -70,8 +65,7 @@ namespace HonkPooper
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction,
             UIElement content = null,
-            double speedOffset = 0,
-            IDictionary<string, object> metaData = null)
+            double speedOffset = 0)
         {
             ConstructType = constructType;
 
@@ -89,9 +83,6 @@ namespace HonkPooper
 
             if (content is not null)
                 SetChild(content);
-
-            if (metaData is not null)
-                MetaData = metaData;
         }
 
         #endregion
@@ -114,7 +105,7 @@ namespace HonkPooper
         public void Recycle()
         {
             RecycleAction(this);
-        }      
+        }
 
         public void SetSize(double width, double height)
         {

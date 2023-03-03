@@ -56,68 +56,10 @@ namespace HonkPooper
 
         public bool GenerateVehicleInScene()
         {
-            var willHonk = _random.Next(0, 2);
-
-            Dictionary<string, object> metaData = new Dictionary<string, object>
-            {
-                { "WillHonk", willHonk },
-                { "IsHonkBusted", willHonk },
-            };
-
-            var vehicleType = _random.Next(0, 2);
-
-            (ConstructType ConstructType, double Height, double Width) size;
-            Uri uri;
-            Construct vehicle = null;
-            double speedOffset = _random.Next(-4, 2);
-
-            switch (vehicleType)
-            {
-                case 0:
-                    {
-                        size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.VEHICLE_SMALL);
-
-                        var vehicles = _vehicle_small_uris;
-                        uri = vehicles[_random.Next(0, vehicles.Length)];
-
-                        vehicle = new(
-                            constructType: ConstructType.VEHICLE_SMALL,
-                            width: size.Width * _scene.Scaling,
-                            height: size.Height * _scene.Scaling,
-                            animateAction: AnimateVehicle,
-                            recycleAction: RecycleVehicle,
-                            content: new Image()
-                            {
-                                Source = new BitmapImage(uriSource: uri)
-                            },
-                            speedOffset: speedOffset,
-                            metaData: metaData);
-                    }
-                    break;
-                case 1:
-                    {
-                        size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.VEHICLE_LARGE);
-
-                        var vehicles = _vehicle_large_uris;
-                        uri = vehicles[_random.Next(0, vehicles.Length)];
-
-                        vehicle = new(
-                            constructType: ConstructType.VEHICLE_LARGE,
-                            width: size.Width * _scene.Scaling,
-                            height: size.Height * _scene.Scaling,
-                            animateAction: AnimateVehicle,
-                            recycleAction: RecycleVehicle,
-                            content: new Image()
-                            {
-                                Source = new BitmapImage(uriSource: uri)
-                            },
-                            speedOffset: speedOffset,
-                            metaData: metaData);
-                    }
-                    break;
-                default:
-                    break;
-            }
+            Vehicle vehicle = new(
+                animateAction: AnimateVehicle,
+                recycleAction: RecycleVehicle,
+                scaling: _scene.Scaling);
 
             _scene.AddToScene(vehicle);
 
@@ -160,13 +102,13 @@ namespace HonkPooper
 
             MoveConstruct(vehicle, speed);
 
-            var hitHox = vehicle.GetHitBox();
+            var hitHox = vehicle.GetCloseHitBox();
 
             // prevent overlapping
 
-            if (_scene.Children.OfType<Construct>()
-                .Where(x => x.ConstructType == ConstructType.VEHICLE_SMALL || x.ConstructType == ConstructType.VEHICLE_LARGE)
-                .FirstOrDefault(x => x.GetHitBox().IntersectsWith(hitHox)) is Construct collidingVehicle)
+            if (_scene.Children.OfType<Vehicle>()
+                //.Where(x => x.ConstructType == ConstructType.VEHICLE_SMALL || x.ConstructType == ConstructType.VEHICLE_LARGE)
+                .FirstOrDefault(x => x.GetCloseHitBox().IntersectsWith(hitHox)) is Construct collidingVehicle)
             {
                 if (collidingVehicle.SpeedOffset < vehicle.SpeedOffset)
                 {
@@ -197,22 +139,10 @@ namespace HonkPooper
 
         public bool GenerateRoadMarkInScene()
         {
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.ROAD_MARK);
-
-            Construct roadMark = new(
-                constructType: ConstructType.ROAD_MARK,
-                width: size.Width * _scene.Scaling,
-                height: size.Height * _scene.Scaling,
+            RoadMark roadMark = new(
                 animateAction: AnimateRoadMark,
                 recycleAction: RecycleRoadMark,
-                speedOffset: 3)
-            {
-                Background = new SolidColorBrush(Colors.White),
-                CornerRadius = new CornerRadius(5),
-            };
-
-            roadMark.SetSkewY(42);
-            roadMark.SetRotation(-63.5);
+                scaling: _scene.Scaling);
 
             _scene.AddToScene(roadMark);
 
@@ -279,18 +209,6 @@ namespace HonkPooper
         private Construct GenerateTree()
         {
             var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.TREE);
-
-            //Construct tree = new(
-            //       constructType: ConstructType.TREE,
-            //       width: size.Width * _scene.Scaling,
-            //       height: size.Height * _scene.Scaling,
-            //       animateAction: AnimateTree,
-            //       recycleAction: RecycleTree,
-            //       content: new Image()
-            //       {
-            //           Source = new BitmapImage(uriSource: Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.TREE).Uri)
-            //       },
-            //       speedOffset: 3);
 
             Tree tree = new(
                 animateAction: AnimateTree,
