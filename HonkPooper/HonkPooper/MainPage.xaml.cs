@@ -149,9 +149,18 @@ namespace HonkPooper
         {
             var speed = _scene.Speed + vehicle.SpeedOffset;
 
-            // speed offset adds variable speed
             vehicle.SetLeft(vehicle.GetLeft() + speed);
             vehicle.SetTop(vehicle.GetTop() + speed * 0.5);
+
+            var hitHox = vehicle.GetHitBox();
+
+            if (_scene.Children.OfType<Construct>().Where(x => x.ConstructType == ConstructType.VEHICLE_SMALL || x.ConstructType == ConstructType.VEHICLE_LARGE).FirstOrDefault(x => x.GetHitBox().IntersectsWith(hitHox)) is Construct collidingVehicle)
+            {
+                if (collidingVehicle.SpeedOffset > vehicle.SpeedOffset)
+                    collidingVehicle.SpeedOffset = vehicle.SpeedOffset;
+                else if (collidingVehicle.SpeedOffset < vehicle.SpeedOffset)
+                    vehicle.SpeedOffset = collidingVehicle.SpeedOffset;
+            }
 
             return true;
         }
