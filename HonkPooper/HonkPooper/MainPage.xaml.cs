@@ -52,7 +52,7 @@ namespace HonkPooper
         public bool GenerateTreeBottom()
         {
             Construct tree = GenerateTree();
-            tree.SetPosition(left: -1 * tree.Width * _scene.Scaling, top: _scene.Height / 2 - tree.Height);
+            tree.SetPosition(left: -1 * tree.Width * _scene.Scaling, top: (_scene.Height / 4 * _scene.Scaling) * 2);
 
             Console.WriteLine("Tree generated.");
 
@@ -61,11 +61,13 @@ namespace HonkPooper
 
         private Construct GenerateTree()
         {
+            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.TREE);
+
             Construct tree = new(
                    speed: 3,
                    constructType: ConstructType.TREE,
-                   width: Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.TREE).Width * _scene.Scaling,
-                   height: Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.TREE).Height * _scene.Scaling,
+                   width: size.Width * _scene.Scaling,
+                   height: size.Height * _scene.Scaling,
                    animateAction: AnimateTree,
                    recycleAction: RecycleTree,
                    content: new Image()
