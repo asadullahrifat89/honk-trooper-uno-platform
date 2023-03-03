@@ -37,10 +37,32 @@ namespace HonkPooper
 
         #region Methods
 
-        public bool GenerateTree()
+        #region Tree
+
+        public bool GenerateTreeTop()
+        {
+            Construct tree = GenerateTree();
+            tree.SetPosition(left: (tree.Width / 4 * _scene.Scaling) * 4, top: tree.Height * -1);
+
+            Console.WriteLine("Tree generated.");
+
+            return true;
+        }
+
+        public bool GenerateTreeBottom()
+        {
+            Construct tree = GenerateTree();
+            tree.SetPosition(left: -1 * tree.Width * _scene.Scaling, top: _scene.Height / 2);
+
+            Console.WriteLine("Tree generated.");
+
+            return true;
+        }
+
+        private Construct GenerateTree()
         {
             Construct tree = new(
-                   speed: 2,
+                   speed: 3,
                    constructType: ConstructType.TREE,
                    width: Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.TREE).Width,
                    height: Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.TREE).Height,
@@ -52,12 +74,9 @@ namespace HonkPooper
                    });
 
             _scene.AddToScene(tree);
-            tree.SetPosition(left: -1 * tree.Width * _scene.Scaling, top: _scene.Height / 2);
-
-            Console.WriteLine("Tree generated.");
-
-            return true;
+            return tree;
         }
+
 
         public bool AnimateTree(Construct tree)
         {
@@ -82,6 +101,8 @@ namespace HonkPooper
                 _scene.DisposeFromScene(tree);
             return true;
         }
+
+        #endregion
 
         #endregion
 
@@ -113,8 +134,11 @@ namespace HonkPooper
 
         private void InputView_PointerPressed(object sender, PointerRoutedEventArgs e)
         {
-            Generator generator = new(generationDelay: 500, generationAction: GenerateTree);
-            _scene.AddToScene(generator);
+            Generator treeGenBottom = new(generationDelay: 100, generationAction: GenerateTreeBottom);
+            Generator treeGenTop = new(generationDelay: 100, generationAction: GenerateTreeTop);
+
+            _scene.AddToScene(treeGenBottom);
+            _scene.AddToScene(treeGenTop);
 
             _scene.Start();
         }

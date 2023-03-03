@@ -41,6 +41,8 @@ namespace HonkPooper
 
         public double Scaling { get; set; }
 
+        public double Speed { get; set; }
+
         #endregion
 
         #region Methods
