@@ -11,8 +11,8 @@ namespace HonkPooper
         #region Fields
 
         private Scene _scene;
-        private Controller _keyboardController;
-        private OnScreenController _onScreenController;
+        private Controller _controller;
+        //private OnScreenController _onScreenController;
         private Random _random;
         private Player _player;
 
@@ -63,37 +63,37 @@ namespace HonkPooper
 
             _player.Hover();
 
-            if (_keyboardController.IsMoveUp || _onScreenController.IsMoveUp)
+            if (_controller.IsMoveUp /*|| _onScreenController.IsMoveUp*/)
             {
-                if (_player.GetTop() > 0 && _player.GetLeft() > 0)
+                if (_player.GetBottom() > 0 && _player.GetRight() > 0)
                     _player.MoveUp(speed);
             }
-            else if (_keyboardController.IsMoveDown || _onScreenController.IsMoveDown)
+            else if (_controller.IsMoveDown /*|| _onScreenController.IsMoveDown*/)
             {
-                if (_player.GetBottom() < _scene.Height && _player.GetRight() < _scene.Width)
+                if (_player.GetTop() < _scene.Height && _player.GetLeft() < _scene.Width)
                     _player.MoveDown(speed);
             }
-            else if (_keyboardController.IsMoveLeft || _onScreenController.IsMoveLeft)
+            else if (_controller.IsMoveLeft /*|| _onScreenController.IsMoveLeft*/)
             {
-                if (_player.GetLeft() > 0 && _player.GetBottom() < _scene.Height)
+                if (_player.GetRight() > 0 && _player.GetTop() < _scene.Height)
                     _player.MoveLeft(speed);
             }
-            else if (_keyboardController.IsMoveRight || _onScreenController.IsMoveRight)
+            else if (_controller.IsMoveRight /*|| _onScreenController.IsMoveRight*/)
             {
-                if (_player.GetRight() < _scene.Width && _player.GetTop() > 0)
+                if (_player.GetLeft() < _scene.Width && _player.GetBottom() > 0)
                     _player.MoveRight(speed);
             }
             else
             {
-                if (_player.GetTop() > 0 && _player.GetLeft() > 0 && _player.GetRight() < _scene.Width && _player.GetBottom() < _scene.Height)
+                //if (_player.GetTop() > 0 && _player.GetLeft() > 0 && _player.GetLeft() < _scene.Width && _player.GetTop() < _scene.Height)
                     _player.StopMovement();
             }
 
-            if (_keyboardController.IsAttacking || _onScreenController.IsAttacking)
+            if (_controller.IsAttacking /*|| _onScreenController.IsAttacking*/)
             {
                 GeneratePlayerBombInScene();
-                _keyboardController.IsAttacking = false;
-                _onScreenController.IsAttacking = false;
+                _controller.IsAttacking = false;
+                //_onScreenController.IsAttacking = false;
             }
 
             return true;
@@ -781,8 +781,8 @@ namespace HonkPooper
 
         private void SetController()
         {
-            _keyboardController.SetScene(_scene);
-            _onScreenController.SetScene(_scene);
+            _controller.SetScene(_scene);
+            //_onScreenController.SetScene(_scene);
         }
 
         #endregion
@@ -795,8 +795,8 @@ namespace HonkPooper
         {
             _scene = this.MainScene;
 
-            _keyboardController = this.KeyboardController;
-            _onScreenController = this.OnScreenController;
+            _controller = this.KeyboardController;
+            //_onScreenController = this.OnScreenController;
 
             _scene.Width = 1920;
             _scene.Height = 1080;

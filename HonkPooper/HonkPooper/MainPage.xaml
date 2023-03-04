@@ -20,11 +20,11 @@
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             Background="Transparent" />
-        <OnScreenController
+        <!--<OnScreenController
             x:Name="OnScreenController"
             HorizontalAlignment="Right"
             VerticalAlignment="Bottom"
-            Background="Transparent" />
+            Background="Transparent" />-->
     </Grid>
 
 </Page>

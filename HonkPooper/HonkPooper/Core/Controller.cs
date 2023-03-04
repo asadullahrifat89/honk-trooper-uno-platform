@@ -9,7 +9,7 @@ using Windows.Security.Cryptography.Certificates;
 
 namespace HonkPooper
 {
-    public partial class ControlerBase : Border
+    public partial class ControlerBase : Grid
     {
         #region Fields
 
@@ -222,6 +222,12 @@ namespace HonkPooper
 
     public partial class Controller : ControlerBase
     {
+        #region Fields
+
+        private int _keysSize = 55;
+
+        #endregion
+
         #region Ctor
 
         public Controller()
@@ -230,27 +236,11 @@ namespace HonkPooper
             //PointerMoved += Controller_PointerMoved;
             KeyUp += Controller_KeyUp;
             KeyDown += Controller_KeyDown;
-        }
 
-        #endregion
-    }
-
-    public partial class OnScreenController : ControlerBase
-    {
-        #region Fields
-        
-        private int _keysSize = 55;
-
-        #endregion
-
-        #region Ctor
-
-        public OnScreenController()
-        {
             Grid keysContainer = new()
             {
-                //HorizontalAlignment = Microsoft.UI.Xaml.HorizontalAlignment.Right,
-                //VerticalAlignment = Microsoft.UI.Xaml.VerticalAlignment.Bottom,
+                HorizontalAlignment = Microsoft.UI.Xaml.HorizontalAlignment.Right,
+                VerticalAlignment = Microsoft.UI.Xaml.VerticalAlignment.Bottom,
                 Margin = new Microsoft.UI.Xaml.Thickness(10)
             };
 
@@ -276,7 +266,7 @@ namespace HonkPooper
                 BorderThickness = new Microsoft.UI.Xaml.Thickness(6),
             };
 
-            up.PointerPressed += (s,e)=> { ActivateMoveUp(); };
+            up.PointerPressed += (s, e) => { ActivateMoveUp(); };
             up.PointerReleased += (s, e) => { DeactivateMoveUp(); };
 
             Border down = new()
@@ -347,8 +337,126 @@ namespace HonkPooper
             keysContainer.Children.Add(left);
             keysContainer.Children.Add(right);
 
-            this.Child = keysContainer;
-        } 
+            this.Children.Add(keysContainer);
+        }
+
+        #endregion
+    }
+
+    public partial class OnScreenController : ControlerBase
+    {
+        #region Fields
+
+        private int _keysSize = 55;
+
+        #endregion
+
+        #region Ctor
+
+        public OnScreenController()
+        {
+            Grid keysContainer = new()
+            {
+                HorizontalAlignment = Microsoft.UI.Xaml.HorizontalAlignment.Right,
+                VerticalAlignment = Microsoft.UI.Xaml.VerticalAlignment.Bottom,
+                Margin = new Microsoft.UI.Xaml.Thickness(10)
+            };
+
+            keysContainer.RowDefinitions.Add(new RowDefinition());
+            keysContainer.RowDefinitions.Add(new RowDefinition());
+            keysContainer.RowDefinitions.Add(new RowDefinition());
+
+            keysContainer.ColumnDefinitions.Add(new ColumnDefinition());
+            keysContainer.ColumnDefinitions.Add(new ColumnDefinition());
+            keysContainer.ColumnDefinitions.Add(new ColumnDefinition());
+
+            Border up = new()
+            {
+                Background = new SolidColorBrush(Colors.Goldenrod),
+                Height = _keysSize,
+                Width = _keysSize,
+                CornerRadius = new Microsoft.UI.Xaml.CornerRadius(30),
+                Child = new SymbolIcon()
+                {
+                    Symbol = Symbol.Up,
+                },
+                BorderBrush = new SolidColorBrush(Colors.White),
+                BorderThickness = new Microsoft.UI.Xaml.Thickness(6),
+            };
+
+            up.PointerPressed += (s, e) => { ActivateMoveUp(); };
+            up.PointerReleased += (s, e) => { DeactivateMoveUp(); };
+
+            Border down = new()
+            {
+                Background = new SolidColorBrush(Colors.Goldenrod),
+                Height = _keysSize,
+                Width = _keysSize,
+                CornerRadius = new Microsoft.UI.Xaml.CornerRadius(30),
+                Child = new SymbolIcon()
+                {
+                    Symbol = Symbol.Download
+                },
+                BorderBrush = new SolidColorBrush(Colors.White),
+                BorderThickness = new Microsoft.UI.Xaml.Thickness(6),
+            };
+
+            down.PointerPressed += (s, e) => { ActivateMoveDown(); };
+            down.PointerReleased += (s, e) => { DeactivateMoveDown(); };
+
+            Border left = new()
+            {
+                Background = new SolidColorBrush(Colors.Goldenrod),
+                Height = _keysSize,
+                Width = _keysSize,
+                CornerRadius = new Microsoft.UI.Xaml.CornerRadius(30),
+                Child = new SymbolIcon()
+                {
+                    Symbol = Symbol.Back,
+                },
+                BorderBrush = new SolidColorBrush(Colors.White),
+                BorderThickness = new Microsoft.UI.Xaml.Thickness(6),
+            };
+
+            left.PointerPressed += (s, e) => { ActivateMoveLeft(); };
+            left.PointerReleased += (s, e) => { DeactivateMoveLeft(); };
+
+            Border right = new()
+            {
+                Background = new SolidColorBrush(Colors.Goldenrod),
+                Height = _keysSize,
+                Width = _keysSize,
+                CornerRadius = new Microsoft.UI.Xaml.CornerRadius(30),
+                Child = new SymbolIcon()
+                {
+                    Symbol = Symbol.Forward,
+                },
+                BorderBrush = new SolidColorBrush(Colors.White),
+                BorderThickness = new Microsoft.UI.Xaml.Thickness(6),
+            };
+
+            right.PointerPressed += (s, e) => { ActivateMoveRight(); };
+            right.PointerReleased += (s, e) => { DeactivateMoveRight(); };
+
+            Grid.SetRow(up, 0);
+            Grid.SetColumn(up, 1);
+
+            Grid.SetRow(left, 1);
+            Grid.SetColumn(left, 0);
+
+            Grid.SetRow(right, 1);
+            Grid.SetColumn(right, 2);
+
+            Grid.SetRow(down, 2);
+            Grid.SetColumn(down, 1);
+
+            keysContainer.Children.Add(up);
+            keysContainer.Children.Add(down);
+            keysContainer.Children.Add(left);
+            keysContainer.Children.Add(right);
+
+            this.Children.Add(keysContainer);
+        }
 
         #endregion
     }
