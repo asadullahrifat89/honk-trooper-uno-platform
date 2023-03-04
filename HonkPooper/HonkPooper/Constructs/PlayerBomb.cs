@@ -129,7 +129,7 @@ namespace HonkPooper
             }
 
             Expand();
-            Fade(0.05);
+            Fade(0.02);
         }
 
         #endregion

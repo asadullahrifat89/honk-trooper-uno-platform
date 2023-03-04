@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
 
 namespace HonkPooper
 {
@@ -15,6 +16,9 @@ namespace HonkPooper
         private Uri[] _vehicle_large_uris;
 
         private int _honkDelay;
+
+        private bool _isHonkBustingComplete;
+        private double _honkBustingUpScalingLimit = 1.5;
 
         #endregion
 
@@ -111,13 +115,16 @@ namespace HonkPooper
 
         public bool IsHonkBusted { get; set; }
 
+        public bool HonkToBeBusted { get; set; }
+
         #endregion
 
         #region Methods
 
-        public void Reset() 
+        public void Reset()
         {
             IsHonkBusted = false;
+            HonkToBeBusted = false;
 
             WillHonk = Convert.ToBoolean(_random.Next(0, 2));
 
@@ -129,7 +136,7 @@ namespace HonkPooper
 
         public bool Honk()
         {
-            if (!IsHonkBusted && WillHonk)
+            if (!HonkToBeBusted && !IsHonkBusted && WillHonk)
             {
                 _honkDelay--;
 
@@ -149,6 +156,31 @@ namespace HonkPooper
             _honkDelay = _random.Next(30, 80);
         }
 
+
+        public void HonkBust()
+        {
+            if (!IsHonkBusted)
+            {
+                if (!_isHonkBustingComplete && GetScaleX() < _honkBustingUpScalingLimit)
+                {
+                    Expand();
+                }
+
+                if (GetScaleX() >= _honkBustingUpScalingLimit)
+                    _isHonkBustingComplete = true;
+
+                if (_isHonkBustingComplete)
+                {
+                    Shrink();
+
+                    if (GetScaleX() <= 1)
+                    {
+                        IsHonkBusted = true;
+                        _isHonkBustingComplete = false;
+                    }
+                }
+            }
+        }
         #endregion
     }
 }

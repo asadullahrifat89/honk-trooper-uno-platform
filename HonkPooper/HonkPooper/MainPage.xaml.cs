@@ -142,7 +142,7 @@ namespace HonkPooper
 
                 if(_scene.Children.OfType<Vehicle>().Where(x=>x.IsAnimating).FirstOrDefault(x=>x.GetCloseHitBox().IntersectsWith(bomb.GetCloseHitBox())) is Vehicle vehicle)
                 {
-                    vehicle.IsHonkBusted = true;
+                    vehicle.HonkToBeBusted = true;
                 }
             }
 
@@ -295,6 +295,11 @@ namespace HonkPooper
             // only honk when vehicle is fully inside view
 
             Vehicle vehicle1 = vehicle as Vehicle;
+
+            if(vehicle1.HonkToBeBusted && !vehicle1.IsHonkBusted)
+            {
+                vehicle1.HonkBust();
+            }
 
             if (vehicle1.Honk())
             {
