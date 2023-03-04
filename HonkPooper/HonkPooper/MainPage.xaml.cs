@@ -133,9 +133,17 @@ namespace HonkPooper
 
             var speed = (_scene.Speed + bomb.SpeedOffset);
 
-            if(playerBomb.Gravitate(_dropShadow, _scene.DownScaling))
+            // returns blast
+            if (playerBomb.Gravitate(_dropShadow, _scene.DownScaling))
             {
                 MoveConstruct(bomb, speed);
+
+                // while in blast check if it intersects with any vehicle, if it does then the vehicle stops honking and slows down
+
+                if(_scene.Children.OfType<Vehicle>().Where(x=>x.IsAnimating).FirstOrDefault(x=>x.GetCloseHitBox().IntersectsWith(bomb.GetCloseHitBox())) is Vehicle vehicle)
+                {
+                    vehicle.IsHonkBusted = true;
+                }
             }
 
             return true;
@@ -218,13 +226,7 @@ namespace HonkPooper
             if (_scene.Children.OfType<Vehicle>().FirstOrDefault(x => x.IsAnimating == false) is Vehicle vehicle)
             {
                 vehicle.IsAnimating = true;
-
-                vehicle.WillHonk = Convert.ToBoolean(_random.Next(0, 2));
-
-                if (vehicle.WillHonk)
-                {
-                    vehicle.SetHonkDelay();
-                }
+                vehicle.Reset();
 
                 // generate top and left corner lane wise vehicles
                 var topOrLeft = _random.Next(0, 2);

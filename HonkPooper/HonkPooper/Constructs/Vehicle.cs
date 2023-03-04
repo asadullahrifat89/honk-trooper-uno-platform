@@ -115,6 +115,18 @@ namespace HonkPooper
 
         #region Methods
 
+        public void Reset() 
+        {
+            IsHonkBusted = false;
+
+            WillHonk = Convert.ToBoolean(_random.Next(0, 2));
+
+            if (WillHonk)
+            {
+                SetHonkDelay();
+            }
+        }
+
         public bool Honk()
         {
             if (!IsHonkBusted && WillHonk)
