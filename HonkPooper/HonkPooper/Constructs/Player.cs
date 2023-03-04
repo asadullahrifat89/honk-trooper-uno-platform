@@ -95,8 +95,8 @@ namespace HonkPooper
             _isMovingLeft = false;
             _isMovingRight = false;
 
-            SetLeft(GetLeft() + speed);
-            SetTop(GetTop() - speed);
+            SetLeft(GetLeft() - speed * 2);
+            SetTop(GetTop() - speed);         
 
             _movementStopDelay = _movementStopDelayDefault;
             _lastSpeed = speed;
@@ -110,7 +110,7 @@ namespace HonkPooper
             _isMovingLeft = false;
             _isMovingRight = false;
 
-            SetLeft(GetLeft() - speed);
+            SetLeft(GetLeft() + speed * 2);
             SetTop(GetTop() + speed);
 
             _movementStopDelay = _movementStopDelayDefault;
@@ -125,8 +125,8 @@ namespace HonkPooper
             _isMovingLeft = true;
             _isMovingRight = false;
 
-            SetLeft(GetLeft() - speed * 2);
-            SetTop(GetTop() - speed);
+            SetLeft(GetLeft() - speed);
+            SetTop(GetTop() + speed);
 
             _movementStopDelay = _movementStopDelayDefault;
             _lastSpeed = speed;
@@ -140,8 +140,8 @@ namespace HonkPooper
             _isMovingLeft = false;
             _isMovingRight = true;
 
-            SetLeft(GetLeft() + speed * 2);
-            SetTop(GetTop() + speed);
+            SetLeft(GetLeft() + speed);
+            SetTop(GetTop() - speed);    
 
             _movementStopDelay = _movementStopDelayDefault;
             _lastSpeed = speed;
