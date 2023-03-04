@@ -226,8 +226,8 @@ namespace HonkPooper
 
         public Controller()
         {
-            PointerPressed += Controller_PointerPressed;
-            PointerMoved += Controller_PointerMoved;
+            //PointerPressed += Controller_PointerPressed;
+            //PointerMoved += Controller_PointerMoved;
             KeyUp += Controller_KeyUp;
             KeyDown += Controller_KeyDown;
         }

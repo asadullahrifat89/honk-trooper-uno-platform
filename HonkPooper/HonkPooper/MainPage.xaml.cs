@@ -65,23 +65,28 @@ namespace HonkPooper
 
             if (_keyboardController.IsMoveUp || _onScreenController.IsMoveUp)
             {
-                _player.MoveUp(speed);
+                if (_player.GetTop() > 0 && _player.GetLeft() > 0)
+                    _player.MoveUp(speed);
             }
             else if (_keyboardController.IsMoveDown || _onScreenController.IsMoveDown)
             {
-                _player.MoveDown(speed);
+                if (_player.GetBottom() < _scene.Height && _player.GetRight() < _scene.Width)
+                    _player.MoveDown(speed);
             }
             else if (_keyboardController.IsMoveLeft || _onScreenController.IsMoveLeft)
             {
-                _player.MoveLeft(speed);
+                if (_player.GetLeft() > 0 && _player.GetBottom() < _scene.Height)
+                    _player.MoveLeft(speed);
             }
             else if (_keyboardController.IsMoveRight || _onScreenController.IsMoveRight)
             {
-                _player.MoveRight(speed);
+                if (_player.GetRight() < _scene.Width && _player.GetTop() > 0)
+                    _player.MoveRight(speed);
             }
             else
             {
-                _player.StopMovement();
+                if (_player.GetTop() > 0 && _player.GetLeft() > 0 && _player.GetRight() < _scene.Width && _player.GetBottom() < _scene.Height)
+                    _player.StopMovement();
             }
 
             if (_keyboardController.IsAttacking || _onScreenController.IsAttacking)
