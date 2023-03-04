@@ -15,13 +15,11 @@
             BorderThickness="3">
             <Scene x:Name="MainScene" Background="Transparent" />
         </Border>
-        <Border
-            x:Name="InputView"
+        <Controller
+            x:Name="MainController"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
-            Background="Transparent"
-            PointerMoved="InputView_PointerMoved"
-            PointerPressed="InputView_PointerPressed" />
+            Background="Transparent" />
     </Grid>
 
 </Page>

@@ -1,13 +1,10 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Media.Imaging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
-using Windows.Foundation;
 
 namespace HonkPooper
 {
@@ -38,6 +35,8 @@ namespace HonkPooper
         #endregion
 
         #region Properties
+
+        public bool IsAnimating { get; set; }
 
         public double Translation { get; set; }
 
@@ -71,6 +70,7 @@ namespace HonkPooper
         /// </summary>
         public async void Start()
         {
+            IsAnimating = true;
             _stopwatch = Stopwatch.StartNew();
             _gameViewTimer = new PeriodicTimer(_frameTime);
 
@@ -83,6 +83,7 @@ namespace HonkPooper
         /// </summary>
         public void Stop()
         {
+            IsAnimating = false;
             _stopwatch?.Stop();
             _gameViewTimer?.Dispose();
         }

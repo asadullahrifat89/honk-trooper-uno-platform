@@ -1,21 +1,8 @@
-﻿using Microsoft.UI;
-using Microsoft.UI.Xaml;
+﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Media.Imaging;
-using Microsoft.UI.Xaml.Navigation;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-using System.IO;
 using System.Linq;
-using System.Reflection.Metadata;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
 
 namespace HonkPooper
 {
@@ -24,7 +11,9 @@ namespace HonkPooper
         #region Fields
 
         private Scene _scene;
+        private Controller _controller;
         private Random _random;
+        private Player _player;
 
         #endregion
 
@@ -34,7 +23,6 @@ namespace HonkPooper
         {
             this.InitializeComponent();
 
-            _scene = this.MainScene;
             _random = new Random();
 
             Loaded += MainPage_Loaded;
@@ -44,6 +32,100 @@ namespace HonkPooper
         #endregion
 
         #region Methods
+
+        #region Page
+
+        private void PrepareScene()
+        {
+            // first add road marks
+            Generator roadMark = new(
+                generationDelay: 30,
+                generationAction: GenerateRoadMarkInScene,
+                spawnAction: SpawnRoadMarksInScene);
+
+            // then add the top trees
+            Generator treeTop = new(
+                generationDelay: 40,
+                generationAction: GenerateTreeInSceneTop,
+                spawnAction: SpawnTreesInScene);
+
+            // then add the vehicles which will appear forward in z wrt the top trees
+            Generator vehicle = new(
+                generationDelay: 80,
+                generationAction: GenerateVehicleInScene,
+                spawnAction: SpawnVehiclesInScene);
+
+            // then add the bottom trees which will appear forward in z wrt to the vehicles
+            Generator treeBottom = new(
+                generationDelay: 40,
+                generationAction: GenerateTreeInSceneBottom,
+                spawnAction: SpawnTreesInScene);
+
+            // add the honks which will appear forward in z wrt to everything on the road
+            Generator honk = new(
+                generationDelay: 0,
+                generationAction: () => { return true; },
+                spawnAction: SpawnHonksInScene);
+
+            // add the player in scene which will appear forward in z wrt to all else
+            Generator player = new(
+               generationDelay: 0,
+               generationAction: () => { return true; },
+               spawnAction: SpawnPlayerInScene);
+
+            _scene.AddToScene(treeBottom);
+            _scene.AddToScene(treeTop);
+
+            _scene.AddToScene(roadMark);
+            _scene.AddToScene(vehicle);
+
+            _scene.AddToScene(player);
+            _scene.Speed = 5;
+        }
+
+        private void SetController()
+        {
+            _controller.SetScene(_scene, _player);
+        }
+
+        #endregion
+
+        #region Player
+
+        public bool SpawnPlayerInScene()
+        {
+            _player = new(
+                animateAction: AnimatePlayer,
+                recycleAction: (_player) => { return true; },
+                scaling: _scene.Translation);
+
+            _scene.AddToScene(_player);
+
+            _player.SetPosition(
+                left: _scene.Width / 2,
+                top: _scene.Height / 2,
+                z: 6);
+
+            return true;
+        }
+
+        public bool AnimatePlayer(Construct player)
+        {
+            var speed = _scene.Speed;
+
+            if (_controller.IsMoveUp)
+            {
+
+            }
+            else if (_controller.IsMoveDown)
+            {
+
+            }
+
+            return true;
+        }
+
+        #endregion
 
         #region Vehicle
 
@@ -427,73 +509,35 @@ namespace HonkPooper
 
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
-            SizeChanged += MainPage_SizeChanged;
+            _scene = this.MainScene;
+            _controller = this.MainController;
+
+            _scene.Width = 1920;
+            _scene.Height = 1080;
+
+            PrepareScene();
+            SetController();
+
+            //SizeChanged += MainPage_SizeChanged;
         }
 
-        private void MainPage_SizeChanged(object sender, SizeChangedEventArgs args)
-        {
-            var _windowWidth = args.NewSize.Width;
-            var _windowHeight = args.NewSize.Height;
+        //private void MainPage_SizeChanged(object sender, SizeChangedEventArgs args)
+        //{
+        //    var _windowWidth = args.NewSize.Width;
+        //    var _windowHeight = args.NewSize.Height;
 
-            _scene.Width = _windowWidth;
-            _scene.Height = _windowHeight;
+        //    _scene.Width = _windowWidth;
+        //    _scene.Height = _windowHeight;
 
-            //_scene.Width = 1920;
-            //_scene.Height = 1080;
-        }
+        //    //_scene.Width = 1920;
+        //    //_scene.Height = 1080;
+        //}
 
         private void MainPage_Unloaded(object sender, RoutedEventArgs e)
         {
-            SizeChanged -= MainPage_SizeChanged;
+            //SizeChanged -= MainPage_SizeChanged;
         }
 
-        private void InputView_PointerMoved(object sender, PointerRoutedEventArgs e)
-        {
-
-        }
-
-        private void InputView_PointerPressed(object sender, PointerRoutedEventArgs e)
-        {
-            // first add road marks
-            Generator roadMark = new(
-                generationDelay: 30,
-                generationAction: GenerateRoadMarkInScene,
-                spawnAction: SpawnRoadMarksInScene);
-
-            // then add the top trees
-            Generator treeTop = new(
-                generationDelay: 40,
-                generationAction: GenerateTreeInSceneTop,
-                spawnAction: SpawnTreesInScene);
-
-            // then add the vehicles which will appear forward in z wrt the top trees
-            Generator vehicle = new(
-                generationDelay: 80,
-                generationAction: GenerateVehicleInScene,
-                spawnAction: SpawnVehiclesInScene);
-
-            // then add the bottom trees which will appear forward in z wrt to the vehicles
-            Generator treeBottom = new(
-                generationDelay: 40,
-                generationAction: GenerateTreeInSceneBottom,
-                spawnAction: SpawnTreesInScene);
-
-            // add the honks which stay above all in z
-            Generator honk = new(
-                generationDelay: 0,
-                generationAction: () => { return true; },
-                spawnAction: SpawnHonksInScene);
-
-            _scene.AddToScene(treeBottom);
-            _scene.AddToScene(treeTop);
-
-            _scene.AddToScene(roadMark);
-            _scene.AddToScene(vehicle);
-
-            _scene.Speed = 5;
-            _scene.Start();
-        }
-
-        #endregion
+        #endregion      
     }
 }

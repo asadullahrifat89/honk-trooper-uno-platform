@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HonkPooper
 {
@@ -13,11 +9,12 @@ namespace HonkPooper
 
         public static (ConstructType ConstructType, double Height, double Width)[] CONSTRUCT_SIZES = new (ConstructType, double, double)[]
         {
-             new (ConstructType.TREE, 150, 150),
-             new (ConstructType.ROAD_MARK, 40, 15),
-             new (ConstructType.VEHICLE_SMALL, 150, 150),
-             new (ConstructType.VEHICLE_LARGE, 180, 180),
-             new (ConstructType.HONK, 90, 90),
+            new (ConstructType.PLAYER, 140, 140),
+            new (ConstructType.TREE, 150, 150),
+            new (ConstructType.ROAD_MARK, 40, 15),
+            new (ConstructType.VEHICLE_SMALL, 150, 150),
+            new (ConstructType.VEHICLE_LARGE, 180, 180),
+            new (ConstructType.HONK, 90, 90),
         };
 
         public static (ConstructType ConstructType, Uri Uri)[] CONSTRUCT_TEMPLATES = new (ConstructType, Uri)[]
@@ -43,6 +40,9 @@ namespace HonkPooper
             new (ConstructType.HONK, new Uri("ms-appx:///HonkPooper/Assets/Images/honk_1.png")),
             new (ConstructType.HONK, new Uri("ms-appx:///HonkPooper/Assets/Images/honk_2.png")),
             new (ConstructType.HONK, new Uri("ms-appx:///HonkPooper/Assets/Images/honk_3.png")),
+
+            new (ConstructType.PLAYER, new Uri("ms-appx:///HonkPooper/Assets/Images/player_1.png")),
+            new (ConstructType.PLAYER, new Uri("ms-appx:///HonkPooper/Assets/Images/player_2.png")),
         };
     }
 
@@ -50,8 +50,6 @@ namespace HonkPooper
     {
         NONE,
         PLAYER,
-        PLAYER_UPWARD,
-        PLAYER_DOWNWARD,
         VEHICLE_SMALL,
         VEHICLE_LARGE,
         STICKER,
