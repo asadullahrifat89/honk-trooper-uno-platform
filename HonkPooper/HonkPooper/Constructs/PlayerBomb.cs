@@ -100,9 +100,6 @@ namespace HonkPooper
             {
                 _blastDelay--;
 
-                //SetLeft(GetLeft() + SpeedOffset / 2);
-                //SetTop(GetTop() + SpeedOffset);
-
                 SetLeft(GetLeft() + speed);
                 SetTop(GetTop() + speed * IsometricDisplacement);
 
