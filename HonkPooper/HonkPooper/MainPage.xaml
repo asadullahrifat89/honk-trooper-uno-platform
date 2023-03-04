@@ -16,9 +16,14 @@
             <Scene x:Name="MainScene" Background="Transparent" />
         </Border>
         <Controller
-            x:Name="MainController"
+            x:Name="KeyboardController"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
+            Background="Transparent" />
+        <OnScreenController
+            x:Name="OnScreenController"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
             Background="Transparent" />
     </Grid>
 

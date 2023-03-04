@@ -11,7 +11,8 @@ namespace HonkPooper
         #region Fields
 
         private Scene _scene;
-        private Controller _controller;
+        private Controller _keyboardController;
+        private OnScreenController _onScreenController;
         private Random _random;
         private Player _player;
 
@@ -62,19 +63,19 @@ namespace HonkPooper
 
             _player.Hover();
 
-            if (_controller.IsMoveUp)
+            if (_keyboardController.IsMoveUp || _onScreenController.IsMoveUp)
             {
                 _player.MoveUp(speed);
             }
-            else if (_controller.IsMoveDown)
+            else if (_keyboardController.IsMoveDown || _onScreenController.IsMoveDown)
             {
                 _player.MoveDown(speed);
             }
-            else if (_controller.IsMoveLeft)
+            else if (_keyboardController.IsMoveLeft || _onScreenController.IsMoveLeft)
             {
                 _player.MoveLeft(speed);
             }
-            else if (_controller.IsMoveRight)
+            else if (_keyboardController.IsMoveRight || _onScreenController.IsMoveRight)
             {
                 _player.MoveRight(speed);
             }
@@ -83,10 +84,11 @@ namespace HonkPooper
                 _player.StopMovement();
             }
 
-            if (_controller.IsAttacking)
+            if (_keyboardController.IsAttacking || _onScreenController.IsAttacking)
             {
                 GeneratePlayerBombInScene();
-                _controller.IsAttacking = false;
+                _keyboardController.IsAttacking = false;
+                _onScreenController.IsAttacking = false;
             }
 
             return true;
@@ -774,7 +776,8 @@ namespace HonkPooper
 
         private void SetController()
         {
-            _controller.SetScene(_scene);
+            _keyboardController.SetScene(_scene);
+            _onScreenController.SetScene(_scene);
         }
 
         #endregion
@@ -786,7 +789,9 @@ namespace HonkPooper
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
             _scene = this.MainScene;
-            _controller = this.MainController;
+
+            _keyboardController = this.KeyboardController;
+            _onScreenController = this.OnScreenController;
 
             _scene.Width = 1920;
             _scene.Height = 1080;
