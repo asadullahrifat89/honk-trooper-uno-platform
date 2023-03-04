@@ -176,7 +176,7 @@ namespace HonkPooper
 
         #endregion
 
-        #region PlayerDropShadow
+        #region DropShadow
 
         public bool SpawnPlayerDropShadowInScene()
         {
@@ -188,7 +188,7 @@ namespace HonkPooper
             _scene.AddToScene(_dropShadow);
 
             _dropShadow.Move(
-               player: _player,
+               parent: _player,
                downScaling: _scene.DownScaling);
 
             _dropShadow.SetZ(6);
@@ -201,7 +201,7 @@ namespace HonkPooper
         public bool AnimatePlayerDropShadow(Construct DropShadow)
         {
             _dropShadow.Move(
-                player: _player,
+                parent: _player,
                 downScaling: _scene.DownScaling);
 
             return true;
@@ -760,7 +760,7 @@ namespace HonkPooper
             _player.Reposition(_scene);
 
             _dropShadow.Move(
-                player: _player,
+                parent: _player,
                 downScaling: _scene.DownScaling);
         }
 

@@ -30,11 +30,11 @@ namespace HonkPooper
             Opacity = 0.8;
         }
 
-        public void Move(Player player, double downScaling) 
+        public void Move(Construct parent, double downScaling)
         {
             SetPosition(
-                   left: (player.GetLeft() + player.Width / 2) - Width / 2,
-                   top: player.GetBottom() + (50 * downScaling));
+                   left: (parent.GetLeft() + parent.Width / 2) - Width / 2,
+                   top: parent.GetBottom() + (50 * downScaling));
         }
     }
 }
