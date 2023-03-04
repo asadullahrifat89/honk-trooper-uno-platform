@@ -48,6 +48,7 @@ namespace HonkPooper
 
             new (ConstructType.PLAYER_BOMB, new Uri("ms-appx:///HonkPooper/Assets/Images/poop_1.png")),
             new (ConstructType.PLAYER_BOMB, new Uri("ms-appx:///HonkPooper/Assets/Images/poop_2.png")),
+            new (ConstructType.PLAYER_BOMB, new Uri("ms-appx:///HonkPooper/Assets/Images/poop_3.png")),
 
             new (ConstructType.PLAYER_BOMB_BLAST, new Uri("ms-appx:///HonkPooper/Assets/Images/blast_1.png")),
             new (ConstructType.PLAYER_BOMB_BLAST, new Uri("ms-appx:///HonkPooper/Assets/Images/blast_2.png")),
