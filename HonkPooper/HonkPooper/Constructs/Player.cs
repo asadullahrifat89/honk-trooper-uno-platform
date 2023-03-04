@@ -53,6 +53,8 @@ namespace HonkPooper
             };
 
             SetChild(content);
+
+            SpeedOffset = 2;
             _hoverDelay = _hoverDelayDefault;
         }
 

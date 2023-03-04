@@ -2,6 +2,7 @@
 using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace HonkPooper
 {
@@ -53,7 +54,7 @@ namespace HonkPooper
 
         public bool AnimatePlayer(Construct player)
         {
-            var speed = _scene.Speed;
+            var speed = _scene.Speed + player.SpeedOffset;
 
             _player.Hover();
 
@@ -398,7 +399,10 @@ namespace HonkPooper
         {
             for (int i = 0; i < 10; i++)
             {
-                Construct tree = GenerateTree();
+                Tree tree = new(
+                    animateAction: AnimateTree,
+                    recycleAction: RecycleTree,
+                    downScaling: _scene.DownScaling);
 
                 tree.SetPosition(
                     left: -500,
@@ -447,16 +451,6 @@ namespace HonkPooper
             }
 
             return false;
-        }
-
-        private Construct GenerateTree()
-        {
-            Tree tree = new(
-                animateAction: AnimateTree,
-                recycleAction: RecycleTree,
-                downScaling: _scene.DownScaling);
-
-            return tree;
         }
 
         private bool AnimateTree(Construct tree)
@@ -556,6 +550,92 @@ namespace HonkPooper
 
         #endregion
 
+        #region Cloud
+
+        public bool SpawnCloudsInScene()
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                Cloud cloud = new(
+                    animateAction: AnimateCloud,
+                    recycleAction: RecycleCloud,
+                    downScaling: _scene.DownScaling);
+
+                cloud.SetPosition(
+                    left: -500,
+                    top: -500,
+                    z: 8);
+
+                _scene.AddToScene(cloud);
+            }
+
+            return true;
+        }
+
+        private bool GenerateCloudInScene()
+        {
+            if (_scene.Children.OfType<Cloud>().FirstOrDefault(x => x.IsAnimating == false) is Cloud cloud)
+            {
+                cloud.IsAnimating = true;
+                cloud.Reset();
+
+                var topOrLeft = _random.Next(0, 2);
+
+                var lane = _random.Next(0, 2);
+
+                switch (topOrLeft)
+                {
+                    case 0:
+                        {
+                            var xLaneWidth = _scene.Width / 4;
+                            cloud.SetPosition(
+                                left: _random.Next(0, Convert.ToInt32(xLaneWidth - cloud.Width)) * _scene.DownScaling,
+                                top: cloud.Height * -1);
+                        }
+                        break;
+                    case 1:
+                        {
+                            var yLaneWidth = (_scene.Height / 2) / 2;
+                            cloud.SetPosition(
+                                left: cloud.Width * -1,
+                                top: _random.Next(0, Convert.ToInt32(yLaneWidth)) * _scene.DownScaling);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool AnimateCloud(Construct cloud)
+        {
+            var speed = (_scene.Speed + cloud.SpeedOffset);
+            MoveConstruct(cloud, speed);
+            return true;
+        }
+
+        private bool RecycleCloud(Construct cloud)
+        {
+            var hitBox = cloud.GetHitBox();
+
+            if (hitBox.Top > _scene.Height || hitBox.Left > _scene.Width)
+            {
+                cloud.SetPosition(
+                    left: -500,
+                    top: -500);
+
+                cloud.IsAnimating = false;
+            }
+
+            return true;
+        }
+
+        #endregion
+
         #region Construct
 
         private void MoveConstruct(Construct construct, double speed)
@@ -572,25 +652,25 @@ namespace HonkPooper
         private void PrepareScene()
         {
             // first add road marks
-            Generator roadMark = new(
+            Generator roadMarks = new(
                 generationDelay: 30,
                 generationAction: GenerateRoadMarkInScene,
                 spawnAction: SpawnRoadMarksInScene);
 
             // then add the top trees
-            Generator treeTop = new(
+            Generator treeTops = new(
                 generationDelay: 40,
                 generationAction: GenerateTreeInSceneTop,
                 spawnAction: SpawnTreesInScene);
 
             // then add the vehicles which will appear forward in z wrt the top trees
-            Generator vehicle = new(
+            Generator vehicles = new(
                 generationDelay: 80,
                 generationAction: GenerateVehicleInScene,
                 spawnAction: SpawnVehiclesInScene);
 
             // then add the bottom trees which will appear forward in z wrt to the vehicles
-            Generator treeBottom = new(
+            Generator treeBottoms = new(
                 generationDelay: 40,
                 generationAction: GenerateTreeInSceneBottom,
                 spawnAction: SpawnTreesInScene);
@@ -603,31 +683,38 @@ namespace HonkPooper
 
             // add the player in scene which will appear forward in z wrt to all else
             Generator player = new(
-               generationDelay: 0,
-               generationAction: () => { return true; },
-               spawnAction: SpawnPlayerInScene);
+                generationDelay: 0,
+                generationAction: () => { return true; },
+                spawnAction: SpawnPlayerInScene);
 
             // add the player drop zone in scene which will appear forward in z wrt to all else
             Generator playerDropShadow = new(
-               generationDelay: 0,
-               generationAction: () => { return true; },
-               spawnAction: SpawnPlayerDropShadowInScene);
+                generationDelay: 0,
+                generationAction: () => { return true; },
+                spawnAction: SpawnPlayerDropShadowInScene);
 
-            Generator bomb = new(
-              generationDelay: 0,
-              generationAction: () => { return true; },
-              spawnAction: SpawnPlayerBombsInScene);
+            Generator bombs = new(
+                generationDelay: 0,
+                generationAction: () => { return true; },
+                spawnAction: SpawnPlayerBombsInScene);
 
-            _scene.AddToScene(treeBottom);
-            _scene.AddToScene(treeTop);
+            // add the clouds which are abve the player z
+            Generator clouds = new(
+                generationDelay: 100,
+                generationAction: GenerateCloudInScene,
+                spawnAction: SpawnCloudsInScene);
 
-            _scene.AddToScene(roadMark);
-            _scene.AddToScene(vehicle);
+            _scene.AddToScene(treeBottoms);
+            _scene.AddToScene(treeTops);
+
+            _scene.AddToScene(roadMarks);
+            _scene.AddToScene(vehicles);
 
             _scene.AddToScene(player);
             _scene.AddToScene(playerDropShadow);
 
-            _scene.AddToScene(bomb);
+            _scene.AddToScene(bombs);
+            _scene.AddToScene(clouds);
 
             _scene.Speed = 5;
         }

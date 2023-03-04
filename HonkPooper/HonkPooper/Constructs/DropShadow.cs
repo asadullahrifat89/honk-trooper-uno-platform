@@ -27,6 +27,7 @@ namespace HonkPooper
 
             Background = new SolidColorBrush(Colors.Gray);
             CornerRadius = new CornerRadius(30);
+            Opacity = 0.8;
         }
 
         public void Move(Player player, double downScaling) 
