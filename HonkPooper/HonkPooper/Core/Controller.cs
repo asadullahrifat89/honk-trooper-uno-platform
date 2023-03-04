@@ -255,8 +255,7 @@ namespace HonkPooper
             ArrowsKeysContainer = new()
             {
                 HorizontalAlignment = Microsoft.UI.Xaml.HorizontalAlignment.Right,
-                VerticalAlignment = Microsoft.UI.Xaml.VerticalAlignment.Bottom,
-                Margin = new Microsoft.UI.Xaml.Thickness(0, 0, 40, 5),
+                VerticalAlignment = Microsoft.UI.Xaml.VerticalAlignment.Bottom,                
                 RenderTransform = _arrowsKeysContainerTransform,
             };
 
@@ -354,6 +353,26 @@ namespace HonkPooper
             ArrowsKeysContainer.Children.Add(right);
 
             this.Children.Add(ArrowsKeysContainer);
+
+            Button attack = new()
+            {
+                Background = new SolidColorBrush(Colors.Goldenrod),
+                Height = _keysSize,
+                Width = _keysSize,
+                CornerRadius = new Microsoft.UI.Xaml.CornerRadius(30),
+                Content = new SymbolIcon()
+                {
+                    Symbol = Symbol.Bold,
+                },
+                BorderBrush = new SolidColorBrush(Colors.White),
+                BorderThickness = new Microsoft.UI.Xaml.Thickness(6),
+                HorizontalAlignment = Microsoft.UI.Xaml.HorizontalAlignment.Left,
+                VerticalAlignment = Microsoft.UI.Xaml.VerticalAlignment.Top,
+                Margin = new Microsoft.UI.Xaml.Thickness(20),
+            };
+
+            attack.Click += (s, e) => { ActivateAttack(); };
+            this.Children.Add(attack);
         }
 
         #endregion

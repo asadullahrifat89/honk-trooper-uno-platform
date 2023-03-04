@@ -84,8 +84,8 @@ namespace HonkPooper
             }
             else
             {
-                if (_player.GetBottom() > 0 && _player.GetRight() > 0 
-                    && _player.GetTop() < _scene.Height && _player.GetLeft() < _scene.Width 
+                if (_player.GetBottom() > 0 && _player.GetRight() > 0
+                    && _player.GetTop() < _scene.Height && _player.GetLeft() < _scene.Width
                     && _player.GetRight() > 0 && _player.GetTop() < _scene.Height
                     && _player.GetLeft() < _scene.Width && _player.GetBottom() > 0)
                     _player.StopMovement();
@@ -784,6 +784,7 @@ namespace HonkPooper
         {
             _controller.SetScene(_scene);
             _controller.SetArrowsKeysContainerRotation(-45);
+            _controller.ArrowsKeysContainer.Margin = new Thickness(left: 0, top: 0, right: 40, bottom: -60);
         }
 
         #endregion
