@@ -17,7 +17,7 @@ namespace HonkPooper
 
         private int _honkDelay;
 
-        private bool _isHonkBustingComplete;
+        private bool _isBombDroppingComplete;
         private double _honkBustingUpScalingLimit = 1.5;
 
         #endregion
@@ -113,7 +113,9 @@ namespace HonkPooper
 
         public bool WillHonk { get; set; }
 
-        public bool IsHonkBusted { get; set; }
+        //public bool IsHonkBusted { get; set; }
+
+        public bool IsMarkedForBombing { get; set; }
 
         public bool IsBombDropped { get; set; }
 
@@ -123,7 +125,8 @@ namespace HonkPooper
 
         public void Reset()
         {
-            IsHonkBusted = false;
+            //IsHonkBusted = false;
+            IsMarkedForBombing = false;
             IsBombDropped = false;
 
             SetScaleTransform(1);
@@ -138,7 +141,7 @@ namespace HonkPooper
 
         public bool Honk()
         {
-            if (!IsBombDropped && !IsHonkBusted && WillHonk)
+            if (!IsMarkedForBombing /*&& !IsHonkBusted*/ && WillHonk)
             {
                 _honkDelay--;
 
@@ -160,24 +163,27 @@ namespace HonkPooper
 
         public void HonkBust()
         {
-            if (!IsHonkBusted)
+            if (!IsBombDropped)
             {
-                if (!_isHonkBustingComplete && GetScaleX() < _honkBustingUpScalingLimit)
+                if (!_isBombDroppingComplete && GetScaleX() < _honkBustingUpScalingLimit)
                 {
                     Expand();
                 }
 
                 if (GetScaleX() >= _honkBustingUpScalingLimit)
-                    _isHonkBustingComplete = true;
+                    _isBombDroppingComplete = true;
 
-                if (_isHonkBustingComplete)
+                if (_isBombDroppingComplete)
                 {
                     Shrink();
 
                     if (GetScaleX() <= 1)
                     {
-                        IsHonkBusted = true;
-                        _isHonkBustingComplete = false;
+                        IsBombDropped = true;
+
+                        _isBombDroppingComplete = false;
+
+                        //IsHonkBusted = true;
                     }
                 }
             }

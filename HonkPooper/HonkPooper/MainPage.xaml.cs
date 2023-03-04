@@ -134,7 +134,10 @@ namespace HonkPooper
             var speed = (_scene.Speed + bomb.SpeedOffset);
 
             // returns blast
-            if (playerBomb.Gravitate(_dropShadow, _scene.DownScaling))
+
+            var isBlasted = playerBomb.Gravitate(_dropShadow, _scene.DownScaling);
+
+            if (isBlasted)
             {
                 MoveConstruct(bomb, speed);
 
@@ -145,7 +148,8 @@ namespace HonkPooper
                     .FirstOrDefault(x => x.GetCloseHitBox().IntersectsWith(bomb.GetCloseHitBox())) 
                     is Vehicle vehicle)
                 {
-                    vehicle.IsBombDropped = true;
+                    vehicle.IsMarkedForBombing = true;
+                    vehicle.WillHonk = false;
                 }
             }
 
@@ -299,7 +303,7 @@ namespace HonkPooper
 
             Vehicle vehicle1 = vehicle as Vehicle;
 
-            if (vehicle1.IsBombDropped && !vehicle1.IsHonkBusted)
+            if (vehicle1.IsMarkedForBombing)
             {
                 vehicle1.HonkBust();
             }
