@@ -24,15 +24,17 @@ namespace HonkPooper
             Func<Construct, bool> recycleAction,
             double downScaling)
         {
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.PLAYER_DROP_ZONE);
+           var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.DROP_SHADOW);
 
-            ConstructType = ConstructType.PLAYER_DROP_ZONE;
+            ConstructType = ConstructType.DROP_SHADOW;
 
             var width = size.Width * downScaling;
             var height = size.Height * downScaling;
 
             AnimateAction = animateAction;
             RecycleAction = recycleAction;
+
+            Height = 25 * downScaling;
 
             SetSize(width: width, height: height);
 
@@ -52,7 +54,7 @@ namespace HonkPooper
         {
             // linking this shadow instance with a construct
             Id = construct.Id;
-            Source = construct;
+            Source = construct;            
         }
 
         public void Reset()

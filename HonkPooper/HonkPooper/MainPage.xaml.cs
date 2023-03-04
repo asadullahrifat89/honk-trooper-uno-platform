@@ -99,7 +99,7 @@ namespace HonkPooper
 
         public bool SpawnPlayerBombsInScene()
         {
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 3; i++)
             {
                 PlayerBomb bomb = new(
                     animateAction: AnimatePlayerBomb,
@@ -147,11 +147,19 @@ namespace HonkPooper
 
             var speed = _scene.Speed + bomb.SpeedOffset;
 
-            var isBlasted = playerBomb.Gravitate(speed * _scene.DownScaling);
+            DropShadow dropShadow = _scene.Children.OfType<DropShadow>().First(x => x.Id == bomb.Id);
 
-            if (isBlasted)
+            if (!playerBomb.IsBlasting && dropShadow.GetCloseHitBox().IntersectsWith(bomb.GetCloseHitBox()))
             {
-                //MoveConstruct(bomb, speed);
+                playerBomb.SetBlastContent();
+            }
+
+            if (playerBomb.IsBlasting)
+            {
+                MoveConstruct(bomb, speed);
+
+                bomb.Expand();
+                bomb.Fade(0.02);
 
                 // while in blast check if it intersects with any vehicle, if it does then the vehicle stops honking and slows down
 
@@ -162,6 +170,11 @@ namespace HonkPooper
                     vehicle.IsMarkedForBombing = true;
                     vehicle.WillHonk = false;
                 }
+            }
+            else
+            {
+                bomb.SetLeft(bomb.GetLeft() + speed);
+                bomb.SetTop(bomb.GetTop() + speed);
             }
 
             return true;
@@ -595,7 +608,7 @@ namespace HonkPooper
             }
 
             return false;
-        }      
+        }
 
         public bool AnimateCloud(Construct cloud)
         {

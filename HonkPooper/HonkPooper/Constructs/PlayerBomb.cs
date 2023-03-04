@@ -94,41 +94,18 @@ namespace HonkPooper
             SetChild(content);
         }
 
-        public bool Gravitate(double speed)
+        public void SetBlastContent()
         {
-            if (_blastDelay > 0)
+            var uri = _bomb_blast_uris[_random.Next(0, _bomb_blast_uris.Length)];
+
+            var content = new Image()
             {
-                _blastDelay--;
+                Source = new BitmapImage(uriSource: uri)
+            };
 
-                SetLeft(GetLeft() + speed);
-                SetTop(GetTop() + speed);
+            SetChild(content);
 
-                return false;
-            }
-            else
-            {
-                if (!IsBlasting)
-                {
-                    var uri = _bomb_blast_uris[_random.Next(0, _bomb_blast_uris.Length)];
-
-                    var content = new Image()
-                    {
-                        Source = new BitmapImage(uriSource: uri)
-                    };
-
-                    SetChild(content);
-
-                    IsBlasting = true;
-                }
-
-                SetLeft(GetLeft() + speed);
-                SetTop(GetTop() + speed * IsometricDisplacement);
-
-                Expand();
-                Fade(0.02);
-
-                return true;
-            }
+            IsBlasting = true;
         }
 
         #endregion
