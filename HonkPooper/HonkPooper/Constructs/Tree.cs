@@ -36,7 +36,7 @@ namespace HonkPooper
             };
 
             SetChild(content);
-            SpeedOffset = 3 * scaling;
+            SpeedOffset = 3;
             IsometricDisplacement = 0.5;
         }
 

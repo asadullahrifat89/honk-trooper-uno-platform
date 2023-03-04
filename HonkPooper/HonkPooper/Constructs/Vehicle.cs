@@ -72,7 +72,7 @@ namespace HonkPooper
                         };
                         SetChild(content);
 
-                        SpeedOffset = speedOffset * scaling;
+                        SpeedOffset = speedOffset;
                     }
                     break;
                 case 1:
@@ -98,7 +98,7 @@ namespace HonkPooper
                         };
                         SetChild(content);
 
-                        SpeedOffset = speedOffset * scaling;
+                        SpeedOffset = speedOffset;
                     }
                     break;
                 default:

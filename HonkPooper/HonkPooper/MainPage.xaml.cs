@@ -54,7 +54,7 @@ namespace HonkPooper
                 Vehicle vehicle = new(
                     animateAction: AnimateVehicle,
                     recycleAction: RecycleVehicle,
-                    scaling: _scene.Scaling);
+                    scaling: _scene.Translation);
 
                 _scene.AddToScene(vehicle);
 
@@ -91,7 +91,7 @@ namespace HonkPooper
                             var xLaneWidth = _scene.Width / 4;
 
                             vehicle.SetPosition(
-                                left: lane == 0 ? 0 : xLaneWidth - vehicle.Width * _scene.Scaling,
+                                left: lane == 0 ? 0 : xLaneWidth - vehicle.Width * _scene.Translation,
                                 top: vehicle.Height * -1);
                         }
                         break;
@@ -101,7 +101,7 @@ namespace HonkPooper
 
                             vehicle.SetPosition(
                                 left: vehicle.Width * -1,
-                                top: lane == 0 ? 0 : yLaneWidth * _scene.Scaling);
+                                top: lane == 0 ? 0 : yLaneWidth * _scene.Translation);
                         }
                         break;
                     default:
@@ -119,7 +119,7 @@ namespace HonkPooper
 
         private bool AnimateVehicle(Construct vehicle)
         {
-            var speed = _scene.Speed + vehicle.SpeedOffset;
+            var speed = (_scene.Speed + vehicle.SpeedOffset);
 
             MoveConstruct(vehicle, speed);
 
@@ -146,7 +146,7 @@ namespace HonkPooper
 
             // only honk when vehicle is fully inside view
 
-            if (hitHox.Left > 0 && hitHox.Top > 0 && vehicle1.Honk())
+            if (/*hitHox.Left > 0 && hitHox.Top > 0 &&*/ vehicle1.Honk())
                 GenerateHonkInScene(vehicle1);
 
             return true;
@@ -179,7 +179,7 @@ namespace HonkPooper
                 RoadMark roadMark = new(
                     animateAction: AnimateRoadMark,
                     recycleAction: RecycleRoadMark,
-                    scaling: _scene.Scaling);
+                    scaling: _scene.Translation);
 
                 roadMark.SetPosition(
                     left: -500,
@@ -212,7 +212,7 @@ namespace HonkPooper
 
         private bool AnimateRoadMark(Construct roadMark)
         {
-            var speed = _scene.Speed + roadMark.SpeedOffset;
+            var speed = (_scene.Speed + roadMark.SpeedOffset);
             MoveConstruct(roadMark, speed);
             return true;
         }
@@ -261,7 +261,7 @@ namespace HonkPooper
                 tree.IsAnimating = true;
 
                 tree.SetPosition(
-                    left: _scene.Width / 2 - tree.Width * _scene.Scaling,
+                    left: _scene.Width / 2 - tree.Width * _scene.Translation,
                     top: tree.Height * -1,
                     z: 2);
 
@@ -280,8 +280,8 @@ namespace HonkPooper
                 tree.IsAnimating = true;
 
                 tree.SetPosition(
-                    left: -1 * tree.Width * _scene.Scaling,
-                    top: _scene.Height / 2 * _scene.Scaling,
+                    left: -1 * tree.Width * _scene.Translation,
+                    top: _scene.Height / 2 * _scene.Translation,
                     z: 4);
 
                 // Console.WriteLine("Tree generated.");
@@ -297,14 +297,14 @@ namespace HonkPooper
             Tree tree = new(
                 animateAction: AnimateTree,
                 recycleAction: RecycleTree,
-                scaling: _scene.Scaling);
+                scaling: _scene.Translation);
 
             return tree;
         }
 
         private bool AnimateTree(Construct tree)
         {
-            var speed = _scene.Speed + tree.SpeedOffset;
+            var speed = (_scene.Speed + tree.SpeedOffset);
             MoveConstruct(tree, speed);
             return true;
         }
@@ -336,7 +336,7 @@ namespace HonkPooper
                 Honk honk = new(
                     animateAction: AnimateHonk,
                     recycleAction: RecycleHonk,
-                    scaling: _scene.Scaling);
+                    scaling: _scene.Translation);
 
                 honk.SetPosition(
                     left: -500,
@@ -370,7 +370,7 @@ namespace HonkPooper
 
                 honk.SetPosition(
                     left: hitBox.Left - vehicle.Width / 2,
-                    top: hitBox.Top - (25 * _scene.Scaling),
+                    top: hitBox.Top - (25 * _scene.Translation),
                     z: 5);
 
                 honk.SetRotation(_random.Next(-30, 30));
@@ -384,7 +384,7 @@ namespace HonkPooper
 
         public bool AnimateHonk(Construct honk)
         {
-            var speed = _scene.Speed + honk.SpeedOffset;
+            var speed = (_scene.Speed + honk.SpeedOffset);
             MoveConstruct(honk, speed);
             return true;
         }
@@ -414,6 +414,7 @@ namespace HonkPooper
 
         private void MoveConstruct(Construct construct, double speed)
         {
+            speed *= _scene.Translation;
             construct.SetLeft(construct.GetLeft() + speed);
             construct.SetTop(construct.GetTop() + speed * construct.IsometricDisplacement);
         }

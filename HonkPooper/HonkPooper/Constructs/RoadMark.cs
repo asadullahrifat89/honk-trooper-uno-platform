@@ -30,7 +30,7 @@ namespace HonkPooper
             RecycleAction = recycleAction;
 
             SetSize(width: width, height: height);
-            SpeedOffset = 3 * scaling;
+            SpeedOffset = 3;
 
             Background = new SolidColorBrush(Colors.White);
             CornerRadius = new CornerRadius(5);

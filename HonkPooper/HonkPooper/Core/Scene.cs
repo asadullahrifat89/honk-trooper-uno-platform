@@ -39,7 +39,7 @@ namespace HonkPooper
 
         #region Properties
 
-        public double Scaling { get; set; }
+        public double Translation { get; set; }
 
         public double Speed { get; set; }
 
@@ -92,7 +92,7 @@ namespace HonkPooper
         /// </summary>
         /// <param name="windowWidth"></param>
         /// <returns></returns>
-        private double GetScalingFactor(double windowWidth)
+        private double GetTranslationFactor(double windowWidth)
         {
             return windowWidth switch
             {
@@ -160,14 +160,17 @@ namespace HonkPooper
 
             // Console.WriteLine($"{_sceneWidth}x{_sceneHeight}");
 
-            Scaling = GetScalingFactor(_sceneWidth);
+            Translation = GetTranslationFactor(_sceneWidth);
 
             // Console.WriteLine($"Scaling {Scaling}");
 
             foreach (var construct in Children.OfType<Construct>())
             {
                 var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == construct.ConstructType);
-                construct.SetSize(width: size.Width * Scaling, height: size.Height * Scaling);
+
+                construct.SetSize(
+                    width: size.Width * Translation,
+                    height: size.Height * Translation);                
             }
         }
 
