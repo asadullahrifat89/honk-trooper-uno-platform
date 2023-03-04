@@ -83,7 +83,7 @@ namespace HonkPooper
 
             if (_controller.IsAttacking)
             {
-                GenerateBombInScene();
+                GeneratePlayerBombInScene();
                 _controller.IsAttacking = false;
             }
 
@@ -114,7 +114,7 @@ namespace HonkPooper
             return true;
         }
 
-        public bool GenerateBombInScene()
+        public bool GeneratePlayerBombInScene()
         {
             if (_scene.Children.OfType<PlayerBomb>().FirstOrDefault(x => x.IsAnimating == false) is PlayerBomb bomb)
             {
@@ -125,8 +125,14 @@ namespace HonkPooper
                     player: _player,
                     downScaling: _scene.DownScaling);
 
-                if (!_scene.Children.OfType<DropShadow>().Any(x => x.Id == bomb.Id))
+                if (_scene.Children.OfType<DropShadow>().FirstOrDefault(x => x.Id == bomb.Id) is DropShadow dropShadow)
+                {
+                    dropShadow.Reposition(_scene.DownScaling);
+                }
+                else
+                {
                     SpawnDropShadowInScene(bomb);
+                }
 
                 Console.WriteLine("Bomb dropped.");
 
@@ -189,11 +195,11 @@ namespace HonkPooper
                 recycleAction: (dropShadow) => { return true; },
                 downScaling: _scene.DownScaling);
 
-            dropShadow.SetParent(construct: construct);
+            dropShadow.SetParent(construct: construct, downScaling: _scene.DownScaling);
 
             _scene.AddToScene(dropShadow);
 
-            dropShadow.Move(downScaling: _scene.DownScaling);
+            dropShadow.Reposition(downScaling: _scene.DownScaling);
 
             dropShadow.SetZ(construct.GetZ());
 
@@ -205,7 +211,7 @@ namespace HonkPooper
         public bool AnimateDropShadow(Construct dropShadow)
         {
             DropShadow dropShadow1 = dropShadow as DropShadow;
-            dropShadow1.Move(downScaling: _scene.DownScaling);
+            dropShadow1.Reposition(downScaling: _scene.DownScaling);
 
             return true;
         }

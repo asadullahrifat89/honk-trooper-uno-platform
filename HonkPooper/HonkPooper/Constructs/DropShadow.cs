@@ -8,7 +8,14 @@ namespace HonkPooper
 {
     public partial class DropShadow : Construct
     {
+        #region Fields
+
         private Construct _parent;
+        private double _lastParentY;
+
+        #endregion
+
+        #region Ctor
 
         public DropShadow(
             Func<Construct, bool> animateAction,
@@ -30,21 +37,43 @@ namespace HonkPooper
             Background = new SolidColorBrush(Colors.Gray);
             CornerRadius = new CornerRadius(30);
             Opacity = 0.8;
+
+            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;
         }
 
-        public void SetParent(Construct construct)
+        #endregion
+
+        #region Methods
+
+        public void SetParent(Construct construct, double downScaling)
         {
             _parent = construct;
 
             // linking this shadow instance with a construct
             Id = _parent.Id;
+
+            _lastParentY = _parent.GetBottom() + (_parent.DropShadowDistance * downScaling);
         }
 
-        public void Move(double downScaling)
+        public void Reposition(double downScaling)
         {
-            SetPosition(
-                   left: (_parent.GetLeft() + _parent.Width / 2) - Width / 2,
-                   top: _parent.GetBottom() + (_parent.DropShadowDistance * downScaling));
+            if (_parent.IsGravitating)
+            {
+                SetPosition(
+                    left: (_parent.GetLeft() + _parent.Width / 2) - Width / 2,
+                    top: GetTop() + SpeedOffset);
+            }
+            else
+            {
+                _lastParentY = _parent.GetBottom() + (_parent.DropShadowDistance * downScaling);
+
+                SetPosition(
+                    left: (_parent.GetLeft() + _parent.Width / 2) - Width / 2,
+                    top: _lastParentY);
+            }
         }
+
+
+        #endregion
     }
 }

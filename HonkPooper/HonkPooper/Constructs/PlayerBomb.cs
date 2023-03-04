@@ -78,6 +78,7 @@ namespace HonkPooper
 
         public void Reset()
         {
+            IsGravitating = false;
             _blastDelay = _blastDelayDefault;
 
             Opacity = 1;
@@ -96,6 +97,8 @@ namespace HonkPooper
 
         public bool Gravitate()
         {
+            IsGravitating = true;
+
             if (_blastDelay > 0)
             {
                 _blastDelay--;
