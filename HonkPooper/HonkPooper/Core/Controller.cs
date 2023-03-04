@@ -256,7 +256,7 @@ namespace HonkPooper
             {
                 HorizontalAlignment = Microsoft.UI.Xaml.HorizontalAlignment.Right,
                 VerticalAlignment = Microsoft.UI.Xaml.VerticalAlignment.Bottom,
-                Margin = new Microsoft.UI.Xaml.Thickness(0, 0, 50, 5),
+                Margin = new Microsoft.UI.Xaml.Thickness(0, 0, 40, 5),
                 RenderTransform = _arrowsKeysContainerTransform,
             };
 

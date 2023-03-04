@@ -783,8 +783,7 @@ namespace HonkPooper
         private void SetController()
         {
             _controller.SetScene(_scene);
-
-            _controller.SetArrowsKeysContainerRotation(-63.5);
+            _controller.SetArrowsKeysContainerRotation(-45);
         }
 
         #endregion
