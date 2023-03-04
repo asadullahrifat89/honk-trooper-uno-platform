@@ -131,12 +131,7 @@ namespace HonkPooper
                     player: _player,
                     downScaling: _scene.DownScaling);
 
-                if (_scene.Children.OfType<DropShadow>().FirstOrDefault(x => x.Id == bomb.Id) is DropShadow dropShadow)
-                {
-                    dropShadow.SourceSpeed = _scene.Speed + bomb.SpeedOffset;
-                    dropShadow.IsAnimating = true;
-                    dropShadow.Reset();
-                }
+                SyncDropShadow(bomb);
 
                 Console.WriteLine("Bomb dropped.");
 
@@ -180,55 +175,6 @@ namespace HonkPooper
                 bomb.IsGravitating = false;
 
                 bomb.SetPosition(
-                    left: -500,
-                    top: -500);
-
-                return true;
-            }
-
-            return false;
-        }
-
-
-
-        #endregion
-
-        #region DropShadow
-
-        public bool SpawnDropShadowInScene(Construct source)
-        {
-            DropShadow dropShadow = new(
-                animateAction: AnimateDropShadow,
-                recycleAction: RecycleDropShadow,
-                downScaling: _scene.DownScaling);
-
-            _scene.AddToScene(dropShadow);
-
-            dropShadow.SetParent(construct: source);
-
-            dropShadow.Move();
-
-            dropShadow.SetZ(source.GetZ());
-
-            return true;
-        }
-
-        public bool AnimateDropShadow(Construct dropShadow)
-        {
-            DropShadow dropShadow1 = dropShadow as DropShadow;
-            dropShadow1.Move();
-            return true;
-        }
-
-        private bool RecycleDropShadow(Construct dropShadow)
-        {
-            DropShadow dropShadow1 = dropShadow as DropShadow;
-
-            if (!dropShadow1.Source.IsAnimating)
-            {
-                dropShadow.IsAnimating = false;
-
-                dropShadow.SetPosition(
                     left: -500,
                     top: -500);
 
@@ -603,6 +549,8 @@ namespace HonkPooper
                     z: 8);
 
                 _scene.AddToScene(cloud);
+
+                SpawnDropShadowInScene(source: cloud);
             }
 
             return true;
@@ -641,11 +589,13 @@ namespace HonkPooper
                         break;
                 }
 
+                SyncDropShadow(cloud);
+
                 return true;
             }
 
             return false;
-        }
+        }      
 
         public bool AnimateCloud(Construct cloud)
         {
@@ -668,6 +618,63 @@ namespace HonkPooper
             }
 
             return true;
+        }
+
+        #endregion
+
+        #region DropShadow
+
+        public bool SpawnDropShadowInScene(Construct source)
+        {
+            DropShadow dropShadow = new(
+                animateAction: AnimateDropShadow,
+                recycleAction: RecycleDropShadow,
+                downScaling: _scene.DownScaling);
+
+            _scene.AddToScene(dropShadow);
+
+            dropShadow.SetParent(construct: source);
+
+            dropShadow.Move();
+
+            dropShadow.SetZ(source.GetZ());
+
+            return true;
+        }
+
+        public bool AnimateDropShadow(Construct dropShadow)
+        {
+            DropShadow dropShadow1 = dropShadow as DropShadow;
+            dropShadow1.Move();
+            return true;
+        }
+
+        private bool RecycleDropShadow(Construct dropShadow)
+        {
+            DropShadow dropShadow1 = dropShadow as DropShadow;
+
+            if (!dropShadow1.Source.IsAnimating)
+            {
+                dropShadow.IsAnimating = false;
+
+                dropShadow.SetPosition(
+                    left: -500,
+                    top: -500);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private void SyncDropShadow(Construct source)
+        {
+            if (_scene.Children.OfType<DropShadow>().FirstOrDefault(x => x.Id == source.Id) is DropShadow dropShadow)
+            {
+                dropShadow.SourceSpeed = _scene.Speed + source.SpeedOffset;
+                dropShadow.IsAnimating = true;
+                dropShadow.Reset();
+            }
         }
 
         #endregion
