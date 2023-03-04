@@ -19,7 +19,7 @@ namespace HonkPooper
         public Honk(
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction,
-            double scaling)
+            double downScaling)
         {
             _random = new Random();
 
@@ -29,8 +29,8 @@ namespace HonkPooper
 
             ConstructType = ConstructType.HONK;
 
-            var width = size.Width * scaling;
-            var height = size.Height * scaling;
+            var width = size.Width * downScaling;
+            var height = size.Height * downScaling;
 
             AnimateAction = animateAction;
             RecycleAction = recycleAction;

@@ -13,14 +13,14 @@ namespace HonkPooper
         public RoadMark(
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction,
-            double scaling)
+            double downScaling)
         {
             var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.ROAD_MARK);
 
             ConstructType = ConstructType.ROAD_MARK;
 
-            var width = size.Width * scaling;
-            var height = size.Height * scaling;
+            var width = size.Width * downScaling;
+            var height = size.Height * downScaling;
 
             AnimateAction = animateAction;
             RecycleAction = recycleAction;

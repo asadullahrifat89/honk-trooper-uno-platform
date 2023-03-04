@@ -14,6 +14,7 @@ namespace HonkPooper
         private Controller _controller;
         private Random _random;
         private Player _player;
+        private PlayerDropZone _dropZone;
 
         #endregion
 
@@ -40,14 +41,11 @@ namespace HonkPooper
             _player = new(
                 animateAction: AnimatePlayer,
                 recycleAction: (_player) => { return true; },
-                scaling: _scene.Ratio);
+                downScaling: _scene.DownScaling);
 
             _scene.AddToScene(_player);
 
-            _player.SetPosition(
-                left: _scene.Width / 2 - _player.Width / 2,
-                top: _scene.Height / 2 - _player.Height / 2,
-                z: 6);
+            _player.Reposition(_scene);
 
             _player.IsAnimating = true;
 
@@ -62,17 +60,50 @@ namespace HonkPooper
 
             if (_controller.IsMoveUp)
             {
-                _player.MoveUp(speed);
+                _player.MoveUp(speed, _scene.DownScaling);
 
             }
             else if (_controller.IsMoveDown)
             {
-                _player.MoveDown(speed);
+                _player.MoveDown(speed, _scene.DownScaling);
             }
             else
             {
-                _player.StopMovement();
+                _player.StopMovement(_scene.DownScaling);
             }
+
+            return true;
+        }
+
+        #endregion
+
+        #region PlayerDropZone
+
+        public bool SpawnPlayerDropZoneInScene()
+        {
+            _dropZone = new(
+                animateAction: AnimatePlayerDropZone,
+                recycleAction: (_player) => { return true; },
+                downScaling: _scene.DownScaling);
+
+            _scene.AddToScene(_dropZone);
+
+            _dropZone.Move(
+               player: _player,
+               downScaling: _scene.DownScaling);
+
+            _dropZone.SetZ(6);
+
+            _dropZone.IsAnimating = true;
+
+            return true;
+        }
+
+        public bool AnimatePlayerDropZone(Construct dropZone)
+        {
+            _dropZone.Move(
+                player: _player,
+                downScaling: _scene.DownScaling);
 
             return true;
         }
@@ -88,7 +119,7 @@ namespace HonkPooper
                 Vehicle vehicle = new(
                     animateAction: AnimateVehicle,
                     recycleAction: RecycleVehicle,
-                    scaling: _scene.Ratio);
+                    downScaling: _scene.DownScaling);
 
                 _scene.AddToScene(vehicle);
 
@@ -125,7 +156,7 @@ namespace HonkPooper
                             var xLaneWidth = _scene.Width / 4;
 
                             vehicle.SetPosition(
-                                left: lane == 0 ? 0 : xLaneWidth - vehicle.Width * _scene.Ratio,
+                                left: lane == 0 ? 0 : xLaneWidth - vehicle.Width * _scene.DownScaling,
                                 top: vehicle.Height * -1);
                         }
                         break;
@@ -135,7 +166,7 @@ namespace HonkPooper
 
                             vehicle.SetPosition(
                                 left: vehicle.Width * -1,
-                                top: lane == 0 ? 0 : yLaneWidth * _scene.Ratio);
+                                top: lane == 0 ? 0 : yLaneWidth * _scene.DownScaling);
                         }
                         break;
                     default:
@@ -164,7 +195,8 @@ namespace HonkPooper
             // prevent overlapping
 
             if (_scene.Children.OfType<Vehicle>()
-                .FirstOrDefault(x => x.GetCloseHitBox().IntersectsWith(hitHox)) is Construct collidingVehicle)
+                .FirstOrDefault(x => x.GetCloseHitBox().IntersectsWith(hitHox))
+                is Construct collidingVehicle)
             {
                 if (collidingVehicle.SpeedOffset < vehicle.SpeedOffset)
                 {
@@ -176,12 +208,14 @@ namespace HonkPooper
                 }
             }
 
-            Vehicle vehicle1 = vehicle as Vehicle;
-
             // only honk when vehicle is fully inside view
 
-            if (/*hitHox.Left > 0 && hitHox.Top > 0 &&*/ vehicle1.Honk())
+            Vehicle vehicle1 = vehicle as Vehicle;
+
+            if (vehicle1.Honk())
+            {
                 GenerateHonkInScene(vehicle1);
+            }
 
             return true;
         }
@@ -213,7 +247,7 @@ namespace HonkPooper
                 RoadMark roadMark = new(
                     animateAction: AnimateRoadMark,
                     recycleAction: RecycleRoadMark,
-                    scaling: _scene.Ratio);
+                    downScaling: _scene.DownScaling);
 
                 roadMark.SetPosition(
                     left: -500,
@@ -295,7 +329,7 @@ namespace HonkPooper
                 tree.IsAnimating = true;
 
                 tree.SetPosition(
-                    left: _scene.Width / 2 - tree.Width * _scene.Ratio,
+                    left: _scene.Width / 2 - tree.Width * _scene.DownScaling,
                     top: tree.Height * -1,
                     z: 2);
 
@@ -314,8 +348,8 @@ namespace HonkPooper
                 tree.IsAnimating = true;
 
                 tree.SetPosition(
-                    left: -1 * tree.Width * _scene.Ratio,
-                    top: _scene.Height / 2 * _scene.Ratio,
+                    left: -1 * tree.Width * _scene.DownScaling,
+                    top: _scene.Height / 2 * _scene.DownScaling,
                     z: 4);
 
                 // Console.WriteLine("Tree generated.");
@@ -331,7 +365,7 @@ namespace HonkPooper
             Tree tree = new(
                 animateAction: AnimateTree,
                 recycleAction: RecycleTree,
-                scaling: _scene.Ratio);
+                downScaling: _scene.DownScaling);
 
             return tree;
         }
@@ -370,7 +404,7 @@ namespace HonkPooper
                 Honk honk = new(
                     animateAction: AnimateHonk,
                     recycleAction: RecycleHonk,
-                    scaling: _scene.Ratio);
+                    downScaling: _scene.DownScaling);
 
                 honk.SetPosition(
                     left: -500,
@@ -404,7 +438,7 @@ namespace HonkPooper
 
                 honk.SetPosition(
                     left: hitBox.Left - vehicle.Width / 2,
-                    top: hitBox.Top - (25 * _scene.Ratio),
+                    top: hitBox.Top - (25 * _scene.DownScaling),
                     z: 5);
 
                 honk.SetRotation(_random.Next(-30, 30));
@@ -448,7 +482,7 @@ namespace HonkPooper
 
         private void MoveConstruct(Construct construct, double speed)
         {
-            speed *= _scene.Ratio;
+            speed *= _scene.DownScaling;
             construct.SetLeft(construct.GetLeft() + speed);
             construct.SetTop(construct.GetTop() + speed * construct.IsometricDisplacement);
         }
@@ -495,6 +529,12 @@ namespace HonkPooper
                generationAction: () => { return true; },
                spawnAction: SpawnPlayerInScene);
 
+            // add the player drop zone in scene which will appear forward in z wrt to all else
+            Generator playerDropZone = new(
+               generationDelay: 0,
+               generationAction: () => { return true; },
+               spawnAction: SpawnPlayerDropZoneInScene);
+
             _scene.AddToScene(treeBottom);
             _scene.AddToScene(treeTop);
 
@@ -502,6 +542,7 @@ namespace HonkPooper
             _scene.AddToScene(vehicle);
 
             _scene.AddToScene(player);
+            _scene.AddToScene(playerDropZone);
             _scene.Speed = 5;
         }
 
@@ -538,9 +579,9 @@ namespace HonkPooper
             _scene.Width = _windowWidth;
             _scene.Height = _windowHeight;
 
-            _player.SetPosition(
-                left: _scene.Width / 2,
-                top: _scene.Height / 2);
+            _player.Reposition(_scene);
+
+            _dropZone.Move(player: _player, downScaling: _scene.DownScaling);
 
             //_scene.Width = 1920;
             //_scene.Height = 1080;

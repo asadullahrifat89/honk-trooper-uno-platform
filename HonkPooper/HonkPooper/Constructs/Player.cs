@@ -15,13 +15,13 @@ namespace HonkPooper
         private Uri[] _player_uris;
 
         private int _hoverDelay;
-        private readonly int _hoverDelayDefault = 30;
+        private readonly int _hoverDelayDefault = 15;
 
         private bool _isMovingUp;
-        private bool _isMovingDown;        
+        private bool _isMovingDown;
 
-        private int _movementStopDelay;
-        private readonly int _movementStopDelayDefault = 30;
+        private double _movementStopDelay;
+        private readonly double _movementStopDelayDefault = 10;
 
         private double _lastSpeed;
         #endregion
@@ -29,7 +29,7 @@ namespace HonkPooper
         public Player(
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction,
-            double scaling)
+            double downScaling)
         {
             _random = new Random();
 
@@ -39,8 +39,8 @@ namespace HonkPooper
 
             ConstructType = ConstructType.PLAYER;
 
-            var width = size.Width * scaling;
-            var height = size.Height * scaling;
+            var width = size.Width * downScaling;
+            var height = size.Height * downScaling;
 
             AnimateAction = animateAction;
             RecycleAction = recycleAction;
@@ -55,10 +55,15 @@ namespace HonkPooper
             };
 
             SetChild(content);
-
-            IsometricDisplacement = 1.5;
-
             _hoverDelay = _hoverDelayDefault;
+        }
+
+        public void Reposition(Scene scene)
+        {
+            SetPosition(
+                  left: (scene.Width / 2) + (scene.Width / 4) - Width / 2,
+                  top: scene.Height / 2 - Height / 2,
+                  z: 6);
         }
 
         public void Hover()
@@ -78,7 +83,7 @@ namespace HonkPooper
             }
         }
 
-        public void MoveUp(double speed)
+        public void MoveUp(double speed, double downScaling)
         {
             _isMovingUp = true;
             _isMovingDown = false;
@@ -86,11 +91,11 @@ namespace HonkPooper
             SetLeft(GetLeft() + speed);
             SetTop(GetTop() - speed);
 
-            _movementStopDelay = _movementStopDelayDefault;
+            _movementStopDelay = _movementStopDelayDefault * downScaling;
             _lastSpeed = speed;
         }
 
-        public void MoveDown(double speed)
+        public void MoveDown(double speed, double downScaling)
         {
             _isMovingDown = true;
             _isMovingUp = false;
@@ -98,11 +103,11 @@ namespace HonkPooper
             SetLeft(GetLeft() - speed);
             SetTop(GetTop() + speed);
 
-            _movementStopDelay = _movementStopDelayDefault;
+            _movementStopDelay = _movementStopDelayDefault * downScaling;
             _lastSpeed = speed;
         }
 
-        public void StopMovement()
+        public void StopMovement(double downScaling)
         {
             if (_movementStopDelay > 0)
             {
@@ -111,12 +116,12 @@ namespace HonkPooper
                 if (_isMovingUp)
                 {
                     if (_lastSpeed > 0)
-                        MoveUp(_lastSpeed - 0.1);
+                        MoveUp(_lastSpeed - 0.1, downScaling);
                 }
                 else if (_isMovingDown)
                 {
                     if (_lastSpeed > 0)
-                        MoveDown(_lastSpeed - 0.1);
+                        MoveDown(_lastSpeed - 0.1, downScaling);
                 }
             }
             else

@@ -23,7 +23,7 @@ namespace HonkPooper
         public Vehicle(
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction,
-            double scaling)
+            double downScaling)
         {
             _random = new Random();
 
@@ -50,8 +50,8 @@ namespace HonkPooper
 
                         ConstructType = ConstructType.VEHICLE_SMALL;
 
-                        var width = size.Width * scaling;
-                        var height = size.Height * scaling;
+                        var width = size.Width * downScaling;
+                        var height = size.Height * downScaling;
 
                         SetSize(width: width, height: height);
 
@@ -76,8 +76,8 @@ namespace HonkPooper
 
                         ConstructType = ConstructType.VEHICLE_LARGE;
 
-                        var width = size.Width * scaling;
-                        var height = size.Height * scaling;
+                        var width = size.Width * downScaling;
+                        var height = size.Height * downScaling;
 
                         SetSize(width: width, height: height);
 

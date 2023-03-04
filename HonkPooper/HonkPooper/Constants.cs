@@ -10,6 +10,7 @@ namespace HonkPooper
         public static (ConstructType ConstructType, double Height, double Width)[] CONSTRUCT_SIZES = new (ConstructType, double, double)[]
         {
             new (ConstructType.PLAYER, 200, 200),
+            new (ConstructType.PLAYER_DROP_ZONE, 25, 60),
             new (ConstructType.TREE, 150, 150),
             new (ConstructType.ROAD_MARK, 40, 15),
             new (ConstructType.VEHICLE_SMALL, 150, 150),
@@ -50,6 +51,7 @@ namespace HonkPooper
     {
         NONE,
         PLAYER,
+        PLAYER_DROP_ZONE,
         VEHICLE_SMALL,
         VEHICLE_LARGE,
         STICKER,
