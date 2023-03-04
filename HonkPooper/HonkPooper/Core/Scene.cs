@@ -38,7 +38,7 @@ namespace HonkPooper
 
         public bool IsAnimating { get; set; }
 
-        public double Translation { get; set; }
+        public double Ratio { get; set; }
 
         public double Speed { get; set; }
 
@@ -161,7 +161,7 @@ namespace HonkPooper
 
             // Console.WriteLine($"{_sceneWidth}x{_sceneHeight}");
 
-            Translation = GetTranslationFactor(_sceneWidth);
+            Ratio = GetTranslationFactor(_sceneWidth);
 
             // Console.WriteLine($"Scaling {Scaling}");
 
@@ -170,8 +170,8 @@ namespace HonkPooper
                 var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == construct.ConstructType);
 
                 construct.SetSize(
-                    width: size.Width * Translation,
-                    height: size.Height * Translation);                
+                    width: size.Width * Ratio,
+                    height: size.Height * Ratio);                
             }
         }
 

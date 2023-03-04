@@ -13,6 +13,9 @@ namespace HonkPooper
         private Random _random;
         private Uri[] _player_uris;
 
+        private int _tiltDelay;
+        private readonly int _tiltDelayDefault = 30;
+
         #endregion
 
         public Player(
@@ -26,7 +29,7 @@ namespace HonkPooper
 
             var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.PLAYER);
 
-            ConstructType = ConstructType.HONK;
+            ConstructType = ConstructType.PLAYER;
 
             var width = size.Width * scaling;
             var height = size.Height * scaling;
@@ -46,6 +49,25 @@ namespace HonkPooper
             SetChild(content);
 
             IsometricDisplacement = 1.5;
+
+            _tiltDelay = _tiltDelayDefault;
+        }
+
+        public void Tilt()
+        {
+            _tiltDelay--;
+
+            if (_tiltDelay > 0)
+            {
+                SetTop(GetTop() + 0.4);
+            }
+            else
+            {
+                SetTop(GetTop() - 0.4);
+
+                if (_tiltDelay <= _tiltDelayDefault * -1)
+                    _tiltDelay = _tiltDelayDefault;
+            }
         }
     }
 }

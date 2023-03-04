@@ -15,7 +15,6 @@ namespace HonkPooper
         private Uri[] _vehicle_large_uris;
 
         private int _honkDelay;
-        //private int _tiltDelay;
 
         #endregion
 
@@ -102,8 +101,6 @@ namespace HonkPooper
 
             if (WillHonk)
                 SetHonkDelay();
-
-            //_tiltDelay = 20;
         }
 
         #endregion
@@ -117,24 +114,6 @@ namespace HonkPooper
         #endregion
 
         #region Methods
-
-        // TODO: this method will work fine for the player baloon
-        //public void Tilt()
-        //{
-        //    _tiltDelay--;
-
-        //    if (_tiltDelay > 0)
-        //    {
-        //        SetTop(GetTop() + 0.4);
-        //    }
-        //    else
-        //    {
-        //        SetTop(GetTop() - 0.4);
-
-        //        if (_tiltDelay <= -20)
-        //            _tiltDelay = 20;
-        //    }
-        //}
 
         public bool Honk()
         {

@@ -33,63 +33,6 @@ namespace HonkPooper
 
         #region Methods
 
-        #region Page
-
-        private void PrepareScene()
-        {
-            // first add road marks
-            Generator roadMark = new(
-                generationDelay: 30,
-                generationAction: GenerateRoadMarkInScene,
-                spawnAction: SpawnRoadMarksInScene);
-
-            // then add the top trees
-            Generator treeTop = new(
-                generationDelay: 40,
-                generationAction: GenerateTreeInSceneTop,
-                spawnAction: SpawnTreesInScene);
-
-            // then add the vehicles which will appear forward in z wrt the top trees
-            Generator vehicle = new(
-                generationDelay: 80,
-                generationAction: GenerateVehicleInScene,
-                spawnAction: SpawnVehiclesInScene);
-
-            // then add the bottom trees which will appear forward in z wrt to the vehicles
-            Generator treeBottom = new(
-                generationDelay: 40,
-                generationAction: GenerateTreeInSceneBottom,
-                spawnAction: SpawnTreesInScene);
-
-            // add the honks which will appear forward in z wrt to everything on the road
-            Generator honk = new(
-                generationDelay: 0,
-                generationAction: () => { return true; },
-                spawnAction: SpawnHonksInScene);
-
-            // add the player in scene which will appear forward in z wrt to all else
-            Generator player = new(
-               generationDelay: 0,
-               generationAction: () => { return true; },
-               spawnAction: SpawnPlayerInScene);
-
-            _scene.AddToScene(treeBottom);
-            _scene.AddToScene(treeTop);
-
-            _scene.AddToScene(roadMark);
-            _scene.AddToScene(vehicle);
-
-            _scene.AddToScene(player);
-            _scene.Speed = 5;
-        }
-
-        private void SetController()
-        {
-            _controller.SetScene(_scene, _player);
-        }
-
-        #endregion
-
         #region Player
 
         public bool SpawnPlayerInScene()
@@ -97,14 +40,16 @@ namespace HonkPooper
             _player = new(
                 animateAction: AnimatePlayer,
                 recycleAction: (_player) => { return true; },
-                scaling: _scene.Translation);
+                scaling: _scene.Ratio);
 
             _scene.AddToScene(_player);
 
             _player.SetPosition(
-                left: _scene.Width / 2,
-                top: _scene.Height / 2,
+                left: _scene.Width / 2 - _player.Width / 2,
+                top: _scene.Height / 2 - _player.Height / 2,
                 z: 6);
+
+            _player.IsAnimating = true;
 
             return true;
         }
@@ -112,6 +57,8 @@ namespace HonkPooper
         public bool AnimatePlayer(Construct player)
         {
             var speed = _scene.Speed;
+
+            _player.Tilt();
 
             if (_controller.IsMoveUp)
             {
@@ -136,7 +83,7 @@ namespace HonkPooper
                 Vehicle vehicle = new(
                     animateAction: AnimateVehicle,
                     recycleAction: RecycleVehicle,
-                    scaling: _scene.Translation);
+                    scaling: _scene.Ratio);
 
                 _scene.AddToScene(vehicle);
 
@@ -173,7 +120,7 @@ namespace HonkPooper
                             var xLaneWidth = _scene.Width / 4;
 
                             vehicle.SetPosition(
-                                left: lane == 0 ? 0 : xLaneWidth - vehicle.Width * _scene.Translation,
+                                left: lane == 0 ? 0 : xLaneWidth - vehicle.Width * _scene.Ratio,
                                 top: vehicle.Height * -1);
                         }
                         break;
@@ -183,7 +130,7 @@ namespace HonkPooper
 
                             vehicle.SetPosition(
                                 left: vehicle.Width * -1,
-                                top: lane == 0 ? 0 : yLaneWidth * _scene.Translation);
+                                top: lane == 0 ? 0 : yLaneWidth * _scene.Ratio);
                         }
                         break;
                     default:
@@ -261,7 +208,7 @@ namespace HonkPooper
                 RoadMark roadMark = new(
                     animateAction: AnimateRoadMark,
                     recycleAction: RecycleRoadMark,
-                    scaling: _scene.Translation);
+                    scaling: _scene.Ratio);
 
                 roadMark.SetPosition(
                     left: -500,
@@ -343,7 +290,7 @@ namespace HonkPooper
                 tree.IsAnimating = true;
 
                 tree.SetPosition(
-                    left: _scene.Width / 2 - tree.Width * _scene.Translation,
+                    left: _scene.Width / 2 - tree.Width * _scene.Ratio,
                     top: tree.Height * -1,
                     z: 2);
 
@@ -362,8 +309,8 @@ namespace HonkPooper
                 tree.IsAnimating = true;
 
                 tree.SetPosition(
-                    left: -1 * tree.Width * _scene.Translation,
-                    top: _scene.Height / 2 * _scene.Translation,
+                    left: -1 * tree.Width * _scene.Ratio,
+                    top: _scene.Height / 2 * _scene.Ratio,
                     z: 4);
 
                 // Console.WriteLine("Tree generated.");
@@ -379,7 +326,7 @@ namespace HonkPooper
             Tree tree = new(
                 animateAction: AnimateTree,
                 recycleAction: RecycleTree,
-                scaling: _scene.Translation);
+                scaling: _scene.Ratio);
 
             return tree;
         }
@@ -418,7 +365,7 @@ namespace HonkPooper
                 Honk honk = new(
                     animateAction: AnimateHonk,
                     recycleAction: RecycleHonk,
-                    scaling: _scene.Translation);
+                    scaling: _scene.Ratio);
 
                 honk.SetPosition(
                     left: -500,
@@ -452,7 +399,7 @@ namespace HonkPooper
 
                 honk.SetPosition(
                     left: hitBox.Left - vehicle.Width / 2,
-                    top: hitBox.Top - (25 * _scene.Translation),
+                    top: hitBox.Top - (25 * _scene.Ratio),
                     z: 5);
 
                 honk.SetRotation(_random.Next(-30, 30));
@@ -496,9 +443,66 @@ namespace HonkPooper
 
         private void MoveConstruct(Construct construct, double speed)
         {
-            speed *= _scene.Translation;
+            speed *= _scene.Ratio;
             construct.SetLeft(construct.GetLeft() + speed);
             construct.SetTop(construct.GetTop() + speed * construct.IsometricDisplacement);
+        }
+
+        #endregion
+
+        #region Page
+
+        private void PrepareScene()
+        {
+            // first add road marks
+            Generator roadMark = new(
+                generationDelay: 30,
+                generationAction: GenerateRoadMarkInScene,
+                spawnAction: SpawnRoadMarksInScene);
+
+            // then add the top trees
+            Generator treeTop = new(
+                generationDelay: 40,
+                generationAction: GenerateTreeInSceneTop,
+                spawnAction: SpawnTreesInScene);
+
+            // then add the vehicles which will appear forward in z wrt the top trees
+            Generator vehicle = new(
+                generationDelay: 80,
+                generationAction: GenerateVehicleInScene,
+                spawnAction: SpawnVehiclesInScene);
+
+            // then add the bottom trees which will appear forward in z wrt to the vehicles
+            Generator treeBottom = new(
+                generationDelay: 40,
+                generationAction: GenerateTreeInSceneBottom,
+                spawnAction: SpawnTreesInScene);
+
+            // add the honks which will appear forward in z wrt to everything on the road
+            Generator honk = new(
+                generationDelay: 0,
+                generationAction: () => { return true; },
+                spawnAction: SpawnHonksInScene);
+
+            // add the player in scene which will appear forward in z wrt to all else
+            Generator player = new(
+               generationDelay: 0,
+               generationAction: () => { return true; },
+               spawnAction: SpawnPlayerInScene);
+
+            _scene.AddToScene(treeBottom);
+            _scene.AddToScene(treeTop);
+
+            _scene.AddToScene(roadMark);
+            _scene.AddToScene(vehicle);
+
+            _scene.AddToScene(player);
+            _scene.Speed = 5;
+        }
+
+        private void SetController()
+        {
+            _controller.SetScene(_scene, _player);
         }
 
         #endregion
@@ -518,24 +522,28 @@ namespace HonkPooper
             PrepareScene();
             SetController();
 
-            //SizeChanged += MainPage_SizeChanged;
+            SizeChanged += MainPage_SizeChanged;
         }
 
-        //private void MainPage_SizeChanged(object sender, SizeChangedEventArgs args)
-        //{
-        //    var _windowWidth = args.NewSize.Width;
-        //    var _windowHeight = args.NewSize.Height;
+        private void MainPage_SizeChanged(object sender, SizeChangedEventArgs args)
+        {
+            var _windowWidth = args.NewSize.Width;
+            var _windowHeight = args.NewSize.Height;
 
-        //    _scene.Width = _windowWidth;
-        //    _scene.Height = _windowHeight;
+            _scene.Width = _windowWidth;
+            _scene.Height = _windowHeight;
 
-        //    //_scene.Width = 1920;
-        //    //_scene.Height = 1080;
-        //}
+            _player.SetPosition(
+                left: _scene.Width / 2,
+                top: _scene.Height / 2);
+
+            //_scene.Width = 1920;
+            //_scene.Height = 1080;
+        }
 
         private void MainPage_Unloaded(object sender, RoutedEventArgs e)
         {
-            //SizeChanged -= MainPage_SizeChanged;
+            SizeChanged -= MainPage_SizeChanged;
         }
 
         #endregion      
