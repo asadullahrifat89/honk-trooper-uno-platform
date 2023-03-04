@@ -18,10 +18,14 @@ namespace HonkPooper
         private bool _isMovingUp;
         private bool _isMovingDown;
 
+        private bool _isMovingLeft;
+        private bool _isMovingRight;
+
         private double _movementStopDelay;
         private readonly double _movementStopDelayDefault = 10;
 
         private double _lastSpeed;
+
         #endregion
 
         public Player(
@@ -107,6 +111,30 @@ namespace HonkPooper
             _lastSpeed = speed;
         }
 
+        public void MoveLeft(double speed, double downScaling)
+        {
+            _isMovingLeft = true;
+            _isMovingRight = false;
+
+            SetLeft(GetLeft() - speed * 2);
+            SetTop(GetTop() - speed);
+
+            _movementStopDelay = _movementStopDelayDefault;
+            _lastSpeed = speed;
+        }
+
+        public void MoveRight(double speed, double downScaling)
+        {
+            _isMovingLeft = false;
+            _isMovingRight = true;
+
+            SetLeft(GetLeft() + speed * 2);
+            SetTop(GetTop() + speed);
+
+            _movementStopDelay = _movementStopDelayDefault;
+            _lastSpeed = speed;
+        }
+
         public void StopMovement(double downScaling)
         {
             if (_movementStopDelay > 0)
@@ -123,11 +151,23 @@ namespace HonkPooper
                     if (_lastSpeed > 0)
                         MoveDown(_lastSpeed - 0.3, downScaling);
                 }
+                else if (_isMovingLeft)
+                {
+                    if (_lastSpeed > 0)
+                        MoveLeft(_lastSpeed - 0.3, downScaling);
+                }
+                else if (_isMovingRight)
+                {
+                    if (_lastSpeed > 0)
+                        MoveRight(_lastSpeed - 0.3, downScaling);
+                }
             }
             else
             {
                 _isMovingUp = false;
                 _isMovingDown = false;
+                _isMovingLeft = false;
+                _isMovingRight = false;
             }
         }
     }

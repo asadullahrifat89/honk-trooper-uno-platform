@@ -67,6 +67,14 @@ namespace HonkPooper
             {
                 _player.MoveDown(speed, _scene.DownScaling);
             }
+            else if (_controller.IsMoveLeft)
+            {
+                _player.MoveLeft(speed, _scene.DownScaling);
+            }
+            else if (_controller.IsMoveRight)
+            {
+                _player.MoveRight(speed, _scene.DownScaling);
+            }
             else
             {
                 _player.StopMovement(_scene.DownScaling);
@@ -74,11 +82,8 @@ namespace HonkPooper
 
             if (_controller.IsAttacking)
             {
-                //if (!_scene.Children.OfType<PlayerBomb>().Any(x => x.IsAnimating))
-                //{
                 GenerateBombInScene();
                 _controller.IsAttacking = false;
-                //}
             }
 
             return true;
