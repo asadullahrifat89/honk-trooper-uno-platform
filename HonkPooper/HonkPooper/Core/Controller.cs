@@ -50,44 +50,27 @@ namespace HonkPooper
             {
                 case Windows.System.VirtualKey.Left:
                     {
-                        IsMoveLeft = true;
-                        IsMoveRight = false;
-
-                        Console.WriteLine("Left");
+                        ActivateMoveLeft();
                     }
                     break;
                 case Windows.System.VirtualKey.Right:
                     {
-                        IsMoveLeft = false;
-                        IsMoveRight = true;
-
-                        Console.WriteLine("Right");
+                        ActivateMoveRight();
                     }
                     break;
                 case Windows.System.VirtualKey.Up:
                     {
-                        IsMoveUp = true;
-                        IsMoveDown = false;
-
-                        Console.WriteLine("Up");
+                        ActivateMoveUp();
                     }
                     break;
                 case Windows.System.VirtualKey.Down:
                     {
-                        IsMoveDown = true;
-                        IsMoveUp = false;
-
-                        Console.WriteLine("Down");
+                        ActivateMoveDown();
                     }
                     break;
                 case Windows.System.VirtualKey.Enter:
                     {
-                        if (_scene.IsAnimating)
-                            _scene.Stop();
-                        else
-                            _scene.Start();
-
-                        Console.WriteLine("Enter");
+                        StartScene();
                     }
                     break;
                 case Windows.System.VirtualKey.Escape:
@@ -97,14 +80,61 @@ namespace HonkPooper
                     break;
                 case Windows.System.VirtualKey.Space:
                     {
-                        IsAttacking = true;
-
-                        Console.WriteLine("Space");
+                        ActivateAttack();
                     }
                     break;
                 default:
                     break;
             }
+        }
+
+        public void ActivateAttack()
+        {
+            IsAttacking = true;
+
+            Console.WriteLine("Space");
+        }
+
+        public void StartScene()
+        {
+            if (_scene.IsAnimating)
+                _scene.Stop();
+            else
+                _scene.Start();
+
+            Console.WriteLine("Enter");
+        }
+
+        public void ActivateMoveDown()
+        {
+            IsMoveDown = true;
+            IsMoveUp = false;
+
+            Console.WriteLine("Down");
+        }
+
+        public void ActivateMoveUp()
+        {
+            IsMoveUp = true;
+            IsMoveDown = false;
+
+            Console.WriteLine("Up");
+        }
+
+        public void ActivateMoveRight()
+        {
+            IsMoveLeft = false;
+            IsMoveRight = true;
+
+            Console.WriteLine("Right");
+        }
+
+        public void ActivateMoveLeft()
+        {
+            IsMoveLeft = true;
+            IsMoveRight = false;
+
+            Console.WriteLine("Left");
         }
 
         public void Controller_KeyUp(object sender, Microsoft.UI.Xaml.Input.KeyRoutedEventArgs e)
@@ -113,32 +143,57 @@ namespace HonkPooper
             {
                 case Windows.System.VirtualKey.Left:
                     {
-                        IsMoveLeft = false;
+                        DeactivateMoveLeft();
                     }
                     break;
                 case Windows.System.VirtualKey.Right:
                     {
-                        IsMoveRight = false;
+                        DeactivateMoveRight();
                     }
                     break;
                 case Windows.System.VirtualKey.Up:
                     {
-                        IsMoveUp = false;
+                        DeactivateMoveUp();
                     }
                     break;
                 case Windows.System.VirtualKey.Down:
                     {
-                        IsMoveDown = false;
+                        DeactivateMoveDown();
                     }
                     break;
                 case Windows.System.VirtualKey.Space:
                     {
-                        IsAttacking = false;
+                        DeactivateAttack();
                     }
                     break;
                 default:
                     break;
             }
+        }
+
+        public void DeactivateAttack()
+        {
+            IsAttacking = false;
+        }
+
+        public void DeactivateMoveDown()
+        {
+            IsMoveDown = false;
+        }
+
+        public void DeactivateMoveUp()
+        {
+            IsMoveUp = false;
+        }
+
+        public void DeactivateMoveRight()
+        {
+            IsMoveRight = false;
+        }
+
+        public void DeactivateMoveLeft()
+        {
+            IsMoveLeft = false;
         }
 
         public void Controller_PointerMoved(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
@@ -221,8 +276,8 @@ namespace HonkPooper
                 BorderThickness = new Microsoft.UI.Xaml.Thickness(6),
             };
 
-            up.KeyDown += Controller_KeyDown;
-            up.KeyUp += Controller_KeyUp;
+            up.PointerPressed += (s,e)=> { ActivateMoveUp(); };
+            up.PointerReleased += (s, e) => { DeactivateMoveUp(); };
 
             Border down = new()
             {
@@ -238,8 +293,8 @@ namespace HonkPooper
                 BorderThickness = new Microsoft.UI.Xaml.Thickness(6),
             };
 
-            down.KeyDown += Controller_KeyDown;
-            down.KeyUp += Controller_KeyUp;
+            down.PointerPressed += (s, e) => { ActivateMoveDown(); };
+            down.PointerReleased += (s, e) => { DeactivateMoveDown(); };
 
             Border left = new()
             {
@@ -255,8 +310,8 @@ namespace HonkPooper
                 BorderThickness = new Microsoft.UI.Xaml.Thickness(6),
             };
 
-            left.KeyDown += Controller_KeyDown;
-            left.KeyUp += Controller_KeyUp;
+            left.PointerPressed += (s, e) => { ActivateMoveLeft(); };
+            left.PointerReleased += (s, e) => { DeactivateMoveLeft(); };
 
             Border right = new()
             {
@@ -272,8 +327,8 @@ namespace HonkPooper
                 BorderThickness = new Microsoft.UI.Xaml.Thickness(6),
             };
 
-            right.KeyDown += Controller_KeyDown;
-            right.KeyUp += Controller_KeyUp;
+            right.PointerReleased += (s, e) => { ActivateMoveRight(); };
+            right.PointerReleased += (s, e) => { DeactivateMoveRight(); };
 
             Grid.SetRow(up, 0);
             Grid.SetColumn(up, 1);
