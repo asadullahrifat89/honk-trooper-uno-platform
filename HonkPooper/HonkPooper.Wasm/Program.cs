@@ -1,7 +1,4 @@
-﻿using Microsoft.UI.Xaml;
-using System;
-
-namespace HonkPooper.Wasm
+﻿namespace HonkPooper.Wasm
 {
     public sealed class Program
     {

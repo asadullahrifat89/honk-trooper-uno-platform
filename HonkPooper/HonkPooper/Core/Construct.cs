@@ -1,10 +1,7 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Media.Imaging;
 using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using Windows.Foundation;
 
 namespace HonkPooper
@@ -172,6 +169,13 @@ namespace HonkPooper
         {
             Canvas.SetTop(this, top);
             Canvas.SetLeft(this, left);
+        }
+
+        public void SetPosition(double left, double top, int z)
+        {
+            Canvas.SetTop(this, top);
+            Canvas.SetLeft(this, left);
+            Canvas.SetZIndex(this, z);
         }
 
         public void SetScaleTransform(double scaleXY)

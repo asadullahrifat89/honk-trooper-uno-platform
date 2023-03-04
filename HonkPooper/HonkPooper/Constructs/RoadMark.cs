@@ -1,12 +1,8 @@
 ﻿using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml;
 using Microsoft.UI;
-using Microsoft.VisualBasic.FileIO;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HonkPooper
 {
@@ -30,7 +26,7 @@ namespace HonkPooper
             RecycleAction = recycleAction;
 
             SetSize(width: width, height: height);
-            SpeedOffset = 3 * scaling;
+            SpeedOffset = 3;
 
             Background = new SolidColorBrush(Colors.White);
             CornerRadius = new CornerRadius(5);

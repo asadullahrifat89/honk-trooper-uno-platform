@@ -1,10 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Navigation;
-using System;
-using Windows.ApplicationModel;
-using Windows.ApplicationModel.Activation;
 
 namespace HonkPooper
 {

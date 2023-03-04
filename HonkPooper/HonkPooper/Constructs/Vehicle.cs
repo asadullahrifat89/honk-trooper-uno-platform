@@ -1,12 +1,5 @@
-﻿using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml;
-using Microsoft.UI;
-using Microsoft.VisualBasic.FileIO;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Controls;
 
@@ -22,7 +15,6 @@ namespace HonkPooper
         private Uri[] _vehicle_large_uris;
 
         private int _honkDelay;
-        //private int _tiltDelay;
 
         #endregion
 
@@ -72,7 +64,7 @@ namespace HonkPooper
                         };
                         SetChild(content);
 
-                        SpeedOffset = speedOffset * scaling;
+                        SpeedOffset = speedOffset;
                     }
                     break;
                 case 1:
@@ -98,7 +90,7 @@ namespace HonkPooper
                         };
                         SetChild(content);
 
-                        SpeedOffset = speedOffset * scaling;
+                        SpeedOffset = speedOffset;
                     }
                     break;
                 default:
@@ -109,8 +101,6 @@ namespace HonkPooper
 
             if (WillHonk)
                 SetHonkDelay();
-
-            //_tiltDelay = 20;
         }
 
         #endregion
@@ -124,24 +114,6 @@ namespace HonkPooper
         #endregion
 
         #region Methods
-
-        // TODO: this method will work fine for the player baloon
-        //public void Tilt()
-        //{
-        //    _tiltDelay--;
-
-        //    if (_tiltDelay > 0)
-        //    {
-        //        SetTop(GetTop() + 0.4);
-        //    }
-        //    else
-        //    {
-        //        SetTop(GetTop() - 0.4);
-
-        //        if (_tiltDelay <= -20)
-        //            _tiltDelay = 20;
-        //    }
-        //}
 
         public bool Honk()
         {
@@ -162,7 +134,7 @@ namespace HonkPooper
 
         public void SetHonkDelay()
         {
-            _honkDelay = _random.Next(55 - (int)Math.Floor(0.2), 125 - (int)Math.Floor(0.4));
+            _honkDelay = _random.Next(30, 80);
         }
 
         #endregion

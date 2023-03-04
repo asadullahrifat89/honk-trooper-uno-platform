@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HonkPooper
 {
     public partial class Generator
     {
         #region Fields
-        
+
         private int _generationDelay;
         private int _generationDelayInCount;
 
@@ -30,21 +26,22 @@ namespace HonkPooper
             _generationDelayInCount = _generationDelay;
 
             GenerationAction = generationAction;
-
             spawnAction();
 
             // TODO: execute spawn action
-
         }
 
         public void Generate()
         {
-            _generationDelayInCount--;
-
-            if (_generationDelayInCount <= 0)
+            if (_generationDelay > 0)
             {
-                GenerationAction();
-                _generationDelayInCount = _generationDelay;
+                _generationDelayInCount--;
+
+                if (_generationDelayInCount <= 0)
+                {
+                    GenerationAction();
+                    _generationDelayInCount = _generationDelay;
+                }
             }
         }
 
