@@ -8,9 +8,9 @@ namespace HonkPooper
 {
     public partial class DropShadow : Construct
     {
-        #region Fields
+        #region Properties
 
-        private Construct _parent;
+        public Construct Source { get; set; }
 
         #endregion
 
@@ -46,20 +46,30 @@ namespace HonkPooper
 
         public void SetParent(Construct construct, double downScaling)
         {
-            _parent = construct;
+            Source = construct;
 
             // linking this shadow instance with a construct
-            Id = _parent.Id;
+            Id = Source.Id;
+
+            //_origin = new((Source.GetLeft() + Source.Width / 2) - Width / 2, Source.GetBottom() + (Source.DropShadowDistance * downScaling));
         }
 
         public void Move(double downScaling)
         {
-            SetPosition(
-                left: (_parent.GetLeft() + _parent.Width / 2) - Width / 2,
-                top: _parent.GetBottom() + (_parent.DropShadowDistance * downScaling));
+            if (Source.IsGravitating)
+            {
+                SetPosition(
+                    left: (Source.GetLeft() + Source.Width / 2) - Width / 2,
+                    top: Source.GetBottom() + (Source.DropShadowDistance * downScaling));
+            }
+            else
+            {
+                SetPosition(
+                    left: (Source.GetLeft() + Source.Width / 2) - Width / 2,
+                    top: Source.GetBottom() + (Source.DropShadowDistance * downScaling));
+            }
         }
 
-
-        #endregion
+        #endregion      
     }
 }
