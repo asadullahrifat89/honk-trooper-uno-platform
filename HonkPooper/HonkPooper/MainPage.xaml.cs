@@ -774,7 +774,7 @@ namespace HonkPooper
 
         private void SetController()
         {
-            _controller.SetScene(_scene, _player);
+            _controller.SetScene(_scene);
         }
 
         #endregion
