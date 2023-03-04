@@ -66,6 +66,9 @@ namespace HonkPooper
             return true;
         }
 
+
+
+
         public bool GenerateVehicleInScene()
         {
             //Vehicle vehicle = new(
@@ -158,7 +161,7 @@ namespace HonkPooper
                 //_scene.DisposeFromScene(vehicle);
 
                 vehicle.IsAnimating = false;
-            }                
+            }
 
             return true;
         }
@@ -167,22 +170,48 @@ namespace HonkPooper
 
         #region RoadMark
 
-        public bool GenerateRoadMarkInScene()
+        public bool SpawnRoadMarksInScene()
         {
-            RoadMark roadMark = new(
-                animateAction: AnimateRoadMark,
-                recycleAction: RecycleRoadMark,
-                scaling: _scene.Scaling);
+            for (int i = 0; i < 20; i++)
+            {
+                RoadMark roadMark = new(
+                    animateAction: AnimateRoadMark,
+                    recycleAction: RecycleRoadMark,
+                    scaling: _scene.Scaling);
 
-            _scene.AddToScene(roadMark);
+                roadMark.SetPosition(
+                    left: -500,
+                    top: -500);
 
-            roadMark.SetPosition(
-              left: 0,
-              top: 0);
-
-            // Console.WriteLine("Road Mark generated.");
+                _scene.AddToScene(roadMark);
+            }
 
             return true;
+        }
+
+        public bool GenerateRoadMarkInScene()
+        {
+            //RoadMark roadMark = new(
+            //    animateAction: AnimateRoadMark,
+            //    recycleAction: RecycleRoadMark,
+            //    scaling: _scene.Scaling);
+
+            //_scene.AddToScene(roadMark);
+
+            if (_scene.Children.OfType<RoadMark>().FirstOrDefault(x => x.IsAnimating == false) is RoadMark roadMark)
+            {
+                roadMark.IsAnimating = true;
+
+                roadMark.SetPosition(
+                    left: 0,
+                    top: 0);
+
+                // Console.WriteLine("Road Mark generated.");
+
+                return true;
+            }
+
+            return false;
         }
 
         private bool AnimateRoadMark(Construct roadMark)
@@ -197,7 +226,10 @@ namespace HonkPooper
             var hitBox = roadMark.GetHitBox();
 
             if (hitBox.Top > _scene.Height || hitBox.Left > _scene.Width)
-                _scene.DisposeFromScene(roadMark);
+            {
+                roadMark.IsAnimating = false;
+                //_scene.DisposeFromScene(roadMark);
+            }
 
             return true;
         }
@@ -365,10 +397,10 @@ namespace HonkPooper
             //    generationAction: GenerateTreeInSceneTop,
             //    spawnAction: null);
 
-            //Generator roadMark = new(
-            //    generationDelay: 30,
-            //    generationAction: GenerateRoadMarkInScene,
-            //    spawnAction: null);
+            Generator roadMark = new(
+                generationDelay: 30,
+                generationAction: GenerateRoadMarkInScene,
+                spawnAction: SpawnRoadMarksInScene);
 
             Generator vehicle = new(
                 generationDelay: 80,
@@ -378,7 +410,7 @@ namespace HonkPooper
             //_scene.AddToScene(treeBottom);
             //_scene.AddToScene(treeTop);
 
-            //_scene.AddToScene(roadMark);
+            _scene.AddToScene(roadMark);
             _scene.AddToScene(vehicle);
 
             _scene.Speed = 5;
