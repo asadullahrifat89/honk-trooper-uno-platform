@@ -66,9 +66,6 @@ namespace HonkPooper
             return true;
         }
 
-
-
-
         public bool GenerateVehicleInScene()
         {
             //Vehicle vehicle = new(
@@ -238,34 +235,64 @@ namespace HonkPooper
 
         #region Tree
 
-        private bool GenerateTreeInSceneTop()
+        public bool SpawnTreesInScene()
         {
-            Construct tree = GenerateTree();
+            for (int i = 0; i < 10; i++)
+            {
+                Construct tree = GenerateTree();
 
-            _scene.AddToScene(tree);
+                tree.SetPosition(
+                    left: -500,
+                    top: -500);
 
-            tree.SetPosition(
-              left: _scene.Width / 2 - tree.Width * _scene.Scaling,
-              top: tree.Height * -1);
-
-            // Console.WriteLine("Tree generated.");
+                _scene.AddToScene(tree);
+            }
 
             return true;
         }
 
+        private bool GenerateTreeInSceneTop()
+        {
+            //Construct tree = GenerateTree();
+
+            //_scene.AddToScene(tree);
+
+            if (_scene.Children.OfType<Tree>().FirstOrDefault(x => x.IsAnimating == false) is Tree tree)
+            {
+                tree.IsAnimating = true;
+
+                tree.SetPosition(
+                  left: _scene.Width / 2 - tree.Width * _scene.Scaling,
+                  top: tree.Height * -1);
+
+                // Console.WriteLine("Tree generated.");
+
+                return true;
+            }
+
+            return false;
+        }
+
         private bool GenerateTreeInSceneBottom()
         {
-            Construct tree = GenerateTree();
+            //Construct tree = GenerateTree();
 
-            _scene.AddToScene(tree);
+            //_scene.AddToScene(tree);
 
-            tree.SetPosition(
-                left: -1 * tree.Width * _scene.Scaling,
-                top: (_scene.Height / 2 * _scene.Scaling));
+            if (_scene.Children.OfType<Tree>().FirstOrDefault(x => x.IsAnimating == false) is Tree tree)
+            {
+                tree.IsAnimating = true;
 
-            // Console.WriteLine("Tree generated.");
+                tree.SetPosition(
+                    left: -1 * tree.Width * _scene.Scaling,
+                    top: (_scene.Height / 2 * _scene.Scaling));
 
-            return true;
+                // Console.WriteLine("Tree generated.");
+
+                return true;
+            }
+
+            return false;
         }
 
         private Construct GenerateTree()
@@ -290,7 +317,10 @@ namespace HonkPooper
             var hitBox = tree.GetHitBox();
 
             if (hitBox.Top > _scene.Height || hitBox.Left > _scene.Width)
-                _scene.DisposeFromScene(tree);
+            {
+                tree.IsAnimating = false;
+                //_scene.DisposeFromScene(tree);
+            }
 
             return true;
         }
@@ -306,7 +336,8 @@ namespace HonkPooper
                 recycleAction: RecycleHonk,
                 scaling: _scene.Scaling)
             {
-                SpeedOffset = vehicle.SpeedOffset * 1.3
+                SpeedOffset = vehicle.SpeedOffset * 1.3,
+                IsAnimating = true,
             };
 
             var hitBox = vehicle.GetCloseHitBox();
@@ -387,15 +418,15 @@ namespace HonkPooper
 
         private void InputView_PointerPressed(object sender, PointerRoutedEventArgs e)
         {
-            //Generator treeBottom = new(
-            //    generationDelay: 40,
-            //    generationAction: GenerateTreeInSceneBottom,
-            //    spawnAction: null);
+            Generator treeBottom = new(
+                generationDelay: 40,
+                generationAction: GenerateTreeInSceneBottom,
+                spawnAction: SpawnTreesInScene);
 
-            //Generator treeTop = new(
-            //    generationDelay: 40,
-            //    generationAction: GenerateTreeInSceneTop,
-            //    spawnAction: null);
+            Generator treeTop = new(
+                generationDelay: 40,
+                generationAction: GenerateTreeInSceneTop,
+                spawnAction: SpawnTreesInScene);
 
             Generator roadMark = new(
                 generationDelay: 30,
@@ -407,8 +438,8 @@ namespace HonkPooper
                 generationAction: GenerateVehicleInScene,
                 spawnAction: SpawnVehiclesInScene);
 
-            //_scene.AddToScene(treeBottom);
-            //_scene.AddToScene(treeTop);
+            _scene.AddToScene(treeBottom);
+            _scene.AddToScene(treeTop);
 
             _scene.AddToScene(roadMark);
             _scene.AddToScene(vehicle);
