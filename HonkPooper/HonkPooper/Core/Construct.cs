@@ -174,6 +174,13 @@ namespace HonkPooper
             Canvas.SetLeft(this, left);
         }
 
+        public void SetPosition(double left, double top, int z)
+        {
+            Canvas.SetTop(this, top);
+            Canvas.SetLeft(this, left);
+            Canvas.SetZIndex(this, z);
+        }
+
         public void SetScaleTransform(double scaleXY)
         {
             _compositeTransform.ScaleX = scaleXY;

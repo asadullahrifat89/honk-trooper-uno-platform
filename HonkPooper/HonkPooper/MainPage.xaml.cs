@@ -108,6 +108,8 @@ namespace HonkPooper
                         break;
                 }
 
+                vehicle.SetZ(3);
+
                 // Console.WriteLine("Vehicle generated.");
                 return true;
             }
@@ -197,7 +199,8 @@ namespace HonkPooper
 
                 roadMark.SetPosition(
                     left: 0,
-                    top: 0);
+                    top: 0,
+                    z: 1);
 
                 // Console.WriteLine("Road Mark generated.");
 
@@ -242,7 +245,8 @@ namespace HonkPooper
 
                 tree.SetPosition(
                     left: -500,
-                    top: -500);
+                    top: -500,
+                    z: 2);
 
                 _scene.AddToScene(tree);
             }
@@ -258,7 +262,8 @@ namespace HonkPooper
 
                 tree.SetPosition(
                     left: _scene.Width / 2 - tree.Width * _scene.Scaling,
-                    top: tree.Height * -1);
+                    top: tree.Height * -1,
+                    z: 2);
 
                 // Console.WriteLine("Tree generated.");
 
@@ -276,7 +281,8 @@ namespace HonkPooper
 
                 tree.SetPosition(
                     left: -1 * tree.Width * _scene.Scaling,
-                    top: (_scene.Height / 2 * _scene.Scaling));
+                    top: _scene.Height / 2 * _scene.Scaling,
+                    z: 4);
 
                 // Console.WriteLine("Tree generated.");
 
@@ -364,7 +370,8 @@ namespace HonkPooper
 
                 honk.SetPosition(
                     left: hitBox.Left - vehicle.Width / 2,
-                    top: hitBox.Top - (25 * _scene.Scaling));
+                    top: hitBox.Top - (25 * _scene.Scaling),
+                    z: 5);
 
                 honk.SetRotation(_random.Next(-30, 30));
                 honk.SetZ(vehicle.GetZ() + 1);
