@@ -151,11 +151,11 @@ namespace HonkPooper
 
             var speed = _scene.Speed + bomb.SpeedOffset;
 
-            var isBlasted = playerBomb.Gravitate();
+            var isBlasted = playerBomb.Gravitate(speed * _scene.DownScaling);
 
             if (isBlasted)
             {
-                MoveConstruct(bomb, speed);
+                //MoveConstruct(bomb, speed);
 
                 // while in blast check if it intersects with any vehicle, if it does then the vehicle stops honking and slows down
 
@@ -218,6 +218,7 @@ namespace HonkPooper
         {
             DropShadow dropShadow1 = dropShadow as DropShadow;
             dropShadow1.Move();
+            dropShadow1.Opacity = dropShadow1.Source.Opacity;
             return true;
         }
 

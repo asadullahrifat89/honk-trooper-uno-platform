@@ -59,7 +59,7 @@ namespace HonkPooper
 
             IsometricDisplacement = 0.5;
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;
-            DropShadowDistance = 30;
+            DropShadowDistance = 40;
 
             _blastDelay = _blastDelayDefault;
         }
@@ -94,43 +94,44 @@ namespace HonkPooper
             SetChild(content);
         }
 
-        public bool Gravitate()
+        public bool Gravitate(double speed)
         {
             if (_blastDelay > 0)
             {
                 _blastDelay--;
 
-                SetLeft(GetLeft() + SpeedOffset / 2);
-                SetTop(GetTop() + SpeedOffset);
+                //SetLeft(GetLeft() + SpeedOffset / 2);
+                //SetTop(GetTop() + SpeedOffset);
+
+                SetLeft(GetLeft() + speed);
+                SetTop(GetTop() + speed * IsometricDisplacement);
 
                 return false;
             }
             else
             {
-                Blast();
+                if (!IsBlasting)
+                {
+                    var uri = _bomb_blast_uris[_random.Next(0, _bomb_blast_uris.Length)];
+
+                    var content = new Image()
+                    {
+                        Source = new BitmapImage(uriSource: uri)
+                    };
+
+                    SetChild(content);
+
+                    IsBlasting = true;
+                }
+
+                SetLeft(GetLeft() + speed);
+                SetTop(GetTop() + speed * IsometricDisplacement);
+
+                Expand();
+                Fade(0.02);
 
                 return true;
             }
-        }
-
-        private void Blast()
-        {
-            if (!IsBlasting)
-            {
-                var uri = _bomb_blast_uris[_random.Next(0, _bomb_blast_uris.Length)];
-
-                var content = new Image()
-                {
-                    Source = new BitmapImage(uriSource: uri)
-                };
-
-                SetChild(content);
-
-                IsBlasting = true;
-            }
-
-            Expand();
-            Fade(0.02);
         }
 
         #endregion

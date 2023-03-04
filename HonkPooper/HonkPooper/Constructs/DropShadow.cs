@@ -9,6 +9,8 @@ namespace HonkPooper
 {
     public partial class DropShadow : Construct
     {
+        private int _gravitationDelay = 20;
+
         #region Properties
 
         public Construct Source { get; set; }
@@ -65,16 +67,15 @@ namespace HonkPooper
 
         public void Move()
         {
+            SetLeft((Source.GetLeft() + Source.Width / 2) - Width / 2);
+
             if (Source.IsGravitating)
             {
-                SetLeft((Source.GetLeft() + Source.Width / 2) - Width / 2);
-                SetTop(GetTop() + Source.SpeedOffset);
+                SetTop(GetTop() + Source.SpeedOffset * IsometricDisplacement);
             }
             else
             {
-                SetPosition(
-                    left: (Source.GetLeft() + Source.Width / 2) - Width / 2,
-                    top: Source.GetBottom() + (Source.DropShadowDistance));
+                SetTop(Source.GetBottom() + Source.DropShadowDistance);
             }
         }
 
