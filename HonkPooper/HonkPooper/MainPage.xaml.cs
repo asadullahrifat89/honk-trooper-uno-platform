@@ -50,6 +50,9 @@ namespace HonkPooper
 
             SpawnDropShadowInScene(_player);
 
+            DropShadow playersShadow = (_scene.Children.OfType<DropShadow>().FirstOrDefault(x => x.Id == _player.Id));
+            playersShadow.IsAnimating = true;
+
             return true;
         }
 
@@ -110,7 +113,7 @@ namespace HonkPooper
 
                 _scene.AddToScene(bomb);
 
-                SpawnDropShadowInScene(bomb);
+                SpawnDropShadowInScene(source: bomb);
             }
 
             return true;
@@ -122,6 +125,7 @@ namespace HonkPooper
             {
                 bomb.Reset();
                 bomb.IsAnimating = true;
+                bomb.IsGravitating = true;
 
                 bomb.Reposition(
                     player: _player,
@@ -130,7 +134,7 @@ namespace HonkPooper
                 if (_scene.Children.OfType<DropShadow>().FirstOrDefault(x => x.Id == bomb.Id) is DropShadow dropShadow)
                 {
                     dropShadow.IsAnimating = true;
-                    dropShadow.Move(_scene.DownScaling);
+                    dropShadow.Reset();
                 }
 
                 Console.WriteLine("Bomb dropped.");
@@ -172,6 +176,7 @@ namespace HonkPooper
             if (bomb.IsFadingComplete)
             {
                 bomb.IsAnimating = false;
+                bomb.IsGravitating = false;
 
                 bomb.SetPosition(
                     left: -500,
@@ -200,11 +205,11 @@ namespace HonkPooper
 
             dropShadow.SetParent(construct: source, downScaling: _scene.DownScaling);
 
-            dropShadow.Move(downScaling: _scene.DownScaling);
+            dropShadow.Move();
 
             dropShadow.SetZ(source.GetZ());
 
-            dropShadow.IsAnimating = true;
+            //dropShadow.IsAnimating = true;
 
             return true;
         }
@@ -212,7 +217,7 @@ namespace HonkPooper
         public bool AnimateDropShadow(Construct dropShadow)
         {
             DropShadow dropShadow1 = dropShadow as DropShadow;
-            dropShadow1.Move(downScaling: _scene.DownScaling);
+            dropShadow1.Move();
             return true;
         }
 
@@ -220,7 +225,7 @@ namespace HonkPooper
         {
             DropShadow dropShadow1 = dropShadow as DropShadow;
 
-            if (dropShadow1.Source.IsAnimating == false)
+            if (!dropShadow1.Source.IsAnimating)
             {
                 dropShadow.IsAnimating = false;
 

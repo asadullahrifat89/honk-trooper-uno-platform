@@ -3,6 +3,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI;
 using System;
 using System.Linq;
+using System.Diagnostics.Contracts;
 
 namespace HonkPooper
 {
@@ -38,6 +39,7 @@ namespace HonkPooper
             Opacity = 0.8;
 
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;
+            IsometricDisplacement = 0.5;
         }
 
         #endregion
@@ -54,19 +56,25 @@ namespace HonkPooper
             //_origin = new((Source.GetLeft() + Source.Width / 2) - Width / 2, Source.GetBottom() + (Source.DropShadowDistance * downScaling));
         }
 
-        public void Move(double downScaling)
+        public void Reset()
+        {
+            SetPosition(
+                left: (Source.GetLeft() + Source.Width / 2) - Width / 2,
+                top: Source.GetBottom() + (Source.DropShadowDistance));
+        }
+
+        public void Move()
         {
             if (Source.IsGravitating)
             {
-                SetPosition(
-                    left: (Source.GetLeft() + Source.Width / 2) - Width / 2,
-                    top: Source.GetBottom() + (Source.DropShadowDistance * downScaling));
+                SetLeft((Source.GetLeft() + Source.Width / 2) - Width / 2);
+                SetTop(GetTop() + Source.SpeedOffset);
             }
             else
             {
                 SetPosition(
                     left: (Source.GetLeft() + Source.Width / 2) - Width / 2,
-                    top: Source.GetBottom() + (Source.DropShadowDistance * downScaling));
+                    top: Source.GetBottom() + (Source.DropShadowDistance));
             }
         }
 

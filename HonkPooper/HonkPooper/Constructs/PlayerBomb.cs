@@ -71,9 +71,9 @@ namespace HonkPooper
         public void Reposition(Player player, double downScaling)
         {
             SetPosition(
-                   left: (player.GetLeft() + player.Width / 2) - Width / 2,
-                   top: player.GetBottom() - (40 * downScaling),
-                   z: 7);
+                left: (player.GetLeft() + player.Width / 2) - Width / 2,
+                top: player.GetBottom() - (40 * downScaling),
+                z: 7);
         }
 
         public void Reset()
