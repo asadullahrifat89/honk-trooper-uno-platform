@@ -64,24 +64,23 @@ namespace HonkPooper
 
             if (_controller.IsMoveUp)
             {
-                _player.MoveUp(speed, _scene.DownScaling);
-
+                _player.MoveUp(speed);
             }
             else if (_controller.IsMoveDown)
             {
-                _player.MoveDown(speed, _scene.DownScaling);
+                _player.MoveDown(speed);
             }
             else if (_controller.IsMoveLeft)
             {
-                _player.MoveLeft(speed, _scene.DownScaling);
+                _player.MoveLeft(speed);
             }
             else if (_controller.IsMoveRight)
             {
-                _player.MoveRight(speed, _scene.DownScaling);
+                _player.MoveRight(speed);
             }
             else
             {
-                _player.StopMovement(_scene.DownScaling);
+                _player.StopMovement();
             }
 
             if (_controller.IsAttacking)
@@ -149,6 +148,7 @@ namespace HonkPooper
 
             DropShadow dropShadow = _scene.Children.OfType<DropShadow>().First(x => x.Id == bomb.Id);
 
+            // start blast animation when the bomb touches it's shadow
             if (!playerBomb.IsBlasting && dropShadow.GetCloseHitBox().IntersectsWith(bomb.GetCloseHitBox()))
             {
                 playerBomb.SetBlastContent();
@@ -160,6 +160,7 @@ namespace HonkPooper
 
                 bomb.Expand();
                 bomb.Fade(0.02);
+                dropShadow.Opacity = bomb.Opacity;
 
                 // while in blast check if it intersects with any vehicle, if it does then the vehicle stops honking and slows down
 
@@ -647,9 +648,7 @@ namespace HonkPooper
             _scene.AddToScene(dropShadow);
 
             dropShadow.SetParent(construct: source);
-
             dropShadow.Move();
-
             dropShadow.SetZ(source.GetZ());
 
             return true;
@@ -684,6 +683,7 @@ namespace HonkPooper
         {
             if (_scene.Children.OfType<DropShadow>().FirstOrDefault(x => x.Id == source.Id) is DropShadow dropShadow)
             {
+                dropShadow.Opacity = 1;
                 dropShadow.SourceSpeed = _scene.Speed + source.SpeedOffset;
                 dropShadow.IsAnimating = true;
                 dropShadow.Reset();

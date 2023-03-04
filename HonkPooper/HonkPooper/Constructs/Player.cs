@@ -22,7 +22,8 @@ namespace HonkPooper
         private bool _isMovingRight;
 
         private double _movementStopDelay;
-        private readonly double _movementStopDelayDefault = 10;
+        private readonly double _movementStopDelayDefault = 5;
+        private readonly double _movementStopSpeedLoss = 0.5;
 
         private double _lastSpeed;
 
@@ -88,7 +89,7 @@ namespace HonkPooper
             }
         }
 
-        public void MoveUp(double speed, double downScaling)
+        public void MoveUp(double speed)
         {
             _isMovingUp = true;
             _isMovingDown = false;
@@ -103,7 +104,7 @@ namespace HonkPooper
             _lastSpeed = speed;
         }
 
-        public void MoveDown(double speed, double downScaling)
+        public void MoveDown(double speed)
         {
             _isMovingDown = true;
             _isMovingUp = false;
@@ -118,7 +119,7 @@ namespace HonkPooper
             _lastSpeed = speed;
         }
 
-        public void MoveLeft(double speed, double downScaling)
+        public void MoveLeft(double speed)
         {
             _isMovingUp = false;
             _isMovingDown = false;
@@ -133,7 +134,7 @@ namespace HonkPooper
             _lastSpeed = speed;
         }
 
-        public void MoveRight(double speed, double downScaling)
+        public void MoveRight(double speed)
         {
             _isMovingUp = false;
             _isMovingDown = false;
@@ -148,7 +149,7 @@ namespace HonkPooper
             _lastSpeed = speed;
         }
 
-        public void StopMovement(double downScaling)
+        public void StopMovement()
         {
             if (_movementStopDelay > 0)
             {
@@ -157,22 +158,22 @@ namespace HonkPooper
                 if (_isMovingUp)
                 {
                     if (_lastSpeed > 0)
-                        MoveUp(_lastSpeed - 0.3, downScaling);
+                        MoveUp(_lastSpeed - _movementStopSpeedLoss);
                 }
                 else if (_isMovingDown)
                 {
                     if (_lastSpeed > 0)
-                        MoveDown(_lastSpeed - 0.3, downScaling);
+                        MoveDown(_lastSpeed - _movementStopSpeedLoss);
                 }
                 else if (_isMovingLeft)
                 {
                     if (_lastSpeed > 0)
-                        MoveLeft(_lastSpeed - 0.3, downScaling);
+                        MoveLeft(_lastSpeed - _movementStopSpeedLoss);
                 }
                 else if (_isMovingRight)
                 {
                     if (_lastSpeed > 0)
-                        MoveRight(_lastSpeed - 0.3, downScaling);
+                        MoveRight(_lastSpeed - _movementStopSpeedLoss);
                 }
             }
             else
