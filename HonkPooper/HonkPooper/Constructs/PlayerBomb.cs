@@ -14,7 +14,7 @@ namespace HonkPooper
         private Uri[] _bomb_blast_uris;
 
         private int _blastDelay;
-        private readonly int _blastDelayDefault = 20;
+        private readonly int _blastDelayDefault = 15;
 
         #endregion
 
@@ -101,7 +101,7 @@ namespace HonkPooper
                 _blastDelay--;
 
                 SetLeft(GetLeft() + speed);
-                SetTop(GetTop() + speed * IsometricDisplacement);
+                SetTop(GetTop() + speed);
 
                 return false;
             }
