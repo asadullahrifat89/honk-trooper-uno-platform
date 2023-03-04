@@ -167,11 +167,13 @@ namespace HonkPooper
 
             foreach (var construct in Children.OfType<Construct>())
             {
-                var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == construct.ConstructType);
+                if (Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == construct.ConstructType) is (ConstructType ConstructType, double Height, double Width) size)
+                {
+                    construct.SetSize(
+                        width: size.Width * DownScaling,
+                        height: size.Height * DownScaling);
 
-                construct.SetSize(
-                    width: size.Width * DownScaling,
-                    height: size.Height * DownScaling);                
+                }
             }
         }
 

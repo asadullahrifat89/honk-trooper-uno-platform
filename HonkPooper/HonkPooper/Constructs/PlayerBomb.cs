@@ -14,7 +14,7 @@ namespace HonkPooper
         private Uri[] _bomb_blast_uris;
 
         private int _blastDelay;
-        private readonly int _blastDelayDefault = 20;
+        private readonly int _blastDelayDefault = 15;
 
         #endregion
 
@@ -59,6 +59,7 @@ namespace HonkPooper
 
             IsometricDisplacement = 0.5;
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;
+            DropShadowDistance = 40;
 
             _blastDelay = _blastDelayDefault;
         }
@@ -70,9 +71,9 @@ namespace HonkPooper
         public void Reposition(Player player, double downScaling)
         {
             SetPosition(
-                   left: (player.GetLeft() + player.Width / 2) - Width / 2,
-                   top: player.GetBottom() - (40 * downScaling),
-                   z: 7);
+                left: (player.GetLeft() + player.Width / 2) - Width / 2,
+                top: player.GetBottom() - (40 * downScaling),
+                z: 7);
         }
 
         public void Reset()
@@ -93,43 +94,18 @@ namespace HonkPooper
             SetChild(content);
         }
 
-        public bool Gravitate(DropShadow DropShadow, double downScaling)
+        public void SetBlastContent()
         {
-            if (_blastDelay > 0)
+            var uri = _bomb_blast_uris[_random.Next(0, _bomb_blast_uris.Length)];
+
+            var content = new Image()
             {
-                _blastDelay--;
+                Source = new BitmapImage(uriSource: uri)
+            };
 
-                SetLeft(GetLeft() + SpeedOffset / 2);
-                SetTop(GetTop() + SpeedOffset);
+            SetChild(content);
 
-                return false;
-            }
-            else
-            {
-                Blast();
-
-                return true;
-            }
-        }
-
-        private void Blast()
-        {
-            if (!IsBlasting)
-            {
-                var uri = _bomb_blast_uris[_random.Next(0, _bomb_blast_uris.Length)];
-
-                var content = new Image()
-                {
-                    Source = new BitmapImage(uriSource: uri)
-                };
-
-                SetChild(content);
-
-                IsBlasting = true;
-            }
-
-            Expand();
-            Fade(0.02);
+            IsBlasting = true;
         }
 
         #endregion
