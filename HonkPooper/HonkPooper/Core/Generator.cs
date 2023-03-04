@@ -8,16 +8,33 @@ namespace HonkPooper
 {
     public partial class Generator
     {
+        #region Fields
+        
         private int _generationDelay;
         private int _generationDelayInCount;
-        private Func<bool> _generationAction;
 
-        public Generator(int generationDelay, Func<bool> generationAction)
+        #endregion
+
+        #region Properties
+
+        private Func<bool> GenerationAction { get; set; }
+
+        #endregion
+
+        public Generator(
+            int generationDelay,
+            Func<bool> generationAction,
+            Func<bool> spawnAction)
         {
             _generationDelay = generationDelay;
-            _generationAction = generationAction;
-
             _generationDelayInCount = _generationDelay;
+
+            GenerationAction = generationAction;
+
+            spawnAction();
+
+            // TODO: execute spawn action
+
         }
 
         public void Generate()
@@ -26,7 +43,7 @@ namespace HonkPooper
 
             if (_generationDelayInCount <= 0)
             {
-                _generationAction();
+                GenerationAction();
                 _generationDelayInCount = _generationDelay;
             }
         }

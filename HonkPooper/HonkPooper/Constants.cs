@@ -8,7 +8,7 @@ namespace HonkPooper
 {
     static class Constants
     {
-        public const double DEFAULT_FRAME_TIME = 18;
+        public const double DEFAULT_FRAME_TIME = 19;
         public const double TREE_SIZE = 200;
 
         public static (ConstructType ConstructType, double Height, double Width)[] CONSTRUCT_SIZES = new (ConstructType, double, double)[]
@@ -17,6 +17,7 @@ namespace HonkPooper
              new (ConstructType.ROAD_MARK, 40, 15),
              new (ConstructType.VEHICLE_SMALL, 150, 150),
              new (ConstructType.VEHICLE_LARGE, 180, 180),
+             new (ConstructType.HONK, 90, 90),
         };
 
         public static (ConstructType ConstructType, Uri Uri)[] CONSTRUCT_TEMPLATES = new (ConstructType, Uri)[]
@@ -38,6 +39,10 @@ namespace HonkPooper
             new (ConstructType.VEHICLE_LARGE, new Uri("ms-appx:///HonkPooper/Assets/Images/vehicle_large_3.png")),
             new (ConstructType.VEHICLE_LARGE, new Uri("ms-appx:///HonkPooper/Assets/Images/vehicle_large_4.png")),
             new (ConstructType.VEHICLE_LARGE, new Uri("ms-appx:///HonkPooper/Assets/Images/vehicle_large_5.png")),
+
+            new (ConstructType.HONK, new Uri("ms-appx:///HonkPooper/Assets/Images/honk_1.png")),
+            new (ConstructType.HONK, new Uri("ms-appx:///HonkPooper/Assets/Images/honk_2.png")),
+            new (ConstructType.HONK, new Uri("ms-appx:///HonkPooper/Assets/Images/honk_3.png")),
         };
     }
 

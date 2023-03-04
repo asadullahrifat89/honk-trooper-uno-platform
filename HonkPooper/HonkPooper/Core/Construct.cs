@@ -3,6 +3,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using Windows.Foundation;
 
@@ -25,13 +26,40 @@ namespace HonkPooper
 
         #region Properties
 
+        /// <summary>
+        /// Type of the construct.
+        /// </summary>
         public ConstructType ConstructType { get; set; }
 
-        private Func<Construct, bool> AnimateAction { get; set; }
+        /// <summary>
+        /// Animation function.
+        /// </summary>
+        public Func<Construct, bool> AnimateAction { get; set; }
 
-        private Func<Construct, bool> RecycleAction { get; set; }
+        /// <summary>
+        /// Recycling function.
+        /// </summary>
+        public Func<Construct, bool> RecycleAction { get; set; }
 
+        /// <summary>
+        /// Adds an offset while animating this construct with the scene speed.
+        /// </summary>
         public double SpeedOffset { get; set; } = 0;
+
+        /// <summary>
+        /// Displacement value that determines isometric movement.
+        /// </summary>
+        public double IsometricDisplacement { get; set; }
+
+        /// <summary>
+        /// Returns true if faded.
+        /// </summary>
+        public bool IsFadingComplete => Opacity <= 0;
+
+        /// <summary>
+        /// Only animated by the scene if set to true.
+        /// </summary>
+        public bool IsAnimating { get; set; }
 
         #endregion
 
@@ -55,8 +83,10 @@ namespace HonkPooper
             double speedOffset = 0)
         {
             ConstructType = constructType;
+
             AnimateAction = animateAction;
             RecycleAction = recycleAction;
+
             SpeedOffset = speedOffset;
 
             RenderTransformOrigin = new Point(0.5, 0.5);
@@ -194,6 +224,17 @@ namespace HonkPooper
         public void SetChild(UIElement uIElement)
         {
             Child = uIElement;
+        }
+
+        public void Fade()
+        {
+            Opacity -= 0.005;
+        }
+
+        public void Shrink()
+        {
+            _compositeTransform.ScaleX -= 0.1;
+            _compositeTransform.ScaleY -= 0.1;
         }
 
         #endregion
