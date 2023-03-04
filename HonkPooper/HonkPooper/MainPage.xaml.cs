@@ -109,6 +109,8 @@ namespace HonkPooper
                     z: 7);
 
                 _scene.AddToScene(bomb);
+
+                SpawnDropShadowInScene(bomb);
             }
 
             return true;
@@ -127,11 +129,7 @@ namespace HonkPooper
 
                 if (_scene.Children.OfType<DropShadow>().FirstOrDefault(x => x.Id == bomb.Id) is DropShadow dropShadow)
                 {
-                    dropShadow.Reposition(_scene.DownScaling);
-                }
-                else
-                {
-                    SpawnDropShadowInScene(bomb);
+                    dropShadow.IsAnimating = true;
                 }
 
                 Console.WriteLine("Bomb dropped.");
@@ -146,7 +144,7 @@ namespace HonkPooper
         {
             PlayerBomb playerBomb = bomb as PlayerBomb;
 
-            var speed = (_scene.Speed + bomb.SpeedOffset);
+            var speed = _scene.Speed + bomb.SpeedOffset;
 
             var isBlasted = playerBomb.Gravitate();
 
@@ -178,6 +176,16 @@ namespace HonkPooper
                     left: -500,
                     top: -500);
 
+                // reset the drop shadow for this bomb
+                if (_scene.Children.OfType<DropShadow>().FirstOrDefault(x => x.Id == bomb.Id) is DropShadow dropShadow)
+                {
+                    dropShadow.IsAnimating = false;
+
+                    dropShadow.SetPosition(
+                        left: -500,
+                        top: -500);
+                }
+
                 return true;
             }
 
@@ -199,7 +207,7 @@ namespace HonkPooper
 
             _scene.AddToScene(dropShadow);
 
-            dropShadow.Reposition(downScaling: _scene.DownScaling);
+            dropShadow.Move(downScaling: _scene.DownScaling);
 
             dropShadow.SetZ(construct.GetZ());
 
@@ -211,8 +219,7 @@ namespace HonkPooper
         public bool AnimateDropShadow(Construct dropShadow)
         {
             DropShadow dropShadow1 = dropShadow as DropShadow;
-            dropShadow1.Reposition(downScaling: _scene.DownScaling);
-
+            dropShadow1.Move(downScaling: _scene.DownScaling);
             return true;
         }
 

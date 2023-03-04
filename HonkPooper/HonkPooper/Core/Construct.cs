@@ -68,8 +68,6 @@ namespace HonkPooper
         /// </summary>
         public double DropShadowDistance { get; set; }
 
-        public bool IsGravitating { get; set; }
-
         #endregion
 
         #region Ctor

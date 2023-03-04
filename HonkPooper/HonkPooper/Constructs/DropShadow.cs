@@ -11,7 +11,6 @@ namespace HonkPooper
         #region Fields
 
         private Construct _parent;
-        private double _lastParentY;
 
         #endregion
 
@@ -51,26 +50,13 @@ namespace HonkPooper
 
             // linking this shadow instance with a construct
             Id = _parent.Id;
-
-            _lastParentY = _parent.GetBottom() + (_parent.DropShadowDistance * downScaling);
         }
 
-        public void Reposition(double downScaling)
+        public void Move(double downScaling)
         {
-            if (_parent.IsGravitating)
-            {
-                SetPosition(
-                    left: (_parent.GetLeft() + _parent.Width / 2) - Width / 2,
-                    top: GetTop() + SpeedOffset);
-            }
-            else
-            {
-                _lastParentY = _parent.GetBottom() + (_parent.DropShadowDistance * downScaling);
-
-                SetPosition(
-                    left: (_parent.GetLeft() + _parent.Width / 2) - Width / 2,
-                    top: _lastParentY);
-            }
+            SetPosition(
+                left: (_parent.GetLeft() + _parent.Width / 2) - Width / 2,
+                top: _parent.GetBottom() + (_parent.DropShadowDistance * downScaling));
         }
 
 
