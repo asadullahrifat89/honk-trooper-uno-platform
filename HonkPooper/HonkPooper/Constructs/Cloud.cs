@@ -5,29 +5,29 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace HonkPooper
 {
-    public partial class Honk : Construct
+    public partial class Cloud : Construct
     {
         #region Fields
 
         private Random _random;
-        private Uri[] _honk_uris; 
+        private Uri[] _cloud_uris;
 
         #endregion
 
         #region Ctor
 
-        public Honk(
+        public Cloud(
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction,
             double downScaling)
         {
             _random = new Random();
 
-            _honk_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.HONK).Select(x => x.Uri).ToArray();
+            _cloud_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.CLOUD).Select(x => x.Uri).ToArray();
 
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.HONK);
+            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.CLOUD);
 
-            ConstructType = ConstructType.HONK;
+            ConstructType = ConstructType.CLOUD;
 
             var width = size.Width * downScaling;
             var height = size.Height * downScaling;
@@ -37,7 +37,7 @@ namespace HonkPooper
 
             SetSize(width: width, height: height);
 
-            var uri = _honk_uris[_random.Next(0, _honk_uris.Length)];
+            var uri = _cloud_uris[_random.Next(0, _cloud_uris.Length)];
 
             var content = new Image()
             {
@@ -46,16 +46,17 @@ namespace HonkPooper
 
             SetChild(content);
 
-            IsometricDisplacement = 0.6;
+            IsometricDisplacement = 0.5;
+            SpeedOffset = 3;
         }
 
         #endregion
 
         #region Methods
 
-        public void Reset() 
+        public void Reset()
         {
-            Opacity = 1;
+            SpeedOffset = _random.Next(3, 7);
         }
 
         #endregion

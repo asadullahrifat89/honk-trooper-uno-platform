@@ -38,7 +38,7 @@ namespace HonkPooper
 
         public bool IsAnimating { get; set; }
 
-        public double Ratio { get; set; }
+        public double DownScaling { get; set; }
 
         public double Speed { get; set; }
 
@@ -89,7 +89,7 @@ namespace HonkPooper
         }
 
         /// <summary>
-        /// Gets the scaling factor according to window size.
+        /// Gets the down scaling factor according to window size.
         /// </summary>
         /// <param name="windowWidth"></param>
         /// <returns></returns>
@@ -136,7 +136,7 @@ namespace HonkPooper
 
             _destroyables.Clear();
 
-            Console.WriteLine($"Animating Objects: {Children.OfType<Construct>().Count(x => x.IsAnimating)} ~ Total Objects: {Children.OfType<Construct>().Count()}");            
+            // Console.WriteLine($"Animating Objects: {Children.OfType<Construct>().Count(x => x.IsAnimating)} ~ Total Objects: {Children.OfType<Construct>().Count()}");            
         }
 
         #endregion
@@ -161,17 +161,17 @@ namespace HonkPooper
 
             // Console.WriteLine($"{_sceneWidth}x{_sceneHeight}");
 
-            Ratio = GetTranslationFactor(_sceneWidth);
+            DownScaling = GetTranslationFactor(_sceneWidth);
 
-            // Console.WriteLine($"Scaling {Scaling}");
+            // Console.WriteLine($"Down Scaling {Scaling}");
 
             foreach (var construct in Children.OfType<Construct>())
             {
                 var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == construct.ConstructType);
 
                 construct.SetSize(
-                    width: size.Width * Ratio,
-                    height: size.Height * Ratio);                
+                    width: size.Width * DownScaling,
+                    height: size.Height * DownScaling);                
             }
         }
 

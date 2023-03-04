@@ -13,21 +13,20 @@ namespace HonkPooper
         public RoadMark(
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction,
-            double scaling)
+            double downScaling)
         {
             var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.ROAD_MARK);
 
             ConstructType = ConstructType.ROAD_MARK;
 
-            var width = size.Width * scaling;
-            var height = size.Height * scaling;
+            var width = size.Width * downScaling;
+            var height = size.Height * downScaling;
 
             AnimateAction = animateAction;
             RecycleAction = recycleAction;
 
             SetSize(width: width, height: height);
-            SpeedOffset = 3;
-
+            
             Background = new SolidColorBrush(Colors.White);
             CornerRadius = new CornerRadius(5);
 
@@ -35,6 +34,7 @@ namespace HonkPooper
             SetRotation(-63.5);
 
             IsometricDisplacement = 0.5;
+            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;
         } 
 
         #endregion

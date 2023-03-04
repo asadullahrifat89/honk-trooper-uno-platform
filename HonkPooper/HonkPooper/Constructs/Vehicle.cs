@@ -16,6 +16,9 @@ namespace HonkPooper
 
         private int _honkDelay;
 
+        private bool _isBombDroppingComplete;
+        private double _honkBustingUpScalingLimit = 1.5;
+
         #endregion
 
         #region Ctor
@@ -23,7 +26,7 @@ namespace HonkPooper
         public Vehicle(
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction,
-            double scaling)
+            double downScaling)
         {
             _random = new Random();
 
@@ -50,8 +53,8 @@ namespace HonkPooper
 
                         ConstructType = ConstructType.VEHICLE_SMALL;
 
-                        var width = size.Width * scaling;
-                        var height = size.Height * scaling;
+                        var width = size.Width * downScaling;
+                        var height = size.Height * downScaling;
 
                         SetSize(width: width, height: height);
 
@@ -76,8 +79,8 @@ namespace HonkPooper
 
                         ConstructType = ConstructType.VEHICLE_LARGE;
 
-                        var width = size.Width * scaling;
-                        var height = size.Height * scaling;
+                        var width = size.Width * downScaling;
+                        var height = size.Height * downScaling;
 
                         SetSize(width: width, height: height);
 
@@ -109,15 +112,34 @@ namespace HonkPooper
 
         public bool WillHonk { get; set; }
 
-        public bool IsHonkBusted { get; set; }
+        public bool IsMarkedForBombing { get; set; }
+
+        public bool IsBombDropped { get; set; }
 
         #endregion
 
         #region Methods
 
+        public void Reset()
+        {
+            IsMarkedForBombing = false;
+            IsBombDropped = false;
+
+            SetScaleTransform(1);
+
+            SpeedOffset = _random.Next(-4, 2);
+
+            WillHonk = Convert.ToBoolean(_random.Next(0, 2));
+
+            if (WillHonk)
+            {
+                SetHonkDelay();
+            }
+        }
+
         public bool Honk()
         {
-            if (!IsHonkBusted && WillHonk)
+            if (!IsMarkedForBombing /*&& !IsHonkBusted*/ && WillHonk)
             {
                 _honkDelay--;
 
@@ -137,6 +159,32 @@ namespace HonkPooper
             _honkDelay = _random.Next(30, 80);
         }
 
+        public void Blast()
+        {
+            if (!IsBombDropped)
+            {
+                if (!_isBombDroppingComplete && GetScaleX() < _honkBustingUpScalingLimit)
+                {
+                    Expand();
+                }
+
+                if (GetScaleX() >= _honkBustingUpScalingLimit)
+                    _isBombDroppingComplete = true;
+
+                if (_isBombDroppingComplete)
+                {
+                    Shrink();
+
+                    if (GetScaleX() <= 1)
+                    {
+                        _isBombDroppingComplete = false;
+                        IsBombDropped = true;
+
+                        SpeedOffset = Constants.DEFAULT_SPEED_OFFSET + 1;
+                    }
+                }
+            }
+        }
         #endregion
     }
 }
