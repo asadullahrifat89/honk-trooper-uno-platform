@@ -135,7 +135,7 @@ namespace HonkPooper
 
             _destroyables.Clear();
 
-            Console.WriteLine($"Object Count: {Children.OfType<Construct>().Count(x => x.IsAnimating)}");
+            Console.WriteLine($"Animating Objects: {Children.OfType<Construct>().Count(x => x.IsAnimating)} ~ Total Objects: {Children.OfType<Construct>().Count()}");            
         }
 
         #endregion

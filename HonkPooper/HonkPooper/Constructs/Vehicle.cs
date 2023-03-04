@@ -162,7 +162,7 @@ namespace HonkPooper
 
         public void SetHonkDelay()
         {
-            _honkDelay = _random.Next(55 - (int)Math.Floor(0.2), 125 - (int)Math.Floor(0.4));
+            _honkDelay = _random.Next(30, 80);
         }
 
         #endregion
