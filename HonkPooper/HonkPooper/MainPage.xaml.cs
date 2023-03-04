@@ -62,14 +62,16 @@ namespace HonkPooper
 
             if (_controller.IsMoveUp)
             {
-                player.SetLeft(player.GetLeft() + speed);
-                player.SetTop(player.GetTop() - speed);
+                _player.MoveUp(speed);
 
             }
             else if (_controller.IsMoveDown)
             {
-                player.SetLeft(player.GetLeft() - speed);
-                player.SetTop(player.GetTop() + speed);
+                _player.MoveDown(speed);
+            }
+            else
+            {
+                _player.StopMovement();
             }
 
             return true;

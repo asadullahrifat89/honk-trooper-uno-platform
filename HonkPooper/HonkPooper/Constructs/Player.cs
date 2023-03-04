@@ -3,6 +3,7 @@ using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.VisualBasic.FileIO;
 using System;
 using System.Linq;
+using System.Numerics;
 
 namespace HonkPooper
 {
@@ -16,6 +17,13 @@ namespace HonkPooper
         private int _hoverDelay;
         private readonly int _hoverDelayDefault = 30;
 
+        private bool _isMovingUp;
+        private bool _isMovingDown;        
+
+        private int _movementStopDelay;
+        private readonly int _movementStopDelayDefault = 30;
+
+        private double _lastSpeed;
         #endregion
 
         public Player(
@@ -67,6 +75,54 @@ namespace HonkPooper
 
                 if (_hoverDelay <= _hoverDelayDefault * -1)
                     _hoverDelay = _hoverDelayDefault;
+            }
+        }
+
+        public void MoveUp(double speed)
+        {
+            _isMovingUp = true;
+            _isMovingDown = false;
+
+            SetLeft(GetLeft() + speed);
+            SetTop(GetTop() - speed);
+
+            _movementStopDelay = _movementStopDelayDefault;
+            _lastSpeed = speed;
+        }
+
+        public void MoveDown(double speed)
+        {
+            _isMovingDown = true;
+            _isMovingUp = false;
+
+            SetLeft(GetLeft() - speed);
+            SetTop(GetTop() + speed);
+
+            _movementStopDelay = _movementStopDelayDefault;
+            _lastSpeed = speed;
+        }
+
+        public void StopMovement()
+        {
+            if (_movementStopDelay > 0)
+            {
+                _movementStopDelay--;
+
+                if (_isMovingUp)
+                {
+                    if (_lastSpeed > 0)
+                        MoveUp(_lastSpeed - 0.1);
+                }
+                else if (_isMovingDown)
+                {
+                    if (_lastSpeed > 0)
+                        MoveDown(_lastSpeed - 0.1);
+                }
+            }
+            else
+            {
+                _isMovingUp = false;
+                _isMovingDown = false;
             }
         }
     }
