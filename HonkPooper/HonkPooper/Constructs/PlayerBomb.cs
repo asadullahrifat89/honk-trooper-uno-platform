@@ -58,7 +58,7 @@ namespace HonkPooper
             SetChild(content);
 
             IsometricDisplacement = 0.5;
-            SpeedOffset = 3;
+            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;
 
             _blastDelay = _blastDelayDefault;
         }

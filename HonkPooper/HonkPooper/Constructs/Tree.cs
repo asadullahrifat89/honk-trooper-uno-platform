@@ -32,7 +32,7 @@ namespace HonkPooper
             };
 
             SetChild(content);
-            SpeedOffset = 3;
+            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;
             IsometricDisplacement = 0.5;
         }
 

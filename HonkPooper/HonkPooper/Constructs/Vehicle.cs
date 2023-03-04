@@ -2,7 +2,6 @@
 using System.Linq;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media;
 
 namespace HonkPooper
 {
@@ -113,8 +112,6 @@ namespace HonkPooper
 
         public bool WillHonk { get; set; }
 
-        //public bool IsHonkBusted { get; set; }
-
         public bool IsMarkedForBombing { get; set; }
 
         public bool IsBombDropped { get; set; }
@@ -125,11 +122,12 @@ namespace HonkPooper
 
         public void Reset()
         {
-            //IsHonkBusted = false;
             IsMarkedForBombing = false;
             IsBombDropped = false;
 
             SetScaleTransform(1);
+
+            SpeedOffset = _random.Next(-4, 2);
 
             WillHonk = Convert.ToBoolean(_random.Next(0, 2));
 
@@ -161,7 +159,7 @@ namespace HonkPooper
             _honkDelay = _random.Next(30, 80);
         }
 
-        public void HonkBust()
+        public void Blast()
         {
             if (!IsBombDropped)
             {
@@ -179,11 +177,10 @@ namespace HonkPooper
 
                     if (GetScaleX() <= 1)
                     {
+                        _isBombDroppingComplete = false;
                         IsBombDropped = true;
 
-                        _isBombDroppingComplete = false;
-
-                        //IsHonkBusted = true;
+                        SpeedOffset = Constants.DEFAULT_SPEED_OFFSET + 1;
                     }
                 }
             }

@@ -1,6 +1,5 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Input;
 using System;
 using System.Linq;
 
@@ -133,8 +132,6 @@ namespace HonkPooper
 
             var speed = (_scene.Speed + bomb.SpeedOffset);
 
-            // returns blast
-
             var isBlasted = playerBomb.Gravitate(_dropShadow, _scene.DownScaling);
 
             if (isBlasted)
@@ -145,8 +142,7 @@ namespace HonkPooper
 
                 if (_scene.Children.OfType<Vehicle>()
                     .Where(x => x.IsAnimating && x.WillHonk)
-                    .FirstOrDefault(x => x.GetCloseHitBox().IntersectsWith(bomb.GetCloseHitBox())) 
-                    is Vehicle vehicle)
+                    .FirstOrDefault(x => x.GetCloseHitBox().IntersectsWith(bomb.GetCloseHitBox())) is Vehicle vehicle)
                 {
                     vehicle.IsMarkedForBombing = true;
                     vehicle.WillHonk = false;
@@ -286,8 +282,7 @@ namespace HonkPooper
             // prevent overlapping
 
             if (_scene.Children.OfType<Vehicle>()
-                .FirstOrDefault(x => x.GetCloseHitBox().IntersectsWith(hitHox))
-                is Construct collidingVehicle)
+                .FirstOrDefault(x => x.GetCloseHitBox().IntersectsWith(hitHox)) is Construct collidingVehicle)
             {
                 if (collidingVehicle.SpeedOffset < vehicle.SpeedOffset)
                 {
@@ -299,13 +294,11 @@ namespace HonkPooper
                 }
             }
 
-            // only honk when vehicle is fully inside view
-
             Vehicle vehicle1 = vehicle as Vehicle;
 
             if (vehicle1.IsMarkedForBombing)
             {
-                vehicle1.HonkBust();
+                vehicle1.Blast();
             }
 
             if (vehicle1.Honk())

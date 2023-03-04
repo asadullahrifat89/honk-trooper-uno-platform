@@ -2,7 +2,6 @@
 using System.Linq;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Controls;
-using System.Reflection;
 
 namespace HonkPooper
 {

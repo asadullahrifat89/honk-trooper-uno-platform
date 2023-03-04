@@ -5,7 +5,7 @@ namespace HonkPooper
     static class Constants
     {
         public const double DEFAULT_FRAME_TIME = 19;
-        public const double TREE_SIZE = 200;
+        public const double DEFAULT_SPEED_OFFSET = 3;
 
         public static (ConstructType ConstructType, double Height, double Width)[] CONSTRUCT_SIZES = new (ConstructType, double, double)[]
         {
