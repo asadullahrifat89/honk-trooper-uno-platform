@@ -58,15 +58,18 @@ namespace HonkPooper
         {
             var speed = _scene.Speed;
 
-            _player.Tilt();
+            _player.Hover();
 
             if (_controller.IsMoveUp)
             {
+                player.SetLeft(player.GetLeft() + speed);
+                player.SetTop(player.GetTop() - speed);
 
             }
             else if (_controller.IsMoveDown)
             {
-
+                player.SetLeft(player.GetLeft() - speed);
+                player.SetTop(player.GetTop() + speed);
             }
 
             return true;

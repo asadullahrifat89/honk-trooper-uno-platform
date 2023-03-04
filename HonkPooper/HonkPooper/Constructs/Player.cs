@@ -13,8 +13,8 @@ namespace HonkPooper
         private Random _random;
         private Uri[] _player_uris;
 
-        private int _tiltDelay;
-        private readonly int _tiltDelayDefault = 30;
+        private int _hoverDelay;
+        private readonly int _hoverDelayDefault = 30;
 
         #endregion
 
@@ -50,14 +50,14 @@ namespace HonkPooper
 
             IsometricDisplacement = 1.5;
 
-            _tiltDelay = _tiltDelayDefault;
+            _hoverDelay = _hoverDelayDefault;
         }
 
-        public void Tilt()
+        public void Hover()
         {
-            _tiltDelay--;
+            _hoverDelay--;
 
-            if (_tiltDelay > 0)
+            if (_hoverDelay > 0)
             {
                 SetTop(GetTop() + 0.4);
             }
@@ -65,8 +65,8 @@ namespace HonkPooper
             {
                 SetTop(GetTop() - 0.4);
 
-                if (_tiltDelay <= _tiltDelayDefault * -1)
-                    _tiltDelay = _tiltDelayDefault;
+                if (_hoverDelay <= _hoverDelayDefault * -1)
+                    _hoverDelay = _hoverDelayDefault;
             }
         }
     }
