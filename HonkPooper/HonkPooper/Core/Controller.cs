@@ -327,7 +327,7 @@ namespace HonkPooper
                 BorderThickness = new Microsoft.UI.Xaml.Thickness(6),
             };
 
-            right.PointerReleased += (s, e) => { ActivateMoveRight(); };
+            right.PointerPressed += (s, e) => { ActivateMoveRight(); };
             right.PointerReleased += (s, e) => { DeactivateMoveRight(); };
 
             Grid.SetRow(up, 0);
