@@ -12,7 +12,6 @@ namespace HonkPooper
 
         private Scene _scene;
         private Controller _controller;
-        //private OnScreenController _onScreenController;
         private Random _random;
         private Player _player;
 
@@ -63,37 +62,39 @@ namespace HonkPooper
 
             _player.Hover();
 
-            if (_controller.IsMoveUp /*|| _onScreenController.IsMoveUp*/)
+            if (_controller.IsMoveUp)
             {
                 if (_player.GetBottom() > 0 && _player.GetRight() > 0)
                     _player.MoveUp(speed);
             }
-            else if (_controller.IsMoveDown /*|| _onScreenController.IsMoveDown*/)
+            else if (_controller.IsMoveDown)
             {
                 if (_player.GetTop() < _scene.Height && _player.GetLeft() < _scene.Width)
                     _player.MoveDown(speed);
             }
-            else if (_controller.IsMoveLeft /*|| _onScreenController.IsMoveLeft*/)
+            else if (_controller.IsMoveLeft)
             {
                 if (_player.GetRight() > 0 && _player.GetTop() < _scene.Height)
                     _player.MoveLeft(speed);
             }
-            else if (_controller.IsMoveRight /*|| _onScreenController.IsMoveRight*/)
+            else if (_controller.IsMoveRight)
             {
                 if (_player.GetLeft() < _scene.Width && _player.GetBottom() > 0)
                     _player.MoveRight(speed);
             }
             else
             {
-                //if (_player.GetTop() > 0 && _player.GetLeft() > 0 && _player.GetLeft() < _scene.Width && _player.GetTop() < _scene.Height)
+                if (_player.GetBottom() > 0 && _player.GetRight() > 0 
+                    && _player.GetTop() < _scene.Height && _player.GetLeft() < _scene.Width 
+                    && _player.GetRight() > 0 && _player.GetTop() < _scene.Height
+                    && _player.GetLeft() < _scene.Width && _player.GetBottom() > 0)
                     _player.StopMovement();
             }
 
-            if (_controller.IsAttacking /*|| _onScreenController.IsAttacking*/)
+            if (_controller.IsAttacking)
             {
                 GeneratePlayerBombInScene();
                 _controller.IsAttacking = false;
-                //_onScreenController.IsAttacking = false;
             }
 
             return true;
@@ -782,7 +783,8 @@ namespace HonkPooper
         private void SetController()
         {
             _controller.SetScene(_scene);
-            //_onScreenController.SetScene(_scene);
+
+            _controller.SetArrowsKeysContainerRotation(-63.5);
         }
 
         #endregion
@@ -796,7 +798,6 @@ namespace HonkPooper
             _scene = this.MainScene;
 
             _controller = this.KeyboardController;
-            //_onScreenController = this.OnScreenController;
 
             _scene.Width = 1920;
             _scene.Height = 1080;
