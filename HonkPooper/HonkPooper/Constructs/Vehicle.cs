@@ -115,7 +115,7 @@ namespace HonkPooper
 
         public bool IsHonkBusted { get; set; }
 
-        public bool HonkToBeBusted { get; set; }
+        public bool IsBombDropped { get; set; }
 
         #endregion
 
@@ -124,7 +124,9 @@ namespace HonkPooper
         public void Reset()
         {
             IsHonkBusted = false;
-            HonkToBeBusted = false;
+            IsBombDropped = false;
+
+            SetScaleTransform(1);
 
             WillHonk = Convert.ToBoolean(_random.Next(0, 2));
 
@@ -136,7 +138,7 @@ namespace HonkPooper
 
         public bool Honk()
         {
-            if (!HonkToBeBusted && !IsHonkBusted && WillHonk)
+            if (!IsBombDropped && !IsHonkBusted && WillHonk)
             {
                 _honkDelay--;
 
@@ -155,7 +157,6 @@ namespace HonkPooper
         {
             _honkDelay = _random.Next(30, 80);
         }
-
 
         public void HonkBust()
         {

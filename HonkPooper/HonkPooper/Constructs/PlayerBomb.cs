@@ -80,7 +80,7 @@ namespace HonkPooper
             _blastDelay = _blastDelayDefault;
 
             Opacity = 1;
-            SetScaleTransform(1, 1);
+            SetScaleTransform(1);
             IsBlasting = false;
 
             var uri = _bomb_uris[_random.Next(0, _bomb_uris.Length)];

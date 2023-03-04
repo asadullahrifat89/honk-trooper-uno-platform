@@ -61,7 +61,7 @@ namespace HonkPooper
         public void Reposition(Scene scene)
         {
             SetPosition(
-                  left: (scene.Width / 3) + (scene.Width / 4) - Width / 2,
+                  left: ((scene.Width / 4) * 2) - Width / 2,
                   top: scene.Height / 2 - Height / 2,
                   z: 6);
         }

@@ -140,9 +140,12 @@ namespace HonkPooper
 
                 // while in blast check if it intersects with any vehicle, if it does then the vehicle stops honking and slows down
 
-                if(_scene.Children.OfType<Vehicle>().Where(x=>x.IsAnimating).FirstOrDefault(x=>x.GetCloseHitBox().IntersectsWith(bomb.GetCloseHitBox())) is Vehicle vehicle)
+                if (_scene.Children.OfType<Vehicle>()
+                    .Where(x => x.IsAnimating && x.WillHonk)
+                    .FirstOrDefault(x => x.GetCloseHitBox().IntersectsWith(bomb.GetCloseHitBox())) 
+                    is Vehicle vehicle)
                 {
-                    vehicle.HonkToBeBusted = true;
+                    vehicle.IsBombDropped = true;
                 }
             }
 
@@ -296,7 +299,7 @@ namespace HonkPooper
 
             Vehicle vehicle1 = vehicle as Vehicle;
 
-            if(vehicle1.HonkToBeBusted && !vehicle1.IsHonkBusted)
+            if (vehicle1.IsBombDropped && !vehicle1.IsHonkBusted)
             {
                 vehicle1.HonkBust();
             }
