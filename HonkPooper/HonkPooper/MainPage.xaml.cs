@@ -58,7 +58,7 @@ namespace HonkPooper
 
         public bool AnimatePlayer(Construct player)
         {
-            var speed = _scene.Speed + player.SpeedOffset;
+            var speed = (_scene.Speed + player.SpeedOffset) * _scene.DownScaling;
 
             _player.Hover();
 
@@ -160,6 +160,9 @@ namespace HonkPooper
 
                 bomb.Expand();
                 bomb.Fade(0.02);
+
+                // make the shadow fade with the bomb blast
+
                 dropShadow.Opacity = bomb.Opacity;
 
                 // while in blast check if it intersects with any vehicle, if it does then the vehicle stops honking and slows down
@@ -229,6 +232,7 @@ namespace HonkPooper
                 vehicle.Reset();
 
                 // generate top and left corner lane wise vehicles
+
                 var topOrLeft = _random.Next(0, 2);
 
                 var lane = _random.Next(0, 2);
@@ -802,6 +806,9 @@ namespace HonkPooper
             _scene.Height = _windowHeight;
 
             _player.Reposition(_scene);
+
+            DropShadow playersShadow = (_scene.Children.OfType<DropShadow>().FirstOrDefault(x => x.Id == _player.Id));
+            playersShadow.Move();
 
             //_dropShadow.Move(
             //    parent: _player,
