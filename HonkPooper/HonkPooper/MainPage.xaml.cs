@@ -14,7 +14,7 @@ namespace HonkPooper
         private Controller _controller;
         private Random _random;
         private Player _player;
-        private DropShadow _DropShadow;
+        private DropShadow _dropShadow;
 
         #endregion
 
@@ -131,10 +131,12 @@ namespace HonkPooper
         {
             PlayerBomb playerBomb = bomb as PlayerBomb;
 
-            //var speed = (_scene.Speed + bomb.SpeedOffset);
-            //MoveConstruct(bomb, speed);
+            var speed = (_scene.Speed + bomb.SpeedOffset);
 
-            playerBomb.Gravitate(_DropShadow, _scene.DownScaling);
+            if(playerBomb.Gravitate(_dropShadow, _scene.DownScaling))
+            {
+                MoveConstruct(bomb, speed);
+            }
 
             return true;
         }
@@ -161,27 +163,27 @@ namespace HonkPooper
 
         public bool SpawnPlayerDropShadowInScene()
         {
-            _DropShadow = new(
+            _dropShadow = new(
                 animateAction: AnimatePlayerDropShadow,
                 recycleAction: (_player) => { return true; },
                 downScaling: _scene.DownScaling);
 
-            _scene.AddToScene(_DropShadow);
+            _scene.AddToScene(_dropShadow);
 
-            _DropShadow.Move(
+            _dropShadow.Move(
                player: _player,
                downScaling: _scene.DownScaling);
 
-            _DropShadow.SetZ(6);
+            _dropShadow.SetZ(6);
 
-            _DropShadow.IsAnimating = true;
+            _dropShadow.IsAnimating = true;
 
             return true;
         }
 
         public bool AnimatePlayerDropShadow(Construct DropShadow)
         {
-            _DropShadow.Move(
+            _dropShadow.Move(
                 player: _player,
                 downScaling: _scene.DownScaling);
 
@@ -658,7 +660,7 @@ namespace HonkPooper
 
             _player.Reposition(_scene);
 
-            _DropShadow.Move(
+            _dropShadow.Move(
                 player: _player,
                 downScaling: _scene.DownScaling);
         }

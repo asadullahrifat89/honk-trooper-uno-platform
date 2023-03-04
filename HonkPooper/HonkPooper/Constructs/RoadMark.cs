@@ -26,8 +26,7 @@ namespace HonkPooper
             RecycleAction = recycleAction;
 
             SetSize(width: width, height: height);
-            SpeedOffset = 3;
-
+            
             Background = new SolidColorBrush(Colors.White);
             CornerRadius = new CornerRadius(5);
 
@@ -35,6 +34,7 @@ namespace HonkPooper
             SetRotation(-63.5);
 
             IsometricDisplacement = 0.5;
+            SpeedOffset = 3;
         } 
 
         #endregion

@@ -58,7 +58,7 @@ namespace HonkPooper
             SetChild(content);
 
             IsometricDisplacement = 0.5;
-            SpeedOffset = 5;
+            SpeedOffset = 3;
 
             _blastDelay = _blastDelayDefault;
         }
@@ -71,7 +71,7 @@ namespace HonkPooper
         {
             SetPosition(
                    left: (player.GetLeft() + player.Width / 2) - Width / 2,
-                   top: player.GetBottom() - (30 * downScaling),
+                   top: player.GetBottom() - (40 * downScaling),
                    z: 7);
         }
 
@@ -93,7 +93,7 @@ namespace HonkPooper
             SetChild(content);
         }
 
-        public void Gravitate(DropShadow DropShadow, double downScaling)
+        public bool Gravitate(DropShadow DropShadow, double downScaling)
         {
             if (_blastDelay > 0)
             {
@@ -101,10 +101,14 @@ namespace HonkPooper
 
                 SetLeft(GetLeft() + SpeedOffset / 2);
                 SetTop(GetTop() + SpeedOffset);
+
+                return false;
             }
             else
             {
                 Blast();
+
+                return true;
             }
         }
 
