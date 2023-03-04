@@ -14,7 +14,6 @@ namespace HonkPooper
         private Controller _controller;
         private Random _random;
         private Player _player;
-        private DropShadow _dropShadow;
 
         #endregion
 
@@ -48,6 +47,8 @@ namespace HonkPooper
             _player.Reposition(_scene);
 
             _player.IsAnimating = true;
+
+            SpawnDropShadowInScene(_player);
 
             return true;
         }
@@ -124,6 +125,9 @@ namespace HonkPooper
                     player: _player,
                     downScaling: _scene.DownScaling);
 
+                if (!_scene.Children.OfType<DropShadow>().Any(x => x.Id == bomb.Id))
+                    SpawnDropShadowInScene(bomb);
+
                 Console.WriteLine("Bomb dropped.");
 
                 return true;
@@ -138,7 +142,7 @@ namespace HonkPooper
 
             var speed = (_scene.Speed + bomb.SpeedOffset);
 
-            var isBlasted = playerBomb.Gravitate(_dropShadow, _scene.DownScaling);
+            var isBlasted = playerBomb.Gravitate();
 
             if (isBlasted)
             {
@@ -178,31 +182,30 @@ namespace HonkPooper
 
         #region DropShadow
 
-        public bool SpawnPlayerDropShadowInScene()
+        public bool SpawnDropShadowInScene(Construct construct)
         {
-            _dropShadow = new(
-                animateAction: AnimatePlayerDropShadow,
-                recycleAction: (_player) => { return true; },
+            DropShadow dropShadow = new(
+                animateAction: AnimateDropShadow,
+                recycleAction: (dropShadow) => { return true; },
                 downScaling: _scene.DownScaling);
 
-            _scene.AddToScene(_dropShadow);
+            dropShadow.SetParent(construct: construct);
 
-            _dropShadow.Move(
-               parent: _player,
-               downScaling: _scene.DownScaling);
+            _scene.AddToScene(dropShadow);
 
-            _dropShadow.SetZ(6);
+            dropShadow.Move(downScaling: _scene.DownScaling);
 
-            _dropShadow.IsAnimating = true;
+            dropShadow.SetZ(construct.GetZ());
+
+            dropShadow.IsAnimating = true;
 
             return true;
         }
 
-        public bool AnimatePlayerDropShadow(Construct DropShadow)
+        public bool AnimateDropShadow(Construct dropShadow)
         {
-            _dropShadow.Move(
-                parent: _player,
-                downScaling: _scene.DownScaling);
+            DropShadow dropShadow1 = dropShadow as DropShadow;
+            dropShadow1.Move(downScaling: _scene.DownScaling);
 
             return true;
         }
@@ -692,12 +695,6 @@ namespace HonkPooper
                 generationAction: () => { return true; },
                 spawnAction: SpawnPlayerInScene);
 
-            // add the player drop zone in scene which will appear forward in z wrt to all else
-            Generator playerDropShadow = new(
-                generationDelay: 0,
-                generationAction: () => { return true; },
-                spawnAction: SpawnPlayerDropShadowInScene);
-
             Generator bombs = new(
                 generationDelay: 0,
                 generationAction: () => { return true; },
@@ -716,7 +713,6 @@ namespace HonkPooper
             _scene.AddToScene(vehicles);
 
             _scene.AddToScene(player);
-            _scene.AddToScene(playerDropShadow);
 
             _scene.AddToScene(bombs);
             _scene.AddToScene(clouds);
@@ -759,9 +755,9 @@ namespace HonkPooper
 
             _player.Reposition(_scene);
 
-            _dropShadow.Move(
-                parent: _player,
-                downScaling: _scene.DownScaling);
+            //_dropShadow.Move(
+            //    parent: _player,
+            //    downScaling: _scene.DownScaling);
         }
 
         private void MainPage_Unloaded(object sender, RoutedEventArgs e)

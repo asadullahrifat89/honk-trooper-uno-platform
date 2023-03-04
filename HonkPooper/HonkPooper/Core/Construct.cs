@@ -24,6 +24,11 @@ namespace HonkPooper
         #region Properties
 
         /// <summary>
+        /// Unique id of the construct.
+        /// </summary>
+        public string Id { get; set; } = Guid.NewGuid().ToString();
+
+        /// <summary>
         /// Type of the construct.
         /// </summary>
         public ConstructType ConstructType { get; set; }
@@ -57,6 +62,11 @@ namespace HonkPooper
         /// Only animated by the scene if set to true.
         /// </summary>
         public bool IsAnimating { get; set; }
+
+        /// <summary>
+        /// The distance from this construct at which a shadow should appear.
+        /// </summary>
+        public double DropShadowDistance { get; set; }
 
         #endregion
 

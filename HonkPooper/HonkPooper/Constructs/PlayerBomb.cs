@@ -59,6 +59,7 @@ namespace HonkPooper
 
             IsometricDisplacement = 0.5;
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;
+            DropShadowDistance = 30;
 
             _blastDelay = _blastDelayDefault;
         }
@@ -93,7 +94,7 @@ namespace HonkPooper
             SetChild(content);
         }
 
-        public bool Gravitate(DropShadow DropShadow, double downScaling)
+        public bool Gravitate()
         {
             if (_blastDelay > 0)
             {

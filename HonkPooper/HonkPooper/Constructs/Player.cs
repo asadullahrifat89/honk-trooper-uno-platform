@@ -59,6 +59,7 @@ namespace HonkPooper
             SetChild(content);
 
             SpeedOffset = 2;
+            DropShadowDistance = 50;
             _hoverDelay = _hoverDelayDefault;
         }
 
@@ -96,7 +97,7 @@ namespace HonkPooper
             _isMovingRight = false;
 
             SetLeft(GetLeft() - speed * 2);
-            SetTop(GetTop() - speed);         
+            SetTop(GetTop() - speed);
 
             _movementStopDelay = _movementStopDelayDefault;
             _lastSpeed = speed;
@@ -141,7 +142,7 @@ namespace HonkPooper
             _isMovingRight = true;
 
             SetLeft(GetLeft() + speed);
-            SetTop(GetTop() - speed);    
+            SetTop(GetTop() - speed);
 
             _movementStopDelay = _movementStopDelayDefault;
             _lastSpeed = speed;

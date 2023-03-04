@@ -8,6 +8,8 @@ namespace HonkPooper
 {
     public partial class DropShadow : Construct
     {
+        private Construct _parent;
+
         public DropShadow(
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction,
@@ -30,11 +32,19 @@ namespace HonkPooper
             Opacity = 0.8;
         }
 
-        public void Move(Construct parent, double downScaling)
+        public void SetParent(Construct construct)
+        {
+            _parent = construct;
+
+            // linking this shadow instance with a construct
+            Id = _parent.Id;
+        }
+
+        public void Move(double downScaling)
         {
             SetPosition(
-                   left: (parent.GetLeft() + parent.Width / 2) - Width / 2,
-                   top: parent.GetBottom() + (50 * downScaling));
+                   left: (_parent.GetLeft() + _parent.Width / 2) - Width / 2,
+                   top: _parent.GetBottom() + (_parent.DropShadowDistance * downScaling));
         }
     }
 }
