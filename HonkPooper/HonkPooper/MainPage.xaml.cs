@@ -68,16 +68,16 @@ namespace HonkPooper
 
         public bool GenerateVehicleInScene()
         {
-            //Vehicle vehicle = new(
-            //    animateAction: AnimateVehicle,
-            //    recycleAction: RecycleVehicle,
-            //    scaling: _scene.Scaling);
-
-            //_scene.AddToScene(vehicle);
-
             if (_scene.Children.OfType<Vehicle>().FirstOrDefault(x => x.IsAnimating == false) is Vehicle vehicle)
             {
                 vehicle.IsAnimating = true;
+
+                vehicle.WillHonk = Convert.ToBoolean(_random.Next(0, 2));
+
+                if (vehicle.WillHonk)
+                {
+                    vehicle.SetHonkDelay();
+                }
 
                 // generate top and left corner lane wise vehicles
                 var topOrLeft = _random.Next(0, 2);
@@ -155,8 +155,6 @@ namespace HonkPooper
 
             if (hitBox.Top > _scene.Height || hitBox.Left > _scene.Width)
             {
-                //_scene.DisposeFromScene(vehicle);
-
                 vehicle.IsAnimating = false;
             }
 
@@ -188,13 +186,6 @@ namespace HonkPooper
 
         public bool GenerateRoadMarkInScene()
         {
-            //RoadMark roadMark = new(
-            //    animateAction: AnimateRoadMark,
-            //    recycleAction: RecycleRoadMark,
-            //    scaling: _scene.Scaling);
-
-            //_scene.AddToScene(roadMark);
-
             if (_scene.Children.OfType<RoadMark>().FirstOrDefault(x => x.IsAnimating == false) is RoadMark roadMark)
             {
                 roadMark.IsAnimating = true;
@@ -225,7 +216,6 @@ namespace HonkPooper
             if (hitBox.Top > _scene.Height || hitBox.Left > _scene.Width)
             {
                 roadMark.IsAnimating = false;
-                //_scene.DisposeFromScene(roadMark);
             }
 
             return true;
@@ -253,17 +243,13 @@ namespace HonkPooper
 
         private bool GenerateTreeInSceneTop()
         {
-            //Construct tree = GenerateTree();
-
-            //_scene.AddToScene(tree);
-
             if (_scene.Children.OfType<Tree>().FirstOrDefault(x => x.IsAnimating == false) is Tree tree)
             {
                 tree.IsAnimating = true;
 
                 tree.SetPosition(
-                  left: _scene.Width / 2 - tree.Width * _scene.Scaling,
-                  top: tree.Height * -1);
+                    left: _scene.Width / 2 - tree.Width * _scene.Scaling,
+                    top: tree.Height * -1);
 
                 // Console.WriteLine("Tree generated.");
 
@@ -275,10 +261,6 @@ namespace HonkPooper
 
         private bool GenerateTreeInSceneBottom()
         {
-            //Construct tree = GenerateTree();
-
-            //_scene.AddToScene(tree);
-
             if (_scene.Children.OfType<Tree>().FirstOrDefault(x => x.IsAnimating == false) is Tree tree)
             {
                 tree.IsAnimating = true;
@@ -319,7 +301,6 @@ namespace HonkPooper
             if (hitBox.Top > _scene.Height || hitBox.Left > _scene.Width)
             {
                 tree.IsAnimating = false;
-                //_scene.DisposeFromScene(tree);
             }
 
             return true;

@@ -22,7 +22,7 @@ namespace HonkPooper
         private Uri[] _vehicle_large_uris;
 
         private int _honkDelay;
-        private int _tiltDelay;
+        //private int _tiltDelay;
 
         #endregion
 
@@ -110,7 +110,7 @@ namespace HonkPooper
             if (WillHonk)
                 SetHonkDelay();
 
-            _tiltDelay = 20;
+            //_tiltDelay = 20;
         }
 
         #endregion
@@ -160,7 +160,7 @@ namespace HonkPooper
 
         }
 
-        private void SetHonkDelay()
+        public void SetHonkDelay()
         {
             _honkDelay = _random.Next(55 - (int)Math.Floor(0.2), 125 - (int)Math.Floor(0.4));
         }
