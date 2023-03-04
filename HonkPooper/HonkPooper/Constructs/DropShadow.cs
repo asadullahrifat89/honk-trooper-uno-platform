@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace HonkPooper
 {
-    public partial class PlayerDropZone : Construct
+    public partial class DropShadow : Construct
     {
-        public PlayerDropZone(
+        public DropShadow(
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction,
             double downScaling)

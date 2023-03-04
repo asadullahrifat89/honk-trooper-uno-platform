@@ -14,7 +14,7 @@ namespace HonkPooper
         private Controller _controller;
         private Random _random;
         private Player _player;
-        private PlayerDropZone _dropZone;
+        private DropShadow _DropShadow;
 
         #endregion
 
@@ -72,36 +72,116 @@ namespace HonkPooper
                 _player.StopMovement(_scene.DownScaling);
             }
 
+            if (_controller.IsAttacking)
+            {
+                //if (!_scene.Children.OfType<PlayerBomb>().Any(x => x.IsAnimating))
+                //{
+                GenerateBombInScene();
+                _controller.IsAttacking = false;
+                //}
+            }
+
             return true;
         }
 
         #endregion
 
-        #region PlayerDropZone
+        #region PlayerBomb
 
-        public bool SpawnPlayerDropZoneInScene()
+        public bool SpawnPlayerBombsInScene()
         {
-            _dropZone = new(
-                animateAction: AnimatePlayerDropZone,
-                recycleAction: (_player) => { return true; },
-                downScaling: _scene.DownScaling);
+            for (int i = 0; i < 5; i++)
+            {
+                PlayerBomb bomb = new(
+                    animateAction: AnimatePlayerBomb,
+                    recycleAction: RecyclePlayerBomb,
+                    downScaling: _scene.DownScaling);
 
-            _scene.AddToScene(_dropZone);
+                bomb.SetPosition(
+                    left: -500,
+                    top: -500,
+                    z: 7);
 
-            _dropZone.Move(
-               player: _player,
-               downScaling: _scene.DownScaling);
-
-            _dropZone.SetZ(6);
-
-            _dropZone.IsAnimating = true;
+                _scene.AddToScene(bomb);
+            }
 
             return true;
         }
 
-        public bool AnimatePlayerDropZone(Construct dropZone)
+        public bool GenerateBombInScene()
         {
-            _dropZone.Move(
+            if (_scene.Children.OfType<PlayerBomb>().FirstOrDefault(x => x.IsAnimating == false) is PlayerBomb bomb)
+            {
+                bomb.Reset();
+                bomb.IsAnimating = true;
+
+                bomb.Reposition(
+                    player: _player,
+                    downScaling: _scene.DownScaling);
+
+                Console.WriteLine("Bomb dropped.");
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool AnimatePlayerBomb(Construct bomb)
+        {
+            PlayerBomb playerBomb = bomb as PlayerBomb;
+
+            //var speed = (_scene.Speed + bomb.SpeedOffset);
+            //MoveConstruct(bomb, speed);
+
+            playerBomb.Gravitate(_DropShadow, _scene.DownScaling);
+
+            return true;
+        }
+
+        public bool RecyclePlayerBomb(Construct bomb)
+        {
+            if (bomb.IsFadingComplete)
+            {
+                bomb.IsAnimating = false;
+
+                bomb.SetPosition(
+                    left: -500,
+                    top: -500);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        #endregion
+
+        #region PlayerDropShadow
+
+        public bool SpawnPlayerDropShadowInScene()
+        {
+            _DropShadow = new(
+                animateAction: AnimatePlayerDropShadow,
+                recycleAction: (_player) => { return true; },
+                downScaling: _scene.DownScaling);
+
+            _scene.AddToScene(_DropShadow);
+
+            _DropShadow.Move(
+               player: _player,
+               downScaling: _scene.DownScaling);
+
+            _DropShadow.SetZ(6);
+
+            _DropShadow.IsAnimating = true;
+
+            return true;
+        }
+
+        public bool AnimatePlayerDropShadow(Construct DropShadow)
+        {
+            _DropShadow.Move(
                 player: _player,
                 downScaling: _scene.DownScaling);
 
@@ -418,21 +498,10 @@ namespace HonkPooper
 
         public bool GenerateHonkInScene(Vehicle vehicle)
         {
-            //Honk honk = new(
-            //    animateAction: AnimateHonk,
-            //    recycleAction: RecycleHonk,
-            //    scaling: _scene.Scaling)
-            //{
-            //    SpeedOffset = vehicle.SpeedOffset * 1.3,
-            //    IsAnimating = true,
-            //};
-
-            //_scene.AddToScene(honk);
-
             if (_scene.Children.OfType<Honk>().FirstOrDefault(x => x.IsAnimating == false) is Honk honk)
             {
                 honk.IsAnimating = true;
-                honk.Opacity = 1;
+                honk.Reset();
 
                 var hitBox = vehicle.GetCloseHitBox();
 
@@ -530,10 +599,15 @@ namespace HonkPooper
                spawnAction: SpawnPlayerInScene);
 
             // add the player drop zone in scene which will appear forward in z wrt to all else
-            Generator playerDropZone = new(
+            Generator playerDropShadow = new(
                generationDelay: 0,
                generationAction: () => { return true; },
-               spawnAction: SpawnPlayerDropZoneInScene);
+               spawnAction: SpawnPlayerDropShadowInScene);
+
+            Generator bomb = new(
+              generationDelay: 0,
+              generationAction: () => { return true; },
+              spawnAction: SpawnPlayerBombsInScene);
 
             _scene.AddToScene(treeBottom);
             _scene.AddToScene(treeTop);
@@ -542,7 +616,10 @@ namespace HonkPooper
             _scene.AddToScene(vehicle);
 
             _scene.AddToScene(player);
-            _scene.AddToScene(playerDropZone);
+            _scene.AddToScene(playerDropShadow);
+
+            _scene.AddToScene(bomb);
+
             _scene.Speed = 5;
         }
 
@@ -581,10 +658,9 @@ namespace HonkPooper
 
             _player.Reposition(_scene);
 
-            _dropZone.Move(player: _player, downScaling: _scene.DownScaling);
-
-            //_scene.Width = 1920;
-            //_scene.Height = 1080;
+            _DropShadow.Move(
+                player: _player,
+                downScaling: _scene.DownScaling);
         }
 
         private void MainPage_Unloaded(object sender, RoutedEventArgs e)

@@ -235,10 +235,21 @@ namespace HonkPooper
             Opacity -= 0.005;
         }
 
+        public void Fade(double fade)
+        {
+            Opacity -= fade;
+        }
+
         public void Shrink()
         {
             _compositeTransform.ScaleX -= 0.1;
             _compositeTransform.ScaleY -= 0.1;
+        }
+
+        public void Expand()
+        {
+            _compositeTransform.ScaleX += 0.1;
+            _compositeTransform.ScaleY += 0.1;
         }
 
         #endregion

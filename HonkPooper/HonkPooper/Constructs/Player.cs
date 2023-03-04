@@ -61,7 +61,7 @@ namespace HonkPooper
         public void Reposition(Scene scene)
         {
             SetPosition(
-                  left: (scene.Width / 2) + (scene.Width / 4) - Width / 2,
+                  left: (scene.Width / 3) + (scene.Width / 4) - Width / 2,
                   top: scene.Height / 2 - Height / 2,
                   z: 6);
         }
@@ -91,7 +91,7 @@ namespace HonkPooper
             SetLeft(GetLeft() + speed);
             SetTop(GetTop() - speed);
 
-            _movementStopDelay = _movementStopDelayDefault * downScaling;
+            _movementStopDelay = _movementStopDelayDefault;
             _lastSpeed = speed;
         }
 
@@ -103,7 +103,7 @@ namespace HonkPooper
             SetLeft(GetLeft() - speed);
             SetTop(GetTop() + speed);
 
-            _movementStopDelay = _movementStopDelayDefault * downScaling;
+            _movementStopDelay = _movementStopDelayDefault;
             _lastSpeed = speed;
         }
 
@@ -116,12 +116,12 @@ namespace HonkPooper
                 if (_isMovingUp)
                 {
                     if (_lastSpeed > 0)
-                        MoveUp(_lastSpeed - 0.1, downScaling);
+                        MoveUp(_lastSpeed - 0.3, downScaling);
                 }
                 else if (_isMovingDown)
                 {
                     if (_lastSpeed > 0)
-                        MoveDown(_lastSpeed - 0.1, downScaling);
+                        MoveDown(_lastSpeed - 0.3, downScaling);
                 }
             }
             else

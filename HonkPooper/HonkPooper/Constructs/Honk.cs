@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Controls;
+using System.Reflection;
 
 namespace HonkPooper
 {
@@ -47,7 +48,16 @@ namespace HonkPooper
             SetChild(content);
 
             IsometricDisplacement = 0.6;
-        } 
+        }
+
+        #endregion
+
+        #region Methods
+
+        public void Reset() 
+        {
+            Opacity = 1;
+        }
 
         #endregion
     }

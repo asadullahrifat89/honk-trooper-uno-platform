@@ -11,6 +11,7 @@ namespace HonkPooper
         {
             new (ConstructType.PLAYER, 200, 200),
             new (ConstructType.PLAYER_DROP_ZONE, 25, 60),
+            new (ConstructType.PLAYER_BOMB, 50, 50),
             new (ConstructType.TREE, 150, 150),
             new (ConstructType.ROAD_MARK, 40, 15),
             new (ConstructType.VEHICLE_SMALL, 150, 150),
@@ -44,6 +45,12 @@ namespace HonkPooper
 
             new (ConstructType.PLAYER, new Uri("ms-appx:///HonkPooper/Assets/Images/player_1.png")),
             new (ConstructType.PLAYER, new Uri("ms-appx:///HonkPooper/Assets/Images/player_2.png")),
+
+            new (ConstructType.PLAYER_BOMB, new Uri("ms-appx:///HonkPooper/Assets/Images/poop_1.png")),
+            new (ConstructType.PLAYER_BOMB, new Uri("ms-appx:///HonkPooper/Assets/Images/poop_2.png")),
+
+            new (ConstructType.PLAYER_BOMB_BLAST, new Uri("ms-appx:///HonkPooper/Assets/Images/blast_1.png")),
+            new (ConstructType.PLAYER_BOMB_BLAST, new Uri("ms-appx:///HonkPooper/Assets/Images/blast_2.png")),
         };
     }
 
@@ -52,9 +59,11 @@ namespace HonkPooper
         NONE,
         PLAYER,
         PLAYER_DROP_ZONE,
+        PLAYER_BOMB,
+        PLAYER_BOMB_BLAST,
         VEHICLE_SMALL,
         VEHICLE_LARGE,
-        STICKER,
+        COLLECTABLE,
         POWERUP,
         ROAD_MARK,
         HONK,
