@@ -47,46 +47,72 @@ namespace HonkPooper
 
         #region Vehicle
 
-        public bool GenerateVehicleInScene()
+        public bool SpawnVehiclesInScene()
         {
-            Vehicle vehicle = new(
-                animateAction: AnimateVehicle,
-                recycleAction: RecycleVehicle,
-                scaling: _scene.Scaling);
-
-            _scene.AddToScene(vehicle);
-
-            // generate top and left corner lane wise vehicles
-            var topOrLeft = _random.Next(0, 2);
-
-            var lane = _random.Next(0, 2);
-
-            switch (topOrLeft)
+            for (int i = 0; i < 10; i++)
             {
-                case 0:
-                    {
-                        var xLaneWidth = _scene.Width / 4;
+                Vehicle vehicle = new(
+                    animateAction: AnimateVehicle,
+                    recycleAction: RecycleVehicle,
+                    scaling: _scene.Scaling);
 
-                        vehicle.SetPosition(
-                            left: lane == 0 ? 0 : xLaneWidth - vehicle.Width * _scene.Scaling,
-                            top: vehicle.Height * -1);
-                    }
-                    break;
-                case 1:
-                    {
-                        var yLaneWidth = (_scene.Height / 2) / 2;
+                _scene.AddToScene(vehicle);
 
-                        vehicle.SetPosition(
-                            left: vehicle.Width * -1,
-                            top: lane == 0 ? 0 : yLaneWidth * _scene.Scaling);
-                    }
-                    break;
-                default:
-                    break;
+                vehicle.SetPosition(
+                    left: -500,
+                    top: -500);
             }
 
-            // Console.WriteLine("Vehicle generated.");
             return true;
+        }
+
+        public bool GenerateVehicleInScene()
+        {
+            //Vehicle vehicle = new(
+            //    animateAction: AnimateVehicle,
+            //    recycleAction: RecycleVehicle,
+            //    scaling: _scene.Scaling);
+
+            //_scene.AddToScene(vehicle);
+
+            if (_scene.Children.OfType<Vehicle>().FirstOrDefault(x => x.IsAnimating == false) is Vehicle vehicle)
+            {
+                vehicle.IsAnimating = true;
+
+                // generate top and left corner lane wise vehicles
+                var topOrLeft = _random.Next(0, 2);
+
+                var lane = _random.Next(0, 2);
+
+                switch (topOrLeft)
+                {
+                    case 0:
+                        {
+                            var xLaneWidth = _scene.Width / 4;
+
+                            vehicle.SetPosition(
+                                left: lane == 0 ? 0 : xLaneWidth - vehicle.Width * _scene.Scaling,
+                                top: vehicle.Height * -1);
+                        }
+                        break;
+                    case 1:
+                        {
+                            var yLaneWidth = (_scene.Height / 2) / 2;
+
+                            vehicle.SetPosition(
+                                left: vehicle.Width * -1,
+                                top: lane == 0 ? 0 : yLaneWidth * _scene.Scaling);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+
+                // Console.WriteLine("Vehicle generated.");
+                return true;
+            }
+
+            return false;
         }
 
         private bool AnimateVehicle(Construct vehicle)
@@ -128,7 +154,11 @@ namespace HonkPooper
             var hitBox = vehicle.GetHitBox();
 
             if (hitBox.Top > _scene.Height || hitBox.Left > _scene.Width)
-                _scene.DisposeFromScene(vehicle);
+            {
+                //_scene.DisposeFromScene(vehicle);
+
+                vehicle.IsAnimating = false;
+            }                
 
             return true;
         }
@@ -325,16 +355,30 @@ namespace HonkPooper
 
         private void InputView_PointerPressed(object sender, PointerRoutedEventArgs e)
         {
-            Generator treeBottom = new(generationDelay: 40, generationAction: GenerateTreeInSceneBottom);
-            Generator treeTop = new(generationDelay: 40, generationAction: GenerateTreeInSceneTop);
+            //Generator treeBottom = new(
+            //    generationDelay: 40,
+            //    generationAction: GenerateTreeInSceneBottom,
+            //    spawnAction: null);
 
-            Generator roadMark = new(generationDelay: 30, generationAction: GenerateRoadMarkInScene);
-            Generator vehicle = new(generationDelay: 80, generationAction: GenerateVehicleInScene);
+            //Generator treeTop = new(
+            //    generationDelay: 40,
+            //    generationAction: GenerateTreeInSceneTop,
+            //    spawnAction: null);
 
-            _scene.AddToScene(treeBottom);
-            _scene.AddToScene(treeTop);
+            //Generator roadMark = new(
+            //    generationDelay: 30,
+            //    generationAction: GenerateRoadMarkInScene,
+            //    spawnAction: null);
 
-            _scene.AddToScene(roadMark);
+            Generator vehicle = new(
+                generationDelay: 80,
+                generationAction: GenerateVehicleInScene,
+                spawnAction: SpawnVehiclesInScene);
+
+            //_scene.AddToScene(treeBottom);
+            //_scene.AddToScene(treeTop);
+
+            //_scene.AddToScene(roadMark);
             _scene.AddToScene(vehicle);
 
             _scene.Speed = 5;

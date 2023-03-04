@@ -121,7 +121,7 @@ namespace HonkPooper
             }
 
             // run action for each construct and add to destroyable if destroyable function returns true
-            foreach (Construct construct in Children.OfType<Construct>())
+            foreach (Construct construct in Children.OfType<Construct>().Where(x => x.IsAnimating))
             {
                 construct.Animate();
                 construct.Recycle();
@@ -135,7 +135,7 @@ namespace HonkPooper
 
             _destroyables.Clear();
 
-            //// Console.WriteLine($"Object Count: {Children.OfType<Construct>().Count()}");
+            // Console.WriteLine($"Object Count: {Children.OfType<Construct>().Count()}");
         }
 
         #endregion

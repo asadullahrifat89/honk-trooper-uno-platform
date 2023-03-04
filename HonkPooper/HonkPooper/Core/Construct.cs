@@ -56,6 +56,11 @@ namespace HonkPooper
         /// </summary>
         public bool IsFadingComplete => Opacity <= 0;
 
+        /// <summary>
+        /// Only animated by the scene if set to true.
+        /// </summary>
+        public bool IsAnimating { get; set; }
+
         #endregion
 
         #region Ctor

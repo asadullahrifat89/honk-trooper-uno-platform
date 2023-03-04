@@ -21,12 +21,20 @@ namespace HonkPooper
 
         #endregion
 
-        public Generator(int generationDelay, Func<bool> generationAction)
+        public Generator(
+            int generationDelay,
+            Func<bool> generationAction,
+            Func<bool> spawnAction)
         {
             _generationDelay = generationDelay;
+            _generationDelayInCount = _generationDelay;
+
             GenerationAction = generationAction;
 
-            _generationDelayInCount = _generationDelay;
+            spawnAction();
+
+            // TODO: execute spawn action
+
         }
 
         public void Generate()
