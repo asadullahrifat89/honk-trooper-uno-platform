@@ -49,7 +49,7 @@ namespace HonkPooper
             IsometricDisplacement = 0.5;
             SpeedOffset = 3;
 
-            DropShadowDistance = 200;
+            DropShadowDistance = 250;
         }
 
         #endregion
