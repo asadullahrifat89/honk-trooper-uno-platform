@@ -92,6 +92,9 @@ namespace HonkPooper
             _isMovingUp = true;
             _isMovingDown = false;
 
+            _isMovingLeft = false;
+            _isMovingRight = false;
+
             SetLeft(GetLeft() + speed);
             SetTop(GetTop() - speed);
 
@@ -104,6 +107,9 @@ namespace HonkPooper
             _isMovingDown = true;
             _isMovingUp = false;
 
+            _isMovingLeft = false;
+            _isMovingRight = false;
+
             SetLeft(GetLeft() - speed);
             SetTop(GetTop() + speed);
 
@@ -113,6 +119,9 @@ namespace HonkPooper
 
         public void MoveLeft(double speed, double downScaling)
         {
+            _isMovingUp = false;
+            _isMovingDown = false;
+
             _isMovingLeft = true;
             _isMovingRight = false;
 
@@ -125,6 +134,9 @@ namespace HonkPooper
 
         public void MoveRight(double speed, double downScaling)
         {
+            _isMovingUp = false;
+            _isMovingDown = false;
+
             _isMovingLeft = false;
             _isMovingRight = true;
 
