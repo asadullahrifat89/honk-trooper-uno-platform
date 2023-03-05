@@ -80,7 +80,21 @@ namespace HonkPooper
             StartButton.Click += (s, e) =>
             {
                 if (SceneStartOrStop())
+                {
                     AttackButton.Focus(Microsoft.UI.Xaml.FocusState.Programmatic);
+                    StartButton.Content = new SymbolIcon()
+                    {
+                        Symbol = Symbol.Pause,
+                    };
+                }
+                else
+                {
+                    StartButton.Content = new SymbolIcon()
+                    {
+                        Symbol = Symbol.Play,
+                    };
+                }
+                    
             };
             this.Children.Add(StartButton);
         }
