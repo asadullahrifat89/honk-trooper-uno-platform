@@ -29,6 +29,9 @@ namespace HonkPooper
 
         public Grid ArrowsKeysContainer { get; set; }
 
+        public Button StartButton { get; set; }
+        public Button AttackButton { get; set; }
+
         #endregion
 
         #region Ctor
@@ -57,7 +60,7 @@ namespace HonkPooper
 
         private void SetupStartButton()
         {
-            Button start = new()
+            StartButton = new()
             {
                 Background = new SolidColorBrush(Colors.Goldenrod),
                 Height = _keysSize,
@@ -74,13 +77,17 @@ namespace HonkPooper
                 Margin = new Microsoft.UI.Xaml.Thickness(20),
             };
 
-            start.Click += (s, e) => { SceneStartOrStop(); };
-            this.Children.Add(start);
+            StartButton.Click += (s, e) =>
+            {
+                if (SceneStartOrStop())
+                    AttackButton.Focus(Microsoft.UI.Xaml.FocusState.Programmatic);
+            };
+            this.Children.Add(StartButton);
         }
 
         private void SetupAttackButton()
         {
-            Button attack = new()
+            AttackButton = new()
             {
                 Background = new SolidColorBrush(Colors.Goldenrod),
                 Height = _keysSize,
@@ -97,8 +104,8 @@ namespace HonkPooper
                 Margin = new Microsoft.UI.Xaml.Thickness(20),
             };
 
-            attack.Click += (s, e) => { ActivateAttack(); };
-            this.Children.Add(attack);
+            AttackButton.Click += (s, e) => { ActivateAttack(); };
+            this.Children.Add(AttackButton);
         }
 
         private void SetupArrowKeysContainer()

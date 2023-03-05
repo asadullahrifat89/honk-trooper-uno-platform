@@ -10,6 +10,8 @@ namespace HonkPooper
     {
         #region Fields
 
+        public event EventHandler<DisplayOrientations> RequiresScreenOrientationChange;
+
         private Scene _scene;
 
         #endregion
@@ -36,8 +38,6 @@ namespace HonkPooper
         public bool IsMoveRight { get; set; }
 
         public bool IsAttacking { get; set; }
-
-        public event EventHandler<DisplayOrientations> RequiresScreenOrientationChange;
 
         #endregion
 
@@ -206,16 +206,21 @@ namespace HonkPooper
             IsMoveLeft = false;
         }
 
-        public void SceneStartOrStop()
+        public bool SceneStartOrStop()
         {
             ScreenExtensions.SetDisplayOrientation(ScreenExtensions.RequiredDisplayOrientation);
 
+            // only start scene if required screen orientation is met
             if (ScreenExtensions.RequiredDisplayOrientation == ScreenExtensions.GetDisplayOrienation())
             {
                 if (_scene.IsAnimating)
-                    _scene.Stop();
+                {
+                    _scene.Stop();                    
+                }
                 else
-                    _scene.Start();
+                {
+                    _scene.Start();                    
+                }
 
                 ScreenExtensions.EnterFullScreen(true);
             }
@@ -225,6 +230,8 @@ namespace HonkPooper
             }
 
             Console.WriteLine("Enter");
+
+            return _scene.IsAnimating;
         }
 
         #endregion        
