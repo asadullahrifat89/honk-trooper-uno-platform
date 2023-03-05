@@ -18,6 +18,7 @@ namespace HonkPooper
             new (ConstructType.VEHICLE_LARGE, 180, 180),
             new (ConstructType.HONK, 90, 90),
             new (ConstructType.CLOUD, 220, 220),
+            new (ConstructType.BOSS, 220, 220),
         };
 
         public static (ConstructType ConstructType, Uri Uri)[] CONSTRUCT_TEMPLATES = new (ConstructType, Uri)[]
@@ -57,6 +58,10 @@ namespace HonkPooper
             new (ConstructType.CLOUD, new Uri("ms-appx:///HonkPooper/Assets/Images/cloud_1.png")),
             new (ConstructType.CLOUD, new Uri("ms-appx:///HonkPooper/Assets/Images/cloud_2.png")),
             new (ConstructType.CLOUD, new Uri("ms-appx:///HonkPooper/Assets/Images/cloud_3.png")),
+
+            new (ConstructType.BOSS, new Uri("ms-appx:///HonkPooper/Assets/Images/boss_1.png")),
+            new (ConstructType.BOSS, new Uri("ms-appx:///HonkPooper/Assets/Images/boss_2.png")),
+            new (ConstructType.BOSS, new Uri("ms-appx:///HonkPooper/Assets/Images/boss_3.png")),
         };
     }
 
@@ -78,5 +83,6 @@ namespace HonkPooper
         HONKING_BUSTED_EMOJI,
         CLOUD,
         DROP_SHADOW,
+        BOSS,
     }
 }

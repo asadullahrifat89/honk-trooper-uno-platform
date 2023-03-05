@@ -3,6 +3,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI;
 using System;
 using System.Linq;
+using System.Diagnostics.Contracts;
 
 namespace HonkPooper
 {
@@ -10,9 +11,9 @@ namespace HonkPooper
     {
         #region Properties
 
-        public Construct Source { get; set; }
+        public Construct ParentConstruct { get; set; }
 
-        public double SourceSpeed { get; set; } = 0;
+        public double ParentConstructSpeed { get; set; } = 0;
 
         #endregion
 
@@ -38,7 +39,7 @@ namespace HonkPooper
             SetSize(width: width, height: height);
 
             Background = new SolidColorBrush(Colors.Gray);
-            CornerRadius = new CornerRadius(30);
+            CornerRadius = new CornerRadius(100);
             Opacity = 0.8;
 
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;
@@ -53,27 +54,27 @@ namespace HonkPooper
         {
             // linking this shadow instance with a construct
             Id = construct.Id;
-            Source = construct;            
+            ParentConstruct = construct;            
         }
 
         public void Reset()
         {
             SetPosition(
-                left: (Source.GetLeft() + Source.Width / 2) - Width / 2,
-                top: Source.GetBottom() + (Source.DropShadowDistance));
+                left: (ParentConstruct.GetLeft() + ParentConstruct.Width / 2) - Width / 2,
+                top: ParentConstruct.GetBottom() + (ParentConstruct.DropShadowDistance));
         }
 
         public void Move()
         {
-            SetLeft((Source.GetLeft() + Source.Width / 2) - Width / 2);
+            SetLeft((ParentConstruct.GetLeft() + ParentConstruct.Width / 2) - Width / 2);
 
-            if (Source.IsGravitating)
+            if (ParentConstruct.IsGravitating)
             {
-                SetTop(GetTop() + SourceSpeed * IsometricDisplacement);
+                SetTop(GetTop() + ParentConstructSpeed * IsometricDisplacement);
             }
             else
             {
-                SetTop(Source.GetBottom() + Source.DropShadowDistance);
+                SetTop(ParentConstruct.GetBottom() + ParentConstruct.DropShadowDistance);
             }
         }
 

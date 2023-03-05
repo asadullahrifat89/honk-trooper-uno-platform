@@ -598,7 +598,7 @@ namespace HonkPooper
                 cloud.SetPosition(
                     left: -500,
                     top: -500,
-                    z: 8);
+                    z: 9);
 
                 _scene.AddToScene(cloud);
 
@@ -674,6 +674,147 @@ namespace HonkPooper
 
         #endregion
 
+        #region Boss
+
+        public bool SpawnBossesInScene()
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                Boss boss = new(
+                    animateAction: AnimateBoss,
+                    recycleAction: RecycleBoss,
+                    downScaling: _scene.DownScaling);
+
+                boss.SetPosition(
+                    left: -500,
+                    top: -500,
+                    z: 8);
+
+                _scene.AddToScene(boss);
+
+                SpawnDropShadowInScene(source: boss);
+            }
+
+            return true;
+        }
+
+        private bool GenerateBossInScene()
+        {
+            // if scene doesn't contain a boss then pick a random boss and add to scene
+
+            if (!_scene.Children.OfType<Boss>().Any(x => x.IsAnimating) && _scene.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating == false) is Boss boss)
+            {
+                boss.IsAnimating = true;
+                boss.Reset();
+
+                //var topOrLeft = _random.Next(0, 2);
+
+                //var lane = _random.Next(0, 2);
+
+                //switch (topOrLeft)
+                //{
+                //    case 0:
+                //        {
+                //            var xLaneWidth = _scene.Width / 4;
+                //            boss.SetPosition(
+                //                left: _random.Next(0, Convert.ToInt32(xLaneWidth - boss.Width)) * _scene.DownScaling,
+                //                top: boss.Height * -1);
+                //        }
+                //        break;
+                //    case 1:
+                //        {
+                //            var yLaneWidth = (_scene.Height / 2) / 2;
+                //            boss.SetPosition(
+                //                left: boss.Width * -1,
+                //                top: _random.Next(0, Convert.ToInt32(yLaneWidth)) * _scene.DownScaling);
+                //        }
+                //        break;
+                //    default:
+                //        break;
+                //}
+
+                boss.SetPosition(
+                    left: 0,
+                    top: boss.Height * -1);
+
+                SyncDropShadow(boss);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool AnimateBoss(Construct boss)
+        {
+            var speed = (_scene.Speed + boss.SpeedOffset);
+
+            Boss boss1 = boss as Boss;
+
+            if (!boss1.IsAttacking && boss.GetLeft() < _scene.Width / 2)
+            {
+                MoveConstruct(construct: boss, speed: speed);
+            }
+
+            if (boss.GetRight() > _scene.Width / 3)
+            {
+                if (!boss1.IsAttacking)
+                    boss1.IsAttacking = true;
+
+                if (boss1.IsAttacking && !boss1.AwaitMoveLeft && !boss1.AwaitMoveRight)
+                {
+                    boss1.AwaitMoveLeft = true;
+                }
+            }
+
+            if (boss1.IsAttacking)
+            {
+                if (boss1.AwaitMoveRight)
+                {
+                    boss1.MoveRight(speed);
+
+                    if (boss.GetTop() < 0)
+                    {
+                        boss1.AwaitMoveLeft = true;
+                        boss1.AwaitMoveRight = false;
+                    }
+                }
+
+                if (boss1.AwaitMoveLeft)
+                {
+                    boss1.MoveLeft(speed);
+
+                    if (boss.GetLeft() < 0)
+                    {
+                        boss1.AwaitMoveLeft = false;
+                        boss1.AwaitMoveRight = true;
+                    }
+                }
+            }
+
+            boss1.Hover();
+
+            return true;
+        }
+
+        private bool RecycleBoss(Construct boss)
+        {
+            var hitBox = boss.GetHitBox();
+
+            if (hitBox.Top > _scene.Height || hitBox.Left > _scene.Width)
+            {
+                boss.SetPosition(
+                    left: -500,
+                    top: -500);
+
+                boss.IsAnimating = false;
+            }
+
+            return true;
+        }
+
+        #endregion
+
         #region DropShadow
 
         public bool SpawnDropShadowInScene(Construct source)
@@ -692,10 +833,16 @@ namespace HonkPooper
             return true;
         }
 
-        public bool AnimateDropShadow(Construct dropShadow)
+        public bool AnimateDropShadow(Construct construct)
         {
-            DropShadow dropShadow1 = dropShadow as DropShadow;
-            dropShadow1.Move();
+            DropShadow dropShadow = construct as DropShadow;
+
+            // adjust shadow with with the source
+            if (dropShadow.Width != dropShadow.ParentConstruct.Width * 0.7)
+                dropShadow.Width = dropShadow.ParentConstruct.Width * 0.7;
+
+            dropShadow.Move();
+
             return true;
         }
 
@@ -703,7 +850,7 @@ namespace HonkPooper
         {
             DropShadow dropShadow1 = dropShadow as DropShadow;
 
-            if (!dropShadow1.Source.IsAnimating)
+            if (!dropShadow1.ParentConstruct.IsAnimating)
             {
                 dropShadow.IsAnimating = false;
 
@@ -722,8 +869,9 @@ namespace HonkPooper
             if (_scene.Children.OfType<DropShadow>().FirstOrDefault(x => x.Id == source.Id) is DropShadow dropShadow)
             {
                 dropShadow.Opacity = 1;
-                dropShadow.SourceSpeed = _scene.Speed + source.SpeedOffset;
+                dropShadow.ParentConstructSpeed = _scene.Speed + source.SpeedOffset;
                 dropShadow.IsAnimating = true;
+
                 dropShadow.Reset();
             }
         }
@@ -792,6 +940,11 @@ namespace HonkPooper
                 generationAction: GenerateCloudInScene,
                 spawnAction: SpawnCloudsInScene);
 
+            Generator bosses = new(
+               generationDelay: 500,
+               generationAction: GenerateBossInScene,
+               spawnAction: SpawnBossesInScene);
+
             _scene.AddToScene(treeBottoms);
             _scene.AddToScene(treeTops);
 
@@ -802,6 +955,8 @@ namespace HonkPooper
 
             _scene.AddToScene(bombs);
             _scene.AddToScene(clouds);
+
+            _scene.AddToScene(bosses);
 
             _scene.Speed = 5;
         }

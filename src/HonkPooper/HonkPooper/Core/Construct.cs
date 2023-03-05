@@ -71,6 +71,9 @@ namespace HonkPooper
         /// </summary>
         public double DropShadowDistance { get; set; }
 
+        /// <summary>
+        /// Determines gravitating effect so that it can reach it's drop shadow.
+        /// </summary>
         public bool IsGravitating { get; set; }
 
         /// <summary>

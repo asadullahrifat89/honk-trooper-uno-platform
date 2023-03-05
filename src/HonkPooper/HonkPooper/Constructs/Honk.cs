@@ -10,7 +10,7 @@ namespace HonkPooper
         #region Fields
 
         private Random _random;
-        private Uri[] _honk_uris; 
+        private Uri[] _honk_uris;
 
         #endregion
 
@@ -53,7 +53,7 @@ namespace HonkPooper
 
         #region Methods
 
-        public void Reset() 
+        public void Reset()
         {
             Opacity = 1;
         }

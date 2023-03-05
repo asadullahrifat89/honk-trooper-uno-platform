@@ -34,6 +34,7 @@ namespace HonkPooper
             Func<Construct, bool> recycleAction,
             double downScaling)
         {
+            _hoverDelay = _hoverDelayDefault;
             _random = new Random();
 
             _player_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER).Select(x => x.Uri).ToArray();
@@ -60,8 +61,7 @@ namespace HonkPooper
             SetChild(content);
 
             SpeedOffset = 2;
-            DropShadowDistance = 50;
-            _hoverDelay = _hoverDelayDefault;
+            DropShadowDistance = 50;            
         }
 
         public void Reposition(Scene scene)
