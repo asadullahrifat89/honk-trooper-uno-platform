@@ -64,7 +64,14 @@ namespace HonkPooper
 
             SpeedOffset = 2;
             DropShadowDistance = 50;
+            Health = 100;
         }
+
+        #endregion
+
+        #region Properties
+
+        public double Health { get; set; }
 
         #endregion
 
@@ -189,8 +196,8 @@ namespace HonkPooper
                 _isMovingLeft = false;
                 _isMovingRight = false;
             }
-        } 
+        }
 
-        #endregion
+        #endregion        
     }
 }

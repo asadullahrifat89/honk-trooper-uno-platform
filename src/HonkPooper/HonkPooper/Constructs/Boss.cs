@@ -78,8 +78,7 @@ namespace HonkPooper
 
         public bool AwaitMoveLeft { get; set; }
 
-        public int Health { get; set; }
-
+        public double Health { get; set; }
 
         #endregion
 
