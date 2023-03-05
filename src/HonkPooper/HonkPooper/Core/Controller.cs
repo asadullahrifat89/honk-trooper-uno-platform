@@ -41,6 +41,68 @@ namespace HonkPooper
             KeyUp += Controller_KeyUp;
             KeyDown += Controller_KeyDown;
 
+            SetupArrowKeysContainer();
+            SetupAttackButton();
+            SetupStartButton();
+        }
+
+        #endregion
+
+        #region Methods
+
+        public void SetArrowsKeysContainerRotation(double rotation)
+        {
+            _arrowsKeysContainerTransform.Rotation = rotation;
+        }
+
+        private void SetupStartButton()
+        {
+            Button start = new()
+            {
+                Background = new SolidColorBrush(Colors.Goldenrod),
+                Height = _keysSize,
+                Width = _keysSize,
+                CornerRadius = new Microsoft.UI.Xaml.CornerRadius(30),
+                Content = new SymbolIcon()
+                {
+                    Symbol = Symbol.Play,
+                },
+                BorderBrush = new SolidColorBrush(Colors.White),
+                BorderThickness = new Microsoft.UI.Xaml.Thickness(6),
+                HorizontalAlignment = Microsoft.UI.Xaml.HorizontalAlignment.Right,
+                VerticalAlignment = Microsoft.UI.Xaml.VerticalAlignment.Top,
+                Margin = new Microsoft.UI.Xaml.Thickness(20),
+            };
+
+            start.Click += (s, e) => { SceneStartOrStop(); };
+            this.Children.Add(start);
+        }
+
+        private void SetupAttackButton()
+        {
+            Button attack = new()
+            {
+                Background = new SolidColorBrush(Colors.Goldenrod),
+                Height = _keysSize,
+                Width = _keysSize,
+                CornerRadius = new Microsoft.UI.Xaml.CornerRadius(30),
+                Content = new SymbolIcon()
+                {
+                    Symbol = Symbol.Bold,
+                },
+                BorderBrush = new SolidColorBrush(Colors.White),
+                BorderThickness = new Microsoft.UI.Xaml.Thickness(6),
+                HorizontalAlignment = Microsoft.UI.Xaml.HorizontalAlignment.Left,
+                VerticalAlignment = Microsoft.UI.Xaml.VerticalAlignment.Top,
+                Margin = new Microsoft.UI.Xaml.Thickness(20),
+            };
+
+            attack.Click += (s, e) => { ActivateAttack(); };
+            this.Children.Add(attack);
+        }
+
+        private void SetupArrowKeysContainer()
+        {
             ArrowsKeysContainer = new()
             {
                 HorizontalAlignment = Microsoft.UI.Xaml.HorizontalAlignment.Right,
@@ -142,57 +204,7 @@ namespace HonkPooper
             ArrowsKeysContainer.Children.Add(right);
 
             this.Children.Add(ArrowsKeysContainer);
-
-            Button attack = new()
-            {
-                Background = new SolidColorBrush(Colors.Goldenrod),
-                Height = _keysSize,
-                Width = _keysSize,
-                CornerRadius = new Microsoft.UI.Xaml.CornerRadius(30),
-                Content = new SymbolIcon()
-                {
-                    Symbol = Symbol.Bold,
-                },
-                BorderBrush = new SolidColorBrush(Colors.White),
-                BorderThickness = new Microsoft.UI.Xaml.Thickness(6),
-                HorizontalAlignment = Microsoft.UI.Xaml.HorizontalAlignment.Left,
-                VerticalAlignment = Microsoft.UI.Xaml.VerticalAlignment.Top,
-                Margin = new Microsoft.UI.Xaml.Thickness(20),
-            };
-
-            attack.Click += (s, e) => { ActivateAttack(); };
-            this.Children.Add(attack);
-
-            Button start = new()
-            {
-                Background = new SolidColorBrush(Colors.Goldenrod),
-                Height = _keysSize,
-                Width = _keysSize,
-                CornerRadius = new Microsoft.UI.Xaml.CornerRadius(30),
-                Content = new SymbolIcon()
-                {
-                    Symbol = Symbol.Play,
-                },
-                BorderBrush = new SolidColorBrush(Colors.White),
-                BorderThickness = new Microsoft.UI.Xaml.Thickness(6),
-                HorizontalAlignment = Microsoft.UI.Xaml.HorizontalAlignment.Right,
-                VerticalAlignment = Microsoft.UI.Xaml.VerticalAlignment.Top,
-                Margin = new Microsoft.UI.Xaml.Thickness(20),
-            };
-
-            start.Click += (s, e) => { SceneStartOrStop(); };
-            this.Children.Add(start);
         }
-
-        #endregion
-
-        #region Methods
-
-        public void SetArrowsKeysContainerRotation(double rotation)
-        {
-            _arrowsKeysContainerTransform.Rotation = rotation;
-        }       
-
 
         #endregion
     }
