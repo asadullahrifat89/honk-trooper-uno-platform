@@ -87,7 +87,7 @@ namespace HonkPooper
         public void Reset()
         {
             Opacity = 1;
-            Health = _random.Next(100, 200);
+            Health = 100;
             IsAttacking = false;
             SetScaleTransform(1);
         }

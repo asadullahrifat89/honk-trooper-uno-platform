@@ -19,6 +19,8 @@ namespace HonkPooper
         private HealthBar _playerHealthBar;
         private HealthBar _bossHealthBar;
 
+        private ScoreBar _scoreBar;
+
         #endregion
 
         #region Ctor
@@ -32,6 +34,12 @@ namespace HonkPooper
             Loaded += MainPage_Loaded;
             Unloaded += MainPage_Unloaded;
         }
+
+        #endregion
+
+        #region Properties
+
+        public int BossPointScoreDiff { get; set; } = 50;
 
         #endregion
 
@@ -291,8 +299,6 @@ namespace HonkPooper
 
             DropShadow dropShadow = _scene.Children.OfType<DropShadow>().First(x => x.Id == bomb.Id);
 
-            // start blast animation when the bomb touches it's shadow
-
             if (PlayerBombGround.IsBlasting)
             {
                 MoveConstruct(construct: bomb, speed: speed);
@@ -301,16 +307,15 @@ namespace HonkPooper
                 bomb.Fade(0.02);
 
                 // make the shadow fade with the bomb blast
-
                 dropShadow.Opacity = bomb.Opacity;
 
                 // while in blast check if it intersects with any vehicle, if it does then the vehicle stops honking and slows down
-
                 if (_scene.Children.OfType<Vehicle>()
                     .Where(x => x.IsAnimating && x.WillHonk)
                     .FirstOrDefault(x => x.GetCloseHitBox().IntersectsWith(bomb.GetCloseHitBox())) is Vehicle vehicle)
                 {
                     vehicle.SetBlast();
+                    _scoreBar.GainScore(5);
                 }
             }
             else
@@ -320,6 +325,7 @@ namespace HonkPooper
                 bomb.SetLeft(bomb.GetLeft() + speed);
                 bomb.SetTop(bomb.GetTop() + speed);
 
+                // start blast animation when the bomb touches it's shadow
                 if (dropShadow.GetCloseHitBox().IntersectsWith(bomb.GetCloseHitBox()))
                     PlayerBombGround.SetBlast();
             }
@@ -836,8 +842,9 @@ namespace HonkPooper
         private bool GenerateBossInScene()
         {
             // if scene doesn't contain a boss then pick a random boss and add to scene
-
-            if (!_scene.Children.OfType<Boss>().Any(x => x.IsAnimating) && _scene.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating == false) is Boss boss)
+            if (_scoreBar.IsBossPointScore(BossPointScoreDiff) &&
+                !_scene.Children.OfType<Boss>().Any(x => x.IsAnimating) &&
+                _scene.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating == false) is Boss boss)
             {
                 boss.IsAnimating = true;
                 boss.Reset();
@@ -847,10 +854,16 @@ namespace HonkPooper
 
                 SyncDropShadow(boss);
 
+                // set boss health
+                boss.Health = BossPointScoreDiff * 1.3;
+
                 _bossHealthBar.SetMaxiumValue(boss.Health);
                 _bossHealthBar.SetValue(boss.Health);
                 _bossHealthBar.SetIcon(boss.GetContentUri());
                 _bossHealthBar.SetProgressForegroundColor(color: Colors.Crimson);
+
+                // next boss will appear at a slightly higher score
+                BossPointScoreDiff += 5;
 
                 return true;
             }
@@ -936,6 +949,8 @@ namespace HonkPooper
                     top: -500);
 
                 boss.IsAnimating = false;
+
+                _scoreBar.GainScore(5);
             }
 
             return true;
@@ -1190,14 +1205,15 @@ namespace HonkPooper
                 startUpAction: SpawnCloudsInScene);
 
             Generator bosses = new(
-               generationDelay: 500,
+               generationDelay: 100,
                generationAction: GenerateBossInScene,
                startUpAction: SpawnBossesInScene);
 
             Generator bossBombs = new(
                generationDelay: 40,
                generationAction: GenerateBossBombInScene,
-               startUpAction: SpawnBossBombsInScene);
+               startUpAction: SpawnBossBombsInScene,
+               randomizeDelay: true);
 
             _scene.AddToScene(treeBottoms);
             _scene.AddToScene(treeTops);
@@ -1239,9 +1255,12 @@ namespace HonkPooper
             _bossHealthBar = this.BossHealthBar;
 
             _controller = this.KeyboardController;
+            _scoreBar = this.GameScoreBar;
 
             _scene.Width = 1920;
             _scene.Height = 1080;
+
+            BossPointScoreDiff = 50;
 
             PrepareScene();
             SetController();

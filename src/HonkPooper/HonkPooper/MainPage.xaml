@@ -23,18 +23,21 @@
         <StackPanel
             HorizontalAlignment="Center"
             VerticalAlignment="Top"
-            Orientation="Horizontal">
-            <HealthBar
-                x:Name="BossHealthBar"
-                Margin="30,30,5,30"
+            Orientation="Vertical">
+            <ScoreBar x:Name="GameScoreBar" HorizontalAlignment="Center" />
+            <StackPanel
+                Margin="0,5,0,0"
                 HorizontalAlignment="Center"
-                VerticalAlignment="Top" />
-            <HealthBar
-                x:Name="PlayerHealthBar"
-                Margin="5,30,30,30"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Top" />
-
+                Orientation="Horizontal">
+                <HealthBar
+                    x:Name="BossHealthBar"
+                    Margin="5"
+                    HorizontalAlignment="Center" />
+                <HealthBar
+                    x:Name="PlayerHealthBar"
+                    Margin="5"
+                    HorizontalAlignment="Center" />
+            </StackPanel>
         </StackPanel>
     </Grid>
 

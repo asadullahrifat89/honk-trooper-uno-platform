@@ -25,6 +25,7 @@ namespace HonkPooper
             Height = 40,
             Width = 40,
             Stretch = Stretch.Uniform,
+            Margin = new Thickness(5)
         };
 
         private StackPanel StackPanel { get; set; }

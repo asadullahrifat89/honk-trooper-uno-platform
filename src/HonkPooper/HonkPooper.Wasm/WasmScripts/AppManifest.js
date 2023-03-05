@@ -2,6 +2,6 @@
 
     splashScreenImage: "Assets/SplashScreen.png",
     splashScreenColor: "transparent",
-    displayName: "Honk Pooper"
+    displayName: "Honk Trooper"
 
 }
