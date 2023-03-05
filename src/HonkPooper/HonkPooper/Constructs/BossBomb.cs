@@ -17,9 +17,6 @@ namespace HonkPooper
         private Uri[] _bomb_uris;
         private Uri[] _bomb_blast_uris;
 
-        private Rect _origin = Rect.Empty;
-        private Rect _target = Rect.Empty;
-
         #endregion
 
         #region Ctor
@@ -56,8 +53,8 @@ namespace HonkPooper
             SetChild(content);
 
             IsometricDisplacement = 0.5;
-            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;
-            DropShadowDistance = 50;
+            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET + 2;
+            DropShadowDistance = 60;
         }
 
         #endregion
@@ -76,8 +73,6 @@ namespace HonkPooper
                 left: (boss.GetLeft() + boss.Width / 2) - Width / 2,
                 top: boss.GetBottom() - (40 * downScaling),
                 z: 7);
-
-            _origin = boss.GetCloseHitBox();
         }
 
         public void Reset()
@@ -95,9 +90,6 @@ namespace HonkPooper
             };
 
             SetChild(content);
-
-            _target = Rect.Empty;
-            _origin = Rect.Empty;
         }
 
         public void SetBlast()
@@ -112,21 +104,6 @@ namespace HonkPooper
             SetChild(content);
 
             IsBlasting = true;
-        }
-
-        public void SetTargetPoint(Rect rect)
-        {
-            _target = rect;
-        }
-
-        public void FollowTargetPoint(double speed)
-        {
-            if (_target != Rect.Empty && _origin != Rect.Empty)
-            {
-                SetLeft(GetLeft() + speed);
-                SetTop(GetTop() + speed * IsometricDisplacement);
-            }
-
         }
 
         #endregion

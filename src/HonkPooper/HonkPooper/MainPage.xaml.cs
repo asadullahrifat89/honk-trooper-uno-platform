@@ -824,15 +824,11 @@ namespace HonkPooper
                 bomb.IsAnimating = true;
                 bomb.AwaitingPop = true;
 
-                bomb.SetRotation(_random.Next(-30, 30));
+                bomb.SetRotation(33);
 
                 bomb.Reposition(
                     boss: boss,
                     downScaling: _scene.DownScaling);
-
-                // set where the bomb should go and blast
-
-                bomb.SetTargetPoint(_player.GetCloseHitBox());
 
                 SyncDropShadow(bomb);
 
@@ -863,7 +859,7 @@ namespace HonkPooper
             }
             else
             {
-                bossBomb.FollowTargetPoint(speed);
+                MoveConstruct(construct: bomb, speed: speed);
 
                 if (bossBomb.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
                     bossBomb.SetBlast();
@@ -1025,7 +1021,7 @@ namespace HonkPooper
 
 
             Generator bossBombs = new(
-               generationDelay: 30,
+               generationDelay: 50,
                generationAction: GenerateBossBombInScene,
                spawnAction: SpawnBossBombsInScene);
 
