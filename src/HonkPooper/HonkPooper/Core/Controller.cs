@@ -38,9 +38,6 @@ namespace HonkPooper
 
         public Controller()
         {
-            //PointerPressed += Controller_PointerPressed;
-            //PointerMoved += Controller_PointerMoved;
-
             CanDrag = false;
 
             KeyUp += Controller_KeyUp;
@@ -49,20 +46,7 @@ namespace HonkPooper
             SetDirectionControls();
             SetAttackButton();
             SetStartButton();
-
-            //SizeChanged += Controller_SizeChanged;
         }
-
-        //private void Controller_SizeChanged(object sender, Microsoft.UI.Xaml.SizeChangedEventArgs args)
-        //{
-        //    var _sceneWidth = args.NewSize.Width;
-        //    var _sceneHeight = args.NewSize.Height;
-
-        //    var downScaling = ScreenExtensions.GetDownScaling(_sceneWidth);
-
-        //    _directionControlsTransform.ScaleX = 1 * downScaling;
-        //    _directionControlsTransform.ScaleY = 1 * downScaling;
-        //}
 
         #endregion
 

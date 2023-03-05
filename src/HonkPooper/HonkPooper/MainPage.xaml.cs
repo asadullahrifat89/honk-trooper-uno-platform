@@ -1,4 +1,5 @@
-﻿using Microsoft.UI.Xaml;
+﻿using Microsoft.UI;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Linq;
@@ -14,6 +15,9 @@ namespace HonkPooper
         private Controller _controller;
         private Random _random;
         private Player _player;
+
+        private HudPanel _playerHudPanel;
+        private HudPanel _bossHudPanel;
 
         #endregion
 
@@ -52,6 +56,11 @@ namespace HonkPooper
 
             DropShadow playersShadow = (_scene.Children.OfType<DropShadow>().FirstOrDefault(x => x.Id == _player.Id));
             playersShadow.IsAnimating = true;
+
+            _playerHudPanel.SetMaxiumValue(_player.Health);
+            _playerHudPanel.SetValue(_player.Health);
+            _playerHudPanel.SetIcon(_player.GetContentUri());
+            _playerHudPanel.SetProgressForegroundColor(color: Colors.Purple);
 
             return true;
         }
@@ -188,6 +197,8 @@ namespace HonkPooper
                         playerBomb.SetBlast();
                         boss.SetPopping();
                         boss.Health -= 10;
+
+                        _bossHudPanel.SetValue(boss.Health);
 
                         if (boss.Health <= 0)
                         {
@@ -836,6 +847,11 @@ namespace HonkPooper
 
                 SyncDropShadow(boss);
 
+                _bossHudPanel.SetMaxiumValue(boss.Health);
+                _bossHudPanel.SetValue(boss.Health);
+                _bossHudPanel.SetIcon(boss.GetContentUri());
+                _bossHudPanel.SetProgressForegroundColor(color: Colors.Crimson);
+
                 return true;
             }
 
@@ -1003,6 +1019,8 @@ namespace HonkPooper
                 {
                     bossBomb.SetBlast();
                     _player.SetPopping();
+                    _player.Health -= 5;
+                    _playerHudPanel.SetValue(_player.Health);
                 }
             }
 
@@ -1117,67 +1135,69 @@ namespace HonkPooper
 
         private void PrepareScene()
         {
+            _scene.Children.Clear();
+
             // first add road marks
             Generator roadMarks = new(
                 generationDelay: 30,
                 generationAction: GenerateRoadMarkInScene,
-                spawnAction: SpawnRoadMarksInScene);
+                startUpAction: SpawnRoadMarksInScene);
 
             // then add the top trees
             Generator treeTops = new(
                 generationDelay: 40,
                 generationAction: GenerateTreeInSceneTop,
-                spawnAction: SpawnTreesInScene);
+                startUpAction: SpawnTreesInScene);
 
             // then add the vehicles which will appear forward in z wrt the top trees
             Generator vehicles = new(
                 generationDelay: 80,
                 generationAction: GenerateVehicleInScene,
-                spawnAction: SpawnVehiclesInScene);
+                startUpAction: SpawnVehiclesInScene);
 
             // then add the bottom trees which will appear forward in z wrt to the vehicles
             Generator treeBottoms = new(
                 generationDelay: 40,
                 generationAction: GenerateTreeInSceneBottom,
-                spawnAction: SpawnTreesInScene);
+                startUpAction: SpawnTreesInScene);
 
             // add the honks which will appear forward in z wrt to everything on the road
             Generator honk = new(
                 generationDelay: 0,
                 generationAction: () => { return true; },
-                spawnAction: SpawnHonksInScene);
+                startUpAction: SpawnHonksInScene);
 
             // add the player in scene which will appear forward in z wrt to all else
             Generator player = new(
                 generationDelay: 0,
                 generationAction: () => { return true; },
-                spawnAction: SpawnPlayerInScene);
+                startUpAction: SpawnPlayerInScene);
 
             Generator playerBombs = new(
               generationDelay: 0,
               generationAction: () => { return true; },
-              spawnAction: SpawnPlayerBombsInScene);
+              startUpAction: SpawnPlayerBombsInScene);
 
             Generator playerGroundBombs = new(
                 generationDelay: 0,
                 generationAction: () => { return true; },
-                spawnAction: SpawnPlayerBombGroundsInScene);
+                startUpAction: SpawnPlayerBombGroundsInScene);
 
             // add the clouds which are abve the player z
             Generator clouds = new(
                 generationDelay: 100,
                 generationAction: GenerateCloudInScene,
-                spawnAction: SpawnCloudsInScene);
+                startUpAction: SpawnCloudsInScene);
 
             Generator bosses = new(
                generationDelay: 500,
                generationAction: GenerateBossInScene,
-               spawnAction: SpawnBossesInScene);
+               startUpAction: SpawnBossesInScene);
 
             Generator bossBombs = new(
                generationDelay: 40,
                generationAction: GenerateBossBombInScene,
-               spawnAction: SpawnBossBombsInScene);
+               startUpAction: SpawnBossBombsInScene);
 
             _scene.AddToScene(treeBottoms);
             _scene.AddToScene(treeTops);
@@ -1215,6 +1235,8 @@ namespace HonkPooper
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
             _scene = this.MainScene;
+            _playerHudPanel = this.PlayerHudPanel;
+            _bossHudPanel = this.BossHudPanel;
 
             _controller = this.KeyboardController;
 

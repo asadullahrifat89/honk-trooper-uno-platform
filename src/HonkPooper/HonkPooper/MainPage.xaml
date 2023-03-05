@@ -20,6 +20,22 @@
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             Background="Transparent" />
+        <StackPanel
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            Orientation="Horizontal">
+            <HudPanel
+                x:Name="BossHudPanel"
+                Margin="20,20,5,20"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top" />
+            <HudPanel
+                x:Name="PlayerHudPanel"
+                Margin="5,20,20,20"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Top" />
+
+        </StackPanel>
     </Grid>
 
 </Page>

@@ -1,4 +1,6 @@
 ﻿using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media.Imaging;
 using System;
 
 namespace HonkPooper
@@ -57,6 +59,19 @@ namespace HonkPooper
         public void SetChild(UIElement uIElement)
         {
             Child = uIElement;
+        }
+
+        public Uri GetContentUri()
+        {
+            if (Child is not null && Child is Image image)
+            {
+                var bitmapImage = image.Source as BitmapImage;
+                return bitmapImage.UriSource;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         #endregion

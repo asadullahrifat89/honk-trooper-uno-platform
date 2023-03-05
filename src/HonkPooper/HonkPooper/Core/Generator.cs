@@ -20,15 +20,13 @@ namespace HonkPooper
         public Generator(
             int generationDelay,
             Func<bool> generationAction,
-            Func<bool> spawnAction)
+            Func<bool> startUpAction)
         {
             _generationDelay = generationDelay;
             _generationDelayInCount = _generationDelay;
 
             GenerationAction = generationAction;
-            spawnAction();
-
-            // TODO: execute spawn action
+            startUpAction();
         }
 
         public void Generate()
