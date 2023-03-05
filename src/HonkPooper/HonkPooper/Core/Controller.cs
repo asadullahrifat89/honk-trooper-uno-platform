@@ -1,6 +1,7 @@
 ﻿using Microsoft.UI;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
+using Windows.Foundation;
 
 namespace HonkPooper
 {
@@ -65,11 +66,6 @@ namespace HonkPooper
 
         #region Methods
 
-        public void SetDirectionControlsRotation(double rotation)
-        {
-            _directionControlsTransform.Rotation = rotation;
-        }
-
         private void SetStartButton()
         {
             StartButton = new()
@@ -121,7 +117,7 @@ namespace HonkPooper
                 CornerRadius = new Microsoft.UI.Xaml.CornerRadius(30),
                 Content = new SymbolIcon()
                 {
-                    Symbol = Symbol.Bold,
+                    Symbol = Symbol.Target,
                 },
                 BorderBrush = new SolidColorBrush(Colors.White),
                 BorderThickness = new Microsoft.UI.Xaml.Thickness(6),
@@ -140,14 +136,12 @@ namespace HonkPooper
             {
                 HorizontalAlignment = Microsoft.UI.Xaml.HorizontalAlignment.Right,
                 VerticalAlignment = Microsoft.UI.Xaml.VerticalAlignment.Bottom,
-                RenderTransform = _directionControlsTransform,
+                Margin = new Microsoft.UI.Xaml.Thickness(20),
             };
 
             DirectionControls.RowDefinitions.Add(new RowDefinition());
             DirectionControls.RowDefinitions.Add(new RowDefinition());
-            DirectionControls.RowDefinitions.Add(new RowDefinition());
 
-            DirectionControls.ColumnDefinitions.Add(new ColumnDefinition());
             DirectionControls.ColumnDefinitions.Add(new ColumnDefinition());
             DirectionControls.ColumnDefinitions.Add(new ColumnDefinition());
 
@@ -163,10 +157,16 @@ namespace HonkPooper
                 },
                 BorderBrush = new SolidColorBrush(Colors.White),
                 BorderThickness = new Microsoft.UI.Xaml.Thickness(6),
+                RenderTransformOrigin = new Point(0.5, 0.5),
+                RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = -45 },
+                Margin = new Microsoft.UI.Xaml.Thickness(5),
             };
 
             up.PointerPressed += (s, e) => { ActivateMoveUp(); };
             up.PointerReleased += (s, e) => { DeactivateMoveUp(); };
+
+            Grid.SetRow(up, 0);
+            Grid.SetColumn(up, 0);
 
             Border down = new()
             {
@@ -180,10 +180,16 @@ namespace HonkPooper
                 },
                 BorderBrush = new SolidColorBrush(Colors.White),
                 BorderThickness = new Microsoft.UI.Xaml.Thickness(6),
+                RenderTransformOrigin = new Point(0.5, 0.5),
+                RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = -45 },
+                Margin = new Microsoft.UI.Xaml.Thickness(5),
             };
 
             down.PointerPressed += (s, e) => { ActivateMoveDown(); };
             down.PointerReleased += (s, e) => { DeactivateMoveDown(); };
+
+            Grid.SetRow(down, 1);
+            Grid.SetColumn(down, 1);
 
             Border left = new()
             {
@@ -197,10 +203,16 @@ namespace HonkPooper
                 },
                 BorderBrush = new SolidColorBrush(Colors.White),
                 BorderThickness = new Microsoft.UI.Xaml.Thickness(6),
+                RenderTransformOrigin = new Point(0.5, 0.5),
+                RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = -45 },
+                Margin = new Microsoft.UI.Xaml.Thickness(5),
             };
 
             left.PointerPressed += (s, e) => { ActivateMoveLeft(); };
             left.PointerReleased += (s, e) => { DeactivateMoveLeft(); };
+
+            Grid.SetRow(left, 1);
+            Grid.SetColumn(left, 0);
 
             Border right = new()
             {
@@ -214,22 +226,16 @@ namespace HonkPooper
                 },
                 BorderBrush = new SolidColorBrush(Colors.White),
                 BorderThickness = new Microsoft.UI.Xaml.Thickness(6),
+                RenderTransformOrigin = new Point(0.5, 0.5),
+                RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = -45 },
+                Margin = new Microsoft.UI.Xaml.Thickness(5),
             };
 
             right.PointerPressed += (s, e) => { ActivateMoveRight(); };
             right.PointerReleased += (s, e) => { DeactivateMoveRight(); };
 
-            Grid.SetRow(up, 0);
-            Grid.SetColumn(up, 1);
-
-            Grid.SetRow(left, 1);
-            Grid.SetColumn(left, 0);
-
-            Grid.SetRow(right, 1);
-            Grid.SetColumn(right, 2);
-
-            Grid.SetRow(down, 2);
-            Grid.SetColumn(down, 1);
+            Grid.SetRow(right, 0);
+            Grid.SetColumn(right, 1);
 
             DirectionControls.Children.Add(up);
             DirectionControls.Children.Add(down);

@@ -1200,8 +1200,6 @@ namespace HonkPooper
         private void SetController()
         {
             _controller.SetScene(_scene);
-            _controller.SetDirectionControlsRotation(-45);
-            _controller.DirectionControls.Margin = new Thickness(left: 0, top: 0, right: 40, bottom: -60);
             _controller.RequiresScreenOrientationChange += Controller_RequiresScreenOrientationChange;
 
             ScreenExtensions.RequiredDisplayOrientation = Windows.Graphics.Display.DisplayOrientations.Landscape;
