@@ -769,17 +769,6 @@ namespace HonkPooper
 
             if (boss1.IsAttacking)
             {
-                if (boss1.AwaitMoveLeft)
-                {
-                    boss1.MoveLeft(speed);
-
-                    if (boss.GetBottom() > _scene.Height)
-                    {
-                        boss1.AwaitMoveLeft = false;
-                        boss1.AwaitMoveRight = true;
-                    }
-                }
-
                 if (boss1.AwaitMoveRight)
                 {
                     boss1.MoveRight(speed);
@@ -788,6 +777,17 @@ namespace HonkPooper
                     {
                         boss1.AwaitMoveLeft = true;
                         boss1.AwaitMoveRight = false;
+                    }
+                }
+
+                if (boss1.AwaitMoveLeft)
+                {
+                    boss1.MoveLeft(speed);
+
+                    if (boss.GetLeft() < 0)
+                    {
+                        boss1.AwaitMoveLeft = false;
+                        boss1.AwaitMoveRight = true;
                     }
                 }
             }
