@@ -29,6 +29,8 @@ namespace HonkPooper
 
         #endregion
 
+        #region Ctor
+
         public Player(
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction,
@@ -61,8 +63,12 @@ namespace HonkPooper
             SetChild(content);
 
             SpeedOffset = 2;
-            DropShadowDistance = 50;            
+            DropShadowDistance = 50;
         }
+
+        #endregion
+
+        #region Methods
 
         public void Reposition(Scene scene)
         {
@@ -183,6 +189,8 @@ namespace HonkPooper
                 _isMovingLeft = false;
                 _isMovingRight = false;
             }
-        }
+        } 
+
+        #endregion
     }
 }
