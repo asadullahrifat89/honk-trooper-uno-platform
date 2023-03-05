@@ -648,7 +648,9 @@ namespace HonkPooper
 
         public bool GenerateHonkInScene(Vehicle vehicle)
         {
-            if (_scene.Children.OfType<Honk>().FirstOrDefault(x => x.IsAnimating == false) is Honk honk)
+            // if there are no bosses in the scene the vehicles will honk
+            if (_scene.Children.OfType<Honk>().FirstOrDefault(x => x.IsAnimating == false) is Honk honk &&
+                !_scene.Children.OfType<Boss>().Any(x => x.IsAnimating && x.IsAttacking))
             {
                 honk.IsAnimating = true;
                 honk.AwaitingPop = true;
@@ -983,7 +985,7 @@ namespace HonkPooper
                     bossBomb.SetBlast();
                     _player.AwaitingPop = true;
                 }
-                    
+
             }
 
             return true;
