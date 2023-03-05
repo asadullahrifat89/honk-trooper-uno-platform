@@ -93,7 +93,7 @@ namespace HonkPooper
         /// </summary>
         /// <param name="windowWidth"></param>
         /// <returns></returns>
-        private double GetTranslationFactor(double windowWidth)
+        private double CalculateDownScaling(double windowWidth)
         {
             return windowWidth switch
             {
@@ -161,7 +161,7 @@ namespace HonkPooper
 
             // Console.WriteLine($"{_sceneWidth}x{_sceneHeight}");
 
-            DownScaling = GetTranslationFactor(_sceneWidth);
+            DownScaling = CalculateDownScaling(_sceneWidth);
 
             // Console.WriteLine($"Down Scaling {Scaling}");
 
