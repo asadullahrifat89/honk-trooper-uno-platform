@@ -1,28 +1,53 @@
-﻿using Windows.UI.ViewManagement;
+﻿using System;
+using Windows.Graphics.Display;
+using Windows.UI.ViewManagement;
 
 namespace HonkPooper
 {
-    public static class ScreenExtensions 
+    public static class ScreenExtensions
     {
+        #region Properties
+
+        public static DisplayInformation DisplayInformation => DisplayInformation.GetForCurrentView();
+
+        public static ApplicationView ApplicationView => ApplicationView.GetForCurrentView();
+
+        public static DisplayOrientations RequiredDisplayOrientation { get; set; } 
+
+        #endregion
+
         #region Methods
 
         public static void EnterFullScreen(bool toggleFullScreen)
         {
             //#if !DEBUG
-            var view = ApplicationView.GetForCurrentView();
-
-            if (view is not null)
+            if (ApplicationView is not null)
             {
                 if (toggleFullScreen)
                 {
-                    view.TryEnterFullScreenMode();
+                    ApplicationView.TryEnterFullScreenMode();
                 }
                 else
                 {
-                    view.ExitFullScreenMode();
+                    ApplicationView.ExitFullScreenMode();
                 }
             }
             //#endif
+        }
+
+        public static void SetDisplayOrientation(DisplayOrientations displayOrientation)
+        {
+            var currentOrientation = DisplayInformation?.CurrentOrientation;
+
+            Console.WriteLine($"{currentOrientation}");
+
+            if (currentOrientation is not null && currentOrientation != displayOrientation)
+                DisplayInformation.AutoRotationPreferences = displayOrientation;
+        }
+
+        public static DisplayOrientations? GetDisplayOrienation()
+        {
+            return DisplayInformation?.CurrentOrientation;
         }
 
         #endregion

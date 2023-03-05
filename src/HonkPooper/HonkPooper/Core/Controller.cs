@@ -191,13 +191,8 @@ namespace HonkPooper
         public void SetArrowsKeysContainerRotation(double rotation)
         {
             _arrowsKeysContainerTransform.Rotation = rotation;
-        }
+        }       
 
-        public void SetDisplayOrientation(DisplayOrientations displayOrientation)
-        {
-            if (DisplayInformation.GetForCurrentView().CurrentOrientation != displayOrientation)
-                DisplayInformation.AutoRotationPreferences = displayOrientation;
-        }
 
         #endregion
     }

@@ -2,6 +2,7 @@
 using Microsoft.UI.Xaml.Controls;
 using System;
 using Windows.Foundation;
+using Windows.Graphics.Display;
 
 namespace HonkPooper
 {
@@ -205,12 +206,15 @@ namespace HonkPooper
 
         public void SceneStartOrStop()
         {
-            if (_scene.IsAnimating)
-                _scene.Stop();
-            else
-                _scene.Start();
+            if (ScreenExtensions.RequiredDisplayOrientation == ScreenExtensions.GetDisplayOrienation())
+            {
+                if (_scene.IsAnimating)
+                    _scene.Stop();
+                else
+                    _scene.Start();
 
-            ScreenExtensions.EnterFullScreen(true);
+                ScreenExtensions.EnterFullScreen(true);
+            }
 
             Console.WriteLine("Enter");
         }
