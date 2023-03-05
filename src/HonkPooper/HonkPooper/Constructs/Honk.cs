@@ -5,49 +5,6 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace HonkPooper
 {
-    public partial class Boss : Construct
-    {
-        #region Fields
-
-        private Random _random;
-        private Uri[] _boss_uris;
-
-        #endregion
-
-        public Boss(
-            Func<Construct, bool> animateAction,
-            Func<Construct, bool> recycleAction,
-            double downScaling)
-        {
-            _random = new Random();
-
-            _boss_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BOSS).Select(x => x.Uri).ToArray();
-
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.BOSS);
-
-            ConstructType = ConstructType.BOSS;
-
-            var width = size.Width * downScaling;
-            var height = size.Height * downScaling;
-
-            AnimateAction = animateAction;
-            RecycleAction = recycleAction;
-
-            SetSize(width: width, height: height);
-
-            var uri = _boss_uris[_random.Next(0, _boss_uris.Length)];
-
-            var content = new Image()
-            {
-                Source = new BitmapImage(uriSource: uri)
-            };
-
-            SetChild(content);
-
-            IsometricDisplacement = 0.5;
-        }
-    }
-
     public partial class Honk : Construct
     {
         #region Fields

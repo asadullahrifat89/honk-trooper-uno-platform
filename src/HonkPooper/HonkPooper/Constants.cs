@@ -18,6 +18,7 @@ namespace HonkPooper
             new (ConstructType.VEHICLE_LARGE, 180, 180),
             new (ConstructType.HONK, 90, 90),
             new (ConstructType.CLOUD, 220, 220),
+            new (ConstructType.BOSS, 220, 220),
         };
 
         public static (ConstructType ConstructType, Uri Uri)[] CONSTRUCT_TEMPLATES = new (ConstructType, Uri)[]
