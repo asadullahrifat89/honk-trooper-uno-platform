@@ -58,29 +58,37 @@ namespace HonkPooper
 
         public bool AnimatePlayer(Construct player)
         {
-            var speed = _scene.Speed + player.SpeedOffset;
+            var speed = (_scene.Speed + player.SpeedOffset) * _scene.DownScaling;
 
             _player.Hover();
 
             if (_controller.IsMoveUp)
             {
-                _player.MoveUp(speed);
+                if (_player.GetBottom() > 0 && _player.GetRight() > 0)
+                    _player.MoveUp(speed);
             }
             else if (_controller.IsMoveDown)
             {
-                _player.MoveDown(speed);
+                if (_player.GetTop() < _scene.Height && _player.GetLeft() < _scene.Width)
+                    _player.MoveDown(speed);
             }
             else if (_controller.IsMoveLeft)
             {
-                _player.MoveLeft(speed);
+                if (_player.GetRight() > 0 && _player.GetTop() < _scene.Height)
+                    _player.MoveLeft(speed);
             }
             else if (_controller.IsMoveRight)
             {
-                _player.MoveRight(speed);
+                if (_player.GetLeft() < _scene.Width && _player.GetBottom() > 0)
+                    _player.MoveRight(speed);
             }
             else
             {
-                _player.StopMovement();
+                if (_player.GetBottom() > 0 && _player.GetRight() > 0
+                    && _player.GetTop() < _scene.Height && _player.GetLeft() < _scene.Width
+                    && _player.GetRight() > 0 && _player.GetTop() < _scene.Height
+                    && _player.GetLeft() < _scene.Width && _player.GetBottom() > 0)
+                    _player.StopMovement();
             }
 
             if (_controller.IsAttacking)
@@ -160,6 +168,9 @@ namespace HonkPooper
 
                 bomb.Expand();
                 bomb.Fade(0.02);
+
+                // make the shadow fade with the bomb blast
+
                 dropShadow.Opacity = bomb.Opacity;
 
                 // while in blast check if it intersects with any vehicle, if it does then the vehicle stops honking and slows down
@@ -229,6 +240,7 @@ namespace HonkPooper
                 vehicle.Reset();
 
                 // generate top and left corner lane wise vehicles
+
                 var topOrLeft = _random.Next(0, 2);
 
                 var lane = _random.Next(0, 2);
@@ -770,7 +782,9 @@ namespace HonkPooper
 
         private void SetController()
         {
-            _controller.SetScene(_scene, _player);
+            _controller.SetScene(_scene);
+            _controller.SetArrowsKeysContainerRotation(-45);
+            _controller.ArrowsKeysContainer.Margin = new Thickness(left: 0, top: 0, right: 40, bottom: -60);
         }
 
         #endregion
@@ -782,7 +796,8 @@ namespace HonkPooper
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
             _scene = this.MainScene;
-            _controller = this.MainController;
+
+            _controller = this.KeyboardController;
 
             _scene.Width = 1920;
             _scene.Height = 1080;
@@ -802,6 +817,9 @@ namespace HonkPooper
             _scene.Height = _windowHeight;
 
             _player.Reposition(_scene);
+
+            DropShadow playersShadow = (_scene.Children.OfType<DropShadow>().FirstOrDefault(x => x.Id == _player.Id));
+            playersShadow.Move();
 
             //_dropShadow.Move(
             //    parent: _player,
