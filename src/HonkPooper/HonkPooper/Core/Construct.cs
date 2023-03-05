@@ -22,6 +22,47 @@ namespace HonkPooper
         private bool _isPoppingComplete;
         private double _popUpScalingLimit = 1.5;
 
+        private bool _isPopping;
+
+        #endregion
+
+        #region Ctor
+
+        public Construct()
+        {
+            RenderTransformOrigin = new Point(0.5, 0.5);
+
+            RenderTransform = _compositeTransform;
+            CanDrag = false;
+        }
+
+        public Construct(
+            ConstructType constructType,
+            double width,
+            double height,
+            Func<Construct, bool> animateAction,
+            Func<Construct, bool> recycleAction,
+            UIElement content = null,
+            double speedOffset = 0)
+        {
+            ConstructType = constructType;
+
+            AnimateAction = animateAction;
+            RecycleAction = recycleAction;
+
+            SpeedOffset = speedOffset;
+
+            RenderTransformOrigin = new Point(0.5, 0.5);
+
+            RenderTransform = _compositeTransform;
+            CanDrag = false;
+
+            SetSize(width: width, height: height);
+
+            if (content is not null)
+                SetChild(content);
+        }
+
         #endregion
 
         #region Properties
@@ -62,6 +103,11 @@ namespace HonkPooper
         public bool IsFadingComplete => Opacity <= 0;
 
         /// <summary>
+        /// Returns true if shrinked.
+        /// </summary>
+        public bool IsShrinkingComplete => GetScaleX() <= 0 || GetScaleY() <= 0;
+
+        /// <summary>
         /// Only animated by the scene if set to true.
         /// </summary>
         public bool IsAnimating { get; set; }
@@ -79,46 +125,7 @@ namespace HonkPooper
         /// <summary>
         /// Determines if pop effect should execute for this construct.
         /// </summary>
-        public bool AwaitingPop { get; set; }
-
-        #endregion
-
-        #region Ctor
-
-        public Construct()
-        {
-            RenderTransformOrigin = new Point(0.5, 0.5);
-
-            RenderTransform = _compositeTransform;
-            CanDrag = false;
-        }
-
-        public Construct(
-            ConstructType constructType,
-            double width,
-            double height,
-            Func<Construct, bool> animateAction,
-            Func<Construct, bool> recycleAction,
-            UIElement content = null,
-            double speedOffset = 0)
-        {
-            ConstructType = constructType;
-
-            AnimateAction = animateAction;
-            RecycleAction = recycleAction;
-
-            SpeedOffset = speedOffset;
-
-            RenderTransformOrigin = new Point(0.5, 0.5);
-
-            RenderTransform = _compositeTransform;
-            CanDrag = false;
-
-            SetSize(width: width, height: height);
-
-            if (content is not null)
-                SetChild(content);
-        }
+        private bool AwaitingPop { get; set; }
 
         #endregion
 
@@ -275,10 +282,22 @@ namespace HonkPooper
             _compositeTransform.ScaleY += 0.1;
         }
 
+        public void SetPopping()
+        {
+            if (!AwaitingPop)
+            {
+                AwaitingPop = true;
+                _isPoppingComplete = false;
+                SetScaleTransform(1);
+            }
+        }
+
         public void Pop()
         {
             if (AwaitingPop)
             {
+                _isPopping = true;
+
                 if (!_isPoppingComplete && GetScaleX() < _popUpScalingLimit)
                     Expand();
 
@@ -292,13 +311,14 @@ namespace HonkPooper
                     if (GetScaleX() <= 1)
                     {
                         _isPoppingComplete = false;
-                        AwaitingPop = false; // stop popping effect                        
+                        AwaitingPop = false; // stop popping effect
+                        SetScaleTransform(1);
                     }
                 }
             }
         }
 
-        public void Rotate() 
+        public void Rotate()
         {
             _compositeTransform.Rotation += 0.1;
         }

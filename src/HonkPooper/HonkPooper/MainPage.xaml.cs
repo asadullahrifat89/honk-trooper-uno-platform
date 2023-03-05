@@ -143,7 +143,7 @@ namespace HonkPooper
             {
                 bomb.Reset();
                 bomb.IsAnimating = true;
-                bomb.AwaitingPop = true;
+                bomb.SetPopping();
 
                 bomb.SetRotation(33);
 
@@ -178,7 +178,6 @@ namespace HonkPooper
 
                 DropShadow dropShadow = _scene.Children.OfType<DropShadow>().First(x => x.Id == bomb.Id);
                 dropShadow.Opacity = bomb.Opacity;
-
             }
             else
             {
@@ -187,9 +186,16 @@ namespace HonkPooper
                     if (playerBomb.GetCloseHitBox().IntersectsWith(boss.GetCloseHitBox()))
                     {
                         playerBomb.SetBlast();
-                        boss.AwaitingPop = true;
-                    }
+                        boss.SetPopping();
+                        boss.Health -= 10;
 
+                        if (boss.Health <= 0)
+                        {
+                            boss.IsAttacking = false;
+                        }                            
+
+                        Console.WriteLine($"Boss Health: {boss.Health}");
+                    }
                 }
             }
 
@@ -248,7 +254,7 @@ namespace HonkPooper
                 bomb.Reset();
                 bomb.IsAnimating = true;
                 bomb.IsGravitating = true;
-                bomb.AwaitingPop = true;
+                bomb.SetPopping();
 
                 bomb.SetRotation(_random.Next(-30, 30));
 
@@ -450,7 +456,7 @@ namespace HonkPooper
 
             if (vehicle1.Honk())
             {
-                //vehicle.AwaitingPop = true;
+                //vehicle.SetPopping();
                 GenerateHonkInScene(vehicle1);
             }
 
@@ -653,7 +659,7 @@ namespace HonkPooper
                 !_scene.Children.OfType<Boss>().Any(x => x.IsAnimating && x.IsAttacking))
             {
                 honk.IsAnimating = true;
-                honk.AwaitingPop = true;
+                honk.SetPopping();
 
                 honk.Reset();
 
@@ -838,49 +844,56 @@ namespace HonkPooper
 
         public bool AnimateBoss(Construct boss)
         {
-            var speed = (_scene.Speed + boss.SpeedOffset);
-
             Boss boss1 = boss as Boss;
 
             boss.Pop();
 
-            if (!boss1.IsAttacking && boss.GetLeft() < _scene.Width / 2)
+            if (boss1.Health <= 0)
             {
-                MoveConstruct(construct: boss, speed: speed);
+                boss.Shrink();
             }
-
-            if (boss.GetRight() > _scene.Width / 3)
+            else
             {
-                if (!boss1.IsAttacking)
-                    boss1.IsAttacking = true;
+                var speed = (_scene.Speed + boss.SpeedOffset);
 
-                if (boss1.IsAttacking && !boss1.AwaitMoveLeft && !boss1.AwaitMoveRight)
+                if (!boss1.IsAttacking && boss.GetLeft() < _scene.Width / 2)
                 {
-                    boss1.AwaitMoveLeft = true;
+                    MoveConstruct(construct: boss, speed: speed);
                 }
-            }
 
-            if (boss1.IsAttacking)
-            {
-                if (boss1.AwaitMoveRight)
+                if (boss.GetRight() > _scene.Width / 3)
                 {
-                    boss1.MoveRight(speed);
+                    if (!boss1.IsAttacking)
+                        boss1.IsAttacking = true;
 
-                    if (boss.GetTop() < 0)
+                    if (boss1.IsAttacking && !boss1.AwaitMoveLeft && !boss1.AwaitMoveRight)
                     {
                         boss1.AwaitMoveLeft = true;
-                        boss1.AwaitMoveRight = false;
                     }
                 }
 
-                if (boss1.AwaitMoveLeft)
+                if (boss1.IsAttacking)
                 {
-                    boss1.MoveLeft(speed);
-
-                    if (boss.GetLeft() < 0)
+                    if (boss1.AwaitMoveRight)
                     {
-                        boss1.AwaitMoveLeft = false;
-                        boss1.AwaitMoveRight = true;
+                        boss1.MoveRight(speed);
+
+                        if (boss.GetTop() < 0)
+                        {
+                            boss1.AwaitMoveLeft = true;
+                            boss1.AwaitMoveRight = false;
+                        }
+                    }
+
+                    if (boss1.AwaitMoveLeft)
+                    {
+                        boss1.MoveLeft(speed);
+
+                        if (boss.GetLeft() < 0)
+                        {
+                            boss1.AwaitMoveLeft = false;
+                            boss1.AwaitMoveRight = true;
+                        }
                     }
                 }
             }
@@ -892,9 +905,9 @@ namespace HonkPooper
 
         private bool RecycleBoss(Construct boss)
         {
-            Boss boss1 = boss as Boss;
+            //Boss boss1 = boss as Boss;
 
-            if (boss1.Health <= 0)
+            if (boss.GetScaleX() <= 0)
             {
                 boss.SetPosition(
                     left: -500,
@@ -941,7 +954,7 @@ namespace HonkPooper
 
                 bomb.Reset();
                 bomb.IsAnimating = true;
-                bomb.AwaitingPop = true;
+                bomb.SetPopping();
 
                 bomb.SetRotation(33);
 
@@ -983,7 +996,7 @@ namespace HonkPooper
                 if (bossBomb.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
                 {
                     bossBomb.SetBlast();
-                    _player.AwaitingPop = true;
+                    _player.SetPopping();
                 }
 
             }

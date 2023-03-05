@@ -14,7 +14,7 @@ namespace HonkPooper
         private Uri[] _vehicle_small_uris;
         private Uri[] _vehicle_large_uris;
 
-        private int _honkDelay;        
+        private int _honkDelay;
 
         #endregion
 
@@ -118,7 +118,6 @@ namespace HonkPooper
         public void Reset()
         {
             IsMarkedForBombing = false;
-            AwaitingPop = false;
 
             SetScaleTransform(1);
 
@@ -140,7 +139,7 @@ namespace HonkPooper
 
                 if (_honkDelay < 0)
                 {
-                    SetHonkDelay();                    
+                    SetHonkDelay();
                     return true;
                 }
             }
@@ -158,7 +157,7 @@ namespace HonkPooper
         {
             IsMarkedForBombing = true;
             WillHonk = false;
-            AwaitingPop = true;
+            SetPopping();
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET + 1;
         }
 
