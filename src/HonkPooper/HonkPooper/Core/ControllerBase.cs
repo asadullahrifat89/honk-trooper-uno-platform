@@ -2,12 +2,15 @@
 using Microsoft.UI.Xaml.Controls;
 using System;
 using Windows.Foundation;
+using Windows.Graphics.Display;
 
 namespace HonkPooper
 {
     public partial class ControllerBase : Grid
     {
         #region Fields
+
+        public event EventHandler<DisplayOrientations> RequiresScreenOrientationChange;
 
         private Scene _scene;
 
@@ -203,16 +206,32 @@ namespace HonkPooper
             IsMoveLeft = false;
         }
 
-        public void SceneStartOrStop()
+        public bool SceneStartOrStop()
         {
-            if (_scene.IsAnimating)
-                _scene.Stop();
-            else
-                _scene.Start();
+            ScreenExtensions.SetDisplayOrientation(ScreenExtensions.RequiredDisplayOrientation);
 
-            ScreenExtensions.EnterFullScreen(true);
+            // only start scene if required screen orientation is met
+            if (ScreenExtensions.RequiredDisplayOrientation == ScreenExtensions.GetDisplayOrienation())
+            {
+                if (_scene.IsAnimating)
+                {
+                    _scene.Stop();                    
+                }
+                else
+                {
+                    _scene.Start();                    
+                }
+
+                ScreenExtensions.EnterFullScreen(true);
+            }
+            else
+            {
+                RequiresScreenOrientationChange?.Invoke(this, ScreenExtensions.RequiredDisplayOrientation);
+            }
 
             Console.WriteLine("Enter");
+
+            return _scene.IsAnimating;
         }
 
         #endregion        

@@ -2,6 +2,7 @@
 using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Linq;
+using Windows.Graphics.Display;
 
 namespace HonkPooper
 {
@@ -784,7 +785,20 @@ namespace HonkPooper
             _controller.SetScene(_scene);
             _controller.SetArrowsKeysContainerRotation(-45);
             _controller.ArrowsKeysContainer.Margin = new Thickness(left: 0, top: 0, right: 40, bottom: -60);
-            _controller.SetDisplayOrientation(Windows.Graphics.Display.DisplayOrientations.Landscape);
+            _controller.RequiresScreenOrientationChange += Controller_RequiresScreenOrientationChange;
+
+            ScreenExtensions.RequiredDisplayOrientation = Windows.Graphics.Display.DisplayOrientations.Landscape;
+            ScreenExtensions.DisplayInformation.OrientationChanged += DisplayInformation_OrientationChanged;
+        }
+
+        private void Controller_RequiresScreenOrientationChange(object sender, DisplayOrientations e)
+        {
+            Console.WriteLine($"Required Orientation {e}");
+        }
+
+        private void DisplayInformation_OrientationChanged(Windows.Graphics.Display.DisplayInformation sender, object args)
+        {
+            Console.WriteLine($"{sender.CurrentOrientation}");
         }
 
         #endregion
@@ -829,6 +843,7 @@ namespace HonkPooper
         private void MainPage_Unloaded(object sender, RoutedEventArgs e)
         {
             SizeChanged -= MainPage_SizeChanged;
+            _controller.RequiresScreenOrientationChange -= Controller_RequiresScreenOrientationChange;
         }
 
         #endregion      
