@@ -697,8 +697,8 @@ namespace HonkPooper
             DropShadow dropShadow = construct as DropShadow;
 
             // adjust shadow with with the source
-            if (construct.Width != dropShadow.ParentConstruct.Width * 0.7)
-                construct.Width = dropShadow.ParentConstruct.Width * 0.7;
+            if (dropShadow.Width != dropShadow.ParentConstruct.Width * 0.7)
+                dropShadow.Width = dropShadow.ParentConstruct.Width * 0.7;
 
             dropShadow.Move();
 
