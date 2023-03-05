@@ -706,33 +706,6 @@ namespace HonkPooper
             {
                 boss.IsAnimating = true;
                 boss.Reset();
-
-                //var topOrLeft = _random.Next(0, 2);
-
-                //var lane = _random.Next(0, 2);
-
-                //switch (topOrLeft)
-                //{
-                //    case 0:
-                //        {
-                //            var xLaneWidth = _scene.Width / 4;
-                //            boss.SetPosition(
-                //                left: _random.Next(0, Convert.ToInt32(xLaneWidth - boss.Width)) * _scene.DownScaling,
-                //                top: boss.Height * -1);
-                //        }
-                //        break;
-                //    case 1:
-                //        {
-                //            var yLaneWidth = (_scene.Height / 2) / 2;
-                //            boss.SetPosition(
-                //                left: boss.Width * -1,
-                //                top: _random.Next(0, Convert.ToInt32(yLaneWidth)) * _scene.DownScaling);
-                //        }
-                //        break;
-                //    default:
-                //        break;
-                //}
-
                 boss.SetPosition(
                     left: 0,
                     top: boss.Height * -1);
