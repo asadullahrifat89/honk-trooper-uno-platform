@@ -16,7 +16,7 @@ namespace HonkPooper
 
         private int _honkDelay;
 
-        private bool _isBombDroppingComplete;
+        private bool _isPoppingComplete;
         private double _honkBustingUpScalingLimit = 1.5;
 
         #endregion
@@ -114,7 +114,7 @@ namespace HonkPooper
 
         public bool IsMarkedForBombing { get; set; }
 
-        public bool IsBombDropped { get; set; }
+        public bool IsMarkedForPopping { get; set; }
 
         #endregion
 
@@ -123,7 +123,7 @@ namespace HonkPooper
         public void Reset()
         {
             IsMarkedForBombing = false;
-            IsBombDropped = false;
+            IsMarkedForPopping = false;
 
             SetScaleTransform(1);
 
@@ -139,13 +139,14 @@ namespace HonkPooper
 
         public bool Honk()
         {
-            if (!IsMarkedForBombing /*&& !IsHonkBusted*/ && WillHonk)
+            if (!IsMarkedForBombing && WillHonk)
             {
                 _honkDelay--;
 
                 if (_honkDelay < 0)
                 {
                     SetHonkDelay();
+                    IsMarkedForPopping = true;
                     return true;
                 }
             }
@@ -159,32 +160,40 @@ namespace HonkPooper
             _honkDelay = _random.Next(30, 80);
         }
 
-        public void Blast()
+        public void MarkBomb()
         {
-            if (!IsBombDropped)
+            IsMarkedForBombing = true;
+            WillHonk = false;
+            IsMarkedForPopping = true;
+            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET + 1;
+        }
+
+        public void Pop()
+        {
+            if (IsMarkedForPopping)
             {
-                if (!_isBombDroppingComplete && GetScaleX() < _honkBustingUpScalingLimit)
+                if (!_isPoppingComplete && GetScaleX() < _honkBustingUpScalingLimit)
                 {
                     Expand();
                 }
 
                 if (GetScaleX() >= _honkBustingUpScalingLimit)
-                    _isBombDroppingComplete = true;
+                    _isPoppingComplete = true;
 
-                if (_isBombDroppingComplete)
+                if (_isPoppingComplete)
                 {
                     Shrink();
 
                     if (GetScaleX() <= 1)
                     {
-                        _isBombDroppingComplete = false;
-                        IsBombDropped = true;
-
-                        SpeedOffset = Constants.DEFAULT_SPEED_OFFSET + 1;
+                        _isPoppingComplete = false;
+                        IsMarkedForPopping = false; // stop popping effect                        
                     }
                 }
             }
         }
+
+
         #endregion
     }
 }

@@ -179,8 +179,7 @@ namespace HonkPooper
                     .Where(x => x.IsAnimating && x.WillHonk)
                     .FirstOrDefault(x => x.GetCloseHitBox().IntersectsWith(bomb.GetCloseHitBox())) is Vehicle vehicle)
                 {
-                    vehicle.IsMarkedForBombing = true;
-                    vehicle.WillHonk = false;
+                    vehicle.MarkBomb();
                 }
             }
             else
@@ -269,11 +268,34 @@ namespace HonkPooper
                         break;
                 }
 
+                //if (_scene.Children.OfType<Vehicle>().FirstOrDefault(x => x.IsAnimating && x.SpeedOffset == vehicle.SpeedOffset && x.GetCloseHitBox().IntersectsWith(vehicle.GetCloseHitBox())) is Vehicle overlappingVehicle)
+                //{
+                //    overlappingVehicle.SetPosition(
+                //        left: -500,
+                //        top: -500);
+
+                //    overlappingVehicle.IsAnimating = false;
+
+                //    Console.WriteLine("Overlapping vehicle removed.");
+                //}
+
                 vehicle.SetZ(3);
 
                 // Console.WriteLine("Vehicle generated.");
                 return true;
             }
+
+            //foreach (Vehicle sourceVehicle in _scene.Children.OfType<Vehicle>().Where(x => x.IsAnimating))
+            //{
+            //    if (_scene.Children.OfType<Vehicle>().Any(x => x.IsAnimating && x.GetCloseHitBox().IntersectsWith(sourceVehicle.GetCloseHitBox())))
+            //    {
+            //        sourceVehicle.SetPosition(
+            //                    left: -500,
+            //                    top: -500);
+
+            //        sourceVehicle.IsAnimating = false;
+            //    }
+            //}
 
             return false;
         }
@@ -305,10 +327,10 @@ namespace HonkPooper
 
             Vehicle vehicle1 = vehicle as Vehicle;
 
-            if (vehicle1.IsMarkedForBombing)
-            {
-                vehicle1.Blast();
-            }
+            //if (vehicle1.IsMarkedForBombing)
+            //{
+            vehicle1.Pop();
+            //}
 
             if (vehicle1.Honk())
             {
