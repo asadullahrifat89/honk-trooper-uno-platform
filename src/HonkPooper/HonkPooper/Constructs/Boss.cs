@@ -90,6 +90,7 @@ namespace HonkPooper
             Opacity = 1;
             Health = _random.Next(100, 200);
             IsAttacking = false;
+            SetScaleTransform(1);
         }
 
         public void Hover()

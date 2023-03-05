@@ -19,9 +19,9 @@ namespace HonkPooper
         #region Ctor
 
         public PlayerBomb(
-            Func<Construct, bool> animateAction,
-            Func<Construct, bool> recycleAction,
-            double downScaling)
+           Func<Construct, bool> animateAction,
+           Func<Construct, bool> recycleAction,
+           double downScaling)
         {
             _random = new Random();
 
@@ -50,8 +50,8 @@ namespace HonkPooper
             SetChild(content);
 
             IsometricDisplacement = 0.5;
-            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;
-            DropShadowDistance = 40;
+            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET + 2;
+            DropShadowDistance = 60;
         }
 
         #endregion
@@ -64,11 +64,11 @@ namespace HonkPooper
 
         #region Methods
 
-        public void Reposition(Player player, double downScaling)
+        public void Reposition(Player Player, double downScaling)
         {
             SetPosition(
-                left: (player.GetLeft() + player.Width / 2) - Width / 2,
-                top: player.GetBottom() - (40 * downScaling),
+                left: (Player.GetLeft() + Player.Width / 2) - Width / 2,
+                top: Player.GetBottom() - (40 * downScaling),
                 z: 7);
         }
 

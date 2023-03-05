@@ -10,16 +10,21 @@ namespace HonkPooper
         public static (ConstructType ConstructType, double Height, double Width)[] CONSTRUCT_SIZES = new (ConstructType, double, double)[]
         {
             new (ConstructType.PLAYER, 200, 200),
-            new (ConstructType.DROP_SHADOW, 25, 60),
-            new (ConstructType.PLAYER_BOMB, 80, 80),            
-            new (ConstructType.TREE, 150, 150),
-            new (ConstructType.ROAD_MARK, 40, 15),
+            new (ConstructType.PLAYER_BOMB, 80, 80),
+            new (ConstructType.PLAYER_BOMB_GROUND, 80, 80),
+
+            new (ConstructType.BOSS, 200, 200),
+            new (ConstructType.BOSS_BOMB, 80, 80),
+
             new (ConstructType.VEHICLE_SMALL, 150, 150),
             new (ConstructType.VEHICLE_LARGE, 180, 180),
+
             new (ConstructType.HONK, 90, 90),
             new (ConstructType.CLOUD, 220, 220),
-            new (ConstructType.BOSS, 220, 220),
-            new (ConstructType.BOSS_BOMB, 80, 80),
+            new (ConstructType.TREE, 150, 150),
+            new (ConstructType.ROAD_MARK, 40, 15),
+
+            new (ConstructType.DROP_SHADOW, 25, 60),
         };
 
         public static (ConstructType ConstructType, Uri Uri)[] CONSTRUCT_TEMPLATES = new (ConstructType, Uri)[]
@@ -49,12 +54,12 @@ namespace HonkPooper
             new (ConstructType.PLAYER, new Uri("ms-appx:///HonkPooper/Assets/Images/player_1.png")),
             new (ConstructType.PLAYER, new Uri("ms-appx:///HonkPooper/Assets/Images/player_2.png")),
 
-            //new (ConstructType.PLAYER_BOMB, new Uri("ms-appx:///HonkPooper/Assets/Images/poop_1.png")),
-            //new (ConstructType.PLAYER_BOMB, new Uri("ms-appx:///HonkPooper/Assets/Images/poop_2.png")),
-            //new (ConstructType.PLAYER_BOMB, new Uri("ms-appx:///HonkPooper/Assets/Images/poop_3.png")),
+            new (ConstructType.PLAYER_BOMB, new Uri("ms-appx:///HonkPooper/Assets/Images/player_bomb_1.png")),
+            new (ConstructType.PLAYER_BOMB, new Uri("ms-appx:///HonkPooper/Assets/Images/player_bomb_2.png")),
+            new (ConstructType.PLAYER_BOMB, new Uri("ms-appx:///HonkPooper/Assets/Images/player_bomb_3.png")),
 
-            new (ConstructType.PLAYER_BOMB, new Uri("ms-appx:///HonkPooper/Assets/Images/cracker_1.png")),
-            new (ConstructType.PLAYER_BOMB, new Uri("ms-appx:///HonkPooper/Assets/Images/cracker_2.png")),
+            new (ConstructType.PLAYER_BOMB_GROUND, new Uri("ms-appx:///HonkPooper/Assets/Images/cracker_1.png")),
+            new (ConstructType.PLAYER_BOMB_GROUND, new Uri("ms-appx:///HonkPooper/Assets/Images/cracker_2.png")),
 
             new (ConstructType.BOMB_BLAST, new Uri("ms-appx:///HonkPooper/Assets/Images/blast_1.png")),
             new (ConstructType.BOMB_BLAST, new Uri("ms-appx:///HonkPooper/Assets/Images/blast_2.png")),
@@ -78,6 +83,7 @@ namespace HonkPooper
         NONE,
         PLAYER,
         PLAYER_BOMB,
+        PLAYER_BOMB_GROUND,
         BOMB_BLAST,
         VEHICLE_SMALL,
         VEHICLE_LARGE,

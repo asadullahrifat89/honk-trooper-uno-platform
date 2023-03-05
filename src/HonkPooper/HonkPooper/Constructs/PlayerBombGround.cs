@@ -5,7 +5,7 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace HonkPooper
 {
-    public partial class BossBomb : Construct
+    public partial class PlayerBombGround : Construct
     {
         #region Fields
 
@@ -18,19 +18,19 @@ namespace HonkPooper
 
         #region Ctor
 
-        public BossBomb(
-           Func<Construct, bool> animateAction,
-           Func<Construct, bool> recycleAction,
-           double downScaling)
+        public PlayerBombGround(
+            Func<Construct, bool> animateAction,
+            Func<Construct, bool> recycleAction,
+            double downScaling)
         {
             _random = new Random();
 
-            _bomb_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BOSS_BOMB).Select(x => x.Uri).ToArray();
+            _bomb_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BOMB_GROUND).Select(x => x.Uri).ToArray();
             _bomb_blast_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BOMB_BLAST).Select(x => x.Uri).ToArray();
 
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.BOSS_BOMB);
+            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.PLAYER_BOMB_GROUND);
 
-            ConstructType = ConstructType.BOSS_BOMB;
+            ConstructType = ConstructType.PLAYER_BOMB_GROUND;
 
             var width = size.Width * downScaling;
             var height = size.Height * downScaling;
@@ -50,8 +50,8 @@ namespace HonkPooper
             SetChild(content);
 
             IsometricDisplacement = 0.5;
-            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET + 2;
-            DropShadowDistance = 60;
+            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;
+            DropShadowDistance = 40;
         }
 
         #endregion
@@ -64,11 +64,11 @@ namespace HonkPooper
 
         #region Methods
 
-        public void Reposition(Boss boss, double downScaling)
+        public void Reposition(Player player, double downScaling)
         {
             SetPosition(
-                left: (boss.GetLeft() + boss.Width / 2) - Width / 2,
-                top: boss.GetBottom() - (40 * downScaling),
+                left: (player.GetLeft() + player.Width / 2) - Width / 2,
+                top: player.GetBottom() - (40 * downScaling),
                 z: 7);
         }
 

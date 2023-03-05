@@ -3,7 +3,6 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI;
 using System;
 using System.Linq;
-using System.Diagnostics.Contracts;
 
 namespace HonkPooper
 {

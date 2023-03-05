@@ -1,10 +1,6 @@
 ﻿using Microsoft.UI;
-using Microsoft.UI.Input;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
-using System;
-using Windows.Foundation;
-using Windows.Graphics.Display;
 
 namespace HonkPooper
 {
