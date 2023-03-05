@@ -35,9 +35,9 @@ namespace HonkPooper
 		var factory = LoggerFactory.Create(builder =>
 		{
 #if __WASM__
-			builder.AddProvider(new Uno.Extensions.Logging.WebAssembly.WebAssemblyConsoleLoggerProvider());
+			builder.AddProvider(new global::Uno.Extensions.Logging.WebAssembly.WebAssemblyConsoleLoggerProvider());
 #elif __IOS__ && !__MACCATALYST__
-			builder.AddProvider(new Uno.Extensions.Logging.OSLogLoggerProvider());
+			builder.AddProvider(new global::Uno.Extensions.Logging.OSLogLoggerProvider());
 #elif NETFX_CORE
 			builder.AddDebug();
 #else
@@ -80,10 +80,10 @@ namespace HonkPooper
 			// builder.AddFilter("Uno.Foundation.WebAssemblyRuntime", LogLevel.Debug );
 		});
 
-            Uno.Extensions.LogExtensionPoint.AmbientLoggerFactory = factory;
+		global::Uno.Extensions.LogExtensionPoint.AmbientLoggerFactory = factory;
 
 #if HAS_UNO
-            Uno.UI.Adapter.Microsoft.Extensions.Logging.LoggingAdapter.Initialize();
+		global::Uno.UI.Adapter.Microsoft.Extensions.Logging.LoggingAdapter.Initialize();
 #endif
 #endif
         }
