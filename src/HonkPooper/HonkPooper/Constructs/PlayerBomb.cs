@@ -10,11 +10,9 @@ namespace HonkPooper
         #region Fields
 
         private Random _random;
+
         private Uri[] _bomb_uris;
         private Uri[] _bomb_blast_uris;
-
-        private int _blastDelay;
-        private readonly int _blastDelayDefault = 15;
 
         #endregion
 
@@ -60,8 +58,6 @@ namespace HonkPooper
             IsometricDisplacement = 0.5;
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;
             DropShadowDistance = 40;
-
-            _blastDelay = _blastDelayDefault;
         }
 
         #endregion
@@ -78,10 +74,8 @@ namespace HonkPooper
 
         public void Reset()
         {
-            _blastDelay = _blastDelayDefault;
-
             Opacity = 1;
-            SetScaleTransform(1);            
+            SetScaleTransform(1);
 
             IsBlasting = false;
 
