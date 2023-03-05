@@ -311,7 +311,7 @@ namespace HonkPooper
 
                 if (dropShadow.GetCloseHitBox().IntersectsWith(bomb.GetCloseHitBox()))
                     PlayerBombGround.SetBlast();
-            }            
+            }
 
             return true;
         }
@@ -858,15 +858,19 @@ namespace HonkPooper
 
                 var speed = (_scene.Speed + boss.SpeedOffset);
 
-                if (!boss1.IsAttacking && boss.GetLeft() < _scene.Width / 2)
+                // bring boss to a suitable distance from player and then start attacking
+
+                if (!boss1.IsAttacking /*&& boss.GetLeft() < _scene.Width / 2*/)
                 {
                     MoveConstruct(construct: boss, speed: speed);
                 }
 
-                if (boss.GetRight() > _scene.Width / 3)
+                if (boss.GetRight() > _scene.Width / 2)
                 {
                     if (!boss1.IsAttacking)
+                    {
                         boss1.IsAttacking = true;
+                    }
 
                     if (boss1.IsAttacking && !boss1.AwaitMoveLeft && !boss1.AwaitMoveRight)
                     {
@@ -891,7 +895,7 @@ namespace HonkPooper
                     {
                         boss1.MoveLeft(speed);
 
-                        if (boss.GetLeft() < 0)
+                        if (boss.GetLeft() < 0 || boss.GetBottom() > _scene.Height)
                         {
                             boss1.AwaitMoveLeft = false;
                             boss1.AwaitMoveRight = true;
@@ -1171,7 +1175,7 @@ namespace HonkPooper
                spawnAction: SpawnBossesInScene);
 
             Generator bossBombs = new(
-               generationDelay: 50,
+               generationDelay: 40,
                generationAction: GenerateBossBombInScene,
                spawnAction: SpawnBossBombsInScene);
 
@@ -1202,19 +1206,6 @@ namespace HonkPooper
 
             ScreenExtensions.RequiredDisplayOrientation = Windows.Graphics.Display.DisplayOrientations.Landscape;
             ScreenExtensions.DisplayInformation.OrientationChanged += DisplayInformation_OrientationChanged;
-        }
-
-        private void Controller_RequiresScreenOrientationChange(object sender, DisplayOrientations e)
-        {
-            Console.WriteLine($"Required Orientation {e}");
-        }
-
-        private void DisplayInformation_OrientationChanged(Windows.Graphics.Display.DisplayInformation sender, object args)
-        {
-            if (_scene.IsAnimating)
-                _scene.Stop();
-
-            Console.WriteLine($"{sender.CurrentOrientation}");
         }
 
         #endregion
@@ -1256,6 +1247,19 @@ namespace HonkPooper
         {
             SizeChanged -= MainPage_SizeChanged;
             _controller.RequiresScreenOrientationChange -= Controller_RequiresScreenOrientationChange;
+        }
+
+        private void Controller_RequiresScreenOrientationChange(object sender, DisplayOrientations e)
+        {
+            Console.WriteLine($"Required Orientation {e}");
+        }
+
+        private void DisplayInformation_OrientationChanged(Windows.Graphics.Display.DisplayInformation sender, object args)
+        {
+            if (_scene.IsAnimating)
+                _scene.Stop();
+
+            Console.WriteLine($"{sender.CurrentOrientation}");
         }
 
         #endregion      

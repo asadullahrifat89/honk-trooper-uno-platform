@@ -13,7 +13,7 @@ namespace HonkPooper
             new (ConstructType.PLAYER_BOMB, 80, 80),
             new (ConstructType.PLAYER_BOMB_GROUND, 80, 80),
 
-            new (ConstructType.BOSS, 220, 220),
+            new (ConstructType.BOSS, 200, 200),
             new (ConstructType.BOSS_BOMB, 80, 80),
 
             new (ConstructType.VEHICLE_SMALL, 150, 150),
