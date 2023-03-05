@@ -65,6 +65,22 @@ namespace HonkPooper
             return rect;
         }
 
+        public static Rect GetOverlappingHitBox(this Construct Construct)
+        {
+            var fourthWidht = Construct.Width / 3;
+            var fourthHeight = Construct.Height / 3;
+
+            var rect = new Rect(
+                x: Construct.GetLeft() + fourthWidht,
+                y: Construct.GetTop() + fourthHeight,
+                width: Construct.Width - fourthWidht,
+                height: Construct.Height - fourthHeight);
+
+            //Construct.SetHitBoxBorder(rect);
+
+            return rect;
+        }
+
         public static Rect GetDistantHitBox(this Construct Construct)
         {
             var maxWidth = (Construct.Width * 4);

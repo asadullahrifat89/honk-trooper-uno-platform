@@ -133,6 +133,7 @@ namespace HonkPooper
                 bomb.Reset();
                 bomb.IsAnimating = true;
                 bomb.IsGravitating = true;
+                bomb.AwaitingPop = true;
 
                 bomb.Reposition(
                     player: _player,
@@ -164,7 +165,7 @@ namespace HonkPooper
 
             if (playerBomb.IsBlasting)
             {
-                MoveConstruct(bomb, speed);
+                MoveConstruct(construct: bomb, speed: speed);
 
                 bomb.Expand();
                 bomb.Fade(0.02);
@@ -179,8 +180,7 @@ namespace HonkPooper
                     .Where(x => x.IsAnimating && x.WillHonk)
                     .FirstOrDefault(x => x.GetCloseHitBox().IntersectsWith(bomb.GetCloseHitBox())) is Vehicle vehicle)
                 {
-                    vehicle.IsMarkedForBombing = true;
-                    vehicle.WillHonk = false;
+                    vehicle.Bomb();
                 }
             }
             else
@@ -188,6 +188,8 @@ namespace HonkPooper
                 bomb.SetLeft(bomb.GetLeft() + speed);
                 bomb.SetTop(bomb.GetTop() + speed);
             }
+
+            bomb.Pop();
 
             return true;
         }
@@ -269,11 +271,34 @@ namespace HonkPooper
                         break;
                 }
 
+                //if (_scene.Children.OfType<Vehicle>().FirstOrDefault(x => x.IsAnimating && x.SpeedOffset == vehicle.SpeedOffset && x.GetCloseHitBox().IntersectsWith(vehicle.GetCloseHitBox())) is Vehicle overlappingVehicle)
+                //{
+                //    overlappingVehicle.SetPosition(
+                //        left: -500,
+                //        top: -500);
+
+                //    overlappingVehicle.IsAnimating = false;
+
+                //    Console.WriteLine("Overlapping vehicle removed.");
+                //}
+
                 vehicle.SetZ(3);
 
                 // Console.WriteLine("Vehicle generated.");
                 return true;
             }
+
+            //foreach (Vehicle sourceVehicle in _scene.Children.OfType<Vehicle>().Where(x => x.IsAnimating))
+            //{
+            //    if (_scene.Children.OfType<Vehicle>().Any(x => x.IsAnimating && x.GetCloseHitBox().IntersectsWith(sourceVehicle.GetCloseHitBox())))
+            //    {
+            //        sourceVehicle.SetPosition(
+            //                    left: -500,
+            //                    top: -500);
+
+            //        sourceVehicle.IsAnimating = false;
+            //    }
+            //}
 
             return false;
         }
@@ -282,7 +307,7 @@ namespace HonkPooper
         {
             var speed = (_scene.Speed + vehicle.SpeedOffset);
 
-            MoveConstruct(vehicle, speed);
+            MoveConstruct(construct: vehicle, speed: speed);
 
             // TODO: fix hitbox for safe distance between vehicles
 
@@ -291,7 +316,7 @@ namespace HonkPooper
             // prevent overlapping
 
             if (_scene.Children.OfType<Vehicle>()
-                .FirstOrDefault(x => x.GetCloseHitBox().IntersectsWith(hitHox)) is Construct collidingVehicle)
+                .FirstOrDefault(x => x.GetHitBox().IntersectsWith(hitHox)) is Construct collidingVehicle)
             {
                 if (collidingVehicle.SpeedOffset < vehicle.SpeedOffset)
                 {
@@ -305,13 +330,11 @@ namespace HonkPooper
 
             Vehicle vehicle1 = vehicle as Vehicle;
 
-            if (vehicle1.IsMarkedForBombing)
-            {
-                vehicle1.Blast();
-            }
+            vehicle.Pop();
 
             if (vehicle1.Honk())
             {
+                //vehicle.AwaitingPop = true;
                 GenerateHonkInScene(vehicle1);
             }
 
@@ -379,7 +402,7 @@ namespace HonkPooper
         private bool AnimateRoadMark(Construct roadMark)
         {
             var speed = (_scene.Speed + roadMark.SpeedOffset);
-            MoveConstruct(roadMark, speed);
+            MoveConstruct(construct: roadMark, speed: speed);
             return true;
         }
 
@@ -464,7 +487,7 @@ namespace HonkPooper
         private bool AnimateTree(Construct tree)
         {
             var speed = (_scene.Speed + tree.SpeedOffset);
-            MoveConstruct(tree, speed);
+            MoveConstruct(construct: tree, speed: speed);
             return true;
         }
 
@@ -512,6 +535,8 @@ namespace HonkPooper
             if (_scene.Children.OfType<Honk>().FirstOrDefault(x => x.IsAnimating == false) is Honk honk)
             {
                 honk.IsAnimating = true;
+                honk.AwaitingPop = true;
+
                 honk.Reset();
 
                 var hitBox = vehicle.GetCloseHitBox();
@@ -532,8 +557,9 @@ namespace HonkPooper
 
         public bool AnimateHonk(Construct honk)
         {
+            honk.Pop();
             var speed = (_scene.Speed + honk.SpeedOffset);
-            MoveConstruct(honk, speed);
+            MoveConstruct(construct: honk, speed: speed);
             return true;
         }
 
@@ -626,7 +652,7 @@ namespace HonkPooper
         public bool AnimateCloud(Construct cloud)
         {
             var speed = (_scene.Speed + cloud.SpeedOffset);
-            MoveConstruct(cloud, speed);
+            MoveConstruct(construct: cloud, speed: speed);
             return true;
         }
 
@@ -837,10 +863,6 @@ namespace HonkPooper
 
             DropShadow playersShadow = (_scene.Children.OfType<DropShadow>().FirstOrDefault(x => x.Id == _player.Id));
             playersShadow.Move();
-
-            //_dropShadow.Move(
-            //    parent: _player,
-            //    downScaling: _scene.DownScaling);
         }
 
         private void MainPage_Unloaded(object sender, RoutedEventArgs e)

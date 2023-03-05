@@ -1,6 +1,6 @@
 {
   "background_color": "#ffffff",
-  "description": "HonkPooper",
+  "description": "Honk Pooper",
   "display": "standalone",
   "icons": [
     {
@@ -29,8 +29,8 @@
       "type": "image/png"
     }
   ],
-  "name": "HonkPooper",
-  "short_name": "HonkPooper",
+  "name": "Honk Pooper",
+  "short_name": "Honk Pooper",
   "theme_color": "#ffffff",
   "id": "/honk-pooper-uno-platform/",
   "start_url": "/honk-pooper-uno-platform/",

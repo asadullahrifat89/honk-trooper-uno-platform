@@ -14,10 +14,7 @@ namespace HonkPooper
         private Uri[] _vehicle_small_uris;
         private Uri[] _vehicle_large_uris;
 
-        private int _honkDelay;
-
-        private bool _isBombDroppingComplete;
-        private double _honkBustingUpScalingLimit = 1.5;
+        private int _honkDelay;        
 
         #endregion
 
@@ -114,8 +111,6 @@ namespace HonkPooper
 
         public bool IsMarkedForBombing { get; set; }
 
-        public bool IsBombDropped { get; set; }
-
         #endregion
 
         #region Methods
@@ -123,7 +118,7 @@ namespace HonkPooper
         public void Reset()
         {
             IsMarkedForBombing = false;
-            IsBombDropped = false;
+            AwaitingPop = false;
 
             SetScaleTransform(1);
 
@@ -139,13 +134,13 @@ namespace HonkPooper
 
         public bool Honk()
         {
-            if (!IsMarkedForBombing /*&& !IsHonkBusted*/ && WillHonk)
+            if (!IsMarkedForBombing && WillHonk)
             {
                 _honkDelay--;
 
                 if (_honkDelay < 0)
                 {
-                    SetHonkDelay();
+                    SetHonkDelay();                    
                     return true;
                 }
             }
@@ -159,32 +154,14 @@ namespace HonkPooper
             _honkDelay = _random.Next(30, 80);
         }
 
-        public void Blast()
+        public void Bomb()
         {
-            if (!IsBombDropped)
-            {
-                if (!_isBombDroppingComplete && GetScaleX() < _honkBustingUpScalingLimit)
-                {
-                    Expand();
-                }
-
-                if (GetScaleX() >= _honkBustingUpScalingLimit)
-                    _isBombDroppingComplete = true;
-
-                if (_isBombDroppingComplete)
-                {
-                    Shrink();
-
-                    if (GetScaleX() <= 1)
-                    {
-                        _isBombDroppingComplete = false;
-                        IsBombDropped = true;
-
-                        SpeedOffset = Constants.DEFAULT_SPEED_OFFSET + 1;
-                    }
-                }
-            }
+            IsMarkedForBombing = true;
+            WillHonk = false;
+            AwaitingPop = true;
+            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET + 1;
         }
+
         #endregion
     }
 }

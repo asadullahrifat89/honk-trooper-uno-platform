@@ -63,7 +63,7 @@ namespace HonkPooper
     public enum ConstructType
     {
         NONE,
-        PLAYER,        
+        PLAYER,
         PLAYER_BOMB,
         PLAYER_BOMB_BLAST,
         VEHICLE_SMALL,
