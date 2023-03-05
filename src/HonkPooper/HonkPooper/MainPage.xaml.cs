@@ -784,6 +784,7 @@ namespace HonkPooper
             _controller.SetScene(_scene);
             _controller.SetArrowsKeysContainerRotation(-45);
             _controller.ArrowsKeysContainer.Margin = new Thickness(left: 0, top: 0, right: 40, bottom: -60);
+            _controller.SetDisplayOrientation(Windows.Graphics.Display.DisplayOrientations.Landscape);
         }
 
         #endregion

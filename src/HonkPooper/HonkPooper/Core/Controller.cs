@@ -4,10 +4,11 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using System;
 using Windows.Foundation;
+using Windows.Graphics.Display;
 
 namespace HonkPooper
 {
-    public partial class Controller : ControlerBase
+    public partial class Controller : ControllerBase
     {
         #region Fields
 
@@ -36,13 +37,14 @@ namespace HonkPooper
         {
             //PointerPressed += Controller_PointerPressed;
             //PointerMoved += Controller_PointerMoved;
+
             KeyUp += Controller_KeyUp;
             KeyDown += Controller_KeyDown;
 
             ArrowsKeysContainer = new()
             {
                 HorizontalAlignment = Microsoft.UI.Xaml.HorizontalAlignment.Right,
-                VerticalAlignment = Microsoft.UI.Xaml.VerticalAlignment.Bottom,                
+                VerticalAlignment = Microsoft.UI.Xaml.VerticalAlignment.Bottom,
                 RenderTransform = _arrowsKeysContainerTransform,
             };
 
@@ -160,6 +162,26 @@ namespace HonkPooper
 
             attack.Click += (s, e) => { ActivateAttack(); };
             this.Children.Add(attack);
+
+            Button start = new()
+            {
+                Background = new SolidColorBrush(Colors.Goldenrod),
+                Height = _keysSize,
+                Width = _keysSize,
+                CornerRadius = new Microsoft.UI.Xaml.CornerRadius(30),
+                Content = new SymbolIcon()
+                {
+                    Symbol = Symbol.Play,
+                },
+                BorderBrush = new SolidColorBrush(Colors.White),
+                BorderThickness = new Microsoft.UI.Xaml.Thickness(6),
+                HorizontalAlignment = Microsoft.UI.Xaml.HorizontalAlignment.Right,
+                VerticalAlignment = Microsoft.UI.Xaml.VerticalAlignment.Top,
+                Margin = new Microsoft.UI.Xaml.Thickness(20),
+            };
+
+            start.Click += (s, e) => { SceneStartOrStop(); };
+            this.Children.Add(start);
         }
 
         #endregion
@@ -169,6 +191,12 @@ namespace HonkPooper
         public void SetArrowsKeysContainerRotation(double rotation)
         {
             _arrowsKeysContainerTransform.Rotation = rotation;
+        }
+
+        public void SetDisplayOrientation(DisplayOrientations displayOrientation)
+        {
+            if (DisplayInformation.GetForCurrentView().CurrentOrientation != displayOrientation)
+                DisplayInformation.AutoRotationPreferences = displayOrientation;
         }
 
         #endregion

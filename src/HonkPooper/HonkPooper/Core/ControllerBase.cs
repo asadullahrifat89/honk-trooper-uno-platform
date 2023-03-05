@@ -5,7 +5,7 @@ using Windows.Foundation;
 
 namespace HonkPooper
 {
-    public partial class ControlerBase : Grid
+    public partial class ControllerBase : Grid
     {
         #region Fields
 
@@ -15,7 +15,7 @@ namespace HonkPooper
 
         #region Ctor
 
-        public ControlerBase()
+        public ControllerBase()
         {
 
         }
@@ -66,7 +66,7 @@ namespace HonkPooper
                     break;
                 case Windows.System.VirtualKey.Enter:
                     {
-                        StartScene();
+                        SceneStartOrStop();
                     }
                     break;
                 case Windows.System.VirtualKey.Escape:
@@ -146,16 +146,6 @@ namespace HonkPooper
             Console.WriteLine("Space");
         }
 
-        public void StartScene()
-        {
-            if (_scene.IsAnimating)
-                _scene.Stop();
-            else
-                _scene.Start();
-
-            Console.WriteLine("Enter");
-        }
-
         public void ActivateMoveDown()
         {
             IsMoveDown = true;
@@ -211,6 +201,18 @@ namespace HonkPooper
         public void DeactivateMoveLeft()
         {
             IsMoveLeft = false;
+        }
+
+        public void SceneStartOrStop()
+        {
+            if (_scene.IsAnimating)
+                _scene.Stop();
+            else
+                _scene.Start();
+
+            ScreenExtensions.EnterFullScreen(true);
+
+            Console.WriteLine("Enter");
         }
 
         #endregion        
