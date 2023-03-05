@@ -2,10 +2,13 @@
 using System.Linq;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Automation.Peers;
+using Windows.Foundation;
+using System.Diagnostics.Contracts;
 
 namespace HonkPooper
 {
-    public partial class PlayerBomb : Construct
+    public partial class BossBomb : Construct
     {
         #region Fields
 
@@ -14,23 +17,26 @@ namespace HonkPooper
         private Uri[] _bomb_uris;
         private Uri[] _bomb_blast_uris;
 
+        private Rect _origin = Rect.Empty;
+        private Rect _target = Rect.Empty;
+
         #endregion
 
         #region Ctor
 
-        public PlayerBomb(
-            Func<Construct, bool> animateAction,
-            Func<Construct, bool> recycleAction,
-            double downScaling)
+        public BossBomb(
+           Func<Construct, bool> animateAction,
+           Func<Construct, bool> recycleAction,
+           double downScaling)
         {
             _random = new Random();
 
-            _bomb_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BOMB).Select(x => x.Uri).ToArray();
+            _bomb_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BOSS_BOMB).Select(x => x.Uri).ToArray();
             _bomb_blast_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BOMB_BLAST).Select(x => x.Uri).ToArray();
 
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.PLAYER_BOMB);
+            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.BOSS_BOMB);
 
-            ConstructType = ConstructType.PLAYER_BOMB;
+            ConstructType = ConstructType.BOSS_BOMB;
 
             var width = size.Width * downScaling;
             var height = size.Height * downScaling;
@@ -51,7 +57,7 @@ namespace HonkPooper
 
             IsometricDisplacement = 0.5;
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;
-            DropShadowDistance = 40;
+            DropShadowDistance = 50;
         }
 
         #endregion
@@ -64,12 +70,14 @@ namespace HonkPooper
 
         #region Methods
 
-        public void Reposition(Player player, double downScaling)
+        public void Reposition(Boss boss, double downScaling)
         {
             SetPosition(
-                left: (player.GetLeft() + player.Width / 2) - Width / 2,
-                top: player.GetBottom() - (40 * downScaling),
+                left: (boss.GetLeft() + boss.Width / 2) - Width / 2,
+                top: boss.GetBottom() - (40 * downScaling),
                 z: 7);
+
+            _origin = boss.GetCloseHitBox();
         }
 
         public void Reset()
@@ -87,6 +95,9 @@ namespace HonkPooper
             };
 
             SetChild(content);
+
+            _target = Rect.Empty;
+            _origin = Rect.Empty;
         }
 
         public void SetBlast()
@@ -101,6 +112,21 @@ namespace HonkPooper
             SetChild(content);
 
             IsBlasting = true;
+        }
+
+        public void SetTargetPoint(Rect rect)
+        {
+            _target = rect;
+        }
+
+        public void FollowTargetPoint(double speed)
+        {
+            if (_target != Rect.Empty && _origin != Rect.Empty)
+            {
+                SetLeft(GetLeft() + speed);
+                SetTop(GetTop() + speed * IsometricDisplacement);
+            }
+
         }
 
         #endregion
