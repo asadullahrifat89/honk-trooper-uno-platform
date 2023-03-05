@@ -5,7 +5,7 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace HonkPooper
 {
-    public partial class BossBomb : Construct
+    public partial class PlayerBomb : Construct
     {
         #region Fields
 
@@ -18,19 +18,19 @@ namespace HonkPooper
 
         #region Ctor
 
-        public BossBomb(
+        public PlayerBomb(
            Func<Construct, bool> animateAction,
            Func<Construct, bool> recycleAction,
            double downScaling)
         {
             _random = new Random();
 
-            _bomb_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BOSS_BOMB).Select(x => x.Uri).ToArray();
+            _bomb_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BOMB).Select(x => x.Uri).ToArray();
             _bomb_blast_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BOMB_BLAST).Select(x => x.Uri).ToArray();
 
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.BOSS_BOMB);
+            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.PLAYER_BOMB);
 
-            ConstructType = ConstructType.BOSS_BOMB;
+            ConstructType = ConstructType.PLAYER_BOMB;
 
             var width = size.Width * downScaling;
             var height = size.Height * downScaling;
@@ -64,11 +64,11 @@ namespace HonkPooper
 
         #region Methods
 
-        public void Reposition(Boss boss, double downScaling)
+        public void Reposition(Player Player, double downScaling)
         {
             SetPosition(
-                left: (boss.GetLeft() + boss.Width / 2) - Width / 2,
-                top: boss.GetBottom() - (40 * downScaling),
+                left: (Player.GetLeft() + Player.Width / 2) - Width / 2,
+                top: Player.GetBottom() - (40 * downScaling),
                 z: 7);
         }
 

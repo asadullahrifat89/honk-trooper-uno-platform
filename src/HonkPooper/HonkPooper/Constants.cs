@@ -54,9 +54,9 @@ namespace HonkPooper
             new (ConstructType.PLAYER, new Uri("ms-appx:///HonkPooper/Assets/Images/player_1.png")),
             new (ConstructType.PLAYER, new Uri("ms-appx:///HonkPooper/Assets/Images/player_2.png")),
 
-            //new (ConstructType.PLAYER_BOMB, new Uri("ms-appx:///HonkPooper/Assets/Images/poop_1.png")),
-            //new (ConstructType.PLAYER_BOMB, new Uri("ms-appx:///HonkPooper/Assets/Images/poop_2.png")),
-            //new (ConstructType.PLAYER_BOMB, new Uri("ms-appx:///HonkPooper/Assets/Images/poop_3.png")),
+            new (ConstructType.PLAYER_BOMB, new Uri("ms-appx:///HonkPooper/Assets/Images/player_bomb_1.png")),
+            new (ConstructType.PLAYER_BOMB, new Uri("ms-appx:///HonkPooper/Assets/Images/player_bomb_2.png")),
+            new (ConstructType.PLAYER_BOMB, new Uri("ms-appx:///HonkPooper/Assets/Images/player_bomb_3.png")),
 
             new (ConstructType.PLAYER_BOMB_GROUND, new Uri("ms-appx:///HonkPooper/Assets/Images/cracker_1.png")),
             new (ConstructType.PLAYER_BOMB_GROUND, new Uri("ms-appx:///HonkPooper/Assets/Images/cracker_2.png")),
