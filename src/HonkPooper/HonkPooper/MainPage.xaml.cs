@@ -798,6 +798,9 @@ namespace HonkPooper
 
         private void DisplayInformation_OrientationChanged(Windows.Graphics.Display.DisplayInformation sender, object args)
         {
+            if (_scene.IsAnimating)
+                _scene.Stop();
+
             Console.WriteLine($"{sender.CurrentOrientation}");
         }
 
