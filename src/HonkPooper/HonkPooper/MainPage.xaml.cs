@@ -58,6 +58,8 @@ namespace HonkPooper
 
         public bool AnimatePlayer(Construct player)
         {
+            player.Pop();
+
             var speed = (_scene.Speed + player.SpeedOffset) * _scene.DownScaling;
 
             _player.Hover();
@@ -101,7 +103,7 @@ namespace HonkPooper
                 {
                     GeneratePlayerBombGroundInScene();
                 }
-                
+
                 _controller.IsAttacking = false;
             }
 
@@ -161,6 +163,8 @@ namespace HonkPooper
 
         public bool AnimatePlayerBomb(Construct bomb)
         {
+            bomb.Pop();
+
             PlayerBomb playerBomb = bomb as PlayerBomb;
 
             var speed = _scene.Speed + bomb.SpeedOffset;
@@ -181,7 +185,11 @@ namespace HonkPooper
                 if (_scene.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss)
                 {
                     if (playerBomb.GetCloseHitBox().IntersectsWith(boss.GetCloseHitBox()))
+                    {
                         playerBomb.SetBlast();
+                        boss.AwaitingPop = true;
+                    }
+
                 }
             }
 
@@ -832,6 +840,8 @@ namespace HonkPooper
 
             Boss boss1 = boss as Boss;
 
+            boss.Pop();
+
             if (!boss1.IsAttacking && boss.GetLeft() < _scene.Width / 2)
             {
                 MoveConstruct(construct: boss, speed: speed);
@@ -949,6 +959,8 @@ namespace HonkPooper
 
         public bool AnimateBossBomb(Construct bomb)
         {
+            bomb.Pop();
+
             BossBomb bossBomb = bomb as BossBomb;
 
             var speed = _scene.Speed + bomb.SpeedOffset;
@@ -967,7 +979,11 @@ namespace HonkPooper
             else
             {
                 if (bossBomb.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
+                {
                     bossBomb.SetBlast();
+                    _player.AwaitingPop = true;
+                }
+                    
             }
 
             return true;
@@ -1117,6 +1133,11 @@ namespace HonkPooper
                 generationAction: () => { return true; },
                 spawnAction: SpawnPlayerInScene);
 
+            Generator playerBombs = new(
+              generationDelay: 0,
+              generationAction: () => { return true; },
+              spawnAction: SpawnPlayerBombsInScene);
+
             Generator playerGroundBombs = new(
                 generationDelay: 0,
                 generationAction: () => { return true; },
@@ -1133,17 +1154,10 @@ namespace HonkPooper
                generationAction: GenerateBossInScene,
                spawnAction: SpawnBossesInScene);
 
-
             Generator bossBombs = new(
                generationDelay: 50,
                generationAction: GenerateBossBombInScene,
                spawnAction: SpawnBossBombsInScene);
-
-
-            Generator playerBombs = new(
-               generationDelay: 0,
-               generationAction: () => { return true; },
-               spawnAction: SpawnPlayerBombsInScene);
 
             _scene.AddToScene(treeBottoms);
             _scene.AddToScene(treeTops);
@@ -1153,7 +1167,7 @@ namespace HonkPooper
 
             _scene.AddToScene(player);
             _scene.AddToScene(playerBombs);
-            _scene.AddToScene(playerGroundBombs);            
+            _scene.AddToScene(playerGroundBombs);
 
             _scene.AddToScene(clouds);
 
