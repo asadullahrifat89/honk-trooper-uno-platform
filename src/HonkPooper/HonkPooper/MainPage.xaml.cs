@@ -93,7 +93,7 @@ namespace HonkPooper
 
             if (_controller.IsAttacking)
             {
-                GeneratePlayerBombInScene();
+                GeneratePlayerBombGroundInScene();
                 _controller.IsAttacking = false;
             }
 
@@ -102,15 +102,15 @@ namespace HonkPooper
 
         #endregion
 
-        #region PlayerBomb
+        #region PlayerBombGround
 
-        public bool SpawnPlayerBombsInScene()
+        public bool SpawnPlayerBombGroundsInScene()
         {
             for (int i = 0; i < 3; i++)
             {
-                PlayerBomb bomb = new(
-                    animateAction: AnimatePlayerBomb,
-                    recycleAction: RecyclePlayerBomb,
+                PlayerBombGround bomb = new(
+                    animateAction: AnimatePlayerBombGround,
+                    recycleAction: RecyclePlayerBombGround,
                     downScaling: _scene.DownScaling);
 
                 bomb.SetPosition(
@@ -126,9 +126,9 @@ namespace HonkPooper
             return true;
         }
 
-        public bool GeneratePlayerBombInScene()
+        public bool GeneratePlayerBombGroundInScene()
         {
-            if (_scene.Children.OfType<PlayerBomb>().FirstOrDefault(x => x.IsAnimating == false) is PlayerBomb bomb)
+            if (_scene.Children.OfType<PlayerBombGround>().FirstOrDefault(x => x.IsAnimating == false) is PlayerBombGround bomb)
             {
                 bomb.Reset();
                 bomb.IsAnimating = true;
@@ -151,9 +151,9 @@ namespace HonkPooper
             return false;
         }
 
-        public bool AnimatePlayerBomb(Construct bomb)
+        public bool AnimatePlayerBombGround(Construct bomb)
         {
-            PlayerBomb playerBomb = bomb as PlayerBomb;
+            PlayerBombGround PlayerBombGround = bomb as PlayerBombGround;
 
             var speed = _scene.Speed + bomb.SpeedOffset;
 
@@ -161,7 +161,7 @@ namespace HonkPooper
 
             // start blast animation when the bomb touches it's shadow
 
-            if (playerBomb.IsBlasting)
+            if (PlayerBombGround.IsBlasting)
             {
                 MoveConstruct(construct: bomb, speed: speed);
 
@@ -187,7 +187,7 @@ namespace HonkPooper
                 bomb.SetTop(bomb.GetTop() + speed);
 
                 if (dropShadow.GetCloseHitBox().IntersectsWith(bomb.GetCloseHitBox()))
-                    playerBomb.SetBlast();
+                    PlayerBombGround.SetBlast();
             }
 
             bomb.Pop();
@@ -195,7 +195,7 @@ namespace HonkPooper
             return true;
         }
 
-        public bool RecyclePlayerBomb(Construct bomb)
+        public bool RecyclePlayerBombGround(Construct bomb)
         {
             if (bomb.IsFadingComplete)
             {
@@ -789,7 +789,7 @@ namespace HonkPooper
 
         #endregion
 
-        #region Boss Bomb
+        #region BossBomb
 
         public bool SpawnBossBombsInScene()
         {
@@ -846,10 +846,10 @@ namespace HonkPooper
 
             var speed = _scene.Speed + bomb.SpeedOffset;
 
+            MoveConstruct(construct: bomb, speed: speed);
+
             if (bossBomb.IsBlasting)
             {
-                MoveConstruct(construct: bomb, speed: speed);
-
                 bomb.Expand();
                 bomb.Fade(0.02);
 
@@ -859,8 +859,6 @@ namespace HonkPooper
             }
             else
             {
-                MoveConstruct(construct: bomb, speed: speed);
-
                 if (bossBomb.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
                     bossBomb.SetBlast();
             }
@@ -1006,7 +1004,7 @@ namespace HonkPooper
             Generator bombs = new(
                 generationDelay: 0,
                 generationAction: () => { return true; },
-                spawnAction: SpawnPlayerBombsInScene);
+                spawnAction: SpawnPlayerBombGroundsInScene);
 
             // add the clouds which are abve the player z
             Generator clouds = new(

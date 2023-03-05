@@ -5,7 +5,7 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace HonkPooper
 {
-    public partial class PlayerBomb : Construct
+    public partial class PlayerBombGround : Construct
     {
         #region Fields
 
@@ -18,19 +18,19 @@ namespace HonkPooper
 
         #region Ctor
 
-        public PlayerBomb(
+        public PlayerBombGround(
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction,
             double downScaling)
         {
             _random = new Random();
 
-            _bomb_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BOMB).Select(x => x.Uri).ToArray();
+            _bomb_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BOMB_GROUND).Select(x => x.Uri).ToArray();
             _bomb_blast_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BOMB_BLAST).Select(x => x.Uri).ToArray();
 
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.PLAYER_BOMB);
+            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.PLAYER_BOMB_GROUND);
 
-            ConstructType = ConstructType.PLAYER_BOMB;
+            ConstructType = ConstructType.PLAYER_BOMB_GROUND;
 
             var width = size.Width * downScaling;
             var height = size.Height * downScaling;
