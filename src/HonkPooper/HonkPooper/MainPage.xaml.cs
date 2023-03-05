@@ -756,12 +756,12 @@ namespace HonkPooper
                 MoveConstruct(construct: boss, speed: speed);
             }
 
-            if (boss.GetRight() > _scene.Width / 2)
+            if (boss.GetRight() > _scene.Width / 3)
             {
                 if (!boss1.IsAttacking)
                     boss1.IsAttacking = true;
 
-                if (boss1.IsAttacking && !boss1.AwaitMoveLeft && !boss1.AwaitMoveLeft)
+                if (boss1.IsAttacking && !boss1.AwaitMoveLeft && !boss1.AwaitMoveRight)
                 {
                     boss1.AwaitMoveLeft = true;
                 }
