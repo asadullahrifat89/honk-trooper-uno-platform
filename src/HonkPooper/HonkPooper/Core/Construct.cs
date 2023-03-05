@@ -286,9 +286,9 @@ namespace HonkPooper
         {
             if (!AwaitingPop)
             {
-                AwaitingPop = true;
-                _isPoppingComplete = false;
                 SetScaleTransform(1);
+                _isPoppingComplete = false;
+                AwaitingPop = true;
             }
         }
 
@@ -311,8 +311,7 @@ namespace HonkPooper
                     if (GetScaleX() <= 1)
                     {
                         _isPoppingComplete = false;
-                        AwaitingPop = false; // stop popping effect
-                        SetScaleTransform(1);
+                        AwaitingPop = false; // stop popping effect                        
                     }
                 }
             }

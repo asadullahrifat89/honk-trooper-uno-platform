@@ -153,7 +153,7 @@ namespace HonkPooper
             _honkDelay = _random.Next(30, 80);
         }
 
-        public void Bomb()
+        public void SetBlast()
         {
             IsMarkedForBombing = true;
             WillHonk = false;

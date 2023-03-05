@@ -163,8 +163,6 @@ namespace HonkPooper
 
         public bool AnimatePlayerBomb(Construct bomb)
         {
-            bomb.Pop();
-
             PlayerBomb playerBomb = bomb as PlayerBomb;
 
             var speed = _scene.Speed + bomb.SpeedOffset;
@@ -181,6 +179,8 @@ namespace HonkPooper
             }
             else
             {
+                bomb.Pop();
+
                 if (_scene.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss)
                 {
                     if (playerBomb.GetCloseHitBox().IntersectsWith(boss.GetCloseHitBox()))
@@ -192,7 +192,7 @@ namespace HonkPooper
                         if (boss.Health <= 0)
                         {
                             boss.IsAttacking = false;
-                        }                            
+                        }
 
                         Console.WriteLine($"Boss Health: {boss.Health}");
                     }
@@ -299,19 +299,19 @@ namespace HonkPooper
                     .Where(x => x.IsAnimating && x.WillHonk)
                     .FirstOrDefault(x => x.GetCloseHitBox().IntersectsWith(bomb.GetCloseHitBox())) is Vehicle vehicle)
                 {
-                    vehicle.Bomb();
+                    vehicle.SetBlast();
                 }
             }
             else
             {
+                bomb.Pop();
+
                 bomb.SetLeft(bomb.GetLeft() + speed);
                 bomb.SetTop(bomb.GetTop() + speed);
 
                 if (dropShadow.GetCloseHitBox().IntersectsWith(bomb.GetCloseHitBox()))
                     PlayerBombGround.SetBlast();
-            }
-
-            bomb.Pop();
+            }            
 
             return true;
         }
@@ -846,14 +846,16 @@ namespace HonkPooper
         {
             Boss boss1 = boss as Boss;
 
-            boss.Pop();
-
             if (boss1.Health <= 0)
             {
                 boss.Shrink();
+
+                //Console.WriteLine($"Boss ScaleX: {boss.GetScaleX()} ScaleY: {boss.GetScaleY()}");
             }
             else
             {
+                boss.Pop();
+
                 var speed = (_scene.Speed + boss.SpeedOffset);
 
                 if (!boss1.IsAttacking && boss.GetLeft() < _scene.Width / 2)
@@ -974,8 +976,6 @@ namespace HonkPooper
 
         public bool AnimateBossBomb(Construct bomb)
         {
-            bomb.Pop();
-
             BossBomb bossBomb = bomb as BossBomb;
 
             var speed = _scene.Speed + bomb.SpeedOffset;
@@ -993,12 +993,13 @@ namespace HonkPooper
             }
             else
             {
+                bomb.Pop();
+
                 if (bossBomb.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
                 {
                     bossBomb.SetBlast();
                     _player.SetPopping();
                 }
-
             }
 
             return true;
