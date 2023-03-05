@@ -298,6 +298,11 @@ namespace HonkPooper
             }
         }
 
+        public void Rotate() 
+        {
+            _compositeTransform.Rotation += 0.1;
+        }
+
         #endregion
     }
 }

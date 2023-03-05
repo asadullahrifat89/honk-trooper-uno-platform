@@ -135,6 +135,8 @@ namespace HonkPooper
                 bomb.IsGravitating = true;
                 bomb.AwaitingPop = true;
 
+                bomb.SetRotation(_random.Next(-30, 30));
+
                 bomb.Reposition(
                     player: _player,
                     downScaling: _scene.DownScaling);
@@ -158,10 +160,6 @@ namespace HonkPooper
             DropShadow dropShadow = _scene.Children.OfType<DropShadow>().First(x => x.Id == bomb.Id);
 
             // start blast animation when the bomb touches it's shadow
-            if (!playerBomb.IsBlasting && dropShadow.GetCloseHitBox().IntersectsWith(bomb.GetCloseHitBox()))
-            {
-                playerBomb.SetBlastContent();
-            }
 
             if (playerBomb.IsBlasting)
             {
@@ -187,6 +185,9 @@ namespace HonkPooper
             {
                 bomb.SetLeft(bomb.GetLeft() + speed);
                 bomb.SetTop(bomb.GetTop() + speed);
+
+                if (dropShadow.GetCloseHitBox().IntersectsWith(bomb.GetCloseHitBox()))
+                    playerBomb.SetBlast();
             }
 
             bomb.Pop();

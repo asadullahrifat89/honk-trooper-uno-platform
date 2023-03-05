@@ -11,7 +11,7 @@ namespace HonkPooper
         {
             new (ConstructType.PLAYER, 200, 200),
             new (ConstructType.DROP_SHADOW, 25, 60),
-            new (ConstructType.PLAYER_BOMB, 50, 50),
+            new (ConstructType.PLAYER_BOMB, 80, 80),
             new (ConstructType.TREE, 150, 150),
             new (ConstructType.ROAD_MARK, 40, 15),
             new (ConstructType.VEHICLE_SMALL, 150, 150),
@@ -48,9 +48,12 @@ namespace HonkPooper
             new (ConstructType.PLAYER, new Uri("ms-appx:///HonkPooper/Assets/Images/player_1.png")),
             new (ConstructType.PLAYER, new Uri("ms-appx:///HonkPooper/Assets/Images/player_2.png")),
 
-            new (ConstructType.PLAYER_BOMB, new Uri("ms-appx:///HonkPooper/Assets/Images/poop_1.png")),
-            new (ConstructType.PLAYER_BOMB, new Uri("ms-appx:///HonkPooper/Assets/Images/poop_2.png")),
-            new (ConstructType.PLAYER_BOMB, new Uri("ms-appx:///HonkPooper/Assets/Images/poop_3.png")),
+            //new (ConstructType.PLAYER_BOMB, new Uri("ms-appx:///HonkPooper/Assets/Images/poop_1.png")),
+            //new (ConstructType.PLAYER_BOMB, new Uri("ms-appx:///HonkPooper/Assets/Images/poop_2.png")),
+            //new (ConstructType.PLAYER_BOMB, new Uri("ms-appx:///HonkPooper/Assets/Images/poop_3.png")),
+
+            new (ConstructType.PLAYER_BOMB, new Uri("ms-appx:///HonkPooper/Assets/Images/cracker_1.png")),
+            new (ConstructType.PLAYER_BOMB, new Uri("ms-appx:///HonkPooper/Assets/Images/cracker_2.png")),
 
             new (ConstructType.PLAYER_BOMB_BLAST, new Uri("ms-appx:///HonkPooper/Assets/Images/blast_1.png")),
             new (ConstructType.PLAYER_BOMB_BLAST, new Uri("ms-appx:///HonkPooper/Assets/Images/blast_2.png")),
