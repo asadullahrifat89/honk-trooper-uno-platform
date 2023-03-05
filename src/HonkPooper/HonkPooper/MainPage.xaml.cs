@@ -135,6 +135,8 @@ namespace HonkPooper
                 bomb.IsGravitating = true;
                 bomb.AwaitingPop = true;
 
+                bomb.SetRotation(_random.Next(-30, 30));
+
                 bomb.Reposition(
                     player: _player,
                     downScaling: _scene.DownScaling);
@@ -158,10 +160,6 @@ namespace HonkPooper
             DropShadow dropShadow = _scene.Children.OfType<DropShadow>().First(x => x.Id == bomb.Id);
 
             // start blast animation when the bomb touches it's shadow
-            if (!playerBomb.IsBlasting && dropShadow.GetCloseHitBox().IntersectsWith(bomb.GetCloseHitBox()))
-            {
-                playerBomb.SetBlastContent();
-            }
 
             if (playerBomb.IsBlasting)
             {
@@ -187,6 +185,9 @@ namespace HonkPooper
             {
                 bomb.SetLeft(bomb.GetLeft() + speed);
                 bomb.SetTop(bomb.GetTop() + speed);
+
+                if (dropShadow.GetCloseHitBox().IntersectsWith(bomb.GetCloseHitBox()))
+                    playerBomb.SetBlast();
             }
 
             bomb.Pop();
@@ -772,9 +773,9 @@ namespace HonkPooper
 
         private bool RecycleBoss(Construct boss)
         {
-            var hitBox = boss.GetHitBox();
+            Boss boss1 = boss as Boss;
 
-            if (hitBox.Top > _scene.Height || hitBox.Left > _scene.Width)
+            if (boss1.Health <= 0)
             {
                 boss.SetPosition(
                     left: -500,
@@ -784,6 +785,106 @@ namespace HonkPooper
             }
 
             return true;
+        }
+
+        #endregion
+
+        #region Boss Bomb
+
+        public bool SpawnBossBombsInScene()
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                BossBomb bomb = new(
+                    animateAction: AnimateBossBomb,
+                    recycleAction: RecycleBossBomb,
+                    downScaling: _scene.DownScaling);
+
+                bomb.SetPosition(
+                    left: -500,
+                    top: -500,
+                    z: 7);
+
+                _scene.AddToScene(bomb);
+
+                SpawnDropShadowInScene(source: bomb);
+            }
+
+            return true;
+        }
+
+        public bool GenerateBossBombInScene()
+        {
+            if (_scene.Children.OfType<Boss>().Any(x => x.IsAnimating && x.IsAttacking) &&
+                _scene.Children.OfType<BossBomb>().FirstOrDefault(x => x.IsAnimating == false) is BossBomb bomb)
+            {
+                Boss boss = _scene.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking);
+
+                bomb.Reset();
+                bomb.IsAnimating = true;
+                bomb.AwaitingPop = true;
+
+                bomb.SetRotation(33);
+
+                bomb.Reposition(
+                    boss: boss,
+                    downScaling: _scene.DownScaling);
+
+                SyncDropShadow(bomb);
+
+                Console.WriteLine("Bomb dropped.");
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool AnimateBossBomb(Construct bomb)
+        {
+            BossBomb bossBomb = bomb as BossBomb;
+
+            var speed = _scene.Speed + bomb.SpeedOffset;
+
+            if (bossBomb.IsBlasting)
+            {
+                MoveConstruct(construct: bomb, speed: speed);
+
+                bomb.Expand();
+                bomb.Fade(0.02);
+
+                DropShadow dropShadow = _scene.Children.OfType<DropShadow>().First(x => x.Id == bomb.Id);
+                dropShadow.Opacity = bomb.Opacity;
+
+            }
+            else
+            {
+                MoveConstruct(construct: bomb, speed: speed);
+
+                if (bossBomb.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
+                    bossBomb.SetBlast();
+            }
+
+            return true;
+        }
+
+        public bool RecycleBossBomb(Construct bomb)
+        {
+            var hitbox = bomb.GetHitBox();
+
+            // if bomb is blasted and faed or goes out of scene bounds
+            if (bomb.IsFadingComplete || hitbox.Left > _scene.Width || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Bottom > _scene.Height)
+            {
+                bomb.IsAnimating = false;
+
+                bomb.SetPosition(
+                    left: -500,
+                    top: -500);
+
+                return true;
+            }
+
+            return false;
         }
 
         #endregion
@@ -862,7 +963,7 @@ namespace HonkPooper
 
         #endregion
 
-        #region Page
+        #region Scene
 
         private void PrepareScene()
         {
@@ -918,6 +1019,12 @@ namespace HonkPooper
                generationAction: GenerateBossInScene,
                spawnAction: SpawnBossesInScene);
 
+
+            Generator bossBombs = new(
+               generationDelay: 50,
+               generationAction: GenerateBossBombInScene,
+               spawnAction: SpawnBossBombsInScene);
+
             _scene.AddToScene(treeBottoms);
             _scene.AddToScene(treeTops);
 
@@ -930,6 +1037,7 @@ namespace HonkPooper
             _scene.AddToScene(clouds);
 
             _scene.AddToScene(bosses);
+            _scene.AddToScene(bossBombs);
 
             _scene.Speed = 5;
         }

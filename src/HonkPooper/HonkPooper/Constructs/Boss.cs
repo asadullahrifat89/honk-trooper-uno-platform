@@ -27,9 +27,6 @@ namespace HonkPooper
 
         private double _lastSpeed;
 
-        private int _movementDirectionChangeCounter = 30;
-        private readonly int _movementDirectionChangeCounterDefault = 30;
-
         #endregion
 
         #region Ctor
@@ -39,7 +36,6 @@ namespace HonkPooper
             Func<Construct, bool> recycleAction,
             double downScaling)
         {
-            _movementDirectionChangeCounter = _movementDirectionChangeCounterDefault;
             _hoverDelay = _hoverDelayDefault;
 
             _random = new Random();
@@ -82,6 +78,8 @@ namespace HonkPooper
 
         public bool AwaitMoveLeft { get; set; }
 
+        public int Health { get; set; }
+
 
         #endregion
 
@@ -90,8 +88,8 @@ namespace HonkPooper
         public void Reset()
         {
             Opacity = 1;
+            Health = _random.Next(100, 200);
             IsAttacking = false;
-            _movementDirectionChangeCounter = _movementDirectionChangeCounterDefault;
         }
 
         public void Hover()
