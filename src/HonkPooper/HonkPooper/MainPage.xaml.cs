@@ -291,7 +291,7 @@ namespace HonkPooper
             // prevent overlapping
 
             if (_scene.Children.OfType<Vehicle>()
-                .FirstOrDefault(x => x.GetCloseHitBox().IntersectsWith(hitHox)) is Construct collidingVehicle)
+                .FirstOrDefault(x => x.GetHitBox().IntersectsWith(hitHox)) is Construct collidingVehicle)
             {
                 if (collidingVehicle.SpeedOffset < vehicle.SpeedOffset)
                 {
