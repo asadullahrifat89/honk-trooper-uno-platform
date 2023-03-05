@@ -16,8 +16,8 @@ namespace HonkPooper
         private Random _random;
         private Player _player;
 
-        private HudPanel _playerHudPanel;
-        private HudPanel _bossHudPanel;
+        private HealthBar _playerHealthBar;
+        private HealthBar _bossHealthBar;
 
         #endregion
 
@@ -57,10 +57,10 @@ namespace HonkPooper
             DropShadow playersShadow = (_scene.Children.OfType<DropShadow>().FirstOrDefault(x => x.Id == _player.Id));
             playersShadow.IsAnimating = true;
 
-            _playerHudPanel.SetMaxiumValue(_player.Health);
-            _playerHudPanel.SetValue(_player.Health);
-            _playerHudPanel.SetIcon(_player.GetContentUri());
-            _playerHudPanel.SetProgressForegroundColor(color: Colors.Purple);
+            _playerHealthBar.SetMaxiumValue(_player.Health);
+            _playerHealthBar.SetValue(_player.Health);
+            _playerHealthBar.SetIcon(_player.GetContentUri());
+            _playerHealthBar.SetProgressForegroundColor(color: Colors.Purple);
 
             return true;
         }
@@ -198,7 +198,7 @@ namespace HonkPooper
                         boss.SetPopping();
                         boss.Health -= 10;
 
-                        _bossHudPanel.SetValue(boss.Health);
+                        _bossHealthBar.SetValue(boss.Health);
 
                         if (boss.Health <= 0)
                         {
@@ -847,10 +847,10 @@ namespace HonkPooper
 
                 SyncDropShadow(boss);
 
-                _bossHudPanel.SetMaxiumValue(boss.Health);
-                _bossHudPanel.SetValue(boss.Health);
-                _bossHudPanel.SetIcon(boss.GetContentUri());
-                _bossHudPanel.SetProgressForegroundColor(color: Colors.Crimson);
+                _bossHealthBar.SetMaxiumValue(boss.Health);
+                _bossHealthBar.SetValue(boss.Health);
+                _bossHealthBar.SetIcon(boss.GetContentUri());
+                _bossHealthBar.SetProgressForegroundColor(color: Colors.Crimson);
 
                 return true;
             }
@@ -1020,7 +1020,7 @@ namespace HonkPooper
                     bossBomb.SetBlast();
                     _player.SetPopping();
                     _player.Health -= 5;
-                    _playerHudPanel.SetValue(_player.Health);
+                    _playerHealthBar.SetValue(_player.Health);
                 }
             }
 
@@ -1235,8 +1235,8 @@ namespace HonkPooper
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
             _scene = this.MainScene;
-            _playerHudPanel = this.PlayerHudPanel;
-            _bossHudPanel = this.BossHudPanel;
+            _playerHealthBar = this.PlayerHealthBar;
+            _bossHealthBar = this.BossHealthBar;
 
             _controller = this.KeyboardController;
 

@@ -24,14 +24,14 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Top"
             Orientation="Horizontal">
-            <HudPanel
-                x:Name="BossHudPanel"
-                Margin="20,20,5,20"
+            <HealthBar
+                x:Name="BossHealthBar"
+                Margin="30,30,5,30"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top" />
-            <HudPanel
-                x:Name="PlayerHudPanel"
-                Margin="5,20,20,20"
+            <HealthBar
+                x:Name="PlayerHealthBar"
+                Margin="5,30,30,30"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Top" />
 

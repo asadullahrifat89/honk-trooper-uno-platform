@@ -8,7 +8,7 @@ using Windows.UI;
 
 namespace HonkPooper
 {
-    public partial class HudPanel : Border
+    public partial class HealthBar : Border
     {
         private ProgressBar ProgressBar { get; set; } = new()
         {
@@ -29,7 +29,7 @@ namespace HonkPooper
 
         private StackPanel StackPanel { get; set; }
 
-        public HudPanel()
+        public HealthBar()
         {
             this.StackPanel = new()
             {
