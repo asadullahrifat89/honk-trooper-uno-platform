@@ -31,7 +31,8 @@
   ],
   "name": "HonkPooper",
   "short_name": "HonkPooper",
-  "start_url": "/index.html",
   "theme_color": "#ffffff",
-  "scope": "/"
+  "id": "/honk-pooper-uno-platform/",
+  "start_url": "/honk-pooper-uno-platform/",
+  "scope": "/honk-pooper-uno-platform/"
 }
