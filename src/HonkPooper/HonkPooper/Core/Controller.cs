@@ -1,10 +1,6 @@
 ﻿using Microsoft.UI;
-using Microsoft.UI.Input;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
-using System;
-using Windows.Foundation;
-using Windows.Graphics.Display;
 
 namespace HonkPooper
 {
@@ -207,17 +203,17 @@ namespace HonkPooper
             right.PointerPressed += (s, e) => { ActivateMoveRight(); };
             right.PointerReleased += (s, e) => { DeactivateMoveRight(); };
 
-            Grid.SetRow(up, 0);
-            Grid.SetColumn(up, 1);
+            SetRow(up, 0);
+            SetColumn(up, 1);
 
-            Grid.SetRow(left, 1);
-            Grid.SetColumn(left, 0);
+            SetRow(left, 1);
+            SetColumn(left, 0);
 
-            Grid.SetRow(right, 1);
-            Grid.SetColumn(right, 2);
+            SetRow(right, 1);
+            SetColumn(right, 2);
 
-            Grid.SetRow(down, 2);
-            Grid.SetColumn(down, 1);
+            SetRow(down, 2);
+            SetColumn(down, 1);
 
             ArrowsKeysContainer.Children.Add(up);
             ArrowsKeysContainer.Children.Add(down);

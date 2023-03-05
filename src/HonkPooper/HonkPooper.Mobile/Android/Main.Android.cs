@@ -5,7 +5,7 @@ using System;
 
 namespace HonkPooper.Droid
 {
-    [global::Android.App.ApplicationAttribute(
+    [Android.App.Application(
         Label = "@string/ApplicationName",
         Icon = "@mipmap/icon",
         LargeHeap = true,

@@ -787,7 +787,7 @@ namespace HonkPooper
             _controller.ArrowsKeysContainer.Margin = new Thickness(left: 0, top: 0, right: 40, bottom: -60);
             _controller.RequiresScreenOrientationChange += Controller_RequiresScreenOrientationChange;
 
-            ScreenExtensions.RequiredDisplayOrientation = Windows.Graphics.Display.DisplayOrientations.Landscape;
+            ScreenExtensions.RequiredDisplayOrientation = DisplayOrientations.Landscape;
             ScreenExtensions.DisplayInformation.OrientationChanged += DisplayInformation_OrientationChanged;
         }
 
@@ -796,8 +796,9 @@ namespace HonkPooper
             Console.WriteLine($"Required Orientation {e}");
         }
 
-        private void DisplayInformation_OrientationChanged(Windows.Graphics.Display.DisplayInformation sender, object args)
+        private void DisplayInformation_OrientationChanged(DisplayInformation sender, object args)
         {
+            _scene.Stop();
             Console.WriteLine($"{sender.CurrentOrientation}");
         }
 

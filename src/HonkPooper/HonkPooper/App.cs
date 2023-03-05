@@ -48,7 +48,7 @@ namespace HonkPooper
 		MainWindow = new Window();
 		MainWindow.Activate();
 #else
-            MainWindow = Microsoft.UI.Xaml.Window.Current;
+            MainWindow = Window.Current;
 #endif
 
             // Do not repeat app initialization when the Window already has content,
