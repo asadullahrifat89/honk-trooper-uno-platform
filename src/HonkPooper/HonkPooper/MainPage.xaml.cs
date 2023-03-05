@@ -692,10 +692,16 @@ namespace HonkPooper
             return true;
         }
 
-        public bool AnimateDropShadow(Construct dropShadow)
+        public bool AnimateDropShadow(Construct construct)
         {
-            DropShadow dropShadow1 = dropShadow as DropShadow;
-            dropShadow1.Move();
+            DropShadow dropShadow = construct as DropShadow;
+
+            // adjust shadow with with the source
+            if (construct.Width != dropShadow.ParentConstruct.Width * 0.7)
+                construct.Width = dropShadow.ParentConstruct.Width * 0.7;
+
+            dropShadow.Move();
+
             return true;
         }
 
@@ -703,7 +709,7 @@ namespace HonkPooper
         {
             DropShadow dropShadow1 = dropShadow as DropShadow;
 
-            if (!dropShadow1.Source.IsAnimating)
+            if (!dropShadow1.ParentConstruct.IsAnimating)
             {
                 dropShadow.IsAnimating = false;
 
@@ -722,8 +728,9 @@ namespace HonkPooper
             if (_scene.Children.OfType<DropShadow>().FirstOrDefault(x => x.Id == source.Id) is DropShadow dropShadow)
             {
                 dropShadow.Opacity = 1;
-                dropShadow.SourceSpeed = _scene.Speed + source.SpeedOffset;
+                dropShadow.ParentConstructSpeed = _scene.Speed + source.SpeedOffset;
                 dropShadow.IsAnimating = true;
+
                 dropShadow.Reset();
             }
         }
