@@ -165,7 +165,7 @@ namespace HonkPooper
 
             if (playerBomb.IsBlasting)
             {
-                MoveConstruct(bomb, speed);
+                MoveConstruct(construct: bomb, speed: speed);
 
                 bomb.Expand();
                 bomb.Fade(0.02);
@@ -307,7 +307,7 @@ namespace HonkPooper
         {
             var speed = (_scene.Speed + vehicle.SpeedOffset);
 
-            MoveConstruct(vehicle, speed);
+            MoveConstruct(construct: vehicle, speed: speed);
 
             // TODO: fix hitbox for safe distance between vehicles
 
@@ -402,7 +402,7 @@ namespace HonkPooper
         private bool AnimateRoadMark(Construct roadMark)
         {
             var speed = (_scene.Speed + roadMark.SpeedOffset);
-            MoveConstruct(roadMark, speed);
+            MoveConstruct(construct: roadMark, speed: speed);
             return true;
         }
 
@@ -487,7 +487,7 @@ namespace HonkPooper
         private bool AnimateTree(Construct tree)
         {
             var speed = (_scene.Speed + tree.SpeedOffset);
-            MoveConstruct(tree, speed);
+            MoveConstruct(construct: tree, speed: speed);
             return true;
         }
 
@@ -559,7 +559,7 @@ namespace HonkPooper
         {
             honk.Pop();
             var speed = (_scene.Speed + honk.SpeedOffset);
-            MoveConstruct(honk, speed);
+            MoveConstruct(construct: honk, speed: speed);
             return true;
         }
 
@@ -652,7 +652,7 @@ namespace HonkPooper
         public bool AnimateCloud(Construct cloud)
         {
             var speed = (_scene.Speed + cloud.SpeedOffset);
-            MoveConstruct(cloud, speed);
+            MoveConstruct(construct: cloud, speed: speed);
             return true;
         }
 
