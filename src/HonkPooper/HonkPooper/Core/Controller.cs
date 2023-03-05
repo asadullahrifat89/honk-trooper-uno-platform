@@ -1,6 +1,7 @@
 ﻿using Microsoft.UI;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
+using Windows.Foundation;
 
 namespace HonkPooper
 {
@@ -8,9 +9,11 @@ namespace HonkPooper
     {
         #region Fields
 
-        private int _keysSize = 55;
+        private int _keysSize = 50;
+        private int _keyCornerRadius = 30;
+        private int _keyBorderThickness = 4;
 
-        private readonly CompositeTransform _arrowsKeysContainerTransform = new()
+        private readonly CompositeTransform _directionControlsTransform = new()
         {
             CenterX = 0.5,
             CenterY = 0.5,
@@ -23,9 +26,10 @@ namespace HonkPooper
 
         #region Properties
 
-        public Grid ArrowsKeysContainer { get; set; }
+        public Grid DirectionControls { get; set; }
 
         public Button StartButton { get; set; }
+
         public Button AttackButton { get; set; }
 
         #endregion
@@ -34,40 +38,34 @@ namespace HonkPooper
 
         public Controller()
         {
-            //PointerPressed += Controller_PointerPressed;
-            //PointerMoved += Controller_PointerMoved;
+            CanDrag = false;
 
             KeyUp += Controller_KeyUp;
             KeyDown += Controller_KeyDown;
 
-            SetupArrowKeysContainer();
-            SetupAttackButton();
-            SetupStartButton();
+            SetDirectionControls();
+            SetAttackButton();
+            SetStartButton();
         }
 
         #endregion
 
         #region Methods
 
-        public void SetArrowsKeysContainerRotation(double rotation)
-        {
-            _arrowsKeysContainerTransform.Rotation = rotation;
-        }
-
-        private void SetupStartButton()
+        private void SetStartButton()
         {
             StartButton = new()
             {
                 Background = new SolidColorBrush(Colors.Goldenrod),
                 Height = _keysSize,
                 Width = _keysSize,
-                CornerRadius = new Microsoft.UI.Xaml.CornerRadius(30),
+                CornerRadius = new Microsoft.UI.Xaml.CornerRadius(_keyCornerRadius),
                 Content = new SymbolIcon()
                 {
                     Symbol = Symbol.Play,
                 },
                 BorderBrush = new SolidColorBrush(Colors.White),
-                BorderThickness = new Microsoft.UI.Xaml.Thickness(6),
+                BorderThickness = new Microsoft.UI.Xaml.Thickness(_keyBorderThickness),
                 HorizontalAlignment = Microsoft.UI.Xaml.HorizontalAlignment.Right,
                 VerticalAlignment = Microsoft.UI.Xaml.VerticalAlignment.Top,
                 Margin = new Microsoft.UI.Xaml.Thickness(20),
@@ -90,25 +88,25 @@ namespace HonkPooper
                         Symbol = Symbol.Play,
                     };
                 }
-                    
+
             };
             this.Children.Add(StartButton);
         }
 
-        private void SetupAttackButton()
+        private void SetAttackButton()
         {
             AttackButton = new()
             {
                 Background = new SolidColorBrush(Colors.Goldenrod),
                 Height = _keysSize,
                 Width = _keysSize,
-                CornerRadius = new Microsoft.UI.Xaml.CornerRadius(30),
+                CornerRadius = new Microsoft.UI.Xaml.CornerRadius(_keyCornerRadius),
                 Content = new SymbolIcon()
                 {
-                    Symbol = Symbol.Bold,
+                    Symbol = Symbol.Target,
                 },
                 BorderBrush = new SolidColorBrush(Colors.White),
-                BorderThickness = new Microsoft.UI.Xaml.Thickness(6),
+                BorderThickness = new Microsoft.UI.Xaml.Thickness(_keyBorderThickness),
                 HorizontalAlignment = Microsoft.UI.Xaml.HorizontalAlignment.Left,
                 VerticalAlignment = Microsoft.UI.Xaml.VerticalAlignment.Top,
                 Margin = new Microsoft.UI.Xaml.Thickness(20),
@@ -118,109 +116,121 @@ namespace HonkPooper
             this.Children.Add(AttackButton);
         }
 
-        private void SetupArrowKeysContainer()
+        private void SetDirectionControls()
         {
-            ArrowsKeysContainer = new()
+            DirectionControls = new()
             {
                 HorizontalAlignment = Microsoft.UI.Xaml.HorizontalAlignment.Right,
                 VerticalAlignment = Microsoft.UI.Xaml.VerticalAlignment.Bottom,
-                RenderTransform = _arrowsKeysContainerTransform,
+                Margin = new Microsoft.UI.Xaml.Thickness(20),
+                //RenderTransformOrigin = new Point(0.5, 0.5),
+                //RenderTransform = _directionControlsTransform,
             };
 
-            ArrowsKeysContainer.RowDefinitions.Add(new RowDefinition());
-            ArrowsKeysContainer.RowDefinitions.Add(new RowDefinition());
-            ArrowsKeysContainer.RowDefinitions.Add(new RowDefinition());
+            DirectionControls.RowDefinitions.Add(new RowDefinition());
+            DirectionControls.RowDefinitions.Add(new RowDefinition());
 
-            ArrowsKeysContainer.ColumnDefinitions.Add(new ColumnDefinition());
-            ArrowsKeysContainer.ColumnDefinitions.Add(new ColumnDefinition());
-            ArrowsKeysContainer.ColumnDefinitions.Add(new ColumnDefinition());
+            DirectionControls.ColumnDefinitions.Add(new ColumnDefinition());
+            DirectionControls.ColumnDefinitions.Add(new ColumnDefinition());
 
             Border up = new()
             {
                 Background = new SolidColorBrush(Colors.Goldenrod),
                 Height = _keysSize,
                 Width = _keysSize,
-                CornerRadius = new Microsoft.UI.Xaml.CornerRadius(30),
+                CornerRadius = new Microsoft.UI.Xaml.CornerRadius(_keyCornerRadius),
                 Child = new SymbolIcon()
                 {
                     Symbol = Symbol.Up,
                 },
                 BorderBrush = new SolidColorBrush(Colors.White),
-                BorderThickness = new Microsoft.UI.Xaml.Thickness(6),
+                BorderThickness = new Microsoft.UI.Xaml.Thickness(_keyBorderThickness),
+                RenderTransformOrigin = new Point(0.5, 0.5),
+                RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = -45 },
+                Margin = new Microsoft.UI.Xaml.Thickness(5),
             };
 
             up.PointerPressed += (s, e) => { ActivateMoveUp(); };
             up.PointerReleased += (s, e) => { DeactivateMoveUp(); };
+
+            Grid.SetRow(up, 0);
+            Grid.SetColumn(up, 0);
 
             Border down = new()
             {
                 Background = new SolidColorBrush(Colors.Goldenrod),
                 Height = _keysSize,
                 Width = _keysSize,
-                CornerRadius = new Microsoft.UI.Xaml.CornerRadius(30),
+                CornerRadius = new Microsoft.UI.Xaml.CornerRadius(_keyCornerRadius),
                 Child = new SymbolIcon()
                 {
                     Symbol = Symbol.Download
                 },
                 BorderBrush = new SolidColorBrush(Colors.White),
-                BorderThickness = new Microsoft.UI.Xaml.Thickness(6),
+                BorderThickness = new Microsoft.UI.Xaml.Thickness(_keyBorderThickness),
+                RenderTransformOrigin = new Point(0.5, 0.5),
+                RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = -45 },
+                Margin = new Microsoft.UI.Xaml.Thickness(5),
             };
 
             down.PointerPressed += (s, e) => { ActivateMoveDown(); };
             down.PointerReleased += (s, e) => { DeactivateMoveDown(); };
+
+            Grid.SetRow(down, 1);
+            Grid.SetColumn(down, 1);
 
             Border left = new()
             {
                 Background = new SolidColorBrush(Colors.Goldenrod),
                 Height = _keysSize,
                 Width = _keysSize,
-                CornerRadius = new Microsoft.UI.Xaml.CornerRadius(30),
+                CornerRadius = new Microsoft.UI.Xaml.CornerRadius(_keyCornerRadius),
                 Child = new SymbolIcon()
                 {
                     Symbol = Symbol.Back,
                 },
                 BorderBrush = new SolidColorBrush(Colors.White),
-                BorderThickness = new Microsoft.UI.Xaml.Thickness(6),
+                BorderThickness = new Microsoft.UI.Xaml.Thickness(_keyBorderThickness),
+                RenderTransformOrigin = new Point(0.5, 0.5),
+                RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = -45 },
+                Margin = new Microsoft.UI.Xaml.Thickness(5),
             };
 
             left.PointerPressed += (s, e) => { ActivateMoveLeft(); };
             left.PointerReleased += (s, e) => { DeactivateMoveLeft(); };
+
+            Grid.SetRow(left, 1);
+            Grid.SetColumn(left, 0);
 
             Border right = new()
             {
                 Background = new SolidColorBrush(Colors.Goldenrod),
                 Height = _keysSize,
                 Width = _keysSize,
-                CornerRadius = new Microsoft.UI.Xaml.CornerRadius(30),
+                CornerRadius = new Microsoft.UI.Xaml.CornerRadius(_keyCornerRadius),
                 Child = new SymbolIcon()
                 {
                     Symbol = Symbol.Forward,
                 },
                 BorderBrush = new SolidColorBrush(Colors.White),
-                BorderThickness = new Microsoft.UI.Xaml.Thickness(6),
+                BorderThickness = new Microsoft.UI.Xaml.Thickness(_keyBorderThickness),
+                RenderTransformOrigin = new Point(0.5, 0.5),
+                RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = -45 },
+                Margin = new Microsoft.UI.Xaml.Thickness(5),
             };
 
             right.PointerPressed += (s, e) => { ActivateMoveRight(); };
             right.PointerReleased += (s, e) => { DeactivateMoveRight(); };
 
-            Grid.SetRow(up, 0);
-            Grid.SetColumn(up, 1);
+            Grid.SetRow(right, 0);
+            Grid.SetColumn(right, 1);
 
-            Grid.SetRow(left, 1);
-            Grid.SetColumn(left, 0);
+            DirectionControls.Children.Add(up);
+            DirectionControls.Children.Add(down);
+            DirectionControls.Children.Add(left);
+            DirectionControls.Children.Add(right);
 
-            Grid.SetRow(right, 1);
-            Grid.SetColumn(right, 2);
-
-            Grid.SetRow(down, 2);
-            Grid.SetColumn(down, 1);
-
-            ArrowsKeysContainer.Children.Add(up);
-            ArrowsKeysContainer.Children.Add(down);
-            ArrowsKeysContainer.Children.Add(left);
-            ArrowsKeysContainer.Children.Add(right);
-
-            this.Children.Add(ArrowsKeysContainer);
+            this.Children.Add(DirectionControls);
         }
 
         #endregion

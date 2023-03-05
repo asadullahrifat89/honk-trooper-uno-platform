@@ -20,6 +20,25 @@
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             Background="Transparent" />
+        <StackPanel
+            HorizontalAlignment="Center"
+            VerticalAlignment="Top"
+            Orientation="Vertical">
+            <ScoreBar x:Name="GameScoreBar" HorizontalAlignment="Center" />
+            <StackPanel
+                Margin="0,5,0,0"
+                HorizontalAlignment="Center"
+                Orientation="Horizontal">
+                <HealthBar
+                    x:Name="BossHealthBar"
+                    Margin="5"
+                    HorizontalAlignment="Center" />
+                <HealthBar
+                    x:Name="PlayerHealthBar"
+                    Margin="5"
+                    HorizontalAlignment="Center" />
+            </StackPanel>
+        </StackPanel>
     </Grid>
 
 </Page>

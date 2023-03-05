@@ -50,6 +50,28 @@ namespace HonkPooper
             return DisplayInformation?.CurrentOrientation;
         }
 
+        /// <summary>
+        /// Gets the down scaling factor according to window size.
+        /// </summary>
+        /// <param name="windowWidth"></param>
+        /// <returns></returns>
+        public static double GetDownScaling(double windowWidth)
+        {
+            return windowWidth switch
+            {
+                <= 300 => 0.50,
+                <= 400 => 0.55,
+                <= 500 => 0.60,
+                <= 700 => 0.65,
+                <= 900 => 0.70,
+                <= 950 => 0.75,
+                <= 1000 => 0.80,
+                <= 1400 => 0.85,
+                <= 2000 => 0.90,
+                _ => 1,
+            };
+        }
+
         #endregion
     }
 }

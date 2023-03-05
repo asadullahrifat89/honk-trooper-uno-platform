@@ -1,4 +1,5 @@
-﻿using Microsoft.UI.Xaml;
+﻿using Microsoft.UI;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Linq;
@@ -15,6 +16,11 @@ namespace HonkPooper
         private Random _random;
         private Player _player;
 
+        private HealthBar _playerHealthBar;
+        private HealthBar _bossHealthBar;
+
+        private ScoreBar _scoreBar;
+
         #endregion
 
         #region Ctor
@@ -28,6 +34,12 @@ namespace HonkPooper
             Loaded += MainPage_Loaded;
             Unloaded += MainPage_Unloaded;
         }
+
+        #endregion
+
+        #region Properties
+
+        public int BossPointScoreDiff { get; set; } = 50;
 
         #endregion
 
@@ -52,6 +64,11 @@ namespace HonkPooper
 
             DropShadow playersShadow = (_scene.Children.OfType<DropShadow>().FirstOrDefault(x => x.Id == _player.Id));
             playersShadow.IsAnimating = true;
+
+            _playerHealthBar.SetMaxiumValue(_player.Health);
+            _playerHealthBar.SetValue(_player.Health);
+            _playerHealthBar.SetIcon(_player.GetContentUri());
+            _playerHealthBar.SetProgressForegroundColor(color: Colors.Purple);
 
             return true;
         }
@@ -138,20 +155,29 @@ namespace HonkPooper
 
         public bool GeneratePlayerBombInScene()
         {
-            if (_scene.Children.OfType<Boss>().Any(x => x.IsAnimating && x.IsAttacking) &&
+            if (_scene.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss &&
                 _scene.Children.OfType<PlayerBomb>().FirstOrDefault(x => x.IsAnimating == false) is PlayerBomb bomb)
             {
                 bomb.Reset();
                 bomb.IsAnimating = true;
                 bomb.SetPopping();
 
-                bomb.SetRotation(33);
-
                 bomb.Reposition(
                     Player: _player,
                     downScaling: _scene.DownScaling);
 
                 SyncDropShadow(bomb);
+
+                bomb.IsReverseMovement = _player.GetLeft() < boss.GetLeft();
+
+                if (bomb.IsReverseMovement)
+                {
+                    bomb.SetRotation(-33);
+                }
+                else
+                {
+                    bomb.SetRotation(33);
+                }
 
                 Console.WriteLine("Player Bomb dropped.");
 
@@ -167,7 +193,7 @@ namespace HonkPooper
 
             var speed = _scene.Speed + bomb.SpeedOffset;
 
-            MoveConstruct(construct: bomb, speed: speed, isReverse: true);
+            MoveConstruct(construct: bomb, speed: speed, isReverse: !playerBomb.IsReverseMovement);
 
             if (playerBomb.IsBlasting)
             {
@@ -188,6 +214,8 @@ namespace HonkPooper
                         playerBomb.SetBlast();
                         boss.SetPopping();
                         boss.Health -= 10;
+
+                        _bossHealthBar.SetValue(boss.Health);
 
                         if (boss.Health <= 0)
                         {
@@ -280,8 +308,6 @@ namespace HonkPooper
 
             DropShadow dropShadow = _scene.Children.OfType<DropShadow>().First(x => x.Id == bomb.Id);
 
-            // start blast animation when the bomb touches it's shadow
-
             if (PlayerBombGround.IsBlasting)
             {
                 MoveConstruct(construct: bomb, speed: speed);
@@ -290,16 +316,15 @@ namespace HonkPooper
                 bomb.Fade(0.02);
 
                 // make the shadow fade with the bomb blast
-
                 dropShadow.Opacity = bomb.Opacity;
 
                 // while in blast check if it intersects with any vehicle, if it does then the vehicle stops honking and slows down
-
                 if (_scene.Children.OfType<Vehicle>()
                     .Where(x => x.IsAnimating && x.WillHonk)
                     .FirstOrDefault(x => x.GetCloseHitBox().IntersectsWith(bomb.GetCloseHitBox())) is Vehicle vehicle)
                 {
                     vehicle.SetBlast();
+                    _scoreBar.GainScore(5);
                 }
             }
             else
@@ -309,6 +334,7 @@ namespace HonkPooper
                 bomb.SetLeft(bomb.GetLeft() + speed);
                 bomb.SetTop(bomb.GetTop() + speed);
 
+                // start blast animation when the bomb touches it's shadow
                 if (dropShadow.GetCloseHitBox().IntersectsWith(bomb.GetCloseHitBox()))
                     PlayerBombGround.SetBlast();
             }
@@ -825,8 +851,9 @@ namespace HonkPooper
         private bool GenerateBossInScene()
         {
             // if scene doesn't contain a boss then pick a random boss and add to scene
-
-            if (!_scene.Children.OfType<Boss>().Any(x => x.IsAnimating) && _scene.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating == false) is Boss boss)
+            if (_scoreBar.IsBossPointScore(BossPointScoreDiff) &&
+                !_scene.Children.OfType<Boss>().Any(x => x.IsAnimating) &&
+                _scene.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating == false) is Boss boss)
             {
                 boss.IsAnimating = true;
                 boss.Reset();
@@ -835,6 +862,17 @@ namespace HonkPooper
                     top: boss.Height * -1);
 
                 SyncDropShadow(boss);
+
+                // set boss health
+                boss.Health = BossPointScoreDiff * 1.3;
+
+                _bossHealthBar.SetMaxiumValue(boss.Health);
+                _bossHealthBar.SetValue(boss.Health);
+                _bossHealthBar.SetIcon(boss.GetContentUri());
+                _bossHealthBar.SetProgressForegroundColor(color: Colors.Crimson);
+
+                // next boss will appear at a slightly higher score
+                BossPointScoreDiff += 5;
 
                 return true;
             }
@@ -920,6 +958,8 @@ namespace HonkPooper
                     top: -500);
 
                 boss.IsAnimating = false;
+
+                _scoreBar.GainScore(5);
             }
 
             return true;
@@ -953,22 +993,31 @@ namespace HonkPooper
 
         public bool GenerateBossBombInScene()
         {
-            if (_scene.Children.OfType<Boss>().Any(x => x.IsAnimating && x.IsAttacking) &&
+            if (_scene.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss &&
                 _scene.Children.OfType<BossBomb>().FirstOrDefault(x => x.IsAnimating == false) is BossBomb bomb)
             {
-                Boss boss = _scene.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking);
-
                 bomb.Reset();
                 bomb.IsAnimating = true;
                 bomb.SetPopping();
 
-                bomb.SetRotation(33);
+
 
                 bomb.Reposition(
                     boss: boss,
                     downScaling: _scene.DownScaling);
 
                 SyncDropShadow(bomb);
+
+                bomb.IsReverseMovement = boss.GetLeft() > _player.GetLeft();
+
+                if (bomb.IsReverseMovement)
+                {
+                    bomb.SetRotation(-33);
+                }
+                else
+                {
+                    bomb.SetRotation(33);
+                }
 
                 Console.WriteLine("Boss Bomb dropped.");
 
@@ -984,7 +1033,7 @@ namespace HonkPooper
 
             var speed = _scene.Speed + bomb.SpeedOffset;
 
-            MoveConstruct(construct: bomb, speed: speed);
+            MoveConstruct(construct: bomb, speed: speed, isReverse: bossBomb.IsReverseMovement);
 
             if (bossBomb.IsBlasting)
             {
@@ -1003,6 +1052,8 @@ namespace HonkPooper
                 {
                     bossBomb.SetBlast();
                     _player.SetPopping();
+                    _player.Health -= 5;
+                    _playerHealthBar.SetValue(_player.Health);
                 }
             }
 
@@ -1117,67 +1168,70 @@ namespace HonkPooper
 
         private void PrepareScene()
         {
+            _scene.Children.Clear();
+
             // first add road marks
             Generator roadMarks = new(
                 generationDelay: 30,
                 generationAction: GenerateRoadMarkInScene,
-                spawnAction: SpawnRoadMarksInScene);
+                startUpAction: SpawnRoadMarksInScene);
 
             // then add the top trees
             Generator treeTops = new(
                 generationDelay: 40,
                 generationAction: GenerateTreeInSceneTop,
-                spawnAction: SpawnTreesInScene);
+                startUpAction: SpawnTreesInScene);
 
             // then add the vehicles which will appear forward in z wrt the top trees
             Generator vehicles = new(
                 generationDelay: 80,
                 generationAction: GenerateVehicleInScene,
-                spawnAction: SpawnVehiclesInScene);
+                startUpAction: SpawnVehiclesInScene);
 
             // then add the bottom trees which will appear forward in z wrt to the vehicles
             Generator treeBottoms = new(
                 generationDelay: 40,
                 generationAction: GenerateTreeInSceneBottom,
-                spawnAction: SpawnTreesInScene);
+                startUpAction: SpawnTreesInScene);
 
             // add the honks which will appear forward in z wrt to everything on the road
             Generator honk = new(
                 generationDelay: 0,
                 generationAction: () => { return true; },
-                spawnAction: SpawnHonksInScene);
+                startUpAction: SpawnHonksInScene);
 
             // add the player in scene which will appear forward in z wrt to all else
             Generator player = new(
                 generationDelay: 0,
                 generationAction: () => { return true; },
-                spawnAction: SpawnPlayerInScene);
+                startUpAction: SpawnPlayerInScene);
 
             Generator playerBombs = new(
               generationDelay: 0,
               generationAction: () => { return true; },
-              spawnAction: SpawnPlayerBombsInScene);
+              startUpAction: SpawnPlayerBombsInScene);
 
             Generator playerGroundBombs = new(
                 generationDelay: 0,
                 generationAction: () => { return true; },
-                spawnAction: SpawnPlayerBombGroundsInScene);
+                startUpAction: SpawnPlayerBombGroundsInScene);
 
             // add the clouds which are abve the player z
             Generator clouds = new(
                 generationDelay: 100,
                 generationAction: GenerateCloudInScene,
-                spawnAction: SpawnCloudsInScene);
+                startUpAction: SpawnCloudsInScene);
 
             Generator bosses = new(
-               generationDelay: 500,
+               generationDelay: 100,
                generationAction: GenerateBossInScene,
-               spawnAction: SpawnBossesInScene);
+               startUpAction: SpawnBossesInScene);
 
             Generator bossBombs = new(
                generationDelay: 40,
                generationAction: GenerateBossBombInScene,
-               spawnAction: SpawnBossBombsInScene);
+               startUpAction: SpawnBossBombsInScene,
+               randomizeDelay: true);
 
             _scene.AddToScene(treeBottoms);
             _scene.AddToScene(treeTops);
@@ -1200,8 +1254,6 @@ namespace HonkPooper
         private void SetController()
         {
             _controller.SetScene(_scene);
-            _controller.SetArrowsKeysContainerRotation(-45);
-            _controller.ArrowsKeysContainer.Margin = new Thickness(left: 0, top: 0, right: 40, bottom: -60);
             _controller.RequiresScreenOrientationChange += Controller_RequiresScreenOrientationChange;
 
             ScreenExtensions.RequiredDisplayOrientation = Windows.Graphics.Display.DisplayOrientations.Landscape;
@@ -1217,11 +1269,16 @@ namespace HonkPooper
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
             _scene = this.MainScene;
+            _playerHealthBar = this.PlayerHealthBar;
+            _bossHealthBar = this.BossHealthBar;
 
             _controller = this.KeyboardController;
+            _scoreBar = this.GameScoreBar;
 
             _scene.Width = 1920;
             _scene.Height = 1080;
+
+            BossPointScoreDiff = 50;
 
             PrepareScene();
             SetController();

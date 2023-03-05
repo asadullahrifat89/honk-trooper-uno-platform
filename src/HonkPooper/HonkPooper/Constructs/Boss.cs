@@ -78,8 +78,7 @@ namespace HonkPooper
 
         public bool AwaitMoveLeft { get; set; }
 
-        public int Health { get; set; }
-
+        public double Health { get; set; }
 
         #endregion
 
@@ -88,7 +87,7 @@ namespace HonkPooper
         public void Reset()
         {
             Opacity = 1;
-            Health = _random.Next(100, 200);
+            Health = 100;
             IsAttacking = false;
             SetScaleTransform(1);
         }
