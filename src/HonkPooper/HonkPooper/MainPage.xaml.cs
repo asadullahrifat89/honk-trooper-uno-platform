@@ -837,10 +837,6 @@ namespace HonkPooper
 
             DropShadow playersShadow = (_scene.Children.OfType<DropShadow>().FirstOrDefault(x => x.Id == _player.Id));
             playersShadow.Move();
-
-            //_dropShadow.Move(
-            //    parent: _player,
-            //    downScaling: _scene.DownScaling);
         }
 
         private void MainPage_Unloaded(object sender, RoutedEventArgs e)
