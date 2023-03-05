@@ -19,6 +19,9 @@ namespace HonkPooper
             ScaleY = 1,
         };
 
+        private bool _isPoppingComplete;
+        private double _popUpScalingLimit = 1.5;
+
         #endregion
 
         #region Properties
@@ -69,6 +72,11 @@ namespace HonkPooper
         public double DropShadowDistance { get; set; }
 
         public bool IsGravitating { get; set; }
+
+        /// <summary>
+        /// Determines if pop effect should execute for this construct.
+        /// </summary>
+        public bool AwaitingPop { get; set; }
 
         #endregion
 
@@ -262,6 +270,29 @@ namespace HonkPooper
         {
             _compositeTransform.ScaleX += 0.1;
             _compositeTransform.ScaleY += 0.1;
+        }
+
+        public void Pop()
+        {
+            if (AwaitingPop)
+            {
+                if (!_isPoppingComplete && GetScaleX() < _popUpScalingLimit)
+                    Expand();
+
+                if (GetScaleX() >= _popUpScalingLimit)
+                    _isPoppingComplete = true;
+
+                if (_isPoppingComplete)
+                {
+                    Shrink();
+
+                    if (GetScaleX() <= 1)
+                    {
+                        _isPoppingComplete = false;
+                        AwaitingPop = false; // stop popping effect                        
+                    }
+                }
+            }
         }
 
         #endregion

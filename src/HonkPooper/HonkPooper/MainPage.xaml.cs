@@ -133,6 +133,7 @@ namespace HonkPooper
                 bomb.Reset();
                 bomb.IsAnimating = true;
                 bomb.IsGravitating = true;
+                bomb.AwaitingPop = true;
 
                 bomb.Reposition(
                     player: _player,
@@ -179,7 +180,7 @@ namespace HonkPooper
                     .Where(x => x.IsAnimating && x.WillHonk)
                     .FirstOrDefault(x => x.GetCloseHitBox().IntersectsWith(bomb.GetCloseHitBox())) is Vehicle vehicle)
                 {
-                    vehicle.MarkBomb();
+                    vehicle.Bomb();
                 }
             }
             else
@@ -187,6 +188,8 @@ namespace HonkPooper
                 bomb.SetLeft(bomb.GetLeft() + speed);
                 bomb.SetTop(bomb.GetTop() + speed);
             }
+
+            bomb.Pop();
 
             return true;
         }
@@ -327,13 +330,11 @@ namespace HonkPooper
 
             Vehicle vehicle1 = vehicle as Vehicle;
 
-            //if (vehicle1.IsMarkedForBombing)
-            //{
-            vehicle1.Pop();
-            //}
+            vehicle.Pop();
 
             if (vehicle1.Honk())
             {
+                //vehicle.AwaitingPop = true;
                 GenerateHonkInScene(vehicle1);
             }
 
@@ -534,6 +535,8 @@ namespace HonkPooper
             if (_scene.Children.OfType<Honk>().FirstOrDefault(x => x.IsAnimating == false) is Honk honk)
             {
                 honk.IsAnimating = true;
+                honk.AwaitingPop = true;
+
                 honk.Reset();
 
                 var hitBox = vehicle.GetCloseHitBox();
@@ -554,6 +557,7 @@ namespace HonkPooper
 
         public bool AnimateHonk(Construct honk)
         {
+            honk.Pop();
             var speed = (_scene.Speed + honk.SpeedOffset);
             MoveConstruct(honk, speed);
             return true;

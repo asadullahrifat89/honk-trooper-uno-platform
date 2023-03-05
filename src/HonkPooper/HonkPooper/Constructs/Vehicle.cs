@@ -14,10 +14,7 @@ namespace HonkPooper
         private Uri[] _vehicle_small_uris;
         private Uri[] _vehicle_large_uris;
 
-        private int _honkDelay;
-
-        private bool _isPoppingComplete;
-        private double _honkBustingUpScalingLimit = 1.5;
+        private int _honkDelay;        
 
         #endregion
 
@@ -114,8 +111,6 @@ namespace HonkPooper
 
         public bool IsMarkedForBombing { get; set; }
 
-        public bool IsMarkedForPopping { get; set; }
-
         #endregion
 
         #region Methods
@@ -123,7 +118,7 @@ namespace HonkPooper
         public void Reset()
         {
             IsMarkedForBombing = false;
-            IsMarkedForPopping = false;
+            AwaitingPop = false;
 
             SetScaleTransform(1);
 
@@ -145,8 +140,7 @@ namespace HonkPooper
 
                 if (_honkDelay < 0)
                 {
-                    SetHonkDelay();
-                    IsMarkedForPopping = true;
+                    SetHonkDelay();                    
                     return true;
                 }
             }
@@ -160,39 +154,13 @@ namespace HonkPooper
             _honkDelay = _random.Next(30, 80);
         }
 
-        public void MarkBomb()
+        public void Bomb()
         {
             IsMarkedForBombing = true;
             WillHonk = false;
-            IsMarkedForPopping = true;
+            AwaitingPop = true;
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET + 1;
         }
-
-        public void Pop()
-        {
-            if (IsMarkedForPopping)
-            {
-                if (!_isPoppingComplete && GetScaleX() < _honkBustingUpScalingLimit)
-                {
-                    Expand();
-                }
-
-                if (GetScaleX() >= _honkBustingUpScalingLimit)
-                    _isPoppingComplete = true;
-
-                if (_isPoppingComplete)
-                {
-                    Shrink();
-
-                    if (GetScaleX() <= 1)
-                    {
-                        _isPoppingComplete = false;
-                        IsMarkedForPopping = false; // stop popping effect                        
-                    }
-                }
-            }
-        }
-
 
         #endregion
     }
