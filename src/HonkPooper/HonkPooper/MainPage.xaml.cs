@@ -155,20 +155,29 @@ namespace HonkPooper
 
         public bool GeneratePlayerBombInScene()
         {
-            if (_scene.Children.OfType<Boss>().Any(x => x.IsAnimating && x.IsAttacking) &&
+            if (_scene.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss &&
                 _scene.Children.OfType<PlayerBomb>().FirstOrDefault(x => x.IsAnimating == false) is PlayerBomb bomb)
             {
                 bomb.Reset();
                 bomb.IsAnimating = true;
                 bomb.SetPopping();
 
-                bomb.SetRotation(33);
-
                 bomb.Reposition(
                     Player: _player,
                     downScaling: _scene.DownScaling);
 
                 SyncDropShadow(bomb);
+
+                bomb.IsReverseMovement = _player.GetLeft() < boss.GetLeft();
+
+                if (bomb.IsReverseMovement)
+                {
+                    bomb.SetRotation(-33);
+                }
+                else
+                {
+                    bomb.SetRotation(33);
+                }
 
                 Console.WriteLine("Player Bomb dropped.");
 
@@ -184,7 +193,7 @@ namespace HonkPooper
 
             var speed = _scene.Speed + bomb.SpeedOffset;
 
-            MoveConstruct(construct: bomb, speed: speed, isReverse: true);
+            MoveConstruct(construct: bomb, speed: speed, isReverse: !playerBomb.IsReverseMovement);
 
             if (playerBomb.IsBlasting)
             {
@@ -984,22 +993,31 @@ namespace HonkPooper
 
         public bool GenerateBossBombInScene()
         {
-            if (_scene.Children.OfType<Boss>().Any(x => x.IsAnimating && x.IsAttacking) &&
+            if (_scene.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss &&
                 _scene.Children.OfType<BossBomb>().FirstOrDefault(x => x.IsAnimating == false) is BossBomb bomb)
             {
-                Boss boss = _scene.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking);
-
                 bomb.Reset();
                 bomb.IsAnimating = true;
                 bomb.SetPopping();
 
-                bomb.SetRotation(33);
+
 
                 bomb.Reposition(
                     boss: boss,
                     downScaling: _scene.DownScaling);
 
                 SyncDropShadow(bomb);
+
+                bomb.IsReverseMovement = boss.GetLeft() > _player.GetLeft();
+
+                if (bomb.IsReverseMovement)
+                {
+                    bomb.SetRotation(-33);
+                }
+                else
+                {
+                    bomb.SetRotation(33);
+                }
 
                 Console.WriteLine("Boss Bomb dropped.");
 
@@ -1015,7 +1033,7 @@ namespace HonkPooper
 
             var speed = _scene.Speed + bomb.SpeedOffset;
 
-            MoveConstruct(construct: bomb, speed: speed);
+            MoveConstruct(construct: bomb, speed: speed, isReverse: bossBomb.IsReverseMovement);
 
             if (bossBomb.IsBlasting)
             {

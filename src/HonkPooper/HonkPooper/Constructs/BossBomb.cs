@@ -60,6 +60,8 @@ namespace HonkPooper
 
         public bool IsBlasting { get; set; }
 
+        public bool IsReverseMovement { get; set; }
+
         #endregion
 
         #region Methods
@@ -87,6 +89,8 @@ namespace HonkPooper
             };
 
             SetChild(content);
+
+            IsReverseMovement = false;
         }
 
         public void SetBlast()
