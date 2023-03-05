@@ -10,7 +10,7 @@ namespace HonkPooper
 
         private int _keysSize = 55;
 
-        private readonly CompositeTransform _arrowsKeysContainerTransform = new()
+        private readonly CompositeTransform _directionControlsTransform = new()
         {
             CenterX = 0.5,
             CenterY = 0.5,
@@ -23,9 +23,10 @@ namespace HonkPooper
 
         #region Properties
 
-        public Grid ArrowsKeysContainer { get; set; }
+        public Grid DirectionControls { get; set; }
 
         public Button StartButton { get; set; }
+
         public Button AttackButton { get; set; }
 
         #endregion
@@ -37,24 +38,39 @@ namespace HonkPooper
             //PointerPressed += Controller_PointerPressed;
             //PointerMoved += Controller_PointerMoved;
 
+            CanDrag = false;
+
             KeyUp += Controller_KeyUp;
             KeyDown += Controller_KeyDown;
 
-            SetupArrowKeysContainer();
-            SetupAttackButton();
-            SetupStartButton();
+            SetDirectionControls();
+            SetAttackButton();
+            SetStartButton();
+
+            SizeChanged += Controller_SizeChanged;
+        }
+
+        private void Controller_SizeChanged(object sender, Microsoft.UI.Xaml.SizeChangedEventArgs args)
+        {
+            var _sceneWidth = args.NewSize.Width;
+            var _sceneHeight = args.NewSize.Height;
+
+            var downScaling = ScreenExtensions.GetDownScaling(_sceneWidth);
+
+            _directionControlsTransform.ScaleX = 1 * downScaling;
+            _directionControlsTransform.ScaleY = 1 * downScaling;
         }
 
         #endregion
 
         #region Methods
 
-        public void SetArrowsKeysContainerRotation(double rotation)
+        public void SetDirectionControlsRotation(double rotation)
         {
-            _arrowsKeysContainerTransform.Rotation = rotation;
+            _directionControlsTransform.Rotation = rotation;
         }
 
-        private void SetupStartButton()
+        private void SetStartButton()
         {
             StartButton = new()
             {
@@ -90,12 +106,12 @@ namespace HonkPooper
                         Symbol = Symbol.Play,
                     };
                 }
-                    
+
             };
             this.Children.Add(StartButton);
         }
 
-        private void SetupAttackButton()
+        private void SetAttackButton()
         {
             AttackButton = new()
             {
@@ -118,22 +134,22 @@ namespace HonkPooper
             this.Children.Add(AttackButton);
         }
 
-        private void SetupArrowKeysContainer()
+        private void SetDirectionControls()
         {
-            ArrowsKeysContainer = new()
+            DirectionControls = new()
             {
                 HorizontalAlignment = Microsoft.UI.Xaml.HorizontalAlignment.Right,
                 VerticalAlignment = Microsoft.UI.Xaml.VerticalAlignment.Bottom,
-                RenderTransform = _arrowsKeysContainerTransform,
+                RenderTransform = _directionControlsTransform,
             };
 
-            ArrowsKeysContainer.RowDefinitions.Add(new RowDefinition());
-            ArrowsKeysContainer.RowDefinitions.Add(new RowDefinition());
-            ArrowsKeysContainer.RowDefinitions.Add(new RowDefinition());
+            DirectionControls.RowDefinitions.Add(new RowDefinition());
+            DirectionControls.RowDefinitions.Add(new RowDefinition());
+            DirectionControls.RowDefinitions.Add(new RowDefinition());
 
-            ArrowsKeysContainer.ColumnDefinitions.Add(new ColumnDefinition());
-            ArrowsKeysContainer.ColumnDefinitions.Add(new ColumnDefinition());
-            ArrowsKeysContainer.ColumnDefinitions.Add(new ColumnDefinition());
+            DirectionControls.ColumnDefinitions.Add(new ColumnDefinition());
+            DirectionControls.ColumnDefinitions.Add(new ColumnDefinition());
+            DirectionControls.ColumnDefinitions.Add(new ColumnDefinition());
 
             Border up = new()
             {
@@ -215,12 +231,12 @@ namespace HonkPooper
             Grid.SetRow(down, 2);
             Grid.SetColumn(down, 1);
 
-            ArrowsKeysContainer.Children.Add(up);
-            ArrowsKeysContainer.Children.Add(down);
-            ArrowsKeysContainer.Children.Add(left);
-            ArrowsKeysContainer.Children.Add(right);
+            DirectionControls.Children.Add(up);
+            DirectionControls.Children.Add(down);
+            DirectionControls.Children.Add(left);
+            DirectionControls.Children.Add(right);
 
-            this.Children.Add(ArrowsKeysContainer);
+            this.Children.Add(DirectionControls);
         }
 
         #endregion

@@ -89,28 +89,6 @@ namespace HonkPooper
         }
 
         /// <summary>
-        /// Gets the down scaling factor according to window size.
-        /// </summary>
-        /// <param name="windowWidth"></param>
-        /// <returns></returns>
-        private double CalculateDownScaling(double windowWidth)
-        {
-            return windowWidth switch
-            {
-                <= 300 => 0.50,
-                <= 400 => 0.55,
-                <= 500 => 0.60,
-                <= 700 => 0.65,
-                <= 900 => 0.70,
-                <= 950 => 0.75,
-                <= 1000 => 0.80,
-                <= 1400 => 0.85,
-                <= 2000 => 0.90,
-                _ => 1,
-            };
-        }
-
-        /// <summary>
         /// Executes actions of the constructs.
         /// </summary>
         private void Animate()
@@ -161,7 +139,7 @@ namespace HonkPooper
 
             // Console.WriteLine($"{_sceneWidth}x{_sceneHeight}");
 
-            DownScaling = CalculateDownScaling(_sceneWidth);
+            DownScaling = ScreenExtensions.GetDownScaling(_sceneWidth);
 
             // Console.WriteLine($"Down Scaling {Scaling}");
 
