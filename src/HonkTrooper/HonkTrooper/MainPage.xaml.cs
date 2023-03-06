@@ -1432,10 +1432,6 @@ namespace HonkTrooper
         {
             _controller.SetScene(_scene);
             _controller.RequiresScreenOrientationChange += Controller_RequiresScreenOrientationChange;
-
-            ScreenExtensions.RequiredDisplayOrientation = DisplayOrientations.Landscape;
-            ScreenExtensions.DisplayInformation.OrientationChanged += DisplayInformation_OrientationChanged;
-            ScreenExtensions.SetDisplayOrientation(ScreenExtensions.RequiredDisplayOrientation);
         }
 
         #endregion
@@ -1462,6 +1458,13 @@ namespace HonkTrooper
             SetController();
 
             SizeChanged += MainPage_SizeChanged;
+
+            ScreenExtensions.DisplayInformation.OrientationChanged += DisplayInformation_OrientationChanged;
+
+            ScreenExtensions.RequiredDisplayOrientation = DisplayOrientations.Landscape;
+
+            if (ScreenExtensions.GetDisplayOrienation() != ScreenExtensions.RequiredDisplayOrientation)
+                ScreenExtensions.SetDisplayOrientation(ScreenExtensions.RequiredDisplayOrientation);
         }
 
         private void MainPage_SizeChanged(object sender, SizeChangedEventArgs args)
@@ -1482,6 +1485,7 @@ namespace HonkTrooper
         {
             SizeChanged -= MainPage_SizeChanged;
             _controller.RequiresScreenOrientationChange -= Controller_RequiresScreenOrientationChange;
+            ScreenExtensions.DisplayInformation.OrientationChanged -= DisplayInformation_OrientationChanged;
         }
 
         private void Controller_RequiresScreenOrientationChange(object sender, DisplayOrientations e)
