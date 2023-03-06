@@ -9,19 +9,19 @@ namespace HonkPooper
     {
         #region Fields
 
-        private int _keysSize = 60;
-        private int _keyCornerRadius = 30;
-        private int _keyBorderThickness = 4;
-        private int _directionKeysMargin = 6;
+        private readonly int _keysSize = 60;
+        private readonly int _keyCornerRadius = 30;
+        private readonly int _keyBorderThickness = 4;
+        private readonly int _directionKeysMargin = 6;
 
-        private readonly CompositeTransform _directionKeysTransform = new()
-        {
-            CenterX = 0.5,
-            CenterY = 0.5,
-            Rotation = 0,
-            ScaleX = 1,
-            ScaleY = 1,
-        };
+        //private readonly CompositeTransform _directionKeysTransform = new()
+        //{
+        //    CenterX = 0.5,
+        //    CenterY = 0.5,
+        //    Rotation = 0,
+        //    ScaleX = 1,
+        //    ScaleY = 1,
+        //};
 
         #endregion
 
@@ -87,8 +87,8 @@ namespace HonkPooper
                 Margin = new Microsoft.UI.Xaml.Thickness(_directionKeysMargin),
             };
 
-            up.PointerPressed += (s, e) => { ActivateMoveUp(); };
-            up.PointerReleased += (s, e) => { DeactivateMoveUp(); };
+            up.PointerEntered += (s, e) => { ActivateMoveUp(); };
+            up.PointerExited += (s, e) => { DeactivateMoveUp(); };            
 
             Grid.SetRow(up, 0);
             Grid.SetColumn(up, 0);
@@ -101,17 +101,17 @@ namespace HonkPooper
                 CornerRadius = new Microsoft.UI.Xaml.CornerRadius(_keyCornerRadius),
                 Child = new SymbolIcon()
                 {
-                    Symbol = Symbol.Download
+                    Symbol = Symbol.Forward
                 },
                 BorderBrush = new SolidColorBrush(Colors.White),
                 BorderThickness = new Microsoft.UI.Xaml.Thickness(_keyBorderThickness),
                 RenderTransformOrigin = new Point(0.5, 0.5),
-                RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = -45 },
+                RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = 45 },
                 Margin = new Microsoft.UI.Xaml.Thickness(_directionKeysMargin),
             };
 
-            down.PointerPressed += (s, e) => { ActivateMoveDown(); };
-            down.PointerReleased += (s, e) => { DeactivateMoveDown(); };
+            down.PointerEntered += (s, e) => { ActivateMoveDown(); };
+            down.PointerExited += (s, e) => { DeactivateMoveDown(); };
 
             Grid.SetRow(down, 1);
             Grid.SetColumn(down, 1);
@@ -133,8 +133,8 @@ namespace HonkPooper
                 Margin = new Microsoft.UI.Xaml.Thickness(_directionKeysMargin),
             };
 
-            left.PointerPressed += (s, e) => { ActivateMoveLeft(); };
-            left.PointerReleased += (s, e) => { DeactivateMoveLeft(); };
+            left.PointerEntered += (s, e) => { ActivateMoveLeft(); };
+            left.PointerExited += (s, e) => { DeactivateMoveLeft(); };
 
             Grid.SetRow(left, 1);
             Grid.SetColumn(left, 0);
@@ -156,8 +156,8 @@ namespace HonkPooper
                 Margin = new Microsoft.UI.Xaml.Thickness(_directionKeysMargin),
             };
 
-            right.PointerPressed += (s, e) => { ActivateMoveRight(); };
-            right.PointerReleased += (s, e) => { DeactivateMoveRight(); };
+            right.PointerEntered += (s, e) => { ActivateMoveRight(); };
+            right.PointerExited += (s, e) => { DeactivateMoveRight(); };
 
             Grid.SetRow(right, 0);
             Grid.SetColumn(right, 1);
