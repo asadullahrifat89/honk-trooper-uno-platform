@@ -1007,7 +1007,7 @@ namespace HonkTrooper
             {
                 boss.Pop();
 
-                var speed = (_scene.Speed + boss.SpeedOffset);
+                var speed = (_scene.Speed + boss.SpeedOffset) * _scene.DownScaling;
 
                 // bring boss to a suitable distance from player and then start attacking
 
