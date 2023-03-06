@@ -1138,8 +1138,6 @@ namespace HonkTrooper
                 bomb.IsAnimating = true;
                 bomb.SetPopping();
 
-
-
                 bomb.Reposition(
                     boss: boss,
                     downScaling: _scene.DownScaling);
