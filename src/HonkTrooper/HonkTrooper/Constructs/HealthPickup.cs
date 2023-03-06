@@ -43,19 +43,19 @@ namespace HonkTrooper
 
         public static bool ShouldGenerate(double playerHealth)
         {
-            return playerHealth < 30;
+            return playerHealth <= 30;
         }
 
         public void Reset()
         {
             IsPickedUp = false;
-        } 
+        }
 
         #endregion
 
         #region Properties
 
-        public bool IsPickedUp { get; set; } 
+        public bool IsPickedUp { get; set; }
 
         #endregion
     }

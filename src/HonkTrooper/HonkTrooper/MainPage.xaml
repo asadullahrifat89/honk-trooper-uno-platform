@@ -27,7 +27,7 @@
 
         <ScoreBar
             x:Name="GameScoreBar"
-            Margin="10"
+            Margin="20,10"
             HorizontalAlignment="Left"
             VerticalAlignment="Top" />
 

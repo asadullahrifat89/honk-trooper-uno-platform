@@ -66,7 +66,7 @@ namespace HonkTrooper
             playersShadow.IsAnimating = true;
 
             _playerHealthBar.SetMaxiumHealth(_player.Health);
-            _playerHealthBar.SetHealth(_player.Health);
+            _playerHealthBar.UpdateValue(_player.Health);
             _playerHealthBar.SetIcon(_player.GetContentUri());
             _playerHealthBar.SetBarForegroundColor(color: Colors.Purple);
 
@@ -213,14 +213,12 @@ namespace HonkTrooper
                     {
                         playerBomb.SetBlast();
                         boss.SetPopping();
-                        boss.Health -= 10;
+                        boss.LooseHealth();
 
-                        _bossHealthBar.SetHealth(boss.Health);
+                        _bossHealthBar.UpdateValue(boss.Health);
 
-                        if (boss.Health <= 0)
-                        {
+                        if (boss.IsDead)
                             boss.IsAttacking = false;
-                        }
 
                         // Console.WriteLine($"Boss Health: {boss.Health}");
                     }
@@ -741,8 +739,8 @@ namespace HonkTrooper
 
                 if (_player.GetCloseHitBox().IntersectsWith(hitbox))
                 {
-                    _player.Health += 10;
-                    _playerHealthBar.SetHealth(_player.Health);
+                    _player.GainHealth();
+                    _playerHealthBar.UpdateValue(_player.Health);
                     healthPickup1.IsPickedUp = true;
                 }
             }
@@ -980,7 +978,7 @@ namespace HonkTrooper
                 boss.Health = BossPointScoreDiff * 1.5;
 
                 _bossHealthBar.SetMaxiumHealth(boss.Health);
-                _bossHealthBar.SetHealth(boss.Health);
+                _bossHealthBar.UpdateValue(boss.Health);
                 _bossHealthBar.SetIcon(boss.GetContentUri());
                 _bossHealthBar.SetBarForegroundColor(color: Colors.Crimson);
 
@@ -997,7 +995,7 @@ namespace HonkTrooper
         {
             Boss boss1 = boss as Boss;
 
-            if (boss1.Health <= 0)
+            if (boss1.IsDead)
             {
                 boss.Shrink();
 
@@ -1011,18 +1009,91 @@ namespace HonkTrooper
 
                 // bring boss to a suitable distance from player and then start attacking
 
-                if (!boss1.IsAttacking /*&& boss.GetLeft() < _scene.Width / 2*/)
+                if (!boss1.IsAttacking)
                 {
                     MoveConstruct(construct: boss, speed: speed);
                 }
 
-                if (boss.GetRight() > _scene.Width / 2)
+                #region Back and Forth Movement
+
+                //if (boss.GetRight() > _scene.Width / 2)
+                //{
+                //    if (boss1.IsAttacking &&
+                //        !boss1.AwaitMoveLeft && !boss1.AwaitMoveRight &&
+                //        !boss1.AwaitMoveUp && !boss1.AwaitMoveDown)
+                //    {
+                //        boss1.AwaitMoveLeft = true;
+                //    }
+                //    else
+                //    {
+                //        boss1.IsAttacking = true;
+                //    }
+                //}
+
+                //if (boss1.IsAttacking)
+                //{
+                //    if (boss1.AwaitMoveLeft)
+                //    {
+                //        boss1.MoveLeft(speed);
+
+                //        if (boss.GetLeft() < 0 || boss.GetBottom() > _scene.Height)
+                //        {
+                //            boss1.AwaitMoveLeft = false;
+                //            boss1.AwaitMoveRight = true;
+                //        }
+                //    }
+                //    else
+                //    {
+                //        if (boss1.AwaitMoveRight)
+                //        {
+                //            boss1.MoveRight(speed);
+
+                //            if (boss.GetTop() < 0)
+                //            {
+                //                boss1.AwaitMoveRight = false;
+                //                boss1.AwaitMoveDown = true;
+                //            }
+                //        }
+                //        else
+                //        {
+                //            if (boss1.AwaitMoveDown)
+                //            {
+                //                boss1.MoveDown(speed);
+
+                //                if (boss1.GetRight() > _scene.Width || boss1.GetBottom() > _scene.Height)
+                //                {
+                //                    boss1.AwaitMoveUp = true;
+                //                    boss1.AwaitMoveDown = false;
+                //                }
+                //            }
+                //            else
+                //            {
+                //                if (boss1.AwaitMoveUp)
+                //                {
+                //                    boss1.MoveUp(speed);
+
+                //                    if (boss1.GetTop() < 0 || boss1.GetLeft() < 0)
+                //                    {
+                //                        boss1.AwaitMoveUp = false;
+                //                        boss1.AwaitMoveLeft = true;
+                //                    }
+                //                }
+                //            }
+                //        }
+                //    }
+                //} 
+
+                #endregion
+
+                #region Circular
+
+                if (boss.GetRight() > _scene.Width / 3)
                 {
                     if (boss1.IsAttacking &&
                         !boss1.AwaitMoveLeft && !boss1.AwaitMoveRight &&
                         !boss1.AwaitMoveUp && !boss1.AwaitMoveDown)
                     {
-                        boss1.AwaitMoveLeft = true;
+                        boss1.AwaitMoveRight = true;
                     }
                     else
                     {
@@ -1032,38 +1103,38 @@ namespace HonkTrooper
 
                 if (boss1.IsAttacking)
                 {
-                    if (boss1.AwaitMoveLeft)
+                    if (boss1.AwaitMoveRight)
                     {
-                        boss1.MoveLeft(speed);
+                        boss1.MoveRight(speed);
 
-                        if (boss.GetLeft() < 0 || boss.GetBottom() > _scene.Height)
+                        if (boss.GetTop() < 0)
                         {
-                            boss1.AwaitMoveLeft = false;
-                            boss1.AwaitMoveRight = true;
+                            boss1.AwaitMoveRight = false;
+                            boss1.AwaitMoveDown = true;
                         }
                     }
                     else
                     {
-                        if (boss1.AwaitMoveRight)
+                        if (boss1.AwaitMoveDown)
                         {
-                            boss1.MoveRight(speed);
+                            boss1.MoveDown(speed);
 
-                            if (boss.GetTop() < 0)
+                            if (boss1.GetRight() > _scene.Width || boss1.GetBottom() > _scene.Height)
                             {
-                                boss1.AwaitMoveRight = false;
-                                boss1.AwaitMoveDown = true;
+                                boss1.AwaitMoveDown = false;
+                                boss1.AwaitMoveLeft = true;
                             }
                         }
                         else
                         {
-                            if (boss1.AwaitMoveDown)
+                            if (boss1.AwaitMoveLeft)
                             {
-                                boss1.MoveDown(speed);
+                                boss1.MoveLeft(speed);
 
-                                if (boss1.GetRight() > _scene.Width || boss1.GetBottom() > _scene.Height)
+                                if (boss.GetLeft() < 0 || boss.GetBottom() > _scene.Height)
                                 {
+                                    boss1.AwaitMoveLeft = false;
                                     boss1.AwaitMoveUp = true;
-                                    boss1.AwaitMoveDown = false;
                                 }
                             }
                             else
@@ -1075,13 +1146,15 @@ namespace HonkTrooper
                                     if (boss1.GetTop() < 0 || boss1.GetLeft() < 0)
                                     {
                                         boss1.AwaitMoveUp = false;
-                                        boss1.AwaitMoveLeft = true;
+                                        boss1.AwaitMoveRight = true;
                                     }
                                 }
                             }
                         }
                     }
                 }
+
+                #endregion
             }
 
             boss1.Hover();
@@ -1146,34 +1219,72 @@ namespace HonkTrooper
 
                 SyncDropShadow(bossBomb);
 
-                if (boss.AwaitMoveLeft || boss.AwaitMoveRight)
+                #region Back & Forth Movement
+
+                //if (boss.AwaitMoveLeft || boss.AwaitMoveRight)
+                //{
+                //    // player is on the right side of the boss
+                //    if (_player.GetLeft() > boss.GetRight())
+                //    {
+                //        bossBomb.AwaitMoveDown = true;
+                //        bossBomb.SetRotation(33);
+                //    }
+                //    else
+                //    {
+                //        bossBomb.AwaitMoveUp = true;
+                //        bossBomb.SetRotation(125);
+                //    }
+                //}
+                //else if (boss.AwaitMoveUp || boss.AwaitMoveDown)
+                //{
+                //    // player is above the boss
+                //    if (_player.GetBottom() < boss.GetTop())
+                //    {
+                //        bossBomb.AwaitMoveRight = true;
+                //        bossBomb.SetRotation(-33);
+                //    }
+                //    else
+                //    {
+                //        bossBomb.AwaitMoveLeft = true;
+                //        bossBomb.SetRotation(125);
+                //    }
+                //} 
+
+                #endregion
+
+                #region Circular Movement
+
+                // player is on the bottom right side of the boss
+                if (_player.GetTop() > boss.GetBottom() && _player.GetLeft() > boss.GetRight())
                 {
-                    // player is on the right side of the boss
-                    if (_player.GetLeft() > boss.GetRight())
-                    {
-                        bossBomb.AwaitMoveDown = true;
-                        bossBomb.SetRotation(33);
-                    }
-                    else
-                    {
-                        bossBomb.AwaitMoveUp = true;
-                        bossBomb.SetRotation(125);
-                    }
+                    bossBomb.AwaitMoveDown = true;
+                    bossBomb.SetRotation(33);
                 }
-                else if (boss.AwaitMoveUp || boss.AwaitMoveDown)
+                // player is on the bottom left side of the boss
+                else if (_player.GetTop() > boss.GetBottom() && _player.GetRight() < boss.GetLeft())
                 {
-                    // player is above the boss
-                    if (_player.GetBottom() < boss.GetTop())
-                    {
-                        bossBomb.AwaitMoveRight = true;
-                        bossBomb.SetRotation(-33);
-                    }
-                    else
-                    {
-                        bossBomb.AwaitMoveLeft = true;
-                        bossBomb.SetRotation(125);
-                    }
+                    bossBomb.AwaitMoveLeft = true;
+                    bossBomb.SetRotation(125);
                 }
+                // if player is on the top left side of the boss
+                else if (_player.GetBottom() < boss.GetTop() && _player.GetRight() < boss.GetLeft())
+                {
+                    bossBomb.AwaitMoveUp = true;
+                    bossBomb.SetRotation(125);
+                }
+                // if player is on the top right side of the boss
+                else if (_player.GetBottom() < boss.GetTop() && _player.GetLeft() > boss.GetRight())
+                {
+                    bossBomb.AwaitMoveRight = true;
+                    bossBomb.SetRotation(-33);
+                }
+                else
+                {
+                    bossBomb.AwaitMoveDown = true;
+                    bossBomb.SetRotation(33);
+                }
+
+                #endregion
 
                 // Console.WriteLine("Boss Bomb dropped.");
 
@@ -1221,9 +1332,11 @@ namespace HonkTrooper
                 if (bossBomb.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
                 {
                     bossBomb.SetBlast();
+
                     _player.SetPopping();
-                    _player.Health -= 5;
-                    _playerHealthBar.SetHealth(_player.Health);
+                    _player.LooseHealth();
+
+                    _playerHealthBar.UpdateValue(_player.Health);
                 }
             }
 
@@ -1404,7 +1517,7 @@ namespace HonkTrooper
                randomizeDelay: true);
 
             Generator healthPickups = new(
-             generationDelay: 300,
+             generationDelay: 100,
              generationAction: GenerateHealthPickupsInScene,
              startUpAction: SpawnHealthPickupsInScene);
 

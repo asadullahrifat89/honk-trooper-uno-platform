@@ -64,7 +64,7 @@ namespace HonkTrooper
             this.Bar.Maximum = value;
         }
 
-        public void SetHealth(double value)
+        public void UpdateValue(double value)
         {
             this.Bar.Value = value;
             Visibility = this.Bar.Value > 0 ? Visibility.Visible : Visibility.Collapsed;

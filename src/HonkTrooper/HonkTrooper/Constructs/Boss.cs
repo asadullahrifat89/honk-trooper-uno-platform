@@ -72,6 +72,8 @@ namespace HonkTrooper
 
         public double Health { get; set; }
 
+        public bool IsDead => Health <= 0;
+
         #endregion
 
         #region Methods
@@ -130,6 +132,11 @@ namespace HonkTrooper
         {
             SetLeft(GetLeft() + speed);
             SetTop(GetTop() + speed * IsometricDisplacement);
+        }
+
+        public void LooseHealth()
+        {
+            Health -= 5;
         }
 
         #endregion
