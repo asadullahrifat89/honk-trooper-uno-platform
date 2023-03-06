@@ -1228,7 +1228,7 @@ namespace HonkPooper
                startUpAction: SpawnBossesInScene);
 
             Generator bossBombs = new(
-               generationDelay: 40,
+               generationDelay: 50,
                generationAction: GenerateBossBombInScene,
                startUpAction: SpawnBossBombsInScene,
                randomizeDelay: true);
