@@ -961,8 +961,10 @@ namespace HonkTrooper
 
         private bool GenerateBossInScene()
         {
+            //TODO: _scoreBar.IsBossPointScore(BossPointScoreDiff) &&
+
             // if scene doesn't contain a boss then pick a random boss and add to scene
-            if (_scoreBar.IsBossPointScore(BossPointScoreDiff) &&
+            if (/*_scoreBar.IsBossPointScore(BossPointScoreDiff) &&*/
                 !_scene.Children.OfType<Boss>().Any(x => x.IsAnimating) &&
                 _scene.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating == false) is Boss boss)
             {
@@ -1155,21 +1157,21 @@ namespace HonkTrooper
                     else
                     {
                         bossBomb.AwaitMoveUp = true;
-                        bossBomb.SetRotation(-33);
+                        bossBomb.SetRotation(123);
                     }
                 }
-                else if(boss.AwaitMoveUp || boss.AwaitMoveDown)
+                else if (boss.AwaitMoveUp || boss.AwaitMoveDown)
                 {
                     // player is above the boss
                     if (_player.GetBottom() < boss.GetTop())
                     {
                         bossBomb.AwaitMoveRight = true;
-                        bossBomb.SetRotation(33);
+                        bossBomb.SetRotation(-33);
                     }
                     else
                     {
                         bossBomb.AwaitMoveLeft = true;
-                        bossBomb.SetRotation(-33);
+                        bossBomb.SetRotation(123);
                     }
                 }
 
