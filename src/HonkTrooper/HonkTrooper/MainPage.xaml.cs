@@ -1460,11 +1460,7 @@ namespace HonkTrooper
             SizeChanged += MainPage_SizeChanged;
 
             ScreenExtensions.DisplayInformation.OrientationChanged += DisplayInformation_OrientationChanged;
-
             ScreenExtensions.RequiredDisplayOrientation = DisplayOrientations.Landscape;
-
-            if (ScreenExtensions.GetDisplayOrienation() != ScreenExtensions.RequiredDisplayOrientation)
-                ScreenExtensions.SetDisplayOrientation(ScreenExtensions.RequiredDisplayOrientation);
         }
 
         private void MainPage_SizeChanged(object sender, SizeChangedEventArgs args)
