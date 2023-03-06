@@ -226,7 +226,7 @@ namespace HonkPooper
                 BorderBrush = new SolidColorBrush(Colors.White),
                 BorderThickness = new Microsoft.UI.Xaml.Thickness(_keyBorderThickness),
                 HorizontalAlignment = Microsoft.UI.Xaml.HorizontalAlignment.Left,
-                VerticalAlignment = Microsoft.UI.Xaml.VerticalAlignment.Top,
+                VerticalAlignment = Microsoft.UI.Xaml.VerticalAlignment.Bottom,
                 Margin = new Microsoft.UI.Xaml.Thickness(20),
             };
 

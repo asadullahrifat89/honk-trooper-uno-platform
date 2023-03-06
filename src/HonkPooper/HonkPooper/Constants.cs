@@ -9,11 +9,11 @@ namespace HonkPooper
 
         public static (ConstructType ConstructType, double Height, double Width)[] CONSTRUCT_SIZES = new (ConstructType, double, double)[]
         {
-            new (ConstructType.PLAYER, 200, 200),
+            new (ConstructType.PLAYER, 190, 190),
             new (ConstructType.PLAYER_BOMB, 80, 80),
             new (ConstructType.PLAYER_BOMB_GROUND, 80, 80),
 
-            new (ConstructType.BOSS, 200, 200),
+            new (ConstructType.BOSS, 190, 190),
             new (ConstructType.BOSS_BOMB, 80, 80),
 
             new (ConstructType.VEHICLE_SMALL, 150, 150),
@@ -25,6 +25,8 @@ namespace HonkPooper
             new (ConstructType.ROAD_MARK, 40, 15),
 
             new (ConstructType.DROP_SHADOW, 25, 60),
+
+            new (ConstructType.HEALTH_PICKUP, 70, 70),
         };
 
         public static (ConstructType ConstructType, Uri Uri)[] CONSTRUCT_TEMPLATES = new (ConstructType, Uri)[]
@@ -75,29 +77,38 @@ namespace HonkPooper
             new (ConstructType.BOSS_BOMB, new Uri("ms-appx:///HonkPooper/Assets/Images/boss_bomb_1.png")),
             new (ConstructType.BOSS_BOMB, new Uri("ms-appx:///HonkPooper/Assets/Images/boss_bomb_2.png")),
             new (ConstructType.BOSS_BOMB, new Uri("ms-appx:///HonkPooper/Assets/Images/boss_bomb_3.png")),
+
+            new (ConstructType.HEALTH_PICKUP, new Uri("ms-appx:///HonkPooper/Assets/Images/health_pickup.png")),
         };
     }
 
     public enum ConstructType
     {
         NONE,
+
         PLAYER,
         PLAYER_BOMB,
         PLAYER_BOMB_GROUND,
-        BOMB_BLAST,
+
         VEHICLE_SMALL,
         VEHICLE_LARGE,
-        COLLECTABLE,
-        POWERUP,
+
         ROAD_MARK,
         HONK,
-        COLLECTIBLE,
         TREE,
+        CLOUD,
+
+        BOMB_BLAST,
+        DROP_SHADOW,
+
         HONKING_EMOJI,
         HONKING_BUSTED_EMOJI,
-        CLOUD,
-        DROP_SHADOW,
+
         BOSS,
         BOSS_BOMB,
+
+        HEALTH_PICKUP,
+        COLLECTABLE_PICKUP,
+        POWERUP_PICKUP,
     }
 }
