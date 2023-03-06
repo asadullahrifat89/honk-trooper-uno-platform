@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Controls;
+using Windows.Foundation;
 
 namespace HonkTrooper
 {
@@ -14,6 +15,9 @@ namespace HonkTrooper
 
         private int _hoverDelay;
         private readonly int _hoverDelayDefault = 15;
+
+        private readonly double _grace = 7;
+        private readonly double _lag = 150;
 
         #endregion
 
@@ -137,6 +141,74 @@ namespace HonkTrooper
         public void LooseHealth()
         {
             Health -= 5;
+        }
+
+        public bool SeekPlayer(Rect playerPoint)
+        {
+            bool hasMoved = false;
+
+            double left = GetLeft();
+            double top = GetTop();
+
+            double playerMiddleX = left + Width / 2;
+            double playerMiddleY = top + Height / 2;
+
+            // move up
+            if (playerPoint.Y < playerMiddleY - _grace)
+            {
+                var distance = Math.Abs(playerPoint.Y - playerMiddleY);
+                double speed = GetFlightSpeed(distance);
+
+                SetTop(top - speed);
+
+                hasMoved = true;
+            }
+
+            // move left
+            if (playerPoint.X < playerMiddleX - _grace)
+            {
+                var distance = Math.Abs(playerPoint.X - playerMiddleX);
+                double speed = GetFlightSpeed(distance);
+
+                SetLeft(left - speed);
+
+                hasMoved = true;
+            }
+
+            // move down
+            if (playerPoint.Y > playerMiddleY + _grace)
+            {
+                var distance = Math.Abs(playerPoint.Y - playerMiddleY);
+                double speed = GetFlightSpeed(distance);
+
+                SetTop(top + speed);
+
+                hasMoved = true;
+            }
+
+            // move right
+            if (playerPoint.X > playerMiddleX + _grace)
+            {
+                var distance = Math.Abs(playerPoint.X - playerMiddleX);
+                double speed = GetFlightSpeed(distance);
+
+                SetLeft(left + speed);
+
+                hasMoved = true;
+            }
+
+            return hasMoved;
+        }
+
+        private double GetFlightSpeed(double distance)
+        {
+            var flightSpeed = (distance / _lag);
+
+            return flightSpeed;
+
+            //return flightSpeed < Constants.DEFAULT_SPEED_OFFSET - 1 
+            //    ? Constants.DEFAULT_SPEED_OFFSET - 1 
+            //    : flightSpeed;
         }
 
         #endregion

@@ -1027,78 +1027,94 @@ namespace HonkTrooper
                     MoveConstruct(construct: boss, speed: speed);
                 }
 
-                #region [L SSHAPE] Back and Forth Movement
+                #region [SEEKING] Player Seeking Movement
 
-                if (boss.GetLeft() > (_scene.Width / 3) * 1.5)
+                if (!boss1.IsAttacking)
                 {
-                    if (boss1.IsAttacking &&
-                        !boss1.AwaitMoveLeft && !boss1.AwaitMoveRight &&
-                        !boss1.AwaitMoveUp && !boss1.AwaitMoveDown)
-                    {
-                        boss1.AwaitMoveLeft = true;
-                    }
-                    else
+                    if (boss.GetLeft() > (_scene.Width / 3) * 1.5)
                     {
                         boss1.IsAttacking = true;
                     }
                 }
-
-                if (boss1.IsAttacking)
+                else
                 {
-                    if (boss1.AwaitMoveLeft)
-                    {
-                        boss1.MoveLeft(speed);
-
-                        if (boss.GetLeft() < 0 || boss.GetBottom() > _scene.Height)
-                        {
-                            boss1.AwaitMoveLeft = false;
-                            boss1.AwaitMoveRight = true;
-                        }
-                    }
-                    else
-                    {
-                        if (boss1.AwaitMoveRight)
-                        {
-                            boss1.MoveRight(speed);
-
-                            if (boss.GetTop() < 0)
-                            {
-                                boss1.AwaitMoveRight = false;
-                                boss1.AwaitMoveDown = true;
-                            }
-                        }
-                        else
-                        {
-                            if (boss1.AwaitMoveDown)
-                            {
-                                boss1.MoveDown(speed);
-
-                                if (boss1.GetRight() > _scene.Width || boss1.GetBottom() > _scene.Height)
-                                {
-                                    boss1.AwaitMoveUp = true;
-                                    boss1.AwaitMoveDown = false;
-                                }
-                            }
-                            else
-                            {
-                                if (boss1.AwaitMoveUp)
-                                {
-                                    boss1.MoveUp(speed);
-
-                                    if (boss1.GetTop() < 0 || boss1.GetLeft() < 0)
-                                    {
-                                        boss1.AwaitMoveUp = false;
-                                        boss1.AwaitMoveLeft = true;
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    boss1.SeekPlayer(_player.GetCloseHitBox());
                 }
 
                 #endregion
 
-                #region [EXPERIMENTAL] Circular
+                #region [L SSHAPE] Back and Forth Movement
+
+                //if (boss.GetLeft() > (_scene.Width / 3) * 1.5)
+                //{
+                //    if (boss1.IsAttacking &&
+                //        !boss1.AwaitMoveLeft && !boss1.AwaitMoveRight &&
+                //        !boss1.AwaitMoveUp && !boss1.AwaitMoveDown)
+                //    {
+                //        boss1.AwaitMoveLeft = true;
+                //    }
+                //    else
+                //    {
+                //        boss1.IsAttacking = true;
+                //    }
+                //}
+
+                //if (boss1.IsAttacking)
+                //{
+                //    if (boss1.AwaitMoveLeft)
+                //    {
+                //        boss1.MoveLeft(speed);
+
+                //        if (boss.GetLeft() < 0 || boss.GetBottom() > _scene.Height)
+                //        {
+                //            boss1.AwaitMoveLeft = false;
+                //            boss1.AwaitMoveRight = true;
+                //        }
+                //    }
+                //    else
+                //    {
+                //        if (boss1.AwaitMoveRight)
+                //        {
+                //            boss1.MoveRight(speed);
+
+                //            if (boss.GetTop() < 0)
+                //            {
+                //                boss1.AwaitMoveRight = false;
+                //                boss1.AwaitMoveDown = true;
+                //            }
+                //        }
+                //        else
+                //        {
+                //            if (boss1.AwaitMoveDown)
+                //            {
+                //                boss1.MoveDown(speed);
+
+                //                if (boss1.GetRight() > _scene.Width || boss1.GetBottom() > _scene.Height)
+                //                {
+                //                    boss1.AwaitMoveUp = true;
+                //                    boss1.AwaitMoveDown = false;
+                //                }
+                //            }
+                //            else
+                //            {
+                //                if (boss1.AwaitMoveUp)
+                //                {
+                //                    boss1.MoveUp(speed);
+
+                //                    if (boss1.GetTop() < 0 || boss1.GetLeft() < 0)
+                //                    {
+                //                        boss1.AwaitMoveUp = false;
+                //                        boss1.AwaitMoveLeft = true;
+                //                    }
+                //                }
+                //            }
+                //        }
+                //    }
+                //}
+
+                #endregion
+
+                #region [Circular] Square Movement
 
                 //if (boss.GetLeft() > (_scene.Width / 3) * 1.5)
                 //{
