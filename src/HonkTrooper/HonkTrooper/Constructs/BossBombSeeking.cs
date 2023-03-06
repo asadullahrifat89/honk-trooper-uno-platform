@@ -13,7 +13,7 @@ namespace HonkTrooper
         private Random _random;
         private Uri[] _bomb_blast_uris;
         private readonly double _grace = 7;
-        private readonly double _lag = 35;
+        private readonly double _lag = 70;
 
         #endregion
 
@@ -47,6 +47,7 @@ namespace HonkTrooper
             SetChild(content);
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET - 4;
             IsometricDisplacement = 0.5;
+            DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE;
         }
 
         #endregion
