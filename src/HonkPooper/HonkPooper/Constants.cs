@@ -9,11 +9,11 @@ namespace HonkPooper
 
         public static (ConstructType ConstructType, double Height, double Width)[] CONSTRUCT_SIZES = new (ConstructType, double, double)[]
         {
-            new (ConstructType.PLAYER, 200, 200),
+            new (ConstructType.PLAYER, 190, 190),
             new (ConstructType.PLAYER_BOMB, 80, 80),
             new (ConstructType.PLAYER_BOMB_GROUND, 80, 80),
 
-            new (ConstructType.BOSS, 200, 200),
+            new (ConstructType.BOSS, 190, 190),
             new (ConstructType.BOSS_BOMB, 80, 80),
 
             new (ConstructType.VEHICLE_SMALL, 150, 150),
