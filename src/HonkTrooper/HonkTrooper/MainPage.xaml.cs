@@ -179,7 +179,7 @@ namespace HonkTrooper
                     bomb.SetRotation(33);
                 }
 
-                Console.WriteLine("Player Bomb dropped.");
+                // Console.WriteLine("Player Bomb dropped.");
 
                 return true;
             }
@@ -222,7 +222,7 @@ namespace HonkTrooper
                             boss.IsAttacking = false;
                         }
 
-                        Console.WriteLine($"Boss Health: {boss.Health}");
+                        // Console.WriteLine($"Boss Health: {boss.Health}");
                     }
                 }
             }
@@ -294,7 +294,7 @@ namespace HonkTrooper
 
                 SyncDropShadow(bomb);
 
-                Console.WriteLine("Player Ground Bomb dropped.");
+                // Console.WriteLine("Player Ground Bomb dropped.");
 
                 return true;
             }
@@ -429,7 +429,7 @@ namespace HonkTrooper
 
                 //    overlappingVehicle.IsAnimating = false;
 
-                //    Console.WriteLine("Overlapping vehicle removed.");
+                //    // Console.WriteLine("Overlapping vehicle removed.");
                 //}
 
                 vehicle.SetZ(3);
@@ -1001,7 +1001,7 @@ namespace HonkTrooper
             {
                 boss.Shrink();
 
-                //Console.WriteLine($"Boss ScaleX: {boss.GetScaleX()} ScaleY: {boss.GetScaleY()}");
+                // Console.WriteLine($"Boss ScaleX: {boss.GetScaleX()} ScaleY: {boss.GetScaleY()}");
             }
             else
             {
@@ -1175,7 +1175,7 @@ namespace HonkTrooper
                     }
                 }
 
-                Console.WriteLine("Boss Bomb dropped.");
+                // Console.WriteLine("Boss Bomb dropped.");
 
                 return true;
             }
@@ -1491,7 +1491,7 @@ namespace HonkTrooper
 
         private void Controller_RequiresScreenOrientationChange(object sender, DisplayOrientations e)
         {
-            Console.WriteLine($"Required Orientation {e}");
+            // Console.WriteLine($"Required Orientation {e}");
         }
 
         private void DisplayInformation_OrientationChanged(Windows.Graphics.Display.DisplayInformation sender, object args)
@@ -1499,7 +1499,7 @@ namespace HonkTrooper
             if (_scene.IsAnimating)
                 _scene.Stop();
 
-            Console.WriteLine($"{sender.CurrentOrientation}");
+            // Console.WriteLine($"{sender.CurrentOrientation}");
         }
 
         #endregion      

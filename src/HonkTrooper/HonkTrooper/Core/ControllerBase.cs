@@ -74,7 +74,7 @@ namespace HonkTrooper
                     break;
                 case Windows.System.VirtualKey.Escape:
                     {
-                        Console.WriteLine("Escape");
+                        // Console.WriteLine("Escape");
                     }
                     break;
                 case Windows.System.VirtualKey.Space:
@@ -146,7 +146,7 @@ namespace HonkTrooper
         {
             IsAttacking = true;
 
-            Console.WriteLine("Space");
+            // Console.WriteLine("Space");
         }
 
         public void ActivateMoveDown()
@@ -154,7 +154,7 @@ namespace HonkTrooper
             IsMoveDown = true;
             IsMoveUp = false;
 
-            Console.WriteLine("Down");
+            // Console.WriteLine("Down");
         }
 
         public void ActivateMoveUp()
@@ -162,7 +162,7 @@ namespace HonkTrooper
             IsMoveUp = true;
             IsMoveDown = false;
 
-            Console.WriteLine("Up");
+            // Console.WriteLine("Up");
         }
 
         public void ActivateMoveRight()
@@ -170,7 +170,7 @@ namespace HonkTrooper
             IsMoveLeft = false;
             IsMoveRight = true;
 
-            Console.WriteLine("Right");
+            // Console.WriteLine("Right");
         }
 
         public void ActivateMoveLeft()
@@ -178,7 +178,7 @@ namespace HonkTrooper
             IsMoveLeft = true;
             IsMoveRight = false;
 
-            Console.WriteLine("Left");
+            // Console.WriteLine("Left");
         }
 
         public void DeactivateAttack()
@@ -229,7 +229,7 @@ namespace HonkTrooper
                 RequiresScreenOrientationChange?.Invoke(this, ScreenExtensions.RequiredDisplayOrientation);
             }
 
-            Console.WriteLine("Enter");
+            // Console.WriteLine("Enter");
 
             return _scene.IsAnimating;
         }

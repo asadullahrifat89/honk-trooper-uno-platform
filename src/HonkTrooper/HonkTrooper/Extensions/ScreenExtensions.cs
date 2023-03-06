@@ -39,7 +39,7 @@ namespace HonkTrooper
         {
             var currentOrientation = DisplayInformation?.CurrentOrientation;
 
-            Console.WriteLine($"{currentOrientation}");
+            // Console.WriteLine($"{currentOrientation}");
 
             if (currentOrientation is not null && currentOrientation != displayOrientation)
                 DisplayInformation.AutoRotationPreferences = displayOrientation;
