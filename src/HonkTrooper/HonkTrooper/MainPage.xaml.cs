@@ -962,7 +962,7 @@ namespace HonkTrooper
             //TODO: _scoreBar.IsBossPointScore(BossPointScoreDiff) &&
 
             // if scene doesn't contain a boss then pick a random boss and add to scene
-            if (/*_scoreBar.IsBossPointScore(BossPointScoreDiff) &&*/
+            if (_scoreBar.IsBossPointScore(BossPointScoreDiff) &&
                 !_scene.Children.OfType<Boss>().Any(x => x.IsAnimating) &&
                 _scene.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating == false) is Boss boss)
             {
@@ -1085,7 +1085,7 @@ namespace HonkTrooper
 
                 #endregion
 
-                #region Circular
+                #region [EXPERIMENTAL] Circular
 
                 //if (boss.GetLeft() > (_scene.Width / 3) * 1.5)
                 //{
@@ -1219,7 +1219,7 @@ namespace HonkTrooper
 
                 SyncDropShadow(bossBomb);
 
-                #region Back & Forth Movement
+                #region [OBSOLETE] Back & Forth Movement
 
                 //if (boss.AwaitMoveLeft || boss.AwaitMoveRight)
                 //{
