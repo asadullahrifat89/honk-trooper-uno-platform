@@ -1132,27 +1132,45 @@ namespace HonkTrooper
         public bool GenerateBossBombInScene()
         {
             if (_scene.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss &&
-                _scene.Children.OfType<BossBomb>().FirstOrDefault(x => x.IsAnimating == false) is BossBomb bomb)
+                _scene.Children.OfType<BossBomb>().FirstOrDefault(x => x.IsAnimating == false) is BossBomb bossBomb)
             {
-                bomb.Reset();
-                bomb.IsAnimating = true;
-                bomb.SetPopping();
+                bossBomb.Reset();
+                bossBomb.IsAnimating = true;
+                bossBomb.SetPopping();
 
-                bomb.Reposition(
+                bossBomb.Reposition(
                     boss: boss,
                     downScaling: _scene.DownScaling);
 
-                SyncDropShadow(bomb);
+                SyncDropShadow(bossBomb);
 
-                bomb.IsReverseMovement = boss.GetLeft() > _player.GetLeft();
-
-                if (bomb.IsReverseMovement)
+                if (boss.AwaitMoveLeft || boss.AwaitMoveRight)
                 {
-                    bomb.SetRotation(-33);
+                    // player is on the right side of the boss
+                    if (_player.GetLeft() > boss.GetRight())
+                    {
+                        bossBomb.AwaitMoveDown = true;
+                        bossBomb.SetRotation(33);
+                    }
+                    else
+                    {
+                        bossBomb.AwaitMoveUp = true;
+                        bossBomb.SetRotation(-33);
+                    }
                 }
-                else
+                else if(boss.AwaitMoveUp || boss.AwaitMoveDown)
                 {
-                    bomb.SetRotation(33);
+                    // player is above the boss
+                    if (_player.GetBottom() < boss.GetTop())
+                    {
+                        bossBomb.AwaitMoveRight = true;
+                        bossBomb.SetRotation(33);
+                    }
+                    else
+                    {
+                        bossBomb.AwaitMoveLeft = true;
+                        bossBomb.SetRotation(-33);
+                    }
                 }
 
                 Console.WriteLine("Boss Bomb dropped.");
@@ -1167,9 +1185,24 @@ namespace HonkTrooper
         {
             BossBomb bossBomb = bomb as BossBomb;
 
-            var speed = _scene.Speed + bomb.SpeedOffset;
+            var speed = (_scene.Speed + bomb.SpeedOffset) * _scene.DownScaling;
 
-            MoveConstruct(construct: bomb, speed: speed, isReverse: bossBomb.IsReverseMovement);
+            if (bossBomb.AwaitMoveLeft)
+            {
+                bossBomb.MoveLeft(speed);
+            }
+            else if (bossBomb.AwaitMoveRight)
+            {
+                bossBomb.MoveRight(speed);
+            }
+            else if (bossBomb.AwaitMoveUp)
+            {
+                bossBomb.MoveUp(speed);
+            }
+            else
+            {
+                bossBomb.MoveDown(speed);
+            }
 
             if (bossBomb.IsBlasting)
             {
@@ -1178,7 +1211,6 @@ namespace HonkTrooper
 
                 DropShadow dropShadow = _scene.Children.OfType<DropShadow>().First(x => x.Id == bomb.Id);
                 dropShadow.Opacity = bomb.Opacity;
-
             }
             else
             {
