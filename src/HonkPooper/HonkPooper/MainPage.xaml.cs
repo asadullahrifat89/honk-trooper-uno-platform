@@ -65,10 +65,10 @@ namespace HonkPooper
             DropShadow playersShadow = (_scene.Children.OfType<DropShadow>().FirstOrDefault(x => x.Id == _player.Id));
             playersShadow.IsAnimating = true;
 
-            _playerHealthBar.SetMaxiumValue(_player.Health);
-            _playerHealthBar.SetValue(_player.Health);
+            _playerHealthBar.SetMaxiumHealth(_player.Health);
+            _playerHealthBar.SetHealth(_player.Health);
             _playerHealthBar.SetIcon(_player.GetContentUri());
-            _playerHealthBar.SetProgressForegroundColor(color: Colors.Purple);
+            _playerHealthBar.SetBarForegroundColor(color: Colors.Purple);
 
             return true;
         }
@@ -215,7 +215,7 @@ namespace HonkPooper
                         boss.SetPopping();
                         boss.Health -= 10;
 
-                        _bossHealthBar.SetValue(boss.Health);
+                        _bossHealthBar.SetHealth(boss.Health);
 
                         if (boss.Health <= 0)
                         {
@@ -235,7 +235,9 @@ namespace HonkPooper
             var hitbox = bomb.GetHitBox();
 
             // if bomb is blasted and faed or goes out of scene bounds
-            if (bomb.IsFadingComplete || hitbox.Left > _scene.Width || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Bottom > _scene.Height)
+            if (bomb.IsFadingComplete ||
+                hitbox.Left > _scene.Width || hitbox.Top > _scene.Height ||
+                hitbox.Right < 0 || hitbox.Bottom < 0)
             {
                 bomb.IsAnimating = false;
 
@@ -657,6 +659,114 @@ namespace HonkPooper
 
         #endregion
 
+        #region HealthPickup
+
+        public bool SpawnHealthPickupsInScene()
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                HealthPickup HealthPickup = new(
+                    animateAction: AnimateHealthPickup,
+                    recycleAction: RecycleHealthPickup,
+                    downScaling: _scene.DownScaling);
+
+                HealthPickup.SetPosition(
+                    left: -500,
+                    top: -500,
+                    z: 6);
+
+                _scene.AddToScene(HealthPickup);
+            }
+
+            return true;
+        }
+
+        private bool GenerateHealthPickupsInScene()
+        {
+            if (HealthPickup.ShouldGenerate(_player.Health) &&
+                _scene.Children.OfType<HealthPickup>().FirstOrDefault(x => x.IsAnimating == false) is HealthPickup healthPickup)
+            {
+                healthPickup.IsAnimating = true;
+                healthPickup.Reset();
+
+                var topOrLeft = _random.Next(0, 2);
+
+                var lane = _random.Next(0, 2);
+
+                switch (topOrLeft)
+                {
+                    case 0:
+                        {
+                            var xLaneWidth = _scene.Width / 4;
+                            healthPickup.SetPosition(
+                                left: _random.Next(0, Convert.ToInt32(xLaneWidth - healthPickup.Width)) * _scene.DownScaling,
+                                top: healthPickup.Height * -1);
+                        }
+                        break;
+                    case 1:
+                        {
+                            var yLaneWidth = (_scene.Height / 2) / 2;
+                            healthPickup.SetPosition(
+                                left: healthPickup.Width * -1,
+                                top: _random.Next(0, Convert.ToInt32(yLaneWidth)) * _scene.DownScaling);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+
+                SyncDropShadow(healthPickup);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimateHealthPickup(Construct healthPickup)
+        {
+            var speed = _scene.Speed + healthPickup.SpeedOffset;
+
+            HealthPickup healthPickup1 = healthPickup as HealthPickup;
+
+            if (healthPickup1.IsPickedUp)
+            {
+                healthPickup1.Shrink();
+            }
+            else
+            {
+                MoveConstruct(construct: healthPickup, speed: speed);
+
+                var hitbox = healthPickup.GetCloseHitBox();
+
+                if (_player.GetCloseHitBox().IntersectsWith(hitbox))
+                {
+                    _playerHealthBar.GainHealth(10);
+                    healthPickup1.IsPickedUp = true;
+                }
+            }
+
+            return true;
+        }
+
+        private bool RecycleHealthPickup(Construct healthPickup)
+        {
+            var hitBox = healthPickup.GetHitBox();
+
+            if (hitBox.Top > _scene.Height || hitBox.Left > _scene.Width || healthPickup.IsShrinkingComplete)
+            {
+                healthPickup.SetPosition(
+                    left: -500,
+                    top: -500);
+
+                healthPickup.IsAnimating = false;
+            }
+
+            return true;
+        }
+
+        #endregion
+
         #region Honk
 
         public bool SpawnHonksInScene()
@@ -866,10 +976,10 @@ namespace HonkPooper
                 // set boss health
                 boss.Health = BossPointScoreDiff * 1.3;
 
-                _bossHealthBar.SetMaxiumValue(boss.Health);
-                _bossHealthBar.SetValue(boss.Health);
+                _bossHealthBar.SetMaxiumHealth(boss.Health);
+                _bossHealthBar.SetHealth(boss.Health);
                 _bossHealthBar.SetIcon(boss.GetContentUri());
-                _bossHealthBar.SetProgressForegroundColor(color: Colors.Crimson);
+                _bossHealthBar.SetBarForegroundColor(color: Colors.Crimson);
 
                 // next boss will appear at a slightly higher score
                 BossPointScoreDiff += 5;
@@ -949,9 +1059,7 @@ namespace HonkPooper
 
         private bool RecycleBoss(Construct boss)
         {
-            //Boss boss1 = boss as Boss;
-
-            if (boss.GetScaleX() <= 0)
+            if (boss.IsShrinkingComplete)
             {
                 boss.SetPosition(
                     left: -500,
@@ -971,7 +1079,7 @@ namespace HonkPooper
 
         public bool SpawnBossBombsInScene()
         {
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 5; i++)
             {
                 BossBomb bomb = new(
                     animateAction: AnimateBossBomb,
@@ -1053,7 +1161,7 @@ namespace HonkPooper
                     bossBomb.SetBlast();
                     _player.SetPopping();
                     _player.Health -= 5;
-                    _playerHealthBar.SetValue(_player.Health);
+                    _playerHealthBar.SetHealth(_player.Health);
                 }
             }
 
@@ -1178,7 +1286,7 @@ namespace HonkPooper
 
             // then add the top trees
             Generator treeTops = new(
-                generationDelay: 40,
+                generationDelay: 35,
                 generationAction: GenerateTreeInSceneTop,
                 startUpAction: SpawnTreesInScene);
 
@@ -1190,7 +1298,7 @@ namespace HonkPooper
 
             // then add the bottom trees which will appear forward in z wrt to the vehicles
             Generator treeBottoms = new(
-                generationDelay: 40,
+                generationDelay: 35,
                 generationAction: GenerateTreeInSceneBottom,
                 startUpAction: SpawnTreesInScene);
 
@@ -1228,10 +1336,15 @@ namespace HonkPooper
                startUpAction: SpawnBossesInScene);
 
             Generator bossBombs = new(
-               generationDelay: 50,
+               generationDelay: 30,
                generationAction: GenerateBossBombInScene,
                startUpAction: SpawnBossBombsInScene,
                randomizeDelay: true);
+
+            Generator healthPickups = new(
+             generationDelay: 300,
+             generationAction: GenerateHealthPickupsInScene,
+             startUpAction: SpawnHealthPickupsInScene);
 
             _scene.AddToScene(treeBottoms);
             _scene.AddToScene(treeTops);
@@ -1247,6 +1360,8 @@ namespace HonkPooper
 
             _scene.AddToScene(bosses);
             _scene.AddToScene(bossBombs);
+
+            _scene.AddToScene(healthPickups);
 
             _scene.Speed = 5;
         }

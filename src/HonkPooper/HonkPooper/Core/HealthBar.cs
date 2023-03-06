@@ -10,7 +10,7 @@ namespace HonkPooper
 {
     public partial class HealthBar : Border
     {
-        private ProgressBar ProgressBar { get; set; } = new()
+        private ProgressBar Bar { get; set; } = new()
         {
             Width = 50,
             Height = 5,
@@ -20,7 +20,7 @@ namespace HonkPooper
             Margin = new Thickness(0, 0, 5, 0)
         };
 
-        private Image Image { get; set; } = new()
+        private Image Icon { get; set; } = new()
         {
             Height = 40,
             Width = 40,
@@ -28,20 +28,20 @@ namespace HonkPooper
             Margin = new Thickness(5)
         };
 
-        private StackPanel StackPanel { get; set; }
+        private StackPanel Container { get; set; }
 
         public HealthBar()
         {
-            this.StackPanel = new()
+            this.Container = new()
             {
                 VerticalAlignment = Microsoft.UI.Xaml.VerticalAlignment.Center,
                 Orientation = Orientation.Horizontal
             };
 
-            this.StackPanel.Children.Add(Image);
-            this.StackPanel.Children.Add(ProgressBar);
+            this.Container.Children.Add(Icon);
+            this.Container.Children.Add(Bar);
 
-            this.Child = this.StackPanel;
+            this.Child = this.Container;
 
             CornerRadius = new Microsoft.UI.Xaml.CornerRadius(10);
             BorderThickness = new Microsoft.UI.Xaml.Thickness(4);
@@ -53,24 +53,29 @@ namespace HonkPooper
 
         public void SetIcon(Uri uri)
         {
-            this.Image.Source = new BitmapImage(uri);
+            this.Icon.Source = new BitmapImage(uri);
         }
 
-        public void SetMaxiumValue(double value)
+        public void SetMaxiumHealth(double value)
         {
-            this.ProgressBar.Maximum = value;
+            this.Bar.Maximum = value;
         }
 
-        public void SetValue(double value)
+        public void SetHealth(double value)
         {
-            this.ProgressBar.Value = value;
+            this.Bar.Value = value;
 
-            Visibility = this.ProgressBar.Value > 0 ? Microsoft.UI.Xaml.Visibility.Visible : Microsoft.UI.Xaml.Visibility.Collapsed;
+            Visibility = this.Bar.Value > 0 ? Microsoft.UI.Xaml.Visibility.Visible : Microsoft.UI.Xaml.Visibility.Collapsed;
         }
 
-        public void SetProgressForegroundColor(Color color)
+        public void SetBarForegroundColor(Color color)
         {
-            this.ProgressBar.Foreground = new SolidColorBrush(color);
+            this.Bar.Foreground = new SolidColorBrush(color);
+        }
+
+        public void GainHealth(double health) 
+        {
+            this.Bar.Value += health;
         }
     }
 }
