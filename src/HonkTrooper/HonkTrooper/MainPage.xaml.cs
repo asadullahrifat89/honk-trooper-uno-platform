@@ -1157,7 +1157,7 @@ namespace HonkTrooper
                     else
                     {
                         bossBomb.AwaitMoveUp = true;
-                        bossBomb.SetRotation(123);
+                        bossBomb.SetRotation(125);
                     }
                 }
                 else if (boss.AwaitMoveUp || boss.AwaitMoveDown)
@@ -1171,7 +1171,7 @@ namespace HonkTrooper
                     else
                     {
                         bossBomb.AwaitMoveLeft = true;
-                        bossBomb.SetRotation(123);
+                        bossBomb.SetRotation(125);
                     }
                 }
 
