@@ -66,6 +66,10 @@ namespace HonkTrooper
 
         public bool AwaitMoveLeft { get; set; }
 
+        public bool AwaitMoveUp { get; set; }
+
+        public bool AwaitMoveDown { get; set; }
+
         public double Health { get; set; }
 
         #endregion
@@ -77,6 +81,13 @@ namespace HonkTrooper
             Opacity = 1;
             Health = 100;
             IsAttacking = false;
+
+            AwaitMoveLeft = false;
+            AwaitMoveRight = false;
+
+            AwaitMoveUp = false;
+            AwaitMoveDown = false;
+
             SetScaleTransform(1);
         }
 
@@ -107,6 +118,18 @@ namespace HonkTrooper
         {
             SetLeft(GetLeft() + speed);
             SetTop(GetTop() - speed);
+        }
+
+        public void MoveUp(double speed)
+        {
+            SetLeft(GetLeft() - speed);
+            SetTop(GetTop() - speed * IsometricDisplacement);
+        }
+
+        public void MoveDown(double speed)
+        {
+            SetLeft(GetLeft() + speed);
+            SetTop(GetTop() + speed * IsometricDisplacement);
         }
 
         #endregion
