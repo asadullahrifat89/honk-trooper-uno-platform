@@ -168,7 +168,9 @@ namespace HonkTrooper
 
                 SyncDropShadow(bomb);
 
-                bomb.IsReverseMovement = _player.GetLeft() < boss.GetLeft();
+                BossBombSeeking bossBombSeeking = _scene.Children.OfType<BossBombSeeking>().FirstOrDefault(x => x.IsAnimating);
+
+                bomb.IsReverseMovement = _player.GetLeft() < boss.GetLeft() || bossBombSeeking is not null && _player.GetLeft() < bossBombSeeking.GetLeft();
 
                 if (bomb.IsReverseMovement)
                 {
@@ -207,6 +209,7 @@ namespace HonkTrooper
             {
                 bomb.Pop();
 
+                // if player bomb touches boss, boss looses health
                 if (_scene.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss)
                 {
                     if (playerBomb.GetCloseHitBox().IntersectsWith(boss.GetCloseHitBox()))
@@ -221,6 +224,16 @@ namespace HonkTrooper
                             boss.IsAttacking = false;
 
                         // Console.WriteLine($"Boss Health: {boss.Health}");
+                    }
+                }
+
+                // if player bomb touches boss's seeking bomb, it blasts
+                if (_scene.Children.OfType<BossBombSeeking>().FirstOrDefault(x => x.IsAnimating) is BossBombSeeking bossBombSeeking)
+                {
+                    if (playerBomb.GetCloseHitBox().IntersectsWith(bossBombSeeking.GetCloseHitBox()))
+                    {
+                        playerBomb.SetBlast();
+                        bossBombSeeking.SetBlast();
                     }
                 }
             }
@@ -1390,7 +1403,9 @@ namespace HonkTrooper
 
         public bool GenerateBossBombSeekingInScene()
         {
+            // generate a seeking bomb if one is not in scene
             if (_scene.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss &&
+                !_scene.Children.OfType<BossBombSeeking>().Any(x => x.IsAnimating) &&
                 _scene.Children.OfType<BossBombSeeking>().FirstOrDefault(x => x.IsAnimating == false) is BossBombSeeking bossBombSeeking)
             {
                 bossBombSeeking.Reset();
@@ -1403,7 +1418,7 @@ namespace HonkTrooper
 
                 SyncDropShadow(bossBombSeeking);
 
-                // Console.WriteLine("Boss Bomb dropped.");
+                // Console.WriteLine("Boss Seeking Bomb dropped.");
 
                 return true;
             }
@@ -1433,7 +1448,7 @@ namespace HonkTrooper
             {
                 bomb.Pop();
 
-                bossBombSeeking.Move(_player.GetCloseHitBox());
+                bossBombSeeking.SeekPlayer(_player.GetCloseHitBox());
 
                 if (bossBombSeeking.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
                 {
@@ -1443,6 +1458,11 @@ namespace HonkTrooper
                     _player.LooseHealth();
 
                     _playerHealthBar.UpdateValue(_player.Health);
+                }
+                else
+                {
+                    if (bossBombSeeking.RunOutOfTimeToBlast())
+                        bossBombSeeking.SetBlast();
                 }
             }
 
@@ -1629,27 +1649,9 @@ namespace HonkTrooper
                 randomizeDelay: true));
 
             _scene.AddToScene(new Generator(
-                generationDelay: 100,
+                generationDelay: 200,
                 generationAction: GenerateHealthPickupsInScene,
                 startUpAction: SpawnHealthPickupsInScene));
-
-            //_scene.AddToScene(treeBottoms);
-            //_scene.AddToScene(treeTops);
-
-            //_scene.AddToScene(roadMarks);
-            //_scene.AddToScene(vehicles);
-
-            //_scene.AddToScene(player);
-            //_scene.AddToScene(playerBombs);
-            //_scene.AddToScene(playerGroundBombs);
-
-            //_scene.AddToScene(clouds);
-
-            //_scene.AddToScene(bosses);
-            //_scene.AddToScene(bossBombs);
-            //_scene.AddToScene(bossBombSeekings);
-
-            //_scene.AddToScene(healthPickups);
 
             _scene.Speed = 5;
         }

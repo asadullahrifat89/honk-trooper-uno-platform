@@ -11,6 +11,7 @@ namespace HonkTrooper
         #region Fields
 
         private Random _random;
+        private Uri[] _bomb_uris;
         private Uri[] _bomb_blast_uris;
         private readonly double _grace = 7;
         private readonly double _lag = 70;
@@ -25,6 +26,8 @@ namespace HonkTrooper
             double downScaling)
         {
             _random = new Random();
+
+            _bomb_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BOSS_BOMB_SEEKING).Select(x => x.Uri).ToArray();
             _bomb_blast_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BOMB_BLAST).Select(x => x.Uri).ToArray();
 
             var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.BOSS_BOMB_SEEKING);
@@ -41,7 +44,7 @@ namespace HonkTrooper
 
             var content = new Image()
             {
-                Source = new BitmapImage(uriSource: Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.BOSS_BOMB_SEEKING).Uri)
+                Source = new BitmapImage(uriSource: _bomb_uris[0])
             };
 
             SetChild(content);
@@ -55,6 +58,8 @@ namespace HonkTrooper
         #region Properties
 
         public bool IsBlasting { get; set; }
+
+        public double TimeLeftUntilBlast { get; set; }
 
         #endregion
 
@@ -75,15 +80,26 @@ namespace HonkTrooper
 
             var content = new Image()
             {
-                Source = new BitmapImage(uriSource: Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.BOSS_BOMB_SEEKING).Uri)
+                Source = new BitmapImage(uriSource: _bomb_uris[0])
             };
 
             SetChild(content);
 
             IsBlasting = false;
+            TimeLeftUntilBlast = 25;
         }
 
-        public bool Move(Rect playerPoint)
+        public bool RunOutOfTimeToBlast()
+        {
+            TimeLeftUntilBlast -= 0.1;
+
+            if (TimeLeftUntilBlast <= 0)
+                return true;
+
+            return false;
+        }
+
+        public bool SeekPlayer(Rect playerPoint)
         {
             bool hasMoved = false;
 
@@ -145,6 +161,10 @@ namespace HonkTrooper
             var flightSpeed = (distance / _lag);
 
             return flightSpeed;
+
+            //return flightSpeed < Constants.DEFAULT_SPEED_OFFSET - 1 
+            //    ? Constants.DEFAULT_SPEED_OFFSET - 1 
+            //    : flightSpeed;
         }
 
         public void SetBlast()
