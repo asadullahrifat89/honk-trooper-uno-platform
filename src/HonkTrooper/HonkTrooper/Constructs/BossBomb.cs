@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Controls;
+using Windows.Data.Pdf;
 
 namespace HonkTrooper
 {
@@ -51,7 +52,7 @@ namespace HonkTrooper
 
             IsometricDisplacement = 0.5;
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET + 2;
-            DropShadowDistance = 60;
+            DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE + 10;
         }
 
         #endregion

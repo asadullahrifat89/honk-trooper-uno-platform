@@ -12,7 +12,7 @@ namespace HonkTrooper
     {
         private ProgressBar Bar { get; set; } = new()
         {
-            Width = 50,
+            Width = 60,
             Height = 5,
             Value = 0,
             Maximum = 0,

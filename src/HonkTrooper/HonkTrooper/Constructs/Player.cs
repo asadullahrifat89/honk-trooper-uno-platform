@@ -63,7 +63,7 @@ namespace HonkTrooper
             SetChild(content);
 
             SpeedOffset = 2;
-            DropShadowDistance = 50;
+            DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE;
             Health = 100;
         }
 
