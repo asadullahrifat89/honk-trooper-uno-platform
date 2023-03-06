@@ -15,6 +15,7 @@ namespace HonkTrooper
 
             new (ConstructType.BOSS, 190, 190),
             new (ConstructType.BOSS_BOMB, 80, 80),
+            new (ConstructType.BOSS_BOMB_SEEKING, 90, 90),
 
             new (ConstructType.VEHICLE_SMALL, 150, 150),
             new (ConstructType.VEHICLE_LARGE, 180, 180),
@@ -78,6 +79,8 @@ namespace HonkTrooper
             new (ConstructType.BOSS_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_2.png")),
             new (ConstructType.BOSS_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_3.png")),
 
+            new (ConstructType.BOSS_BOMB_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_seeking.png")),
+
             new (ConstructType.HEALTH_PICKUP, new Uri("ms-appx:///HonkTrooper/Assets/Images/health_pickup.png")),
         };
     }
@@ -106,6 +109,7 @@ namespace HonkTrooper
 
         BOSS,
         BOSS_BOMB,
+        BOSS_BOMB_SEEKING,
 
         HEALTH_PICKUP,
         COLLECTABLE_PICKUP,

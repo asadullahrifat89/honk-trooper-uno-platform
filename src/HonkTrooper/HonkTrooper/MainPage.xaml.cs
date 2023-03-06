@@ -962,7 +962,7 @@ namespace HonkTrooper
             //TODO: _scoreBar.IsBossPointScore(BossPointScoreDiff) &&
 
             // if scene doesn't contain a boss then pick a random boss and add to scene
-            if (_scoreBar.IsBossPointScore(BossPointScoreDiff) &&
+            if (/*_scoreBar.IsBossPointScore(BossPointScoreDiff) &&*/
                 !_scene.Children.OfType<Boss>().Any(x => x.IsAnimating) &&
                 _scene.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating == false) is Boss boss)
             {
@@ -1014,7 +1014,7 @@ namespace HonkTrooper
                     MoveConstruct(construct: boss, speed: speed);
                 }
 
-                #region Back and Forth Movement
+                #region [L SSHAPE] Back and Forth Movement
 
                 if (boss.GetLeft() > (_scene.Width / 3) * 1.5)
                 {
@@ -1312,7 +1312,7 @@ namespace HonkTrooper
             {
                 bossBomb.MoveUp(speed);
             }
-            else
+            else if (bossBomb.AwaitMoveDown)
             {
                 bossBomb.MoveDown(speed);
             }
@@ -1344,6 +1344,112 @@ namespace HonkTrooper
         }
 
         public bool RecycleBossBomb(Construct bomb)
+        {
+            var hitbox = bomb.GetHitBox();
+
+            // if bomb is blasted and faed or goes out of scene bounds
+            if (bomb.IsFadingComplete || hitbox.Left > _scene.Width || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Bottom > _scene.Height)
+            {
+                bomb.IsAnimating = false;
+
+                bomb.SetPosition(
+                    left: -500,
+                    top: -500);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        #endregion
+
+        #region BossBombSeeking
+
+        public bool SpawnBossBombSeekingsInScene()
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                BossBombSeeking bomb = new(
+                    animateAction: AnimateBossBombSeeking,
+                    recycleAction: RecycleBossBombSeeking,
+                    downScaling: _scene.DownScaling);
+
+                bomb.SetPosition(
+                    left: -500,
+                    top: -500,
+                    z: 7);
+
+                _scene.AddToScene(bomb);
+
+                SpawnDropShadowInScene(source: bomb);
+            }
+
+            return true;
+        }
+
+        public bool GenerateBossBombSeekingInScene()
+        {
+            if (_scene.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss &&
+                _scene.Children.OfType<BossBombSeeking>().FirstOrDefault(x => x.IsAnimating == false) is BossBombSeeking bossBombSeeking)
+            {
+                bossBombSeeking.Reset();
+                bossBombSeeking.IsAnimating = true;
+                bossBombSeeking.SetPopping();
+
+                bossBombSeeking.Reposition(
+                    boss: boss,
+                    downScaling: _scene.DownScaling);
+
+                SyncDropShadow(bossBombSeeking);
+
+                // Console.WriteLine("Boss Bomb dropped.");
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool AnimateBossBombSeeking(Construct bomb)
+        {
+            BossBombSeeking bossBombSeeking = bomb as BossBombSeeking;
+
+            var speed = (_scene.Speed + bomb.SpeedOffset) * _scene.DownScaling;
+
+            // TODO: seek player position
+
+            if (bossBombSeeking.IsBlasting)
+            {
+                MoveConstruct(bossBombSeeking, speed);
+
+                bomb.Expand();
+                bomb.Fade(0.02);
+
+                DropShadow dropShadow = _scene.Children.OfType<DropShadow>().First(x => x.Id == bomb.Id);
+                dropShadow.Opacity = bomb.Opacity;
+            }
+            else
+            {
+                bomb.Pop();
+
+                bossBombSeeking.Move(_player.GetCloseHitBox());
+
+                if (bossBombSeeking.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
+                {
+                    bossBombSeeking.SetBlast();
+
+                    _player.SetPopping();
+                    _player.LooseHealth();
+
+                    _playerHealthBar.UpdateValue(_player.Health);
+                }
+            }
+
+            return true;
+        }
+
+        public bool RecycleBossBombSeeking(Construct bomb)
         {
             var hitbox = bomb.GetHitBox();
 
@@ -1454,92 +1560,103 @@ namespace HonkTrooper
             _scene.Children.Clear();
 
             // first add road marks
-            Generator roadMarks = new(
+            _scene.AddToScene(new Generator(
                 generationDelay: 30,
                 generationAction: GenerateRoadMarkInScene,
-                startUpAction: SpawnRoadMarksInScene);
+                startUpAction: SpawnRoadMarksInScene));
 
             // then add the top trees
-            Generator treeTops = new(
+            _scene.AddToScene(new Generator(
                 generationDelay: 35,
                 generationAction: GenerateTreeInSceneTop,
-                startUpAction: SpawnTreesInScene);
+                startUpAction: SpawnTreesInScene));
 
             // then add the vehicles which will appear forward in z wrt the top trees
-            Generator vehicles = new(
+            _scene.AddToScene(new Generator(
                 generationDelay: 80,
                 generationAction: GenerateVehicleInScene,
-                startUpAction: SpawnVehiclesInScene);
+                startUpAction: SpawnVehiclesInScene));
 
             // then add the bottom trees which will appear forward in z wrt to the vehicles
-            Generator treeBottoms = new(
+            _scene.AddToScene(new Generator(
                 generationDelay: 35,
                 generationAction: GenerateTreeInSceneBottom,
-                startUpAction: SpawnTreesInScene);
+                startUpAction: SpawnTreesInScene));
 
             // add the honks which will appear forward in z wrt to everything on the road
-            Generator honk = new(
+            _scene.AddToScene(new Generator(
                 generationDelay: 0,
                 generationAction: () => { return true; },
-                startUpAction: SpawnHonksInScene);
+                startUpAction: SpawnHonksInScene));
 
             // add the player in scene which will appear forward in z wrt to all else
-            Generator player = new(
+            _scene.AddToScene(new Generator(
                 generationDelay: 0,
                 generationAction: () => { return true; },
-                startUpAction: SpawnPlayerInScene);
+                startUpAction: SpawnPlayerInScene));
 
-            Generator playerBombs = new(
-              generationDelay: 0,
-              generationAction: () => { return true; },
-              startUpAction: SpawnPlayerBombsInScene);
-
-            Generator playerGroundBombs = new(
+            _scene.AddToScene(new Generator(
                 generationDelay: 0,
                 generationAction: () => { return true; },
-                startUpAction: SpawnPlayerBombGroundsInScene);
+                startUpAction: SpawnPlayerBombsInScene));
+
+            _scene.AddToScene(new Generator(
+                generationDelay: 0,
+                generationAction: () => { return true; },
+                startUpAction: SpawnPlayerBombGroundsInScene));
 
             // add the clouds which are abve the player z
-            Generator clouds = new(
+            _scene.AddToScene(new Generator(
                 generationDelay: 100,
                 generationAction: GenerateCloudInScene,
-                startUpAction: SpawnCloudsInScene);
+                startUpAction: SpawnCloudsInScene));
 
-            Generator bosses = new(
-               generationDelay: 100,
-               generationAction: GenerateBossInScene,
-               startUpAction: SpawnBossesInScene);
+            _scene.AddToScene(new Generator(
+                generationDelay: 100,
+                generationAction: GenerateBossInScene,
+                startUpAction: SpawnBossesInScene));
 
-            Generator bossBombs = new(
-               generationDelay: 30,
-               generationAction: GenerateBossBombInScene,
-               startUpAction: SpawnBossBombsInScene,
-               randomizeDelay: true);
+            _scene.AddToScene(new Generator(
+                generationDelay: 30,
+                generationAction: GenerateBossBombInScene,
+                startUpAction: SpawnBossBombsInScene,
+                randomizeDelay: true));
 
-            Generator healthPickups = new(
-             generationDelay: 100,
-             generationAction: GenerateHealthPickupsInScene,
-             startUpAction: SpawnHealthPickupsInScene);
+            _scene.AddToScene(new Generator(
+                generationDelay: 200,
+                generationAction: GenerateBossBombSeekingInScene,
+                startUpAction: SpawnBossBombSeekingsInScene,
+                randomizeDelay: true));
 
-            _scene.AddToScene(treeBottoms);
-            _scene.AddToScene(treeTops);
+            _scene.AddToScene(new Generator(
+                generationDelay: 100,
+                generationAction: GenerateHealthPickupsInScene,
+                startUpAction: SpawnHealthPickupsInScene));
 
-            _scene.AddToScene(roadMarks);
-            _scene.AddToScene(vehicles);
+            //_scene.AddToScene(treeBottoms);
+            //_scene.AddToScene(treeTops);
 
-            _scene.AddToScene(player);
-            _scene.AddToScene(playerBombs);
-            _scene.AddToScene(playerGroundBombs);
+            //_scene.AddToScene(roadMarks);
+            //_scene.AddToScene(vehicles);
 
-            _scene.AddToScene(clouds);
+            //_scene.AddToScene(player);
+            //_scene.AddToScene(playerBombs);
+            //_scene.AddToScene(playerGroundBombs);
 
-            _scene.AddToScene(bosses);
-            _scene.AddToScene(bossBombs);
+            //_scene.AddToScene(clouds);
 
-            _scene.AddToScene(healthPickups);
+            //_scene.AddToScene(bosses);
+            //_scene.AddToScene(bossBombs);
+            //_scene.AddToScene(bossBombSeekings);
+
+            //_scene.AddToScene(healthPickups);
 
             _scene.Speed = 5;
         }
+
+        #endregion
+
+        #region Controller
 
         private void SetController()
         {
@@ -1576,9 +1693,7 @@ namespace HonkTrooper
             ScreenExtensions.RequiredDisplayOrientation = DisplayOrientations.Landscape;
 
             if (ScreenExtensions.GetDisplayOrienation() != ScreenExtensions.RequiredDisplayOrientation)
-            {
                 ScreenExtensions.SetDisplayOrientation(ScreenExtensions.RequiredDisplayOrientation);
-            }
         }
 
         private void MainPage_SizeChanged(object sender, SizeChangedEventArgs args)
