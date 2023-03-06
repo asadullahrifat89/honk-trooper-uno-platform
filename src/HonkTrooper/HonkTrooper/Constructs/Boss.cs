@@ -53,7 +53,7 @@ namespace HonkTrooper
 
             IsometricDisplacement = 0.5;
             DropShadowDistance = 50;
-            SpeedOffset = 1;
+            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET - 0.5;
         }
 
         #endregion
@@ -71,6 +71,8 @@ namespace HonkTrooper
         public bool AwaitMoveDown { get; set; }
 
         public double Health { get; set; }
+
+        public bool IsDead => Health <= 0;
 
         #endregion
 
@@ -130,6 +132,11 @@ namespace HonkTrooper
         {
             SetLeft(GetLeft() + speed);
             SetTop(GetTop() + speed * IsometricDisplacement);
+        }
+
+        public void LooseHealth()
+        {
+            Health -= 5;
         }
 
         #endregion

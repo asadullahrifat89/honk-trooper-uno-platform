@@ -26,7 +26,7 @@
     <RuntimeIdentifier Condition="'$(TargetFramework)' == 'net7.0-ios'">iossimulator-x64</RuntimeIdentifier>
     <RuntimeIdentifier Condition="'$(TargetFramework)' == 'net7.0-maccatalyst'">maccatalyst-x64</RuntimeIdentifier>
     <RuntimeIdentifier Condition="'$(TargetFramework)' == 'net7.0-macos'">osx-x64</RuntimeIdentifier>
-  </PropertyGroup>
+  </PropertyGroup> 
   <ItemGroup>
     <PackageReference Include="Uno.WinUI" Version="4.7.44" />
     <PackageReference Include="Uno.WinUI.RemoteControl" Version="4.7.44" Condition="'$(Configuration)'=='Debug'" />

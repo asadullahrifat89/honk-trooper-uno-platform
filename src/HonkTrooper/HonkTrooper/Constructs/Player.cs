@@ -198,6 +198,16 @@ namespace HonkTrooper
             }
         }
 
+        public void LooseHealth()
+        {
+            Health -= 5;
+        }
+
+        public void GainHealth()
+        {
+            Health += 10;
+        }
+
         #endregion        
     }
 }
