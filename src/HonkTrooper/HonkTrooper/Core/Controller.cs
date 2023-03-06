@@ -88,10 +88,10 @@ namespace HonkTrooper
             };
 
             up.PointerEntered += (s, e) => { ActivateMoveUp(); };
-            up.PointerExited += (s, e) => { DeactivateMoveUp(); };            
+            up.PointerExited += (s, e) => { DeactivateMoveUp(); };
 
-            Grid.SetRow(up, 0);
-            Grid.SetColumn(up, 0);
+            SetRow(up, 0);
+            SetColumn(up, 0);
 
             Border down = new()
             {
@@ -113,8 +113,8 @@ namespace HonkTrooper
             down.PointerEntered += (s, e) => { ActivateMoveDown(); };
             down.PointerExited += (s, e) => { DeactivateMoveDown(); };
 
-            Grid.SetRow(down, 1);
-            Grid.SetColumn(down, 1);
+            SetRow(down, 1);
+            SetColumn(down, 1);
 
             Border left = new()
             {
@@ -136,8 +136,8 @@ namespace HonkTrooper
             left.PointerEntered += (s, e) => { ActivateMoveLeft(); };
             left.PointerExited += (s, e) => { DeactivateMoveLeft(); };
 
-            Grid.SetRow(left, 1);
-            Grid.SetColumn(left, 0);
+            SetRow(left, 1);
+            SetColumn(left, 0);
 
             Border right = new()
             {
@@ -159,8 +159,8 @@ namespace HonkTrooper
             right.PointerEntered += (s, e) => { ActivateMoveRight(); };
             right.PointerExited += (s, e) => { DeactivateMoveRight(); };
 
-            Grid.SetRow(right, 0);
-            Grid.SetColumn(right, 1);
+            SetRow(right, 0);
+            SetColumn(right, 1);
 
             DirectionKeys.Children.Add(up);
             DirectionKeys.Children.Add(down);

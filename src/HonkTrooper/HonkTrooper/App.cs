@@ -45,8 +45,8 @@ namespace HonkTrooper
 #endif
 
 #if NET6_0_OR_GREATER && WINDOWS && !HAS_UNO
-		MainWindow = new Window();
-		MainWindow.Activate();
+		    MainWindow = new Window();
+		    MainWindow.Activate();
 #else
             MainWindow = Microsoft.UI.Xaml.Window.Current;
 #endif

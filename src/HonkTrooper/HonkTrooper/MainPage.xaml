@@ -9,36 +9,43 @@
     mc:Ignorable="d">
 
     <Grid x:Name="RootGrid">
+
         <Border
             Background="{ThemeResource RoadBackgroundColor}"
             BorderBrush="#111111"
             BorderThickness="3">
+
             <Scene x:Name="MainScene" Background="Transparent" />
+
         </Border>
+
         <Controller
             x:Name="KeyboardController"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             Background="Transparent" />
+
+        <ScoreBar
+            x:Name="GameScoreBar"
+            Margin="10"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top" />
+
         <StackPanel
+            Margin="0,15,0,0"
             HorizontalAlignment="Center"
             VerticalAlignment="Top"
-            Orientation="Vertical">
-            <ScoreBar x:Name="GameScoreBar" HorizontalAlignment="Center" />
-            <StackPanel
-                Margin="0,5,0,0"
-                HorizontalAlignment="Center"
-                Orientation="Horizontal">
-                <HealthBar
-                    x:Name="BossHealthBar"
-                    Margin="5"
-                    HorizontalAlignment="Center" />
-                <HealthBar
-                    x:Name="PlayerHealthBar"
-                    Margin="5"
-                    HorizontalAlignment="Center" />
-            </StackPanel>
+            Orientation="Horizontal">
+            <HealthBar
+                x:Name="BossHealthBar"
+                Margin="5"
+                HorizontalAlignment="Center" />
+            <HealthBar
+                x:Name="PlayerHealthBar"
+                Margin="5"
+                HorizontalAlignment="Center" />
         </StackPanel>
+
     </Grid>
 
 </Page>
