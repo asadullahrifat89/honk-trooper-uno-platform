@@ -67,7 +67,8 @@ namespace HonkTrooper
 
             _playerHealthBar.SetMaxiumHealth(_player.Health);
             _playerHealthBar.UpdateValue(_player.Health);
-            _playerHealthBar.SetIcon(_player.GetContentUri());
+            //_playerHealthBar.SetIcon(_player.GetContentUri());
+            _playerHealthBar.SetIcon(Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.HEALTH_PICKUP).Uri);
             _playerHealthBar.SetBarForegroundColor(color: Colors.Purple);
 
             return true;
@@ -472,12 +473,11 @@ namespace HonkTrooper
 
             // TODO: fix hitbox for safe distance between vehicles
 
-            var hitHox = vehicle.GetCloseHitBox();
+            var hitHox = vehicle.GetHorizontalHitBox();
 
             // prevent overlapping
 
-            if (_scene.Children.OfType<Vehicle>()
-                .FirstOrDefault(x => x.GetHitBox().IntersectsWith(hitHox)) is Construct collidingVehicle)
+            if (_scene.Children.OfType<Vehicle>().FirstOrDefault(x => x.IsAnimating && x.GetHorizontalHitBox().IntersectsWith(hitHox)) is Construct collidingVehicle)
             {
                 if (collidingVehicle.SpeedOffset < vehicle.SpeedOffset)
                 {
@@ -975,7 +975,7 @@ namespace HonkTrooper
             //TODO: _scoreBar.IsBossPointScore(BossPointScoreDiff) &&
 
             // if scene doesn't contain a boss then pick a random boss and add to scene
-            if (/*_scoreBar.IsBossPointScore(BossPointScoreDiff) &&*/
+            if (_scoreBar.IsBossPointScore(BossPointScoreDiff) &&
                 !_scene.Children.OfType<Boss>().Any(x => x.IsAnimating) &&
                 _scene.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating == false) is Boss boss)
             {
@@ -1464,8 +1464,6 @@ namespace HonkTrooper
             BossBombSeeking bossBombSeeking = bomb as BossBombSeeking;
 
             var speed = (_scene.Speed + bomb.SpeedOffset) * _scene.DownScaling;
-
-            // TODO: seek player position
 
             if (bossBombSeeking.IsBlasting)
             {

@@ -14,7 +14,7 @@ namespace HonkTrooper
         private Uri[] _bomb_uris;
         private Uri[] _bomb_blast_uris;
         private readonly double _grace = 7;
-        private readonly double _lag = 70;
+        private readonly double _lag = 60;
 
         #endregion
 
@@ -158,13 +158,9 @@ namespace HonkTrooper
 
         private double GetFlightSpeed(double distance)
         {
-            var flightSpeed = (distance / _lag);
+            var flightSpeed = distance / _lag;
 
-            return flightSpeed;
-
-            //return flightSpeed < Constants.DEFAULT_SPEED_OFFSET - 1 
-            //    ? Constants.DEFAULT_SPEED_OFFSET - 1 
-            //    : flightSpeed;
+            return flightSpeed > 2 ? flightSpeed : 2;
         }
 
         public void SetBlast()

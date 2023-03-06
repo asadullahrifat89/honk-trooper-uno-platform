@@ -64,6 +64,21 @@ namespace HonkTrooper
             return rect;
         }
 
+        public static Rect GetHorizontalHitBox(this Construct Construct)
+        {
+            var fourthHeight = Construct.Height / 4;
+
+            var rect = new Rect(
+                x: Construct.GetLeft(),
+                y: Construct.GetTop() + fourthHeight,
+                width: Construct.Width,
+                height: Construct.Height - fourthHeight);
+
+            //Construct.SetHitBoxBorder(rect);
+
+            return rect;
+        }
+
         public static Rect GetOverlappingHitBox(this Construct Construct)
         {
             var fourthWidht = Construct.Width / 3;
