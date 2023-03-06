@@ -34,7 +34,7 @@ namespace HonkPooper
         {
             this.Container = new()
             {
-                VerticalAlignment = Microsoft.UI.Xaml.VerticalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
                 Orientation = Orientation.Horizontal
             };
 
@@ -48,7 +48,7 @@ namespace HonkPooper
             Background = new SolidColorBrush(Colors.Goldenrod);
             BorderBrush = new SolidColorBrush(Colors.White);
 
-            Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
+            Visibility = Visibility.Collapsed;
         }
 
         public void SetIcon(Uri uri)
@@ -64,18 +64,12 @@ namespace HonkPooper
         public void SetHealth(double value)
         {
             this.Bar.Value = value;
-
-            Visibility = this.Bar.Value > 0 ? Microsoft.UI.Xaml.Visibility.Visible : Microsoft.UI.Xaml.Visibility.Collapsed;
+            Visibility = this.Bar.Value > 0 ? Visibility.Visible : Visibility.Collapsed;
         }
 
         public void SetBarForegroundColor(Color color)
         {
             this.Bar.Foreground = new SolidColorBrush(color);
-        }
-
-        public void GainHealth(double health) 
-        {
-            this.Bar.Value += health;
-        }
+        }      
     }
 }

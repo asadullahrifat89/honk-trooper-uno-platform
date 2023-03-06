@@ -741,7 +741,8 @@ namespace HonkPooper
 
                 if (_player.GetCloseHitBox().IntersectsWith(hitbox))
                 {
-                    _playerHealthBar.GainHealth(10);
+                    _player.Health += 10;
+                    _playerHealthBar.SetHealth(_player.Health);
                     healthPickup1.IsPickedUp = true;
                 }
             }
