@@ -17,7 +17,9 @@ namespace HonkTrooper
         private readonly int _hoverDelayDefault = 15;
 
         private readonly double _grace = 7;
-        private readonly double _lag = 150;
+        private readonly double _lag = 125;
+
+        private double _changeMovementPatternDelay;
 
         #endregion
 
@@ -55,7 +57,7 @@ namespace HonkTrooper
 
             SetChild(content);
 
-            IsometricDisplacement = 0.5;            
+            IsometricDisplacement = 0.5;
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET - 0.5;
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE;
         }
@@ -78,6 +80,9 @@ namespace HonkTrooper
 
         public bool IsDead => Health <= 0;
 
+        public BossMovementPattern MovementPattern { get; set; }
+
+
         #endregion
 
         #region Methods
@@ -94,6 +99,7 @@ namespace HonkTrooper
             AwaitMoveUp = false;
             AwaitMoveDown = false;
 
+            RandomizeMovementPattern();
             SetScaleTransform(1);
         }
 
@@ -143,9 +149,27 @@ namespace HonkTrooper
             Health -= 5;
         }
 
-        public bool SeekPlayer(Rect playerPoint)
+        public void Move(double speed, double sceneWidth, double sceneHeight, Rect playerPoint)
         {
-            bool hasMoved = false;
+            switch (MovementPattern)
+            {
+                case BossMovementPattern.PLAYER_SEEKING:
+                    SeekPlayer(playerPoint);
+                    break;
+                case BossMovementPattern.SQUARE:
+                    MoveInSquares(speed, sceneWidth, sceneHeight);
+                    break;
+            }
+        }
+
+        public void SeekPlayer(Rect playerPoint)
+        {
+            _changeMovementPatternDelay -= 0.1;
+
+            if (_changeMovementPatternDelay < 0)
+            {
+                RandomizeMovementPattern();
+            }
 
             double left = GetLeft();
             double top = GetTop();
@@ -160,8 +184,6 @@ namespace HonkTrooper
                 double speed = GetFlightSpeed(distance);
 
                 SetTop(top - speed);
-
-                hasMoved = true;
             }
 
             // move left
@@ -171,8 +193,6 @@ namespace HonkTrooper
                 double speed = GetFlightSpeed(distance);
 
                 SetLeft(left - speed);
-
-                hasMoved = true;
             }
 
             // move down
@@ -182,8 +202,6 @@ namespace HonkTrooper
                 double speed = GetFlightSpeed(distance);
 
                 SetTop(top + speed);
-
-                hasMoved = true;
             }
 
             // move right
@@ -193,11 +211,82 @@ namespace HonkTrooper
                 double speed = GetFlightSpeed(distance);
 
                 SetLeft(left + speed);
+            }
+        }
 
-                hasMoved = true;
+        public bool MoveInSquares(double speed, double sceneWidth, double sceneHeight)
+        {
+            _changeMovementPatternDelay -= 0.1;
+
+            if (_changeMovementPatternDelay < 0)
+            {
+                RandomizeMovementPattern();
+                return true;
             }
 
-            return hasMoved;
+            if (IsAttacking && !AwaitMoveLeft && !AwaitMoveRight && !AwaitMoveUp && !AwaitMoveDown)
+            {
+                AwaitMoveRight = true;
+            }
+            else
+            {
+                IsAttacking = true;
+            }
+
+            if (IsAttacking)
+            {
+                if (AwaitMoveRight)
+                {
+                    MoveRight(speed);
+
+                    if (GetTop() < 0)
+                    {
+                        AwaitMoveRight = false;
+                        AwaitMoveDown = true;
+                    }
+                }
+                else
+                {
+                    if (AwaitMoveDown)
+                    {
+                        MoveDown(speed);
+
+                        if (GetRight() > sceneWidth || GetBottom() > sceneHeight)
+                        {
+                            AwaitMoveDown = false;
+                            AwaitMoveLeft = true;
+                        }
+                    }
+                    else
+                    {
+                        if (AwaitMoveLeft)
+                        {
+                            MoveLeft(speed);
+
+                            if (GetLeft() < 0 || GetBottom() > sceneHeight)
+                            {
+                                AwaitMoveLeft = false;
+                                AwaitMoveUp = true;
+                            }
+                        }
+                        else
+                        {
+                            if (AwaitMoveUp)
+                            {
+                                MoveUp(speed);
+
+                                if (GetTop() < 0 || GetLeft() < 0)
+                                {
+                                    AwaitMoveUp = false;
+                                    AwaitMoveRight = true;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            return false;
         }
 
         private double GetFlightSpeed(double distance)
@@ -211,6 +300,18 @@ namespace HonkTrooper
             //    : flightSpeed;
         }
 
+        private void RandomizeMovementPattern()
+        {
+            _changeMovementPatternDelay = _random.Next(40, 60);
+            MovementPattern = (BossMovementPattern)_random.Next(0, Enum.GetNames(typeof(BossMovementPattern)).Length);
+        }
+
         #endregion
+    }
+
+    public enum BossMovementPattern
+    {
+        PLAYER_SEEKING,
+        SQUARE,
     }
 }

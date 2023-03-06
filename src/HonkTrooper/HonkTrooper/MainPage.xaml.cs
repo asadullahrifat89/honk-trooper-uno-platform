@@ -1022,28 +1022,45 @@ namespace HonkTrooper
 
                 // bring boss to a suitable distance from player and then start attacking
 
-                if (!boss1.IsAttacking)
+                #region [PATTERN CHANGING] Unpredictable Movement
+
+                if (boss1.IsAttacking)
+                {
+                    boss1.Move(
+                        speed: speed,
+                        sceneWidth: _scene.Width,
+                        sceneHeight: _scene.Height,
+                        playerPoint: _player.GetCloseHitBox());
+                }
+                else
                 {
                     MoveConstruct(construct: boss, speed: speed);
-                }
 
-                #region [SEEKING] Player Seeking Movement
-
-                if (!boss1.IsAttacking)
-                {
                     if (boss.GetLeft() > (_scene.Width / 3) * 1.5)
                     {
                         boss1.IsAttacking = true;
                     }
                 }
-                else
-                {
-                    boss1.SeekPlayer(_player.GetCloseHitBox());
-                }
 
                 #endregion
 
-                #region [L SSHAPE] Back and Forth Movement
+                #region [SEEKING] Player Seeking Movement
+
+                //if (boss1.IsAttacking)
+                //{
+                //    boss1.SeekPlayer(_player.GetCloseHitBox());
+                //}
+                //else
+                //{
+                //    if (boss.GetLeft() > (_scene.Width / 3) * 1.5)
+                //    {
+                //        boss1.IsAttacking = true;
+                //    }
+                //}
+
+                #endregion
+
+                #region [L SSHAPED] Back and Forth Movement
 
                 //if (boss.GetLeft() > (_scene.Width / 3) * 1.5)
                 //{
@@ -1114,7 +1131,7 @@ namespace HonkTrooper
 
                 #endregion
 
-                #region [Circular] Square Movement
+                #region [SQUARE] Rounding Movement
 
                 //if (boss.GetLeft() > (_scene.Width / 3) * 1.5)
                 //{
