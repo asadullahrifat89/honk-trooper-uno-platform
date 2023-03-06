@@ -21,8 +21,6 @@ namespace HonkTrooper
         private bool _isPoppingComplete;
         private double _popUpScalingLimit = 1.5;
 
-        private bool _isPopping;
-
         #endregion
 
         #region Ctor
@@ -215,8 +213,6 @@ namespace HonkTrooper
         {
             if (IsAwaitingPop)
             {
-                _isPopping = true;
-
                 if (!_isPoppingComplete && GetScaleX() < _popUpScalingLimit)
                     Expand();
 

@@ -1,19 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-		<TargetFrameworks>net7.0-android</TargetFrameworks>
-		<TargetFrameworks>$(TargetFrameworks);net7.0-ios</TargetFrameworks>
-		
+    <TargetFrameworks>net7.0-android</TargetFrameworks>
+    <TargetFrameworks>$(TargetFrameworks);net7.0-ios</TargetFrameworks>
 
-		
-
-  	</PropertyGroup>
+  </PropertyGroup>
   <PropertyGroup>
     <SingleProject>true</SingleProject>
     <OutputType>Exe</OutputType>
     <!-- Display name -->
     <ApplicationTitle>HonkTrooper</ApplicationTitle>
     <!-- App Identifier -->
-    <ApplicationId>com.companyname.HonkTrooper</ApplicationId>
+    <ApplicationId>asadullahrifat89.HonkTrooper</ApplicationId>
     <ApplicationIdGuid>3658d174-4be3-4703-857f-820724e5cfb6</ApplicationIdGuid>
     <!-- Versions -->
     <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
@@ -79,8 +76,8 @@
       </ItemGroup>
     </When>
 
-		
-	</Choose>
+
+  </Choose>
   <ItemGroup>
     <ProjectReference Include="..\HonkTrooper\HonkTrooper.csproj" />
   </ItemGroup>

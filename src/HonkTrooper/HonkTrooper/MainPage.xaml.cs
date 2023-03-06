@@ -1433,8 +1433,9 @@ namespace HonkTrooper
             _controller.SetScene(_scene);
             _controller.RequiresScreenOrientationChange += Controller_RequiresScreenOrientationChange;
 
-            ScreenExtensions.RequiredDisplayOrientation = Windows.Graphics.Display.DisplayOrientations.Landscape;
+            ScreenExtensions.RequiredDisplayOrientation = DisplayOrientations.Landscape;
             ScreenExtensions.DisplayInformation.OrientationChanged += DisplayInformation_OrientationChanged;
+            ScreenExtensions.SetDisplayOrientation(ScreenExtensions.RequiredDisplayOrientation);
         }
 
         #endregion

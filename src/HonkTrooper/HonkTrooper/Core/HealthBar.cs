@@ -22,8 +22,8 @@ namespace HonkTrooper
 
         private Image Icon { get; set; } = new()
         {
-            Height = 40,
-            Width = 40,
+            Height = 30,
+            Width = 30,
             Stretch = Stretch.Uniform,
             Margin = new Thickness(5)
         };
@@ -32,6 +32,9 @@ namespace HonkTrooper
 
         public HealthBar()
         {
+            VerticalAlignment = VerticalAlignment.Center;
+            HorizontalAlignment = HorizontalAlignment.Center;
+
             this.Container = new()
             {
                 VerticalAlignment = VerticalAlignment.Center,

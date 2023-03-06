@@ -1,5 +1,11 @@
-﻿using Microsoft.UI.Text;
+﻿using Microsoft.UI;
+using Microsoft.UI.Text;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Imaging;
+using System;
+using Windows.UI;
 
 namespace HonkTrooper
 {
@@ -9,10 +15,13 @@ namespace HonkTrooper
 
         private int Score { get; set; } = 0;
 
-        private TextBlock TextBlock { get; set; } = new TextBlock() { FontSize = 40, FontWeight = FontWeights.Bold };
+        private TextBlock TextBlock { get; set; } = new TextBlock() { FontSize = 30, FontWeight = FontWeights.Bold };
 
         public ScoreBar()
         {
+            VerticalAlignment = VerticalAlignment.Center;
+            HorizontalAlignment = HorizontalAlignment.Center;
+
             this.Child = TextBlock;
             GainScore(0);
         }
