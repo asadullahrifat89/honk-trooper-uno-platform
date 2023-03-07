@@ -60,7 +60,13 @@ namespace HonkTrooper
 
         public bool IsBlasting { get; set; }
 
-        public bool IsReverseMovement { get; set; }
+        public bool AwaitMoveRight { get; set; }
+
+        public bool AwaitMoveLeft { get; set; }
+
+        public bool AwaitMoveUp { get; set; }
+
+        public bool AwaitMoveDown { get; set; }
 
         #endregion
 
@@ -90,7 +96,11 @@ namespace HonkTrooper
 
             SetChild(content);
 
-            IsReverseMovement = false;
+            AwaitMoveLeft = false;
+            AwaitMoveRight = false;
+
+            AwaitMoveUp = false;
+            AwaitMoveDown = false;
         }
 
         public void SetBlast()
@@ -105,6 +115,30 @@ namespace HonkTrooper
             SetChild(content);
 
             IsBlasting = true;
+        }
+
+        public void MoveLeft(double speed)
+        {
+            SetLeft(GetLeft() - speed);
+            SetTop(GetTop() + speed);
+        }
+
+        public void MoveRight(double speed)
+        {
+            SetLeft(GetLeft() + speed);
+            SetTop(GetTop() - speed);
+        }
+
+        public void MoveUp(double speed)
+        {
+            SetLeft(GetLeft() - speed);
+            SetTop(GetTop() - speed * IsometricDisplacement);
+        }
+
+        public void MoveDown(double speed)
+        {
+            SetLeft(GetLeft() + speed);
+            SetTop(GetTop() + speed * IsometricDisplacement);
         }
 
         #endregion
