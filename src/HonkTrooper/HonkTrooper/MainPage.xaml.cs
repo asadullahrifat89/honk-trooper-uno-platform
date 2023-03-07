@@ -1671,13 +1671,13 @@ namespace HonkTrooper
                 generationDelay: 30,
                 generationAction: GenerateBossBombInScene,
                 startUpAction: SpawnBossBombsInScene,
-                randomizeDelay: true));
+                randomizeGenerationDelay: true));
 
             _scene.AddToScene(new Generator(
                 generationDelay: 200,
                 generationAction: GenerateBossBombSeekingInScene,
                 startUpAction: SpawnBossBombSeekingsInScene,
-                randomizeDelay: true));
+                randomizeGenerationDelay: true));
 
             _scene.AddToScene(new Generator(
                 generationDelay: 200,
