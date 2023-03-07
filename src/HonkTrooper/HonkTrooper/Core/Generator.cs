@@ -24,9 +24,9 @@ namespace HonkTrooper
             int generationDelay,
             Func<bool> generationAction,
             Func<bool> startUpAction,
-            bool randomizeDelay = false)
+            bool randomizeGenerationDelay = false)
         {
-            _randomizeDelay = randomizeDelay;
+            _randomizeDelay = randomizeGenerationDelay;
             _generationDelay = generationDelay;
 
             _generationDelayInCount = _generationDelay;

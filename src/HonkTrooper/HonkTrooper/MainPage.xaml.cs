@@ -157,32 +157,55 @@ namespace HonkTrooper
         public bool GeneratePlayerBombInScene()
         {
             if (_scene.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss &&
-                _scene.Children.OfType<PlayerBomb>().FirstOrDefault(x => x.IsAnimating == false) is PlayerBomb bomb)
+                _scene.Children.OfType<PlayerBomb>().FirstOrDefault(x => x.IsAnimating == false) is PlayerBomb playerBomb)
             {
-                bomb.Reset();
-                bomb.IsAnimating = true;
-                bomb.SetPopping();
+                playerBomb.Reset();
+                playerBomb.IsAnimating = true;
+                playerBomb.SetPopping();
 
-                bomb.Reposition(
+                playerBomb.Reposition(
                     Player: _player,
                     downScaling: _scene.DownScaling);
 
-                SyncDropShadow(bomb);
+                SyncDropShadow(playerBomb);
 
-                BossBombSeeking bossBombSeeking = _scene.Children.OfType<BossBombSeeking>().FirstOrDefault(x => x.IsAnimating);
+                //BossBombSeeking bossBombSeeking = _scene.Children.OfType<BossBombSeeking>().FirstOrDefault(x => x.IsAnimating);
 
-                bomb.IsReverseMovement = _player.GetLeft() < boss.GetLeft() || bossBombSeeking is not null && _player.GetLeft() < bossBombSeeking.GetLeft();
+                // Console.WriteLine("Player Bomb dropped.");
 
-                if (bomb.IsReverseMovement)
+                #region Target Based Movement
+
+                // player is on the bottom right side of the boss
+                if (_player.GetTop() > boss.GetTop() && _player.GetLeft() > boss.GetLeft())
                 {
-                    bomb.SetRotation(-33);
+                    playerBomb.AwaitMoveUp = true;
+                    playerBomb.SetRotation(-143);
+                }
+                // player is on the bottom left side of the boss
+                else if (_player.GetTop() > boss.GetTop() && _player.GetLeft() < boss.GetLeft())
+                {
+                    playerBomb.AwaitMoveRight = true;
+                    playerBomb.SetRotation(-33);
+                }
+                // if player is on the top left side of the boss
+                else if (_player.GetTop() < boss.GetTop() && _player.GetLeft() < boss.GetLeft())
+                {
+                    playerBomb.AwaitMoveDown = true;
+                    playerBomb.SetRotation(33);
+                }
+                // if player is on the top right side of the boss
+                else if (_player.GetTop() < boss.GetTop() && _player.GetLeft() > boss.GetLeft())
+                {
+                    playerBomb.AwaitMoveLeft = true;
+                    playerBomb.SetRotation(123);
                 }
                 else
                 {
-                    bomb.SetRotation(33);
+                    playerBomb.AwaitMoveUp = true;
+                    playerBomb.SetRotation(-143);
                 }
 
-                // Console.WriteLine("Player Bomb dropped.");
+                #endregion
 
                 return true;
             }
@@ -196,7 +219,22 @@ namespace HonkTrooper
 
             var speed = _scene.Speed + bomb.SpeedOffset;
 
-            MoveConstruct(construct: bomb, speed: speed, isReverse: !playerBomb.IsReverseMovement);
+            if (playerBomb.AwaitMoveLeft)
+            {
+                playerBomb.MoveLeft(speed);
+            }
+            else if (playerBomb.AwaitMoveRight)
+            {
+                playerBomb.MoveRight(speed);
+            }
+            else if (playerBomb.AwaitMoveUp)
+            {
+                playerBomb.MoveUp(speed);
+            }
+            else if (playerBomb.AwaitMoveDown)
+            {
+                playerBomb.MoveDown(speed);
+            }
 
             if (playerBomb.IsBlasting)
             {
@@ -975,6 +1013,7 @@ namespace HonkTrooper
             //TODO: _scoreBar.IsBossPointScore(BossPointScoreDiff) &&
 
             // if scene doesn't contain a boss then pick a random boss and add to scene
+
             if (_scoreBar.IsBossPointScore(BossPointScoreDiff) &&
                 !_scene.Children.OfType<Boss>().Any(x => x.IsAnimating) &&
                 _scene.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating == false) is Boss boss)
@@ -1298,7 +1337,7 @@ namespace HonkTrooper
 
                 #endregion
 
-                #region Circular Movement
+                #region Target Based Movement
 
                 // player is on the bottom right side of the boss
                 if (_player.GetTop() > boss.GetTop() && _player.GetLeft() > boss.GetLeft())
@@ -1310,13 +1349,13 @@ namespace HonkTrooper
                 else if (_player.GetTop() > boss.GetTop() && _player.GetLeft() < boss.GetLeft())
                 {
                     bossBomb.AwaitMoveLeft = true;
-                    bossBomb.SetRotation(125);
+                    bossBomb.SetRotation(123);
                 }
                 // if player is on the top left side of the boss
                 else if (_player.GetTop() < boss.GetTop() && _player.GetLeft() < boss.GetLeft())
                 {
                     bossBomb.AwaitMoveUp = true;
-                    bossBomb.SetRotation(125);
+                    bossBomb.SetRotation(123);
                 }
                 // if player is on the top right side of the boss
                 else if (_player.GetTop() < boss.GetTop() && _player.GetLeft() > boss.GetLeft())
@@ -1467,7 +1506,7 @@ namespace HonkTrooper
 
             if (bossBombSeeking.IsBlasting)
             {
-                MoveConstruct(bossBombSeeking, speed);
+                MoveConstruct(construct: bossBombSeeking, speed: speed);
 
                 bomb.Expand();
                 bomb.Fade(0.02);
@@ -1586,20 +1625,12 @@ namespace HonkTrooper
 
         #region Construct
 
-        private void MoveConstruct(Construct construct, double speed, bool isReverse = false)
+        private void MoveConstruct(Construct construct, double speed)
         {
             speed *= _scene.DownScaling;
 
-            if (isReverse)
-            {
-                construct.SetLeft(construct.GetLeft() - speed);
-                construct.SetTop(construct.GetTop() - speed * construct.IsometricDisplacement);
-            }
-            else
-            {
-                construct.SetLeft(construct.GetLeft() + speed);
-                construct.SetTop(construct.GetTop() + speed * construct.IsometricDisplacement);
-            }
+            construct.SetLeft(construct.GetLeft() + speed);
+            construct.SetTop(construct.GetTop() + speed * construct.IsometricDisplacement);
         }
 
         #endregion
@@ -1671,13 +1702,13 @@ namespace HonkTrooper
                 generationDelay: 30,
                 generationAction: GenerateBossBombInScene,
                 startUpAction: SpawnBossBombsInScene,
-                randomizeDelay: true));
+                randomizeGenerationDelay: true));
 
             _scene.AddToScene(new Generator(
                 generationDelay: 200,
                 generationAction: GenerateBossBombSeekingInScene,
                 startUpAction: SpawnBossBombSeekingsInScene,
-                randomizeDelay: true));
+                randomizeGenerationDelay: true));
 
             _scene.AddToScene(new Generator(
                 generationDelay: 200,
