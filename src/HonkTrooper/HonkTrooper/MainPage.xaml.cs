@@ -169,34 +169,23 @@ namespace HonkTrooper
 
                 SyncDropShadow(playerBomb);
 
-                BossBombSeeking bossBombSeeking = _scene.Children.OfType<BossBombSeeking>().FirstOrDefault(x => x.IsAnimating);
-
-                //bomb.IsReverseMovement = _player.GetLeft() < boss.GetLeft() || bossBombSeeking is not null && _player.GetLeft() < bossBombSeeking.GetLeft();
-
-                //if (bomb.IsReverseMovement)
-                //{
-                //    bomb.SetRotation(-33);
-                //}
-                //else
-                //{
-                //    bomb.SetRotation(33);
-                //}
+                //BossBombSeeking bossBombSeeking = _scene.Children.OfType<BossBombSeeking>().FirstOrDefault(x => x.IsAnimating);
 
                 // Console.WriteLine("Player Bomb dropped.");
 
-                #region Circular Movement
+                #region Target Based Movement
 
                 // player is on the bottom right side of the boss
                 if (_player.GetTop() > boss.GetTop() && _player.GetLeft() > boss.GetLeft())
                 {
                     playerBomb.AwaitMoveUp = true;
-                    playerBomb.SetRotation(-143);                    
+                    playerBomb.SetRotation(-143);
                 }
                 // player is on the bottom left side of the boss
                 else if (_player.GetTop() > boss.GetTop() && _player.GetLeft() < boss.GetLeft())
                 {
                     playerBomb.AwaitMoveRight = true;
-                    playerBomb.SetRotation(-33);                  
+                    playerBomb.SetRotation(-33);
                 }
                 // if player is on the top left side of the boss
                 else if (_player.GetTop() < boss.GetTop() && _player.GetLeft() < boss.GetLeft())
@@ -229,8 +218,6 @@ namespace HonkTrooper
             PlayerBomb playerBomb = bomb as PlayerBomb;
 
             var speed = _scene.Speed + bomb.SpeedOffset;
-
-            //MoveConstruct(construct: bomb, speed: speed, isReverse: !playerBomb.IsReverseMovement);
 
             if (playerBomb.AwaitMoveLeft)
             {
@@ -1027,7 +1014,7 @@ namespace HonkTrooper
 
             // if scene doesn't contain a boss then pick a random boss and add to scene
 
-            if (/*_scoreBar.IsBossPointScore(BossPointScoreDiff) &&*/
+            if (_scoreBar.IsBossPointScore(BossPointScoreDiff) &&
                 !_scene.Children.OfType<Boss>().Any(x => x.IsAnimating) &&
                 _scene.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating == false) is Boss boss)
             {
@@ -1350,7 +1337,7 @@ namespace HonkTrooper
 
                 #endregion
 
-                #region Circular Movement
+                #region Target Based Movement
 
                 // player is on the bottom right side of the boss
                 if (_player.GetTop() > boss.GetTop() && _player.GetLeft() > boss.GetLeft())
@@ -1519,7 +1506,7 @@ namespace HonkTrooper
 
             if (bossBombSeeking.IsBlasting)
             {
-                MoveConstruct(bossBombSeeking, speed);
+                MoveConstruct(construct: bossBombSeeking, speed: speed);
 
                 bomb.Expand();
                 bomb.Fade(0.02);
@@ -1638,20 +1625,12 @@ namespace HonkTrooper
 
         #region Construct
 
-        private void MoveConstruct(Construct construct, double speed, bool isReverse = false)
+        private void MoveConstruct(Construct construct, double speed)
         {
             speed *= _scene.DownScaling;
 
-            if (isReverse)
-            {
-                construct.SetLeft(construct.GetLeft() - speed);
-                construct.SetTop(construct.GetTop() - speed * construct.IsometricDisplacement);
-            }
-            else
-            {
-                construct.SetLeft(construct.GetLeft() + speed);
-                construct.SetTop(construct.GetTop() + speed * construct.IsometricDisplacement);
-            }
+            construct.SetLeft(construct.GetLeft() + speed);
+            construct.SetTop(construct.GetTop() + speed * construct.IsometricDisplacement);
         }
 
         #endregion
