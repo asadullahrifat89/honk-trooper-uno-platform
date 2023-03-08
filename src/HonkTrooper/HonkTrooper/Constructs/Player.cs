@@ -22,11 +22,13 @@ namespace HonkTrooper
         private bool _isMovingRight;
 
         private double _movementStopDelay;
-        private readonly double _movementStopDelayDefault = 5;
+        private readonly double _movementStopDelayDefault = 6;
         private readonly double _movementStopSpeedLoss = 0.5;
 
         private double _lastSpeed;
         private readonly double _rotationThreadhold = 9;
+        private readonly double _unrotationSpeed = 1.1;
+        private readonly double _rotationSpeed = 0.5;
 
         #endregion
 
@@ -120,7 +122,7 @@ namespace HonkTrooper
             Rotate(
                 rotationDirection: RotationDirection.Backward,
                 threadhold: _rotationThreadhold,
-                rotationSpeed: 0.4);
+                rotationSpeed: _rotationSpeed);
         }
 
         public void MoveDown(double speed)
@@ -140,7 +142,7 @@ namespace HonkTrooper
             Rotate(
                 rotationDirection: RotationDirection.Forward,
                 threadhold: _rotationThreadhold,
-                rotationSpeed: 0.4);
+                rotationSpeed: _rotationSpeed);
         }
 
         public void MoveLeft(double speed)
@@ -160,7 +162,7 @@ namespace HonkTrooper
             Rotate(
                 rotationDirection: RotationDirection.Backward,
                 threadhold: _rotationThreadhold,
-                rotationSpeed: 0.4);
+                rotationSpeed: _rotationSpeed);
         }
 
         public void MoveRight(double speed)
@@ -180,7 +182,7 @@ namespace HonkTrooper
             Rotate(
                 rotationDirection: RotationDirection.Forward,
                 threadhold: _rotationThreadhold,
-                rotationSpeed: 0.4);
+                rotationSpeed: _rotationSpeed);
         }
 
         public void StopMovement()
@@ -194,10 +196,7 @@ namespace HonkTrooper
                     if (_lastSpeed > 0)
                     {
                         MoveUp(_lastSpeed - _movementStopSpeedLoss);
-                        Rotate(
-                            rotationDirection: RotationDirection.Forward,
-                            threadhold: _rotationThreadhold,
-                            rotationSpeed: 1);
+                        UnRotate(rotationSpeed: _unrotationSpeed);
 
                     }
                 }
@@ -206,10 +205,7 @@ namespace HonkTrooper
                     if (_lastSpeed > 0)
                     {
                         MoveDown(_lastSpeed - _movementStopSpeedLoss);
-                        Rotate(
-                            rotationDirection: RotationDirection.Backward,
-                            threadhold: _rotationThreadhold,
-                            rotationSpeed: 1);
+                        UnRotate(rotationSpeed: _unrotationSpeed);
                     }
                 }
                 else if (_isMovingLeft)
@@ -217,10 +213,7 @@ namespace HonkTrooper
                     if (_lastSpeed > 0)
                     {
                         MoveLeft(_lastSpeed - _movementStopSpeedLoss);
-                        Rotate(
-                            rotationDirection: RotationDirection.Forward,
-                            threadhold: _rotationThreadhold,
-                            rotationSpeed: 1);
+                        UnRotate(rotationSpeed: _unrotationSpeed);
                     }
                 }
                 else if (_isMovingRight)
@@ -228,10 +221,7 @@ namespace HonkTrooper
                     if (_lastSpeed > 0)
                     {
                         MoveRight(_lastSpeed - _movementStopSpeedLoss);
-                        Rotate(
-                            rotationDirection: RotationDirection.Backward,
-                            threadhold: _rotationThreadhold,
-                            rotationSpeed: 1);
+                        UnRotate(rotationSpeed: _unrotationSpeed);
                     }
                 }
             }
@@ -242,8 +232,7 @@ namespace HonkTrooper
                 _isMovingLeft = false;
                 _isMovingRight = false;
 
-                if (GetRotation() != 0)
-                    SetRotation(0);
+                //UnRotate(rotationSpeed: 1);
             }
         }
 

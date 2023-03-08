@@ -237,7 +237,10 @@ namespace HonkTrooper
             }
         }
 
-        public void Rotate(RotationDirection rotationDirection = RotationDirection.Forward, double threadhold = 0, double rotationSpeed = 0)
+        public void Rotate(
+            RotationDirection rotationDirection = RotationDirection.Forward,
+            double threadhold = 0,
+            double rotationSpeed = 0.1)
         {
             switch (rotationDirection)
             {
@@ -245,12 +248,12 @@ namespace HonkTrooper
                     {
                         if (threadhold == 0)
                         {
-                            _compositeTransform.Rotation += rotationSpeed != 0 ? rotationSpeed : 0.1;
+                            _compositeTransform.Rotation += rotationSpeed;
                         }
                         else
                         {
                             if (_compositeTransform.Rotation <= threadhold)
-                                _compositeTransform.Rotation += rotationSpeed != 0 ? rotationSpeed : 0.1;
+                                _compositeTransform.Rotation += rotationSpeed;
                         }
                     }
                     break;
@@ -258,16 +261,36 @@ namespace HonkTrooper
                     {
                         if (threadhold == 0)
                         {
-                            _compositeTransform.Rotation -= rotationSpeed != 0 ? rotationSpeed : 0.1;
+                            _compositeTransform.Rotation -= rotationSpeed;
                         }
                         else
                         {
                             if (_compositeTransform.Rotation >= threadhold * -1)
-                                _compositeTransform.Rotation -= rotationSpeed != 0 ? rotationSpeed : 0.1;
+                                _compositeTransform.Rotation -= rotationSpeed;
                         }
 
                     }
                     break;
+            }
+        }
+
+        public void UnRotate(double rotationSpeed = 0.1)
+        {
+            if (Convert.ToInt32(_compositeTransform.Rotation) != 0)
+            {
+                if (_compositeTransform.Rotation < 0)
+                {
+                    _compositeTransform.Rotation += rotationSpeed;
+
+                    // Console.WriteLine($"Rotation: {_compositeTransform.Rotation}");
+                    return;
+                }
+
+                if (_compositeTransform.Rotation > 0)
+                {
+                    _compositeTransform.Rotation -= rotationSpeed;
+                    // Console.WriteLine($"Rotation: {_compositeTransform.Rotation}");
+                }
             }
         }
 
