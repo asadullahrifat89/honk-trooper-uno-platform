@@ -88,7 +88,9 @@ namespace HonkTrooper
             new (ConstructType.BOSS_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_2.png")),
             new (ConstructType.BOSS_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_3.png")),
 
-            new (ConstructType.BOSS_BOMB_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_seeking.png")),
+            new (ConstructType.BOSS_BOMB_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_seeking_1.png")),
+            new (ConstructType.BOSS_BOMB_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_seeking_2.png")),
+            new (ConstructType.BOSS_BOMB_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_seeking_3.png")),
 
             new (ConstructType.HEALTH_PICKUP, new Uri("ms-appx:///HonkTrooper/Assets/Images/health_pickup.png")),
         };

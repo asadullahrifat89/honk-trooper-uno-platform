@@ -462,6 +462,10 @@ namespace HonkTrooper
 
                 SyncDropShadow(playerBombSeeking);
 
+                // use up the power up
+                if (_powerUpHealthBar.HasHealth)
+                    _powerUpHealthBar.UpdateValue(_powerUpHealthBar.GetValue() - 1);
+
                 // Console.WriteLine("Player Seeking Bomb dropped.");
 
                 return true;
@@ -1000,13 +1004,7 @@ namespace HonkTrooper
                         break;
                 }
 
-                SyncDropShadow(powerUpPickup);              
-
-                // decrease the health of the power up
-                if (_powerUpHealthBar.HasHealth)
-                {
-                    _powerUpHealthBar.UpdateValue(_powerUpHealthBar.GetValue() - 5);
-                }
+                SyncDropShadow(powerUpPickup);
 
                 return true;
             }
@@ -1030,12 +1028,14 @@ namespace HonkTrooper
 
                 var hitbox = powerUpPickup.GetCloseHitBox();
 
+                // if player picks up seeking bomb pickup
                 if (_player.GetCloseHitBox().IntersectsWith(hitbox))
                 {
                     powerUpPickup1.IsPickedUp = true;
 
-                    _powerUpHealthBar.SetMaxiumHealth(30);
-                    _powerUpHealthBar.UpdateValue(30);
+                    // allow using a burst of 3 seeking bombs three times
+                    _powerUpHealthBar.SetMaxiumHealth(12);
+                    _powerUpHealthBar.UpdateValue(12);
 
                     _powerUpHealthBar.SetIcon(Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP).Uri);
                     _powerUpHealthBar.SetBarForegroundColor(color: Colors.Green);

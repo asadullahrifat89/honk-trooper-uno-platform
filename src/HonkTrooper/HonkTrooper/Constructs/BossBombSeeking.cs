@@ -42,9 +42,11 @@ namespace HonkTrooper
 
             SetSize(width: width, height: height);
 
+            var uri = _bomb_uris[_random.Next(0, _bomb_uris.Length)];
+
             var content = new Image()
             {
-                Source = new BitmapImage(uriSource: _bomb_uris[0])
+                Source = new BitmapImage(uriSource: uri)
             };
 
             SetChild(content);
@@ -78,9 +80,11 @@ namespace HonkTrooper
             Opacity = 1;
             SetScaleTransform(1);
 
+            var uri = _bomb_uris[_random.Next(0, _bomb_uris.Length)];
+
             var content = new Image()
             {
-                Source = new BitmapImage(uriSource: _bomb_uris[0])
+                Source = new BitmapImage(uriSource: uri)
             };
 
             SetChild(content);
