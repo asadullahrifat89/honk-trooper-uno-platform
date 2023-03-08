@@ -417,6 +417,125 @@ namespace HonkTrooper
 
         #endregion
 
+        #region PlayerBombSeeking
+
+        public bool SpawnPlayerBombSeekingsInScene()
+        {
+            for (int i = 0; i < 2; i++)
+            {
+                PlayerBombSeeking bomb = new(
+                    animateAction: AnimatePlayerBombSeeking,
+                    recycleAction: RecyclePlayerBombSeeking,
+                    downScaling: _scene.DownScaling);
+
+                bomb.SetPosition(
+                    left: -500,
+                    top: -500,
+                    z: 7);
+
+                _scene.AddToScene(bomb);
+
+                SpawnDropShadowInScene(source: bomb);
+            }
+
+            return true;
+        }
+
+        public bool GeneratePlayerBombSeekingInScene()
+        {
+            // generate a seeking bomb if one is not in scene
+            if (_scene.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss &&
+                !_scene.Children.OfType<PlayerBombSeeking>().Any(x => x.IsAnimating) &&
+                _scene.Children.OfType<PlayerBombSeeking>().FirstOrDefault(x => x.IsAnimating == false) is PlayerBombSeeking playerBombSeeking)
+            {
+                playerBombSeeking.Reset();
+                playerBombSeeking.IsAnimating = true;
+                playerBombSeeking.SetPopping();
+
+                playerBombSeeking.Reposition(
+                    player: _player,
+                    downScaling: _scene.DownScaling);
+
+                SyncDropShadow(playerBombSeeking);
+
+                // Console.WriteLine("Player Seeking Bomb dropped.");
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool AnimatePlayerBombSeeking(Construct bomb)
+        {
+            PlayerBombSeeking playerBombSeeking = bomb as PlayerBombSeeking;
+
+            var speed = (_scene.Speed + bomb.SpeedOffset) * _scene.DownScaling;
+
+            if (playerBombSeeking.IsBlasting)
+            {
+                MoveConstruct(construct: playerBombSeeking, speed: speed);
+
+                bomb.Expand();
+                bomb.Fade(0.02);
+
+                DropShadow dropShadow = _scene.Children.OfType<DropShadow>().First(x => x.Id == bomb.Id);
+                dropShadow.Opacity = bomb.Opacity;
+            }
+            else
+            {
+                bomb.Pop();
+
+                if (_scene.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss)
+                {
+                    playerBombSeeking.SeekBoss(boss.GetCloseHitBox());
+
+                    if (playerBombSeeking.GetCloseHitBox().IntersectsWith(boss.GetCloseHitBox()))
+                    {
+                        playerBombSeeking.SetBlast();
+
+                        boss.SetPopping();
+                        boss.LooseHealth();
+
+                        _bossHealthBar.UpdateValue(boss.Health);
+                    }
+                    else
+                    {
+                        if (playerBombSeeking.RunOutOfTimeToBlast())
+                            playerBombSeeking.SetBlast();
+                    }
+                }
+                else
+                {
+                    if (playerBombSeeking.RunOutOfTimeToBlast())
+                        playerBombSeeking.SetBlast();
+                }
+            }
+
+            return true;
+        }
+
+        public bool RecyclePlayerBombSeeking(Construct bomb)
+        {
+            var hitbox = bomb.GetHitBox();
+
+            // if bomb is blasted and faed or goes out of scene bounds
+            if (bomb.IsFadingComplete || hitbox.Left > _scene.Width || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Bottom > _scene.Height)
+            {
+                bomb.IsAnimating = false;
+
+                bomb.SetPosition(
+                    left: -500,
+                    top: -500);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        #endregion
+
         #region Vehicle
 
         public bool SpawnVehiclesInScene()
@@ -1018,7 +1137,7 @@ namespace HonkTrooper
 
             // if scene doesn't contain a boss then pick a random boss and add to scene
 
-            if (_scoreBar.IsBossPointScore(BossPointScoreDiff) &&
+            if (/*_scoreBar.IsBossPointScore(BossPointScoreDiff) &&*/
                 !_scene.Children.OfType<Boss>().Any(x => x.IsAnimating) &&
                 _scene.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating == false) is Boss boss)
             {
@@ -1713,6 +1832,12 @@ namespace HonkTrooper
                 generationAction: GenerateBossBombSeekingInScene,
                 startUpAction: SpawnBossBombSeekingsInScene,
                 randomizeGenerationDelay: true));
+
+            _scene.AddToScene(new Generator(
+               generationDelay: 200,
+               generationAction: GeneratePlayerBombSeekingInScene,
+               startUpAction: SpawnPlayerBombSeekingsInScene,
+               randomizeGenerationDelay: true));
 
             _scene.AddToScene(new Generator(
                 generationDelay: 200,

@@ -6,7 +6,7 @@ using Windows.Foundation;
 
 namespace HonkTrooper
 {
-    public partial class BossBombSeeking : Construct
+    public partial class PlayerBombSeeking : Construct
     {
         #region Fields
 
@@ -20,19 +20,19 @@ namespace HonkTrooper
 
         #region Ctor
 
-        public BossBombSeeking(
+        public PlayerBombSeeking(
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction,
             double downScaling)
         {
             _random = new Random();
 
-            _bomb_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BOSS_BOMB_SEEKING).Select(x => x.Uri).ToArray();
+            _bomb_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BOMB_SEEKING).Select(x => x.Uri).ToArray();
             _bomb_blast_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BOMB_BLAST).Select(x => x.Uri).ToArray();
 
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.BOSS_BOMB_SEEKING);
+            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.PLAYER_BOMB_SEEKING);
 
-            ConstructType = ConstructType.BOSS_BOMB_SEEKING;
+            ConstructType = ConstructType.PLAYER_BOMB_SEEKING;
 
             var width = size.Width * downScaling;
             var height = size.Height * downScaling;
@@ -65,11 +65,11 @@ namespace HonkTrooper
 
         #region Methods
 
-        public void Reposition(Boss boss, double downScaling)
+        public void Reposition(Player player, double downScaling)
         {
             SetPosition(
-                left: (boss.GetLeft() + boss.Width / 2) - Width / 2,
-                top: boss.GetBottom() - (40 * downScaling),
+                left: (player.GetLeft() + player.Width / 2) - Width / 2,
+                top: player.GetBottom() - (40 * downScaling),
                 z: 7);
         }
 
@@ -99,7 +99,7 @@ namespace HonkTrooper
             return false;
         }
 
-        public bool SeekPlayer(Rect playerHitbox)
+        public bool SeekBoss(Rect bossHitbox)
         {
             bool hasMoved = false;
 
@@ -110,9 +110,9 @@ namespace HonkTrooper
             double playerMiddleY = top + Height / 2;
 
             // move up
-            if (playerHitbox.Y < playerMiddleY - _grace)
+            if (bossHitbox.Y < playerMiddleY - _grace)
             {
-                var distance = Math.Abs(playerHitbox.Y - playerMiddleY);
+                var distance = Math.Abs(bossHitbox.Y - playerMiddleY);
                 double speed = GetFlightSpeed(distance);
 
                 SetTop(top - speed);
@@ -121,9 +121,9 @@ namespace HonkTrooper
             }
 
             // move left
-            if (playerHitbox.X < playerMiddleX - _grace)
+            if (bossHitbox.X < playerMiddleX - _grace)
             {
-                var distance = Math.Abs(playerHitbox.X - playerMiddleX);
+                var distance = Math.Abs(bossHitbox.X - playerMiddleX);
                 double speed = GetFlightSpeed(distance);
 
                 SetLeft(left - speed);
@@ -132,9 +132,9 @@ namespace HonkTrooper
             }
 
             // move down
-            if (playerHitbox.Y > playerMiddleY + _grace)
+            if (bossHitbox.Y > playerMiddleY + _grace)
             {
-                var distance = Math.Abs(playerHitbox.Y - playerMiddleY);
+                var distance = Math.Abs(bossHitbox.Y - playerMiddleY);
                 double speed = GetFlightSpeed(distance);
 
                 SetTop(top + speed);
@@ -143,9 +143,9 @@ namespace HonkTrooper
             }
 
             // move right
-            if (playerHitbox.X > playerMiddleX + _grace)
+            if (bossHitbox.X > playerMiddleX + _grace)
             {
-                var distance = Math.Abs(playerHitbox.X - playerMiddleX);
+                var distance = Math.Abs(bossHitbox.X - playerMiddleX);
                 double speed = GetFlightSpeed(distance);
 
                 SetLeft(left + speed);

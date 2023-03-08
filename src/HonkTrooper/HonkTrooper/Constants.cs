@@ -13,6 +13,7 @@ namespace HonkTrooper
             new (ConstructType.PLAYER, 190, 190),
             new (ConstructType.PLAYER_BOMB, 80, 80),
             new (ConstructType.PLAYER_BOMB_GROUND, 80, 80),
+            new (ConstructType.PLAYER_BOMB_SEEKING, 90, 90),
 
             new (ConstructType.BOSS, 190, 190),
             new (ConstructType.BOSS_BOMB, 80, 80),
@@ -65,6 +66,8 @@ namespace HonkTrooper
             new (ConstructType.PLAYER_BOMB_GROUND, new Uri("ms-appx:///HonkTrooper/Assets/Images/cracker_1.png")),
             new (ConstructType.PLAYER_BOMB_GROUND, new Uri("ms-appx:///HonkTrooper/Assets/Images/cracker_2.png")),
 
+            new (ConstructType.PLAYER_BOMB_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_seeking.png")),
+
             new (ConstructType.BOMB_BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Images/blast_1.png")),
             new (ConstructType.BOMB_BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Images/blast_2.png")),
 
@@ -93,6 +96,7 @@ namespace HonkTrooper
         PLAYER,
         PLAYER_BOMB,
         PLAYER_BOMB_GROUND,
+        PLAYER_BOMB_SEEKING,
 
         VEHICLE_SMALL,
         VEHICLE_LARGE,
