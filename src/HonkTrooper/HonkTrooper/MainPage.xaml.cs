@@ -426,7 +426,7 @@ namespace HonkTrooper
 
         public bool SpawnPlayerBombSeekingsInScene()
         {
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 3; i++)
             {
                 PlayerBombSeeking bomb = new(
                     animateAction: AnimatePlayerBombSeeking,
@@ -450,7 +450,6 @@ namespace HonkTrooper
         {
             // generate a seeking bomb if one is not in scene
             if (_scene.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss &&
-                !_scene.Children.OfType<PlayerBombSeeking>().Any(x => x.IsAnimating) &&
                 _scene.Children.OfType<PlayerBombSeeking>().FirstOrDefault(x => x.IsAnimating == false) is PlayerBombSeeking playerBombSeeking)
             {
                 playerBombSeeking.Reset();
@@ -1001,7 +1000,13 @@ namespace HonkTrooper
                         break;
                 }
 
-                SyncDropShadow(powerUpPickup);
+                SyncDropShadow(powerUpPickup);              
+
+                // decrease the health of the power up
+                if (_powerUpHealthBar.HasHealth)
+                {
+                    _powerUpHealthBar.UpdateValue(_powerUpHealthBar.GetValue() - 5);
+                }
 
                 return true;
             }
@@ -1035,12 +1040,6 @@ namespace HonkTrooper
                     _powerUpHealthBar.SetIcon(Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP).Uri);
                     _powerUpHealthBar.SetBarForegroundColor(color: Colors.Green);
                 }
-            }
-
-            // decrease the duration of the power up
-            if (_powerUpHealthBar.HasHealth)
-            {
-                _powerUpHealthBar.UpdateValue(_powerUpHealthBar.GetValue() - 0.1);
             }
 
             return true;

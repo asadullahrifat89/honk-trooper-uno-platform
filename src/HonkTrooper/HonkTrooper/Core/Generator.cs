@@ -6,7 +6,7 @@ namespace HonkTrooper
     {
         #region Fields
 
-        private bool _randomizeDelay = false;
+        private bool _randomizeGenerationDelay = false;
         private int _generationDelay;
         private int _generationDelayInCount;
 
@@ -26,7 +26,7 @@ namespace HonkTrooper
             Func<bool> startUpAction,
             bool randomizeGenerationDelay = false)
         {
-            _randomizeDelay = randomizeGenerationDelay;
+            _randomizeGenerationDelay = randomizeGenerationDelay;
             _generationDelay = generationDelay;
 
             _generationDelayInCount = _generationDelay;
@@ -44,7 +44,7 @@ namespace HonkTrooper
                 if (_generationDelayInCount <= 0)
                 {
                     GenerationAction();
-                    _generationDelayInCount = _randomizeDelay ? _random.Next((int)_generationDelay / 2, _generationDelay) : _generationDelay;
+                    _generationDelayInCount = _randomizeGenerationDelay ? _random.Next(_generationDelay / 2, _generationDelay) : _generationDelay;
                 }
             }
         }
