@@ -22,10 +22,13 @@ namespace HonkTrooper
         private bool _isMovingRight;
 
         private double _movementStopDelay;
-        private readonly double _movementStopDelayDefault = 5;
+        private readonly double _movementStopDelayDefault = 6;
         private readonly double _movementStopSpeedLoss = 0.5;
 
         private double _lastSpeed;
+        private readonly double _rotationThreadhold = 9;
+        private readonly double _unrotationSpeed = 1.1;
+        private readonly double _rotationSpeed = 0.5;
 
         #endregion
 
@@ -115,6 +118,11 @@ namespace HonkTrooper
 
             _movementStopDelay = _movementStopDelayDefault;
             _lastSpeed = speed;
+
+            Rotate(
+                rotationDirection: RotationDirection.Backward,
+                threadhold: _rotationThreadhold,
+                rotationSpeed: _rotationSpeed);
         }
 
         public void MoveDown(double speed)
@@ -130,6 +138,11 @@ namespace HonkTrooper
 
             _movementStopDelay = _movementStopDelayDefault;
             _lastSpeed = speed;
+
+            Rotate(
+                rotationDirection: RotationDirection.Forward,
+                threadhold: _rotationThreadhold,
+                rotationSpeed: _rotationSpeed);
         }
 
         public void MoveLeft(double speed)
@@ -145,6 +158,11 @@ namespace HonkTrooper
 
             _movementStopDelay = _movementStopDelayDefault;
             _lastSpeed = speed;
+
+            Rotate(
+                rotationDirection: RotationDirection.Backward,
+                threadhold: _rotationThreadhold,
+                rotationSpeed: _rotationSpeed);
         }
 
         public void MoveRight(double speed)
@@ -160,6 +178,11 @@ namespace HonkTrooper
 
             _movementStopDelay = _movementStopDelayDefault;
             _lastSpeed = speed;
+
+            Rotate(
+                rotationDirection: RotationDirection.Forward,
+                threadhold: _rotationThreadhold,
+                rotationSpeed: _rotationSpeed);
         }
 
         public void StopMovement()
@@ -171,22 +194,35 @@ namespace HonkTrooper
                 if (_isMovingUp)
                 {
                     if (_lastSpeed > 0)
+                    {
                         MoveUp(_lastSpeed - _movementStopSpeedLoss);
+                        UnRotate(rotationSpeed: _unrotationSpeed);
+
+                    }
                 }
                 else if (_isMovingDown)
                 {
                     if (_lastSpeed > 0)
+                    {
                         MoveDown(_lastSpeed - _movementStopSpeedLoss);
+                        UnRotate(rotationSpeed: _unrotationSpeed);
+                    }
                 }
                 else if (_isMovingLeft)
                 {
                     if (_lastSpeed > 0)
+                    {
                         MoveLeft(_lastSpeed - _movementStopSpeedLoss);
+                        UnRotate(rotationSpeed: _unrotationSpeed);
+                    }
                 }
                 else if (_isMovingRight)
                 {
                     if (_lastSpeed > 0)
+                    {
                         MoveRight(_lastSpeed - _movementStopSpeedLoss);
+                        UnRotate(rotationSpeed: _unrotationSpeed);
+                    }
                 }
             }
             else
@@ -195,6 +231,8 @@ namespace HonkTrooper
                 _isMovingDown = false;
                 _isMovingLeft = false;
                 _isMovingRight = false;
+
+                //UnRotate(rotationSpeed: 1);
             }
         }
 
