@@ -1273,7 +1273,7 @@ namespace HonkTrooper
 
             // if scene doesn't contain a boss then pick a random boss and add to scene
 
-            if (/*_scoreBar.IsBossPointScore(BossPointScoreDiff) &&*/
+            if (_scoreBar.IsBossPointScore(BossPointScoreDiff) &&
                 !_scene.Children.OfType<Boss>().Any(x => x.IsAnimating) &&
                 _scene.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating == false) is Boss boss)
             {
