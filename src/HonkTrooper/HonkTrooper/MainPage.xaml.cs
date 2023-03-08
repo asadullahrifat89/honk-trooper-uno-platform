@@ -2,6 +2,7 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
+using System.ComponentModel.Design;
 using System.Linq;
 using Windows.Graphics.Display;
 
@@ -18,6 +19,7 @@ namespace HonkTrooper
 
         private HealthBar _playerHealthBar;
         private HealthBar _bossHealthBar;
+        private HealthBar _powerUpHealthBar;
 
         private ScoreBar _scoreBar;
 
@@ -67,7 +69,7 @@ namespace HonkTrooper
 
             _playerHealthBar.SetMaxiumHealth(_player.Health);
             _playerHealthBar.UpdateValue(_player.Health);
-            //_playerHealthBar.SetIcon(_player.GetContentUri());
+
             _playerHealthBar.SetIcon(Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.HEALTH_PICKUP).Uri);
             _playerHealthBar.SetBarForegroundColor(color: Colors.Purple);
 
@@ -115,8 +117,10 @@ namespace HonkTrooper
             {
                 if (_scene.Children.OfType<Boss>().Any(x => x.IsAnimating && x.IsAttacking))
                 {
-                    //TODO: check if power up received
-                    GeneratePlayerBombInScene();
+                    if (_powerUpHealthBar.HasHealth)
+                        GeneratePlayerBombSeekingInScene();
+                    else
+                        GeneratePlayerBombInScene();
                 }
                 else
                 {
@@ -934,6 +938,125 @@ namespace HonkTrooper
                     top: -500);
 
                 healthPickup.IsAnimating = false;
+            }
+
+            return true;
+        }
+
+        #endregion
+
+        #region PowerUpPickup
+
+        public bool SpawnPowerUpPickupsInScene()
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                PowerUpPickup powerUpPickup = new(
+                    animateAction: AnimatePowerUpPickup,
+                    recycleAction: RecyclePowerUpPickup,
+                    downScaling: _scene.DownScaling);
+
+                powerUpPickup.SetPosition(
+                    left: -500,
+                    top: -500,
+                    z: 6);
+
+                _scene.AddToScene(powerUpPickup);
+            }
+
+            return true;
+        }
+
+        private bool GeneratePowerUpPickupsInScene()
+        {
+            if (_scene.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss &&
+                _scene.Children.OfType<PowerUpPickup>().FirstOrDefault(x => x.IsAnimating == false) is PowerUpPickup powerUpPickup)
+            {
+                powerUpPickup.IsAnimating = true;
+                powerUpPickup.Reset();
+
+                var topOrLeft = _random.Next(0, 2);
+
+                var lane = _random.Next(0, 2);
+
+                switch (topOrLeft)
+                {
+                    case 0:
+                        {
+                            var xLaneWidth = _scene.Width / 4;
+                            powerUpPickup.SetPosition(
+                                left: _random.Next(0, Convert.ToInt32(xLaneWidth - powerUpPickup.Width)) * _scene.DownScaling,
+                                top: powerUpPickup.Height * -1);
+                        }
+                        break;
+                    case 1:
+                        {
+                            var yLaneWidth = (_scene.Height / 2) / 2;
+                            powerUpPickup.SetPosition(
+                                left: powerUpPickup.Width * -1,
+                                top: _random.Next(0, Convert.ToInt32(yLaneWidth)) * _scene.DownScaling);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+
+                SyncDropShadow(powerUpPickup);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimatePowerUpPickup(Construct powerUpPickup)
+        {
+            var speed = _scene.Speed + powerUpPickup.SpeedOffset;
+
+            PowerUpPickup powerUpPickup1 = powerUpPickup as PowerUpPickup;
+
+            if (powerUpPickup1.IsPickedUp)
+            {
+                powerUpPickup1.Shrink();
+            }
+            else
+            {
+                MoveConstruct(construct: powerUpPickup, speed: speed);
+
+                var hitbox = powerUpPickup.GetCloseHitBox();
+
+                if (_player.GetCloseHitBox().IntersectsWith(hitbox))
+                {
+                    powerUpPickup1.IsPickedUp = true;
+
+                    _powerUpHealthBar.SetMaxiumHealth(30);
+                    _powerUpHealthBar.UpdateValue(30);
+
+                    _powerUpHealthBar.SetIcon(Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP).Uri);
+                    _powerUpHealthBar.SetBarForegroundColor(color: Colors.Green);
+                }
+            }
+
+            // decrease the duration of the power up
+            if (_powerUpHealthBar.HasHealth)
+            {
+                _powerUpHealthBar.UpdateValue(_powerUpHealthBar.GetValue() - 0.1);
+            }
+
+            return true;
+        }
+
+        private bool RecyclePowerUpPickup(Construct PowerUpPickup)
+        {
+            var hitBox = PowerUpPickup.GetHitBox();
+
+            if (hitBox.Top > _scene.Height || hitBox.Left > _scene.Width || PowerUpPickup.IsShrinkingComplete)
+            {
+                PowerUpPickup.SetPosition(
+                    left: -500,
+                    top: -500);
+
+                PowerUpPickup.IsAnimating = false;
             }
 
             return true;
@@ -1844,6 +1967,12 @@ namespace HonkTrooper
                 generationAction: GenerateHealthPickupsInScene,
                 startUpAction: SpawnHealthPickupsInScene));
 
+            _scene.AddToScene(new Generator(
+              generationDelay: 200,
+              generationAction: GeneratePowerUpPickupsInScene,
+              startUpAction: SpawnPowerUpPickupsInScene,
+              randomizeGenerationDelay: true));
+
             _scene.Speed = 5;
         }
 
@@ -1868,6 +1997,7 @@ namespace HonkTrooper
             _scene = this.MainScene;
             _playerHealthBar = this.PlayerHealthBar;
             _bossHealthBar = this.BossHealthBar;
+            _powerUpHealthBar = this.PowerUpHealthBar;
 
             _controller = this.KeyboardController;
             _scoreBar = this.GameScoreBar;

@@ -44,6 +44,10 @@
                 x:Name="PlayerHealthBar"
                 Margin="5"
                 HorizontalAlignment="Center" />
+            <HealthBar
+                x:Name="PowerUpHealthBar"
+                Margin="5"
+                HorizontalAlignment="Center" />
         </StackPanel>
 
     </Grid>

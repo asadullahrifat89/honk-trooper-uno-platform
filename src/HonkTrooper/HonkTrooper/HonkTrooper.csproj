@@ -55,6 +55,7 @@
     <None Remove="Assets\Images\player_bomb_seeking_2.png" />
     <None Remove="Assets\Images\player_bomb_seeking_3.png" />
     <None Remove="Assets\Images\poop_3.png" />
+    <None Remove="Assets\Images\power_up_pickup.png" />
     <None Remove="Assets\Images\tree_E.png" />
     <None Remove="Assets\Images\vehicle_1.png" />
     <None Remove="Assets\Images\vehicle_10.png" />

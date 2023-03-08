@@ -10,7 +10,9 @@ namespace HonkTrooper
 {
     public partial class HealthBar : Border
     {
-        private ProgressBar Bar { get; set; } = new()
+        #region Fields
+
+        private ProgressBar _bar = new()
         {
             Width = 60,
             Height = 5,
@@ -20,7 +22,7 @@ namespace HonkTrooper
             Margin = new Thickness(0, 0, 5, 0)
         };
 
-        private Image Icon { get; set; } = new()
+        private Image _icon = new()
         {
             Height = 30,
             Width = 30,
@@ -28,23 +30,27 @@ namespace HonkTrooper
             Margin = new Thickness(5)
         };
 
-        private StackPanel Container { get; set; }
+        private StackPanel _container;
+
+        #endregion
+
+        #region Ctor
 
         public HealthBar()
         {
             VerticalAlignment = VerticalAlignment.Center;
             HorizontalAlignment = HorizontalAlignment.Center;
 
-            this.Container = new()
+            this._container = new()
             {
                 VerticalAlignment = VerticalAlignment.Center,
                 Orientation = Orientation.Horizontal
             };
 
-            this.Container.Children.Add(Icon);
-            this.Container.Children.Add(Bar);
+            this._container.Children.Add(_icon);
+            this._container.Children.Add(_bar);
 
-            this.Child = this.Container;
+            this.Child = this._container;
 
             CornerRadius = new CornerRadius(10);
             BorderThickness = new Thickness(4);
@@ -54,25 +60,42 @@ namespace HonkTrooper
             Visibility = Visibility.Collapsed;
         }
 
+        #endregion
+
+        #region Properties
+
+        public bool HasHealth => this._bar.Value > 0;
+
+        #endregion
+
+        #region Methods
+
         public void SetIcon(Uri uri)
         {
-            this.Icon.Source = new BitmapImage(uri);
+            this._icon.Source = new BitmapImage(uri);
         }
 
         public void SetMaxiumHealth(double value)
         {
-            this.Bar.Maximum = value;
+            this._bar.Maximum = value;
         }
 
         public void UpdateValue(double value)
         {
-            this.Bar.Value = value;
-            Visibility = this.Bar.Value > 0 ? Visibility.Visible : Visibility.Collapsed;
+            this._bar.Value = value;
+            Visibility = this._bar.Value > 0 ? Visibility.Visible : Visibility.Collapsed;
         }
 
         public void SetBarForegroundColor(Color color)
         {
-            this.Bar.Foreground = new SolidColorBrush(color);
-        }      
+            this._bar.Foreground = new SolidColorBrush(color);
+        }
+
+        public double GetValue()
+        {
+            return this._bar.Value;
+        }
+
+        #endregion
     }
 }
