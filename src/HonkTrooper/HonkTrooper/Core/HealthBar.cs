@@ -46,8 +46,8 @@ namespace HonkTrooper
 
             this.Child = this.Container;
 
-            CornerRadius = new Microsoft.UI.Xaml.CornerRadius(10);
-            BorderThickness = new Microsoft.UI.Xaml.Thickness(4);
+            CornerRadius = new CornerRadius(10);
+            BorderThickness = new Thickness(4);
             Background = new SolidColorBrush(Colors.Goldenrod);
             BorderBrush = new SolidColorBrush(Colors.White);
 

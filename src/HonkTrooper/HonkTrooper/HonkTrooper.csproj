@@ -52,6 +52,8 @@
     <None Remove="Assets\Images\honk_1.png" />
     <None Remove="Assets\Images\honk_2.png" />
     <None Remove="Assets\Images\honk_3.png" />
+    <None Remove="Assets\Images\player_bomb_seeking_2.png" />
+    <None Remove="Assets\Images\player_bomb_seeking_3.png" />
     <None Remove="Assets\Images\poop_3.png" />
     <None Remove="Assets\Images\tree_E.png" />
     <None Remove="Assets\Images\vehicle_1.png" />

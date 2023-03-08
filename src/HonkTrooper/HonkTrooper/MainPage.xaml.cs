@@ -115,6 +115,7 @@ namespace HonkTrooper
             {
                 if (_scene.Children.OfType<Boss>().Any(x => x.IsAnimating && x.IsAttacking))
                 {
+                    //TODO: check if power up received
                     GeneratePlayerBombInScene();
                 }
                 else
@@ -1834,10 +1835,9 @@ namespace HonkTrooper
                 randomizeGenerationDelay: true));
 
             _scene.AddToScene(new Generator(
-               generationDelay: 200,
-               generationAction: GeneratePlayerBombSeekingInScene,
-               startUpAction: SpawnPlayerBombSeekingsInScene,
-               randomizeGenerationDelay: true));
+               generationDelay: 0,
+               generationAction: () => { return true; },
+               startUpAction: SpawnPlayerBombSeekingsInScene));
 
             _scene.AddToScene(new Generator(
                 generationDelay: 200,
@@ -1915,7 +1915,7 @@ namespace HonkTrooper
             // Console.WriteLine($"Required Orientation {e}");
         }
 
-        private void DisplayInformation_OrientationChanged(Windows.Graphics.Display.DisplayInformation sender, object args)
+        private void DisplayInformation_OrientationChanged(DisplayInformation sender, object args)
         {
             if (_scene.IsAnimating)
                 _scene.Stop();
