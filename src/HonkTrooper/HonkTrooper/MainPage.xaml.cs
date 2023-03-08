@@ -18,6 +18,7 @@ namespace HonkTrooper
 
         private HealthBar _playerHealthBar;
         private HealthBar _bossHealthBar;
+        private HealthBar _powerUpHealthBar;
 
         private ScoreBar _scoreBar;
 
@@ -66,8 +67,8 @@ namespace HonkTrooper
             playersShadow.IsAnimating = true;
 
             _playerHealthBar.SetMaxiumHealth(_player.Health);
-            _playerHealthBar.UpdateValue(_player.Health);
-            //_playerHealthBar.SetIcon(_player.GetContentUri());
+            _playerHealthBar.SetValue(_player.Health);
+
             _playerHealthBar.SetIcon(Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.HEALTH_PICKUP).Uri);
             _playerHealthBar.SetBarForegroundColor(color: Colors.Purple);
 
@@ -115,7 +116,10 @@ namespace HonkTrooper
             {
                 if (_scene.Children.OfType<Boss>().Any(x => x.IsAnimating && x.IsAttacking))
                 {
-                    GeneratePlayerBombInScene();
+                    if (_powerUpHealthBar.HasHealth)
+                        GeneratePlayerBombSeekingInScene();
+                    else
+                        GeneratePlayerBombInScene();
                 }
                 else
                 {
@@ -169,32 +173,36 @@ namespace HonkTrooper
 
                 SyncDropShadow(playerBomb);
 
-                //BossBombSeeking bossBombSeeking = _scene.Children.OfType<BossBombSeeking>().FirstOrDefault(x => x.IsAnimating);
+                BossBombSeeking bossBombSeeking = _scene.Children.OfType<BossBombSeeking>().FirstOrDefault(x => x.IsAnimating);
 
                 // Console.WriteLine("Player Bomb dropped.");
 
                 #region Target Based Movement
 
                 // player is on the bottom right side of the boss
-                if (_player.GetTop() > boss.GetTop() && _player.GetLeft() > boss.GetLeft())
+                if ((_player.GetTop() > boss.GetTop() && _player.GetLeft() > boss.GetLeft()) ||
+                    (bossBombSeeking is not null && _player.GetTop() > bossBombSeeking.GetTop() && _player.GetLeft() > bossBombSeeking.GetLeft()))
                 {
                     playerBomb.AwaitMoveUp = true;
                     playerBomb.SetRotation(-143);
                 }
                 // player is on the bottom left side of the boss
-                else if (_player.GetTop() > boss.GetTop() && _player.GetLeft() < boss.GetLeft())
+                else if ((_player.GetTop() > boss.GetTop() && _player.GetLeft() < boss.GetLeft()) ||
+                    (bossBombSeeking is not null && _player.GetTop() > bossBombSeeking.GetTop() && _player.GetLeft() < bossBombSeeking.GetLeft()))
                 {
                     playerBomb.AwaitMoveRight = true;
                     playerBomb.SetRotation(-33);
                 }
                 // if player is on the top left side of the boss
-                else if (_player.GetTop() < boss.GetTop() && _player.GetLeft() < boss.GetLeft())
+                else if ((_player.GetTop() < boss.GetTop() && _player.GetLeft() < boss.GetLeft()) ||
+                    (bossBombSeeking is not null && _player.GetTop() < bossBombSeeking.GetTop() && _player.GetLeft() < bossBombSeeking.GetLeft()))
                 {
                     playerBomb.AwaitMoveDown = true;
                     playerBomb.SetRotation(33);
                 }
                 // if player is on the top right side of the boss
-                else if (_player.GetTop() < boss.GetTop() && _player.GetLeft() > boss.GetLeft())
+                else if ((_player.GetTop() < boss.GetTop() && _player.GetLeft() > boss.GetLeft()) ||
+                    (bossBombSeeking is not null && _player.GetTop() < bossBombSeeking.GetTop() && _player.GetLeft() > bossBombSeeking.GetLeft()))
                 {
                     playerBomb.AwaitMoveLeft = true;
                     playerBomb.SetRotation(123);
@@ -257,7 +265,7 @@ namespace HonkTrooper
                         boss.SetPopping();
                         boss.LooseHealth();
 
-                        _bossHealthBar.UpdateValue(boss.Health);
+                        _bossHealthBar.SetValue(boss.Health);
 
                         if (boss.IsDead)
                             boss.IsAttacking = false;
@@ -400,6 +408,142 @@ namespace HonkTrooper
             {
                 bomb.IsAnimating = false;
                 bomb.IsGravitating = false;
+
+                bomb.SetPosition(
+                    left: -500,
+                    top: -500);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        #endregion
+
+        #region PlayerBombSeeking
+
+        public bool SpawnPlayerBombSeekingsInScene()
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                PlayerBombSeeking bomb = new(
+                    animateAction: AnimatePlayerBombSeeking,
+                    recycleAction: RecyclePlayerBombSeeking,
+                    downScaling: _scene.DownScaling);
+
+                bomb.SetPosition(
+                    left: -500,
+                    top: -500,
+                    z: 7);
+
+                _scene.AddToScene(bomb);
+
+                SpawnDropShadowInScene(source: bomb);
+            }
+
+            return true;
+        }
+
+        public bool GeneratePlayerBombSeekingInScene()
+        {
+            // generate a seeking bomb if one is not in scene
+            if (_scene.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss &&
+                _scene.Children.OfType<PlayerBombSeeking>().FirstOrDefault(x => x.IsAnimating == false) is PlayerBombSeeking playerBombSeeking)
+            {
+                playerBombSeeking.Reset();
+                playerBombSeeking.IsAnimating = true;
+                playerBombSeeking.SetPopping();
+
+                playerBombSeeking.Reposition(
+                    player: _player,
+                    downScaling: _scene.DownScaling);
+
+                SyncDropShadow(playerBombSeeking);
+
+                // use up the power up
+                if (_powerUpHealthBar.HasHealth)
+                    _powerUpHealthBar.SetValue(_powerUpHealthBar.GetValue() - 1);
+
+                // Console.WriteLine("Player Seeking Bomb dropped.");
+
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool AnimatePlayerBombSeeking(Construct bomb)
+        {
+            PlayerBombSeeking playerBombSeeking = bomb as PlayerBombSeeking;
+
+            var speed = (_scene.Speed + bomb.SpeedOffset) * _scene.DownScaling;
+
+            if (playerBombSeeking.IsBlasting)
+            {
+                MoveConstruct(construct: playerBombSeeking, speed: speed);
+
+                bomb.Expand();
+                bomb.Fade(0.02);
+
+                DropShadow dropShadow = _scene.Children.OfType<DropShadow>().First(x => x.Id == bomb.Id);
+                dropShadow.Opacity = bomb.Opacity;
+            }
+            else
+            {
+                bomb.Pop();
+
+                // if there a boss bomb seeking the player then target that first and if they hit both bombs blast
+
+                if (_scene.Children.OfType<BossBombSeeking>().FirstOrDefault(x => x.IsAnimating) is BossBombSeeking bossBombSeeking)
+                {
+                    playerBombSeeking.SeekBoss(bossBombSeeking.GetCloseHitBox());
+
+                    if (playerBombSeeking.GetCloseHitBox().IntersectsWith(bossBombSeeking.GetCloseHitBox()))
+                    {
+                        playerBombSeeking.SetBlast();
+                        bossBombSeeking.SetBlast();
+                    }
+                }
+
+                // make the player bomb seek boss
+
+                if (_scene.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss)
+                {
+                    playerBombSeeking.SeekBoss(boss.GetCloseHitBox());
+
+                    if (playerBombSeeking.GetCloseHitBox().IntersectsWith(boss.GetCloseHitBox()))
+                    {
+                        playerBombSeeking.SetBlast();
+
+                        boss.SetPopping();
+                        boss.LooseHealth();
+
+                        _bossHealthBar.SetValue(boss.Health);
+                    }
+                    else
+                    {
+                        if (playerBombSeeking.RunOutOfTimeToBlast())
+                            playerBombSeeking.SetBlast();
+                    }
+                }
+                else
+                {
+                    playerBombSeeking.SetBlast();
+                }
+            }
+
+            return true;
+        }
+
+        public bool RecyclePlayerBombSeeking(Construct bomb)
+        {
+            var hitbox = bomb.GetHitBox();
+
+            // if bomb is blasted and faed or goes out of scene bounds
+            if (bomb.IsFadingComplete || hitbox.Left > _scene.Width || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Bottom > _scene.Height)
+            {
+                bomb.IsAnimating = false;
 
                 bomb.SetPosition(
                     left: -500,
@@ -791,7 +935,7 @@ namespace HonkTrooper
                 if (_player.GetCloseHitBox().IntersectsWith(hitbox))
                 {
                     _player.GainHealth();
-                    _playerHealthBar.UpdateValue(_player.Health);
+                    _playerHealthBar.SetValue(_player.Health);
                     healthPickup1.IsPickedUp = true;
                 }
             }
@@ -810,6 +954,121 @@ namespace HonkTrooper
                     top: -500);
 
                 healthPickup.IsAnimating = false;
+            }
+
+            return true;
+        }
+
+        #endregion
+
+        #region PowerUpPickup
+
+        public bool SpawnPowerUpPickupsInScene()
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                PowerUpPickup powerUpPickup = new(
+                    animateAction: AnimatePowerUpPickup,
+                    recycleAction: RecyclePowerUpPickup,
+                    downScaling: _scene.DownScaling);
+
+                powerUpPickup.SetPosition(
+                    left: -500,
+                    top: -500,
+                    z: 6);
+
+                _scene.AddToScene(powerUpPickup);
+            }
+
+            return true;
+        }
+
+        private bool GeneratePowerUpPickupsInScene()
+        {
+            if (_scene.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss &&
+                _scene.Children.OfType<PowerUpPickup>().FirstOrDefault(x => x.IsAnimating == false) is PowerUpPickup powerUpPickup)
+            {
+                powerUpPickup.IsAnimating = true;
+                powerUpPickup.Reset();
+
+                var topOrLeft = _random.Next(0, 2);
+
+                var lane = _random.Next(0, 2);
+
+                switch (topOrLeft)
+                {
+                    case 0:
+                        {
+                            var xLaneWidth = _scene.Width / 4;
+                            powerUpPickup.SetPosition(
+                                left: _random.Next(0, Convert.ToInt32(xLaneWidth - powerUpPickup.Width)) * _scene.DownScaling,
+                                top: powerUpPickup.Height * -1);
+                        }
+                        break;
+                    case 1:
+                        {
+                            var yLaneWidth = (_scene.Height / 2) / 2;
+                            powerUpPickup.SetPosition(
+                                left: powerUpPickup.Width * -1,
+                                top: _random.Next(0, Convert.ToInt32(yLaneWidth)) * _scene.DownScaling);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+
+                SyncDropShadow(powerUpPickup);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimatePowerUpPickup(Construct powerUpPickup)
+        {
+            var speed = _scene.Speed + powerUpPickup.SpeedOffset;
+
+            PowerUpPickup powerUpPickup1 = powerUpPickup as PowerUpPickup;
+
+            if (powerUpPickup1.IsPickedUp)
+            {
+                powerUpPickup1.Shrink();
+            }
+            else
+            {
+                MoveConstruct(construct: powerUpPickup, speed: speed);
+
+                var hitbox = powerUpPickup.GetCloseHitBox();
+
+                // if player picks up seeking bomb pickup
+                if (_player.GetCloseHitBox().IntersectsWith(hitbox))
+                {
+                    powerUpPickup1.IsPickedUp = true;
+
+                    // allow using a burst of 3 seeking bombs three times
+                    _powerUpHealthBar.SetMaxiumHealth(12);
+                    _powerUpHealthBar.SetValue(12);
+
+                    _powerUpHealthBar.SetIcon(Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP).Uri);
+                    _powerUpHealthBar.SetBarForegroundColor(color: Colors.Green);
+                }
+            }
+
+            return true;
+        }
+
+        private bool RecyclePowerUpPickup(Construct PowerUpPickup)
+        {
+            var hitBox = PowerUpPickup.GetHitBox();
+
+            if (hitBox.Top > _scene.Height || hitBox.Left > _scene.Width || PowerUpPickup.IsShrinkingComplete)
+            {
+                PowerUpPickup.SetPosition(
+                    left: -500,
+                    top: -500);
+
+                PowerUpPickup.IsAnimating = false;
             }
 
             return true;
@@ -1030,7 +1289,7 @@ namespace HonkTrooper
                 boss.Health = BossPointScoreDiff * 1.5;
 
                 _bossHealthBar.SetMaxiumHealth(boss.Health);
-                _bossHealthBar.UpdateValue(boss.Health);
+                _bossHealthBar.SetValue(boss.Health);
                 _bossHealthBar.SetIcon(boss.GetContentUri());
                 _bossHealthBar.SetBarForegroundColor(color: Colors.Crimson);
 
@@ -1421,7 +1680,7 @@ namespace HonkTrooper
                     _player.SetPopping();
                     _player.LooseHealth();
 
-                    _playerHealthBar.UpdateValue(_player.Health);
+                    _playerHealthBar.SetValue(_player.Health);
                 }
             }
 
@@ -1527,7 +1786,7 @@ namespace HonkTrooper
                     _player.SetPopping();
                     _player.LooseHealth();
 
-                    _playerHealthBar.UpdateValue(_player.Health);
+                    _playerHealthBar.SetValue(_player.Health);
                 }
                 else
                 {
@@ -1639,7 +1898,9 @@ namespace HonkTrooper
 
         private void PrepareScene()
         {
-            _scene.Children.Clear();
+            _scene.Clear();
+            _powerUpHealthBar.SetValue(0);
+            _bossHealthBar.SetValue(0);
 
             // first add road marks
             _scene.AddToScene(new Generator(
@@ -1711,9 +1972,20 @@ namespace HonkTrooper
                 randomizeGenerationDelay: true));
 
             _scene.AddToScene(new Generator(
+               generationDelay: 0,
+               generationAction: () => { return true; },
+               startUpAction: SpawnPlayerBombSeekingsInScene));
+
+            _scene.AddToScene(new Generator(
                 generationDelay: 200,
                 generationAction: GenerateHealthPickupsInScene,
                 startUpAction: SpawnHealthPickupsInScene));
+
+            _scene.AddToScene(new Generator(
+              generationDelay: 200,
+              generationAction: GeneratePowerUpPickupsInScene,
+              startUpAction: SpawnPowerUpPickupsInScene,
+              randomizeGenerationDelay: true));
 
             _scene.Speed = 5;
         }
@@ -1739,6 +2011,7 @@ namespace HonkTrooper
             _scene = this.MainScene;
             _playerHealthBar = this.PlayerHealthBar;
             _bossHealthBar = this.BossHealthBar;
+            _powerUpHealthBar = this.PowerUpHealthBar;
 
             _controller = this.KeyboardController;
             _scoreBar = this.GameScoreBar;
@@ -1786,7 +2059,7 @@ namespace HonkTrooper
             // Console.WriteLine($"Required Orientation {e}");
         }
 
-        private void DisplayInformation_OrientationChanged(Windows.Graphics.Display.DisplayInformation sender, object args)
+        private void DisplayInformation_OrientationChanged(DisplayInformation sender, object args)
         {
             if (_scene.IsAnimating)
                 _scene.Stop();

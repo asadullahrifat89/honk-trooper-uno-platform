@@ -88,6 +88,14 @@ namespace HonkTrooper
             _gameViewTimer?.Dispose();
         }
 
+        public void Clear()
+        {
+            this.Children.Clear();
+            _generators.Clear();
+            _destroyables.Clear();
+            _gameViewTimer?.Dispose();
+        }
+
         /// <summary>
         /// Executes actions of the constructs.
         /// </summary>
