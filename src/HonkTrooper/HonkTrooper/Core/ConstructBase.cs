@@ -162,6 +162,11 @@ namespace HonkTrooper
             _compositeTransform.ScaleY = scaleY;
         }
 
+        public double GetRotation()
+        {
+            return _compositeTransform.Rotation;
+        }
+
         public void SetRotation(double rotation)
         {
             _compositeTransform.Rotation = rotation;
@@ -232,9 +237,38 @@ namespace HonkTrooper
             }
         }
 
-        public void Rotate()
+        public void Rotate(RotationDirection rotationDirection = RotationDirection.Forward, double threadhold = 0, double rotationSpeed = 0)
         {
-            _compositeTransform.Rotation += 0.1;
+            switch (rotationDirection)
+            {
+                case RotationDirection.Forward:
+                    {
+                        if (threadhold == 0)
+                        {
+                            _compositeTransform.Rotation += rotationSpeed != 0 ? rotationSpeed : 0.1;
+                        }
+                        else
+                        {
+                            if (_compositeTransform.Rotation <= threadhold)
+                                _compositeTransform.Rotation += rotationSpeed != 0 ? rotationSpeed : 0.1;
+                        }
+                    }
+                    break;
+                case RotationDirection.Backward:
+                    {
+                        if (threadhold == 0)
+                        {
+                            _compositeTransform.Rotation -= rotationSpeed != 0 ? rotationSpeed : 0.1;
+                        }
+                        else
+                        {
+                            if (_compositeTransform.Rotation >= threadhold * -1)
+                                _compositeTransform.Rotation -= rotationSpeed != 0 ? rotationSpeed : 0.1;
+                        }
+
+                    }
+                    break;
+            }
         }
 
         public void SetSize(double width, double height)
@@ -244,5 +278,11 @@ namespace HonkTrooper
         }
 
         #endregion
+    }
+
+    public enum RotationDirection
+    {
+        Forward,
+        Backward,
     }
 }

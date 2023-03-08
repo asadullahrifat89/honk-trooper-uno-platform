@@ -26,6 +26,7 @@ namespace HonkTrooper
         private readonly double _movementStopSpeedLoss = 0.5;
 
         private double _lastSpeed;
+        private readonly double _rotationThreadhold = 9;
 
         #endregion
 
@@ -115,6 +116,11 @@ namespace HonkTrooper
 
             _movementStopDelay = _movementStopDelayDefault;
             _lastSpeed = speed;
+
+            Rotate(
+                rotationDirection: RotationDirection.Backward,
+                threadhold: _rotationThreadhold,
+                rotationSpeed: 0.4);
         }
 
         public void MoveDown(double speed)
@@ -130,6 +136,11 @@ namespace HonkTrooper
 
             _movementStopDelay = _movementStopDelayDefault;
             _lastSpeed = speed;
+
+            Rotate(
+                rotationDirection: RotationDirection.Forward,
+                threadhold: _rotationThreadhold,
+                rotationSpeed: 0.4);
         }
 
         public void MoveLeft(double speed)
@@ -145,6 +156,11 @@ namespace HonkTrooper
 
             _movementStopDelay = _movementStopDelayDefault;
             _lastSpeed = speed;
+
+            Rotate(
+                rotationDirection: RotationDirection.Backward,
+                threadhold: _rotationThreadhold,
+                rotationSpeed: 0.4);
         }
 
         public void MoveRight(double speed)
@@ -160,6 +176,11 @@ namespace HonkTrooper
 
             _movementStopDelay = _movementStopDelayDefault;
             _lastSpeed = speed;
+
+            Rotate(
+                rotationDirection: RotationDirection.Forward,
+                threadhold: _rotationThreadhold,
+                rotationSpeed: 0.4);
         }
 
         public void StopMovement()
@@ -171,22 +192,47 @@ namespace HonkTrooper
                 if (_isMovingUp)
                 {
                     if (_lastSpeed > 0)
+                    {
                         MoveUp(_lastSpeed - _movementStopSpeedLoss);
+                        Rotate(
+                            rotationDirection: RotationDirection.Forward,
+                            threadhold: _rotationThreadhold,
+                            rotationSpeed: 1);
+
+                    }
                 }
                 else if (_isMovingDown)
                 {
                     if (_lastSpeed > 0)
+                    {
                         MoveDown(_lastSpeed - _movementStopSpeedLoss);
+                        Rotate(
+                            rotationDirection: RotationDirection.Backward,
+                            threadhold: _rotationThreadhold,
+                            rotationSpeed: 1);
+                    }
                 }
                 else if (_isMovingLeft)
                 {
                     if (_lastSpeed > 0)
+                    {
                         MoveLeft(_lastSpeed - _movementStopSpeedLoss);
+                        Rotate(
+                            rotationDirection: RotationDirection.Forward,
+                            threadhold: _rotationThreadhold,
+                            rotationSpeed: 1);
+                    }
                 }
                 else if (_isMovingRight)
                 {
                     if (_lastSpeed > 0)
+                    {
                         MoveRight(_lastSpeed - _movementStopSpeedLoss);
+                        Rotate(
+                            rotationDirection: RotationDirection.Backward,
+                            threadhold: _rotationThreadhold,
+                            rotationSpeed: 1);
+                    }
                 }
             }
             else
@@ -195,6 +241,9 @@ namespace HonkTrooper
                 _isMovingDown = false;
                 _isMovingLeft = false;
                 _isMovingRight = false;
+
+                if (GetRotation() != 0)
+                    SetRotation(0);
             }
         }
 
