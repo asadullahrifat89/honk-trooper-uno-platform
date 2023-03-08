@@ -515,8 +515,7 @@ namespace HonkTrooper
                 }
                 else
                 {
-                    if (playerBombSeeking.RunOutOfTimeToBlast())
-                        playerBombSeeking.SetBlast();
+                    playerBombSeeking.SetBlast();
                 }
             }
 
