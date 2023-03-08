@@ -169,32 +169,36 @@ namespace HonkTrooper
 
                 SyncDropShadow(playerBomb);
 
-                //BossBombSeeking bossBombSeeking = _scene.Children.OfType<BossBombSeeking>().FirstOrDefault(x => x.IsAnimating);
+                BossBombSeeking bossBombSeeking = _scene.Children.OfType<BossBombSeeking>().FirstOrDefault(x => x.IsAnimating);
 
                 // Console.WriteLine("Player Bomb dropped.");
 
                 #region Target Based Movement
 
                 // player is on the bottom right side of the boss
-                if (_player.GetTop() > boss.GetTop() && _player.GetLeft() > boss.GetLeft())
+                if ((_player.GetTop() > boss.GetTop() && _player.GetLeft() > boss.GetLeft()) ||
+                    (bossBombSeeking is not null && _player.GetTop() > bossBombSeeking.GetTop() && _player.GetLeft() > bossBombSeeking.GetLeft()))
                 {
                     playerBomb.AwaitMoveUp = true;
                     playerBomb.SetRotation(-143);
                 }
                 // player is on the bottom left side of the boss
-                else if (_player.GetTop() > boss.GetTop() && _player.GetLeft() < boss.GetLeft())
+                else if ((_player.GetTop() > boss.GetTop() && _player.GetLeft() < boss.GetLeft()) ||
+                    (bossBombSeeking is not null && _player.GetTop() > bossBombSeeking.GetTop() && _player.GetLeft() < bossBombSeeking.GetLeft()))
                 {
                     playerBomb.AwaitMoveRight = true;
                     playerBomb.SetRotation(-33);
                 }
                 // if player is on the top left side of the boss
-                else if (_player.GetTop() < boss.GetTop() && _player.GetLeft() < boss.GetLeft())
+                else if ((_player.GetTop() < boss.GetTop() && _player.GetLeft() < boss.GetLeft()) ||
+                    (bossBombSeeking is not null && _player.GetTop() < bossBombSeeking.GetTop() && _player.GetLeft() < bossBombSeeking.GetLeft()))
                 {
                     playerBomb.AwaitMoveDown = true;
                     playerBomb.SetRotation(33);
                 }
                 // if player is on the top right side of the boss
-                else if (_player.GetTop() < boss.GetTop() && _player.GetLeft() > boss.GetLeft())
+                else if ((_player.GetTop() < boss.GetTop() && _player.GetLeft() > boss.GetLeft()) ||
+                    (bossBombSeeking is not null && _player.GetTop() < bossBombSeeking.GetTop() && _player.GetLeft() > bossBombSeeking.GetLeft()))
                 {
                     playerBomb.AwaitMoveLeft = true;
                     playerBomb.SetRotation(123);
