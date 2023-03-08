@@ -2,7 +2,6 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
-using System.ComponentModel.Design;
 using System.Linq;
 using Windows.Graphics.Display;
 
@@ -68,7 +67,7 @@ namespace HonkTrooper
             playersShadow.IsAnimating = true;
 
             _playerHealthBar.SetMaxiumHealth(_player.Health);
-            _playerHealthBar.UpdateValue(_player.Health);
+            _playerHealthBar.SetValue(_player.Health);
 
             _playerHealthBar.SetIcon(Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.HEALTH_PICKUP).Uri);
             _playerHealthBar.SetBarForegroundColor(color: Colors.Purple);
@@ -266,7 +265,7 @@ namespace HonkTrooper
                         boss.SetPopping();
                         boss.LooseHealth();
 
-                        _bossHealthBar.UpdateValue(boss.Health);
+                        _bossHealthBar.SetValue(boss.Health);
 
                         if (boss.IsDead)
                             boss.IsAttacking = false;
@@ -464,7 +463,7 @@ namespace HonkTrooper
 
                 // use up the power up
                 if (_powerUpHealthBar.HasHealth)
-                    _powerUpHealthBar.UpdateValue(_powerUpHealthBar.GetValue() - 1);
+                    _powerUpHealthBar.SetValue(_powerUpHealthBar.GetValue() - 1);
 
                 // Console.WriteLine("Player Seeking Bomb dropped.");
 
@@ -494,6 +493,21 @@ namespace HonkTrooper
             {
                 bomb.Pop();
 
+                // if there a boss bomb seeking the player then target that first and if they hit both bombs blast
+
+                if (_scene.Children.OfType<BossBombSeeking>().FirstOrDefault(x => x.IsAnimating) is BossBombSeeking bossBombSeeking)
+                {
+                    playerBombSeeking.SeekBoss(bossBombSeeking.GetCloseHitBox());
+
+                    if (playerBombSeeking.GetCloseHitBox().IntersectsWith(bossBombSeeking.GetCloseHitBox()))
+                    {
+                        playerBombSeeking.SetBlast();
+                        bossBombSeeking.SetBlast();
+                    }
+                }
+
+                // make the player bomb seek boss
+
                 if (_scene.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss)
                 {
                     playerBombSeeking.SeekBoss(boss.GetCloseHitBox());
@@ -505,7 +519,7 @@ namespace HonkTrooper
                         boss.SetPopping();
                         boss.LooseHealth();
 
-                        _bossHealthBar.UpdateValue(boss.Health);
+                        _bossHealthBar.SetValue(boss.Health);
                     }
                     else
                     {
@@ -921,7 +935,7 @@ namespace HonkTrooper
                 if (_player.GetCloseHitBox().IntersectsWith(hitbox))
                 {
                     _player.GainHealth();
-                    _playerHealthBar.UpdateValue(_player.Health);
+                    _playerHealthBar.SetValue(_player.Health);
                     healthPickup1.IsPickedUp = true;
                 }
             }
@@ -1034,7 +1048,7 @@ namespace HonkTrooper
 
                     // allow using a burst of 3 seeking bombs three times
                     _powerUpHealthBar.SetMaxiumHealth(12);
-                    _powerUpHealthBar.UpdateValue(12);
+                    _powerUpHealthBar.SetValue(12);
 
                     _powerUpHealthBar.SetIcon(Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP).Uri);
                     _powerUpHealthBar.SetBarForegroundColor(color: Colors.Green);
@@ -1275,7 +1289,7 @@ namespace HonkTrooper
                 boss.Health = BossPointScoreDiff * 1.5;
 
                 _bossHealthBar.SetMaxiumHealth(boss.Health);
-                _bossHealthBar.UpdateValue(boss.Health);
+                _bossHealthBar.SetValue(boss.Health);
                 _bossHealthBar.SetIcon(boss.GetContentUri());
                 _bossHealthBar.SetBarForegroundColor(color: Colors.Crimson);
 
@@ -1666,7 +1680,7 @@ namespace HonkTrooper
                     _player.SetPopping();
                     _player.LooseHealth();
 
-                    _playerHealthBar.UpdateValue(_player.Health);
+                    _playerHealthBar.SetValue(_player.Health);
                 }
             }
 
@@ -1772,7 +1786,7 @@ namespace HonkTrooper
                     _player.SetPopping();
                     _player.LooseHealth();
 
-                    _playerHealthBar.UpdateValue(_player.Health);
+                    _playerHealthBar.SetValue(_player.Health);
                 }
                 else
                 {
@@ -1884,7 +1898,9 @@ namespace HonkTrooper
 
         private void PrepareScene()
         {
-            _scene.Children.Clear();
+            _scene.Clear();
+            _powerUpHealthBar.SetValue(0);
+            _bossHealthBar.SetValue(0);
 
             // first add road marks
             _scene.AddToScene(new Generator(

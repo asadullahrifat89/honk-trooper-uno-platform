@@ -80,7 +80,7 @@ namespace HonkTrooper
             _bar.Maximum = value;
         }
 
-        public void UpdateValue(double value)
+        public void SetValue(double value)
         {
             _bar.Value = value;
             Visibility = _bar.Value > 0 ? Visibility.Visible : Visibility.Collapsed;
