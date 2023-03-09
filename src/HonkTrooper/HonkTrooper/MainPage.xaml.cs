@@ -1783,21 +1783,28 @@ namespace HonkTrooper
             {
                 bomb.Pop();
 
-                bossBombSeeking.SeekPlayer(_player.GetCloseHitBox());
-
-                if (bossBombSeeking.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
+                if (_scene.Children.OfType<Boss>().Any(x => x.IsAnimating && x.IsAttacking))
                 {
-                    bossBombSeeking.SetBlast();
+                    bossBombSeeking.SeekPlayer(_player.GetCloseHitBox());
 
-                    _player.SetPopping();
-                    _player.LooseHealth();
+                    if (bossBombSeeking.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
+                    {
+                        bossBombSeeking.SetBlast();
 
-                    _playerHealthBar.SetValue(_player.Health);
+                        _player.SetPopping();
+                        _player.LooseHealth();
+
+                        _playerHealthBar.SetValue(_player.Health);
+                    }
+                    else
+                    {
+                        if (bossBombSeeking.RunOutOfTimeToBlast())
+                            bossBombSeeking.SetBlast();
+                    }
                 }
                 else
                 {
-                    if (bossBombSeeking.RunOutOfTimeToBlast())
-                        bossBombSeeking.SetBlast();
+                    bossBombSeeking.SetBlast();
                 }
             }
 
