@@ -784,6 +784,8 @@ namespace HonkTrooper
                     z: 2);
 
                 _scene.AddToScene(tree);
+
+                SpawnDropShadowInScene(source: tree);
             }
 
             return true;
@@ -799,6 +801,8 @@ namespace HonkTrooper
                     left: _scene.Width / 2 - tree.Width * _scene.DownScaling,
                     top: tree.Height * -1,
                     z: 2);
+
+                SyncDropShadow(tree);
 
                 // Console.WriteLine("Tree generated.");
 
@@ -818,6 +822,8 @@ namespace HonkTrooper
                     left: -1 * tree.Width * _scene.DownScaling,
                     top: _scene.Height / 2 * _scene.DownScaling,
                     z: 4);
+
+                SyncDropShadow(tree);
 
                 // Console.WriteLine("Tree generated.");
 
@@ -1832,7 +1838,7 @@ namespace HonkTrooper
 
             dropShadow.SetParent(construct: source);
             dropShadow.Move();
-            dropShadow.SetZ(source.GetZ());
+            dropShadow.SetZ(source.GetZ() - 1);
 
             return true;
         }
@@ -1840,11 +1846,7 @@ namespace HonkTrooper
         public bool AnimateDropShadow(Construct construct)
         {
             DropShadow dropShadow = construct as DropShadow;
-
-            // adjust shadow with with the source
-            if (dropShadow.Width != dropShadow.ParentConstruct.Width * 0.7)
-                dropShadow.Width = dropShadow.ParentConstruct.Width * 0.7;
-
+            dropShadow.SyncWidth();
             dropShadow.Move();
 
             return true;
@@ -1875,6 +1877,8 @@ namespace HonkTrooper
                 dropShadow.Opacity = 1;
                 dropShadow.ParentConstructSpeed = _scene.Speed + source.SpeedOffset;
                 dropShadow.IsAnimating = true;
+
+                dropShadow.SetZ(source.GetZ() - 1);
 
                 dropShadow.Reset();
             }
