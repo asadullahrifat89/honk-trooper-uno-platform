@@ -23,7 +23,7 @@ namespace HonkTrooper
             Func<Construct, bool> recycleAction,
             double downScaling)
         {
-           var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.DROP_SHADOW);
+            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.DROP_SHADOW);
 
             ConstructType = ConstructType.DROP_SHADOW;
 
@@ -37,7 +37,7 @@ namespace HonkTrooper
 
             SetSize(width: width, height: height);
 
-            Background = new SolidColorBrush(Colors.Gray);
+            Background = new SolidColorBrush(Colors.DarkGray);
             CornerRadius = new CornerRadius(100);
             Opacity = 0.8;
 
@@ -52,8 +52,9 @@ namespace HonkTrooper
         public void SetParent(Construct construct)
         {
             // linking this shadow instance with a construct
+
             Id = construct.Id;
-            ParentConstruct = construct;            
+            ParentConstruct = construct;
         }
 
         public void Reset()
@@ -61,6 +62,13 @@ namespace HonkTrooper
             SetPosition(
                 left: (ParentConstruct.GetLeft() + ParentConstruct.Width / 2) - Width / 2,
                 top: ParentConstruct.GetBottom() + (ParentConstruct.DropShadowDistance));
+        }
+
+        public void SyncWidth()
+        {
+            // adjust shadow with with the source
+            if (Width != ParentConstruct.Width * 0.6)
+                Width = ParentConstruct.Width * 0.6;
         }
 
         public void Move()
