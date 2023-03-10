@@ -136,7 +136,7 @@ namespace HonkTrooper
             _lastSpeed = Speed;
             Speed /= 3.5;
 
-            _slowMotionDelay = 200;
+            _slowMotionDelay = 180;
         }
 
         private void DepleteSlowMotion()

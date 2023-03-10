@@ -267,8 +267,11 @@ namespace HonkTrooper
 
                         _bossHealthBar.SetValue(boss.Health);
 
-                        if (boss.IsDead)
+                        if (boss.IsDead && boss.IsAttacking)
+                        {
                             boss.IsAttacking = false;
+                            _scene.ActivateSlowMotion();
+                        }                            
 
                         // Console.WriteLine($"Boss Health: {boss.Health}");
                     }
@@ -520,6 +523,12 @@ namespace HonkTrooper
                         boss.LooseHealth();
 
                         _bossHealthBar.SetValue(boss.Health);
+
+                        if (boss.IsDead && boss.IsAttacking)
+                        {
+                            boss.IsAttacking = false;
+                            _scene.ActivateSlowMotion();
+                        }
                     }
                     else
                     {
@@ -1051,7 +1060,7 @@ namespace HonkTrooper
                 {
                     powerUpPickup1.IsPickedUp = true;
 
-                    // allow using a burst of 3 seeking bombs three times
+                    // allow using a burst of 3 seeking bombs 4 times
                     _powerUpHealthBar.SetMaxiumHealth(12);
                     _powerUpHealthBar.SetValue(12);
 
@@ -1989,12 +1998,12 @@ namespace HonkTrooper
                startUpAction: SpawnPlayerBombSeekingsInScene));
 
             _scene.AddToScene(new Generator(
-                generationDelay: 200,
+                generationDelay: 250,
                 generationAction: GenerateHealthPickupsInScene,
                 startUpAction: SpawnHealthPickupsInScene));
 
             _scene.AddToScene(new Generator(
-              generationDelay: 200,
+              generationDelay: 250,
               generationAction: GeneratePowerUpPickupsInScene,
               startUpAction: SpawnPowerUpPickupsInScene,
               randomizeGenerationDelay: true));
