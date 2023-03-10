@@ -1,6 +1,7 @@
 ﻿using Microsoft.UI;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
+using System;
 using Windows.Foundation;
 
 namespace HonkTrooper
@@ -33,7 +34,7 @@ namespace HonkTrooper
 
         public Button AttackButton { get; set; }
 
-        //public Button ActionButton { get; set; }
+        public event EventHandler<bool> PlayPauseed;
 
         #endregion
 
@@ -234,23 +235,28 @@ namespace HonkTrooper
 
             PlayPauseButton.Click += (s, e) =>
             {
-                if (ScenePlayOrPause())
-                {
-                    AttackButton.Focus(Microsoft.UI.Xaml.FocusState.Programmatic);
-                    PlayPauseButton.Content = new SymbolIcon()
-                    {
-                        Symbol = Symbol.Pause,
-                    };
-                }
-                else
-                {
-                    PlayPauseButton.Content = new SymbolIcon()
-                    {
-                        Symbol = Symbol.Play,
-                    };
-                }
+                PlayPauseScene();
             };
             this.Children.Add(PlayPauseButton);
+        }
+
+        public void PlayPauseScene()
+        {
+            if (ScenePlayOrPause())
+            {
+                AttackButton.Focus(Microsoft.UI.Xaml.FocusState.Programmatic);
+                PlayPauseButton.Content = new SymbolIcon()
+                {
+                    Symbol = Symbol.Pause,
+                };
+            }
+            else
+            {
+                PlayPauseButton.Content = new SymbolIcon()
+                {
+                    Symbol = Symbol.Play,
+                };
+            }
         }
 
         private void SetAttackButton()

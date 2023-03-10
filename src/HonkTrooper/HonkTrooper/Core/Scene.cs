@@ -25,7 +25,6 @@ namespace HonkTrooper
         private double _lastSpeed;
         private double _slowMotionDelay;
 
-
         #endregion
 
         #region Ctor
@@ -47,6 +46,8 @@ namespace HonkTrooper
         public double Speed { get; set; }
 
         public bool IsSlowMotionActivated => _slowMotionDelay > 0;
+
+        public SceneState SceneState { get; set; } = SceneState.GAME_STOPPED;
 
         #endregion
 
@@ -99,10 +100,15 @@ namespace HonkTrooper
             _gameViewTimer?.Dispose();
         }
 
+        public void SetSceneState(SceneState sceneState)
+        {
+            SceneState = sceneState;
+        }
+
         /// <summary>
         /// Stops the timer of the scene and clears all constructs from scene.
         /// </summary>
-        public void Stop() 
+        public void Stop()
         {
             IsAnimating = false;
             _stopwatch?.Stop();
@@ -113,9 +119,11 @@ namespace HonkTrooper
 
         public void Clear()
         {
-            this.Children.Clear();
+            Children.Clear();
+
             _generators.Clear();
             _destroyables.Clear();
+
             _gameViewTimer?.Dispose();
         }
 
@@ -169,6 +177,7 @@ namespace HonkTrooper
             }
         }
 
+
         #endregion
 
         #region Events
@@ -208,5 +217,10 @@ namespace HonkTrooper
         }
 
         #endregion
+    }
+
+    public enum SceneState
+    {
+        GAME_STOPPED, GAME_RUNNING,
     }
 }
