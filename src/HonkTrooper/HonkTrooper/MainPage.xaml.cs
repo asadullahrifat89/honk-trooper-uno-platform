@@ -677,7 +677,6 @@ namespace HonkTrooper
 
             if (vehicle1.Honk())
             {
-                //vehicle.SetPopping();
                 GenerateHonkInScene(vehicle1);
             }
 
@@ -1301,6 +1300,8 @@ namespace HonkTrooper
 
                 // next boss will appear at a slightly higher score
                 BossPointScoreDiff += 5;
+
+                _scene.ActivateSlowMotion();
 
                 return true;
             }

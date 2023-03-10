@@ -22,6 +22,10 @@ namespace HonkTrooper
         private readonly List<Construct> _destroyables = new();
         private readonly List<Generator> _generators = new();
 
+        private double _lastSpeed;
+        private double _slowMotionDelay;
+
+
         #endregion
 
         #region Ctor
@@ -122,7 +126,28 @@ namespace HonkTrooper
 
             _destroyables.Clear();
 
+            DepleteSlowMotion();
+
             // Console.WriteLine($"Animating Objects: {Children.OfType<Construct>().Count(x => x.IsAnimating)} ~ Total Objects: {Children.OfType<Construct>().Count()}");            
+        }
+
+        public void ActivateSlowMotion()
+        {
+            _lastSpeed = Speed;
+            Speed /= 3.5;
+
+            _slowMotionDelay = 200;
+        }
+
+        private void DepleteSlowMotion()
+        {
+            if (_slowMotionDelay > 0)
+            {
+                _slowMotionDelay--;
+
+                if (_slowMotionDelay <= 0)
+                    Speed = _lastSpeed;
+            }
         }
 
         #endregion
