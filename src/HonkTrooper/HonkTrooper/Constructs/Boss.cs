@@ -13,12 +13,12 @@ namespace HonkTrooper
         private Random _random;
         private Uri[] _boss_uris;
 
-        private int _hoverDelay;
-        private readonly int _hoverDelayDefault = 15;
+        private double _hoverDelay;
+        private readonly double _hoverDelayDefault = 15;
 
         private readonly double _grace = 7;
         private readonly double _lag = 125;
-        private readonly double _hoverSpeed = 0.4;
+        private readonly double _hoverSpeed = 0.5;
 
         private double _changeMovementPatternDelay;
 
@@ -107,18 +107,38 @@ namespace HonkTrooper
 
         public void Hover(Scene scene)
         {
-            _hoverDelay--;
-
-            if (_hoverDelay > 0)
+            if (scene.IsSlowMotionActivated)
             {
-                SetTop(GetTop() + _hoverSpeed);
+                _hoverDelay -= 0.5;
+
+                if (_hoverDelay > 0)
+                {
+                    SetTop(GetTop() + _hoverSpeed / 3.5);
+                }
+                else
+                {
+                    SetTop(GetTop() - _hoverSpeed / 3.5);
+
+                    if (_hoverDelay <= _hoverDelayDefault * -1)
+                        _hoverDelay = _hoverDelayDefault;
+                }
             }
+
             else
             {
-                SetTop(GetTop() - _hoverSpeed);
+                _hoverDelay--;
 
-                if (_hoverDelay <= _hoverDelayDefault * -1)
-                    _hoverDelay = _hoverDelayDefault;
+                if (_hoverDelay > 0)
+                {
+                    SetTop(GetTop() + _hoverSpeed);
+                }
+                else
+                {
+                    SetTop(GetTop() - _hoverSpeed);
+
+                    if (_hoverDelay <= _hoverDelayDefault * -1)
+                        _hoverDelay = _hoverDelayDefault;
+                }
             }
         }
 

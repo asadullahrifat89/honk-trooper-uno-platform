@@ -2,6 +2,7 @@
 using Microsoft.UI.Xaml.Media.Imaging;
 using System;
 using System.Linq;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace HonkTrooper
 {
@@ -12,8 +13,8 @@ namespace HonkTrooper
         private Random _random;
         private Uri[] _player_uris;
 
-        private int _hoverDelay;
-        private readonly int _hoverDelayDefault = 15;
+        private double _hoverDelay;
+        private readonly double _hoverDelayDefault = 15;
 
         private bool _isMovingUp;
         private bool _isMovingDown;
@@ -29,7 +30,7 @@ namespace HonkTrooper
         private readonly double _rotationThreadhold = 9;
         private readonly double _unrotationSpeed = 1.1;
         private readonly double _rotationSpeed = 0.5;
-        private readonly double _hoverSpeed = 0.4;
+        private readonly double _hoverSpeed = 0.5;
 
         #endregion
 
@@ -89,20 +90,40 @@ namespace HonkTrooper
                   z: 6);
         }
 
-        public void Hover()
+        public void Hover(Scene scene)
         {
-            _hoverDelay--;
-
-            if (_hoverDelay > 0)
+            if (scene.IsSlowMotionActivated)
             {
-                SetTop(GetTop() + _hoverSpeed);
+                _hoverDelay -= 0.5;
+
+                if (_hoverDelay > 0)
+                {
+                    SetTop(GetTop() + _hoverSpeed / 3.5);
+                }
+                else
+                {
+                    SetTop(GetTop() - _hoverSpeed / 3.5);
+
+                    if (_hoverDelay <= _hoverDelayDefault * -1)
+                        _hoverDelay = _hoverDelayDefault;
+                }
             }
+
             else
             {
-                SetTop(GetTop() - _hoverSpeed);
+                _hoverDelay--;
 
-                if (_hoverDelay <= _hoverDelayDefault * -1)
-                    _hoverDelay = _hoverDelayDefault;
+                if (_hoverDelay > 0)
+                {
+                    SetTop(GetTop() + _hoverSpeed);
+                }
+                else
+                {
+                    SetTop(GetTop() - _hoverSpeed);
+
+                    if (_hoverDelay <= _hoverDelayDefault * -1)
+                        _hoverDelay = _hoverDelayDefault;
+                }
             }
         }
 

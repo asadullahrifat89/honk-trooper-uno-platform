@@ -81,7 +81,7 @@ namespace HonkTrooper
 
             var speed = (_scene.Speed + player.SpeedOffset) * _scene.DownScaling;
 
-            _player.Hover();
+            _player.Hover(_scene);
 
             if (_controller.IsMoveUp)
             {
@@ -271,7 +271,7 @@ namespace HonkTrooper
                         {
                             boss.IsAttacking = false;
                             _scene.ActivateSlowMotion();
-                        }                            
+                        }
 
                         // Console.WriteLine($"Boss Health: {boss.Health}");
                     }
@@ -684,7 +684,7 @@ namespace HonkTrooper
 
             vehicle.Pop();
 
-            if (vehicle1.Honk())
+            if (vehicle1.Honk(_scene))
             {
                 GenerateHonkInScene(vehicle1);
             }

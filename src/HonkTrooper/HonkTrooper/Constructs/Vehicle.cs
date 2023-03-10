@@ -14,7 +14,7 @@ namespace HonkTrooper
         private Uri[] _vehicle_small_uris;
         private Uri[] _vehicle_large_uris;
 
-        private int _honkDelay;
+        private double _honkDelay;
 
         #endregion
 
@@ -131,11 +131,14 @@ namespace HonkTrooper
             }
         }
 
-        public bool Honk()
+        public bool Honk(Scene scene)
         {
             if (!IsMarkedForBombing && WillHonk)
             {
-                _honkDelay--;
+                if (scene.IsSlowMotionActivated)
+                    _honkDelay -= 0.5;
+                else
+                    _honkDelay--;
 
                 if (_honkDelay < 0)
                 {
