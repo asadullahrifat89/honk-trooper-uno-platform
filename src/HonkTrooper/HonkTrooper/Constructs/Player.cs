@@ -29,6 +29,7 @@ namespace HonkTrooper
         private readonly double _rotationThreadhold = 9;
         private readonly double _unrotationSpeed = 1.1;
         private readonly double _rotationSpeed = 0.5;
+        private readonly double _hoverSpeed = 0.4;
 
         #endregion
 
@@ -94,11 +95,11 @@ namespace HonkTrooper
 
             if (_hoverDelay > 0)
             {
-                SetTop(GetTop() + 0.4);
+                SetTop(GetTop() + _hoverSpeed);
             }
             else
             {
-                SetTop(GetTop() - 0.4);
+                SetTop(GetTop() - _hoverSpeed);
 
                 if (_hoverDelay <= _hoverDelayDefault * -1)
                     _hoverDelay = _hoverDelayDefault;
@@ -196,8 +197,6 @@ namespace HonkTrooper
                     if (_lastSpeed > 0)
                     {
                         MoveUp(_lastSpeed - _movementStopSpeedLoss);
-                        UnRotate(rotationSpeed: _unrotationSpeed);
-
                     }
                 }
                 else if (_isMovingDown)
@@ -205,7 +204,6 @@ namespace HonkTrooper
                     if (_lastSpeed > 0)
                     {
                         MoveDown(_lastSpeed - _movementStopSpeedLoss);
-                        UnRotate(rotationSpeed: _unrotationSpeed);
                     }
                 }
                 else if (_isMovingLeft)
@@ -213,7 +211,6 @@ namespace HonkTrooper
                     if (_lastSpeed > 0)
                     {
                         MoveLeft(_lastSpeed - _movementStopSpeedLoss);
-                        UnRotate(rotationSpeed: _unrotationSpeed);
                     }
                 }
                 else if (_isMovingRight)
@@ -221,9 +218,10 @@ namespace HonkTrooper
                     if (_lastSpeed > 0)
                     {
                         MoveRight(_lastSpeed - _movementStopSpeedLoss);
-                        UnRotate(rotationSpeed: _unrotationSpeed);
                     }
                 }
+
+                UnRotate(rotationSpeed: _unrotationSpeed);
             }
             else
             {
@@ -231,8 +229,6 @@ namespace HonkTrooper
                 _isMovingDown = false;
                 _isMovingLeft = false;
                 _isMovingRight = false;
-
-                //UnRotate(rotationSpeed: 1);
             }
         }
 

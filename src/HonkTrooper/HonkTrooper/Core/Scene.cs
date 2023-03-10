@@ -46,6 +46,8 @@ namespace HonkTrooper
 
         public double Speed { get; set; }
 
+        public bool IsSlowMotionActivated => _slowMotionDelay > 0;
+
         #endregion
 
         #region Methods

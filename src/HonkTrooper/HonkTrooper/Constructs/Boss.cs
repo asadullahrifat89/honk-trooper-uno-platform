@@ -18,8 +18,10 @@ namespace HonkTrooper
 
         private readonly double _grace = 7;
         private readonly double _lag = 125;
+        private readonly double _hoverSpeed = 0.4;
 
         private double _changeMovementPatternDelay;
+
 
         #endregion
 
@@ -103,17 +105,17 @@ namespace HonkTrooper
             SetScaleTransform(1);
         }
 
-        public void Hover()
+        public void Hover(Scene scene)
         {
             _hoverDelay--;
 
             if (_hoverDelay > 0)
             {
-                SetTop(GetTop() + 0.4);
+                SetTop(GetTop() + _hoverSpeed);
             }
             else
             {
-                SetTop(GetTop() - 0.4);
+                SetTop(GetTop() - _hoverSpeed);
 
                 if (_hoverDelay <= _hoverDelayDefault * -1)
                     _hoverDelay = _hoverDelayDefault;

@@ -1330,6 +1330,8 @@ namespace HonkTrooper
             }
             else
             {
+                boss1.Hover(_scene);
+
                 boss.Pop();
 
                 var speed = (_scene.Speed + boss.SpeedOffset) * _scene.DownScaling;
@@ -1516,8 +1518,6 @@ namespace HonkTrooper
 
                 #endregion
             }
-
-            boss1.Hover();
 
             return true;
         }
