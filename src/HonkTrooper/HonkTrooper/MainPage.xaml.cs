@@ -57,7 +57,7 @@ namespace HonkTrooper
 
             _scene.AddToScene(_player);
 
-            _player.Reposition(_scene);
+            _player.Reposition();
 
             _player.IsAnimating = true;
 
@@ -267,8 +267,11 @@ namespace HonkTrooper
 
                         _bossHealthBar.SetValue(boss.Health);
 
-                        if (boss.IsDead)
+                        if (boss.IsDead && boss.IsAttacking)
+                        {
                             boss.IsAttacking = false;
+                            _scene.ActivateSlowMotion();
+                        }
 
                         // Console.WriteLine($"Boss Health: {boss.Health}");
                     }
@@ -520,6 +523,12 @@ namespace HonkTrooper
                         boss.LooseHealth();
 
                         _bossHealthBar.SetValue(boss.Health);
+
+                        if (boss.IsDead && boss.IsAttacking)
+                        {
+                            boss.IsAttacking = false;
+                            _scene.ActivateSlowMotion();
+                        }
                     }
                     else
                     {
@@ -677,7 +686,6 @@ namespace HonkTrooper
 
             if (vehicle1.Honk())
             {
-                //vehicle.SetPopping();
                 GenerateHonkInScene(vehicle1);
             }
 
@@ -1052,7 +1060,7 @@ namespace HonkTrooper
                 {
                     powerUpPickup1.IsPickedUp = true;
 
-                    // allow using a burst of 3 seeking bombs three times
+                    // allow using a burst of 3 seeking bombs 4 times
                     _powerUpHealthBar.SetMaxiumHealth(12);
                     _powerUpHealthBar.SetValue(12);
 
@@ -1302,6 +1310,8 @@ namespace HonkTrooper
                 // next boss will appear at a slightly higher score
                 BossPointScoreDiff += 5;
 
+                _scene.ActivateSlowMotion();
+
                 return true;
             }
 
@@ -1320,6 +1330,8 @@ namespace HonkTrooper
             }
             else
             {
+                boss1.Hover();
+
                 boss.Pop();
 
                 var speed = (_scene.Speed + boss.SpeedOffset) * _scene.DownScaling;
@@ -1506,8 +1518,6 @@ namespace HonkTrooper
 
                 #endregion
             }
-
-            boss1.Hover();
 
             return true;
         }
@@ -1907,7 +1917,7 @@ namespace HonkTrooper
 
         #region Scene
 
-        private void PrepareScene()
+        private void SetScene()
         {
             _scene.Clear();
             _powerUpHealthBar.SetValue(0);
@@ -1971,7 +1981,7 @@ namespace HonkTrooper
                 startUpAction: SpawnBossesInScene));
 
             _scene.AddToScene(new Generator(
-                generationDelay: 30,
+                generationDelay: 50,
                 generationAction: GenerateBossBombInScene,
                 startUpAction: SpawnBossBombsInScene,
                 randomizeGenerationDelay: true));
@@ -1988,12 +1998,12 @@ namespace HonkTrooper
                startUpAction: SpawnPlayerBombSeekingsInScene));
 
             _scene.AddToScene(new Generator(
-                generationDelay: 200,
+                generationDelay: 250,
                 generationAction: GenerateHealthPickupsInScene,
                 startUpAction: SpawnHealthPickupsInScene));
 
             _scene.AddToScene(new Generator(
-              generationDelay: 200,
+              generationDelay: 250,
               generationAction: GeneratePowerUpPickupsInScene,
               startUpAction: SpawnPowerUpPickupsInScene,
               randomizeGenerationDelay: true));
@@ -2032,7 +2042,7 @@ namespace HonkTrooper
 
             BossPointScoreDiff = 50;
 
-            PrepareScene();
+            SetScene();
             SetController();
 
             SizeChanged += MainPage_SizeChanged;
@@ -2052,7 +2062,7 @@ namespace HonkTrooper
             _scene.Width = _windowWidth;
             _scene.Height = _windowHeight;
 
-            _player.Reposition(_scene);
+            _player.Reposition();
 
             DropShadow playersShadow = (_scene.Children.OfType<DropShadow>().FirstOrDefault(x => x.Id == _player.Id));
             playersShadow.Move();

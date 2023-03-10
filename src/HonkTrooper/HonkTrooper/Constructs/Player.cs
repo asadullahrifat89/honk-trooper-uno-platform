@@ -2,6 +2,7 @@
 using Microsoft.UI.Xaml.Media.Imaging;
 using System;
 using System.Linq;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace HonkTrooper
 {
@@ -12,8 +13,8 @@ namespace HonkTrooper
         private Random _random;
         private Uri[] _player_uris;
 
-        private int _hoverDelay;
-        private readonly int _hoverDelayDefault = 15;
+        private double _hoverDelay;
+        private readonly double _hoverDelayDefault = 15;
 
         private bool _isMovingUp;
         private bool _isMovingDown;
@@ -29,6 +30,7 @@ namespace HonkTrooper
         private readonly double _rotationThreadhold = 9;
         private readonly double _unrotationSpeed = 1.1;
         private readonly double _rotationSpeed = 0.5;
+        private readonly double _hoverSpeed = 0.5;
 
         #endregion
 
@@ -80,28 +82,48 @@ namespace HonkTrooper
 
         #region Methods
 
-        public void Reposition(Scene scene)
+        public void Reposition()
         {
             SetPosition(
-                  left: ((scene.Width / 4) * 2) - Width / 2,
-                  top: scene.Height / 2 - Height / 2,
+                  left: ((Scene.Width / 4) * 2) - Width / 2,
+                  top: Scene.Height / 2 - Height / 2,
                   z: 6);
         }
 
         public void Hover()
         {
-            _hoverDelay--;
-
-            if (_hoverDelay > 0)
+            if (Scene.IsSlowMotionActivated)
             {
-                SetTop(GetTop() + 0.4);
+                _hoverDelay -= 0.5;
+
+                if (_hoverDelay > 0)
+                {
+                    SetTop(GetTop() + _hoverSpeed / Constants.DEFAULT_SLOW_MOTION_REDUCTION_FACTOR);
+                }
+                else
+                {
+                    SetTop(GetTop() - _hoverSpeed / Constants.DEFAULT_SLOW_MOTION_REDUCTION_FACTOR);
+
+                    if (_hoverDelay <= _hoverDelayDefault * -1)
+                        _hoverDelay = _hoverDelayDefault;
+                }
             }
+
             else
             {
-                SetTop(GetTop() - 0.4);
+                _hoverDelay--;
 
-                if (_hoverDelay <= _hoverDelayDefault * -1)
-                    _hoverDelay = _hoverDelayDefault;
+                if (_hoverDelay > 0)
+                {
+                    SetTop(GetTop() + _hoverSpeed);
+                }
+                else
+                {
+                    SetTop(GetTop() - _hoverSpeed);
+
+                    if (_hoverDelay <= _hoverDelayDefault * -1)
+                        _hoverDelay = _hoverDelayDefault;
+                }
             }
         }
 
@@ -191,39 +213,42 @@ namespace HonkTrooper
             {
                 _movementStopDelay--;
 
+                double mvmntSpdLs = _movementStopSpeedLoss;
+
+                if (Scene.IsSlowMotionActivated)
+                    mvmntSpdLs = _movementStopSpeedLoss / Constants.DEFAULT_SLOW_MOTION_REDUCTION_FACTOR;
+
+
                 if (_isMovingUp)
                 {
                     if (_lastSpeed > 0)
                     {
-                        MoveUp(_lastSpeed - _movementStopSpeedLoss);
-                        UnRotate(rotationSpeed: _unrotationSpeed);
-
+                        MoveUp(_lastSpeed - mvmntSpdLs);
                     }
                 }
                 else if (_isMovingDown)
                 {
                     if (_lastSpeed > 0)
                     {
-                        MoveDown(_lastSpeed - _movementStopSpeedLoss);
-                        UnRotate(rotationSpeed: _unrotationSpeed);
+                        MoveDown(_lastSpeed - mvmntSpdLs);
                     }
                 }
                 else if (_isMovingLeft)
                 {
                     if (_lastSpeed > 0)
                     {
-                        MoveLeft(_lastSpeed - _movementStopSpeedLoss);
-                        UnRotate(rotationSpeed: _unrotationSpeed);
+                        MoveLeft(_lastSpeed - mvmntSpdLs);
                     }
                 }
                 else if (_isMovingRight)
                 {
                     if (_lastSpeed > 0)
                     {
-                        MoveRight(_lastSpeed - _movementStopSpeedLoss);
-                        UnRotate(rotationSpeed: _unrotationSpeed);
+                        MoveRight(_lastSpeed - mvmntSpdLs);
                     }
                 }
+
+                UnRotate(rotationSpeed: _unrotationSpeed);
             }
             else
             {
@@ -231,8 +256,6 @@ namespace HonkTrooper
                 _isMovingDown = false;
                 _isMovingLeft = false;
                 _isMovingRight = false;
-
-                //UnRotate(rotationSpeed: 1);
             }
         }
 
