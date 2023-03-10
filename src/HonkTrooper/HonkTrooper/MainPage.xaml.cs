@@ -1917,7 +1917,7 @@ namespace HonkTrooper
 
         #region Scene
 
-        private void PrepareScene()
+        private void SetScene()
         {
             _scene.Clear();
             _powerUpHealthBar.SetValue(0);
@@ -1981,7 +1981,7 @@ namespace HonkTrooper
                 startUpAction: SpawnBossesInScene));
 
             _scene.AddToScene(new Generator(
-                generationDelay: 30,
+                generationDelay: 50,
                 generationAction: GenerateBossBombInScene,
                 startUpAction: SpawnBossBombsInScene,
                 randomizeGenerationDelay: true));
@@ -2042,7 +2042,7 @@ namespace HonkTrooper
 
             BossPointScoreDiff = 50;
 
-            PrepareScene();
+            SetScene();
             SetController();
 
             SizeChanged += MainPage_SizeChanged;
