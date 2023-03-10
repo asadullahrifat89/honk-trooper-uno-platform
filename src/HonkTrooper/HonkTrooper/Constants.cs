@@ -29,8 +29,8 @@ namespace HonkTrooper
 
             new (ConstructType.DROP_SHADOW, 25, 60),
 
-            new (ConstructType.HEALTH_PICKUP, 80, 80),
-            new (ConstructType.POWERUP_PICKUP, 80, 80),
+            new (ConstructType.HEALTH_PICKUP, 100, 100),
+            new (ConstructType.POWERUP_PICKUP, 100, 100),
         };
 
         public static (ConstructType ConstructType, Uri Uri)[] CONSTRUCT_TEMPLATES = new (ConstructType, Uri)[]
