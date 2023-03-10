@@ -2083,7 +2083,7 @@ namespace HonkTrooper
         private void DisplayInformation_OrientationChanged(DisplayInformation sender, object args)
         {
             if (_scene.IsAnimating)
-                _scene.Stop();
+                _scene.Pause();
 
             // Console.WriteLine($"{sender.CurrentOrientation}");
         }

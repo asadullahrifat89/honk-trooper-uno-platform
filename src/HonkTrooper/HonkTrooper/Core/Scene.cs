@@ -79,7 +79,7 @@ namespace HonkTrooper
         /// <summary>
         /// Starts the timer for the scene and starts the scene loop.
         /// </summary>
-        public async void Start()
+        public async void Play()
         {
             IsAnimating = true;
             _stopwatch = Stopwatch.StartNew();
@@ -90,13 +90,25 @@ namespace HonkTrooper
         }
 
         /// <summary>
-        /// Stops the timer for the scene.
+        /// Pauses the timer for the scene.
         /// </summary>
-        public void Stop()
+        public void Pause()
         {
             IsAnimating = false;
             _stopwatch?.Stop();
             _gameViewTimer?.Dispose();
+        }
+
+        /// <summary>
+        /// Stops the timer of the scene and clears all constructs from scene.
+        /// </summary>
+        public void Stop() 
+        {
+            IsAnimating = false;
+            _stopwatch?.Stop();
+            _gameViewTimer?.Dispose();
+
+            Clear();
         }
 
         public void Clear()
@@ -164,7 +176,7 @@ namespace HonkTrooper
         private void Scene_Unloaded(object sender, RoutedEventArgs e)
         {
             SizeChanged -= Scene_SizeChanged;
-            Stop();
+            Pause();
         }
 
         private void Scene_Loaded(object sender, RoutedEventArgs e)

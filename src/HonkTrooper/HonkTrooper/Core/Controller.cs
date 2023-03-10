@@ -29,9 +29,11 @@ namespace HonkTrooper
 
         public Grid DirectionKeys { get; set; }
 
-        public Button StartButton { get; set; }
+        public Button PlayPauseButton { get; set; }
 
         public Button AttackButton { get; set; }
+
+        //public Button ActionButton { get; set; }
 
         #endregion
 
@@ -46,7 +48,7 @@ namespace HonkTrooper
 
             SetDirectionKeys();
             SetAttackButton();
-            SetStartButton();
+            SetPlayPauseButton();
         }
 
         #endregion
@@ -170,9 +172,50 @@ namespace HonkTrooper
             this.Children.Add(DirectionKeys);
         }
 
-        private void SetStartButton()
+        //private void SetActionButton()
+        //{
+        //    ActionButton = new()
+        //    {
+        //        Background = new SolidColorBrush(Colors.Goldenrod),
+        //        Height = _keysSize,
+        //        Width = _keysSize * 2,
+        //        CornerRadius = new Microsoft.UI.Xaml.CornerRadius(_keyCornerRadius),
+        //        Content = new TextBlock() { Text = "Start Game" },
+        //        BorderBrush = new SolidColorBrush(Colors.White),
+        //        BorderThickness = new Microsoft.UI.Xaml.Thickness(_keyBorderThickness),
+        //        HorizontalAlignment = Microsoft.UI.Xaml.HorizontalAlignment.Center,
+        //        VerticalAlignment = Microsoft.UI.Xaml.VerticalAlignment.Center,
+        //        Margin = new Microsoft.UI.Xaml.Thickness(20),
+        //    };
+
+        //    ActionButton.Click += (s, e) =>
+        //    {
+        //        PlayPauseButton.Visibility = Microsoft.UI.Xaml.Visibility.Visible;
+        //        ActionButton.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
+
+        //        if (ScenePlayOrPause())
+        //        {
+        //            AttackButton.Focus(Microsoft.UI.Xaml.FocusState.Programmatic);
+        //            PlayPauseButton.Content = new SymbolIcon()
+        //            {
+        //                Symbol = Symbol.Pause,
+        //            };
+        //        }
+        //        else
+        //        {
+        //            PlayPauseButton.Content = new SymbolIcon()
+        //            {
+        //                Symbol = Symbol.Play,
+        //            };
+        //        }
+        //    };
+
+        //    this.Children.Add(ActionButton);
+        //}
+
+        private void SetPlayPauseButton()
         {
-            StartButton = new()
+            PlayPauseButton = new()
             {
                 Background = new SolidColorBrush(Colors.Goldenrod),
                 Height = _keysSize,
@@ -189,26 +232,25 @@ namespace HonkTrooper
                 Margin = new Microsoft.UI.Xaml.Thickness(20),
             };
 
-            StartButton.Click += (s, e) =>
+            PlayPauseButton.Click += (s, e) =>
             {
-                if (SceneStartOrStop())
+                if (ScenePlayOrPause())
                 {
                     AttackButton.Focus(Microsoft.UI.Xaml.FocusState.Programmatic);
-                    StartButton.Content = new SymbolIcon()
+                    PlayPauseButton.Content = new SymbolIcon()
                     {
                         Symbol = Symbol.Pause,
                     };
                 }
                 else
                 {
-                    StartButton.Content = new SymbolIcon()
+                    PlayPauseButton.Content = new SymbolIcon()
                     {
                         Symbol = Symbol.Play,
                     };
                 }
-
             };
-            this.Children.Add(StartButton);
+            this.Children.Add(PlayPauseButton);
         }
 
         private void SetAttackButton()
