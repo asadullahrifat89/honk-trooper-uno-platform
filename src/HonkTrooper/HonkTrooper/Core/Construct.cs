@@ -34,17 +34,22 @@ namespace HonkTrooper
         /// </summary>
         public double IsometricDisplacement { get; set; }
 
+        /// <summary>
+        /// The scene to which this construct is visible in.
+        /// </summary>
+        public Scene Scene { get; set; }
+
         #endregion
 
         #region Methods     
 
-        public void SetAction(
-            Func<Construct, bool> movementAction,
-            Func<Construct, bool> recycleAction)
-        {
-            AnimateAction = movementAction;
-            RecycleAction = recycleAction;
-        }
+        //public void SetAction(
+        //    Func<Construct, bool> movementAction,
+        //    Func<Construct, bool> recycleAction)
+        //{
+        //    AnimateAction = movementAction;
+        //    RecycleAction = recycleAction;
+        //}
 
         public void Animate()
         {

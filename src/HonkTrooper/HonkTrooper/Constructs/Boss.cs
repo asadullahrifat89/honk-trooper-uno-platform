@@ -105,19 +105,19 @@ namespace HonkTrooper
             SetScaleTransform(1);
         }
 
-        public void Hover(Scene scene)
+        public void Hover()
         {
-            if (scene.IsSlowMotionActivated)
+            if (Scene.IsSlowMotionActivated)
             {
                 _hoverDelay -= 0.5;
 
                 if (_hoverDelay > 0)
                 {
-                    SetTop(GetTop() + _hoverSpeed / 3.5);
+                    SetTop(GetTop() + _hoverSpeed / Constants.DEFAULT_SLOW_MOTION_REDUCTION_FACTOR);
                 }
                 else
                 {
-                    SetTop(GetTop() - _hoverSpeed / 3.5);
+                    SetTop(GetTop() - _hoverSpeed / Constants.DEFAULT_SLOW_MOTION_REDUCTION_FACTOR);
 
                     if (_hoverDelay <= _hoverDelayDefault * -1)
                         _hoverDelay = _hoverDelayDefault;

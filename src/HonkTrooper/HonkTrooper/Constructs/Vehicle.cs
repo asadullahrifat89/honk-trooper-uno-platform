@@ -131,11 +131,11 @@ namespace HonkTrooper
             }
         }
 
-        public bool Honk(Scene scene)
+        public bool Honk()
         {
             if (!IsMarkedForBombing && WillHonk)
             {
-                if (scene.IsSlowMotionActivated)
+                if (Scene.IsSlowMotionActivated)
                     _honkDelay -= 0.5;
                 else
                     _honkDelay--;

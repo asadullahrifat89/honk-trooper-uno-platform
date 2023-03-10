@@ -57,7 +57,7 @@ namespace HonkTrooper
 
             _scene.AddToScene(_player);
 
-            _player.Reposition(_scene);
+            _player.Reposition();
 
             _player.IsAnimating = true;
 
@@ -81,7 +81,7 @@ namespace HonkTrooper
 
             var speed = (_scene.Speed + player.SpeedOffset) * _scene.DownScaling;
 
-            _player.Hover(_scene);
+            _player.Hover();
 
             if (_controller.IsMoveUp)
             {
@@ -684,7 +684,7 @@ namespace HonkTrooper
 
             vehicle.Pop();
 
-            if (vehicle1.Honk(_scene))
+            if (vehicle1.Honk())
             {
                 GenerateHonkInScene(vehicle1);
             }
@@ -1330,7 +1330,7 @@ namespace HonkTrooper
             }
             else
             {
-                boss1.Hover(_scene);
+                boss1.Hover();
 
                 boss.Pop();
 
@@ -2062,7 +2062,7 @@ namespace HonkTrooper
             _scene.Width = _windowWidth;
             _scene.Height = _windowHeight;
 
-            _player.Reposition(_scene);
+            _player.Reposition();
 
             DropShadow playersShadow = (_scene.Children.OfType<DropShadow>().FirstOrDefault(x => x.Id == _player.Id));
             playersShadow.Move();

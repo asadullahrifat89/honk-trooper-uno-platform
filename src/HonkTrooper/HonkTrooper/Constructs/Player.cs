@@ -82,27 +82,27 @@ namespace HonkTrooper
 
         #region Methods
 
-        public void Reposition(Scene scene)
+        public void Reposition()
         {
             SetPosition(
-                  left: ((scene.Width / 4) * 2) - Width / 2,
-                  top: scene.Height / 2 - Height / 2,
+                  left: ((Scene.Width / 4) * 2) - Width / 2,
+                  top: Scene.Height / 2 - Height / 2,
                   z: 6);
         }
 
-        public void Hover(Scene scene)
+        public void Hover()
         {
-            if (scene.IsSlowMotionActivated)
+            if (Scene.IsSlowMotionActivated)
             {
                 _hoverDelay -= 0.5;
 
                 if (_hoverDelay > 0)
                 {
-                    SetTop(GetTop() + _hoverSpeed / 3.5);
+                    SetTop(GetTop() + _hoverSpeed / Constants.DEFAULT_SLOW_MOTION_REDUCTION_FACTOR);
                 }
                 else
                 {
-                    SetTop(GetTop() - _hoverSpeed / 3.5);
+                    SetTop(GetTop() - _hoverSpeed / Constants.DEFAULT_SLOW_MOTION_REDUCTION_FACTOR);
 
                     if (_hoverDelay <= _hoverDelayDefault * -1)
                         _hoverDelay = _hoverDelayDefault;
@@ -213,32 +213,38 @@ namespace HonkTrooper
             {
                 _movementStopDelay--;
 
+                double mvmntSpdLs = _movementStopSpeedLoss;
+
+                if (Scene.IsSlowMotionActivated)
+                    mvmntSpdLs = _movementStopSpeedLoss / Constants.DEFAULT_SLOW_MOTION_REDUCTION_FACTOR;
+
+
                 if (_isMovingUp)
                 {
                     if (_lastSpeed > 0)
                     {
-                        MoveUp(_lastSpeed - _movementStopSpeedLoss);
+                        MoveUp(_lastSpeed - mvmntSpdLs);
                     }
                 }
                 else if (_isMovingDown)
                 {
                     if (_lastSpeed > 0)
                     {
-                        MoveDown(_lastSpeed - _movementStopSpeedLoss);
+                        MoveDown(_lastSpeed - mvmntSpdLs);
                     }
                 }
                 else if (_isMovingLeft)
                 {
                     if (_lastSpeed > 0)
                     {
-                        MoveLeft(_lastSpeed - _movementStopSpeedLoss);
+                        MoveLeft(_lastSpeed - mvmntSpdLs);
                     }
                 }
                 else if (_isMovingRight)
                 {
                     if (_lastSpeed > 0)
                     {
-                        MoveRight(_lastSpeed - _movementStopSpeedLoss);
+                        MoveRight(_lastSpeed - mvmntSpdLs);
                     }
                 }
 
