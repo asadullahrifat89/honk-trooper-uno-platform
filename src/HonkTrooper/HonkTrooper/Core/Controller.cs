@@ -237,30 +237,40 @@ namespace HonkTrooper
 
         public void PlayPauseScene()
         {
-            if (ScenePlayOrPause())
+            if (ToggleScenePlayOrPause())
             {
-                // game running
-                DirectionKeys.Visibility = Visibility.Visible;
-                AttackButton.Visibility = Visibility.Visible;
-
-                PauseButton.Visibility = Visibility.Visible;
-                PlayButton.Visibility = Visibility.Collapsed;
-
-                AttackButton.Focus(FocusState.Programmatic);
-
-                OnPlayPause?.Invoke(this, true);
+                OnPlayScene();
             }
             else
             {
-                // game stopped
-                DirectionKeys.Visibility = Visibility.Collapsed;
-                AttackButton.Visibility = Visibility.Collapsed;
-
-                PauseButton.Visibility = Visibility.Collapsed;
-                PlayButton.Visibility = Visibility.Visible;
-
-                OnPlayPause?.Invoke(this, false);
+                OnPauseScene();
             }
+        }
+
+        private void OnPauseScene()
+        {
+            // game stopped
+            DirectionKeys.Visibility = Visibility.Collapsed;
+            AttackButton.Visibility = Visibility.Collapsed;
+
+            PauseButton.Visibility = Visibility.Collapsed;
+            PlayButton.Visibility = Visibility.Visible;
+
+            OnPlayPause?.Invoke(this, false);
+        }
+
+        private void OnPlayScene()
+        {
+            // game running
+            DirectionKeys.Visibility = Visibility.Visible;
+            AttackButton.Visibility = Visibility.Visible;
+
+            PauseButton.Visibility = Visibility.Visible;
+            PlayButton.Visibility = Visibility.Collapsed;
+
+            AttackButton.Focus(FocusState.Programmatic);
+
+            OnPlayPause?.Invoke(this, true);
         }
 
         private void SetAttackButton()

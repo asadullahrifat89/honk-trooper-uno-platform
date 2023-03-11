@@ -69,7 +69,7 @@ namespace HonkTrooper
                     break;
                 case Windows.System.VirtualKey.Enter:
                     {
-                        ScenePlayOrPause();
+                        ToggleScenePlayOrPause();
                     }
                     break;
                 case Windows.System.VirtualKey.Escape:
@@ -206,7 +206,7 @@ namespace HonkTrooper
             IsMoveLeft = false;
         }
 
-        public bool ScenePlayOrPause()
+        public bool ToggleScenePlayOrPause()
         {
             ScreenExtensions.SetDisplayOrientation(ScreenExtensions.RequiredDisplayOrientation);
 
