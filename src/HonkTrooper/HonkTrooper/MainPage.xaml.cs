@@ -59,9 +59,53 @@ namespace HonkTrooper
 
         #region Methods
 
+        #region Game
+
+        private void ResumeGame(ScreenElement se)
+        {
+            ToggleHudVisibility(Visibility.Visible);
+            _game_controller.AttackButton.Focus(FocusState.Programmatic);
+            _scene_game.Play();
+            RelocateGameTitle(se);
+        }
+
+        private void NewGame(ScreenElement se)
+        {
+            // TODO: change game state to running
+
+            ToggleHudVisibility(Visibility.Visible);
+
+            _scene_game.SceneState = SceneState.GAME_RUNNING;
+
+            _player.Reset();
+            _player.Reposition();
+            _game_score_bar.Reset();
+
+            // if there is a boss already in the picture then remove it
+            if (_scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating) is Boss boss)
+            {
+                boss.Health = 0;
+                boss.IsAttacking = false;
+                boss.SetPosition(left: -500, top: -500);
+
+                boss.IsAnimating = false;
+
+                Console.WriteLine("Boss relocated");
+            }
+
+            _game_controller.AttackButton.Focus(FocusState.Programmatic);
+
+            if (!_scene_game.IsAnimating)
+                _scene_game.Play();
+
+            RelocateGameTitle(se);
+        }
+
+        #endregion
+
         #region GameTitle
 
-        public bool SpawnGameTitleInScene()
+        private bool SpawnGameTitleInScene()
         {
             ScreenElement se = null;
 
@@ -130,47 +174,7 @@ namespace HonkTrooper
             return true;
         }
 
-        private void ResumeGame(ScreenElement se)
-        {
-            ToggleHudVisibility(Visibility.Visible);
-            _game_controller.AttackButton.Focus(FocusState.Programmatic);
-            _scene_game.Play();
-            RelocateGameTitle(se);
-        }
-
-        private void NewGame(ScreenElement se)
-        {
-            // TODO: change game state to running
-
-            ToggleHudVisibility(Visibility.Visible);
-
-            _scene_game.SceneState = SceneState.GAME_RUNNING;
-
-            _player.Reset();
-            _player.Reposition();
-            _game_score_bar.Reset();
-
-            // if there is a boss already in the picture then remove it
-            if (_scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating) is Boss boss)
-            {
-                boss.Health = 0;
-                boss.IsAttacking = false;
-                boss.SetPosition(left: -500, top: -500);
-
-                boss.IsAnimating = false;
-
-                Console.WriteLine("Boss relocated");
-            }
-
-            _game_controller.AttackButton.Focus(FocusState.Programmatic);
-
-            if (!_scene_game.IsAnimating)
-                _scene_game.Play();
-
-            RelocateGameTitle(se);
-        }
-
-        public bool GenerateGameTitleInScene()
+        private bool GenerateGameTitleInScene()
         {
             if (_scene_game.Children.OfType<ScreenElement>().FirstOrDefault(x => x.IsAnimating == false && x.ConstructType == ConstructType.GAME_TITLE) is ScreenElement se)
             {
@@ -229,7 +233,7 @@ namespace HonkTrooper
 
         #region Player
 
-        public bool SpawnPlayerInScene()
+        private bool SpawnPlayerInScene()
         {
             _player = new(
                 animateAction: AnimatePlayer,
@@ -256,7 +260,7 @@ namespace HonkTrooper
             return true;
         }
 
-        public bool AnimatePlayer(Construct player)
+        private bool AnimatePlayer(Construct player)
         {
             _player.Pop();
             _player.Hover();
@@ -343,7 +347,7 @@ namespace HonkTrooper
 
         #region PlayerBomb
 
-        public bool SpawnPlayerBombsInScene()
+        private bool SpawnPlayerBombsInScene()
         {
             for (int i = 0; i < 3; i++)
             {
@@ -365,7 +369,7 @@ namespace HonkTrooper
             return true;
         }
 
-        public bool GeneratePlayerBombInScene()
+        private bool GeneratePlayerBombInScene()
         {
             if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
                 _scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss &&
@@ -429,7 +433,7 @@ namespace HonkTrooper
             return false;
         }
 
-        public bool AnimatePlayerBomb(Construct bomb)
+        private bool AnimatePlayerBomb(Construct bomb)
         {
             PlayerBomb playerBomb = bomb as PlayerBomb;
 
@@ -494,7 +498,7 @@ namespace HonkTrooper
             return true;
         }
 
-        public bool RecyclePlayerBomb(Construct bomb)
+        private bool RecyclePlayerBomb(Construct bomb)
         {
             var hitbox = bomb.GetHitBox();
 
@@ -519,7 +523,7 @@ namespace HonkTrooper
 
         #region PlayerBombGround
 
-        public bool SpawnPlayerBombGroundsInScene()
+        private bool SpawnPlayerBombGroundsInScene()
         {
             for (int i = 0; i < 3; i++)
             {
@@ -541,7 +545,7 @@ namespace HonkTrooper
             return true;
         }
 
-        public bool GeneratePlayerBombGroundInScene()
+        private bool GeneratePlayerBombGroundInScene()
         {
             if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
                 _scene_game.Children.OfType<PlayerBombGround>().FirstOrDefault(x => x.IsAnimating == false) is PlayerBombGround bomb)
@@ -567,7 +571,7 @@ namespace HonkTrooper
             return false;
         }
 
-        public bool AnimatePlayerBombGround(Construct bomb)
+        private bool AnimatePlayerBombGround(Construct bomb)
         {
             PlayerBombGround playerBombGround = bomb as PlayerBombGround;
 
@@ -612,7 +616,7 @@ namespace HonkTrooper
             return true;
         }
 
-        public bool RecyclePlayerBombGround(Construct bomb)
+        private bool RecyclePlayerBombGround(Construct bomb)
         {
             if (bomb.IsFadingComplete)
             {
@@ -633,7 +637,7 @@ namespace HonkTrooper
 
         #region PlayerBombSeeking
 
-        public bool SpawnPlayerBombSeekingsInScene()
+        private bool SpawnPlayerBombSeekingsInScene()
         {
             for (int i = 0; i < 3; i++)
             {
@@ -655,7 +659,7 @@ namespace HonkTrooper
             return true;
         }
 
-        public bool GeneratePlayerBombSeekingInScene()
+        private bool GeneratePlayerBombSeekingInScene()
         {
             // generate a seeking bomb if one is not in scene
             if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
@@ -684,7 +688,7 @@ namespace HonkTrooper
             return false;
         }
 
-        public bool AnimatePlayerBombSeeking(Construct bomb)
+        private bool AnimatePlayerBombSeeking(Construct bomb)
         {
             PlayerBombSeeking playerBombSeeking = bomb as PlayerBombSeeking;
 
@@ -758,7 +762,7 @@ namespace HonkTrooper
             return true;
         }
 
-        public bool RecyclePlayerBombSeeking(Construct bomb)
+        private bool RecyclePlayerBombSeeking(Construct bomb)
         {
             var hitbox = bomb.GetHitBox();
 
@@ -781,7 +785,7 @@ namespace HonkTrooper
 
         #region Vehicle
 
-        public bool SpawnVehiclesInScene()
+        private bool SpawnVehiclesInScene()
         {
             for (int i = 0; i < 10; i++)
             {
@@ -800,7 +804,7 @@ namespace HonkTrooper
             return true;
         }
 
-        public bool GenerateVehicleInScene()
+        private bool GenerateVehicleInScene()
         {
             if (_scene_game.Children.OfType<Vehicle>().FirstOrDefault(x => x.IsAnimating == false) is Vehicle vehicle)
             {
@@ -904,7 +908,7 @@ namespace HonkTrooper
 
         #region RoadMark
 
-        public bool SpawnRoadMarksInScene()
+        private bool SpawnRoadMarksInScene()
         {
             for (int i = 0; i < 20; i++)
             {
@@ -923,7 +927,7 @@ namespace HonkTrooper
             return true;
         }
 
-        public bool GenerateRoadMarkInScene()
+        private bool GenerateRoadMarkInScene()
         {
             if (_scene_game.Children.OfType<RoadMark>().FirstOrDefault(x => x.IsAnimating == false) is RoadMark roadMark)
             {
@@ -969,7 +973,7 @@ namespace HonkTrooper
 
         #region Tree
 
-        public bool SpawnTreesInScene()
+        private bool SpawnTreesInScene()
         {
             for (int i = 0; i < 10; i++)
             {
@@ -1060,7 +1064,7 @@ namespace HonkTrooper
 
         #region HealthPickup
 
-        public bool SpawnHealthPickupsInScene()
+        private bool SpawnHealthPickupsInScene()
         {
             for (int i = 0; i < 3; i++)
             {
@@ -1173,7 +1177,7 @@ namespace HonkTrooper
 
         #region PowerUpPickup
 
-        public bool SpawnPowerUpPickupsInScene()
+        private bool SpawnPowerUpPickupsInScene()
         {
             for (int i = 0; i < 3; i++)
             {
@@ -1292,7 +1296,7 @@ namespace HonkTrooper
 
         #region Honk
 
-        public bool SpawnHonksInScene()
+        private bool SpawnHonksInScene()
         {
             for (int i = 0; i < 10; i++)
             {
@@ -1311,7 +1315,7 @@ namespace HonkTrooper
             return true;
         }
 
-        public bool GenerateHonkInScene(Vehicle vehicle)
+        private bool GenerateHonkInScene(Vehicle vehicle)
         {
             // if there are no bosses in the scene the vehicles will honk
             if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
@@ -1339,7 +1343,7 @@ namespace HonkTrooper
             return false;
         }
 
-        public bool AnimateHonk(Construct honk)
+        private bool AnimateHonk(Construct honk)
         {
             honk.Pop();
             var speed = (_scene_game.Speed + honk.SpeedOffset);
@@ -1370,7 +1374,7 @@ namespace HonkTrooper
 
         #region Cloud
 
-        public bool SpawnCloudsInScene()
+        private bool SpawnCloudsInScene()
         {
             for (int i = 0; i < 10; i++)
             {
@@ -1433,7 +1437,7 @@ namespace HonkTrooper
             return false;
         }
 
-        public bool AnimateCloud(Construct cloud)
+        private bool AnimateCloud(Construct cloud)
         {
             var speed = (_scene_game.Speed + cloud.SpeedOffset);
             MoveConstruct(construct: cloud, speed: speed);
@@ -1460,7 +1464,7 @@ namespace HonkTrooper
 
         #region Boss
 
-        public bool SpawnBossesInScene()
+        private bool SpawnBossesInScene()
         {
             for (int i = 0; i < 3; i++)
             {
@@ -1518,7 +1522,7 @@ namespace HonkTrooper
             return false;
         }
 
-        public bool AnimateBoss(Construct boss)
+        private bool AnimateBoss(Construct boss)
         {
             Boss boss1 = boss as Boss;
 
@@ -1759,7 +1763,7 @@ namespace HonkTrooper
 
         #region BossBomb
 
-        public bool SpawnBossBombsInScene()
+        private bool SpawnBossBombsInScene()
         {
             for (int i = 0; i < 5; i++)
             {
@@ -1781,7 +1785,7 @@ namespace HonkTrooper
             return true;
         }
 
-        public bool GenerateBossBombInScene()
+        private bool GenerateBossBombInScene()
         {
             if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
                 _scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss &&
@@ -1872,7 +1876,7 @@ namespace HonkTrooper
             return false;
         }
 
-        public bool AnimateBossBomb(Construct bomb)
+        private bool AnimateBossBomb(Construct bomb)
         {
             BossBomb bossBomb = bomb as BossBomb;
 
@@ -1921,7 +1925,7 @@ namespace HonkTrooper
             return true;
         }
 
-        public bool RecycleBossBomb(Construct bomb)
+        private bool RecycleBossBomb(Construct bomb)
         {
             var hitbox = bomb.GetHitBox();
 
@@ -1944,7 +1948,7 @@ namespace HonkTrooper
 
         #region BossBombSeeking
 
-        public bool SpawnBossBombSeekingsInScene()
+        private bool SpawnBossBombSeekingsInScene()
         {
             for (int i = 0; i < 2; i++)
             {
@@ -1966,7 +1970,7 @@ namespace HonkTrooper
             return true;
         }
 
-        public bool GenerateBossBombSeekingInScene()
+        private bool GenerateBossBombSeekingInScene()
         {
             // generate a seeking bomb if one is not in scene
             if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
@@ -1992,7 +1996,7 @@ namespace HonkTrooper
             return false;
         }
 
-        public bool AnimateBossBombSeeking(Construct bomb)
+        private bool AnimateBossBombSeeking(Construct bomb)
         {
             BossBombSeeking bossBombSeeking = bomb as BossBombSeeking;
 
@@ -2040,7 +2044,7 @@ namespace HonkTrooper
             return true;
         }
 
-        public bool RecycleBossBombSeeking(Construct bomb)
+        private bool RecycleBossBombSeeking(Construct bomb)
         {
             var hitbox = bomb.GetHitBox();
 
@@ -2063,7 +2067,7 @@ namespace HonkTrooper
 
         #region DropShadow
 
-        public bool SpawnDropShadowInScene(Construct source)
+        private bool SpawnDropShadowInScene(Construct source)
         {
             DropShadow dropShadow = new(
                 animateAction: AnimateDropShadow,
@@ -2079,7 +2083,7 @@ namespace HonkTrooper
             return true;
         }
 
-        public bool AnimateDropShadow(Construct construct)
+        private bool AnimateDropShadow(Construct construct)
         {
             DropShadow dropShadow = construct as DropShadow;
             dropShadow.SyncWidth();
