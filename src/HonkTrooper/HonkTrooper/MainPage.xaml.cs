@@ -30,6 +30,14 @@ namespace HonkTrooper
         {
             this.InitializeComponent();
 
+            _scene = this.MainScene;
+            _playerHealthBar = this.PlayerHealthBar;
+            _bossHealthBar = this.BossHealthBar;
+            _powerUpHealthBar = this.PowerUpHealthBar;
+
+            _controller = this.KeyboardController;
+            _scoreBar = this.GameScoreBar;
+
             _random = new Random();
 
             Loaded += MainPage_Loaded;
@@ -2164,14 +2172,6 @@ namespace HonkTrooper
 
         private void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
-            _scene = this.MainScene;
-            _playerHealthBar = this.PlayerHealthBar;
-            _bossHealthBar = this.BossHealthBar;
-            _powerUpHealthBar = this.PowerUpHealthBar;
-
-            _controller = this.KeyboardController;
-            _scoreBar = this.GameScoreBar;
-
             _scene.Width = 1920;
             _scene.Height = 1080;
 
