@@ -169,34 +169,37 @@ namespace HonkTrooper
 
         private void SetPlayPauseButton()
         {
-            StackPanel content = new()
-            {
-                Orientation = Orientation.Horizontal
-            };
+            //StackPanel content = new()
+            //{
+            //    Orientation = Orientation.Horizontal
+            //};
 
-            content.Children.Add(new SymbolIcon()
-            {
-                Symbol = Symbol.Play,
-            });
+            //content.Children.Add(new SymbolIcon()
+            //{
+            //    Symbol = Symbol.Play,
+            //});
 
-            content.Children.Add(new TextBlock()
-            {
-                Text = "Play",
-                FontSize = 25,
-                Margin = new Thickness(10, 0, 0, 0),
-            });
+            //content.Children.Add(new TextBlock()
+            //{
+            //    Text = "Play",
+            //    FontSize = 25,
+            //    Margin = new Thickness(10, 0, 0, 0),
+            //});
 
             PlayButton = new()
             {
                 Background = new SolidColorBrush(Colors.Goldenrod),
                 Height = _keysSize,
-                Width = _keysSize * 4,
+                Width = _keysSize,
                 CornerRadius = new CornerRadius(_keyCornerRadius),
-                Content = content,
+                Content = new SymbolIcon()
+                {
+                    Symbol = Symbol.Play,
+                },
                 BorderBrush = new SolidColorBrush(Colors.White),
                 BorderThickness = new Thickness(_keyBorderThickness),
-                HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center,
+                HorizontalAlignment = HorizontalAlignment.Right,
+                VerticalAlignment = VerticalAlignment.Top,
                 Margin = new Thickness(20),
             };
 

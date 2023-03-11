@@ -2240,7 +2240,13 @@ namespace HonkTrooper
                 ToggleHudVisibility(Visibility.Visible);
 
                 if (_scene.OfType<ScreenElement>().FirstOrDefault(x => x.IsAnimating && x.ConstructType == ConstructType.GAME_TITLE) is ScreenElement gameTitle)
-                    gameTitle.AwaitMoveDown = true;
+                {
+                    gameTitle.SetPosition(
+                    left: -500,
+                    top: -500);
+
+                    gameTitle.IsAnimating = false;
+                }                    
             }
             else
             {
