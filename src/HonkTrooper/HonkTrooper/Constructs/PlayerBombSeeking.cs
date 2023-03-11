@@ -1,20 +1,19 @@
 ﻿using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using Windows.Foundation;
 
 namespace HonkTrooper
 {
-    public partial class PlayerBombSeeking : Construct
+    public partial class PlayerBombSeeking : BombSeeking
     {
         #region Fields
 
         private Random _random;
         private Uri[] _bomb_uris;
         private Uri[] _bomb_blast_uris;
-        private readonly double _grace = 7;
-        private readonly double _lag = 60;
 
         #endregion
 
@@ -101,70 +100,6 @@ namespace HonkTrooper
                 return true;
 
             return false;
-        }
-
-        public bool SeekBoss(Rect bossHitbox)
-        {
-            bool hasMoved = false;
-
-            double left = GetLeft();
-            double top = GetTop();
-
-            double playerMiddleX = left + Width / 2;
-            double playerMiddleY = top + Height / 2;
-
-            // move up
-            if (bossHitbox.Y < playerMiddleY - _grace)
-            {
-                var distance = Math.Abs(bossHitbox.Y - playerMiddleY);
-                double speed = GetFlightSpeed(distance);
-
-                SetTop(top - speed);
-
-                hasMoved = true;
-            }
-
-            // move left
-            if (bossHitbox.X < playerMiddleX - _grace)
-            {
-                var distance = Math.Abs(bossHitbox.X - playerMiddleX);
-                double speed = GetFlightSpeed(distance);
-
-                SetLeft(left - speed);
-
-                hasMoved = true;
-            }
-
-            // move down
-            if (bossHitbox.Y > playerMiddleY + _grace)
-            {
-                var distance = Math.Abs(bossHitbox.Y - playerMiddleY);
-                double speed = GetFlightSpeed(distance);
-
-                SetTop(top + speed);
-
-                hasMoved = true;
-            }
-
-            // move right
-            if (bossHitbox.X > playerMiddleX + _grace)
-            {
-                var distance = Math.Abs(bossHitbox.X - playerMiddleX);
-                double speed = GetFlightSpeed(distance);
-
-                SetLeft(left + speed);
-
-                hasMoved = true;
-            }
-
-            return hasMoved;
-        }
-
-        private double GetFlightSpeed(double distance)
-        {
-            var flightSpeed = distance / _lag;
-
-            return flightSpeed > 2 ? flightSpeed : 2;
         }
 
         public void SetBlast()

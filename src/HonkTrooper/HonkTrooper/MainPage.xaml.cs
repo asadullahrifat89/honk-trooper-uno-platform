@@ -418,7 +418,7 @@ namespace HonkTrooper
                     (bossBombSeeking is not null && _player.GetTop() > bossBombSeeking.GetTop() && _player.GetLeft() > bossBombSeeking.GetLeft()))
                 {
                     playerBomb.AwaitMoveUp = true;
-                    playerBomb.SetRotation(-143);
+                    playerBomb.SetRotation(123);
                 }
                 // player is on the bottom left side of the boss
                 else if ((_player.GetTop() > boss.GetTop() && _player.GetLeft() < boss.GetLeft()) ||
@@ -444,7 +444,7 @@ namespace HonkTrooper
                 else
                 {
                     playerBomb.AwaitMoveUp = true;
-                    playerBomb.SetRotation(-143);
+                    playerBomb.SetRotation(123);
                 }
 
                 #endregion
@@ -459,7 +459,7 @@ namespace HonkTrooper
         {
             PlayerBomb playerBomb = bomb as PlayerBomb;
 
-            var speed = _scene_game.Speed + bomb.SpeedOffset;
+            var speed = (_scene_game.Speed + bomb.SpeedOffset) * _scene_game.DownScaling;
 
             if (playerBomb.AwaitMoveLeft)
             {
@@ -739,7 +739,7 @@ namespace HonkTrooper
 
                     if (_scene_game.Children.OfType<BossBombSeeking>().FirstOrDefault(x => x.IsAnimating) is BossBombSeeking bossBombSeeking)
                     {
-                        playerBombSeeking.SeekBoss(bossBombSeeking.GetCloseHitBox());
+                        playerBombSeeking.Seek(bossBombSeeking.GetCloseHitBox());
 
                         if (playerBombSeeking.GetCloseHitBox().IntersectsWith(bossBombSeeking.GetCloseHitBox()))
                         {
@@ -752,23 +752,11 @@ namespace HonkTrooper
 
                     if (_scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss)
                     {
-                        playerBombSeeking.SeekBoss(boss.GetCloseHitBox());
+                        playerBombSeeking.Seek(boss.GetCloseHitBox());
 
                         if (playerBombSeeking.GetCloseHitBox().IntersectsWith(boss.GetCloseHitBox()))
                         {
                             playerBombSeeking.SetBlast();
-
-                            //boss.SetPopping();
-                            //boss.LooseHealth();
-
-                            //_bossHealthBar.SetValue(boss.Health);
-
-                            //if (boss.IsDead && boss.IsAttacking)
-                            //{
-                            //    boss.IsAttacking = false;
-                            //    _scene.ActivateSlowMotion();
-                            //}
-
                             LooseBossHealth(boss);
                         }
                         else
@@ -2045,7 +2033,7 @@ namespace HonkTrooper
                 {
                     if (_scene_game.Children.OfType<Boss>().Any(x => x.IsAnimating && x.IsAttacking))
                     {
-                        bossBombSeeking.SeekPlayer(_player.GetCloseHitBox());
+                        bossBombSeeking.Seek(_player.GetCloseHitBox());
 
                         if (bossBombSeeking.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
                         {
@@ -2143,7 +2131,7 @@ namespace HonkTrooper
                 dropShadow.ParentConstructSpeed = _scene_game.Speed + source.SpeedOffset;
                 dropShadow.IsAnimating = true;
 
-                dropShadow.SetZ(source.GetZ() - 1);
+                dropShadow.SetZ(source.GetZ() - 2);
 
                 dropShadow.Reset();
             }
