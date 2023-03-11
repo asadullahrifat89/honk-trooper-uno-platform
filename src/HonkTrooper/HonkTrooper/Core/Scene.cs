@@ -24,6 +24,7 @@ namespace HonkTrooper
 
         private double _lastSpeed;
         private double _slowMotionDelay;
+        private readonly double _slowMotionDelayDefault = 160;
 
         #endregion
 
@@ -163,7 +164,7 @@ namespace HonkTrooper
             _lastSpeed = Speed;
             Speed /= 3.5;
 
-            _slowMotionDelay = 180;
+            _slowMotionDelay = _slowMotionDelayDefault;
         }
 
         private void DepleteSlowMotion()
