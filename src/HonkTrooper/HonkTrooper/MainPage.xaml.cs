@@ -63,7 +63,7 @@ namespace HonkTrooper
 
         private void ResumeGame(ScreenElement se)
         {
-            ToggleHudVisibility(Visibility.Visible);            
+            ToggleHudVisibility(Visibility.Visible);
             _scene_game.Play();
             RelocateGameTitle(se);
 
@@ -74,7 +74,7 @@ namespace HonkTrooper
         {
             // TODO: change game state to running                
 
-            _game_controller.Reset();            
+            _game_controller.Reset();
 
             _player.Reset();
             _player.Reposition();
@@ -100,9 +100,6 @@ namespace HonkTrooper
             RelocateGameTitle(se);
 
             ToggleHudVisibility(Visibility.Visible);
-
-            if (ScreenExtensions.GetDisplayOrienation() != ScreenExtensions.RequiredDisplayOrientation)
-                ScreenExtensions.SetDisplayOrientation(ScreenExtensions.RequiredDisplayOrientation);
 
             ScreenExtensions.EnterFullScreen(true);
 
@@ -161,7 +158,10 @@ namespace HonkTrooper
             {
                 if (_scene_game.SceneState == SceneState.GAME_STOPPED)
                 {
-                    NewGame(se);
+                    if (ScreenExtensions.RequiredDisplayOrientation == ScreenExtensions.GetDisplayOrienation())
+                        NewGame(se);
+                    else
+                        ScreenExtensions.SetDisplayOrientation(ScreenExtensions.RequiredDisplayOrientation);
                 }
                 else
                 {
@@ -2335,9 +2335,9 @@ namespace HonkTrooper
             // Console.WriteLine($"{sender.CurrentOrientation}");
         }
 
-        private void Controller_OnPlayPause(object sender, bool isPlaying)
+        private void Controller_OnPlayPause(object sender, bool isPlayed)
         {
-            if (isPlaying)
+            if (!isPlayed)
             {
                 //ToggleHudVisibility(Visibility.Visible);
 
@@ -2345,11 +2345,8 @@ namespace HonkTrooper
                 //{
                 //    RelocateGameTitle(gameTitle);
                 //}
-            }
-            else
-            {
+                _scene_game.Pause();
                 ToggleHudVisibility(Visibility.Collapsed);
-
                 GenerateGameTitleInScene();
             }
         }

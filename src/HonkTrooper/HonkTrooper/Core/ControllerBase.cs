@@ -67,11 +67,11 @@ namespace HonkTrooper
                         ActivateMoveDown();
                     }
                     break;
-                case Windows.System.VirtualKey.Enter:
-                    {
-                        ToggleScenePlayOrPause();
-                    }
-                    break;
+                //case Windows.System.VirtualKey.Enter:
+                //    {
+                //        ToggleScenePlayOrPause();
+                //    }
+                //    break;
                 case Windows.System.VirtualKey.Escape:
                     {
                         // Console.WriteLine("Escape");
@@ -215,41 +215,41 @@ namespace HonkTrooper
             IsMoveLeft = false;
         }
 
-        public bool ToggleScenePlayOrPause()
-        {
-            ScreenExtensions.SetDisplayOrientation(ScreenExtensions.RequiredDisplayOrientation);
+        //public bool ToggleScenePlayOrPause()
+        //{
+        //    ScreenExtensions.SetDisplayOrientation(ScreenExtensions.RequiredDisplayOrientation);
 
-            // only start scene if required screen orientation is met
-            if (ScreenExtensions.RequiredDisplayOrientation == ScreenExtensions.GetDisplayOrienation())
-            {
-                //if (_scene.SceneState == SceneState.GAME_RUNNING)
-                //{
-                if (_scene.IsAnimating)
-                    _scene.Pause();
-                else
-                    _scene.Play();
+        //    // only start scene if required screen orientation is met
+        //    if (ScreenExtensions.RequiredDisplayOrientation == ScreenExtensions.GetDisplayOrienation())
+        //    {
+        //        //if (_scene.SceneState == SceneState.GAME_RUNNING)
+        //        //{
+        //        if (_scene.IsAnimating)
+        //            _scene.Pause();
+        //        else
+        //            _scene.Play();
 
-                //_scene.SetState(SceneState.GAME_STOPPED);
-                //}
-                //else
-                //{
-                //if (!_scene.IsAnimating)
-                //    _scene.Play();
+        //        //_scene.SetState(SceneState.GAME_STOPPED);
+        //        //}
+        //        //else
+        //        //{
+        //        //if (!_scene.IsAnimating)
+        //        //    _scene.Play();
 
-                //_scene.SetState(SceneState.GAME_RUNNING);
-                //}
+        //        //_scene.SetState(SceneState.GAME_RUNNING);
+        //        //}
 
-                ScreenExtensions.EnterFullScreen(true);
-            }
-            else
-            {
-                RequiresScreenOrientationChange?.Invoke(this, ScreenExtensions.RequiredDisplayOrientation);
-            }
+        //        ScreenExtensions.EnterFullScreen(true);
+        //    }
+        //    else
+        //    {
+        //        RequiresScreenOrientationChange?.Invoke(this, ScreenExtensions.RequiredDisplayOrientation);
+        //    }
 
-            // Console.WriteLine("Enter");
+        //    // Console.WriteLine("Enter");
 
-            return _scene.IsAnimating;
-        }
+        //    return _scene.IsAnimating;
+        //}
 
         #endregion        
     }
