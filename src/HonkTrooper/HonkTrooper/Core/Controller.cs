@@ -8,19 +8,9 @@ namespace HonkTrooper
 {
     public partial class Controller : ControllerBase
     {
-        #region Fields
-
-        //public event EventHandler<bool> OnPlayPause;
-
-        #endregion
-
         #region Properties
 
         public Grid DirectionKeys { get; set; }
-
-        //public Button PlayButton { get; set; }
-
-        //public Button PauseButton { get; set; }
 
         public Button AttackButton { get; set; }
 
@@ -37,8 +27,6 @@ namespace HonkTrooper
 
             SetDirectionKeys();
             SetAttackButton();
-            //SetPlayButton();
-            //SetPauseButton();
         }
 
         #endregion
@@ -51,8 +39,7 @@ namespace HonkTrooper
             {
                 HorizontalAlignment = HorizontalAlignment.Right,
                 VerticalAlignment = VerticalAlignment.Bottom,
-                Margin = new Thickness(20),
-                //Visibility = Visibility.Collapsed,
+                Margin = new Thickness(20),                
             };
 
             DirectionKeys.RowDefinitions.Add(new RowDefinition());
@@ -160,113 +147,6 @@ namespace HonkTrooper
 
             this.Children.Add(DirectionKeys);
         }
-
-        //private void SetPlayButton()
-        //{
-
-        //    PlayButton = new()
-        //    {
-        //        Background = new SolidColorBrush(Colors.Goldenrod),
-        //        Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-        //        Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-        //        CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS),
-        //        Content = new SymbolIcon()
-        //        {
-        //            Symbol = Symbol.Play,
-        //        },
-        //        BorderBrush = new SolidColorBrush(Colors.White),
-        //        BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
-        //        HorizontalAlignment = HorizontalAlignment.Right,
-        //        VerticalAlignment = VerticalAlignment.Top,
-        //        Margin = new Thickness(20),
-        //    };
-
-        //    PlayButton.Click += (s, e) =>
-        //    {
-        //        PlayPauseScene();
-        //    };
-        //    this.Children.Add(PlayButton);
-        //}
-
-        //private void SetPauseButton()
-        //{
-        //    PauseButton = new()
-        //    {
-        //        Background = new SolidColorBrush(Colors.Goldenrod),
-        //        Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-        //        Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-        //        CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS),
-        //        Content = new SymbolIcon()
-        //        {
-        //            Symbol = Symbol.Pause,
-        //        },
-        //        BorderBrush = new SolidColorBrush(Colors.White),
-        //        BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
-        //        HorizontalAlignment = HorizontalAlignment.Right,
-        //        VerticalAlignment = VerticalAlignment.Top,
-        //        Margin = new Thickness(20),
-        //        //Visibility = Visibility.Collapsed,
-        //    };
-
-        //    PauseButton.Click += (s, e) =>
-        //    {
-        //        //PlayPauseScene();
-
-        //        this.PauseScene();
-        //        OnPlayPause?.Invoke(this, false);
-        //    };
-
-        //    this.Children.Add(PauseButton);
-        //}
-
-        //public void PlayPauseScene()
-        //{
-        //    if (ToggleScenePlayOrPause())
-        //    {
-        //        //OnPlayScene();
-        //        OnPlayPause?.Invoke(this, true);
-        //    }
-        //    else
-        //    {
-        //        //OnPauseScene();
-        //        OnPlayPause?.Invoke(this, false);
-        //    }
-        //}
-
-        //public void ToggleHudVisibility(Visibility visibility) 
-        //{
-        //    DirectionKeys.Visibility = visibility;
-        //    AttackButton.Visibility = visibility;
-
-        //    PauseButton.Visibility = visibility;
-        //    PlayButton.Visibility = visibility;
-        //}
-
-        //private void OnPauseScene()
-        //{
-        //    // game stopped
-        //    DirectionKeys.Visibility = Visibility.Collapsed;
-        //    AttackButton.Visibility = Visibility.Collapsed;
-
-        //    PauseButton.Visibility = Visibility.Collapsed;
-        //    PlayButton.Visibility = Visibility.Visible;
-
-        //    OnPlayPause?.Invoke(this, false);
-        //}
-
-        //private void OnPlayScene()
-        //{
-        //    // game running
-        //    DirectionKeys.Visibility = Visibility.Visible;
-        //    AttackButton.Visibility = Visibility.Visible;
-
-        //    PauseButton.Visibility = Visibility.Visible;
-        //    PlayButton.Visibility = Visibility.Collapsed;
-
-        //    AttackButton.Focus(FocusState.Programmatic);
-
-        //    OnPlayPause?.Invoke(this, true);
-        //}
 
         private void SetAttackButton()
         {
