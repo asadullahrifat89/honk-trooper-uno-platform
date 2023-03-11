@@ -1,5 +1,4 @@
-﻿using System;
-using Windows.Graphics.Display;
+﻿using Windows.Graphics.Display;
 using Windows.UI.ViewManagement;
 
 namespace HonkTrooper

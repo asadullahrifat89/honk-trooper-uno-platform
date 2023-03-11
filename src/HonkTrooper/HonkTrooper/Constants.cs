@@ -119,7 +119,6 @@ namespace HonkTrooper
         HONK,
         TREE,
         CLOUD,
-        GAME_TITLE,
 
         BOMB_BLAST,
         DROP_SHADOW,
@@ -131,5 +130,7 @@ namespace HonkTrooper
         HEALTH_PICKUP,
         POWERUP_PICKUP,
         COLLECTABLE_PICKUP,
+
+        GAME_TITLE,
     }
 }

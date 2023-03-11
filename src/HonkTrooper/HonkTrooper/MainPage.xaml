@@ -19,8 +19,10 @@
 
         </Border>
 
+        <Scene x:Name="MainMenuScene" Background="Transparent" />
+
         <Controller
-            x:Name="KeyboardController"
+            x:Name="GameController"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
             Background="Transparent" />
