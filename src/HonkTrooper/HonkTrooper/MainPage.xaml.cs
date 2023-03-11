@@ -63,24 +63,18 @@ namespace HonkTrooper
 
         private void ResumeGame(ScreenElement se)
         {
-            ToggleHudVisibility(Visibility.Visible);
-            _game_controller.AttackButton.Focus(FocusState.Programmatic);
+            ToggleHudVisibility(Visibility.Visible);            
             _scene_game.Play();
             RelocateGameTitle(se);
+
+            _game_controller.AttackButton.Focus(FocusState.Programmatic);
         }
 
         private void NewGame(ScreenElement se)
         {
-            // TODO: change game state to running
+            // TODO: change game state to running                
 
-            if (ScreenExtensions.GetDisplayOrienation() != ScreenExtensions.RequiredDisplayOrientation)
-                ScreenExtensions.SetDisplayOrientation(ScreenExtensions.RequiredDisplayOrientation);
-
-            ScreenExtensions.EnterFullScreen(true);
-
-            ToggleHudVisibility(Visibility.Visible);
-
-            _scene_game.SceneState = SceneState.GAME_RUNNING;
+            _game_controller.Reset();            
 
             _player.Reset();
             _player.Reposition();
@@ -98,12 +92,21 @@ namespace HonkTrooper
                 Console.WriteLine("Boss relocated");
             }
 
-            _game_controller.AttackButton.Focus(FocusState.Programmatic);
+            _scene_game.SceneState = SceneState.GAME_RUNNING;
 
             if (!_scene_game.IsAnimating)
                 _scene_game.Play();
 
             RelocateGameTitle(se);
+
+            ToggleHudVisibility(Visibility.Visible);
+
+            if (ScreenExtensions.GetDisplayOrienation() != ScreenExtensions.RequiredDisplayOrientation)
+                ScreenExtensions.SetDisplayOrientation(ScreenExtensions.RequiredDisplayOrientation);
+
+            ScreenExtensions.EnterFullScreen(true);
+
+            _game_controller.AttackButton.Focus(FocusState.Programmatic);
         }
 
         #endregion
@@ -123,8 +126,6 @@ namespace HonkTrooper
             se.SetPosition(
                 left: -500,
                 top: -500);
-
-            //se.SetSize(width: 300, height: 400);
 
             StackPanel content = new()
             {

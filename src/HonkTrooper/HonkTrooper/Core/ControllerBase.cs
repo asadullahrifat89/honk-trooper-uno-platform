@@ -137,6 +137,15 @@ namespace HonkTrooper
 
         #region Methods
 
+        public void Reset()
+        {
+            DeactivateAttack();
+            DeactivateMoveLeft();
+            DeactivateMoveRight();
+            DeactivateMoveUp();
+            DeactivateMoveDown();
+        }
+
         public void SetScene(Scene scene)
         {
             _scene = scene;
