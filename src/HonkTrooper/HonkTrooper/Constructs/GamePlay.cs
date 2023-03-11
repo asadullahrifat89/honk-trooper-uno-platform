@@ -1,13 +1,10 @@
-﻿using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml;
-using Microsoft.UI;
+﻿using Microsoft.UI.Xaml;
 using System;
 using System.Linq;
-using Microsoft.UI.Xaml.Controls;
 
 namespace HonkTrooper
 {
-    public partial class GameTitle : Construct
+    public partial class GamePlay : Construct
     {
         #region Fields
 
@@ -20,7 +17,7 @@ namespace HonkTrooper
 
         #region Ctor
 
-        public GameTitle
+        public GamePlay
             (Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction,
             double downScaling)

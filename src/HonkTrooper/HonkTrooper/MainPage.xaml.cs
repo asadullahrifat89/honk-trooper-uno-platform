@@ -65,7 +65,7 @@ namespace HonkTrooper
 
         private bool SpawnGameTitleInScene()
         {
-            GameTitle gameTitle = null;
+            GamePlay gameTitle = null;
 
             gameTitle = new(
                 animateAction: AnimateGameTitle,
@@ -133,7 +133,7 @@ namespace HonkTrooper
             return true;
         }
 
-        private void ResumeGame(GameTitle se)
+        private void ResumeGame(GamePlay se)
         {
             ToggleHudVisibility(Visibility.Visible);
 
@@ -146,7 +146,7 @@ namespace HonkTrooper
             _game_controller.AttackButton.Focus(FocusState.Programmatic);
         }
 
-        private void NewGame(GameTitle se)
+        private void NewGame(GamePlay se)
         {
             // TODO: change game state to running                
 
@@ -187,7 +187,7 @@ namespace HonkTrooper
 
         private bool GenerateGameTitleInScene()
         {
-            if (_scene_main_menu.Children.OfType<GameTitle>().FirstOrDefault(x => x.IsAnimating == false) is GameTitle gameTitle)
+            if (_scene_main_menu.Children.OfType<GamePlay>().FirstOrDefault(x => x.IsAnimating == false) is GamePlay gameTitle)
             {
                 gameTitle.IsAnimating = true;
                 gameTitle.Reposition();
@@ -204,7 +204,7 @@ namespace HonkTrooper
         {
             var speed = (_scene_game.Speed + se.SpeedOffset);
 
-            GameTitle screen1 = se as GameTitle;
+            GamePlay screen1 = se as GamePlay;
 
             screen1.Hover();
 
@@ -216,7 +216,7 @@ namespace HonkTrooper
             return true;
         }
 
-        private void RecycleGameTitleScreen(GameTitle gameTitle)
+        private void RecycleGameTitleScreen(GamePlay gameTitle)
         {
             gameTitle.SetPosition(left: -500, top: -500);
             gameTitle.IsAnimating = false;
@@ -2404,7 +2404,7 @@ namespace HonkTrooper
             DropShadow playersShadow = (_scene_game.Children.OfType<DropShadow>().FirstOrDefault(x => x.Id == _player.Id));
             playersShadow.Move();
 
-            if (_scene_main_menu.Children.OfType<GameTitle>().FirstOrDefault(x => x.IsAnimating) is GameTitle gameTitle)
+            if (_scene_main_menu.Children.OfType<GamePlay>().FirstOrDefault(x => x.IsAnimating) is GamePlay gameTitle)
                 gameTitle.Reposition();
 
             if (_scene_main_menu.Children.OfType<GamePause>().FirstOrDefault(x => x.IsAnimating) is GamePause gamePause)

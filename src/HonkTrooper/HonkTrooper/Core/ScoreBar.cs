@@ -1,12 +1,6 @@
-﻿using Microsoft.UI;
-using Microsoft.UI.Text;
+﻿using Microsoft.UI.Text;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Media.Imaging;
-using System;
-using Windows.UI;
-using static System.Formats.Asn1.AsnWriter;
 
 namespace HonkTrooper
 {

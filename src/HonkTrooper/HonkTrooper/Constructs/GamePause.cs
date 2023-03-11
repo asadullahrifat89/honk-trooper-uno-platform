@@ -48,8 +48,8 @@ namespace HonkTrooper
         public void Reposition()
         {
             SetPosition(
-                  left: (Scene.Width - Width * 2) + (30 * Scene.DownScaling),
-                  top: (30 * Scene.DownScaling),
+                  left: (Scene.Width - Width * 1.5) /*+ (20 * Scene.DownScaling)*/,
+                  top: (20 * Scene.DownScaling),
                   z: 10);
         }
 
