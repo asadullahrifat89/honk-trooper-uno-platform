@@ -2131,7 +2131,7 @@ namespace HonkTrooper
                 dropShadow.ParentConstructSpeed = _scene_game.Speed + source.SpeedOffset;
                 dropShadow.IsAnimating = true;
 
-                dropShadow.SetZ(source.GetZ() - 1);
+                dropShadow.SetZ(source.GetZ() - 2);
 
                 dropShadow.Reset();
             }
