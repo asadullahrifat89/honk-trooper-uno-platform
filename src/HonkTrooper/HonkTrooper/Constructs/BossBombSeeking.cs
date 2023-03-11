@@ -6,15 +6,13 @@ using Windows.Foundation;
 
 namespace HonkTrooper
 {
-    public partial class BossBombSeeking : Construct
+    public partial class BossBombSeeking : BombSeeking
     {
         #region Fields
 
         private Random _random;
         private Uri[] _bomb_uris;
         private Uri[] _bomb_blast_uris;
-        private readonly double _grace = 7;
-        private readonly double _lag = 60;
 
         #endregion
 
@@ -101,70 +99,6 @@ namespace HonkTrooper
                 return true;
 
             return false;
-        }
-
-        public bool SeekPlayer(Rect playerHitbox)
-        {
-            bool hasMoved = false;
-
-            double left = GetLeft();
-            double top = GetTop();
-
-            double playerMiddleX = left + Width / 2;
-            double playerMiddleY = top + Height / 2;
-
-            // move up
-            if (playerHitbox.Y < playerMiddleY - _grace)
-            {
-                var distance = Math.Abs(playerHitbox.Y - playerMiddleY);
-                double speed = GetFlightSpeed(distance);
-
-                SetTop(top - speed);
-
-                hasMoved = true;
-            }
-
-            // move left
-            if (playerHitbox.X < playerMiddleX - _grace)
-            {
-                var distance = Math.Abs(playerHitbox.X - playerMiddleX);
-                double speed = GetFlightSpeed(distance);
-
-                SetLeft(left - speed);
-
-                hasMoved = true;
-            }
-
-            // move down
-            if (playerHitbox.Y > playerMiddleY + _grace)
-            {
-                var distance = Math.Abs(playerHitbox.Y - playerMiddleY);
-                double speed = GetFlightSpeed(distance);
-
-                SetTop(top + speed);
-
-                hasMoved = true;
-            }
-
-            // move right
-            if (playerHitbox.X > playerMiddleX + _grace)
-            {
-                var distance = Math.Abs(playerHitbox.X - playerMiddleX);
-                double speed = GetFlightSpeed(distance);
-
-                SetLeft(left + speed);
-
-                hasMoved = true;
-            }
-
-            return hasMoved;
-        }
-
-        private double GetFlightSpeed(double distance)
-        {
-            var flightSpeed = distance / _lag;
-
-            return flightSpeed;
         }
 
         public void SetBlast()

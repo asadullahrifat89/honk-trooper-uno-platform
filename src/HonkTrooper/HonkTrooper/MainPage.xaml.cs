@@ -739,7 +739,7 @@ namespace HonkTrooper
 
                     if (_scene_game.Children.OfType<BossBombSeeking>().FirstOrDefault(x => x.IsAnimating) is BossBombSeeking bossBombSeeking)
                     {
-                        playerBombSeeking.SeekBoss(bossBombSeeking.GetCloseHitBox());
+                        playerBombSeeking.Seek(bossBombSeeking.GetCloseHitBox());
 
                         if (playerBombSeeking.GetCloseHitBox().IntersectsWith(bossBombSeeking.GetCloseHitBox()))
                         {
@@ -752,7 +752,7 @@ namespace HonkTrooper
 
                     if (_scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss)
                     {
-                        playerBombSeeking.SeekBoss(boss.GetCloseHitBox());
+                        playerBombSeeking.Seek(boss.GetCloseHitBox());
 
                         if (playerBombSeeking.GetCloseHitBox().IntersectsWith(boss.GetCloseHitBox()))
                         {
@@ -2033,7 +2033,7 @@ namespace HonkTrooper
                 {
                     if (_scene_game.Children.OfType<Boss>().Any(x => x.IsAnimating && x.IsAttacking))
                     {
-                        bossBombSeeking.SeekPlayer(_player.GetCloseHitBox());
+                        bossBombSeeking.Seek(_player.GetCloseHitBox());
 
                         if (bossBombSeeking.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
                         {
