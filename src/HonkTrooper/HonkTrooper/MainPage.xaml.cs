@@ -73,6 +73,11 @@ namespace HonkTrooper
         {
             // TODO: change game state to running
 
+            if (ScreenExtensions.GetDisplayOrienation() != ScreenExtensions.RequiredDisplayOrientation)
+                ScreenExtensions.SetDisplayOrientation(ScreenExtensions.RequiredDisplayOrientation);
+
+            ScreenExtensions.EnterFullScreen(true);
+
             ToggleHudVisibility(Visibility.Visible);
 
             _scene_game.SceneState = SceneState.GAME_RUNNING;
@@ -123,15 +128,16 @@ namespace HonkTrooper
 
             StackPanel content = new()
             {
-                Orientation = Orientation.Vertical
+                Orientation = Orientation.Vertical,
+                HorizontalAlignment = HorizontalAlignment.Center,
             };
 
             content.Children.Add(new TextBlock()
             {
                 Text = "Honk Trooper",
-                FontSize = 35,
-                HorizontalAlignment = HorizontalAlignment.Center,
-                Margin = new Thickness(5)
+                FontSize = 30,
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                Margin = new Thickness(0, 0, 0, 5),
             });
 
             Button playButton = new()
@@ -155,7 +161,7 @@ namespace HonkTrooper
                 if (_scene_game.SceneState == SceneState.GAME_STOPPED)
                 {
                     NewGame(se);
-                }                    
+                }
                 else
                 {
                     if (!_scene_game.IsAnimating)
@@ -179,7 +185,6 @@ namespace HonkTrooper
             if (_scene_game.Children.OfType<ScreenElement>().FirstOrDefault(x => x.IsAnimating == false && x.ConstructType == ConstructType.GAME_TITLE) is ScreenElement se)
             {
                 se.IsAnimating = true;
-                se.Reset();
                 se.Reposition();
 
                 se.AwaitMoveDown = true;
