@@ -418,7 +418,7 @@ namespace HonkTrooper
                     (bossBombSeeking is not null && _player.GetTop() > bossBombSeeking.GetTop() && _player.GetLeft() > bossBombSeeking.GetLeft()))
                 {
                     playerBomb.AwaitMoveUp = true;
-                    playerBomb.SetRotation(-143);
+                    playerBomb.SetRotation(123);
                 }
                 // player is on the bottom left side of the boss
                 else if ((_player.GetTop() > boss.GetTop() && _player.GetLeft() < boss.GetLeft()) ||
@@ -444,7 +444,7 @@ namespace HonkTrooper
                 else
                 {
                     playerBomb.AwaitMoveUp = true;
-                    playerBomb.SetRotation(-143);
+                    playerBomb.SetRotation(123);
                 }
 
                 #endregion
@@ -757,18 +757,6 @@ namespace HonkTrooper
                         if (playerBombSeeking.GetCloseHitBox().IntersectsWith(boss.GetCloseHitBox()))
                         {
                             playerBombSeeking.SetBlast();
-
-                            //boss.SetPopping();
-                            //boss.LooseHealth();
-
-                            //_bossHealthBar.SetValue(boss.Health);
-
-                            //if (boss.IsDead && boss.IsAttacking)
-                            //{
-                            //    boss.IsAttacking = false;
-                            //    _scene.ActivateSlowMotion();
-                            //}
-
                             LooseBossHealth(boss);
                         }
                         else
