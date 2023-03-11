@@ -19,7 +19,7 @@ namespace HonkTrooper
         private readonly HealthBar _boss_health_bar;
         private readonly HealthBar _powerUp_health_bar;
 
-        private readonly ScoreBar _score_bar;
+        private readonly ScoreBar _game_score_bar;
         private readonly StackPanel _health_bars;
 
         private readonly Random _random;
@@ -40,7 +40,7 @@ namespace HonkTrooper
             _powerUp_health_bar = this.PowerUpHealthBar;
 
             _game_controller = this.KeyboardController;
-            _score_bar = this.GameScoreBar;
+            _game_score_bar = this.GameScoreBar;
             _health_bars = this.HealthBars;
 
             ToggleHudVisibility(Visibility.Collapsed);
@@ -54,8 +54,6 @@ namespace HonkTrooper
         #endregion
 
         #region Properties
-
-        public int BossPointScoreDiff { get; set; } = 50;
 
         #endregion
 
@@ -87,7 +85,7 @@ namespace HonkTrooper
             content.Children.Add(new TextBlock()
             {
                 Text = "Honk Trooper",
-                FontSize = 40 /** _scene.DownScaling*/,
+                FontSize = 35,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 Margin = new Thickness(5)
             });
@@ -110,16 +108,17 @@ namespace HonkTrooper
 
             playButton.Click += (s, e) =>
             {
-                // TODO: change game state to running
-                ToggleHudVisibility(Visibility.Visible);
-                _scene_game.SceneState = SceneState.GAME_RUNNING;
-
-                _game_controller.AttackButton.Focus(FocusState.Programmatic);
-
-                if (!_scene_game.IsAnimating)
-                    _scene_game.Play();
-
-                RelocateGameTitle(se);
+                if (_scene_game.SceneState == SceneState.GAME_STOPPED)
+                {
+                    NewGame(se);
+                }                    
+                else
+                {
+                    if (!_scene_game.IsAnimating)
+                    {
+                        ResumeGame(se);
+                    }
+                }
             };
 
             content.Children.Add(playButton);
@@ -129,6 +128,46 @@ namespace HonkTrooper
             _scene_game.AddToScene(se);
 
             return true;
+        }
+
+        private void ResumeGame(ScreenElement se)
+        {
+            ToggleHudVisibility(Visibility.Visible);
+            _game_controller.AttackButton.Focus(FocusState.Programmatic);
+            _scene_game.Play();
+            RelocateGameTitle(se);
+        }
+
+        private void NewGame(ScreenElement se)
+        {
+            // TODO: change game state to running
+
+            ToggleHudVisibility(Visibility.Visible);
+
+            _scene_game.SceneState = SceneState.GAME_RUNNING;
+
+            _player.Reset();
+            _player.Reposition();
+            _game_score_bar.Reset();
+
+            // if there is a boss already in the picture then remove it
+            if (_scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating) is Boss boss)
+            {
+                boss.Health = 0;
+                boss.IsAttacking = false;
+                boss.SetPosition(left: -500, top: -500);
+
+                boss.IsAnimating = false;
+
+                Console.WriteLine("Boss relocated");
+            }
+
+            _game_controller.AttackButton.Focus(FocusState.Programmatic);
+
+            if (!_scene_game.IsAnimating)
+                _scene_game.Play();
+
+            RelocateGameTitle(se);
         }
 
         public bool GenerateGameTitleInScene()
@@ -283,13 +322,19 @@ namespace HonkTrooper
 
             _player_health_bar.SetValue(_player.Health);
 
+            GameOver();
+        }
+
+        private void GameOver()
+        {
             // if player is dead game keeps playing in the background but scene state goes to game over
             if (_player.IsDead)
             {
-                _score_bar.Reset();
                 _scene_game.SceneState = SceneState.GAME_STOPPED;
+
                 ToggleHudVisibility(Visibility.Collapsed);
                 GenerateGameTitleInScene();
+
                 //TODO: make title screen visible
             }
         }
@@ -546,7 +591,7 @@ namespace HonkTrooper
                     .FirstOrDefault(x => x.GetCloseHitBox().IntersectsWith(bomb.GetCloseHitBox())) is Vehicle vehicle)
                 {
                     vehicle.SetBlast();
-                    _score_bar.GainScore(5);
+                    _game_score_bar.GainScore(5);
                 }
             }
             else
@@ -1439,12 +1484,12 @@ namespace HonkTrooper
 
         private bool GenerateBossInScene()
         {
-            //TODO: _scoreBar.IsBossPointScore(BossPointScoreDiff) &&
+            //TODO: _scoreBar.IsBossPointScore() &&
 
             // if scene doesn't contain a boss then pick a random boss and add to scene
 
             if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
-                _score_bar.IsBossPointScore(BossPointScoreDiff) &&
+                _game_score_bar.IsBossPointScore() &&
                 !_scene_game.Children.OfType<Boss>().Any(x => x.IsAnimating) &&
                 _scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating == false) is Boss boss)
             {
@@ -1457,15 +1502,13 @@ namespace HonkTrooper
                 SyncDropShadow(boss);
 
                 // set boss health
-                boss.Health = BossPointScoreDiff * 1.5;
+                boss.Health = _game_score_bar.GetBossPointScoreDifference() * 1.5;
 
                 _boss_health_bar.SetMaxiumHealth(boss.Health);
                 _boss_health_bar.SetValue(boss.Health);
                 _boss_health_bar.SetIcon(boss.GetContentUri());
                 _boss_health_bar.SetBarForegroundColor(color: Colors.Crimson);
 
-                // next boss will appear at a slightly higher score
-                BossPointScoreDiff += 5;
 
                 _scene_game.ActivateSlowMotion();
 
@@ -1692,7 +1735,7 @@ namespace HonkTrooper
 
                 boss.IsAnimating = false;
 
-                _score_bar.GainScore(5);
+                _game_score_bar.GainScore(5);
             }
 
             return true;
@@ -2103,7 +2146,7 @@ namespace HonkTrooper
         private void ToggleHudVisibility(Visibility visibility)
         {
             _game_controller.Visibility = visibility;
-            _score_bar.Visibility = visibility;
+            _game_score_bar.Visibility = visibility;
             _health_bars.Visibility = visibility;
         }
 
@@ -2116,6 +2159,7 @@ namespace HonkTrooper
             _scene_game.Clear();
             _powerUp_health_bar.SetValue(0);
             _boss_health_bar.SetValue(0);
+            _game_score_bar.Reset();
 
             // first add road marks
             _scene_game.AddToScene(new Generator(
@@ -2209,7 +2253,6 @@ namespace HonkTrooper
 
             _scene_game.Speed = 5;
             _scene_game.Play();
-            GenerateGameTitleInScene();
 
             //TODO: make title screen visible
         }
@@ -2225,10 +2268,9 @@ namespace HonkTrooper
             _scene_game.Width = 1920;
             _scene_game.Height = 1080;
 
-            BossPointScoreDiff = 50;
-
             SetController();
             SetScene();
+            GenerateGameTitleInScene();
 
             SizeChanged += MainPage_SizeChanged;
 
@@ -2287,12 +2329,12 @@ namespace HonkTrooper
         {
             if (isPlaying)
             {
-                ToggleHudVisibility(Visibility.Visible);
+                //ToggleHudVisibility(Visibility.Visible);
 
-                if (_scene_game.OfType<ScreenElement>().FirstOrDefault(x => x.IsAnimating && x.ConstructType == ConstructType.GAME_TITLE) is ScreenElement gameTitle)
-                {
-                    RelocateGameTitle(gameTitle);
-                }
+                //if (_scene_game.OfType<ScreenElement>().FirstOrDefault(x => x.IsAnimating && x.ConstructType == ConstructType.GAME_TITLE) is ScreenElement gameTitle)
+                //{
+                //    RelocateGameTitle(gameTitle);
+                //}
             }
             else
             {

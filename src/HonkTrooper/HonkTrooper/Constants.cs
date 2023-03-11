@@ -37,7 +37,7 @@ namespace HonkTrooper
             new (ConstructType.HEALTH_PICKUP, 100, 100),
             new (ConstructType.POWERUP_PICKUP, 100, 100),
 
-            new (ConstructType.GAME_TITLE, 300, 300),
+            new (ConstructType.GAME_TITLE, 300, 400),
         };
 
         public static (ConstructType ConstructType, Uri Uri)[] CONSTRUCT_TEMPLATES = new (ConstructType, Uri)[]

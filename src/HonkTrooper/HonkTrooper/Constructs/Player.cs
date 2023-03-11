@@ -84,6 +84,20 @@ namespace HonkTrooper
 
         #region Methods
 
+        public void Reset()
+        {
+            Health = 100;
+
+            _isMovingUp = false;
+            _isMovingDown = false;
+
+            _isMovingLeft = false;
+            _isMovingRight = false;
+
+            _movementStopDelay = _movementStopDelayDefault;
+            _lastSpeed = 0;
+        }
+
         public void Reposition()
         {
             SetPosition(
