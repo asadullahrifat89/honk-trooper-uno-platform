@@ -7,7 +7,7 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace HonkTrooper
 {
-    public partial class ScreenElement : Construct
+    public partial class GameTitle : Construct
     {
         #region Fields
 
@@ -20,15 +20,14 @@ namespace HonkTrooper
 
         #region Ctor
 
-        public ScreenElement
+        public GameTitle
             (Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction,
-            double downScaling,
-            ConstructType constructType)
+            double downScaling)
         {
-            ConstructType = constructType;
+            ConstructType = ConstructType.GAME_TITLE;
 
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == constructType);
+            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.GAME_TITLE);
 
             var width = size.Width * downScaling;
             var height = size.Height * downScaling;
@@ -45,18 +44,9 @@ namespace HonkTrooper
             DropShadowDistance = 50;
         }
 
-        #endregion
-
-        #region Properties
-
-        public bool AwaitMoveDown { get; set; }
-
-        public bool AwaitMoveUp { get; set; }
-
-        #endregion
+        #endregion      
 
         #region Methods
-
 
         public void Reposition()
         {

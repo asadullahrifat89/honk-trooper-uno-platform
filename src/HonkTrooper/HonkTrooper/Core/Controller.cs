@@ -11,7 +11,7 @@ namespace HonkTrooper
     {
         #region Fields
 
-        public event EventHandler<bool> OnPlayPause;
+        //public event EventHandler<bool> OnPlayPause;
 
         #endregion
 
@@ -19,9 +19,9 @@ namespace HonkTrooper
 
         public Grid DirectionKeys { get; set; }
 
-        public Button PlayButton { get; set; }
+        //public Button PlayButton { get; set; }
 
-        public Button PauseButton { get; set; }
+        //public Button PauseButton { get; set; }
 
         public Button AttackButton { get; set; }
 
@@ -39,7 +39,7 @@ namespace HonkTrooper
             SetDirectionKeys();
             SetAttackButton();
             //SetPlayButton();
-            SetPauseButton();
+            //SetPauseButton();
         }
 
         #endregion
@@ -189,36 +189,36 @@ namespace HonkTrooper
         //    this.Children.Add(PlayButton);
         //}
 
-        private void SetPauseButton()
-        {
-            PauseButton = new()
-            {
-                Background = new SolidColorBrush(Colors.Goldenrod),
-                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-                CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS),
-                Content = new SymbolIcon()
-                {
-                    Symbol = Symbol.Pause,
-                },
-                BorderBrush = new SolidColorBrush(Colors.White),
-                BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
-                HorizontalAlignment = HorizontalAlignment.Right,
-                VerticalAlignment = VerticalAlignment.Top,
-                Margin = new Thickness(20),
-                //Visibility = Visibility.Collapsed,
-            };
+        //private void SetPauseButton()
+        //{
+        //    PauseButton = new()
+        //    {
+        //        Background = new SolidColorBrush(Colors.Goldenrod),
+        //        Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+        //        Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+        //        CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS),
+        //        Content = new SymbolIcon()
+        //        {
+        //            Symbol = Symbol.Pause,
+        //        },
+        //        BorderBrush = new SolidColorBrush(Colors.White),
+        //        BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
+        //        HorizontalAlignment = HorizontalAlignment.Right,
+        //        VerticalAlignment = VerticalAlignment.Top,
+        //        Margin = new Thickness(20),
+        //        //Visibility = Visibility.Collapsed,
+        //    };
 
-            PauseButton.Click += (s, e) =>
-            {
-                //PlayPauseScene();
+        //    PauseButton.Click += (s, e) =>
+        //    {
+        //        //PlayPauseScene();
 
-                this.PauseScene();
-                OnPlayPause?.Invoke(this, false);
-            };
+        //        this.PauseScene();
+        //        OnPlayPause?.Invoke(this, false);
+        //    };
 
-            this.Children.Add(PauseButton);
-        }
+        //    this.Children.Add(PauseButton);
+        //}
 
         //public void PlayPauseScene()
         //{

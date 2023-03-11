@@ -37,7 +37,8 @@ namespace HonkTrooper
             new (ConstructType.HEALTH_PICKUP, 100, 100),
             new (ConstructType.POWERUP_PICKUP, 100, 100),
 
-            new (ConstructType.TITLE_SCREEN, 300, DEFAULT_CONTROLLER_KEY_SIZE * 9),
+            new (ConstructType.GAME_TITLE, 300, DEFAULT_CONTROLLER_KEY_SIZE * 9),
+            new (ConstructType.GAME_PAUSE, DEFAULT_CONTROLLER_KEY_SIZE * 1.5, DEFAULT_CONTROLLER_KEY_SIZE * 1.5),
         };
 
         public static (ConstructType ConstructType, Uri Uri)[] CONSTRUCT_TEMPLATES = new (ConstructType, Uri)[]
@@ -120,8 +121,6 @@ namespace HonkTrooper
         TREE,
         CLOUD,
 
-        TITLE_SCREEN,
-
         BOMB_BLAST,
         DROP_SHADOW,
 
@@ -132,5 +131,8 @@ namespace HonkTrooper
         HEALTH_PICKUP,
         POWERUP_PICKUP,
         COLLECTABLE_PICKUP,
+
+        GAME_TITLE,
+        GAME_PAUSE,
     }
 }
