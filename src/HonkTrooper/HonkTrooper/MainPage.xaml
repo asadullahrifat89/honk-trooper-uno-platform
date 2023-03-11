@@ -23,8 +23,7 @@
             x:Name="KeyboardController"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
-            Background="Transparent"
-            Visibility="Collapsed" />
+            Background="Transparent" />
 
         <ScoreBar
             x:Name="GameScoreBar"

@@ -215,12 +215,16 @@ namespace HonkTrooper
             {
                 if (_scene.SceneState == SceneState.GAME_RUNNING)
                 {
-                    _scene.Pause();
+                    if (_scene.IsAnimating)
+                        _scene.Pause();
+
                     _scene.SetState(SceneState.GAME_STOPPED);
                 }
                 else
                 {
-                    _scene.Play();
+                    if (!_scene.IsAnimating)
+                        _scene.Play();
+
                     _scene.SetState(SceneState.GAME_RUNNING);
                 }
 
@@ -233,7 +237,7 @@ namespace HonkTrooper
 
             // Console.WriteLine("Enter");
 
-            return _scene.IsAnimating;
+            return _scene.SceneState == SceneState.GAME_RUNNING;
         }
 
         #endregion        

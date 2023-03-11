@@ -1,4 +1,5 @@
 ﻿using Microsoft.UI;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using System;
@@ -15,15 +16,6 @@ namespace HonkTrooper
         private readonly int _keyBorderThickness = 4;
         private readonly int _directionKeysMargin = 6;
 
-        //private readonly CompositeTransform _directionKeysTransform = new()
-        //{
-        //    CenterX = 0.5,
-        //    CenterY = 0.5,
-        //    Rotation = 0,
-        //    ScaleX = 1,
-        //    ScaleY = 1,
-        //};
-
         #endregion
 
         #region Properties
@@ -33,8 +25,6 @@ namespace HonkTrooper
         public Button PlayPauseButton { get; set; }
 
         public Button AttackButton { get; set; }
-
-        public event EventHandler<bool> PlayPauseed;
 
         #endregion
 
@@ -60,11 +50,10 @@ namespace HonkTrooper
         {
             DirectionKeys = new()
             {
-                HorizontalAlignment = Microsoft.UI.Xaml.HorizontalAlignment.Right,
-                VerticalAlignment = Microsoft.UI.Xaml.VerticalAlignment.Bottom,
-                Margin = new Microsoft.UI.Xaml.Thickness(20),
-                //RenderTransformOrigin = new Point(0.5, 0.5),
-                //RenderTransform = _directionControlsTransform,
+                HorizontalAlignment = HorizontalAlignment.Right,
+                VerticalAlignment = VerticalAlignment.Bottom,
+                Margin = new Thickness(20),
+                Visibility = Visibility.Collapsed,
             };
 
             DirectionKeys.RowDefinitions.Add(new RowDefinition());
@@ -78,16 +67,16 @@ namespace HonkTrooper
                 Background = new SolidColorBrush(Colors.Goldenrod),
                 Height = _keysSize,
                 Width = _keysSize,
-                CornerRadius = new Microsoft.UI.Xaml.CornerRadius(_keyCornerRadius),
+                CornerRadius = new CornerRadius(_keyCornerRadius),
                 Child = new SymbolIcon()
                 {
                     Symbol = Symbol.Up,
                 },
                 BorderBrush = new SolidColorBrush(Colors.White),
-                BorderThickness = new Microsoft.UI.Xaml.Thickness(_keyBorderThickness),
+                BorderThickness = new Thickness(_keyBorderThickness),
                 RenderTransformOrigin = new Point(0.5, 0.5),
                 RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = -45 },
-                Margin = new Microsoft.UI.Xaml.Thickness(_directionKeysMargin),
+                Margin = new Thickness(_directionKeysMargin),
             };
 
             up.PointerEntered += (s, e) => { ActivateMoveUp(); };
@@ -101,16 +90,16 @@ namespace HonkTrooper
                 Background = new SolidColorBrush(Colors.Goldenrod),
                 Height = _keysSize,
                 Width = _keysSize,
-                CornerRadius = new Microsoft.UI.Xaml.CornerRadius(_keyCornerRadius),
+                CornerRadius = new CornerRadius(_keyCornerRadius),
                 Child = new SymbolIcon()
                 {
                     Symbol = Symbol.Forward
                 },
                 BorderBrush = new SolidColorBrush(Colors.White),
-                BorderThickness = new Microsoft.UI.Xaml.Thickness(_keyBorderThickness),
+                BorderThickness = new Thickness(_keyBorderThickness),
                 RenderTransformOrigin = new Point(0.5, 0.5),
                 RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = 45 },
-                Margin = new Microsoft.UI.Xaml.Thickness(_directionKeysMargin),
+                Margin = new Thickness(_directionKeysMargin),
             };
 
             down.PointerEntered += (s, e) => { ActivateMoveDown(); };
@@ -124,16 +113,16 @@ namespace HonkTrooper
                 Background = new SolidColorBrush(Colors.Goldenrod),
                 Height = _keysSize,
                 Width = _keysSize,
-                CornerRadius = new Microsoft.UI.Xaml.CornerRadius(_keyCornerRadius),
+                CornerRadius = new CornerRadius(_keyCornerRadius),
                 Child = new SymbolIcon()
                 {
                     Symbol = Symbol.Back,
                 },
                 BorderBrush = new SolidColorBrush(Colors.White),
-                BorderThickness = new Microsoft.UI.Xaml.Thickness(_keyBorderThickness),
+                BorderThickness = new Thickness(_keyBorderThickness),
                 RenderTransformOrigin = new Point(0.5, 0.5),
                 RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = -45 },
-                Margin = new Microsoft.UI.Xaml.Thickness(_directionKeysMargin),
+                Margin = new Thickness(_directionKeysMargin),
             };
 
             left.PointerEntered += (s, e) => { ActivateMoveLeft(); };
@@ -147,16 +136,16 @@ namespace HonkTrooper
                 Background = new SolidColorBrush(Colors.Goldenrod),
                 Height = _keysSize,
                 Width = _keysSize,
-                CornerRadius = new Microsoft.UI.Xaml.CornerRadius(_keyCornerRadius),
+                CornerRadius = new CornerRadius(_keyCornerRadius),
                 Child = new SymbolIcon()
                 {
                     Symbol = Symbol.Forward,
                 },
                 BorderBrush = new SolidColorBrush(Colors.White),
-                BorderThickness = new Microsoft.UI.Xaml.Thickness(_keyBorderThickness),
+                BorderThickness = new Thickness(_keyBorderThickness),
                 RenderTransformOrigin = new Point(0.5, 0.5),
                 RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = -45 },
-                Margin = new Microsoft.UI.Xaml.Thickness(_directionKeysMargin),
+                Margin = new Thickness(_directionKeysMargin),
             };
 
             right.PointerEntered += (s, e) => { ActivateMoveRight(); };
@@ -173,47 +162,6 @@ namespace HonkTrooper
             this.Children.Add(DirectionKeys);
         }
 
-        //private void SetActionButton()
-        //{
-        //    ActionButton = new()
-        //    {
-        //        Background = new SolidColorBrush(Colors.Goldenrod),
-        //        Height = _keysSize,
-        //        Width = _keysSize * 2,
-        //        CornerRadius = new Microsoft.UI.Xaml.CornerRadius(_keyCornerRadius),
-        //        Content = new TextBlock() { Text = "Start Game" },
-        //        BorderBrush = new SolidColorBrush(Colors.White),
-        //        BorderThickness = new Microsoft.UI.Xaml.Thickness(_keyBorderThickness),
-        //        HorizontalAlignment = Microsoft.UI.Xaml.HorizontalAlignment.Center,
-        //        VerticalAlignment = Microsoft.UI.Xaml.VerticalAlignment.Center,
-        //        Margin = new Microsoft.UI.Xaml.Thickness(20),
-        //    };
-
-        //    ActionButton.Click += (s, e) =>
-        //    {
-        //        PlayPauseButton.Visibility = Microsoft.UI.Xaml.Visibility.Visible;
-        //        ActionButton.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
-
-        //        if (ScenePlayOrPause())
-        //        {
-        //            AttackButton.Focus(Microsoft.UI.Xaml.FocusState.Programmatic);
-        //            PlayPauseButton.Content = new SymbolIcon()
-        //            {
-        //                Symbol = Symbol.Pause,
-        //            };
-        //        }
-        //        else
-        //        {
-        //            PlayPauseButton.Content = new SymbolIcon()
-        //            {
-        //                Symbol = Symbol.Play,
-        //            };
-        //        }
-        //    };
-
-        //    this.Children.Add(ActionButton);
-        //}
-
         private void SetPlayPauseButton()
         {
             PlayPauseButton = new()
@@ -221,16 +169,16 @@ namespace HonkTrooper
                 Background = new SolidColorBrush(Colors.Goldenrod),
                 Height = _keysSize,
                 Width = _keysSize,
-                CornerRadius = new Microsoft.UI.Xaml.CornerRadius(_keyCornerRadius),
+                CornerRadius = new CornerRadius(_keyCornerRadius),
                 Content = new SymbolIcon()
                 {
                     Symbol = Symbol.Play,
                 },
                 BorderBrush = new SolidColorBrush(Colors.White),
-                BorderThickness = new Microsoft.UI.Xaml.Thickness(_keyBorderThickness),
-                HorizontalAlignment = Microsoft.UI.Xaml.HorizontalAlignment.Right,
-                VerticalAlignment = Microsoft.UI.Xaml.VerticalAlignment.Top,
-                Margin = new Microsoft.UI.Xaml.Thickness(20),
+                BorderThickness = new Thickness(_keyBorderThickness),
+                HorizontalAlignment = HorizontalAlignment.Right,
+                VerticalAlignment = VerticalAlignment.Top,
+                Margin = new Thickness(20),
             };
 
             PlayPauseButton.Click += (s, e) =>
@@ -244,7 +192,11 @@ namespace HonkTrooper
         {
             if (ScenePlayOrPause())
             {
-                AttackButton.Focus(Microsoft.UI.Xaml.FocusState.Programmatic);
+                DirectionKeys.Visibility = Visibility.Visible;
+                AttackButton.Visibility = Visibility.Visible;
+
+                AttackButton.Focus(FocusState.Programmatic);                
+
                 PlayPauseButton.Content = new SymbolIcon()
                 {
                     Symbol = Symbol.Pause,
@@ -256,6 +208,9 @@ namespace HonkTrooper
                 {
                     Symbol = Symbol.Play,
                 };
+
+                DirectionKeys.Visibility = Visibility.Collapsed;
+                AttackButton.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -266,16 +221,17 @@ namespace HonkTrooper
                 Background = new SolidColorBrush(Colors.Goldenrod),
                 Height = _keysSize,
                 Width = _keysSize,
-                CornerRadius = new Microsoft.UI.Xaml.CornerRadius(_keyCornerRadius),
+                CornerRadius = new CornerRadius(_keyCornerRadius),
                 Content = new SymbolIcon()
                 {
                     Symbol = Symbol.Target,
                 },
                 BorderBrush = new SolidColorBrush(Colors.White),
-                BorderThickness = new Microsoft.UI.Xaml.Thickness(_keyBorderThickness),
-                HorizontalAlignment = Microsoft.UI.Xaml.HorizontalAlignment.Left,
-                VerticalAlignment = Microsoft.UI.Xaml.VerticalAlignment.Bottom,
-                Margin = new Microsoft.UI.Xaml.Thickness(20),
+                BorderThickness = new Thickness(_keyBorderThickness),
+                HorizontalAlignment = HorizontalAlignment.Left,
+                VerticalAlignment = VerticalAlignment.Bottom,
+                Margin = new Thickness(20),
+                Visibility = Visibility.Collapsed,
             };
 
             AttackButton.Click += (s, e) => { ActivateAttack(); };
