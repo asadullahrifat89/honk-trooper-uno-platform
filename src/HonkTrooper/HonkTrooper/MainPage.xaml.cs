@@ -13,14 +13,16 @@ namespace HonkTrooper
 
         private Scene _scene_game;
         private Controller _controller;
-        private Random _random;
-        private Player _player;
 
         private HealthBar _playerHealthBar;
         private HealthBar _bossHealthBar;
         private HealthBar _powerUpHealthBar;
 
         private ScoreBar _scoreBar;
+
+        private Random _random;
+        private Player _player;
+        private StackPanel _healthBars;
 
         #endregion
 
@@ -37,6 +39,7 @@ namespace HonkTrooper
 
             _controller = this.KeyboardController;
             _scoreBar = this.GameScoreBar;
+            _healthBars = this.HealthBars;
 
             _random = new Random();
 
@@ -58,39 +61,39 @@ namespace HonkTrooper
 
         public bool SpawnGameTitleInScene()
         {
-            ScreenElement screen = null;
+            ScreenElement se = null;
 
-            screen = new(
+            se = new(
                 animateAction: AnimateScreen,
                 recycleAction: RecycleScreen,
                 downScaling: _scene_game.DownScaling);
 
-            screen.SetPosition(
+            se.SetPosition(
                 left: -500,
                 top: -500);
 
-            screen.SetChild(new TextBlock()
+            se.SetChild(new TextBlock()
             {
                 Text = "Honk Trooper",
                 FontSize = 40 /** _scene.DownScaling*/,
                 HorizontalAlignment = HorizontalAlignment.Center,
             });
 
-            _scene_game.AddToScene(screen);
+            _scene_game.AddToScene(se);
 
             return true;
         }
 
         public bool GenerateGameTitleInScene()
         {
-            if (_scene_game.Children.OfType<ScreenElement>().FirstOrDefault(x => x.IsAnimating == false && x.ConstructType == ConstructType.GAME_TITLE) is ScreenElement screen)
+            if (_scene_game.Children.OfType<ScreenElement>().FirstOrDefault(x => x.IsAnimating == false && x.ConstructType == ConstructType.GAME_TITLE) is ScreenElement se)
             {
-                screen.IsAnimating = true;
-                screen.Reset();
+                se.IsAnimating = true;
+                se.Reset();
 
-                screen.Reposition();
+                se.Reposition();
 
-                screen.AwaitMoveDown = true;
+                se.AwaitMoveDown = true;
 
                 Console.WriteLine("Game title generated.");
 
@@ -100,33 +103,33 @@ namespace HonkTrooper
             return false;
         }
 
-        private bool AnimateScreen(Construct screen)
+        private bool AnimateScreen(Construct se)
         {
-            var speed = (_scene_game.Speed + screen.SpeedOffset);
+            var speed = (_scene_game.Speed + se.SpeedOffset);
 
-            ScreenElement screen1 = screen as ScreenElement;
+            ScreenElement screen1 = se as ScreenElement;
 
             screen1.Hover();
 
             if (screen1.AwaitMoveDown && _scene_game.SceneState == SceneState.GAME_RUNNING)
             {
-                MoveConstruct(construct: screen, speed: speed);
+                MoveConstruct(construct: se, speed: speed);
             }
 
             return true;
         }
 
-        private bool RecycleScreen(Construct screen)
+        private bool RecycleScreen(Construct se)
         {
-            var hitBox = screen.GetHitBox();
+            var hitBox = se.GetHitBox();
 
             if (hitBox.Top > _scene_game.Height || hitBox.Left > _scene_game.Width)
             {
-                screen.SetPosition(
+                se.SetPosition(
                     left: -500,
                     top: -500);
 
-                screen.IsAnimating = false;
+                se.IsAnimating = false;
             }
 
             return true;
@@ -2053,8 +2056,8 @@ namespace HonkTrooper
 
         private void ToggleHudVisibility(Visibility visibility)
         {
-            GameScoreBar.Visibility = visibility;
-            HealthBars.Visibility = visibility;
+            _scoreBar.Visibility = visibility;
+            _healthBars.Visibility = visibility;
         }
 
         #endregion
@@ -2246,7 +2249,7 @@ namespace HonkTrooper
                     top: -500);
 
                     gameTitle.IsAnimating = false;
-                }                    
+                }
             }
             else
             {
