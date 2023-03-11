@@ -141,6 +141,15 @@ namespace HonkTrooper
             _player.LooseHealth();
 
             _playerHealthBar.SetValue(_player.Health);
+
+
+
+            // if player is dead game keeps playing in the background but scene state goes to game over
+            if (_player.IsDead)
+            {
+                _scene.SetState(SceneState.GAME_STOPPED);
+                //TODO: make title screen visible
+            }                
         }
 
         #endregion
@@ -1839,7 +1848,7 @@ namespace HonkTrooper
                     else
                     {
                         bossBombSeeking.SetBlast();
-                    } 
+                    }
                 }
             }
 
@@ -2018,9 +2027,9 @@ namespace HonkTrooper
                 randomizeGenerationDelay: true));
 
             _scene.AddToScene(new Generator(
-               generationDelay: 0,
-               generationAction: () => { return true; },
-               startUpAction: SpawnPlayerBombSeekingsInScene));
+                generationDelay: 0,
+                generationAction: () => { return true; },
+                startUpAction: SpawnPlayerBombSeekingsInScene));
 
             _scene.AddToScene(new Generator(
                 generationDelay: 250,
@@ -2028,13 +2037,15 @@ namespace HonkTrooper
                 startUpAction: SpawnHealthPickupsInScene));
 
             _scene.AddToScene(new Generator(
-              generationDelay: 250,
-              generationAction: GeneratePowerUpPickupsInScene,
-              startUpAction: SpawnPowerUpPickupsInScene,
-              randomizeGenerationDelay: true));
+                generationDelay: 250,
+                generationAction: GeneratePowerUpPickupsInScene,
+                startUpAction: SpawnPowerUpPickupsInScene,
+                randomizeGenerationDelay: true));
 
             _scene.Speed = 5;
             _scene.Play();
+
+            //TODO: make title screen visible
         }
 
         #endregion
@@ -2068,14 +2079,15 @@ namespace HonkTrooper
 
             BossPointScoreDiff = 50;
 
-            SetScene();
             SetController();
+            SetScene();
 
             SizeChanged += MainPage_SizeChanged;
 
             ScreenExtensions.DisplayInformation.OrientationChanged += DisplayInformation_OrientationChanged;
             ScreenExtensions.RequiredDisplayOrientation = DisplayOrientations.Landscape;
 
+            // set display orientation to required orientation
             if (ScreenExtensions.GetDisplayOrienation() != ScreenExtensions.RequiredDisplayOrientation)
                 ScreenExtensions.SetDisplayOrientation(ScreenExtensions.RequiredDisplayOrientation);
         }

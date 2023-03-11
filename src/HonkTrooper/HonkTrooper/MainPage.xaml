@@ -23,20 +23,23 @@
             x:Name="KeyboardController"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch"
-            Background="Transparent" />
+            Background="Transparent"
+            Visibility="Collapsed" />
 
         <ScoreBar
             x:Name="GameScoreBar"
             Margin="20,10"
             HorizontalAlignment="Left"
-            VerticalAlignment="Top" />
+            VerticalAlignment="Top"
+            Visibility="Collapsed" />
 
         <StackPanel
             x:Name="HealthBars"
             Margin="0,15,0,0"
             HorizontalAlignment="Center"
             VerticalAlignment="Top"
-            Orientation="Horizontal">
+            Orientation="Horizontal"
+            Visibility="Collapsed">
             <HealthBar
                 x:Name="BossHealthBar"
                 Margin="5"

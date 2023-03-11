@@ -78,6 +78,8 @@ namespace HonkTrooper
 
         public double Health { get; set; }
 
+        public bool IsDead => Health <= 0;
+
         #endregion
 
         #region Methods

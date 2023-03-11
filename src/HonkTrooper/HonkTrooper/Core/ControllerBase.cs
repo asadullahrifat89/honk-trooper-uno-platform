@@ -213,13 +213,15 @@ namespace HonkTrooper
             // only start scene if required screen orientation is met
             if (ScreenExtensions.RequiredDisplayOrientation == ScreenExtensions.GetDisplayOrienation())
             {
-                if (_scene.IsAnimating)
+                if (_scene.SceneState == SceneState.GAME_RUNNING)
                 {
-                    _scene.Pause();                    
+                    _scene.Pause();
+                    _scene.SetState(SceneState.GAME_STOPPED);
                 }
                 else
                 {
-                    _scene.Play();                    
+                    _scene.Play();
+                    _scene.SetState(SceneState.GAME_RUNNING);
                 }
 
                 ScreenExtensions.EnterFullScreen(true);

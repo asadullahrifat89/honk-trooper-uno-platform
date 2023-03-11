@@ -100,7 +100,7 @@ namespace HonkTrooper
             _gameViewTimer?.Dispose();
         }
 
-        public void SetSceneState(SceneState sceneState)
+        public void SetState(SceneState sceneState)
         {
             SceneState = sceneState;
         }
