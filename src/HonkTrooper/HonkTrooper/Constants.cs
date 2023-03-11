@@ -33,7 +33,7 @@ namespace HonkTrooper
             new (ConstructType.HEALTH_PICKUP, 100, 100),
             new (ConstructType.POWERUP_PICKUP, 100, 100),
 
-            new (ConstructType.SCREEN, 100, 100),
+            new (ConstructType.GAME_TITLE, 60, 300),
         };
 
         public static (ConstructType ConstructType, Uri Uri)[] CONSTRUCT_TEMPLATES = new (ConstructType, Uri)[]
@@ -115,7 +115,7 @@ namespace HonkTrooper
         HONK,
         TREE,
         CLOUD,
-        SCREEN,
+        GAME_TITLE,
 
         BOMB_BLAST,
         DROP_SHADOW,
@@ -126,6 +126,6 @@ namespace HonkTrooper
 
         HEALTH_PICKUP,
         POWERUP_PICKUP,
-        COLLECTABLE_PICKUP,        
+        COLLECTABLE_PICKUP,
     }
 }
