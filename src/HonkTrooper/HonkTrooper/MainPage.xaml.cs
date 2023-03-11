@@ -89,7 +89,7 @@ namespace HonkTrooper
 
             _player.Reset();
             _player.Reposition();
-            
+
             _powerUp_health_bar.Reset();
             _boss_health_bar.Reset();
 
@@ -597,13 +597,14 @@ namespace HonkTrooper
         {
             PlayerBombGround playerBombGround = bomb as PlayerBombGround;
 
-            var speed = _scene_game.Speed + bomb.SpeedOffset;
-
             DropShadow dropShadow = _scene_game.Children.OfType<DropShadow>().First(x => x.Id == bomb.Id);
 
             if (playerBombGround.IsBlasting)
             {
-                MoveConstruct(construct: bomb, speed: speed);
+                var speed = (_scene_game.Speed + bomb.SpeedOffset);
+
+                bomb.SetLeft(bomb.GetLeft() + speed);
+                bomb.SetTop(bomb.GetTop() + speed * bomb.IsometricDisplacement);
 
                 bomb.Expand();
                 bomb.Fade(0.02);
@@ -622,6 +623,8 @@ namespace HonkTrooper
             }
             else
             {
+                var speed = (_scene_game.Speed + bomb.SpeedOffset);
+
                 bomb.Pop();
 
                 bomb.SetLeft(bomb.GetLeft() + speed);
