@@ -6,6 +6,7 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System;
 using Windows.UI;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace HonkTrooper
 {
@@ -24,6 +25,12 @@ namespace HonkTrooper
 
             this.Child = TextBlock;
             GainScore(0);
+        }
+
+        public void Reset() 
+        {
+            Score = 0;
+            TextBlock.Text = Score.ToString("0000");
         }
 
         public void GainScore(int score)

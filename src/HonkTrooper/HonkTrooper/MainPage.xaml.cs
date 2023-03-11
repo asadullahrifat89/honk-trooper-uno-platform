@@ -251,7 +251,10 @@ namespace HonkTrooper
             // if player is dead game keeps playing in the background but scene state goes to game over
             if (_player.IsDead)
             {
+                _scoreBar.Reset();
+
                 _scene.SetState(SceneState.GAME_STOPPED);
+
                 ToggleHudVisibility(Visibility.Collapsed);
 
                 //GenerateTitleScreenInScene();
@@ -2062,10 +2065,24 @@ namespace HonkTrooper
         {
             _controller.SetScene(_scene);
             _controller.RequiresScreenOrientationChange += Controller_RequiresScreenOrientationChange;
+
+            _controller.OnPlayPause += Controller_OnPlayPause;
+        }
+
+        private void Controller_OnPlayPause(object sender, bool e)
+        {
+            if (e)
+            {
+                ToggleHudVisibility(Visibility.Visible);
+            }
+            else
+            {
+                ToggleHudVisibility(Visibility.Collapsed);
+            }
         }
 
         private void ToggleHudVisibility(Visibility visibility)
-        {            
+        {
             GameScoreBar.Visibility = visibility;
             HealthBars.Visibility = visibility;
         }
@@ -2219,6 +2236,9 @@ namespace HonkTrooper
             _scene.Width = _windowWidth;
             _scene.Height = _windowHeight;
 
+            _controller.Width = _windowWidth;
+            _controller.Height = _windowHeight;
+
             _player.Reposition();
 
             DropShadow playersShadow = (_scene.Children.OfType<DropShadow>().FirstOrDefault(x => x.Id == _player.Id));
@@ -2228,7 +2248,10 @@ namespace HonkTrooper
         private void MainPage_Unloaded(object sender, RoutedEventArgs e)
         {
             SizeChanged -= MainPage_SizeChanged;
+
             _controller.RequiresScreenOrientationChange -= Controller_RequiresScreenOrientationChange;
+            _controller.OnPlayPause -= Controller_OnPlayPause;
+
             ScreenExtensions.DisplayInformation.OrientationChanged -= DisplayInformation_OrientationChanged;
         }
 

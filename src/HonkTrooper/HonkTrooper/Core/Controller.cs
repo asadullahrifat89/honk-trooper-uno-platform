@@ -16,6 +16,8 @@ namespace HonkTrooper
         private readonly int _keyBorderThickness = 4;
         private readonly int _directionKeysMargin = 6;
 
+        public event EventHandler<bool> OnPlayPause;
+
         #endregion
 
         #region Properties
@@ -167,20 +169,34 @@ namespace HonkTrooper
 
         private void SetPlayPauseButton()
         {
+            StackPanel content = new()
+            {
+                Orientation = Orientation.Horizontal
+            };
+
+            content.Children.Add(new SymbolIcon()
+            {
+                Symbol = Symbol.Play,
+            });
+
+            content.Children.Add(new TextBlock()
+            {
+                Text = "Play",
+                FontSize = 25,
+                Margin = new Thickness(10, 0, 0, 0),
+            });
+
             PlayButton = new()
             {
                 Background = new SolidColorBrush(Colors.Goldenrod),
                 Height = _keysSize,
-                Width = _keysSize,
+                Width = _keysSize * 3,
                 CornerRadius = new CornerRadius(_keyCornerRadius),
-                Content = new SymbolIcon()
-                {
-                    Symbol = Symbol.Play,
-                },
+                Content = content,
                 BorderBrush = new SolidColorBrush(Colors.White),
                 BorderThickness = new Thickness(_keyBorderThickness),
-                HorizontalAlignment = HorizontalAlignment.Right,
-                VerticalAlignment = VerticalAlignment.Top,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
                 Margin = new Thickness(20),
             };
 
@@ -231,6 +247,8 @@ namespace HonkTrooper
                 PlayButton.Visibility = Visibility.Collapsed;
 
                 AttackButton.Focus(FocusState.Programmatic);
+
+                OnPlayPause?.Invoke(this, true);
             }
             else
             {
@@ -240,6 +258,8 @@ namespace HonkTrooper
 
                 PauseButton.Visibility = Visibility.Collapsed;
                 PlayButton.Visibility = Visibility.Visible;
+
+                OnPlayPause?.Invoke(this, false);
             }
         }
 
