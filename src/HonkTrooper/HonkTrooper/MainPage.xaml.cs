@@ -1,7 +1,6 @@
 ﻿using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media;
 using System;
 using System.Linq;
 using Windows.Graphics.Display;
@@ -65,7 +64,8 @@ namespace HonkTrooper
             screen.SetChild(new TextBlock()
             {
                 Text = "Honk Trooper",
-                FontSize = 40/* * _scene.DownScaling*/,
+                FontSize = 40 /** _scene.DownScaling*/,
+                HorizontalAlignment = HorizontalAlignment.Center,
             });
 
             _scene.AddToScene(screen);
@@ -80,10 +80,7 @@ namespace HonkTrooper
                 screen.IsAnimating = true;
                 screen.Reset();
 
-                screen.SetPosition(
-                    left: 0,
-                    top: _scene.Height / 6,
-                    z: 10);
+                screen.Reposition();
 
                 screen.AwaitMoveDown = true;
 
@@ -103,14 +100,9 @@ namespace HonkTrooper
 
             screen1.Hover();
 
-            if (screen1.AwaitMoveDown)
+            if (screen1.AwaitMoveDown && _scene.SceneState == SceneState.GAME_RUNNING)
             {
                 MoveConstruct(construct: screen, speed: speed);
-
-                Console.WriteLine("Game title moving.");
-
-                if (screen.GetTop() + screen.Height / 2 > _scene.Height / 2 && _scene.SceneState == SceneState.GAME_STOPPED)
-                    screen1.AwaitMoveDown = false;
             }
 
             return true;
@@ -2210,6 +2202,9 @@ namespace HonkTrooper
             _controller.Height = _windowHeight;
 
             _player.Reposition();
+
+            if (_scene.Children.OfType<ScreenElement>().FirstOrDefault(x => x.IsAnimating && x.ConstructType == ConstructType.GAME_TITLE) is ScreenElement screenElement)
+                screenElement.Reposition();
 
             DropShadow playersShadow = (_scene.Children.OfType<DropShadow>().FirstOrDefault(x => x.Id == _player.Id));
             playersShadow.Move();
