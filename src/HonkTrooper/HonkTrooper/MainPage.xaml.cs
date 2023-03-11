@@ -11,18 +11,19 @@ namespace HonkTrooper
     {
         #region Fields
 
-        private Scene _scene_game;
-        private Controller _controller;
+        private readonly Scene _scene_game;
+        private readonly Controller _controller;
 
-        private HealthBar _playerHealthBar;
-        private HealthBar _bossHealthBar;
-        private HealthBar _powerUpHealthBar;
+        private readonly HealthBar _player_health_bar;
+        private readonly HealthBar _boss_health_bar;
+        private readonly HealthBar _powerUp_health_bar;
 
-        private ScoreBar _scoreBar;
+        private readonly ScoreBar _score_bar;
+        private readonly StackPanel _health_bars;
 
-        private Random _random;
+        private readonly Random _random;
         private Player _player;
-        private StackPanel _healthBars;
+        
 
         #endregion
 
@@ -33,13 +34,13 @@ namespace HonkTrooper
             this.InitializeComponent();
 
             _scene_game = this.GameScene;
-            _playerHealthBar = this.PlayerHealthBar;
-            _bossHealthBar = this.BossHealthBar;
-            _powerUpHealthBar = this.PowerUpHealthBar;
+            _player_health_bar = this.PlayerHealthBar;
+            _boss_health_bar = this.BossHealthBar;
+            _powerUp_health_bar = this.PowerUpHealthBar;
 
             _controller = this.KeyboardController;
-            _scoreBar = this.GameScoreBar;
-            _healthBars = this.HealthBars;
+            _score_bar = this.GameScoreBar;
+            _health_bars = this.HealthBars;
 
             _random = new Random();
 
@@ -157,11 +158,11 @@ namespace HonkTrooper
             DropShadow playersShadow = (_scene_game.Children.OfType<DropShadow>().FirstOrDefault(x => x.Id == _player.Id));
             playersShadow.IsAnimating = true;
 
-            _playerHealthBar.SetMaxiumHealth(_player.Health);
-            _playerHealthBar.SetValue(_player.Health);
+            _player_health_bar.SetMaxiumHealth(_player.Health);
+            _player_health_bar.SetValue(_player.Health);
 
-            _playerHealthBar.SetIcon(Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.HEALTH_PICKUP).Uri);
-            _playerHealthBar.SetBarForegroundColor(color: Colors.Purple);
+            _player_health_bar.SetIcon(Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.HEALTH_PICKUP).Uri);
+            _player_health_bar.SetBarForegroundColor(color: Colors.Purple);
 
             return true;
         }
@@ -209,7 +210,7 @@ namespace HonkTrooper
                 {
                     if (_scene_game.Children.OfType<Boss>().Any(x => x.IsAnimating && x.IsAttacking))
                     {
-                        if (_powerUpHealthBar.HasHealth)
+                        if (_powerUp_health_bar.HasHealth)
                             GeneratePlayerBombSeekingInScene();
                         else
                             GeneratePlayerBombInScene();
@@ -231,12 +232,12 @@ namespace HonkTrooper
             _player.SetPopping();
             _player.LooseHealth();
 
-            _playerHealthBar.SetValue(_player.Health);
+            _player_health_bar.SetValue(_player.Health);
 
             // if player is dead game keeps playing in the background but scene state goes to game over
             if (_player.IsDead)
             {
-                _scoreBar.Reset();
+                _score_bar.Reset();
 
                 _scene_game.SetState(SceneState.GAME_STOPPED);
 
@@ -499,7 +500,7 @@ namespace HonkTrooper
                     .FirstOrDefault(x => x.GetCloseHitBox().IntersectsWith(bomb.GetCloseHitBox())) is Vehicle vehicle)
                 {
                     vehicle.SetBlast();
-                    _scoreBar.GainScore(5);
+                    _score_bar.GainScore(5);
                 }
             }
             else
@@ -581,8 +582,8 @@ namespace HonkTrooper
                 SyncDropShadow(playerBombSeeking);
 
                 // use up the power up
-                if (_powerUpHealthBar.HasHealth)
-                    _powerUpHealthBar.SetValue(_powerUpHealthBar.GetValue() - 1);
+                if (_powerUp_health_bar.HasHealth)
+                    _powerUp_health_bar.SetValue(_powerUp_health_bar.GetValue() - 1);
 
                 // Console.WriteLine("Player Seeking Bomb dropped.");
 
@@ -1052,7 +1053,7 @@ namespace HonkTrooper
                     if (_player.GetCloseHitBox().IntersectsWith(hitbox))
                     {
                         _player.GainHealth();
-                        _playerHealthBar.SetValue(_player.Health);
+                        _player_health_bar.SetValue(_player.Health);
                         healthPickup1.IsPickedUp = true;
                     }
                 }
@@ -1168,11 +1169,11 @@ namespace HonkTrooper
                         powerUpPickup1.IsPickedUp = true;
 
                         // allow using a burst of 3 seeking bombs 4 times
-                        _powerUpHealthBar.SetMaxiumHealth(12);
-                        _powerUpHealthBar.SetValue(12);
+                        _powerUp_health_bar.SetMaxiumHealth(12);
+                        _powerUp_health_bar.SetValue(12);
 
-                        _powerUpHealthBar.SetIcon(Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP).Uri);
-                        _powerUpHealthBar.SetBarForegroundColor(color: Colors.Green);
+                        _powerUp_health_bar.SetIcon(Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP).Uri);
+                        _powerUp_health_bar.SetBarForegroundColor(color: Colors.Green);
                     }
                 }
             }
@@ -1397,7 +1398,7 @@ namespace HonkTrooper
             // if scene doesn't contain a boss then pick a random boss and add to scene
 
             if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
-                _scoreBar.IsBossPointScore(BossPointScoreDiff) &&
+                _score_bar.IsBossPointScore(BossPointScoreDiff) &&
                 !_scene_game.Children.OfType<Boss>().Any(x => x.IsAnimating) &&
                 _scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating == false) is Boss boss)
             {
@@ -1412,10 +1413,10 @@ namespace HonkTrooper
                 // set boss health
                 boss.Health = BossPointScoreDiff * 1.5;
 
-                _bossHealthBar.SetMaxiumHealth(boss.Health);
-                _bossHealthBar.SetValue(boss.Health);
-                _bossHealthBar.SetIcon(boss.GetContentUri());
-                _bossHealthBar.SetBarForegroundColor(color: Colors.Crimson);
+                _boss_health_bar.SetMaxiumHealth(boss.Health);
+                _boss_health_bar.SetValue(boss.Health);
+                _boss_health_bar.SetIcon(boss.GetContentUri());
+                _boss_health_bar.SetBarForegroundColor(color: Colors.Crimson);
 
                 // next boss will appear at a slightly higher score
                 BossPointScoreDiff += 5;
@@ -1645,7 +1646,7 @@ namespace HonkTrooper
 
                 boss.IsAnimating = false;
 
-                _scoreBar.GainScore(5);
+                _score_bar.GainScore(5);
             }
 
             return true;
@@ -1656,7 +1657,7 @@ namespace HonkTrooper
             boss.SetPopping();
             boss.LooseHealth();
 
-            _bossHealthBar.SetValue(boss.Health);
+            _boss_health_bar.SetValue(boss.Health);
 
             if (boss.IsDead && boss.IsAttacking)
             {
@@ -2056,8 +2057,8 @@ namespace HonkTrooper
 
         private void ToggleHudVisibility(Visibility visibility)
         {
-            _scoreBar.Visibility = visibility;
-            _healthBars.Visibility = visibility;
+            _score_bar.Visibility = visibility;
+            _health_bars.Visibility = visibility;
         }
 
         #endregion
@@ -2067,8 +2068,8 @@ namespace HonkTrooper
         private void SetScene()
         {
             _scene_game.Clear();
-            _powerUpHealthBar.SetValue(0);
-            _bossHealthBar.SetValue(0);
+            _powerUp_health_bar.SetValue(0);
+            _boss_health_bar.SetValue(0);
 
             // first add road marks
             _scene_game.AddToScene(new Generator(
