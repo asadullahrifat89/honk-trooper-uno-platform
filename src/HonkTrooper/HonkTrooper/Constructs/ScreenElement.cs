@@ -30,8 +30,8 @@ namespace HonkTrooper
 
             var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == constructType);
 
-            var width = size.Width;
-            var height = size.Height;
+            var width = size.Width * downScaling;
+            var height = size.Height * downScaling;
 
             SetSize(width: width, height: height);
 
@@ -57,11 +57,6 @@ namespace HonkTrooper
 
         #region Methods
 
-        public void Reset()
-        {
-            AwaitMoveDown = false;
-            AwaitMoveUp = false;
-        }
 
         public void Reposition()
         {
@@ -69,16 +64,6 @@ namespace HonkTrooper
                   left: ((Scene.Width / 4) * 2) - Width / 2,
                   top: (Scene.Height / 2) + 10 * Scene.DownScaling,
                   z: 10);
-        }
-
-        public void MoveDown(double speed)
-        {
-            SetTop(GetTop() + speed);
-        }
-
-        public void MoveUp(double speed)
-        {
-            SetTop(GetTop() - speed);
         }
 
         public void Hover()
