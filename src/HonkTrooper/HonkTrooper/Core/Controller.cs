@@ -190,7 +190,7 @@ namespace HonkTrooper
             {
                 Background = new SolidColorBrush(Colors.Goldenrod),
                 Height = _keysSize,
-                Width = _keysSize * 3,
+                Width = _keysSize * 4,
                 CornerRadius = new CornerRadius(_keyCornerRadius),
                 Content = content,
                 BorderBrush = new SolidColorBrush(Colors.White),

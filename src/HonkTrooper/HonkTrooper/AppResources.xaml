@@ -13,4 +13,10 @@
     <!--  Add resources here  -->
     <SolidColorBrush x:Key="RoadBackgroundColor" Color="#4d4d4d" />
 
+    <FontFamily x:Key="FontFamilyLight">ms-appx:///HonkTrooper/Assets/Fonts/CuteyPatchy.ttf#CuteyPatchy</FontFamily>
+
+    <Style BasedOn="{StaticResource DefaultTextBlockStyle}" TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{StaticResource FontFamilyLight}" />
+    </Style>
+
 </ResourceDictionary>
