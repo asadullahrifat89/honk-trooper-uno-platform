@@ -213,6 +213,7 @@ namespace HonkTrooper
             {
                 //PlayPauseScene();
 
+                this.PauseScene();
                 OnPlayPause?.Invoke(this, false);
             };
 

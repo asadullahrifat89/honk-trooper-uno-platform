@@ -118,7 +118,7 @@ namespace HonkTrooper
                 animateAction: AnimateScreen,
                 recycleAction: RecycleScreen,
                 downScaling: _scene_game.DownScaling,
-                constructType: ConstructType.GAME_TITLE);
+                constructType: ConstructType.TITLE_SCREEN);
 
             se.SetPosition(
                 left: -500,
@@ -183,7 +183,7 @@ namespace HonkTrooper
 
         private bool GenerateGameTitleInScene()
         {
-            if (_scene_game.Children.OfType<ScreenElement>().FirstOrDefault(x => x.IsAnimating == false && x.ConstructType == ConstructType.GAME_TITLE) is ScreenElement se)
+            if (_scene_game.Children.OfType<ScreenElement>().FirstOrDefault(x => x.IsAnimating == false && x.ConstructType == ConstructType.TITLE_SCREEN) is ScreenElement se)
             {
                 se.IsAnimating = true;
                 se.Reposition();
@@ -2305,7 +2305,7 @@ namespace HonkTrooper
 
             _player.Reposition();
 
-            if (_scene_game.Children.OfType<ScreenElement>().FirstOrDefault(x => x.IsAnimating && x.ConstructType == ConstructType.GAME_TITLE) is ScreenElement screenElement)
+            if (_scene_game.Children.OfType<ScreenElement>().FirstOrDefault(x => x.IsAnimating && x.ConstructType == ConstructType.TITLE_SCREEN) is ScreenElement screenElement)
                 screenElement.Reposition();
 
             DropShadow playersShadow = (_scene_game.Children.OfType<DropShadow>().FirstOrDefault(x => x.Id == _player.Id));
@@ -2345,7 +2345,7 @@ namespace HonkTrooper
                 //{
                 //    RelocateGameTitle(gameTitle);
                 //}
-                _scene_game.Pause();
+                
                 ToggleHudVisibility(Visibility.Collapsed);
                 GenerateGameTitleInScene();
             }

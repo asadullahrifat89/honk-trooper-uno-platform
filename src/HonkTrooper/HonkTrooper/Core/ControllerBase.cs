@@ -215,6 +215,19 @@ namespace HonkTrooper
             IsMoveLeft = false;
         }
 
+        public void PauseScene()
+        {
+            if (_scene.IsAnimating)
+                _scene.Pause();
+        }
+
+        public void PlayScene()
+        {
+            if (!_scene.IsAnimating)
+                _scene.Play();
+        }
+
+
         //public bool ToggleScenePlayOrPause()
         //{
         //    ScreenExtensions.SetDisplayOrientation(ScreenExtensions.RequiredDisplayOrientation);
