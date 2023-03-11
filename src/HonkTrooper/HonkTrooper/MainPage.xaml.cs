@@ -459,7 +459,7 @@ namespace HonkTrooper
         {
             PlayerBomb playerBomb = bomb as PlayerBomb;
 
-            var speed = _scene_game.Speed + bomb.SpeedOffset;
+            var speed = (_scene_game.Speed + bomb.SpeedOffset) * _scene_game.DownScaling;
 
             if (playerBomb.AwaitMoveLeft)
             {

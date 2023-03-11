@@ -164,7 +164,7 @@ namespace HonkTrooper
         {
             var flightSpeed = distance / _lag;
 
-            return flightSpeed > 2 ? flightSpeed : 2;
+            return flightSpeed > 3 ? flightSpeed : 3;
         }
 
         public void SetBlast()
