@@ -44,6 +44,7 @@
     <UpToDateCheckInput Include="**\*.xaml" Exclude="bin\**\*.xaml;obj\**\*.xaml" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Assets\Fonts\CuteDolphin.ttf" />
     <None Remove="Assets\Fonts\CuteyPatchy.ttf" />
     <None Remove="Assets\Images\boss_bomb_seeking_1.png" />
     <None Remove="Assets\Images\boss_bomb_seeking_2.png" />
