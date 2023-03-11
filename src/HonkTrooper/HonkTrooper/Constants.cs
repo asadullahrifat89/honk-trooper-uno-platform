@@ -38,7 +38,6 @@ namespace HonkTrooper
             new (ConstructType.POWERUP_PICKUP, 100, 100),
 
             new (ConstructType.GAME_TITLE, 300, DEFAULT_CONTROLLER_KEY_SIZE * 9),
-            new (ConstructType.GAME_PAUSE, DEFAULT_CONTROLLER_KEY_SIZE * 1.2, DEFAULT_CONTROLLER_KEY_SIZE * 1.2),
         };
 
         public static (ConstructType ConstructType, Uri Uri)[] CONSTRUCT_TEMPLATES = new (ConstructType, Uri)[]
@@ -133,6 +132,5 @@ namespace HonkTrooper
         COLLECTABLE_PICKUP,
 
         GAME_TITLE,
-        GAME_PAUSE,
     }
 }

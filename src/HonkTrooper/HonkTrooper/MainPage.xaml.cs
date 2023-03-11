@@ -55,11 +55,71 @@ namespace HonkTrooper
 
         #endregion
 
-        #region Properties
+        #region Methods
+
+        #region Game
+
+        private void PauseGame()
+        {
+            ToggleHudVisibility(Visibility.Collapsed);
+
+            _scene_game.Pause();
+            _scene_main_menu.Play();
+
+            //RecycleGamePauseScreen(se);
+            GenerateGameTitleInScene();
+        }
+
+        private void ResumeGame(GamePlay se)
+        {
+            ToggleHudVisibility(Visibility.Visible);
+
+            _scene_game.Play();
+            _scene_main_menu.Pause();
+
+            RecycleGameTitleScreen(se);
+
+            _game_controller.AttackButton.Focus(FocusState.Programmatic);
+        }
+
+        private void NewGame(GamePlay se)
+        {
+            // TODO: change game state to running                
+
+            _game_controller.Reset();
+
+            _player.Reset();
+            _player.Reposition();
+            _game_score_bar.Reset();
+
+            // if there is a boss already in the picture then remove it
+            if (_scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating) is Boss boss)
+            {
+                boss.Health = 0;
+                boss.IsAttacking = false;
+                boss.SetPosition(left: -500, top: -500);
+
+                boss.IsAnimating = false;
+
+                Console.WriteLine("Boss relocated");
+            }
+
+            _scene_game.SceneState = SceneState.GAME_RUNNING;
+
+            if (!_scene_game.IsAnimating)
+                _scene_game.Play();
+
+            _scene_main_menu.Pause();
+
+            RecycleGameTitleScreen(se);
+            ToggleHudVisibility(Visibility.Visible);
+
+            ScreenExtensions.EnterFullScreen(true);
+
+            _game_controller.AttackButton.Focus(FocusState.Programmatic);
+        }
 
         #endregion
-
-        #region Methods
 
         #region GameTitle
 
@@ -133,58 +193,6 @@ namespace HonkTrooper
             return true;
         }
 
-        private void ResumeGame(GamePlay se)
-        {
-            ToggleHudVisibility(Visibility.Visible);
-
-            _scene_game.Play();
-            _scene_main_menu.Pause();
-
-            RecycleGameTitleScreen(se);
-            GenerateGamePauseInScene();
-
-            _game_controller.AttackButton.Focus(FocusState.Programmatic);
-        }
-
-        private void NewGame(GamePlay se)
-        {
-            // TODO: change game state to running                
-
-            _game_controller.Reset();
-
-            _player.Reset();
-            _player.Reposition();
-            _game_score_bar.Reset();
-
-            // if there is a boss already in the picture then remove it
-            if (_scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating) is Boss boss)
-            {
-                boss.Health = 0;
-                boss.IsAttacking = false;
-                boss.SetPosition(left: -500, top: -500);
-
-                boss.IsAnimating = false;
-
-                Console.WriteLine("Boss relocated");
-            }
-
-            _scene_game.SceneState = SceneState.GAME_RUNNING;
-
-            if (!_scene_game.IsAnimating)
-                _scene_game.Play();
-
-            _scene_main_menu.Pause();
-
-            RecycleGameTitleScreen(se);
-            GenerateGamePauseInScene();
-
-            ToggleHudVisibility(Visibility.Visible);
-
-            ScreenExtensions.EnterFullScreen(true);
-
-            _game_controller.AttackButton.Focus(FocusState.Programmatic);
-        }
-
         private bool GenerateGameTitleInScene()
         {
             if (_scene_main_menu.Children.OfType<GamePlay>().FirstOrDefault(x => x.IsAnimating == false) is GamePlay gameTitle)
@@ -202,16 +210,11 @@ namespace HonkTrooper
 
         private bool AnimateGameTitle(Construct se)
         {
-            var speed = (_scene_game.Speed + se.SpeedOffset);
+            //var speed = (_scene_game.Speed + se.SpeedOffset);
 
             GamePlay screen1 = se as GamePlay;
 
             screen1.Hover();
-
-            //if (screen1.AwaitMoveDown && _scene_game.SceneState == SceneState.GAME_RUNNING)
-            //{
-            //    MoveConstruct(construct: se, speed: speed);
-            //}
 
             return true;
         }
@@ -220,99 +223,6 @@ namespace HonkTrooper
         {
             gameTitle.SetPosition(left: -500, top: -500);
             gameTitle.IsAnimating = false;
-        }
-
-        #endregion
-
-        #region GamePause
-
-        private bool SpawnGamePauseInScene()
-        {
-            GamePause gamePause = null;
-
-            gamePause = new(
-                animateAction: AnimateGamePause,
-                recycleAction: (se) => { return true; },
-                downScaling: _scene_game.DownScaling);
-
-            gamePause.SetPosition(
-                left: -500,
-                top: -500);
-
-            //StackPanel content = new()
-            //{
-            //    Orientation = Orientation.Vertical,
-            //    HorizontalAlignment = HorizontalAlignment.Center,
-            //};
-
-            Button pauseButton = new()
-            {
-                Background = new SolidColorBrush(Colors.Goldenrod),
-                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-                //Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-                CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS),
-                Content = new SymbolIcon()
-                {
-                    Symbol = Symbol.Pause,
-                },
-                BorderBrush = new SolidColorBrush(Colors.White),
-                BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
-                HorizontalAlignment = HorizontalAlignment.Stretch,
-                VerticalAlignment = VerticalAlignment.Stretch,
-            };
-
-            pauseButton.Click += (s, e) =>
-            {
-                PauseGame(gamePause);
-            };
-
-            //content.Children.Add(pauseButton);
-
-            gamePause.SetChild(pauseButton);
-
-            _scene_main_menu.AddToScene(gamePause);
-
-            return true;
-        }
-
-        private void PauseGame(GamePause se)
-        {
-            ToggleHudVisibility(Visibility.Collapsed);
-
-            _scene_game.Pause();
-            _scene_main_menu.Play();
-
-            RecycleGamePauseScreen(se);
-            GenerateGameTitleInScene();
-        }
-
-        private bool GenerateGamePauseInScene()
-        {
-            if (_scene_main_menu.Children.OfType<GamePause>().FirstOrDefault(x => x.IsAnimating == false) is GamePause gamePause)
-            {
-                gamePause.IsAnimating = true;
-                gamePause.Reposition();
-
-                Console.WriteLine("Game Pause generated.");
-
-                return true;
-            }
-
-            return false;
-        }
-
-        private bool AnimateGamePause(Construct se)
-        {
-            //var speed = (_scene_game.Speed + se.SpeedOffset);
-            GamePause screen1 = se as GamePause;
-            screen1.Hover();
-            return true;
-        }
-
-        private void RecycleGamePauseScreen(GamePause gamePause)
-        {
-            gamePause.SetPosition(left: -500, top: -500);
-            gamePause.IsAnimating = false;
         }
 
         #endregion
@@ -2230,7 +2140,7 @@ namespace HonkTrooper
         {
             _game_controller.SetScene(_scene_game);
             _game_controller.RequiresScreenOrientationChange += Controller_RequiresScreenOrientationChange;
-            //_game_controller.OnPlayPause += Controller_OnPlayPause;
+            _game_controller.PauseButton.Click += PauseButton_Click;
         }
 
         private void ToggleHudVisibility(Visibility visibility)
@@ -2343,18 +2253,11 @@ namespace HonkTrooper
                generationAction: () => { return true; },
                startUpAction: SpawnGameTitleInScene));
 
-            _scene_main_menu.AddToScene(new Generator(
-             generationDelay: 0,
-             generationAction: () => { return true; },
-             startUpAction: SpawnGamePauseInScene));
-
             _scene_game.Speed = 5;
             _scene_game.Play();
 
             _scene_main_menu.Speed = 5;
             _scene_main_menu.Play();
-
-            //TODO: make title screen visible
         }
 
         #endregion
@@ -2385,6 +2288,14 @@ namespace HonkTrooper
                 ScreenExtensions.SetDisplayOrientation(ScreenExtensions.RequiredDisplayOrientation);
         }
 
+        private void MainPage_Unloaded(object sender, RoutedEventArgs e)
+        {
+            SizeChanged -= MainPage_SizeChanged;
+            ScreenExtensions.DisplayInformation.OrientationChanged -= DisplayInformation_OrientationChanged;
+            _game_controller.RequiresScreenOrientationChange -= Controller_RequiresScreenOrientationChange;
+            _game_controller.PauseButton.Click -= PauseButton_Click;
+        }
+
         private void MainPage_SizeChanged(object sender, SizeChangedEventArgs args)
         {
             var _windowWidth = args.NewSize.Width;
@@ -2406,19 +2317,6 @@ namespace HonkTrooper
 
             if (_scene_main_menu.Children.OfType<GamePlay>().FirstOrDefault(x => x.IsAnimating) is GamePlay gameTitle)
                 gameTitle.Reposition();
-
-            if (_scene_main_menu.Children.OfType<GamePause>().FirstOrDefault(x => x.IsAnimating) is GamePause gamePause)
-                gamePause.Reposition();
-        }
-
-        private void MainPage_Unloaded(object sender, RoutedEventArgs e)
-        {
-            SizeChanged -= MainPage_SizeChanged;
-
-            _game_controller.RequiresScreenOrientationChange -= Controller_RequiresScreenOrientationChange;
-            //_game_controller.OnPlayPause -= Controller_OnPlayPause;
-
-            ScreenExtensions.DisplayInformation.OrientationChanged -= DisplayInformation_OrientationChanged;
         }
 
         private void Controller_RequiresScreenOrientationChange(object sender, DisplayOrientations e)
@@ -2434,21 +2332,10 @@ namespace HonkTrooper
             // Console.WriteLine($"{sender.CurrentOrientation}");
         }
 
-        //private void Controller_OnPlayPause(object sender, bool isPlayed)
-        //{
-        //    if (!isPlayed)
-        //    {
-        //        //ToggleHudVisibility(Visibility.Visible);
-
-        //        //if (_scene_game.OfType<ScreenElement>().FirstOrDefault(x => x.IsAnimating && x.ConstructType == ConstructType.GAME_TITLE) is ScreenElement gameTitle)
-        //        //{
-        //        //    RelocateGameTitle(gameTitle);
-        //        //}
-
-        //        ToggleHudVisibility(Visibility.Collapsed);
-        //        GenerateGameTitleInScene();
-        //    }
-        //}
+        private void PauseButton_Click(object sender, RoutedEventArgs e)
+        {
+            PauseGame();
+        }
 
         #endregion
     }
