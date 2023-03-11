@@ -66,7 +66,6 @@ namespace HonkTrooper
             _scene_game.Pause();
             _scene_main_menu.Play();
 
-            //RecycleGamePauseScreen(se);
             GenerateGameTitleInScene();
         }
 
@@ -90,6 +89,10 @@ namespace HonkTrooper
 
             _player.Reset();
             _player.Reposition();
+            
+            _powerUp_health_bar.Reset();
+            _boss_health_bar.Reset();
+
             _game_score_bar.Reset();
 
             // if there is a boss already in the picture then remove it
@@ -102,6 +105,24 @@ namespace HonkTrooper
                 boss.IsAnimating = false;
 
                 Console.WriteLine("Boss relocated");
+            }
+
+            foreach (var powerUpPickup in _scene_game.Children.OfType<PowerUpPickup>())
+            {
+                powerUpPickup.SetPosition(
+                     left: -500,
+                     top: -500);
+
+                powerUpPickup.IsAnimating = false;
+            }
+
+            foreach (var healthPickup in _scene_game.Children.OfType<HealthPickup>())
+            {
+                healthPickup.SetPosition(
+                     left: -500,
+                     top: -500);
+
+                healthPickup.IsAnimating = false;
             }
 
             _scene_game.SceneState = SceneState.GAME_RUNNING;
@@ -330,10 +351,15 @@ namespace HonkTrooper
             // if player is dead game keeps playing in the background but scene state goes to game over
             if (_player.IsDead)
             {
-                _scene_game.SceneState = SceneState.GAME_STOPPED;
 
                 ToggleHudVisibility(Visibility.Collapsed);
+
+                //_scene_game.Pause();
+                _scene_main_menu.Play();
+
                 GenerateGameTitleInScene();
+
+                _scene_game.SceneState = SceneState.GAME_STOPPED;
 
                 //TODO: make title screen visible
             }
@@ -1272,17 +1298,17 @@ namespace HonkTrooper
             return true;
         }
 
-        private bool RecyclePowerUpPickup(Construct PowerUpPickup)
+        private bool RecyclePowerUpPickup(Construct powerUpPickup)
         {
-            var hitBox = PowerUpPickup.GetHitBox();
+            var hitBox = powerUpPickup.GetHitBox();
 
-            if (hitBox.Top > _scene_game.Height || hitBox.Left > _scene_game.Width || PowerUpPickup.IsShrinkingComplete)
+            if (hitBox.Top > _scene_game.Height || hitBox.Left > _scene_game.Width || powerUpPickup.IsShrinkingComplete)
             {
-                PowerUpPickup.SetPosition(
+                powerUpPickup.SetPosition(
                     left: -500,
                     top: -500);
 
-                PowerUpPickup.IsAnimating = false;
+                powerUpPickup.IsAnimating = false;
             }
 
             return true;
@@ -2159,8 +2185,8 @@ namespace HonkTrooper
             _scene_game.Clear();
             _scene_main_menu.Clear();
 
-            _powerUp_health_bar.SetValue(0);
-            _boss_health_bar.SetValue(0);
+            _powerUp_health_bar.Reset();
+            _boss_health_bar.Reset();
             _game_score_bar.Reset();
 
             // first add road marks
@@ -2243,7 +2269,7 @@ namespace HonkTrooper
                 startUpAction: SpawnHealthPickupsInScene));
 
             _scene_game.AddToScene(new Generator(
-                generationDelay: 250,
+                generationDelay: 600,
                 generationAction: GeneratePowerUpPickupsInScene,
                 startUpAction: SpawnPowerUpPickupsInScene,
                 randomizeGenerationDelay: true));

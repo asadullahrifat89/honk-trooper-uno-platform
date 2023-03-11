@@ -96,6 +96,11 @@ namespace HonkTrooper
             return _bar.Value;
         }
 
+        public void Reset()
+        {
+            SetValue(0);
+        }
+
         #endregion
     }
 }
