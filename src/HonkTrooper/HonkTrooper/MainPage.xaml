@@ -29,16 +29,14 @@
             x:Name="GameScoreBar"
             Margin="20,10"
             HorizontalAlignment="Left"
-            VerticalAlignment="Top"
-            Visibility="Collapsed" />
+            VerticalAlignment="Top" />
 
         <StackPanel
             x:Name="HealthBars"
             Margin="0,15,0,0"
             HorizontalAlignment="Center"
             VerticalAlignment="Top"
-            Orientation="Horizontal"
-            Visibility="Collapsed">
+            Orientation="Horizontal">
             <HealthBar
                 x:Name="BossHealthBar"
                 Margin="5"

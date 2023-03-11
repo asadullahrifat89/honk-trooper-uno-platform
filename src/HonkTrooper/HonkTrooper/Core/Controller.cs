@@ -11,11 +11,6 @@ namespace HonkTrooper
     {
         #region Fields
 
-        private readonly int _keysSize = 60;
-        private readonly int _keyCornerRadius = 30;
-        private readonly int _keyBorderThickness = 4;
-        private readonly int _directionKeysMargin = 6;
-
         public event EventHandler<bool> OnPlayPause;
 
         #endregion
@@ -43,7 +38,7 @@ namespace HonkTrooper
 
             SetDirectionKeys();
             SetAttackButton();
-            SetPlayPauseButton();
+            //SetPlayButton();
             SetPauseButton();
         }
 
@@ -58,7 +53,7 @@ namespace HonkTrooper
                 HorizontalAlignment = HorizontalAlignment.Right,
                 VerticalAlignment = VerticalAlignment.Bottom,
                 Margin = new Thickness(20),
-                Visibility = Visibility.Collapsed,
+                //Visibility = Visibility.Collapsed,
             };
 
             DirectionKeys.RowDefinitions.Add(new RowDefinition());
@@ -70,18 +65,18 @@ namespace HonkTrooper
             Border up = new()
             {
                 Background = new SolidColorBrush(Colors.Goldenrod),
-                Height = _keysSize,
-                Width = _keysSize,
-                CornerRadius = new CornerRadius(_keyCornerRadius),
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS),
                 Child = new SymbolIcon()
                 {
                     Symbol = Symbol.Up,
                 },
                 BorderBrush = new SolidColorBrush(Colors.White),
-                BorderThickness = new Thickness(_keyBorderThickness),
+                BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
                 RenderTransformOrigin = new Point(0.5, 0.5),
                 RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = -45 },
-                Margin = new Thickness(_directionKeysMargin),
+                Margin = new Thickness(Constants.DEFAULT_CONTROLLER_DIRECTION_KEYS_MARGIN),
             };
 
             up.PointerEntered += (s, e) => { ActivateMoveUp(); };
@@ -93,18 +88,18 @@ namespace HonkTrooper
             Border down = new()
             {
                 Background = new SolidColorBrush(Colors.Goldenrod),
-                Height = _keysSize,
-                Width = _keysSize,
-                CornerRadius = new CornerRadius(_keyCornerRadius),
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS),
                 Child = new SymbolIcon()
                 {
                     Symbol = Symbol.Forward
                 },
                 BorderBrush = new SolidColorBrush(Colors.White),
-                BorderThickness = new Thickness(_keyBorderThickness),
+                BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
                 RenderTransformOrigin = new Point(0.5, 0.5),
                 RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = 45 },
-                Margin = new Thickness(_directionKeysMargin),
+                Margin = new Thickness(Constants.DEFAULT_CONTROLLER_DIRECTION_KEYS_MARGIN),
             };
 
             down.PointerEntered += (s, e) => { ActivateMoveDown(); };
@@ -116,18 +111,18 @@ namespace HonkTrooper
             Border left = new()
             {
                 Background = new SolidColorBrush(Colors.Goldenrod),
-                Height = _keysSize,
-                Width = _keysSize,
-                CornerRadius = new CornerRadius(_keyCornerRadius),
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS),
                 Child = new SymbolIcon()
                 {
                     Symbol = Symbol.Back,
                 },
                 BorderBrush = new SolidColorBrush(Colors.White),
-                BorderThickness = new Thickness(_keyBorderThickness),
+                BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
                 RenderTransformOrigin = new Point(0.5, 0.5),
                 RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = -45 },
-                Margin = new Thickness(_directionKeysMargin),
+                Margin = new Thickness(Constants.DEFAULT_CONTROLLER_DIRECTION_KEYS_MARGIN),
             };
 
             left.PointerEntered += (s, e) => { ActivateMoveLeft(); };
@@ -139,18 +134,18 @@ namespace HonkTrooper
             Border right = new()
             {
                 Background = new SolidColorBrush(Colors.Goldenrod),
-                Height = _keysSize,
-                Width = _keysSize,
-                CornerRadius = new CornerRadius(_keyCornerRadius),
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS),
                 Child = new SymbolIcon()
                 {
                     Symbol = Symbol.Forward,
                 },
                 BorderBrush = new SolidColorBrush(Colors.White),
-                BorderThickness = new Thickness(_keyBorderThickness),
+                BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
                 RenderTransformOrigin = new Point(0.5, 0.5),
                 RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = -45 },
-                Margin = new Thickness(_directionKeysMargin),
+                Margin = new Thickness(Constants.DEFAULT_CONTROLLER_DIRECTION_KEYS_MARGIN),
             };
 
             right.PointerEntered += (s, e) => { ActivateMoveRight(); };
@@ -167,7 +162,7 @@ namespace HonkTrooper
             this.Children.Add(DirectionKeys);
         }
 
-        private void SetPlayPauseButton()
+        private void SetPlayButton()
         {
             //StackPanel content = new()
             //{
@@ -189,15 +184,15 @@ namespace HonkTrooper
             PlayButton = new()
             {
                 Background = new SolidColorBrush(Colors.Goldenrod),
-                Height = _keysSize,
-                Width = _keysSize,
-                CornerRadius = new CornerRadius(_keyCornerRadius),
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS),
                 Content = new SymbolIcon()
                 {
                     Symbol = Symbol.Play,
                 },
                 BorderBrush = new SolidColorBrush(Colors.White),
-                BorderThickness = new Thickness(_keyBorderThickness),
+                BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
                 HorizontalAlignment = HorizontalAlignment.Right,
                 VerticalAlignment = VerticalAlignment.Top,
                 Margin = new Thickness(20),
@@ -215,19 +210,19 @@ namespace HonkTrooper
             PauseButton = new()
             {
                 Background = new SolidColorBrush(Colors.Goldenrod),
-                Height = _keysSize,
-                Width = _keysSize,
-                CornerRadius = new CornerRadius(_keyCornerRadius),
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS),
                 Content = new SymbolIcon()
                 {
                     Symbol = Symbol.Pause,
                 },
                 BorderBrush = new SolidColorBrush(Colors.White),
-                BorderThickness = new Thickness(_keyBorderThickness),
+                BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
                 HorizontalAlignment = HorizontalAlignment.Right,
                 VerticalAlignment = VerticalAlignment.Top,
                 Margin = new Thickness(20),
-                Visibility = Visibility.Collapsed,
+                //Visibility = Visibility.Collapsed,
             };
 
             PauseButton.Click += (s, e) =>
@@ -242,13 +237,24 @@ namespace HonkTrooper
         {
             if (ToggleScenePlayOrPause())
             {
-                OnPlayScene();
+                //OnPlayScene();
+                OnPlayPause?.Invoke(this, true);
             }
             else
             {
-                OnPauseScene();
+                //OnPauseScene();
+                OnPlayPause?.Invoke(this, false);
             }
         }
+
+        //public void ToggleHudVisibility(Visibility visibility) 
+        //{
+        //    DirectionKeys.Visibility = visibility;
+        //    AttackButton.Visibility = visibility;
+
+        //    PauseButton.Visibility = visibility;
+        //    PlayButton.Visibility = visibility;
+        //}
 
         private void OnPauseScene()
         {
@@ -281,15 +287,15 @@ namespace HonkTrooper
             AttackButton = new()
             {
                 Background = new SolidColorBrush(Colors.Goldenrod),
-                Height = _keysSize,
-                Width = _keysSize,
-                CornerRadius = new CornerRadius(_keyCornerRadius),
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS),
                 Content = new SymbolIcon()
                 {
                     Symbol = Symbol.Target,
                 },
                 BorderBrush = new SolidColorBrush(Colors.White),
-                BorderThickness = new Thickness(_keyBorderThickness),
+                BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
                 HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Bottom,
                 Margin = new Thickness(20),

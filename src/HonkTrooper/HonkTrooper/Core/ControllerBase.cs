@@ -213,20 +213,22 @@ namespace HonkTrooper
             // only start scene if required screen orientation is met
             if (ScreenExtensions.RequiredDisplayOrientation == ScreenExtensions.GetDisplayOrienation())
             {
-                if (_scene.SceneState == SceneState.GAME_RUNNING)
-                {
-                    if (_scene.IsAnimating)
-                        _scene.Pause();
-
-                    _scene.SetState(SceneState.GAME_STOPPED);
-                }
+                //if (_scene.SceneState == SceneState.GAME_RUNNING)
+                //{
+                if (_scene.IsAnimating)
+                    _scene.Pause();
                 else
-                {
-                    if (!_scene.IsAnimating)
-                        _scene.Play();
+                    _scene.Play();
 
-                    _scene.SetState(SceneState.GAME_RUNNING);
-                }
+                //_scene.SetState(SceneState.GAME_STOPPED);
+                //}
+                //else
+                //{
+                //if (!_scene.IsAnimating)
+                //    _scene.Play();
+
+                //_scene.SetState(SceneState.GAME_RUNNING);
+                //}
 
                 ScreenExtensions.EnterFullScreen(true);
             }
@@ -237,7 +239,7 @@ namespace HonkTrooper
 
             // Console.WriteLine("Enter");
 
-            return _scene.SceneState == SceneState.GAME_RUNNING;
+            return _scene.IsAnimating;
         }
 
         #endregion        

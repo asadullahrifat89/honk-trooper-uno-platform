@@ -23,11 +23,12 @@ namespace HonkTrooper
         public ScreenElement
             (Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction,
-            double downScaling)
+            double downScaling,
+            ConstructType constructType)
         {
-            ConstructType = ConstructType.GAME_TITLE;
+            ConstructType = constructType;
 
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.GAME_TITLE);
+            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == constructType);
 
             var width = size.Width * downScaling;
             var height = size.Height * downScaling;
