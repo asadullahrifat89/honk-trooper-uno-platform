@@ -15,18 +15,18 @@ namespace HonkTrooper
             Func<Construct, bool> recycleAction,
             double downScaling)
         {
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.ROAD_MARK);
-
             ConstructType = ConstructType.ROAD_MARK;
+
+            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.ROAD_MARK);
 
             var width = size.Width * downScaling;
             var height = size.Height * downScaling;
 
+            SetSize(width: width, height: height);
+
             AnimateAction = animateAction;
             RecycleAction = recycleAction;
 
-            SetSize(width: width, height: height);
-            
             Background = new SolidColorBrush(Colors.White);
             CornerRadius = new CornerRadius(5);
 

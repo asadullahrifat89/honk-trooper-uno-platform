@@ -8,6 +8,10 @@ namespace HonkTrooper
         public const double DEFAULT_SPEED_OFFSET = 3;
         public const double DEFAULT_DROP_SHADOW_DISTANCE = 50;
         public const double DEFAULT_SLOW_MOTION_REDUCTION_FACTOR = 3.5;
+        public const double DEFAULT_CONTROLLER_KEY_SIZE = 60;
+        public const double DEFAULT_CONTROLLER_KEY_CORNER_RADIUS = 30;
+        public const double DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS = 4;
+        public const double DEFAULT_CONTROLLER_DIRECTION_KEYS_MARGIN = 6;
 
         public static (ConstructType ConstructType, double Height, double Width)[] CONSTRUCT_SIZES = new (ConstructType, double, double)[]
         {
@@ -32,6 +36,8 @@ namespace HonkTrooper
 
             new (ConstructType.HEALTH_PICKUP, 100, 100),
             new (ConstructType.POWERUP_PICKUP, 100, 100),
+
+            new (ConstructType.GAME_TITLE, 300, 400),
         };
 
         public static (ConstructType ConstructType, Uri Uri)[] CONSTRUCT_TEMPLATES = new (ConstructType, Uri)[]
@@ -113,6 +119,7 @@ namespace HonkTrooper
         HONK,
         TREE,
         CLOUD,
+        GAME_TITLE,
 
         BOMB_BLAST,
         DROP_SHADOW,
@@ -123,6 +130,6 @@ namespace HonkTrooper
 
         HEALTH_PICKUP,
         POWERUP_PICKUP,
-        COLLECTABLE_PICKUP,        
+        COLLECTABLE_PICKUP,
     }
 }

@@ -41,15 +41,7 @@ namespace HonkTrooper
 
         #endregion
 
-        #region Methods     
-
-        //public void SetAction(
-        //    Func<Construct, bool> movementAction,
-        //    Func<Construct, bool> recycleAction)
-        //{
-        //    AnimateAction = movementAction;
-        //    RecycleAction = recycleAction;
-        //}
+        #region Methods
 
         public void Animate()
         {

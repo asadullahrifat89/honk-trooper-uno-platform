@@ -6,16 +6,23 @@ using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System;
 using Windows.UI;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace HonkTrooper
 {
     public partial class ScoreBar : Border
     {
+        #region Properties
+
         private int BossPointScore { get; set; } = 0;
+
+        private int BossPointScoreDifference { get; set; } = 50;
 
         private int Score { get; set; } = 0;
 
         private TextBlock TextBlock { get; set; } = new TextBlock() { FontSize = 30, FontWeight = FontWeights.Bold };
+
+        #endregion
 
         public ScoreBar()
         {
@@ -24,6 +31,13 @@ namespace HonkTrooper
 
             this.Child = TextBlock;
             GainScore(0);
+        }
+
+        public void Reset()
+        {
+            Score = 0;
+            BossPointScoreDifference = 50;
+            TextBlock.Text = Score.ToString("0000");
         }
 
         public void GainScore(int score)
@@ -37,12 +51,20 @@ namespace HonkTrooper
             return Score;
         }
 
-        public bool IsBossPointScore(int scoreDiff)
+        public int GetBossPointScoreDifference()
         {
-            var bossPoint = Score - BossPointScore > scoreDiff;
+            return BossPointScoreDifference;
+        }
+
+        public bool IsBossPointScore()
+        {
+            var bossPoint = Score - BossPointScore > BossPointScoreDifference;
 
             if (bossPoint)
+            {
                 BossPointScore = Score;
+                BossPointScoreDifference += 10;
+            }
 
             return bossPoint;
         }

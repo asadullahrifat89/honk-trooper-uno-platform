@@ -69,7 +69,7 @@ namespace HonkTrooper
                     break;
                 case Windows.System.VirtualKey.Enter:
                     {
-                        ScenePlayOrPause();
+                        ToggleScenePlayOrPause();
                     }
                     break;
                 case Windows.System.VirtualKey.Escape:
@@ -206,21 +206,29 @@ namespace HonkTrooper
             IsMoveLeft = false;
         }
 
-        public bool ScenePlayOrPause()
+        public bool ToggleScenePlayOrPause()
         {
             ScreenExtensions.SetDisplayOrientation(ScreenExtensions.RequiredDisplayOrientation);
 
             // only start scene if required screen orientation is met
             if (ScreenExtensions.RequiredDisplayOrientation == ScreenExtensions.GetDisplayOrienation())
             {
+                //if (_scene.SceneState == SceneState.GAME_RUNNING)
+                //{
                 if (_scene.IsAnimating)
-                {
-                    _scene.Pause();                    
-                }
+                    _scene.Pause();
                 else
-                {
-                    _scene.Play();                    
-                }
+                    _scene.Play();
+
+                //_scene.SetState(SceneState.GAME_STOPPED);
+                //}
+                //else
+                //{
+                //if (!_scene.IsAnimating)
+                //    _scene.Play();
+
+                //_scene.SetState(SceneState.GAME_RUNNING);
+                //}
 
                 ScreenExtensions.EnterFullScreen(true);
             }

@@ -78,15 +78,31 @@ namespace HonkTrooper
 
         public double Health { get; set; }
 
+        public bool IsDead => Health <= 0;
+
         #endregion
 
         #region Methods
+
+        public void Reset()
+        {
+            Health = 100;
+
+            _isMovingUp = false;
+            _isMovingDown = false;
+
+            _isMovingLeft = false;
+            _isMovingRight = false;
+
+            _movementStopDelay = _movementStopDelayDefault;
+            _lastSpeed = 0;
+        }
 
         public void Reposition()
         {
             SetPosition(
                   left: ((Scene.Width / 4) * 2) - Width / 2,
-                  top: Scene.Height / 2 - Height / 2,
+                  top: (Scene.Height / 2 - Height / 2) - 150 * Scene.DownScaling,
                   z: 6);
         }
 

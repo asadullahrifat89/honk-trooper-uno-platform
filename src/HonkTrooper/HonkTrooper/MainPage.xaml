@@ -15,7 +15,7 @@
             BorderBrush="#111111"
             BorderThickness="3">
 
-            <Scene x:Name="MainScene" Background="Transparent" />
+            <Scene x:Name="GameScene" Background="Transparent" />
 
         </Border>
 
@@ -32,6 +32,7 @@
             VerticalAlignment="Top" />
 
         <StackPanel
+            x:Name="HealthBars"
             Margin="0,15,0,0"
             HorizontalAlignment="Center"
             VerticalAlignment="Top"
