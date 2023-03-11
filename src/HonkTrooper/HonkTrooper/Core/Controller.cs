@@ -298,8 +298,7 @@ namespace HonkTrooper
                 BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
                 HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Bottom,
-                Margin = new Thickness(20),
-                Visibility = Visibility.Collapsed,
+                Margin = new Thickness(20),                
             };
 
             AttackButton.Click += (s, e) => { ActivateAttack(); };

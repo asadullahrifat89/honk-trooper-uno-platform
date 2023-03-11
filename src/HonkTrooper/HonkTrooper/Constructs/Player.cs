@@ -88,7 +88,7 @@ namespace HonkTrooper
         {
             SetPosition(
                   left: ((Scene.Width / 4) * 2) - Width / 2,
-                  top: Scene.Height / 2 - Height / 2,
+                  top: (Scene.Height / 2 - Height / 2) - 150 * Scene.DownScaling,
                   z: 6);
         }
 

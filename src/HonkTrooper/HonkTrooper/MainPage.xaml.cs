@@ -77,6 +77,8 @@ namespace HonkTrooper
                 left: -500,
                 top: -500);
 
+            //se.SetSize(width: 300, height: 400);
+
             StackPanel content = new()
             {
                 Orientation = Orientation.Vertical
@@ -87,14 +89,14 @@ namespace HonkTrooper
                 Text = "Honk Trooper",
                 FontSize = 40 /** _scene.DownScaling*/,
                 HorizontalAlignment = HorizontalAlignment.Center,
-                Margin = new Thickness(10)
+                Margin = new Thickness(5)
             });
 
             Button playButton = new()
             {
                 Background = new SolidColorBrush(Colors.Goldenrod),
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 3,
                 CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS),
                 Content = new SymbolIcon()
                 {
@@ -102,8 +104,8 @@ namespace HonkTrooper
                 },
                 BorderBrush = new SolidColorBrush(Colors.White),
                 BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
-                HorizontalAlignment = HorizontalAlignment.Right,
-                VerticalAlignment = VerticalAlignment.Top,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
             };
 
             playButton.Click += (s, e) =>
@@ -111,6 +113,13 @@ namespace HonkTrooper
                 // TODO: change game state to running
                 ToggleHudVisibility(Visibility.Visible);
                 _scene_game.SceneState = SceneState.GAME_RUNNING;
+
+                _game_controller.AttackButton.Focus(FocusState.Programmatic);
+
+                if (!_scene_game.IsAnimating)
+                    _scene_game.Play();
+
+                RelocateGameTitle(se);
             };
 
             content.Children.Add(playButton);
@@ -148,10 +157,10 @@ namespace HonkTrooper
 
             screen1.Hover();
 
-            if (screen1.AwaitMoveDown && _scene_game.SceneState == SceneState.GAME_RUNNING)
-            {
-                MoveConstruct(construct: se, speed: speed);
-            }
+            //if (screen1.AwaitMoveDown && _scene_game.SceneState == SceneState.GAME_RUNNING)
+            //{
+            //    MoveConstruct(construct: se, speed: speed);
+            //}
 
             return true;
         }
@@ -162,14 +171,19 @@ namespace HonkTrooper
 
             if (hitBox.Top > _scene_game.Height || hitBox.Left > _scene_game.Width)
             {
-                se.SetPosition(
-                    left: -500,
-                    top: -500);
-
-                se.IsAnimating = false;
+                RelocateGameTitle(se as ScreenElement);
             }
 
             return true;
+        }
+
+        private void RelocateGameTitle(ScreenElement gameTitle)
+        {
+            gameTitle.SetPosition(
+            left: -500,
+            top: -500);
+
+            gameTitle.IsAnimating = false;
         }
 
         #endregion
@@ -2277,11 +2291,7 @@ namespace HonkTrooper
 
                 if (_scene_game.OfType<ScreenElement>().FirstOrDefault(x => x.IsAnimating && x.ConstructType == ConstructType.GAME_TITLE) is ScreenElement gameTitle)
                 {
-                    gameTitle.SetPosition(
-                    left: -500,
-                    top: -500);
-
-                    gameTitle.IsAnimating = false;
+                    RelocateGameTitle(gameTitle);
                 }
             }
             else
@@ -2292,6 +2302,6 @@ namespace HonkTrooper
             }
         }
 
-        #endregion      
+        #endregion
     }
 }
