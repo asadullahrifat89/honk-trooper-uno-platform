@@ -10,7 +10,7 @@ namespace HonkTrooper
 
         private int BossPointScore { get; set; } = 0;
 
-        private int BossPointScoreDifference { get; set; } = 50;
+        private int BossPointScoreDifference { get; set; }
 
         private int Score { get; set; } = 0;
 
@@ -25,12 +25,14 @@ namespace HonkTrooper
 
             this.Child = TextBlock;
             GainScore(0);
+
+            BossPointScoreDifference = 40;
         }
 
         public void Reset()
         {
             Score = 0;
-            BossPointScoreDifference = 50;
+            BossPointScoreDifference = 40;
             TextBlock.Text = Score.ToString("0000");
         }
 
