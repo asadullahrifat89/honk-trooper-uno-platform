@@ -27,8 +27,6 @@ namespace HonkTrooper
         private readonly Random _random;
         private Player _player;
 
-        //private TextBlock _titleScreenText;
-
         #endregion
 
         #region Ctor
@@ -78,7 +76,7 @@ namespace HonkTrooper
             _scene_game.Play();
             _scene_main_menu.Pause();
 
-            RecycleTitleScreenScreen(se);
+            RecycleTitleScreen(se);
 
             _game_controller.AttackButton.Focus(FocusState.Programmatic);
         }
@@ -133,7 +131,7 @@ namespace HonkTrooper
 
             _scene_main_menu.Pause();
 
-            RecycleTitleScreenScreen(se);
+            RecycleTitleScreen(se);
             ToggleHudVisibility(Visibility.Visible);
 
             ScreenExtensions.EnterFullScreen(true);
@@ -193,88 +191,6 @@ namespace HonkTrooper
                 left: -500,
                 top: -500);
 
-            //Grid grid = new();
-            //grid.Children.Add(new Border()
-            //{
-            //    Background = new SolidColorBrush(Colors.Goldenrod),
-            //    CornerRadius = new CornerRadius(15),
-            //    Opacity = 0.6,
-            //    BorderBrush = new SolidColorBrush(Colors.White),
-            //    BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
-            //});
-
-            //StackPanel container = new()
-            //{
-            //    Orientation = Orientation.Vertical,
-            //    HorizontalAlignment = HorizontalAlignment.Center,
-            //    VerticalAlignment = VerticalAlignment.Center,
-            //};
-
-            //Image titleScreenIcon = new Image()
-            //{
-            //    Source = new BitmapImage(_player.GetContentUri()),
-            //    HorizontalAlignment = HorizontalAlignment.Stretch,
-            //    Stretch = Stretch.Uniform,
-            //    Margin = new Thickness(0, 0, 0, 5),
-            //    Height = 110,
-            //    Width = 110,
-            //};
-
-            //container.Children.Add(titleScreenIcon);
-
-            //_titleScreenText = new TextBlock()
-            //{
-            //    Text = "Honk Trooper",
-            //    FontSize = 30,
-            //    HorizontalAlignment = HorizontalAlignment.Stretch,
-            //    Margin = new Thickness(0, 0, 0, 5),
-            //    Foreground = new SolidColorBrush(Colors.White),
-            //};
-
-            //container.Children.Add(_titleScreenText);
-
-            //Button playButton = new()
-            //{
-            //    Background = new SolidColorBrush(Colors.Goldenrod),
-            //    Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-            //    CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS),
-            //    Content = new SymbolIcon()
-            //    {
-            //        Symbol = Symbol.Play,
-            //    },
-            //    BorderBrush = new SolidColorBrush(Colors.White),
-            //    BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
-            //    HorizontalAlignment = HorizontalAlignment.Stretch,
-            //    Foreground = new SolidColorBrush(Colors.White),
-            //};
-
-            //container.Children.Add(playButton);          
-
-            //grid.Children.Add(container);
-
-            //TitleScreen.SetChild(grid);
-
-            //playButton.Click += (s, e) =>
-            //{
-            //    if (_scene_game.SceneState == SceneState.GAME_STOPPED)
-            //    {
-            //        if (ScreenExtensions.RequiredDisplayOrientation == ScreenExtensions.GetDisplayOrienation())
-            //            NewGame(TitleScreen);
-            //        else
-            //            ScreenExtensions.SetDisplayOrientation(ScreenExtensions.RequiredDisplayOrientation);
-            //    }
-            //    else
-            //    {
-            //        if (!_scene_game.IsAnimating)
-            //        {
-            //            if (ScreenExtensions.RequiredDisplayOrientation == ScreenExtensions.GetDisplayOrienation())
-            //                ResumeGame(TitleScreen);
-            //            else
-            //                ScreenExtensions.SetDisplayOrientation(ScreenExtensions.RequiredDisplayOrientation);
-            //        }
-            //    }
-            //};
-
             _scene_main_menu.AddToScene(TitleScreen);
 
             return true;
@@ -303,10 +219,70 @@ namespace HonkTrooper
             return true;
         }
 
-        private void RecycleTitleScreenScreen(TitleScreen TitleScreen)
+        private void RecycleTitleScreen(TitleScreen TitleScreen)
         {
             TitleScreen.SetPosition(left: -500, top: -500);
             TitleScreen.IsAnimating = false;
+        }
+
+        #endregion
+
+        #region InterimScreen
+
+        private bool SpawnInterimScreenInScene()
+        {
+            InterimScreen interimScreen = null;
+
+            interimScreen = new(
+                animateAction: AnimateInterimScreen,
+                recycleAction: RecycleInterimScreen,
+                downScaling: _scene_game.DownScaling);
+
+            interimScreen.SetPosition(
+                left: -500,
+                top: -500);
+
+            _scene_game.AddToScene(interimScreen);
+
+            return true;
+        }
+
+        private bool GenerateInterimScreenInScene(string title)
+        {
+            if (_scene_game.Children.OfType<InterimScreen>().FirstOrDefault(x => x.IsAnimating == false) is InterimScreen interimScreen)
+            {
+                interimScreen.SetTitle(title);
+                interimScreen.IsAnimating = true;
+                interimScreen.Reposition();
+                interimScreen.Reset();
+
+                // Console.WriteLine("Game title generated.");
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimateInterimScreen(Construct interimScreen)
+        {
+            InterimScreen screen1 = interimScreen as InterimScreen;
+            screen1.Hover();
+            screen1.DepleteOnScreenDelay();
+            return true;
+        }
+
+        private bool RecycleInterimScreen(Construct interimScreen)
+        {
+            if (interimScreen is InterimScreen interimScreen1 && interimScreen1.IsDepleted)
+            {
+                interimScreen.SetPosition(left: -500, top: -500);
+                interimScreen.IsAnimating = false;
+
+                return true;
+            }
+
+            return false;
         }
 
         #endregion
@@ -1667,6 +1643,7 @@ namespace HonkTrooper
                 _boss_health_bar.SetIcon(boss.GetContentUri());
                 _boss_health_bar.SetBarForegroundColor(color: Colors.Crimson);
 
+                GenerateInterimScreenInScene("Beware of Boss");
 
                 _scene_game.ActivateSlowMotion();
 
@@ -1908,6 +1885,7 @@ namespace HonkTrooper
 
             if (boss.IsDead && boss.IsAttacking)
             {
+                GenerateInterimScreenInScene("Boss Busted");
                 boss.IsAttacking = false;
                 _scene_game.ActivateSlowMotion();
             }
@@ -2422,6 +2400,11 @@ namespace HonkTrooper
                generationDelay: 0,
                generationAction: () => { return true; },
                startUpAction: SpawnTitleScreenInScene));
+
+            _scene_game.AddToScene(new Generator(
+              generationDelay: 0,
+              generationAction: () => { return true; },
+              startUpAction: SpawnInterimScreenInScene));
 
             _scene_game.Speed = 5;
             _scene_game.Play();

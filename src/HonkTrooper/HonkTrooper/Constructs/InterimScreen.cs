@@ -1,16 +1,13 @@
 ﻿using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Documents;
 using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Media.Imaging;
 using System;
-using System.ComponentModel;
 using System.Linq;
 
 namespace HonkTrooper
 {
-    public partial class TitleScreen : Construct
+    public partial class InterimScreen : Construct
     {
         #region Fields
 
@@ -21,19 +18,21 @@ namespace HonkTrooper
 
         private TextBlock _titleScreenText;
 
+        private double _messageOnScreenDelay;
+        private readonly double _messageOnScreenDelayDefault = 20;
+
         #endregion
 
         #region Ctor
 
-        public TitleScreen
-            (Func<Construct, bool> animateAction,
+        public InterimScreen(
+            Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction,
-            Func<bool> playAction,
             double downScaling)
         {
-            ConstructType = ConstructType.TITLE_SCREEN;
+            ConstructType = ConstructType.INTERIM_SCREEN;
 
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.TITLE_SCREEN);
+            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.INTERIM_SCREEN);
 
             var width = size.Width * downScaling;
             var height = size.Height * downScaling;
@@ -49,73 +48,39 @@ namespace HonkTrooper
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;
             DropShadowDistance = 50;
 
-            Grid grid = new();
-            grid.Children.Add(new Border()
-            {
-                Background = new SolidColorBrush(Colors.Goldenrod),
-                CornerRadius = new CornerRadius(15),
-                Opacity = 0.6,
-                BorderBrush = new SolidColorBrush(Colors.White),
-                BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
-            });
-
-            StackPanel container = new()
-            {
-                Orientation = Orientation.Vertical,
-                HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center,
-            };
-
-            Image titleScreenIcon = new Image()
-            {
-                Source = new BitmapImage(Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.PLAYER).Uri),
-                HorizontalAlignment = HorizontalAlignment.Stretch,
-                Stretch = Stretch.Uniform,
-                Margin = new Thickness(0, 0, 0, 5),
-                Height = 110,
-                Width = 110,
-            };
-
-            container.Children.Add(titleScreenIcon);
-
             _titleScreenText = new TextBlock()
             {
                 Text = "Honk Trooper",
                 FontSize = Constants.DEFAULT_GUI_FONT_SIZE,
-                HorizontalAlignment = HorizontalAlignment.Stretch,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
                 Margin = new Thickness(0, 0, 0, 5),
                 Foreground = new SolidColorBrush(Colors.White),
             };
 
-            container.Children.Add(_titleScreenText);
-
-            Button playButton = new()
-            {
-                Background = new SolidColorBrush(Colors.Goldenrod),
-                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-                CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS),
-                Content = new SymbolIcon()
-                {
-                    Symbol = Symbol.Play,
-                },
-                BorderBrush = new SolidColorBrush(Colors.White),
-                BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
-                HorizontalAlignment = HorizontalAlignment.Stretch,
-                Foreground = new SolidColorBrush(Colors.White),
-            };
-
-            playButton.Click += (s, e) => { playAction(); };
-
-            container.Children.Add(playButton);
-
-            grid.Children.Add(container);
-
-            SetChild(grid);
+            SetChild(_titleScreenText);
         }
 
-        #endregion      
+        #endregion
+
+        #region Properties
+
+        public bool IsDepleted => _messageOnScreenDelay <= 0;
+
+        #endregion
 
         #region Methods
+
+        public void Reset()
+        {
+            _messageOnScreenDelay = _messageOnScreenDelayDefault;
+        }
+
+        public bool DepleteOnScreenDelay()
+        {
+            _messageOnScreenDelay -= 0.1;
+            return true;
+        }
 
         public void Reposition()
         {

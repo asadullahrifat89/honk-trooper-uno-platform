@@ -12,6 +12,7 @@ namespace HonkTrooper
         public const double DEFAULT_CONTROLLER_KEY_CORNER_RADIUS = 30;
         public const double DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS = 4;
         public const double DEFAULT_CONTROLLER_DIRECTION_KEYS_MARGIN = 6;
+        public const double DEFAULT_GUI_FONT_SIZE = 30;
 
         public static (ConstructType ConstructType, double Height, double Width)[] CONSTRUCT_SIZES = new (ConstructType, double, double)[]
         {
@@ -39,6 +40,7 @@ namespace HonkTrooper
             new (ConstructType.POWERUP_PICKUP, 100, 100),
 
             new (ConstructType.TITLE_SCREEN, 400, DEFAULT_CONTROLLER_KEY_SIZE * 10),
+            new (ConstructType.INTERIM_SCREEN, 400, DEFAULT_CONTROLLER_KEY_SIZE * 10),
         };
 
         public static (ConstructType ConstructType, Uri Uri)[] CONSTRUCT_TEMPLATES = new (ConstructType, Uri)[]
@@ -135,5 +137,6 @@ namespace HonkTrooper
         COLLECTABLE_PICKUP,
 
         TITLE_SCREEN,
+        INTERIM_SCREEN,
     }
 }
