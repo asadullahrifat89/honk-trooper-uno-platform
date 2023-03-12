@@ -36,25 +36,36 @@ namespace HonkTrooper
         {
             CanDrag = false;
 
-            SetJoyStick();
             SetAttackButton();
             SetPauseButton();
 
             KeyUp += Controller_KeyUp;
             KeyDown += Controller_KeyDown;
 
+            SetJoyStick();
+            SetGyrometer();
+        }
+
+        public void SetGyrometer()
+        {
             Gyrometer = Gyrometer.GetDefault();
 
             if (Gyrometer is not null)
             {
-                Console.WriteLine($"Gyrometer detected.");
+                // Console.WriteLine($"Gyrometer detected.");
                 Gyrometer.ReadingChanged += Gyrometer_ReadingChanged;
             }
         }
 
-        #endregion
+        public void UnsetGyrometer()
+        {
 
-        #region Methods
+            if (Gyrometer is not null)
+            {
+                // Console.WriteLine($"Gyrometer detected.");
+                Gyrometer.ReadingChanged -= Gyrometer_ReadingChanged;
+            }
+        }
 
         private void Gyrometer_ReadingChanged(Gyrometer sender, GyrometerReadingChangedEventArgs args)
         {
@@ -70,100 +81,21 @@ namespace HonkTrooper
 
             #region Isometric Movement
 
-            //if (AngularVelocityY > 0)
-            //{
-            //    if (AngularVelocityY > 20)
-            //    {
-            //        ActivateMoveRight();
-            //    }
-            //    else
-            //    {
-            //        DeactivateMoveLeft();
-            //        DeactivateMoveRight();
-            //    }
-            //}
-            //else
-            //{
-            //    if (Math.Abs(AngularVelocityY) > 20)
-            //    {
-            //        ActivateMoveLeft();
-            //    }
-            //    else
-            //    {
-            //        DeactivateMoveRight();
-            //        DeactivateMoveLeft();
-            //    }
-            //}
-
-            //if (AngularVelocityX > 0)
-            //{
-            //    if (AngularVelocityX > 15)
-            //    {
-            //        ActivateMoveDown();
-            //    }
-            //    else
-            //    {
-            //        DeactivateMoveUp();
-            //        DeactivateMoveDown();
-            //    }
-            //}
-            //else
-            //{
-            //    if (Math.Abs(AngularVelocityX) > 15)
-            //    {
-            //        ActivateMoveUp();
-            //    }
-            //    else
-            //    {
-            //        DeactivateMoveUp();
-            //        DeactivateMoveDown();
-            //    }
-            //}
-
-            #endregion
-
-            #region Linear Movement
-
             if (AngularVelocityY > 0)
             {
                 if (AngularVelocityY > 20)
-                {
-                    ActivateMoveUp();
-                }
-                else
-                {
-                    DeactivateMoveUp();
-                    DeactivateMoveDown();
-                }
-            }
-            else
-            {
-                if (Math.Abs(AngularVelocityY) > 20)
-                {
-                    ActivateMoveDown();
-                }
-                else
-                {
-                    DeactivateMoveUp();
-                    DeactivateMoveDown();
-                }
-            }
-
-            if (AngularVelocityX > 0)
-            {
-                if (AngularVelocityX > 15)
                 {
                     ActivateMoveRight();
                 }
                 else
                 {
-                    DeactivateMoveRight();
                     DeactivateMoveLeft();
+                    DeactivateMoveRight();
                 }
             }
             else
             {
-                if (Math.Abs(AngularVelocityX) > 15)
+                if (Math.Abs(AngularVelocityY) > 20)
                 {
                     ActivateMoveLeft();
                 }
@@ -174,12 +106,93 @@ namespace HonkTrooper
                 }
             }
 
+            if (AngularVelocityX > 0)
+            {
+                if (AngularVelocityX > 15)
+                {
+                    ActivateMoveDown();
+                }
+                else
+                {
+                    DeactivateMoveUp();
+                    DeactivateMoveDown();
+                }
+            }
+            else
+            {
+                if (Math.Abs(AngularVelocityX) > 15)
+                {
+                    ActivateMoveUp();
+                }
+                else
+                {
+                    DeactivateMoveUp();
+                    DeactivateMoveDown();
+                }
+            }
+
             #endregion
 
+            #region Linear Movement
 
+            //if (AngularVelocityY > 0)
+            //{
+            //    if (AngularVelocityY > 20)
+            //    {
+            //        ActivateMoveUp();
+            //    }
+            //    else
+            //    {
+            //        DeactivateMoveUp();
+            //        DeactivateMoveDown();
+            //    }
+            //}
+            //else
+            //{
+            //    if (Math.Abs(AngularVelocityY) > 20)
+            //    {
+            //        ActivateMoveDown();
+            //    }
+            //    else
+            //    {
+            //        DeactivateMoveUp();
+            //        DeactivateMoveDown();
+            //    }
+            //}
+
+            //if (AngularVelocityX > 0)
+            //{
+            //    if (AngularVelocityX > 15)
+            //    {
+            //        ActivateMoveRight();
+            //    }
+            //    else
+            //    {
+            //        DeactivateMoveRight();
+            //        DeactivateMoveLeft();
+            //    }
+            //}
+            //else
+            //{
+            //    if (Math.Abs(AngularVelocityX) > 15)
+            //    {
+            //        ActivateMoveLeft();
+            //    }
+            //    else
+            //    {
+            //        DeactivateMoveRight();
+            //        DeactivateMoveLeft();
+            //    }
+            //}
+
+            #endregion
         }
 
-        private void SetJoyStick()
+        #endregion
+
+        #region Methods
+
+        public void SetJoyStick()
         {
             Joystick = new()
             {
@@ -191,7 +204,7 @@ namespace HonkTrooper
             #region Isometric Movement
 
             #region Placeholder
-            
+
             Joystick.RowDefinitions.Add(new RowDefinition());
             Joystick.RowDefinitions.Add(new RowDefinition());
 
@@ -304,7 +317,7 @@ namespace HonkTrooper
             right.PointerExited += (s, e) => { DeactivateMoveRight(); };
 
             Grid.SetRow(right, 0);
-            Grid.SetColumn(right, 1); 
+            Grid.SetColumn(right, 1);
 
             #endregion
 
