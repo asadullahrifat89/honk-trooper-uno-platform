@@ -173,9 +173,11 @@ namespace HonkTrooper
             Grid grid = new();
             grid.Children.Add(new Border()
             {
-                Background = new SolidColorBrush(Colors.White),
-                CornerRadius = new CornerRadius(20),
-                Opacity = 0.4,
+                Background = new SolidColorBrush(Colors.Goldenrod),
+                CornerRadius = new CornerRadius(15),
+                Opacity = 0.6,
+                BorderBrush = new SolidColorBrush(Colors.White),
+                BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
             });
 
             StackPanel container = new()
@@ -201,7 +203,7 @@ namespace HonkTrooper
                 FontSize = 30,
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 Margin = new Thickness(0, 0, 0, 5),
-                Foreground = new SolidColorBrush(Colors.BlanchedAlmond),
+                Foreground = new SolidColorBrush(Colors.White),
             });
 
             Button playButton = new()
@@ -268,12 +270,8 @@ namespace HonkTrooper
 
         private bool AnimateGamePlay(Construct se)
         {
-            //var speed = (_scene_game.Speed + se.SpeedOffset);
-
             GamePlay screen1 = se as GamePlay;
-
             screen1.Hover();
-
             return true;
         }
 
@@ -2334,6 +2332,8 @@ namespace HonkTrooper
             // set display orientation to required orientation
             if (ScreenExtensions.GetDisplayOrienation() != ScreenExtensions.RequiredDisplayOrientation)
                 ScreenExtensions.SetDisplayOrientation(ScreenExtensions.RequiredDisplayOrientation);
+
+            ScreenExtensions.EnterFullScreen(true);
         }
 
         private void MainPage_Unloaded(object sender, RoutedEventArgs e)
