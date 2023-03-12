@@ -88,9 +88,6 @@ namespace HonkTrooper
 
             _game_controller.Reset();
 
-            //_player.Reset();
-            //_player.Reposition();
-
             GeneratePlayerInScene();
 
             _powerUp_health_bar.Reset();
@@ -212,7 +209,6 @@ namespace HonkTrooper
                 BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 Foreground = new SolidColorBrush(Colors.White),
-                //VerticalAlignment = VerticalAlignment.Center,
             };
 
             playButton.Click += (s, e) =>
@@ -287,24 +283,9 @@ namespace HonkTrooper
 
             _player.SetPosition(
                   left: -500,
-                  top: -500);
+                  top: -500);          
 
-            //_player.Reposition();
-
-            //_player.IsAnimating = true;
-
-            SpawnDropShadowInScene(_player);
-
-            //DropShadow playersShadow = (_scene_game.Children.OfType<DropShadow>().FirstOrDefault(x => x.Id == _player.Id));
-            //playersShadow.IsAnimating = true;
-
-            //SyncDropShadow(_player);
-
-            //_player_health_bar.SetMaxiumHealth(_player.Health);
-            //_player_health_bar.SetValue(_player.Health);
-
-            //_player_health_bar.SetIcon(Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.HEALTH_PICKUP).Uri);
-            //_player_health_bar.SetBarForegroundColor(color: Colors.Purple);
+            SpawnDropShadowInScene(_player);           
 
             _scene_game.AddToScene(_player);
 
