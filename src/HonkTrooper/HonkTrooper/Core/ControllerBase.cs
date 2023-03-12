@@ -16,11 +16,6 @@ namespace HonkTrooper
 
         #endregion
 
-        #region Ctor
-
-
-        #endregion
-
         #region Properties
 
         public Point PointerPosition { get; set; }
