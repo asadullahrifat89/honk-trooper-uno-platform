@@ -19,11 +19,11 @@ namespace HonkTrooper
             new (ConstructType.PLAYER, 170, 170),
             new (ConstructType.PLAYER_BOMB, 80, 80),
             new (ConstructType.PLAYER_BOMB_GROUND, 80, 80),
-            new (ConstructType.PLAYER_BOMB_SEEKING, 90, 90),
+            new (ConstructType.PLAYER_BOMB_SEEKING, 80, 80),
 
             new (ConstructType.BOSS, 180, 180),
             new (ConstructType.BOSS_BOMB, 80, 80),
-            new (ConstructType.BOSS_BOMB_SEEKING, 90, 90),
+            new (ConstructType.BOSS_BOMB_SEEKING, 80, 80),
 
             new (ConstructType.VEHICLE_SMALL, 150, 150),
             new (ConstructType.VEHICLE_LARGE, 180, 180),
@@ -80,7 +80,6 @@ namespace HonkTrooper
 
             new (ConstructType.PLAYER_BOMB_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_seeking_1.png")),
             new (ConstructType.PLAYER_BOMB_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_seeking_2.png")),
-            new (ConstructType.PLAYER_BOMB_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_seeking_3.png")),
 
             new (ConstructType.POWERUP_PICKUP, new Uri("ms-appx:///HonkTrooper/Assets/Images/power_up_pickup.png")),
 
