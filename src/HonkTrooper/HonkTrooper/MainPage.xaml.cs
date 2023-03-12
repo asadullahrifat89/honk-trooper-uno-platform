@@ -332,6 +332,7 @@ namespace HonkTrooper
             _player.Pop();
             _player.Hover();
             _player.DepleteAttackStance();
+            _player.DepleteWinStance();
 
             var speed = (_scene_game.Speed + player.SpeedOffset) * _scene_game.DownScaling;
 
@@ -1890,6 +1891,8 @@ namespace HonkTrooper
 
             if (boss.IsDead && boss.IsAttacking)
             {
+                _player.SetWinStance();
+
                 GenerateInterimScreenInScene("Boss Busted");
                 boss.IsAttacking = false;
                 _scene_game.ActivateSlowMotion();

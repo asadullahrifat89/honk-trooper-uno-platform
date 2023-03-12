@@ -12,6 +12,7 @@ namespace HonkTrooper
         private Random _random;
         private Uri[] _player_uris;
         private Uri[] _player_attack_uris;
+        private Uri[] _player_win_uris;
 
         private double _hoverDelay;
         private readonly double _hoverDelayDefault = 15;
@@ -35,7 +36,10 @@ namespace HonkTrooper
         private double _attackStanceDelay;
         private readonly double _attackStanceDelayDefault = 1.5;
 
-        private Image _content_image;
+        private double _winStanceDelay;
+        private readonly double _winStanceDelayDefault = 15;
+
+        private readonly Image _content_image;
 
         #endregion
 
@@ -51,10 +55,11 @@ namespace HonkTrooper
 
             _player_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER).Select(x => x.Uri).ToArray();
             _player_attack_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_ATTACK).Select(x => x.Uri).ToArray();
-
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.PLAYER);
+            _player_win_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_WIN).Select(x => x.Uri).ToArray();
 
             ConstructType = ConstructType.PLAYER;
+
+            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.PLAYER);
 
             var width = size.Width * downScaling;
             var height = size.Height * downScaling;
@@ -101,14 +106,6 @@ namespace HonkTrooper
             _isMovingRight = false;
 
             var uri = _player_uris[_random.Next(0, _player_uris.Length)];
-
-            //var content = new Image()
-            //{
-            //    Source = new BitmapImage(uriSource: uri)
-            //};
-
-            //SetChild(content);
-
             _content_image.Source = new BitmapImage(uriSource: uri);
 
             _movementStopDelay = _movementStopDelayDefault;
@@ -126,30 +123,20 @@ namespace HonkTrooper
         public void SetAttackStance()
         {
             var uri = _player_attack_uris[_random.Next(0, _player_attack_uris.Length)];
-
-            //var content = new Image()
-            //{
-            //    Source = new BitmapImage(uriSource: uri)
-            //};
-
-            //SetChild(content);
-
             _content_image.Source = new BitmapImage(uriSource: uri);
-
             _attackStanceDelay = _attackStanceDelayDefault;
+        }
+
+        public void SetWinStance()
+        {
+            var uri = _player_win_uris[_random.Next(0, _player_win_uris.Length)];
+            _content_image.Source = new BitmapImage(uriSource: uri);
+            _winStanceDelay = _winStanceDelayDefault;
         }
 
         private void SetIdleStance()
         {
             var uri = _player_uris[_random.Next(0, _player_uris.Length)];
-
-            //var content = new Image()
-            //{
-            //    Source = new BitmapImage(uriSource: uri)
-            //};
-
-            //SetChild(content);
-
             _content_image.Source = new BitmapImage(uriSource: uri);
         }
 
@@ -160,6 +147,19 @@ namespace HonkTrooper
                 _attackStanceDelay -= 0.1;
 
                 if (_attackStanceDelay <= 0)
+                {
+                    SetIdleStance();
+                }
+            }
+        }
+
+        public void DepleteWinStance()
+        {
+            if (_winStanceDelay > 0)
+            {
+                _winStanceDelay -= 0.1;
+
+                if (_winStanceDelay <= 0)
                 {
                     SetIdleStance();
                 }

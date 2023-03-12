@@ -77,6 +77,7 @@ namespace HonkTrooper
 
             new (ConstructType.PLAYER_IDLE, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_1_idle.png")),
             new (ConstructType.PLAYER_ATTACK, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_1_attack.png")),
+            new (ConstructType.PLAYER_WIN, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_1_win.png")),
 
             new (ConstructType.PLAYER_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_1.png")),
             new (ConstructType.PLAYER_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_2.png")),
@@ -122,6 +123,7 @@ namespace HonkTrooper
         PLAYER,
         PLAYER_IDLE,
         PLAYER_ATTACK,
+        PLAYER_WIN,
 
         PLAYER_BOMB,
         PLAYER_BOMB_GROUND,
