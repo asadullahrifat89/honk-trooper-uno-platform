@@ -68,12 +68,36 @@ namespace HonkTrooper
             Console.WriteLine($"AngularVelocityY: {AngularVelocityY}");
             Console.WriteLine($"AngularVelocityZ: {AngularVelocityZ}");
 
+            if (AngularVelocityY > 0)
+            {
+                if (AngularVelocityY > 20)
+                {
+                    ActivateMoveRight();
+                }
+                else
+                {
+                    DeactivateMoveLeft();
+                    DeactivateMoveRight();
+                }
+            }
+            else
+            {
+                if (Math.Abs(AngularVelocityY) > 20)
+                {
+                    ActivateMoveLeft();
+                }
+                else
+                {
+                    DeactivateMoveRight();
+                    DeactivateMoveLeft();
+                }
+            }
+
             if (AngularVelocityX > 0)
             {
-                if (AngularVelocityX > 5)
+                if (AngularVelocityX > 15)
                 {
-                    ActivateMoveDown();
-                    DeactivateMoveUp();
+                    ActivateMoveDown();                    
                 }
                 else
                 {
@@ -83,10 +107,9 @@ namespace HonkTrooper
             }
             else
             {
-                if (Math.Abs(AngularVelocityX) > 5)
+                if (Math.Abs(AngularVelocityX) > 15)
                 {
                     ActivateMoveUp();
-                    DeactivateMoveDown();
                 }
                 else
                 {
@@ -95,32 +118,7 @@ namespace HonkTrooper
                 }
             }
 
-            if (AngularVelocityY > 0)
-            {
-                if (AngularVelocityY > 5)
-                {
-                    ActivateMoveRight();
-                    DeactivateMoveLeft();
-                }
-                else
-                {
-                    DeactivateMoveLeft();
-                    DeactivateMoveRight();
-                }
-            }
-            else
-            {
-                if (Math.Abs(AngularVelocityY) > 5)
-                {
-                    ActivateMoveLeft();
-                    DeactivateMoveRight();
-                }
-                else
-                {
-                    DeactivateMoveRight();
-                    DeactivateMoveLeft();
-                }
-            }
+       
         }
 
         private void SetJoyStick()
