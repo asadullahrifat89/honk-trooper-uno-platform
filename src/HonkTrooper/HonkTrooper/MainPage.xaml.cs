@@ -191,7 +191,7 @@ namespace HonkTrooper
             {
                 Source = new BitmapImage(_player.GetContentUri()),
                 HorizontalAlignment = HorizontalAlignment.Stretch,
-                Stretch = Stretch.UniformToFill,
+                Stretch = Stretch.Uniform,
                 Margin = new Thickness(0, 0, 0, 5),
                 Height = 110,
                 Width = 110,
@@ -948,6 +948,71 @@ namespace HonkTrooper
 
         #endregion
 
+        #region Road
+
+        private bool SpawnRoadsInScene()
+        {
+            for (int i = 0; i < 6; i++)
+            {
+                Road Road = new(
+                    animateAction: AnimateRoad,
+                    recycleAction: RecycleRoad,
+                    downScaling: _scene_game.DownScaling);
+
+                Road.SetPosition(
+                    left: -1500,
+                    top: -1500);
+
+                _scene_game.AddToScene(Road);
+            }
+
+            return true;
+        }
+
+        private bool GenerateRoadInScene()
+        {
+            if (_scene_game.Children.OfType<Road>().FirstOrDefault(x => x.IsAnimating == false) is Road road)
+            {
+                road.IsAnimating = true;
+
+                road.SetPosition(
+                    left: _scene_game.Width / 2 - road.Width * _scene_game.DownScaling,
+                    top: 0 - road.Width * _scene_game.DownScaling,
+                    z: 0);
+
+                // Console.WriteLine("Road Mark generated.");
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimateRoad(Construct Road)
+        {
+            var speed = (_scene_game.Speed + Road.SpeedOffset);
+            MoveConstruct(construct: Road, speed: speed);
+            return true;
+        }
+
+        private bool RecycleRoad(Construct Road)
+        {
+            var hitBox = Road.GetHitBox();
+
+            if (hitBox.Top > _scene_game.Height || hitBox.Left > _scene_game.Width)
+            {
+                Road.SetPosition(
+                    left: -1500,
+                    top: -1500);
+
+                Road.IsAnimating = false;
+            }
+
+            return true;
+        }
+
+        #endregion
+
         #region RoadMark
 
         private bool SpawnRoadMarksInScene()
@@ -1045,7 +1110,7 @@ namespace HonkTrooper
 
                 tree.SetPosition(
                     left: _scene_game.Width / 2 - tree.Width * _scene_game.DownScaling,
-                    top: tree.Height * -1,
+                    top: 0 - tree.Width * _scene_game.DownScaling,
                     z: 2);
 
                 SyncDropShadow(tree);
@@ -2208,6 +2273,12 @@ namespace HonkTrooper
             _powerUp_health_bar.Reset();
             _boss_health_bar.Reset();
             _game_score_bar.Reset();
+
+            // first add road
+            _scene_game.AddToScene(new Generator(
+                generationDelay: 70,
+                generationAction: GenerateRoadInScene,
+                startUpAction: SpawnRoadsInScene));
 
             // first add road marks
             _scene_game.AddToScene(new Generator(
