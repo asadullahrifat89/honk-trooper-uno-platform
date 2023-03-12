@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace HonkTrooper
 {
-    public partial class GamePlay : Construct
+    public partial class TitleScreen : Construct
     {
         #region Fields
 
@@ -19,14 +19,14 @@ namespace HonkTrooper
 
         #region Ctor
 
-        public GamePlay
+        public TitleScreen
             (Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction,
             double downScaling)
         {
-            ConstructType = ConstructType.GAME_TITLE;
+            ConstructType = ConstructType.TITLE_SCREEN;
 
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.GAME_TITLE);
+            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.TITLE_SCREEN);
 
             var width = size.Width * downScaling;
             var height = size.Height * downScaling;

@@ -15,7 +15,7 @@ namespace HonkTrooper
 
         public static (ConstructType ConstructType, double Height, double Width)[] CONSTRUCT_SIZES = new (ConstructType, double, double)[]
         {
-            new (ConstructType.PLAYER, 180, 180),
+            new (ConstructType.PLAYER, 170, 170),
             new (ConstructType.PLAYER_BOMB, 80, 80),
             new (ConstructType.PLAYER_BOMB_GROUND, 80, 80),
             new (ConstructType.PLAYER_BOMB_SEEKING, 90, 90),
@@ -38,7 +38,7 @@ namespace HonkTrooper
             new (ConstructType.HEALTH_PICKUP, 100, 100),
             new (ConstructType.POWERUP_PICKUP, 100, 100),
 
-            new (ConstructType.GAME_TITLE, 400, DEFAULT_CONTROLLER_KEY_SIZE * 10),
+            new (ConstructType.TITLE_SCREEN, 400, DEFAULT_CONTROLLER_KEY_SIZE * 10),
         };
 
         public static (ConstructType ConstructType, Uri Uri)[] CONSTRUCT_TEMPLATES = new (ConstructType, Uri)[]
@@ -134,6 +134,6 @@ namespace HonkTrooper
         POWERUP_PICKUP,
         COLLECTABLE_PICKUP,
 
-        GAME_TITLE,
+        TITLE_SCREEN,
     }
 }
