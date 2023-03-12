@@ -268,12 +268,8 @@ namespace HonkTrooper
 
         private bool AnimateGamePlay(Construct se)
         {
-            //var speed = (_scene_game.Speed + se.SpeedOffset);
-
             GamePlay screen1 = se as GamePlay;
-
             screen1.Hover();
-
             return true;
         }
 
