@@ -48,9 +48,6 @@
     <None Remove="Assets\Fonts\CuteyPatchy.ttf" />
     <None Remove="Assets\Fonts\Gameplay.ttf" />
     <None Remove="Assets\Images\boss_bomb_seeking.png" />
-    <None Remove="Assets\Images\boss_bomb_seeking_1.png" />
-    <None Remove="Assets\Images\boss_bomb_seeking_2.png" />
-    <None Remove="Assets\Images\boss_bomb_seeking_3.png" />
     <None Remove="Assets\Images\cloud_1.png" />
     <None Remove="Assets\Images\cloud_2.png" />
     <None Remove="Assets\Images\cloud_3.png" />
@@ -60,7 +57,6 @@
     <None Remove="Assets\Images\honk_3.png" />
     <None Remove="Assets\Images\player_3.png" />
     <None Remove="Assets\Images\player_bomb_seeking_2.png" />
-    <None Remove="Assets\Images\player_bomb_seeking_3.png" />
     <None Remove="Assets\Images\poop_3.png" />
     <None Remove="Assets\Images\power_up_pickup.png" />
     <None Remove="Assets\Images\tree_E.png" />
