@@ -1276,9 +1276,9 @@ namespace HonkTrooper
                     {
                         powerUpPickup1.IsPickedUp = true;
 
-                        // allow using a burst of 3 seeking bombs 4 times
-                        _powerUp_health_bar.SetMaxiumHealth(12);
-                        _powerUp_health_bar.SetValue(12);
+                        // allow using a burst of 3 seeking bombs 3 times
+                        _powerUp_health_bar.SetMaxiumHealth(9);
+                        _powerUp_health_bar.SetValue(9);
 
                         _powerUp_health_bar.SetIcon(Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP).Uri);
                         _powerUp_health_bar.SetBarForegroundColor(color: Colors.Green);
