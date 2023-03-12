@@ -12,7 +12,7 @@ namespace HonkTrooper
 
         public event EventHandler<DisplayOrientations> RequiresScreenOrientationChange;
 
-        private Scene _scene;
+        private Scene Scene;
 
         #endregion
 
@@ -114,13 +114,13 @@ namespace HonkTrooper
 
         public void Controller_PointerMoved(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
         {
-            PointerPoint point = e.GetCurrentPoint(_scene);
+            PointerPoint point = e.GetCurrentPoint(Scene);
             PointerPosition = point.Position;
         }
 
         public void Controller_PointerPressed(object sender, Microsoft.UI.Xaml.Input.PointerRoutedEventArgs e)
         {
-            PointerPoint point = e.GetCurrentPoint(_scene);
+            PointerPoint point = e.GetCurrentPoint(Scene);
             PointerPosition = point.Position;
         }
 
@@ -139,7 +139,7 @@ namespace HonkTrooper
 
         public void SetScene(Scene scene)
         {
-            _scene = scene;
+            Scene = scene;
         }
 
         public void ActivateAttack()
