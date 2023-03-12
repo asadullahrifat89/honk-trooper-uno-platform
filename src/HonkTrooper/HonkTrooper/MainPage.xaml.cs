@@ -27,7 +27,6 @@ namespace HonkTrooper
         private readonly Random _random;
         private Player _player;
 
-
         #endregion
 
         #region Ctor
@@ -67,25 +66,23 @@ namespace HonkTrooper
             _scene_game.Pause();
             _scene_main_menu.Play();
 
-            GenerateGamePlayInScene();
+            GenerateTitleScreenInScene("Game Paused");
         }
 
-        private void ResumeGame(GamePlay se)
+        private void ResumeGame(TitleScreen se)
         {
             ToggleHudVisibility(Visibility.Visible);
 
             _scene_game.Play();
             _scene_main_menu.Pause();
 
-            RecycleGamePlayScreen(se);
+            RecycleTitleScreen(se);
 
             _game_controller.AttackButton.Focus(FocusState.Programmatic);
         }
 
-        private void NewGame(GamePlay se)
+        private void NewGame(TitleScreen se)
         {
-            // TODO: change game state to running                
-
             _game_controller.Reset();
 
             GeneratePlayerInScene();
@@ -132,7 +129,7 @@ namespace HonkTrooper
 
             _scene_main_menu.Pause();
 
-            RecycleGamePlayScreen(se);
+            RecycleTitleScreen(se);
             ToggleHudVisibility(Visibility.Visible);
 
             ScreenExtensions.EnterFullScreen(true);
@@ -149,116 +146,61 @@ namespace HonkTrooper
                 _scene_game.SceneState = SceneState.GAME_STOPPED;
 
                 ToggleHudVisibility(Visibility.Collapsed);
-                GenerateGamePlayInScene();
+                GenerateTitleScreenInScene("Game Over");
             }
         }
 
         #endregion
 
-        #region GamePlay
+        #region TitleScreen
 
-        private bool SpawnGamePlayInScene()
+        private bool SpawnTitleScreenInScene()
         {
-            GamePlay gamePlay = null;
+            TitleScreen TitleScreen = null;
 
-            gamePlay = new(
-                animateAction: AnimateGamePlay,
+            TitleScreen = new(
+                animateAction: AnimateTitleScreen,
                 recycleAction: (se) => { return true; },
-                downScaling: _scene_game.DownScaling);
-
-            gamePlay.SetPosition(
-                left: -500,
-                top: -500);
-
-            Grid grid = new();
-            grid.Children.Add(new Border()
-            {
-                Background = new SolidColorBrush(Colors.Goldenrod),
-                CornerRadius = new CornerRadius(15),
-                Opacity = 0.6,
-                BorderBrush = new SolidColorBrush(Colors.White),
-                BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
-            });
-
-            StackPanel container = new()
-            {
-                Orientation = Orientation.Vertical,
-                HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center,
-            };
-
-            container.Children.Add(new Image()
-            {
-                Source = new BitmapImage(_player.GetContentUri()),
-                HorizontalAlignment = HorizontalAlignment.Stretch,
-                Stretch = Stretch.UniformToFill,
-                Margin = new Thickness(0, 0, 0, 5),
-                Height = 110,
-                Width = 110,
-            });
-
-            container.Children.Add(new TextBlock()
-            {
-                Text = "Honk Trooper",
-                FontSize = 30,
-                HorizontalAlignment = HorizontalAlignment.Stretch,
-                Margin = new Thickness(0, 0, 0, 5),
-                Foreground = new SolidColorBrush(Colors.White),
-            });
-
-            Button playButton = new()
-            {
-                Background = new SolidColorBrush(Colors.Goldenrod),
-                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-                CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS),
-                Content = new SymbolIcon()
+                downScaling: _scene_game.DownScaling,
+                playAction: () =>
                 {
-                    Symbol = Symbol.Play,
-                },
-                BorderBrush = new SolidColorBrush(Colors.White),
-                BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
-                HorizontalAlignment = HorizontalAlignment.Stretch,
-                Foreground = new SolidColorBrush(Colors.White),
-            };
-
-            playButton.Click += (s, e) =>
-            {
-                if (_scene_game.SceneState == SceneState.GAME_STOPPED)
-                {
-                    if (ScreenExtensions.RequiredDisplayOrientation == ScreenExtensions.GetDisplayOrienation())
-                        NewGame(gamePlay);
-                    else
-                        ScreenExtensions.SetDisplayOrientation(ScreenExtensions.RequiredDisplayOrientation);
-                }
-                else
-                {
-                    if (!_scene_game.IsAnimating)
+                    if (_scene_game.SceneState == SceneState.GAME_STOPPED)
                     {
                         if (ScreenExtensions.RequiredDisplayOrientation == ScreenExtensions.GetDisplayOrienation())
-                            ResumeGame(gamePlay);
+                            NewGame(TitleScreen);
                         else
                             ScreenExtensions.SetDisplayOrientation(ScreenExtensions.RequiredDisplayOrientation);
                     }
-                }
-            };
+                    else
+                    {
+                        if (!_scene_game.IsAnimating)
+                        {
+                            if (ScreenExtensions.RequiredDisplayOrientation == ScreenExtensions.GetDisplayOrienation())
+                                ResumeGame(TitleScreen);
+                            else
+                                ScreenExtensions.SetDisplayOrientation(ScreenExtensions.RequiredDisplayOrientation);
+                        }
+                    }
 
-            container.Children.Add(playButton);
+                    return true;
+                });
 
-            grid.Children.Add(container);
+            TitleScreen.SetPosition(
+                left: -500,
+                top: -500);
 
-            gamePlay.SetChild(grid);
-
-            _scene_main_menu.AddToScene(gamePlay);
+            _scene_main_menu.AddToScene(TitleScreen);
 
             return true;
         }
 
-        private bool GenerateGamePlayInScene()
+        private bool GenerateTitleScreenInScene(string title)
         {
-            if (_scene_main_menu.Children.OfType<GamePlay>().FirstOrDefault(x => x.IsAnimating == false) is GamePlay GamePlay)
+            if (_scene_main_menu.Children.OfType<TitleScreen>().FirstOrDefault(x => x.IsAnimating == false) is TitleScreen titleScreen)
             {
-                GamePlay.IsAnimating = true;
-                GamePlay.Reposition();
+                titleScreen.SetTitle(title);
+                titleScreen.IsAnimating = true;
+                titleScreen.Reposition();
 
                 // Console.WriteLine("Game title generated.");
 
@@ -268,17 +210,77 @@ namespace HonkTrooper
             return false;
         }
 
-        private bool AnimateGamePlay(Construct se)
+        private bool AnimateTitleScreen(Construct se)
         {
-            GamePlay screen1 = se as GamePlay;
+            TitleScreen screen1 = se as TitleScreen;
             screen1.Hover();
             return true;
         }
 
-        private void RecycleGamePlayScreen(GamePlay GamePlay)
+        private void RecycleTitleScreen(TitleScreen TitleScreen)
         {
-            GamePlay.SetPosition(left: -500, top: -500);
-            GamePlay.IsAnimating = false;
+            TitleScreen.SetPosition(left: -500, top: -500);
+            TitleScreen.IsAnimating = false;
+        }
+
+        #endregion
+
+        #region InterimScreen
+
+        private bool SpawnInterimScreenInScene()
+        {
+            InterimScreen interimScreen = null;
+
+            interimScreen = new(
+                animateAction: AnimateInterimScreen,
+                recycleAction: RecycleInterimScreen,
+                downScaling: _scene_game.DownScaling);
+
+            interimScreen.SetPosition(
+                left: -500,
+                top: -500);
+
+            _scene_game.AddToScene(interimScreen);
+
+            return true;
+        }
+
+        private bool GenerateInterimScreenInScene(string title)
+        {
+            if (_scene_game.Children.OfType<InterimScreen>().FirstOrDefault(x => x.IsAnimating == false) is InterimScreen interimScreen)
+            {
+                interimScreen.SetTitle(title);
+                interimScreen.IsAnimating = true;
+                interimScreen.Reposition();
+                interimScreen.Reset();
+
+                // Console.WriteLine("Game title generated.");
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimateInterimScreen(Construct interimScreen)
+        {
+            InterimScreen screen1 = interimScreen as InterimScreen;
+            screen1.Hover();
+            screen1.DepleteOnScreenDelay();
+            return true;
+        }
+
+        private bool RecycleInterimScreen(Construct interimScreen)
+        {
+            if (interimScreen is InterimScreen interimScreen1 && interimScreen1.IsDepleted)
+            {
+                interimScreen.SetPosition(left: -500, top: -500);
+                interimScreen.IsAnimating = false;
+
+                return true;
+            }
+
+            return false;
         }
 
         #endregion
@@ -447,7 +449,7 @@ namespace HonkTrooper
                     (bossBombSeeking is not null && _player.GetTop() > bossBombSeeking.GetTop() && _player.GetLeft() > bossBombSeeking.GetLeft()))
                 {
                     playerBomb.AwaitMoveUp = true;
-                    playerBomb.SetRotation(123);
+                    playerBomb.SetRotation(210);
                 }
                 // player is on the bottom left side of the boss
                 else if ((_player.GetTop() > boss.GetTop() && _player.GetLeft() < boss.GetLeft()) ||
@@ -461,7 +463,7 @@ namespace HonkTrooper
                     (bossBombSeeking is not null && _player.GetTop() < bossBombSeeking.GetTop() && _player.GetLeft() < bossBombSeeking.GetLeft()))
                 {
                     playerBomb.AwaitMoveDown = true;
-                    playerBomb.SetRotation(33);
+                    playerBomb.SetRotation(123);
                 }
                 // if player is on the top right side of the boss
                 else if ((_player.GetTop() < boss.GetTop() && _player.GetLeft() > boss.GetLeft()) ||
@@ -948,6 +950,90 @@ namespace HonkTrooper
 
         #endregion
 
+        #region RoadSlab
+
+        //private bool SpawnRoadSlabsInScene()
+        //{
+        //    for (int i = 0; i < 8; i++)
+        //    {
+        //        RoadSlab roadSlab = new(
+        //            animateAction: AnimateRoadSlab,
+        //            recycleAction: RecycleRoadSlab,
+        //            downScaling: _scene_game.DownScaling);
+
+        //        roadSlab.SetPosition(
+        //            left: -1500,
+        //            top: -1500);
+
+        //        _scene_game.AddToScene(roadSlab);
+        //    }
+
+        //    return true;
+        //}
+
+        //private bool GenerateRoadSlabInSceneTop()
+        //{
+        //    if (_scene_game.Children.OfType<RoadSlab>().FirstOrDefault(x => x.IsAnimating == false) is RoadSlab roadSlab)
+        //    {
+        //        roadSlab.IsAnimating = true;
+
+        //        roadSlab.SetPosition(
+        //            left: (_scene_game.Width / 2 - roadSlab.Width / 1.5) * _scene_game.DownScaling,
+        //            top: (0 - roadSlab.Width) * _scene_game.DownScaling,
+        //            z: 0);
+
+        //        // Console.WriteLine("RoadSlab Mark generated.");
+
+        //        return true;
+        //    }
+
+        //    return false;
+        //}
+
+        //private bool GenerateRoadSlabInSceneBottom()
+        //{
+        //    if (_scene_game.Children.OfType<RoadSlab>().FirstOrDefault(x => x.IsAnimating == false) is RoadSlab roadSlab)
+        //    {
+        //        roadSlab.IsAnimating = true;
+
+        //        roadSlab.SetPosition(
+        //            left: (-1 * roadSlab.Width) * _scene_game.DownScaling,
+        //            top: (_scene_game.Height / 2.5) * _scene_game.DownScaling,
+        //            z: 0);
+
+        //        // Console.WriteLine("RoadSlab Mark generated.");
+
+        //        return true;
+        //    }
+
+        //    return false;
+        //}
+
+        //private bool AnimateRoadSlab(Construct roadSlab)
+        //{
+        //    var speed = (_scene_game.Speed + roadSlab.SpeedOffset);
+        //    MoveConstruct(construct: roadSlab, speed: speed);
+        //    return true;
+        //}
+
+        //private bool RecycleRoadSlab(Construct roadSlab)
+        //{
+        //    var hitBox = roadSlab.GetHitBox();
+
+        //    if (hitBox.Top > _scene_game.Height || hitBox.Left > _scene_game.Width)
+        //    {
+        //        roadSlab.SetPosition(
+        //            left: -1500,
+        //            top: -1500);
+
+        //        roadSlab.IsAnimating = false;
+        //    }
+
+        //    return true;
+        //}
+
+        #endregion
+
         #region RoadMark
 
         private bool SpawnRoadMarksInScene()
@@ -1044,8 +1130,8 @@ namespace HonkTrooper
                 tree.IsAnimating = true;
 
                 tree.SetPosition(
-                    left: _scene_game.Width / 2 - tree.Width * _scene_game.DownScaling,
-                    top: tree.Height * -1,
+                    left: (_scene_game.Width / 2 - tree.Width) * _scene_game.DownScaling,
+                    top: (0 - tree.Width) * _scene_game.DownScaling,
                     z: 2);
 
                 SyncDropShadow(tree);
@@ -1065,8 +1151,8 @@ namespace HonkTrooper
                 tree.IsAnimating = true;
 
                 tree.SetPosition(
-                    left: -1 * tree.Width * _scene_game.DownScaling,
-                    top: _scene_game.Height / 2 * _scene_game.DownScaling,
+                    left: (-1 * tree.Width) * _scene_game.DownScaling,
+                    top: (_scene_game.Height / 2.5) * _scene_game.DownScaling,
                     z: 4);
 
                 SyncDropShadow(tree);
@@ -1555,6 +1641,7 @@ namespace HonkTrooper
                 _boss_health_bar.SetIcon(boss.GetContentUri());
                 _boss_health_bar.SetBarForegroundColor(color: Colors.Crimson);
 
+                GenerateInterimScreenInScene("Beware of Boss");
 
                 _scene_game.ActivateSlowMotion();
 
@@ -1796,6 +1883,7 @@ namespace HonkTrooper
 
             if (boss.IsDead && boss.IsAttacking)
             {
+                GenerateInterimScreenInScene("Boss Busted");
                 boss.IsAttacking = false;
                 _scene_game.ActivateSlowMotion();
             }
@@ -2209,7 +2297,19 @@ namespace HonkTrooper
             _boss_health_bar.Reset();
             _game_score_bar.Reset();
 
-            // first add road marks
+            //// first add road slabs
+            //_scene_game.AddToScene(new Generator(
+            //    generationDelay: 70,
+            //    generationAction: GenerateRoadSlabInSceneTop,
+            //    startUpAction: SpawnRoadSlabsInScene));
+
+            //// first add road slabs
+            //_scene_game.AddToScene(new Generator(
+            //    generationDelay: 70,
+            //    generationAction: GenerateRoadSlabInSceneBottom,
+            //    startUpAction: SpawnRoadSlabsInScene));
+
+            // then add road marks
             _scene_game.AddToScene(new Generator(
                 generationDelay: 30,
                 generationAction: GenerateRoadMarkInScene,
@@ -2217,7 +2317,7 @@ namespace HonkTrooper
 
             // then add the top trees
             _scene_game.AddToScene(new Generator(
-                generationDelay: 35,
+                generationDelay: 30,
                 generationAction: GenerateTreeInSceneTop,
                 startUpAction: SpawnTreesInScene));
 
@@ -2229,7 +2329,7 @@ namespace HonkTrooper
 
             // then add the bottom trees which will appear forward in z wrt to the vehicles
             _scene_game.AddToScene(new Generator(
-                generationDelay: 35,
+                generationDelay: 30,
                 generationAction: GenerateTreeInSceneBottom,
                 startUpAction: SpawnTreesInScene));
 
@@ -2297,7 +2397,12 @@ namespace HonkTrooper
             _scene_main_menu.AddToScene(new Generator(
                generationDelay: 0,
                generationAction: () => { return true; },
-               startUpAction: SpawnGamePlayInScene));
+               startUpAction: SpawnTitleScreenInScene));
+
+            _scene_game.AddToScene(new Generator(
+              generationDelay: 0,
+              generationAction: () => { return true; },
+              startUpAction: SpawnInterimScreenInScene));
 
             _scene_game.Speed = 5;
             _scene_game.Play();
@@ -2322,7 +2427,7 @@ namespace HonkTrooper
 
             SetController();
             SetScene();
-            GenerateGamePlayInScene();
+            GenerateTitleScreenInScene("Honk Trooper");
 
             SizeChanged += MainPage_SizeChanged;
 
@@ -2364,7 +2469,7 @@ namespace HonkTrooper
                 SyncDropShadow(_player);
             }
 
-            if (_scene_main_menu.Children.OfType<GamePlay>().FirstOrDefault(x => x.IsAnimating) is GamePlay GamePlay)
+            if (_scene_main_menu.Children.OfType<TitleScreen>().FirstOrDefault(x => x.IsAnimating) is TitleScreen GamePlay)
                 GamePlay.Reposition();
         }
 

@@ -12,10 +12,11 @@ namespace HonkTrooper
         public const double DEFAULT_CONTROLLER_KEY_CORNER_RADIUS = 30;
         public const double DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS = 4;
         public const double DEFAULT_CONTROLLER_DIRECTION_KEYS_MARGIN = 6;
+        public const double DEFAULT_GUI_FONT_SIZE = 30;
 
         public static (ConstructType ConstructType, double Height, double Width)[] CONSTRUCT_SIZES = new (ConstructType, double, double)[]
         {
-            new (ConstructType.PLAYER, 180, 180),
+            new (ConstructType.PLAYER, 170, 170),
             new (ConstructType.PLAYER_BOMB, 80, 80),
             new (ConstructType.PLAYER_BOMB_GROUND, 80, 80),
             new (ConstructType.PLAYER_BOMB_SEEKING, 90, 90),
@@ -31,13 +32,15 @@ namespace HonkTrooper
             new (ConstructType.CLOUD, 220, 220),
             new (ConstructType.TREE, 150, 150),
             new (ConstructType.ROAD_MARK, 40, 15),
+            new (ConstructType.ROAD_SLAB, 600, 600),
 
             new (ConstructType.DROP_SHADOW, 25, 60),
 
             new (ConstructType.HEALTH_PICKUP, 100, 100),
             new (ConstructType.POWERUP_PICKUP, 100, 100),
 
-            new (ConstructType.GAME_TITLE, 400, DEFAULT_CONTROLLER_KEY_SIZE * 10),
+            new (ConstructType.TITLE_SCREEN, 400, DEFAULT_CONTROLLER_KEY_SIZE * 10),
+            new (ConstructType.INTERIM_SCREEN, 400, DEFAULT_CONTROLLER_KEY_SIZE * 10),
         };
 
         public static (ConstructType ConstructType, Uri Uri)[] CONSTRUCT_TEMPLATES = new (ConstructType, Uri)[]
@@ -66,6 +69,7 @@ namespace HonkTrooper
 
             new (ConstructType.PLAYER, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_1.png")),
             new (ConstructType.PLAYER, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_2.png")),
+            new (ConstructType.PLAYER, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_3.png")),
 
             new (ConstructType.PLAYER_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_1.png")),
             new (ConstructType.PLAYER_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_2.png")),
@@ -95,9 +99,11 @@ namespace HonkTrooper
             new (ConstructType.BOSS_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_2.png")),
             new (ConstructType.BOSS_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_3.png")),
 
-            new (ConstructType.BOSS_BOMB_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_seeking_1.png")),
-            new (ConstructType.BOSS_BOMB_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_seeking_2.png")),
-            new (ConstructType.BOSS_BOMB_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_seeking_3.png")),
+            //new (ConstructType.BOSS_BOMB_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_seeking_1.png")),
+            //new (ConstructType.BOSS_BOMB_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_seeking_2.png")),
+            //new (ConstructType.BOSS_BOMB_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_seeking_3.png")),
+
+            new (ConstructType.BOSS_BOMB_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_seeking.png")),            
 
             new (ConstructType.HEALTH_PICKUP, new Uri("ms-appx:///HonkTrooper/Assets/Images/health_pickup.png")),
         };
@@ -115,6 +121,7 @@ namespace HonkTrooper
         VEHICLE_SMALL,
         VEHICLE_LARGE,
 
+        ROAD_SLAB,
         ROAD_MARK,
         HONK,
         TREE,
@@ -131,6 +138,7 @@ namespace HonkTrooper
         POWERUP_PICKUP,
         COLLECTABLE_PICKUP,
 
-        GAME_TITLE,
+        TITLE_SCREEN,
+        INTERIM_SCREEN,
     }
 }

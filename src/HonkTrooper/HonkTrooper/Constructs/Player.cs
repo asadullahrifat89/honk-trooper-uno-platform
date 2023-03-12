@@ -93,6 +93,15 @@ namespace HonkTrooper
             _isMovingLeft = false;
             _isMovingRight = false;
 
+            var uri = _player_uris[_random.Next(0, _player_uris.Length)];
+
+            var content = new Image()
+            {
+                Source = new BitmapImage(uriSource: uri)
+            };
+
+            SetChild(content);
+
             _movementStopDelay = _movementStopDelayDefault;
             _lastSpeed = 0;
         }
