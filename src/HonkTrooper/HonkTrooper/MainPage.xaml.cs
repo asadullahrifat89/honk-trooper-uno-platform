@@ -83,8 +83,6 @@ namespace HonkTrooper
 
         private void NewGame(TitleScreen se)
         {
-            // TODO: change game state to running                
-
             _game_controller.Reset();
 
             GeneratePlayerInScene();
@@ -451,7 +449,7 @@ namespace HonkTrooper
                     (bossBombSeeking is not null && _player.GetTop() > bossBombSeeking.GetTop() && _player.GetLeft() > bossBombSeeking.GetLeft()))
                 {
                     playerBomb.AwaitMoveUp = true;
-                    playerBomb.SetRotation(123);
+                    playerBomb.SetRotation(210);
                 }
                 // player is on the bottom left side of the boss
                 else if ((_player.GetTop() > boss.GetTop() && _player.GetLeft() < boss.GetLeft()) ||
@@ -465,7 +463,7 @@ namespace HonkTrooper
                     (bossBombSeeking is not null && _player.GetTop() < bossBombSeeking.GetTop() && _player.GetLeft() < bossBombSeeking.GetLeft()))
                 {
                     playerBomb.AwaitMoveDown = true;
-                    playerBomb.SetRotation(33);
+                    playerBomb.SetRotation(123);
                 }
                 // if player is on the top right side of the boss
                 else if ((_player.GetTop() < boss.GetTop() && _player.GetLeft() > boss.GetLeft()) ||
