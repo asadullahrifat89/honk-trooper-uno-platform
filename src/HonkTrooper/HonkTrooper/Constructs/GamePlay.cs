@@ -1,4 +1,6 @@
-﻿using Microsoft.UI.Xaml;
+﻿using Microsoft.UI;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Media;
 using System;
 using System.Linq;
 
@@ -49,7 +51,8 @@ namespace HonkTrooper
         {
             SetPosition(
                   left: ((Scene.Width / 4) * 2) - Width / 2,
-                  top: (Scene.Height / 2) + 10 * Scene.DownScaling,
+                  //top: (Scene.Height / 2) + 10 * Scene.DownScaling,
+                  top: (Scene.Height / 2) - Height / 2,
                   z: 10);
         }
 

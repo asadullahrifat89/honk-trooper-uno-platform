@@ -2,6 +2,7 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Imaging;
 using System;
 using System.Linq;
 using Windows.Graphics.Display;
@@ -66,7 +67,7 @@ namespace HonkTrooper
             _scene_game.Pause();
             _scene_main_menu.Play();
 
-            GenerateGameTitleInScene();
+            GenerateGamePlayInScene();
         }
 
         private void ResumeGame(GamePlay se)
@@ -76,7 +77,7 @@ namespace HonkTrooper
             _scene_game.Play();
             _scene_main_menu.Pause();
 
-            RecycleGameTitleScreen(se);
+            RecycleGamePlayScreen(se);
 
             _game_controller.AttackButton.Focus(FocusState.Programmatic);
         }
@@ -87,8 +88,10 @@ namespace HonkTrooper
 
             _game_controller.Reset();
 
-            _player.Reset();
-            _player.Reposition();
+            //_player.Reset();
+            //_player.Reposition();
+
+            GeneratePlayerInScene();
 
             _powerUp_health_bar.Reset();
             _boss_health_bar.Reset();
@@ -132,7 +135,7 @@ namespace HonkTrooper
 
             _scene_main_menu.Pause();
 
-            RecycleGameTitleScreen(se);
+            RecycleGamePlayScreen(se);
             ToggleHudVisibility(Visibility.Visible);
 
             ScreenExtensions.EnterFullScreen(true);
@@ -140,20 +143,33 @@ namespace HonkTrooper
             _game_controller.AttackButton.Focus(FocusState.Programmatic);
         }
 
+        private void GameOver()
+        {
+            // if player is dead game keeps playing in the background but scene state goes to game over
+            if (_player.IsDead)
+            {
+                _scene_main_menu.Play();
+                _scene_game.SceneState = SceneState.GAME_STOPPED;
+
+                ToggleHudVisibility(Visibility.Collapsed);
+                GenerateGamePlayInScene();
+            }
+        }
+
         #endregion
 
-        #region GameTitle
+        #region GamePlay
 
-        private bool SpawnGameTitleInScene()
+        private bool SpawnGamePlayInScene()
         {
-            GamePlay gameTitle = null;
+            GamePlay GamePlay = null;
 
-            gameTitle = new(
-                animateAction: AnimateGameTitle,
+            GamePlay = new(
+                animateAction: AnimateGamePlay,
                 recycleAction: (se) => { return true; },
                 downScaling: _scene_game.DownScaling);
 
-            gameTitle.SetPosition(
+            GamePlay.SetPosition(
                 left: -500,
                 top: -500);
 
@@ -163,12 +179,23 @@ namespace HonkTrooper
                 HorizontalAlignment = HorizontalAlignment.Center,
             };
 
+            content.Children.Add(new Image()
+            {
+                Source = new BitmapImage(_player.GetContentUri()),
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                Stretch = Stretch.UniformToFill,
+                Margin = new Thickness(0, 0, 0, 5),
+                Height = 100,
+                Width = 100,
+            });
+
             content.Children.Add(new TextBlock()
             {
                 Text = "Honk Trooper",
                 FontSize = 30,
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 Margin = new Thickness(0, 0, 0, 5),
+                Foreground = new SolidColorBrush(Colors.Goldenrod),
             });
 
             Button playButton = new()
@@ -184,6 +211,7 @@ namespace HonkTrooper
                 BorderBrush = new SolidColorBrush(Colors.White),
                 BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
                 HorizontalAlignment = HorizontalAlignment.Stretch,
+                Foreground = new SolidColorBrush(Colors.White),
                 //VerticalAlignment = VerticalAlignment.Center,
             };
 
@@ -192,7 +220,7 @@ namespace HonkTrooper
                 if (_scene_game.SceneState == SceneState.GAME_STOPPED)
                 {
                     if (ScreenExtensions.RequiredDisplayOrientation == ScreenExtensions.GetDisplayOrienation())
-                        NewGame(gameTitle);
+                        NewGame(GamePlay);
                     else
                         ScreenExtensions.SetDisplayOrientation(ScreenExtensions.RequiredDisplayOrientation);
                 }
@@ -200,26 +228,26 @@ namespace HonkTrooper
                 {
                     if (!_scene_game.IsAnimating)
                     {
-                        ResumeGame(gameTitle);
+                        ResumeGame(GamePlay);
                     }
                 }
             };
 
             content.Children.Add(playButton);
 
-            gameTitle.SetChild(content);
+            GamePlay.SetChild(content);
 
-            _scene_main_menu.AddToScene(gameTitle);
+            _scene_main_menu.AddToScene(GamePlay);
 
             return true;
         }
 
-        private bool GenerateGameTitleInScene()
+        private bool GenerateGamePlayInScene()
         {
-            if (_scene_main_menu.Children.OfType<GamePlay>().FirstOrDefault(x => x.IsAnimating == false) is GamePlay gameTitle)
+            if (_scene_main_menu.Children.OfType<GamePlay>().FirstOrDefault(x => x.IsAnimating == false) is GamePlay GamePlay)
             {
-                gameTitle.IsAnimating = true;
-                gameTitle.Reposition();
+                GamePlay.IsAnimating = true;
+                GamePlay.Reposition();
 
                 // Console.WriteLine("Game title generated.");
 
@@ -229,7 +257,7 @@ namespace HonkTrooper
             return false;
         }
 
-        private bool AnimateGameTitle(Construct se)
+        private bool AnimateGamePlay(Construct se)
         {
             //var speed = (_scene_game.Speed + se.SpeedOffset);
 
@@ -240,10 +268,10 @@ namespace HonkTrooper
             return true;
         }
 
-        private void RecycleGameTitleScreen(GamePlay gameTitle)
+        private void RecycleGamePlayScreen(GamePlay GamePlay)
         {
-            gameTitle.SetPosition(left: -500, top: -500);
-            gameTitle.IsAnimating = false;
+            GamePlay.SetPosition(left: -500, top: -500);
+            GamePlay.IsAnimating = false;
         }
 
         #endregion
@@ -257,24 +285,52 @@ namespace HonkTrooper
                 recycleAction: (_player) => { return true; },
                 downScaling: _scene_game.DownScaling);
 
-            _scene_game.AddToScene(_player);
+            _player.SetPosition(
+                  left: -500,
+                  top: -500);
 
-            _player.Reposition();
+            //_player.Reposition();
 
-            _player.IsAnimating = true;
+            //_player.IsAnimating = true;
 
             SpawnDropShadowInScene(_player);
 
-            DropShadow playersShadow = (_scene_game.Children.OfType<DropShadow>().FirstOrDefault(x => x.Id == _player.Id));
-            playersShadow.IsAnimating = true;
+            //DropShadow playersShadow = (_scene_game.Children.OfType<DropShadow>().FirstOrDefault(x => x.Id == _player.Id));
+            //playersShadow.IsAnimating = true;
 
+            //SyncDropShadow(_player);
+
+            //_player_health_bar.SetMaxiumHealth(_player.Health);
+            //_player_health_bar.SetValue(_player.Health);
+
+            //_player_health_bar.SetIcon(Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.HEALTH_PICKUP).Uri);
+            //_player_health_bar.SetBarForegroundColor(color: Colors.Purple);
+
+            _scene_game.AddToScene(_player);
+
+            return true;
+        }
+
+        private bool GeneratePlayerInScene()
+        {
+            _player.IsAnimating = true;
+            _player.Reset();
+            _player.Reposition();
+
+            SyncDropShadow(_player);
+
+            SetPlayerHealthBar();
+
+            return true;
+        }
+
+        private void SetPlayerHealthBar()
+        {
             _player_health_bar.SetMaxiumHealth(_player.Health);
             _player_health_bar.SetValue(_player.Health);
 
             _player_health_bar.SetIcon(Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.HEALTH_PICKUP).Uri);
             _player_health_bar.SetBarForegroundColor(color: Colors.Purple);
-
-            return true;
         }
 
         private bool AnimatePlayer(Construct player)
@@ -344,25 +400,6 @@ namespace HonkTrooper
             _player_health_bar.SetValue(_player.Health);
 
             GameOver();
-        }
-
-        private void GameOver()
-        {
-            // if player is dead game keeps playing in the background but scene state goes to game over
-            if (_player.IsDead)
-            {
-
-                ToggleHudVisibility(Visibility.Collapsed);
-
-                //_scene_game.Pause();
-                _scene_main_menu.Play();
-
-                GenerateGameTitleInScene();
-
-                _scene_game.SceneState = SceneState.GAME_STOPPED;
-
-                //TODO: make title screen visible
-            }
         }
 
         #endregion
@@ -2268,7 +2305,7 @@ namespace HonkTrooper
             _scene_main_menu.AddToScene(new Generator(
                generationDelay: 0,
                generationAction: () => { return true; },
-               startUpAction: SpawnGameTitleInScene));
+               startUpAction: SpawnGamePlayInScene));
 
             _scene_game.Speed = 5;
             _scene_game.Play();
@@ -2293,7 +2330,7 @@ namespace HonkTrooper
 
             SetController();
             SetScene();
-            GenerateGameTitleInScene();
+            GenerateGamePlayInScene();
 
             SizeChanged += MainPage_SizeChanged;
 
@@ -2327,13 +2364,14 @@ namespace HonkTrooper
             _game_controller.Width = _windowWidth;
             _game_controller.Height = _windowHeight;
 
-            _player.Reposition();
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING)
+            {
+                _player.Reposition();
+                SyncDropShadow(_player);
+            }
 
-            DropShadow playersShadow = (_scene_game.Children.OfType<DropShadow>().FirstOrDefault(x => x.Id == _player.Id));
-            playersShadow.Move();
-
-            if (_scene_main_menu.Children.OfType<GamePlay>().FirstOrDefault(x => x.IsAnimating) is GamePlay gameTitle)
-                gameTitle.Reposition();
+            if (_scene_main_menu.Children.OfType<GamePlay>().FirstOrDefault(x => x.IsAnimating) is GamePlay GamePlay)
+                GamePlay.Reposition();
         }
 
         private void Controller_RequiresScreenOrientationChange(object sender, DisplayOrientations e)

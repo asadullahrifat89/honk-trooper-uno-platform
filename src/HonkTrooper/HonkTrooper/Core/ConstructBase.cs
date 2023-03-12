@@ -186,7 +186,7 @@ namespace HonkTrooper
         {
             Opacity -= 0.005;
         }
-
+        
         public void Fade(double fade)
         {
             Opacity -= fade;
