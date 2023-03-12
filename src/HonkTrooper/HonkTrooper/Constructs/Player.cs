@@ -142,6 +142,92 @@ namespace HonkTrooper
             }
         }
 
+        #region Isometric Movement
+
+        //public void MoveUp(double speed)
+        //{
+        //    _isMovingUp = true;
+        //    _isMovingDown = false;
+
+        //    _isMovingLeft = false;
+        //    _isMovingRight = false;
+
+        //    SetLeft(GetLeft() - speed * 2);
+        //    SetTop(GetTop() - speed);
+
+        //    _movementStopDelay = _movementStopDelayDefault;
+        //    _lastSpeed = speed;
+
+        //    Rotate(
+        //        rotationDirection: RotationDirection.Backward,
+        //        threadhold: _rotationThreadhold,
+        //        rotationSpeed: _rotationSpeed);
+        //}
+
+        //public void MoveDown(double speed)
+        //{
+        //    _isMovingDown = true;
+        //    _isMovingUp = false;
+
+        //    _isMovingLeft = false;
+        //    _isMovingRight = false;
+
+        //    SetLeft(GetLeft() + speed * 2);
+        //    SetTop(GetTop() + speed);
+
+        //    _movementStopDelay = _movementStopDelayDefault;
+        //    _lastSpeed = speed;
+
+        //    Rotate(
+        //        rotationDirection: RotationDirection.Forward,
+        //        threadhold: _rotationThreadhold,
+        //        rotationSpeed: _rotationSpeed);
+        //}
+
+        //public void MoveLeft(double speed)
+        //{
+        //    _isMovingUp = false;
+        //    _isMovingDown = false;
+
+        //    _isMovingLeft = true;
+        //    _isMovingRight = false;
+
+        //    SetLeft(GetLeft() - speed);
+        //    SetTop(GetTop() + speed);
+
+        //    _movementStopDelay = _movementStopDelayDefault;
+        //    _lastSpeed = speed;
+
+        //    Rotate(
+        //        rotationDirection: RotationDirection.Backward,
+        //        threadhold: _rotationThreadhold,
+        //        rotationSpeed: _rotationSpeed);
+        //}
+
+        //public void MoveRight(double speed)
+        //{
+        //    _isMovingUp = false;
+        //    _isMovingDown = false;
+
+        //    _isMovingLeft = false;
+        //    _isMovingRight = true;
+
+        //    SetLeft(GetLeft() + speed);
+        //    SetTop(GetTop() - speed);
+
+        //    _movementStopDelay = _movementStopDelayDefault;
+        //    _lastSpeed = speed;
+
+        //    Rotate(
+        //        rotationDirection: RotationDirection.Forward,
+        //        threadhold: _rotationThreadhold,
+        //        rotationSpeed: _rotationSpeed);
+        //}
+
+        #endregion
+
+        #region Linear Movement
+
         public void MoveUp(double speed)
         {
             _isMovingUp = true;
@@ -150,7 +236,6 @@ namespace HonkTrooper
             _isMovingLeft = false;
             _isMovingRight = false;
 
-            SetLeft(GetLeft() - speed * 2);
             SetTop(GetTop() - speed);
 
             _movementStopDelay = _movementStopDelayDefault;
@@ -170,7 +255,6 @@ namespace HonkTrooper
             _isMovingLeft = false;
             _isMovingRight = false;
 
-            SetLeft(GetLeft() + speed * 2);
             SetTop(GetTop() + speed);
 
             _movementStopDelay = _movementStopDelayDefault;
@@ -190,8 +274,7 @@ namespace HonkTrooper
             _isMovingLeft = true;
             _isMovingRight = false;
 
-            SetLeft(GetLeft() - speed);
-            SetTop(GetTop() + speed);
+            SetLeft(GetLeft() - speed * 2);
 
             _movementStopDelay = _movementStopDelayDefault;
             _lastSpeed = speed;
@@ -210,8 +293,7 @@ namespace HonkTrooper
             _isMovingLeft = false;
             _isMovingRight = true;
 
-            SetLeft(GetLeft() + speed);
-            SetTop(GetTop() - speed);
+            SetLeft(GetLeft() + speed * 2);
 
             _movementStopDelay = _movementStopDelayDefault;
             _lastSpeed = speed;
@@ -221,6 +303,8 @@ namespace HonkTrooper
                 threadhold: _rotationThreadhold,
                 rotationSpeed: _rotationSpeed);
         }
+
+        #endregion
 
         public void StopMovement()
         {

@@ -68,21 +68,102 @@ namespace HonkTrooper
             Console.WriteLine($"AngularVelocityY: {AngularVelocityY}");
             Console.WriteLine($"AngularVelocityZ: {AngularVelocityZ}");
 
+            #region Isometric Movement
+
+            //if (AngularVelocityY > 0)
+            //{
+            //    if (AngularVelocityY > 20)
+            //    {
+            //        ActivateMoveRight();
+            //    }
+            //    else
+            //    {
+            //        DeactivateMoveLeft();
+            //        DeactivateMoveRight();
+            //    }
+            //}
+            //else
+            //{
+            //    if (Math.Abs(AngularVelocityY) > 20)
+            //    {
+            //        ActivateMoveLeft();
+            //    }
+            //    else
+            //    {
+            //        DeactivateMoveRight();
+            //        DeactivateMoveLeft();
+            //    }
+            //}
+
+            //if (AngularVelocityX > 0)
+            //{
+            //    if (AngularVelocityX > 15)
+            //    {
+            //        ActivateMoveDown();
+            //    }
+            //    else
+            //    {
+            //        DeactivateMoveUp();
+            //        DeactivateMoveDown();
+            //    }
+            //}
+            //else
+            //{
+            //    if (Math.Abs(AngularVelocityX) > 15)
+            //    {
+            //        ActivateMoveUp();
+            //    }
+            //    else
+            //    {
+            //        DeactivateMoveUp();
+            //        DeactivateMoveDown();
+            //    }
+            //}
+
+            #endregion
+
+            #region Linear Movement
+
             if (AngularVelocityY > 0)
             {
                 if (AngularVelocityY > 20)
                 {
-                    ActivateMoveRight();
+                    ActivateMoveUp();
                 }
                 else
                 {
-                    DeactivateMoveLeft();
-                    DeactivateMoveRight();
+                    DeactivateMoveUp();
+                    DeactivateMoveDown();
                 }
             }
             else
             {
                 if (Math.Abs(AngularVelocityY) > 20)
+                {
+                    ActivateMoveDown();
+                }
+                else
+                {
+                    DeactivateMoveUp();
+                    DeactivateMoveDown();
+                }
+            }
+
+            if (AngularVelocityX > 0)
+            {
+                if (AngularVelocityX > 15)
+                {
+                    ActivateMoveRight();
+                }
+                else
+                {
+                    DeactivateMoveRight();
+                    DeactivateMoveLeft();
+                }
+            }
+            else
+            {
+                if (Math.Abs(AngularVelocityX) > 15)
                 {
                     ActivateMoveLeft();
                 }
@@ -93,32 +174,9 @@ namespace HonkTrooper
                 }
             }
 
-            if (AngularVelocityX > 0)
-            {
-                if (AngularVelocityX > 15)
-                {
-                    ActivateMoveDown();                    
-                }
-                else
-                {
-                    DeactivateMoveUp();
-                    DeactivateMoveDown();
-                }
-            }
-            else
-            {
-                if (Math.Abs(AngularVelocityX) > 15)
-                {
-                    ActivateMoveUp();
-                }
-                else
-                {
-                    DeactivateMoveUp();
-                    DeactivateMoveDown();
-                }
-            }
+            #endregion
 
-       
+
         }
 
         private void SetJoyStick()
