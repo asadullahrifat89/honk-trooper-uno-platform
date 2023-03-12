@@ -162,7 +162,7 @@ namespace HonkTrooper
         public void ActivateSlowMotion()
         {
             _lastSpeed = Speed;
-            Speed /= 3.5;
+            Speed /= Constants.DEFAULT_SLOW_MOTION_REDUCTION_FACTOR;
 
             _slowMotionDelay = _slowMotionDelayDefault;
         }

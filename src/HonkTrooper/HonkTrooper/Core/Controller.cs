@@ -2,8 +2,11 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
+using System;
 using System.Collections.Generic;
+using Windows.Devices.Sensors;
 using Windows.Foundation;
+using Windows.UI.Core;
 
 namespace HonkTrooper
 {
@@ -11,11 +14,19 @@ namespace HonkTrooper
     {
         #region Properties
 
-        public Grid DirectionButtons { get; set; }
+        public Grid Joystick { get; set; }
 
         public Button AttackButton { get; set; }
 
         public Button PauseButton { get; set; }
+
+        public Gyrometer Gyrometer { get; set; }
+
+        public double AngularVelocityX { get; set; }
+
+        public double AngularVelocityY { get; set; }
+
+        public double AngularVelocityZ { get; set; }
 
         #endregion
 
@@ -25,37 +36,80 @@ namespace HonkTrooper
         {
             CanDrag = false;
 
+            SetJoyStick();
+            SetAttackButton();
+            SetPauseButton();
+
             KeyUp += Controller_KeyUp;
             KeyDown += Controller_KeyDown;
 
-            Setup();
+            Gyrometer = Gyrometer.GetDefault();
+
+            if (Gyrometer is not null)
+            {
+                Console.WriteLine($"Gyrometer detected.");
+                Gyrometer.ReadingChanged += Gyrometer_ReadingChanged;
+            }
         }
 
         #endregion
 
         #region Methods
 
-        public void Setup()
+        private void Gyrometer_ReadingChanged(Gyrometer sender, GyrometerReadingChangedEventArgs args)
         {
-            SetDirectionKeys();
-            SetAttackButton();
-            SetPauseButton();
+            //await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            //{
+            AngularVelocityX = args.Reading.AngularVelocityX;
+            AngularVelocityY = args.Reading.AngularVelocityY;
+            AngularVelocityZ = args.Reading.AngularVelocityZ;
+            //});
+            Console.WriteLine($"AngularVelocityX: {AngularVelocityX}");
+            Console.WriteLine($"AngularVelocityY: {AngularVelocityY}");
+            Console.WriteLine($"AngularVelocityZ: {AngularVelocityZ}");
+
+            if (AngularVelocityX > 0)
+            {
+                if (AngularVelocityX > 5)
+                {
+                    ActivateMoveDown();
+                    DeactivateMoveUp();
+                }
+                else
+                {
+                    DeactivateMoveUp();
+                    DeactivateMoveDown();
+                }
+            }
+            else
+            {
+                if (Math.Abs(AngularVelocityX) > 5)
+                {
+                    ActivateMoveUp();
+                    DeactivateMoveDown();
+                }
+                else
+                {
+                    DeactivateMoveUp();
+                    DeactivateMoveDown();
+                }
+            }
         }
 
-        private void SetDirectionKeys()
+        private void SetJoyStick()
         {
-            DirectionButtons = new()
+            Joystick = new()
             {
                 HorizontalAlignment = HorizontalAlignment.Right,
                 VerticalAlignment = VerticalAlignment.Bottom,
                 Margin = new Thickness(20),
             };
 
-            DirectionButtons.RowDefinitions.Add(new RowDefinition());
-            DirectionButtons.RowDefinitions.Add(new RowDefinition());
+            Joystick.RowDefinitions.Add(new RowDefinition());
+            Joystick.RowDefinitions.Add(new RowDefinition());
 
-            DirectionButtons.ColumnDefinitions.Add(new ColumnDefinition());
-            DirectionButtons.ColumnDefinitions.Add(new ColumnDefinition());
+            Joystick.ColumnDefinitions.Add(new ColumnDefinition());
+            Joystick.ColumnDefinitions.Add(new ColumnDefinition());
 
             Border up = new()
             {
@@ -149,12 +203,12 @@ namespace HonkTrooper
             Grid.SetRow(right, 0);
             Grid.SetColumn(right, 1);
 
-            DirectionButtons.Children.Add(up);
-            DirectionButtons.Children.Add(down);
-            DirectionButtons.Children.Add(left);
-            DirectionButtons.Children.Add(right);
+            Joystick.Children.Add(up);
+            Joystick.Children.Add(down);
+            Joystick.Children.Add(left);
+            Joystick.Children.Add(right);
 
-            this.Children.Add(DirectionButtons);
+            this.Children.Add(Joystick);
         }
 
         private void SetAttackButton()
@@ -180,7 +234,7 @@ namespace HonkTrooper
             this.Children.Add(AttackButton);
         }
 
-        private void SetPauseButton() 
+        private void SetPauseButton()
         {
             PauseButton = new()
             {
