@@ -94,6 +94,33 @@ namespace HonkTrooper
                     DeactivateMoveDown();
                 }
             }
+
+            if (AngularVelocityY > 0)
+            {
+                if (AngularVelocityY > 5)
+                {
+                    ActivateMoveRight();
+                    DeactivateMoveLeft();
+                }
+                else
+                {
+                    DeactivateMoveLeft();
+                    DeactivateMoveRight();
+                }
+            }
+            else
+            {
+                if (Math.Abs(AngularVelocityY) > 5)
+                {
+                    ActivateMoveLeft();
+                    DeactivateMoveRight();
+                }
+                else
+                {
+                    DeactivateMoveRight();
+                    DeactivateMoveLeft();
+                }
+            }
         }
 
         private void SetJoyStick()
