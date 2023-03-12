@@ -159,47 +159,55 @@ namespace HonkTrooper
 
         private bool SpawnGamePlayInScene()
         {
-            GamePlay GamePlay = null;
+            GamePlay gamePlay = null;
 
-            GamePlay = new(
+            gamePlay = new(
                 animateAction: AnimateGamePlay,
                 recycleAction: (se) => { return true; },
                 downScaling: _scene_game.DownScaling);
 
-            GamePlay.SetPosition(
+            gamePlay.SetPosition(
                 left: -500,
                 top: -500);
 
-            StackPanel content = new()
+            Grid grid = new();
+            grid.Children.Add(new Border()
+            {
+                Background = new SolidColorBrush(Colors.White),
+                CornerRadius = new CornerRadius(20),
+                Opacity = 0.4,
+            });
+
+            StackPanel container = new()
             {
                 Orientation = Orientation.Vertical,
                 HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
             };
 
-            content.Children.Add(new Image()
+            container.Children.Add(new Image()
             {
                 Source = new BitmapImage(_player.GetContentUri()),
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 Stretch = Stretch.UniformToFill,
                 Margin = new Thickness(0, 0, 0, 5),
-                Height = 100,
-                Width = 100,
+                Height = 110,
+                Width = 110,
             });
 
-            content.Children.Add(new TextBlock()
+            container.Children.Add(new TextBlock()
             {
                 Text = "Honk Trooper",
                 FontSize = 30,
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 Margin = new Thickness(0, 0, 0, 5),
-                Foreground = new SolidColorBrush(Colors.Goldenrod),
+                Foreground = new SolidColorBrush(Colors.BlanchedAlmond),
             });
 
             Button playButton = new()
             {
                 Background = new SolidColorBrush(Colors.Goldenrod),
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-                //Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 3,
                 CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS),
                 Content = new SymbolIcon()
                 {
@@ -216,7 +224,7 @@ namespace HonkTrooper
                 if (_scene_game.SceneState == SceneState.GAME_STOPPED)
                 {
                     if (ScreenExtensions.RequiredDisplayOrientation == ScreenExtensions.GetDisplayOrienation())
-                        NewGame(GamePlay);
+                        NewGame(gamePlay);
                     else
                         ScreenExtensions.SetDisplayOrientation(ScreenExtensions.RequiredDisplayOrientation);
                 }
@@ -224,16 +232,21 @@ namespace HonkTrooper
                 {
                     if (!_scene_game.IsAnimating)
                     {
-                        ResumeGame(GamePlay);
+                        if (ScreenExtensions.RequiredDisplayOrientation == ScreenExtensions.GetDisplayOrienation())
+                            ResumeGame(gamePlay);
+                        else
+                            ScreenExtensions.SetDisplayOrientation(ScreenExtensions.RequiredDisplayOrientation);
                     }
                 }
             };
 
-            content.Children.Add(playButton);
+            container.Children.Add(playButton);
 
-            GamePlay.SetChild(content);
+            grid.Children.Add(container);
 
-            _scene_main_menu.AddToScene(GamePlay);
+            gamePlay.SetChild(grid);
+
+            _scene_main_menu.AddToScene(gamePlay);
 
             return true;
         }
@@ -283,9 +296,9 @@ namespace HonkTrooper
 
             _player.SetPosition(
                   left: -500,
-                  top: -500);          
+                  top: -500);
 
-            SpawnDropShadowInScene(_player);           
+            SpawnDropShadowInScene(_player);
 
             _scene_game.AddToScene(_player);
 
