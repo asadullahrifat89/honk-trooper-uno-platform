@@ -27,7 +27,7 @@ namespace HonkTrooper
         private readonly Random _random;
         private Player _player;
 
-        private TextBlock _titleScreenText;
+        //private TextBlock _titleScreenText;
 
         #endregion
 
@@ -65,11 +65,10 @@ namespace HonkTrooper
         {
             ToggleHudVisibility(Visibility.Collapsed);
 
-            _titleScreenText.Text = "Honk Trooper";
             _scene_game.Pause();
             _scene_main_menu.Play();
 
-            GenerateTitleScreenInScene();
+            GenerateTitleScreenInScene("Game Paused");
         }
 
         private void ResumeGame(TitleScreen se)
@@ -147,12 +146,11 @@ namespace HonkTrooper
             // if player is dead game keeps playing in the background but scene state goes to game over
             if (_player.IsDead)
             {
-                _titleScreenText.Text = "Game Over";
                 _scene_main_menu.Play();
                 _scene_game.SceneState = SceneState.GAME_STOPPED;
 
                 ToggleHudVisibility(Visibility.Collapsed);
-                GenerateTitleScreenInScene();
+                GenerateTitleScreenInScene("Game Over");
             }
         }
 
@@ -167,105 +165,128 @@ namespace HonkTrooper
             TitleScreen = new(
                 animateAction: AnimateTitleScreen,
                 recycleAction: (se) => { return true; },
-                downScaling: _scene_game.DownScaling);
+                downScaling: _scene_game.DownScaling,
+                playAction: () =>
+                {
+                    if (_scene_game.SceneState == SceneState.GAME_STOPPED)
+                    {
+                        if (ScreenExtensions.RequiredDisplayOrientation == ScreenExtensions.GetDisplayOrienation())
+                            NewGame(TitleScreen);
+                        else
+                            ScreenExtensions.SetDisplayOrientation(ScreenExtensions.RequiredDisplayOrientation);
+                    }
+                    else
+                    {
+                        if (!_scene_game.IsAnimating)
+                        {
+                            if (ScreenExtensions.RequiredDisplayOrientation == ScreenExtensions.GetDisplayOrienation())
+                                ResumeGame(TitleScreen);
+                            else
+                                ScreenExtensions.SetDisplayOrientation(ScreenExtensions.RequiredDisplayOrientation);
+                        }
+                    }
+
+                    return true;
+                });
 
             TitleScreen.SetPosition(
                 left: -500,
                 top: -500);
 
-            Grid grid = new();
-            grid.Children.Add(new Border()
-            {
-                Background = new SolidColorBrush(Colors.Goldenrod),
-                CornerRadius = new CornerRadius(15),
-                Opacity = 0.6,
-                BorderBrush = new SolidColorBrush(Colors.White),
-                BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
-            });
+            //Grid grid = new();
+            //grid.Children.Add(new Border()
+            //{
+            //    Background = new SolidColorBrush(Colors.Goldenrod),
+            //    CornerRadius = new CornerRadius(15),
+            //    Opacity = 0.6,
+            //    BorderBrush = new SolidColorBrush(Colors.White),
+            //    BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
+            //});
 
-            StackPanel container = new()
-            {
-                Orientation = Orientation.Vertical,
-                HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center,
-            };
+            //StackPanel container = new()
+            //{
+            //    Orientation = Orientation.Vertical,
+            //    HorizontalAlignment = HorizontalAlignment.Center,
+            //    VerticalAlignment = VerticalAlignment.Center,
+            //};
 
-            Image titleScreenIcon = new Image()
-            {
-                Source = new BitmapImage(_player.GetContentUri()),
-                HorizontalAlignment = HorizontalAlignment.Stretch,
-                Stretch = Stretch.Uniform,
-                Margin = new Thickness(0, 0, 0, 5),
-                Height = 110,
-                Width = 110,
-            };
+            //Image titleScreenIcon = new Image()
+            //{
+            //    Source = new BitmapImage(_player.GetContentUri()),
+            //    HorizontalAlignment = HorizontalAlignment.Stretch,
+            //    Stretch = Stretch.Uniform,
+            //    Margin = new Thickness(0, 0, 0, 5),
+            //    Height = 110,
+            //    Width = 110,
+            //};
 
-            container.Children.Add(titleScreenIcon);
+            //container.Children.Add(titleScreenIcon);
 
-            _titleScreenText = new TextBlock()
-            {
-                Text = "Honk Trooper",
-                FontSize = 30,
-                HorizontalAlignment = HorizontalAlignment.Stretch,
-                Margin = new Thickness(0, 0, 0, 5),
-                Foreground = new SolidColorBrush(Colors.White),
-            };
+            //_titleScreenText = new TextBlock()
+            //{
+            //    Text = "Honk Trooper",
+            //    FontSize = 30,
+            //    HorizontalAlignment = HorizontalAlignment.Stretch,
+            //    Margin = new Thickness(0, 0, 0, 5),
+            //    Foreground = new SolidColorBrush(Colors.White),
+            //};
 
-            container.Children.Add(_titleScreenText);
+            //container.Children.Add(_titleScreenText);
 
-            Button playButton = new()
-            {
-                Background = new SolidColorBrush(Colors.Goldenrod),
-                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-                CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS),
-                Content = new SymbolIcon()
-                {
-                    Symbol = Symbol.Play,
-                },
-                BorderBrush = new SolidColorBrush(Colors.White),
-                BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
-                HorizontalAlignment = HorizontalAlignment.Stretch,
-                Foreground = new SolidColorBrush(Colors.White),
-            };
+            //Button playButton = new()
+            //{
+            //    Background = new SolidColorBrush(Colors.Goldenrod),
+            //    Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+            //    CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS),
+            //    Content = new SymbolIcon()
+            //    {
+            //        Symbol = Symbol.Play,
+            //    },
+            //    BorderBrush = new SolidColorBrush(Colors.White),
+            //    BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
+            //    HorizontalAlignment = HorizontalAlignment.Stretch,
+            //    Foreground = new SolidColorBrush(Colors.White),
+            //};
 
-            container.Children.Add(playButton);
+            //container.Children.Add(playButton);          
 
-            playButton.Click += (s, e) =>
-            {
-                if (_scene_game.SceneState == SceneState.GAME_STOPPED)
-                {
-                    if (ScreenExtensions.RequiredDisplayOrientation == ScreenExtensions.GetDisplayOrienation())
-                        NewGame(TitleScreen);
-                    else
-                        ScreenExtensions.SetDisplayOrientation(ScreenExtensions.RequiredDisplayOrientation);
-                }
-                else
-                {
-                    if (!_scene_game.IsAnimating)
-                    {
-                        if (ScreenExtensions.RequiredDisplayOrientation == ScreenExtensions.GetDisplayOrienation())
-                            ResumeGame(TitleScreen);
-                        else
-                            ScreenExtensions.SetDisplayOrientation(ScreenExtensions.RequiredDisplayOrientation);
-                    }
-                }
-            };
+            //grid.Children.Add(container);
 
-            grid.Children.Add(container);
+            //TitleScreen.SetChild(grid);
 
-            TitleScreen.SetChild(grid);
+            //playButton.Click += (s, e) =>
+            //{
+            //    if (_scene_game.SceneState == SceneState.GAME_STOPPED)
+            //    {
+            //        if (ScreenExtensions.RequiredDisplayOrientation == ScreenExtensions.GetDisplayOrienation())
+            //            NewGame(TitleScreen);
+            //        else
+            //            ScreenExtensions.SetDisplayOrientation(ScreenExtensions.RequiredDisplayOrientation);
+            //    }
+            //    else
+            //    {
+            //        if (!_scene_game.IsAnimating)
+            //        {
+            //            if (ScreenExtensions.RequiredDisplayOrientation == ScreenExtensions.GetDisplayOrienation())
+            //                ResumeGame(TitleScreen);
+            //            else
+            //                ScreenExtensions.SetDisplayOrientation(ScreenExtensions.RequiredDisplayOrientation);
+            //        }
+            //    }
+            //};
 
             _scene_main_menu.AddToScene(TitleScreen);
 
             return true;
         }
 
-        private bool GenerateTitleScreenInScene()
+        private bool GenerateTitleScreenInScene(string title)
         {
-            if (_scene_main_menu.Children.OfType<TitleScreen>().FirstOrDefault(x => x.IsAnimating == false) is TitleScreen TitleScreen)
+            if (_scene_main_menu.Children.OfType<TitleScreen>().FirstOrDefault(x => x.IsAnimating == false) is TitleScreen titleScreen)
             {
-                TitleScreen.IsAnimating = true;
-                TitleScreen.Reposition();
+                titleScreen.SetTitle(title);
+                titleScreen.IsAnimating = true;
+                titleScreen.Reposition();
 
                 // Console.WriteLine("Game title generated.");
 
@@ -2425,7 +2446,7 @@ namespace HonkTrooper
 
             SetController();
             SetScene();
-            GenerateTitleScreenInScene();
+            GenerateTitleScreenInScene("Honk Trooper");
 
             SizeChanged += MainPage_SizeChanged;
 
