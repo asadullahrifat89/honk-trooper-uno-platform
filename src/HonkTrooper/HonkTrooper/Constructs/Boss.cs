@@ -22,6 +22,7 @@ namespace HonkTrooper
 
         private double _changeMovementPatternDelay;
 
+        private readonly Image _content_image;
 
         #endregion
 
@@ -52,12 +53,12 @@ namespace HonkTrooper
 
             var uri = _boss_uris[_random.Next(0, _boss_uris.Length)];
 
-            var content = new Image()
+            _content_image = new Image()
             {
                 Source = new BitmapImage(uriSource: uri)
             };
 
-            SetChild(content);
+            SetChild(_content_image);
 
             IsometricDisplacement = 0.5;
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET - 0.5;
@@ -100,6 +101,9 @@ namespace HonkTrooper
 
             AwaitMoveUp = false;
             AwaitMoveDown = false;
+
+            var uri = _boss_uris[_random.Next(0, _boss_uris.Length)];
+            _content_image.Source = new BitmapImage(uri);
 
             RandomizeMovementPattern();
             SetScaleTransform(1);

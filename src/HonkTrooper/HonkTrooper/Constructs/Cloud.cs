@@ -12,6 +12,8 @@ namespace HonkTrooper
         private Random _random;
         private Uri[] _cloud_uris;
 
+        private readonly Image _content_image;
+
         #endregion
 
         #region Ctor
@@ -39,12 +41,12 @@ namespace HonkTrooper
 
             var uri = _cloud_uris[_random.Next(0, _cloud_uris.Length)];
 
-            var content = new Image()
+            _content_image = new Image()
             {
                 Source = new BitmapImage(uriSource: uri)
             };
 
-            SetChild(content);
+            SetChild(_content_image);
 
             IsometricDisplacement = 0.5;
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;
@@ -59,6 +61,9 @@ namespace HonkTrooper
         public void Reset()
         {
             SpeedOffset = _random.Next(3, 7);
+
+            var uri = _cloud_uris[_random.Next(0, _cloud_uris.Length)];
+            _content_image.Source = new BitmapImage(uri);
         }
 
         #endregion

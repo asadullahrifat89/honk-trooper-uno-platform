@@ -55,9 +55,10 @@
     <None Remove="Assets\Images\honk_1.png" />
     <None Remove="Assets\Images\honk_2.png" />
     <None Remove="Assets\Images\honk_3.png" />
-    <None Remove="Assets\Images\player_3.png" />
+    <None Remove="Assets\Images\player_1_attack.png" />
+    <None Remove="Assets\Images\player_1_idle.png" />
+    <None Remove="Assets\Images\player_1_win.png" />
     <None Remove="Assets\Images\player_bomb_seeking_2.png" />
-    <None Remove="Assets\Images\poop_3.png" />
     <None Remove="Assets\Images\power_up_pickup.png" />
     <None Remove="Assets\Images\tree_E.png" />
     <None Remove="Assets\Images\vehicle_1.png" />
