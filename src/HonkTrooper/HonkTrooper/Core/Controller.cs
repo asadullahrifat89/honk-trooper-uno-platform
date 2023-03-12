@@ -22,11 +22,19 @@ namespace HonkTrooper
 
         public Gyrometer Gyrometer { get; set; }
 
+        public Accelerometer Accelerometer { get; set; }
+
         public double AngularVelocityX { get; set; }
 
         public double AngularVelocityY { get; set; }
 
         public double AngularVelocityZ { get; set; }
+
+        public double AccelerationX { get; set; }
+
+        public double AccelerationY { get; set; }
+
+        public double AccelerationZ { get; set; }
 
         #endregion
 
@@ -44,6 +52,8 @@ namespace HonkTrooper
 
             SetJoyStick();
             SetGyrometer();
+            //SetAccelerometer();
+            
         }
 
         #endregion
@@ -378,6 +388,17 @@ namespace HonkTrooper
             }
         }
 
+        //public void SetAccelerometer()
+        //{
+        //    Accelerometer = Accelerometer.GetDefault();
+
+        //    if (Accelerometer is not null)
+        //    {
+        //        // Console.WriteLine($"Gyrometer detected.");
+        //        Accelerometer.ReadingChanged += Accelerometer_ReadingChanged;
+        //    }
+        //}
+     
         #endregion
 
         #region Events
@@ -423,7 +444,7 @@ namespace HonkTrooper
 
             if (AngularVelocityY > 0)
             {
-                if (AngularVelocityY > 20)
+                if (AngularVelocityY > 10)
                 {
                     ActivateMoveRight();
                 }
@@ -435,7 +456,7 @@ namespace HonkTrooper
             }
             else
             {
-                if (Math.Abs(AngularVelocityY) > 20)
+                if (Math.Abs(AngularVelocityY) > 10)
                 {
                     ActivateMoveLeft();
                 }
@@ -502,6 +523,68 @@ namespace HonkTrooper
 
             #endregion
         }
+
+        //private void Accelerometer_ReadingChanged(Accelerometer sender, AccelerometerReadingChangedEventArgs args)
+        //{
+        //    AccelerationX = args.Reading.AccelerationX;
+        //    AccelerationY = args.Reading.AccelerationY;
+        //    AccelerationZ = args.Reading.AccelerationZ;
+
+        //    Console.WriteLine($"AccelerationX: {AccelerationX}");
+        //    Console.WriteLine($"AccelerationY: {AccelerationY}");
+        //    Console.WriteLine($"AccelerationZ: {AccelerationZ}");
+
+        //    if (AccelerationX > 0)
+        //    {
+        //        if (AccelerationX > 15)
+        //        {
+        //            ActivateMoveDown();
+        //        }
+        //        else
+        //        {
+        //            DeactivateMoveUp();
+        //            DeactivateMoveDown();
+        //        }
+        //    }
+        //    else
+        //    {
+        //        if (Math.Abs(AccelerationX) > 15)
+        //        {
+        //            ActivateMoveUp();
+        //        }
+        //        else
+        //        {
+        //            DeactivateMoveUp();
+        //            DeactivateMoveDown();
+        //        }
+        //    }
+
+        //    if (AccelerationY > 0)
+        //    {
+        //        if (AccelerationY > 10)
+        //        {
+        //            ActivateMoveRight();
+        //        }
+        //        else
+        //        {
+        //            DeactivateMoveLeft();
+        //            DeactivateMoveRight();
+        //        }
+        //    }
+        //    else
+        //    {
+        //        if (Math.Abs(AccelerationY) > 10)
+        //        {
+        //            ActivateMoveLeft();
+        //        }
+        //        else
+        //        {
+        //            DeactivateMoveRight();
+        //            DeactivateMoveLeft();
+        //        }
+        //    }
+        //}
+
 
         #endregion
     }
