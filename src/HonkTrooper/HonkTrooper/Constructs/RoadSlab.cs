@@ -6,18 +6,18 @@ using System.Linq;
 
 namespace HonkTrooper
 {
-    public partial class Road : Construct
+    public partial class RoadSlab : Construct
     {
         #region Ctor
 
-        public Road(
+        public RoadSlab(
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction,
             double downScaling)
         {
-            ConstructType = ConstructType.ROAD;
+            ConstructType = ConstructType.ROAD_SLAB;
 
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.ROAD);
+            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.ROAD_SLAB);
 
             var width = size.Width * downScaling;
             var height = size.Height * downScaling;
@@ -40,3 +40,4 @@ namespace HonkTrooper
         #endregion
     }
 }
+

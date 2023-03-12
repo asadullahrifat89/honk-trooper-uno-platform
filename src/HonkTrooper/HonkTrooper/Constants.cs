@@ -31,7 +31,7 @@ namespace HonkTrooper
             new (ConstructType.CLOUD, 220, 220),
             new (ConstructType.TREE, 150, 150),
             new (ConstructType.ROAD_MARK, 40, 15),
-            new (ConstructType.ROAD, 395, 100),
+            new (ConstructType.ROAD_SLAB, 600, 600),
 
             new (ConstructType.DROP_SHADOW, 25, 60),
 
@@ -117,7 +117,7 @@ namespace HonkTrooper
         VEHICLE_SMALL,
         VEHICLE_LARGE,
 
-        ROAD,
+        ROAD_SLAB,
         ROAD_MARK,
         HONK,
         TREE,

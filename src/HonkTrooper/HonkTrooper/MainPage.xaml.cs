@@ -948,39 +948,39 @@ namespace HonkTrooper
 
         #endregion
 
-        #region Road
+        #region RoadSlab
 
-        private bool SpawnRoadsInScene()
+        private bool SpawnRoadSlabsInScene()
         {
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 8; i++)
             {
-                Road Road = new(
-                    animateAction: AnimateRoad,
-                    recycleAction: RecycleRoad,
+                RoadSlab roadSlab = new(
+                    animateAction: AnimateRoadSlab,
+                    recycleAction: RecycleRoadSlab,
                     downScaling: _scene_game.DownScaling);
 
-                Road.SetPosition(
+                roadSlab.SetPosition(
                     left: -1500,
                     top: -1500);
 
-                _scene_game.AddToScene(Road);
+                _scene_game.AddToScene(roadSlab);
             }
 
             return true;
         }
 
-        private bool GenerateRoadInScene()
+        private bool GenerateRoadSlabInSceneTop()
         {
-            if (_scene_game.Children.OfType<Road>().FirstOrDefault(x => x.IsAnimating == false) is Road road)
+            if (_scene_game.Children.OfType<RoadSlab>().FirstOrDefault(x => x.IsAnimating == false) is RoadSlab roadSlab)
             {
-                road.IsAnimating = true;
+                roadSlab.IsAnimating = true;
 
-                road.SetPosition(
-                    left: _scene_game.Width / 2 - road.Width * _scene_game.DownScaling,
-                    top: 0 - road.Width * _scene_game.DownScaling,
+                roadSlab.SetPosition(
+                    left: (_scene_game.Width / 2 - roadSlab.Width / 1.5) * _scene_game.DownScaling,
+                    top: (0 - roadSlab.Width) * _scene_game.DownScaling,
                     z: 0);
 
-                // Console.WriteLine("Road Mark generated.");
+                // Console.WriteLine("RoadSlab Mark generated.");
 
                 return true;
             }
@@ -988,24 +988,43 @@ namespace HonkTrooper
             return false;
         }
 
-        private bool AnimateRoad(Construct Road)
+        private bool GenerateRoadSlabInSceneBottom()
         {
-            var speed = (_scene_game.Speed + Road.SpeedOffset);
-            MoveConstruct(construct: Road, speed: speed);
+            if (_scene_game.Children.OfType<RoadSlab>().FirstOrDefault(x => x.IsAnimating == false) is RoadSlab roadSlab)
+            {
+                roadSlab.IsAnimating = true;
+
+                roadSlab.SetPosition(
+                    left: (-1 * roadSlab.Width) * _scene_game.DownScaling,
+                    top: (_scene_game.Height / 2.5) * _scene_game.DownScaling,
+                    z: 0);
+
+                // Console.WriteLine("RoadSlab Mark generated.");
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimateRoadSlab(Construct roadSlab)
+        {
+            var speed = (_scene_game.Speed + roadSlab.SpeedOffset);
+            MoveConstruct(construct: roadSlab, speed: speed);
             return true;
         }
 
-        private bool RecycleRoad(Construct Road)
+        private bool RecycleRoadSlab(Construct roadSlab)
         {
-            var hitBox = Road.GetHitBox();
+            var hitBox = roadSlab.GetHitBox();
 
             if (hitBox.Top > _scene_game.Height || hitBox.Left > _scene_game.Width)
             {
-                Road.SetPosition(
+                roadSlab.SetPosition(
                     left: -1500,
                     top: -1500);
 
-                Road.IsAnimating = false;
+                roadSlab.IsAnimating = false;
             }
 
             return true;
@@ -1109,8 +1128,8 @@ namespace HonkTrooper
                 tree.IsAnimating = true;
 
                 tree.SetPosition(
-                    left: _scene_game.Width / 2 - tree.Width * _scene_game.DownScaling,
-                    top: 0 - tree.Width * _scene_game.DownScaling,
+                    left: (_scene_game.Width / 2 - tree.Width) * _scene_game.DownScaling,
+                    top: (0 - tree.Width) * _scene_game.DownScaling,
                     z: 2);
 
                 SyncDropShadow(tree);
@@ -1130,8 +1149,8 @@ namespace HonkTrooper
                 tree.IsAnimating = true;
 
                 tree.SetPosition(
-                    left: -1 * tree.Width * _scene_game.DownScaling,
-                    top: _scene_game.Height / 2 * _scene_game.DownScaling,
+                    left: (-1 * tree.Width) * _scene_game.DownScaling,
+                    top: (_scene_game.Height / 2.5) * _scene_game.DownScaling,
                     z: 4);
 
                 SyncDropShadow(tree);
@@ -2274,13 +2293,19 @@ namespace HonkTrooper
             _boss_health_bar.Reset();
             _game_score_bar.Reset();
 
-            // first add road
-            _scene_game.AddToScene(new Generator(
-                generationDelay: 70,
-                generationAction: GenerateRoadInScene,
-                startUpAction: SpawnRoadsInScene));
+            //// first add road slabs
+            //_scene_game.AddToScene(new Generator(
+            //    generationDelay: 70,
+            //    generationAction: GenerateRoadSlabInSceneTop,
+            //    startUpAction: SpawnRoadSlabsInScene));
 
-            // first add road marks
+            //// first add road slabs
+            //_scene_game.AddToScene(new Generator(
+            //    generationDelay: 70,
+            //    generationAction: GenerateRoadSlabInSceneBottom,
+            //    startUpAction: SpawnRoadSlabsInScene));
+
+            // then add road marks
             _scene_game.AddToScene(new Generator(
                 generationDelay: 30,
                 generationAction: GenerateRoadMarkInScene,
