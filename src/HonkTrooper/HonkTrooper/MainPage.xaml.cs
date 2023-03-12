@@ -331,6 +331,7 @@ namespace HonkTrooper
         {
             _player.Pop();
             _player.Hover();
+            _player.DepleteAttackStance();
 
             var speed = (_scene_game.Speed + player.SpeedOffset) * _scene_game.DownScaling;
 
@@ -428,6 +429,8 @@ namespace HonkTrooper
                 _scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss &&
                 _scene_game.Children.OfType<PlayerBomb>().FirstOrDefault(x => x.IsAnimating == false) is PlayerBomb playerBomb)
             {
+                _player.SetAttackStance();
+
                 playerBomb.Reset();
                 playerBomb.IsAnimating = true;
                 playerBomb.SetPopping();
@@ -603,6 +606,8 @@ namespace HonkTrooper
             if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
                 _scene_game.Children.OfType<PlayerBombGround>().FirstOrDefault(x => x.IsAnimating == false) is PlayerBombGround bomb)
             {
+                _player.SetAttackStance();
+
                 bomb.Reset();
                 bomb.IsAnimating = true;
                 bomb.IsGravitating = true;
@@ -722,6 +727,8 @@ namespace HonkTrooper
                 _scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss &&
                 _scene_game.Children.OfType<PlayerBombSeeking>().FirstOrDefault(x => x.IsAnimating == false) is PlayerBombSeeking playerBombSeeking)
             {
+                _player.SetAttackStance();
+
                 playerBombSeeking.Reset();
                 playerBombSeeking.IsAnimating = true;
                 playerBombSeeking.SetPopping();

@@ -14,6 +14,8 @@ namespace HonkTrooper
         private Uri[] _bomb_uris;
         private Uri[] _bomb_blast_uris;
 
+        private readonly Image _content_image;
+
         #endregion
 
         #region Ctor
@@ -42,12 +44,13 @@ namespace HonkTrooper
 
             var uri = _bomb_uris[_random.Next(0, _bomb_uris.Length)];
 
-            var content = new Image()
+            _content_image = new Image()
             {
                 Source = new BitmapImage(uriSource: uri)
             };
 
-            SetChild(content);
+            SetChild(_content_image);
+
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET - 4;
             IsometricDisplacement = 0.5;
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE;
@@ -79,13 +82,7 @@ namespace HonkTrooper
             SetScaleTransform(1);
 
             var uri = _bomb_uris[_random.Next(0, _bomb_uris.Length)];
-
-            var content = new Image()
-            {
-                Source = new BitmapImage(uriSource: uri)
-            };
-
-            SetChild(content);
+            _content_image.Source = new BitmapImage(uri);
 
             IsBlasting = false;
             TimeLeftUntilBlast = 25;
@@ -104,14 +101,7 @@ namespace HonkTrooper
         public void SetBlast()
         {
             var uri = _bomb_blast_uris[_random.Next(0, _bomb_blast_uris.Length)];
-
-            var content = new Image()
-            {
-                Source = new BitmapImage(uriSource: uri)
-            };
-
-            SetChild(content);
-
+            _content_image.Source = new BitmapImage(uri);
             IsBlasting = true;
         }
 
