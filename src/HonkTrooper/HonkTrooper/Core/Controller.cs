@@ -426,7 +426,6 @@ namespace HonkTrooper
                 else
                 {
                     DeactivateMoveUp();
-                    DeactivateMoveDown();
                 }
             }
             else
@@ -438,7 +437,6 @@ namespace HonkTrooper
                 else
                 {
                     DeactivateMoveUp();
-                    DeactivateMoveDown();
                 }
             }
 
@@ -451,7 +449,6 @@ namespace HonkTrooper
                 else
                 {
                     DeactivateMoveLeft();
-                    DeactivateMoveRight();
                 }
             }
             else
@@ -463,7 +460,6 @@ namespace HonkTrooper
                 else
                 {
                     DeactivateMoveRight();
-                    DeactivateMoveLeft();
                 }
             }
 
