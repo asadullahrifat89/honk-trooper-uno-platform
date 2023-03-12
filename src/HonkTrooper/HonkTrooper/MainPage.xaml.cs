@@ -2313,7 +2313,7 @@ namespace HonkTrooper
 
             // then add the top trees
             _scene_game.AddToScene(new Generator(
-                generationDelay: 35,
+                generationDelay: 30,
                 generationAction: GenerateTreeInSceneTop,
                 startUpAction: SpawnTreesInScene));
 
@@ -2325,7 +2325,7 @@ namespace HonkTrooper
 
             // then add the bottom trees which will appear forward in z wrt to the vehicles
             _scene_game.AddToScene(new Generator(
-                generationDelay: 35,
+                generationDelay: 30,
                 generationAction: GenerateTreeInSceneBottom,
                 startUpAction: SpawnTreesInScene));
 
