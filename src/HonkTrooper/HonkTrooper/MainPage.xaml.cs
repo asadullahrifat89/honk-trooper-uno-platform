@@ -950,85 +950,85 @@ namespace HonkTrooper
 
         #region RoadSlab
 
-        private bool SpawnRoadSlabsInScene()
-        {
-            for (int i = 0; i < 8; i++)
-            {
-                RoadSlab roadSlab = new(
-                    animateAction: AnimateRoadSlab,
-                    recycleAction: RecycleRoadSlab,
-                    downScaling: _scene_game.DownScaling);
+        //private bool SpawnRoadSlabsInScene()
+        //{
+        //    for (int i = 0; i < 8; i++)
+        //    {
+        //        RoadSlab roadSlab = new(
+        //            animateAction: AnimateRoadSlab,
+        //            recycleAction: RecycleRoadSlab,
+        //            downScaling: _scene_game.DownScaling);
 
-                roadSlab.SetPosition(
-                    left: -1500,
-                    top: -1500);
+        //        roadSlab.SetPosition(
+        //            left: -1500,
+        //            top: -1500);
 
-                _scene_game.AddToScene(roadSlab);
-            }
+        //        _scene_game.AddToScene(roadSlab);
+        //    }
 
-            return true;
-        }
+        //    return true;
+        //}
 
-        private bool GenerateRoadSlabInSceneTop()
-        {
-            if (_scene_game.Children.OfType<RoadSlab>().FirstOrDefault(x => x.IsAnimating == false) is RoadSlab roadSlab)
-            {
-                roadSlab.IsAnimating = true;
+        //private bool GenerateRoadSlabInSceneTop()
+        //{
+        //    if (_scene_game.Children.OfType<RoadSlab>().FirstOrDefault(x => x.IsAnimating == false) is RoadSlab roadSlab)
+        //    {
+        //        roadSlab.IsAnimating = true;
 
-                roadSlab.SetPosition(
-                    left: (_scene_game.Width / 2 - roadSlab.Width / 1.5) * _scene_game.DownScaling,
-                    top: (0 - roadSlab.Width) * _scene_game.DownScaling,
-                    z: 0);
+        //        roadSlab.SetPosition(
+        //            left: (_scene_game.Width / 2 - roadSlab.Width / 1.5) * _scene_game.DownScaling,
+        //            top: (0 - roadSlab.Width) * _scene_game.DownScaling,
+        //            z: 0);
 
-                // Console.WriteLine("RoadSlab Mark generated.");
+        //        // Console.WriteLine("RoadSlab Mark generated.");
 
-                return true;
-            }
+        //        return true;
+        //    }
 
-            return false;
-        }
+        //    return false;
+        //}
 
-        private bool GenerateRoadSlabInSceneBottom()
-        {
-            if (_scene_game.Children.OfType<RoadSlab>().FirstOrDefault(x => x.IsAnimating == false) is RoadSlab roadSlab)
-            {
-                roadSlab.IsAnimating = true;
+        //private bool GenerateRoadSlabInSceneBottom()
+        //{
+        //    if (_scene_game.Children.OfType<RoadSlab>().FirstOrDefault(x => x.IsAnimating == false) is RoadSlab roadSlab)
+        //    {
+        //        roadSlab.IsAnimating = true;
 
-                roadSlab.SetPosition(
-                    left: (-1 * roadSlab.Width) * _scene_game.DownScaling,
-                    top: (_scene_game.Height / 2.5) * _scene_game.DownScaling,
-                    z: 0);
+        //        roadSlab.SetPosition(
+        //            left: (-1 * roadSlab.Width) * _scene_game.DownScaling,
+        //            top: (_scene_game.Height / 2.5) * _scene_game.DownScaling,
+        //            z: 0);
 
-                // Console.WriteLine("RoadSlab Mark generated.");
+        //        // Console.WriteLine("RoadSlab Mark generated.");
 
-                return true;
-            }
+        //        return true;
+        //    }
 
-            return false;
-        }
+        //    return false;
+        //}
 
-        private bool AnimateRoadSlab(Construct roadSlab)
-        {
-            var speed = (_scene_game.Speed + roadSlab.SpeedOffset);
-            MoveConstruct(construct: roadSlab, speed: speed);
-            return true;
-        }
+        //private bool AnimateRoadSlab(Construct roadSlab)
+        //{
+        //    var speed = (_scene_game.Speed + roadSlab.SpeedOffset);
+        //    MoveConstruct(construct: roadSlab, speed: speed);
+        //    return true;
+        //}
 
-        private bool RecycleRoadSlab(Construct roadSlab)
-        {
-            var hitBox = roadSlab.GetHitBox();
+        //private bool RecycleRoadSlab(Construct roadSlab)
+        //{
+        //    var hitBox = roadSlab.GetHitBox();
 
-            if (hitBox.Top > _scene_game.Height || hitBox.Left > _scene_game.Width)
-            {
-                roadSlab.SetPosition(
-                    left: -1500,
-                    top: -1500);
+        //    if (hitBox.Top > _scene_game.Height || hitBox.Left > _scene_game.Width)
+        //    {
+        //        roadSlab.SetPosition(
+        //            left: -1500,
+        //            top: -1500);
 
-                roadSlab.IsAnimating = false;
-            }
+        //        roadSlab.IsAnimating = false;
+        //    }
 
-            return true;
-        }
+        //    return true;
+        //}
 
         #endregion
 
