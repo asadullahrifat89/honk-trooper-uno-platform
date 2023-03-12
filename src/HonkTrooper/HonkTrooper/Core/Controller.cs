@@ -46,148 +46,6 @@ namespace HonkTrooper
             SetGyrometer();
         }
 
-        public void SetGyrometer()
-        {
-            Gyrometer = Gyrometer.GetDefault();
-
-            if (Gyrometer is not null)
-            {
-                // Console.WriteLine($"Gyrometer detected.");
-                Gyrometer.ReadingChanged += Gyrometer_ReadingChanged;
-            }
-        }
-
-        public void UnsetGyrometer()
-        {
-
-            if (Gyrometer is not null)
-            {
-                // Console.WriteLine($"Gyrometer detected.");
-                Gyrometer.ReadingChanged -= Gyrometer_ReadingChanged;
-            }
-        }
-
-        private void Gyrometer_ReadingChanged(Gyrometer sender, GyrometerReadingChangedEventArgs args)
-        {
-            //await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
-            //{
-            AngularVelocityX = args.Reading.AngularVelocityX;
-            AngularVelocityY = args.Reading.AngularVelocityY;
-            AngularVelocityZ = args.Reading.AngularVelocityZ;
-            //});
-            Console.WriteLine($"AngularVelocityX: {AngularVelocityX}");
-            Console.WriteLine($"AngularVelocityY: {AngularVelocityY}");
-            Console.WriteLine($"AngularVelocityZ: {AngularVelocityZ}");
-
-            #region Isometric Movement
-
-            if (AngularVelocityY > 0)
-            {
-                if (AngularVelocityY > 20)
-                {
-                    ActivateMoveRight();
-                }
-                else
-                {
-                    DeactivateMoveLeft();
-                    DeactivateMoveRight();
-                }
-            }
-            else
-            {
-                if (Math.Abs(AngularVelocityY) > 20)
-                {
-                    ActivateMoveLeft();
-                }
-                else
-                {
-                    DeactivateMoveRight();
-                    DeactivateMoveLeft();
-                }
-            }
-
-            if (AngularVelocityX > 0)
-            {
-                if (AngularVelocityX > 15)
-                {
-                    ActivateMoveDown();
-                }
-                else
-                {
-                    DeactivateMoveUp();
-                    DeactivateMoveDown();
-                }
-            }
-            else
-            {
-                if (Math.Abs(AngularVelocityX) > 15)
-                {
-                    ActivateMoveUp();
-                }
-                else
-                {
-                    DeactivateMoveUp();
-                    DeactivateMoveDown();
-                }
-            }
-
-            #endregion
-
-            #region Linear Movement
-
-            //if (AngularVelocityY > 0)
-            //{
-            //    if (AngularVelocityY > 20)
-            //    {
-            //        ActivateMoveUp();
-            //    }
-            //    else
-            //    {
-            //        DeactivateMoveUp();
-            //        DeactivateMoveDown();
-            //    }
-            //}
-            //else
-            //{
-            //    if (Math.Abs(AngularVelocityY) > 20)
-            //    {
-            //        ActivateMoveDown();
-            //    }
-            //    else
-            //    {
-            //        DeactivateMoveUp();
-            //        DeactivateMoveDown();
-            //    }
-            //}
-
-            //if (AngularVelocityX > 0)
-            //{
-            //    if (AngularVelocityX > 15)
-            //    {
-            //        ActivateMoveRight();
-            //    }
-            //    else
-            //    {
-            //        DeactivateMoveRight();
-            //        DeactivateMoveLeft();
-            //    }
-            //}
-            //else
-            //{
-            //    if (Math.Abs(AngularVelocityX) > 15)
-            //    {
-            //        ActivateMoveLeft();
-            //    }
-            //    else
-            //    {
-            //        DeactivateMoveRight();
-            //        DeactivateMoveLeft();
-            //    }
-            //}
-
-            #endregion
-        }
-
         #endregion
 
         #region Methods
@@ -497,6 +355,208 @@ namespace HonkTrooper
                 Margin = new Thickness(20),
             };
             this.Children.Add(PauseButton);
+        }
+
+        public void SetGyrometer()
+        {
+            Gyrometer = Gyrometer.GetDefault();
+
+            if (Gyrometer is not null)
+            {
+                // Console.WriteLine($"Gyrometer detected.");
+                Gyrometer.ReadingChanged += Gyrometer_ReadingChanged;
+            }
+        }
+
+        public void UnsetGyrometer()
+        {
+
+            if (Gyrometer is not null)
+            {
+                // Console.WriteLine($"Gyrometer detected.");
+                Gyrometer.ReadingChanged -= Gyrometer_ReadingChanged;
+            }
+        }
+
+        #endregion
+
+        #region Events
+
+        private void Gyrometer_ReadingChanged(Gyrometer sender, GyrometerReadingChangedEventArgs args)
+        {
+            //await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            //{
+            AngularVelocityX = args.Reading.AngularVelocityX;
+            AngularVelocityY = args.Reading.AngularVelocityY;
+            AngularVelocityZ = args.Reading.AngularVelocityZ;
+            //});
+            Console.WriteLine($"AngularVelocityX: {AngularVelocityX}");
+            Console.WriteLine($"AngularVelocityY: {AngularVelocityY}");
+            Console.WriteLine($"AngularVelocityZ: {AngularVelocityZ}");
+
+            #region Isometric Movement V1
+
+            //if (AngularVelocityY > 0)
+            //{
+            //    if (AngularVelocityY > 20)
+            //    {
+            //        ActivateMoveRight();
+            //    }
+            //    else
+            //    {
+            //        DeactivateMoveLeft();
+            //        DeactivateMoveRight();
+            //    }
+            //}
+            //else
+            //{
+            //    if (Math.Abs(AngularVelocityY) > 20)
+            //    {
+            //        ActivateMoveLeft();
+            //    }
+            //    else
+            //    {
+            //        DeactivateMoveRight();
+            //        DeactivateMoveLeft();
+            //    }
+            //}
+
+            //if (AngularVelocityX > 0)
+            //{
+            //    if (AngularVelocityX > 15)
+            //    {
+            //        ActivateMoveDown();
+            //    }
+            //    else
+            //    {
+            //        DeactivateMoveUp();
+            //        DeactivateMoveDown();
+            //    }
+            //}
+            //else
+            //{
+            //    if (Math.Abs(AngularVelocityX) > 15)
+            //    {
+            //        ActivateMoveUp();
+            //    }
+            //    else
+            //    {
+            //        DeactivateMoveUp();
+            //        DeactivateMoveDown();
+            //    }
+            //}
+
+            #endregion
+
+            #region Isometric Movement V2
+
+            if (AngularVelocityY > 0)
+            {
+                if (AngularVelocityY > 20)
+                {
+                    if (AngularVelocityX > 0 && AngularVelocityX > 15)
+                        ActivateMoveRight();
+                }
+                else
+                {
+                    DeactivateMoveLeft();
+                    DeactivateMoveRight();
+                }
+            }
+            else
+            {
+                if (Math.Abs(AngularVelocityY) > 20)
+                {
+                    if (AngularVelocityX < 0 && Math.Abs(AngularVelocityX) > 15)
+                        ActivateMoveLeft();
+                }
+                else
+                {
+                    DeactivateMoveRight();
+                    DeactivateMoveLeft();
+                }
+            }
+
+            if (AngularVelocityX > 0)
+            {
+                if (AngularVelocityX > 15)
+                {
+                    ActivateMoveDown();
+                }
+                else
+                {
+                    DeactivateMoveUp();
+                    DeactivateMoveDown();
+                }
+            }
+            else
+            {
+                if (Math.Abs(AngularVelocityX) > 15)
+                {
+                    ActivateMoveUp();
+                }
+                else
+                {
+                    DeactivateMoveUp();
+                    DeactivateMoveDown();
+                }
+            }
+
+            #endregion
+
+            #region Linear Movement
+
+            //if (AngularVelocityY > 0)
+            //{
+            //    if (AngularVelocityY > 20)
+            //    {
+            //        ActivateMoveUp();
+            //    }
+            //    else
+            //    {
+            //        DeactivateMoveUp();
+            //        DeactivateMoveDown();
+            //    }
+            //}
+            //else
+            //{
+            //    if (Math.Abs(AngularVelocityY) > 20)
+            //    {
+            //        ActivateMoveDown();
+            //    }
+            //    else
+            //    {
+            //        DeactivateMoveUp();
+            //        DeactivateMoveDown();
+            //    }
+            //}
+
+            //if (AngularVelocityX > 0)
+            //{
+            //    if (AngularVelocityX > 15)
+            //    {
+            //        ActivateMoveRight();
+            //    }
+            //    else
+            //    {
+            //        DeactivateMoveRight();
+            //        DeactivateMoveLeft();
+            //    }
+            //}
+            //else
+            //{
+            //    if (Math.Abs(AngularVelocityX) > 15)
+            //    {
+            //        ActivateMoveLeft();
+            //    }
+            //    else
+            //    {
+            //        DeactivateMoveRight();
+            //        DeactivateMoveLeft();
+            //    }
+            //}
+
+            #endregion
         }
 
         #endregion
