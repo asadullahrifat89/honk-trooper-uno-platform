@@ -12,6 +12,16 @@ namespace HonkTrooper
 {
     public partial class Controller : ControllerBase
     {
+
+        #region Fields
+
+        private int _move_up_activator;
+        private int _move_down_activator;
+        private int _move_left_activator;
+        private int _move_right_activator;
+
+        #endregion
+
         #region Properties
 
         public Grid Joystick { get; set; }
@@ -30,11 +40,11 @@ namespace HonkTrooper
 
         public double AngularVelocityZ { get; set; }
 
-        public double AccelerationX { get; set; }
+        //public double AccelerationX { get; set; }
 
-        public double AccelerationY { get; set; }
+        //public double AccelerationY { get; set; }
 
-        public double AccelerationZ { get; set; }
+        //public double AccelerationZ { get; set; }
 
         #endregion
 
@@ -425,7 +435,7 @@ namespace HonkTrooper
                 }
                 else
                 {
-                    DeactivateMoveUp();
+                    DeactivateMoveDown();
                 }
             }
             else
@@ -448,7 +458,7 @@ namespace HonkTrooper
                 }
                 else
                 {
-                    DeactivateMoveLeft();
+                    DeactivateMoveRight();
                 }
             }
             else
@@ -459,9 +469,59 @@ namespace HonkTrooper
                 }
                 else
                 {
-                    DeactivateMoveRight();
+                    DeactivateMoveLeft();
                 }
             }
+
+            #endregion
+
+            #region Isometric Movement V2
+
+            //if (AngularVelocityX > 0)
+            //{
+            //    if (AngularVelocityX > 15)
+            //    {
+            //        ActivateMoveDown();
+            //    }
+            //    else
+            //    {
+            //        DeactivateMoveUp();
+            //    }
+            //}
+            //else
+            //{
+            //    if (Math.Abs(AngularVelocityX) > 15)
+            //    {
+            //        ActivateMoveUp();
+            //    }
+            //    else
+            //    {
+            //        DeactivateMoveUp();
+            //    }
+            //}
+
+            //if (AngularVelocityY > 0)
+            //{
+            //    if (AngularVelocityY > 10)
+            //    {
+            //        ActivateMoveRight();
+            //    }
+            //    else
+            //    {
+            //        DeactivateMoveLeft();
+            //    }
+            //}
+            //else
+            //{
+            //    if (Math.Abs(AngularVelocityY) > 10)
+            //    {
+            //        ActivateMoveLeft();
+            //    }
+            //    else
+            //    {
+            //        DeactivateMoveRight();
+            //    }
+            //}
 
             #endregion
 
