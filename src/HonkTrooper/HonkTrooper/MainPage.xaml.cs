@@ -333,6 +333,7 @@ namespace HonkTrooper
             _player.Hover();
             _player.DepleteAttackStance();
             _player.DepleteWinStance();
+            _player.DepleteHitStance();
 
             var speed = (_scene_game.Speed + player.SpeedOffset) * _scene_game.DownScaling;
 
@@ -392,6 +393,7 @@ namespace HonkTrooper
         {
             _player.SetPopping();
             _player.LooseHealth();
+            _player.SetHitStance();
 
             _player_health_bar.SetValue(_player.Health);
 

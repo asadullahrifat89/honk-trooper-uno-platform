@@ -58,6 +58,7 @@
     <None Remove="Assets\Images\honk_2.png" />
     <None Remove="Assets\Images\honk_3.png" />
     <None Remove="Assets\Images\player_1_attack.png" />
+    <None Remove="Assets\Images\player_1_hit.png" />
     <None Remove="Assets\Images\player_1_idle.png" />
     <None Remove="Assets\Images\player_1_win.png" />
     <None Remove="Assets\Images\player_bomb_seeking_2.png" />

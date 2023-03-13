@@ -13,6 +13,7 @@ namespace HonkTrooper
         private Uri[] _player_uris;
         private Uri[] _player_attack_uris;
         private Uri[] _player_win_uris;
+        private Uri[] _player_hit_uris;
 
         private double _hoverDelay;
         private readonly double _hoverDelayDefault = 15;
@@ -39,6 +40,9 @@ namespace HonkTrooper
         private double _winStanceDelay;
         private readonly double _winStanceDelayDefault = 15;
 
+        private double _hitStanceDelay;
+        private readonly double _hitStanceDelayDefault = 1.5;
+
         private readonly Image _content_image;
 
         #endregion
@@ -56,6 +60,7 @@ namespace HonkTrooper
             _player_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER).Select(x => x.Uri).ToArray();
             _player_attack_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_ATTACK).Select(x => x.Uri).ToArray();
             _player_win_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_WIN).Select(x => x.Uri).ToArray();
+            _player_hit_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_HIT).Select(x => x.Uri).ToArray();
 
             ConstructType = ConstructType.PLAYER;
 
@@ -132,6 +137,26 @@ namespace HonkTrooper
             var uri = _player_win_uris[_random.Next(0, _player_win_uris.Length)];
             _content_image.Source = new BitmapImage(uriSource: uri);
             _winStanceDelay = _winStanceDelayDefault;
+        }
+
+        public void SetHitStance()
+        {
+            var uri = _player_hit_uris[_random.Next(0, _player_hit_uris.Length)];
+            _content_image.Source = new BitmapImage(uriSource: uri);
+            _hitStanceDelay = _hitStanceDelayDefault;
+        }
+
+        public void DepleteHitStance()
+        {
+            if (_hitStanceDelay > 0)
+            {
+                _hitStanceDelay -= 0.1;
+
+                if (_hitStanceDelay <= 0)
+                {
+                    SetIdleStance();
+                }
+            }
         }
 
         public void DepleteAttackStance()
