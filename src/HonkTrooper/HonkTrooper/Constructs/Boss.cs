@@ -216,7 +216,7 @@ namespace HonkTrooper
             }
         }
 
-        public void SeekPlayer(Rect playerPoint)
+        private void SeekPlayer(Rect playerPoint)
         {
             _changeMovementPatternDelay -= 0.1;
 
@@ -268,7 +268,7 @@ namespace HonkTrooper
             }
         }
 
-        public bool MoveInSquares(double speed, double sceneWidth, double sceneHeight)
+        private bool MoveInSquares(double speed, double sceneWidth, double sceneHeight)
         {
             _changeMovementPatternDelay -= 0.1;
 
@@ -343,7 +343,7 @@ namespace HonkTrooper
             return false;
         }
 
-        public bool MoveLeftAndRight(double speed, double sceneWidth, double sceneHeight)
+        private bool MoveLeftAndRight(double speed, double sceneWidth, double sceneHeight)
         {
             _changeMovementPatternDelay -= 0.1;
 
@@ -392,17 +392,6 @@ namespace HonkTrooper
             return false;
         }
 
-        private double GetFlightSpeed(double distance)
-        {
-            var flightSpeed = (distance / _lag);
-
-            return flightSpeed;
-
-            //return flightSpeed < Constants.DEFAULT_SPEED_OFFSET - 1 
-            //    ? Constants.DEFAULT_SPEED_OFFSET - 1 
-            //    : flightSpeed;
-        }
-
         private void RandomizeMovementPattern()
         {
             _changeMovementPatternDelay = _random.Next(40, 60);
@@ -413,6 +402,16 @@ namespace HonkTrooper
         {
             var uri = _boss_uris[_random.Next(0, _boss_uris.Length)];
             _content_image.Source = new BitmapImage(uriSource: uri);
+        }
+
+        private double GetFlightSpeed(double distance)
+        {
+            var flightSpeed = distance / _lag;
+            return flightSpeed;
+
+            //return flightSpeed < Constants.DEFAULT_SPEED_OFFSET - 1 
+            //    ? Constants.DEFAULT_SPEED_OFFSET - 1 
+            //    : flightSpeed;
         }
 
         #endregion
