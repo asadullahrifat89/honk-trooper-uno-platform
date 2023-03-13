@@ -10,19 +10,19 @@ The game engine has four main classes.
 
 ### Construct
 
-This is used to define a game element. This can be added to a Scene. A construct can contain two basic functions. Animate and Recycle. These functions can set in code.
+This is used to define a game element. This can be added to a Scene. A construct can contain two basic functions. Animate and Recycle. These functions can be set in code.
 
 ### Generator
 
-This is used to define a generaion sequence of a particular construct. This can be added to a Scene. This accepts two functions. Startup and Generate. The Startup function is executed as soon as a generator is added to a scene.
+This is used to define a generation sequence of a particular construct. This can be added to a Scene. This accepts two functions. Startup and Generate. The Startup function is executed as soon as a generator is added to a scene.
 
 ### Scene
 
-This is used to host and render game elements in view. It will execute each constructs Animate and Recycle function that has been added to it. Additionally it will also execute the Generate function defined in code.
+This is used to host and render game elements in view. It will execute each construct's Animate and Recycle function that has been added to it. Additionally, it will also execute the Generate function defined in the code.
 
 ### Controller
 
-This is used to intercept user input from keyboard and touch-screen. It exposes properties which can be used to detect player movement directions.
+This is used to intercept user input from the keyboard and touch-screen. It exposes properties that can be used to detect player movement directions.
 
 ## Screenshots
 
