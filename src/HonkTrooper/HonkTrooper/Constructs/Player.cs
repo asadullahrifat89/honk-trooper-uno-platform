@@ -134,12 +134,6 @@ namespace HonkTrooper
             _winStanceDelay = _winStanceDelayDefault;
         }
 
-        private void SetIdleStance()
-        {
-            var uri = _player_uris[_random.Next(0, _player_uris.Length)];
-            _content_image.Source = new BitmapImage(uriSource: uri);
-        }
-
         public void DepleteAttackStance()
         {
             if (_attackStanceDelay > 0)
@@ -427,6 +421,12 @@ namespace HonkTrooper
         public void GainHealth()
         {
             Health += 10;
+        }
+
+        private void SetIdleStance()
+        {
+            var uri = _player_uris[_random.Next(0, _player_uris.Length)];
+            _content_image.Source = new BitmapImage(uriSource: uri);
         }
 
         #endregion        

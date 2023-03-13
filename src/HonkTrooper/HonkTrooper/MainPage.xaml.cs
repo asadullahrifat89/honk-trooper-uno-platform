@@ -1666,14 +1666,12 @@ namespace HonkTrooper
             if (boss1.IsDead)
             {
                 boss.Shrink();
-
-                // Console.WriteLine($"Boss ScaleX: {boss.GetScaleX()} ScaleY: {boss.GetScaleY()}");
             }
             else
             {
                 boss1.Hover();
-
                 boss.Pop();
+                boss1.DepleteHitStance();
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
@@ -1886,6 +1884,7 @@ namespace HonkTrooper
         {
             boss.SetPopping();
             boss.LooseHealth();
+            boss.SetHitStance();
 
             _boss_health_bar.SetValue(boss.Health);
 
