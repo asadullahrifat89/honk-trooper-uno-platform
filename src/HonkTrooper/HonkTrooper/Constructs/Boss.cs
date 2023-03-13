@@ -208,7 +208,10 @@ namespace HonkTrooper
                     SeekPlayer(playerPoint);
                     break;
                 case BossMovementPattern.SQUARE:
-                    MoveInSquares(speed, sceneWidth, sceneHeight);
+                    MoveInSquares(speed: speed, sceneWidth: sceneWidth, sceneHeight: sceneHeight);
+                    break;
+                case BossMovementPattern.LEFT_RIGHT:
+                    MoveLeftAndRight(speed: speed, sceneWidth: sceneWidth, sceneHeight: sceneHeight);
                     break;
             }
         }
@@ -340,6 +343,55 @@ namespace HonkTrooper
             return false;
         }
 
+        public bool MoveLeftAndRight(double speed, double sceneWidth, double sceneHeight)
+        {
+            _changeMovementPatternDelay -= 0.1;
+
+            if (_changeMovementPatternDelay < 0)
+            {
+                RandomizeMovementPattern();
+                return true;
+            }
+
+            if (IsAttacking && !AwaitMoveLeft && !AwaitMoveRight)
+            {
+                AwaitMoveRight = true;
+            }
+            else
+            {
+                IsAttacking = true;
+            }
+
+            if (IsAttacking)
+            {
+                if (AwaitMoveRight)
+                {
+                    MoveRight(speed);
+
+                    if (GetTop() < 0)
+                    {
+                        AwaitMoveRight = false;
+                        AwaitMoveLeft = true;
+                    }
+                }
+                else
+                {
+                    if (AwaitMoveLeft)
+                    {
+                        MoveLeft(speed);
+
+                        if (GetLeft() < 0 || GetBottom() > sceneHeight)
+                        {
+                            AwaitMoveLeft = false;
+                            AwaitMoveRight = true;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
         private double GetFlightSpeed(double distance)
         {
             var flightSpeed = (distance / _lag);
@@ -370,5 +422,6 @@ namespace HonkTrooper
     {
         PLAYER_SEEKING,
         SQUARE,
+        LEFT_RIGHT,
     }
 }
