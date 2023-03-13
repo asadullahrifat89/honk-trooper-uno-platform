@@ -84,9 +84,9 @@ namespace HonkTrooper
 
             #endregion
 
-            #region Up
+            #region Left
 
-            Border up = new()
+            Border l = new()
             {
                 Background = new SolidColorBrush(Colors.Goldenrod),
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
@@ -103,17 +103,17 @@ namespace HonkTrooper
                 Margin = new Thickness(Constants.DEFAULT_CONTROLLER_DIRECTION_KEYS_MARGIN),
             };
 
-            up.PointerEntered += (s, e) => { ActivateMoveUp(); };
-            up.PointerExited += (s, e) => { DeactivateMoveUp(); };
+            l.PointerEntered += (s, e) => { ActivateMoveLeft(); };
+            l.PointerExited += (s, e) => { DeactivateMoveLeft(); };
 
-            Grid.SetRow(up, 0);
-            Grid.SetColumn(up, 0);
+            Grid.SetRow(l, 0);
+            Grid.SetColumn(l, 0);
 
             #endregion
 
-            #region Down
+            #region Right
 
-            Border down = new()
+            Border r = new()
             {
                 Background = new SolidColorBrush(Colors.Goldenrod),
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
@@ -130,17 +130,17 @@ namespace HonkTrooper
                 Margin = new Thickness(Constants.DEFAULT_CONTROLLER_DIRECTION_KEYS_MARGIN),
             };
 
-            down.PointerEntered += (s, e) => { ActivateMoveDown(); };
-            down.PointerExited += (s, e) => { DeactivateMoveDown(); };
+            r.PointerEntered += (s, e) => { ActivateMoveRight(); };
+            r.PointerExited += (s, e) => { DeactivateMoveRight(); };
 
-            Grid.SetRow(down, 1);
-            Grid.SetColumn(down, 1);
+            Grid.SetRow(r, 1);
+            Grid.SetColumn(r, 1);
 
             #endregion
 
-            #region Left
+            #region Down
 
-            Border left = new()
+            Border d = new()
             {
                 Background = new SolidColorBrush(Colors.Goldenrod),
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
@@ -157,17 +157,17 @@ namespace HonkTrooper
                 Margin = new Thickness(Constants.DEFAULT_CONTROLLER_DIRECTION_KEYS_MARGIN),
             };
 
-            left.PointerEntered += (s, e) => { ActivateMoveLeft(); };
-            left.PointerExited += (s, e) => { DeactivateMoveLeft(); };
+            d.PointerEntered += (s, e) => { ActivateMoveDown(); };
+            d.PointerExited += (s, e) => { DeactivateMoveDown(); };
 
-            Grid.SetRow(left, 1);
-            Grid.SetColumn(left, 0);
+            Grid.SetRow(d, 1);
+            Grid.SetColumn(d, 0);
 
             #endregion
 
-            #region Right
+            #region Up
 
-            Border right = new()
+            Border u = new()
             {
                 Background = new SolidColorBrush(Colors.Goldenrod),
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
@@ -184,11 +184,11 @@ namespace HonkTrooper
                 Margin = new Thickness(Constants.DEFAULT_CONTROLLER_DIRECTION_KEYS_MARGIN),
             };
 
-            right.PointerEntered += (s, e) => { ActivateMoveRight(); };
-            right.PointerExited += (s, e) => { DeactivateMoveRight(); };
+            u.PointerEntered += (s, e) => { ActivateMoveUp(); };
+            u.PointerExited += (s, e) => { DeactivateMoveUp(); };
 
-            Grid.SetRow(right, 0);
-            Grid.SetColumn(right, 1);
+            Grid.SetRow(u, 0);
+            Grid.SetColumn(u, 1);
 
             #endregion
 
@@ -237,7 +237,7 @@ namespace HonkTrooper
 
             //#region Down
 
-            //Border down = new()
+            //Border r = new()
             //{
             //    Background = new SolidColorBrush(Colors.Goldenrod),
             //    Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
@@ -254,17 +254,17 @@ namespace HonkTrooper
             //    Margin = new Thickness(Constants.DEFAULT_CONTROLLER_DIRECTION_KEYS_MARGIN),
             //};
 
-            //down.PointerEntered += (s, e) => { ActivateMoveDown(); };
-            //down.PointerExited += (s, e) => { DeactivateMoveDown(); };
+            //r.PointerEntered += (s, e) => { ActivateMoveDown(); };
+            //r.PointerExited += (s, e) => { DeactivateMoveDown(); };
 
-            //Grid.SetRow(down, 2);
-            //Grid.SetColumn(down, 1);
+            //Grid.SetRow(r, 2);
+            //Grid.SetColumn(r, 1);
 
             //#endregion
 
             //#region Left
 
-            //Border left = new()
+            //Border d = new()
             //{
             //    Background = new SolidColorBrush(Colors.Goldenrod),
             //    Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
@@ -281,11 +281,11 @@ namespace HonkTrooper
             //    Margin = new Thickness(Constants.DEFAULT_CONTROLLER_DIRECTION_KEYS_MARGIN),
             //};
 
-            //left.PointerEntered += (s, e) => { ActivateMoveLeft(); };
-            //left.PointerExited += (s, e) => { DeactivateMoveLeft(); };
+            //d.PointerEntered += (s, e) => { ActivateMoveLeft(); };
+            //d.PointerExited += (s, e) => { DeactivateMoveLeft(); };
 
-            //Grid.SetRow(left, 1);
-            //Grid.SetColumn(left, 0);
+            //Grid.SetRow(d, 1);
+            //Grid.SetColumn(d, 0);
 
             //#endregion
 
@@ -318,10 +318,10 @@ namespace HonkTrooper
 
             #endregion
 
-            Joystick.Children.Add(up);
-            Joystick.Children.Add(down);
-            Joystick.Children.Add(left);
-            Joystick.Children.Add(right);
+            Joystick.Children.Add(l);
+            Joystick.Children.Add(r);
+            Joystick.Children.Add(d);
+            Joystick.Children.Add(u);
 
             this.Children.Add(Joystick);
         }
