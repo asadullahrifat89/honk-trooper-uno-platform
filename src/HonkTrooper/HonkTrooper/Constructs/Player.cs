@@ -224,96 +224,12 @@ namespace HonkTrooper
 
         #region Isometric Movement
 
-        //public void MoveUp(double speed)
-        //{
-        //    _isMovingUp = true;
-        //    _isMovingDown = false;
-
-        //    _isMovingLeft = false;
-        //    _isMovingRight = false;
-
-        //    SetLeft(GetLeft() - speed * 2);
-        //    SetTop(GetTop() - speed);
-
-        //    _movementStopDelay = _movementStopDelayDefault;
-        //    _lastSpeed = speed;
-
-        //    Rotate(
-        //        rotationDirection: RotationDirection.Backward,
-        //        threadhold: _rotationThreadhold,
-        //        rotationSpeed: _rotationSpeed);
-        //}
-
-        //public void MoveDown(double speed)
-        //{
-        //    _isMovingDown = true;
-        //    _isMovingUp = false;
-
-        //    _isMovingLeft = false;
-        //    _isMovingRight = false;
-
-        //    SetLeft(GetLeft() + speed * 2);
-        //    SetTop(GetTop() + speed);
-
-        //    _movementStopDelay = _movementStopDelayDefault;
-        //    _lastSpeed = speed;
-
-        //    Rotate(
-        //        rotationDirection: RotationDirection.Forward,
-        //        threadhold: _rotationThreadhold,
-        //        rotationSpeed: _rotationSpeed);
-        //}
-
-        //public void MoveLeft(double speed)
-        //{
-        //    _isMovingUp = false;
-        //    _isMovingDown = false;
-
-        //    _isMovingLeft = true;
-        //    _isMovingRight = false;
-
-        //    SetLeft(GetLeft() - speed);
-        //    SetTop(GetTop() + speed);
-
-        //    _movementStopDelay = _movementStopDelayDefault;
-        //    _lastSpeed = speed;
-
-        //    Rotate(
-        //        rotationDirection: RotationDirection.Backward,
-        //        threadhold: _rotationThreadhold,
-        //        rotationSpeed: _rotationSpeed);
-        //}
-
-        //public void MoveRight(double speed)
-        //{
-        //    _isMovingUp = false;
-        //    _isMovingDown = false;
-
-        //    _isMovingLeft = false;
-        //    _isMovingRight = true;
-
-        //    SetLeft(GetLeft() + speed);
-        //    SetTop(GetTop() - speed);
-
-        //    _movementStopDelay = _movementStopDelayDefault;
-        //    _lastSpeed = speed;
-
-        //    Rotate(
-        //        rotationDirection: RotationDirection.Forward,
-        //        threadhold: _rotationThreadhold,
-        //        rotationSpeed: _rotationSpeed);
-        //}
-
-        #endregion
-
-        #region Isometric Movement V2
-
-        public void MoveLeft(double speed)
+        public void MoveUp(double speed)
         {
-            _isMovingUp = false;
+            _isMovingUp = true;
             _isMovingDown = false;
 
-            _isMovingLeft = true;
+            _isMovingLeft = false;
             _isMovingRight = false;
 
             SetLeft(GetLeft() - speed * 2);
@@ -328,13 +244,13 @@ namespace HonkTrooper
                 rotationSpeed: _rotationSpeed);
         }
 
-        public void MoveRight(double speed)
+        public void MoveDown(double speed)
         {
-            _isMovingDown = false;
+            _isMovingDown = true;
             _isMovingUp = false;
 
             _isMovingLeft = false;
-            _isMovingRight = true;
+            _isMovingRight = false;
 
             SetLeft(GetLeft() + speed * 2);
             SetTop(GetTop() + speed);
@@ -348,12 +264,12 @@ namespace HonkTrooper
                 rotationSpeed: _rotationSpeed);
         }
 
-        public void MoveDown(double speed)
+        public void MoveLeft(double speed)
         {
             _isMovingUp = false;
-            _isMovingDown = true;
+            _isMovingDown = false;
 
-            _isMovingLeft = false;
+            _isMovingLeft = true;
             _isMovingRight = false;
 
             SetLeft(GetLeft() - speed);
@@ -368,13 +284,13 @@ namespace HonkTrooper
                 rotationSpeed: _rotationSpeed);
         }
 
-        public void MoveUp(double speed)
+        public void MoveRight(double speed)
         {
-            _isMovingUp = true;
+            _isMovingUp = false;
             _isMovingDown = false;
 
             _isMovingLeft = false;
-            _isMovingRight = false;
+            _isMovingRight = true;
 
             SetLeft(GetLeft() + speed);
             SetTop(GetTop() - speed);
@@ -387,6 +303,90 @@ namespace HonkTrooper
                 threadhold: _rotationThreadhold,
                 rotationSpeed: _rotationSpeed);
         }
+
+        #endregion
+
+        #region Isometric Movement V2
+
+        //public void MoveLeft(double speed)
+        //{
+        //    _isMovingUp = false;
+        //    _isMovingDown = false;
+
+        //    _isMovingLeft = true;
+        //    _isMovingRight = false;
+
+        //    SetLeft(GetLeft() - speed * 2);
+        //    SetTop(GetTop() - speed);
+
+        //    _movementStopDelay = _movementStopDelayDefault;
+        //    _lastSpeed = speed;
+
+        //    Rotate(
+        //        rotationDirection: RotationDirection.Backward,
+        //        threadhold: _rotationThreadhold,
+        //        rotationSpeed: _rotationSpeed);
+        //}
+
+        //public void MoveRight(double speed)
+        //{
+        //    _isMovingDown = false;
+        //    _isMovingUp = false;
+
+        //    _isMovingLeft = false;
+        //    _isMovingRight = true;
+
+        //    SetLeft(GetLeft() + speed * 2);
+        //    SetTop(GetTop() + speed);
+
+        //    _movementStopDelay = _movementStopDelayDefault;
+        //    _lastSpeed = speed;
+
+        //    Rotate(
+        //        rotationDirection: RotationDirection.Forward,
+        //        threadhold: _rotationThreadhold,
+        //        rotationSpeed: _rotationSpeed);
+        //}
+
+        //public void MoveDown(double speed)
+        //{
+        //    _isMovingUp = false;
+        //    _isMovingDown = true;
+
+        //    _isMovingLeft = false;
+        //    _isMovingRight = false;
+
+        //    SetLeft(GetLeft() - speed);
+        //    SetTop(GetTop() + speed);
+
+        //    _movementStopDelay = _movementStopDelayDefault;
+        //    _lastSpeed = speed;
+
+        //    Rotate(
+        //        rotationDirection: RotationDirection.Backward,
+        //        threadhold: _rotationThreadhold,
+        //        rotationSpeed: _rotationSpeed);
+        //}
+
+        //public void MoveUp(double speed)
+        //{
+        //    _isMovingUp = true;
+        //    _isMovingDown = false;
+
+        //    _isMovingLeft = false;
+        //    _isMovingRight = false;
+
+        //    SetLeft(GetLeft() + speed);
+        //    SetTop(GetTop() - speed);
+
+        //    _movementStopDelay = _movementStopDelayDefault;
+        //    _lastSpeed = speed;
+
+        //    Rotate(
+        //        rotationDirection: RotationDirection.Forward,
+        //        threadhold: _rotationThreadhold,
+        //        rotationSpeed: _rotationSpeed);
+        //}
 
         #endregion
 
