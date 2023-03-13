@@ -1076,7 +1076,7 @@ namespace HonkTrooper
 
                 roadMark.SetPosition(
                   left: 0,
-                  top: roadMark.Height,
+                  top: roadMark.Height / 2,
                   z: 1);
 
                 // Console.WriteLine("Road Mark generated.");

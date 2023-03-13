@@ -208,12 +208,15 @@ namespace HonkTrooper
                     SeekPlayer(playerPoint);
                     break;
                 case BossMovementPattern.SQUARE:
-                    MoveInSquares(speed, sceneWidth, sceneHeight);
+                    MoveInSquares(speed: speed, sceneWidth: sceneWidth, sceneHeight: sceneHeight);
+                    break;
+                case BossMovementPattern.LEFT_RIGHT:
+                    MoveLeftAndRight(speed: speed, sceneWidth: sceneWidth, sceneHeight: sceneHeight);
                     break;
             }
         }
 
-        public void SeekPlayer(Rect playerPoint)
+        private void SeekPlayer(Rect playerPoint)
         {
             _changeMovementPatternDelay -= 0.1;
 
@@ -265,7 +268,7 @@ namespace HonkTrooper
             }
         }
 
-        public bool MoveInSquares(double speed, double sceneWidth, double sceneHeight)
+        private bool MoveInSquares(double speed, double sceneWidth, double sceneHeight)
         {
             _changeMovementPatternDelay -= 0.1;
 
@@ -340,15 +343,53 @@ namespace HonkTrooper
             return false;
         }
 
-        private double GetFlightSpeed(double distance)
+        private bool MoveLeftAndRight(double speed, double sceneWidth, double sceneHeight)
         {
-            var flightSpeed = (distance / _lag);
+            _changeMovementPatternDelay -= 0.1;
 
-            return flightSpeed;
+            if (_changeMovementPatternDelay < 0)
+            {
+                RandomizeMovementPattern();
+                return true;
+            }
 
-            //return flightSpeed < Constants.DEFAULT_SPEED_OFFSET - 1 
-            //    ? Constants.DEFAULT_SPEED_OFFSET - 1 
-            //    : flightSpeed;
+            if (IsAttacking && !AwaitMoveLeft && !AwaitMoveRight)
+            {
+                AwaitMoveRight = true;
+            }
+            else
+            {
+                IsAttacking = true;
+            }
+
+            if (IsAttacking)
+            {
+                if (AwaitMoveRight)
+                {
+                    MoveRight(speed);
+
+                    if (GetTop() < 0)
+                    {
+                        AwaitMoveRight = false;
+                        AwaitMoveLeft = true;
+                    }
+                }
+                else
+                {
+                    if (AwaitMoveLeft)
+                    {
+                        MoveLeft(speed);
+
+                        if (GetLeft() < 0 || GetBottom() > sceneHeight)
+                        {
+                            AwaitMoveLeft = false;
+                            AwaitMoveRight = true;
+                        }
+                    }
+                }
+            }
+
+            return false;
         }
 
         private void RandomizeMovementPattern()
@@ -363,6 +404,16 @@ namespace HonkTrooper
             _content_image.Source = new BitmapImage(uriSource: uri);
         }
 
+        private double GetFlightSpeed(double distance)
+        {
+            var flightSpeed = distance / _lag;
+            return flightSpeed;
+
+            //return flightSpeed < Constants.DEFAULT_SPEED_OFFSET - 1 
+            //    ? Constants.DEFAULT_SPEED_OFFSET - 1 
+            //    : flightSpeed;
+        }
+
         #endregion
     }
 
@@ -370,5 +421,6 @@ namespace HonkTrooper
     {
         PLAYER_SEEKING,
         SQUARE,
+        LEFT_RIGHT,
     }
 }
