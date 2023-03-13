@@ -333,6 +333,7 @@ namespace HonkTrooper
             _player.Hover();
             _player.DepleteAttackStance();
             _player.DepleteWinStance();
+            _player.DepleteHitStance();
 
             var speed = (_scene_game.Speed + player.SpeedOffset) * _scene_game.DownScaling;
 
@@ -392,6 +393,7 @@ namespace HonkTrooper
         {
             _player.SetPopping();
             _player.LooseHealth();
+            _player.SetHitStance();
 
             _player_health_bar.SetValue(_player.Health);
 
@@ -1666,14 +1668,12 @@ namespace HonkTrooper
             if (boss1.IsDead)
             {
                 boss.Shrink();
-
-                // Console.WriteLine($"Boss ScaleX: {boss.GetScaleX()} ScaleY: {boss.GetScaleY()}");
             }
             else
             {
                 boss1.Hover();
-
                 boss.Pop();
+                boss1.DepleteHitStance();
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
@@ -1886,6 +1886,7 @@ namespace HonkTrooper
         {
             boss.SetPopping();
             boss.LooseHealth();
+            boss.SetHitStance();
 
             _boss_health_bar.SetValue(boss.Health);
 

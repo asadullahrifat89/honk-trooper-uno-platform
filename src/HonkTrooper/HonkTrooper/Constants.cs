@@ -25,8 +25,8 @@ namespace HonkTrooper
             new (ConstructType.BOSS_BOMB, 80, 80),
             new (ConstructType.BOSS_BOMB_SEEKING, 80, 80),
 
-            new (ConstructType.VEHICLE_SMALL, 150, 150),
-            new (ConstructType.VEHICLE_LARGE, 180, 180),
+            new (ConstructType.VEHICLE_SMALL, 160, 160),
+            new (ConstructType.VEHICLE_LARGE, 190, 190),
 
             new (ConstructType.HONK, 90, 90),
             new (ConstructType.CLOUD, 220, 220),
@@ -78,6 +78,7 @@ namespace HonkTrooper
             new (ConstructType.PLAYER_IDLE, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_1_idle.png")),
             new (ConstructType.PLAYER_ATTACK, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_1_attack.png")),
             new (ConstructType.PLAYER_WIN, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_1_win.png")),
+            new (ConstructType.PLAYER_HIT, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_1_hit.png")),
 
             new (ConstructType.PLAYER_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_1.png")),
             new (ConstructType.PLAYER_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_2.png")),
@@ -98,9 +99,10 @@ namespace HonkTrooper
             new (ConstructType.CLOUD, new Uri("ms-appx:///HonkTrooper/Assets/Images/cloud_2.png")),
             new (ConstructType.CLOUD, new Uri("ms-appx:///HonkTrooper/Assets/Images/cloud_3.png")),
 
-            new (ConstructType.BOSS, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_1.png")),
-            new (ConstructType.BOSS, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_2.png")),
-            new (ConstructType.BOSS, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_3.png")),
+            //new (ConstructType.BOSS, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_1.png")),
+            //new (ConstructType.BOSS, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_2.png")),
+            new (ConstructType.BOSS, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_3_idle.png")),
+            new (ConstructType.BOSS_HIT, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_3_hit.png")),
 
             new (ConstructType.BOSS_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_1.png")),
             new (ConstructType.BOSS_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_2.png")),
@@ -124,6 +126,7 @@ namespace HonkTrooper
         PLAYER_IDLE,
         PLAYER_ATTACK,
         PLAYER_WIN,
+        PLAYER_HIT,
 
         PLAYER_BOMB,
         PLAYER_BOMB_GROUND,
@@ -142,6 +145,9 @@ namespace HonkTrooper
         DROP_SHADOW,
 
         BOSS,
+        BOSS_IDLE,
+        BOSS_HIT,
+
         BOSS_BOMB,
         BOSS_BOMB_SEEKING,
 

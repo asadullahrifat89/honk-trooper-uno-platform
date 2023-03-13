@@ -12,6 +12,7 @@ namespace HonkTrooper
 
         private Random _random;
         private Uri[] _boss_uris;
+        private Uri[] _boss_hit_uris;
 
         private double _hoverDelay;
         private readonly double _hoverDelayDefault = 15;
@@ -23,6 +24,9 @@ namespace HonkTrooper
         private double _changeMovementPatternDelay;
 
         private readonly Image _content_image;
+
+        private double _hitStanceDelay;
+        private readonly double _hitStanceDelayDefault = 1.5;
 
         #endregion
 
@@ -38,6 +42,7 @@ namespace HonkTrooper
             _random = new Random();
 
             _boss_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BOSS).Select(x => x.Uri).ToArray();
+            _boss_hit_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BOSS_HIT).Select(x => x.Uri).ToArray();
 
             var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.BOSS);
 
@@ -142,6 +147,26 @@ namespace HonkTrooper
 
                     if (_hoverDelay <= _hoverDelayDefault * -1)
                         _hoverDelay = _hoverDelayDefault;
+                }
+            }
+        }
+
+        public void SetHitStance()
+        {
+            var uri = _boss_hit_uris[_random.Next(0, _boss_hit_uris.Length)];
+            _content_image.Source = new BitmapImage(uriSource: uri);
+            _hitStanceDelay = _hitStanceDelayDefault;
+        }
+
+        public void DepleteHitStance()
+        {
+            if (_hitStanceDelay > 0)
+            {
+                _hitStanceDelay -= 0.1;
+
+                if (_hitStanceDelay <= 0)
+                {
+                    SetIdleStance();
                 }
             }
         }
@@ -330,6 +355,12 @@ namespace HonkTrooper
         {
             _changeMovementPatternDelay = _random.Next(40, 60);
             MovementPattern = (BossMovementPattern)_random.Next(0, Enum.GetNames(typeof(BossMovementPattern)).Length);
+        }
+
+        private void SetIdleStance()
+        {
+            var uri = _boss_uris[_random.Next(0, _boss_uris.Length)];
+            _content_image.Source = new BitmapImage(uriSource: uri);
         }
 
         #endregion
