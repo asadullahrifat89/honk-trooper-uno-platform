@@ -2,7 +2,6 @@
 using Microsoft.UI.Xaml.Media.Imaging;
 using System;
 using System.Linq;
-using Windows.Foundation;
 
 namespace HonkTrooper
 {

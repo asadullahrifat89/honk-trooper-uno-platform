@@ -1,8 +1,6 @@
 ﻿using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Media.Imaging;
 using System;
 using System.Linq;
 using Windows.Graphics.Display;
@@ -1071,10 +1069,15 @@ namespace HonkTrooper
             {
                 roadMark.IsAnimating = true;
 
+                //roadMark.SetPosition(
+                //    left: 0,
+                //    top: 0,
+                //    z: 1);
+
                 roadMark.SetPosition(
-                    left: 0,
-                    top: 0,
-                    z: 1);
+                  left: 0,
+                  top: roadMark.Height,
+                  z: 1);
 
                 // Console.WriteLine("Road Mark generated.");
 
@@ -1139,10 +1142,15 @@ namespace HonkTrooper
             {
                 tree.IsAnimating = true;
 
+                //tree.SetPosition(
+                //    left: (_scene_game.Width / 2 - tree.Width) * _scene_game.DownScaling,
+                //    top: (0 - tree.Width) * _scene_game.DownScaling,
+                //    z: 2);
+
                 tree.SetPosition(
-                    left: (_scene_game.Width / 2 - tree.Width) * _scene_game.DownScaling,
-                    top: (0 - tree.Width) * _scene_game.DownScaling,
-                    z: 2);
+                  left: _scene_game.Width / 2 - tree.Width * _scene_game.DownScaling,
+                  top: tree.Height * -1,
+                  z: 2);
 
                 SyncDropShadow(tree);
 
@@ -1160,10 +1168,15 @@ namespace HonkTrooper
             {
                 tree.IsAnimating = true;
 
+                //tree.SetPosition(
+                //    left: (-1 * tree.Width) * _scene_game.DownScaling,
+                //    top: (_scene_game.Height / 2.5) * _scene_game.DownScaling,
+                //    z: 4);
+
                 tree.SetPosition(
-                    left: (-1 * tree.Width) * _scene_game.DownScaling,
-                    top: (_scene_game.Height / 2.5) * _scene_game.DownScaling,
-                    z: 4);
+                  left: -1 * tree.Width * _scene_game.DownScaling,
+                  top: _scene_game.Height / 2 * _scene_game.DownScaling,
+                  z: 4);
 
                 SyncDropShadow(tree);
 
