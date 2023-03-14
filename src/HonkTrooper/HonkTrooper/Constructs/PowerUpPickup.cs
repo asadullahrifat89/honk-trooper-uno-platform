@@ -7,6 +7,13 @@ namespace HonkTrooper
 {
     public partial class PowerUpPickup : Construct
     {
+        #region Fields
+
+        private readonly Random _random;
+        private readonly Image _content_image;
+
+        #endregion
+
         #region Ctor
 
         public PowerUpPickup(
@@ -18,6 +25,8 @@ namespace HonkTrooper
 
             ConstructType = ConstructType.POWERUP_PICKUP;
 
+            _random = new Random();
+
             var width = size.Width * downScaling;
             var height = size.Height * downScaling;
 
@@ -26,12 +35,32 @@ namespace HonkTrooper
 
             SetSize(width: width, height: height);
 
-            var content = new Image()
-            {
-                Source = new BitmapImage(uriSource: Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP).Uri)
-            };
+            PowerUpType = (PowerUpType)_random.Next(0, Enum.GetNames(typeof(PowerUpType)).Length);
 
-            SetChild(content);
+            switch (PowerUpType)
+            {
+                case PowerUpType.SEEKING_BALLS:
+                    {
+                        _content_image = new Image()
+                        {
+                            Source = new BitmapImage(uriSource: Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP_SEEKING_BALLS).Uri)
+                        };
+                    }
+                    break;
+                case PowerUpType.FORCE_SHIELD:
+                    {
+                        _content_image = new Image()
+                        {
+                            Source = new BitmapImage(uriSource: Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP_FORCE_SHIELD).Uri)
+                        };
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+            SetChild(_content_image);
+
             SpeedOffset = 0;
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE;
             IsometricDisplacement = 0.5;
@@ -44,6 +73,26 @@ namespace HonkTrooper
         public void Reset()
         {
             IsPickedUp = false;
+
+            PowerUpType = (PowerUpType)_random.Next(0, Enum.GetNames(typeof(PowerUpType)).Length);
+
+            switch (PowerUpType)
+            {
+                case PowerUpType.SEEKING_BALLS:
+                    {
+                        _content_image.Source = new BitmapImage(uriSource: Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP_SEEKING_BALLS).Uri);
+                    }
+                    break;
+                case PowerUpType.FORCE_SHIELD:
+                    {
+                        _content_image.Source = new BitmapImage(uriSource: Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP_FORCE_SHIELD).Uri);
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+            SetChild(_content_image);
         }
 
         #endregion
@@ -52,6 +101,14 @@ namespace HonkTrooper
 
         public bool IsPickedUp { get; set; }
 
+        public PowerUpType PowerUpType { get; set; }
+
         #endregion
+    }
+
+    public enum PowerUpType
+    {
+        SEEKING_BALLS,
+        FORCE_SHIELD,
     }
 }

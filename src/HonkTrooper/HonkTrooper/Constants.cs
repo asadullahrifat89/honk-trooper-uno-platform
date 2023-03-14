@@ -7,7 +7,7 @@ namespace HonkTrooper
         public const double DEFAULT_FRAME_TIME = 19;
         public const double DEFAULT_SPEED_OFFSET = 3;
         public const double DEFAULT_DROP_SHADOW_DISTANCE = 50;
-        public const double DEFAULT_SLOW_MOTION_REDUCTION_FACTOR = 4;
+        public const double DEFAULT_SLOW_MOTION_REDUCTION_FACTOR = 3;
         public const double DEFAULT_CONTROLLER_KEY_SIZE = 55;
         public const double DEFAULT_CONTROLLER_KEY_CORNER_RADIUS = 30;
         public const double DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS = 4;
@@ -115,7 +115,8 @@ namespace HonkTrooper
             new (ConstructType.ENEMY_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/enemy_bomb.png")),
 
             new (ConstructType.HEALTH_PICKUP, new Uri("ms-appx:///HonkTrooper/Assets/Images/health_pickup.png")),
-            new (ConstructType.POWERUP_PICKUP, new Uri("ms-appx:///HonkTrooper/Assets/Images/power_up_pickup.png")),
+            new (ConstructType.POWERUP_PICKUP_SEEKING_BALLS, new Uri("ms-appx:///HonkTrooper/Assets/Images/power_up_pickup_seeking_balls.png")),
+            new (ConstructType.POWERUP_PICKUP_FORCE_SHIELD, new Uri("ms-appx:///HonkTrooper/Assets/Images/power_up_pickup_force_shield.png")),
         };
     }
 
@@ -157,6 +158,8 @@ namespace HonkTrooper
 
         HEALTH_PICKUP,
         POWERUP_PICKUP,
+        POWERUP_PICKUP_SEEKING_BALLS,
+        POWERUP_PICKUP_FORCE_SHIELD,
         COLLECTABLE_PICKUP,
 
         TITLE_SCREEN,

@@ -7,8 +7,8 @@ namespace HonkTrooper
         #region Fields
 
         private readonly bool _randomizeGenerationDelay = false;
-        private int _generationDelay;
-        private int _generationDelayInCount;
+        private double _generationDelay;
+        private double _generationDelayInCount;
 
         private readonly Random _random = new Random();
 
@@ -17,6 +17,8 @@ namespace HonkTrooper
         #region Properties
 
         private Func<bool> GenerationAction { get; set; }
+
+        public Scene Scene { get; set; }
 
         #endregion
 
@@ -35,16 +37,18 @@ namespace HonkTrooper
             startUpAction();
         }
 
+        #region Methods
+
         public void Generate()
         {
             if (_generationDelay > 0)
             {
-                _generationDelayInCount--;
+                _generationDelayInCount -= Scene.IsSlowMotionActivated ? 1 / Constants.DEFAULT_SLOW_MOTION_REDUCTION_FACTOR : 1;
 
                 if (_generationDelayInCount <= 0)
                 {
                     GenerationAction();
-                    _generationDelayInCount = _randomizeGenerationDelay ? _random.Next(_generationDelay / 2, _generationDelay) : _generationDelay;
+                    _generationDelayInCount = _randomizeGenerationDelay ? _random.Next((int)(_generationDelay / 2), (int)_generationDelay) : _generationDelay;
                 }
             }
         }
@@ -53,5 +57,7 @@ namespace HonkTrooper
         {
             _generationDelay = deplay;
         }
+
+        #endregion
     }
 }
