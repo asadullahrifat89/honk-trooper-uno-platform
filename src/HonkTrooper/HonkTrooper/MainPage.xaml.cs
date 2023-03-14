@@ -569,21 +569,21 @@ namespace HonkTrooper
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
                     // if player bomb touches boss, it blasts, boss looses health
-                    if (_scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss && boss.GetCloseHitBox().IntersectsWith(hitBox))
+                    if (_scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetCloseHitBox().IntersectsWith(hitBox)) is Boss boss)
                     {
                         playerBomb.SetBlast();
                         LooseBossHealth(boss);
                     }
 
                     // if player bomb touches boss's seeking bomb, it blasts
-                    if (_scene_game.Children.OfType<BossBombSeeking>().FirstOrDefault(x => x.IsAnimating) is BossBombSeeking bossBombSeeking && bossBombSeeking.GetCloseHitBox().IntersectsWith(hitBox))
+                    if (_scene_game.Children.OfType<BossBombSeeking>().FirstOrDefault(x => x.IsAnimating && x.GetCloseHitBox().IntersectsWith(hitBox)) is BossBombSeeking bossBombSeeking)
                     {
                         playerBomb.SetBlast();
                         bossBombSeeking.SetBlast();
                     }
 
                     // if player bomb touches enemy, it blasts, enemy looses health
-                    if (_scene_game.Children.OfType<Enemy>().FirstOrDefault(x => x.IsAnimating) is Enemy enemy && enemy.GetCloseHitBox().IntersectsWith(hitBox))
+                    if (_scene_game.Children.OfType<Enemy>().FirstOrDefault(x => x.IsAnimating && x.GetCloseHitBox().IntersectsWith(hitBox)) is Enemy enemy)
                     {
                         playerBomb.SetBlast();
                         LooseEnemyHealth(enemy);
@@ -2018,7 +2018,7 @@ namespace HonkTrooper
 
                 SyncDropShadow(enemy);
 
-                Console.WriteLine("Enemy generated.");
+                //Console.WriteLine("Enemy generated.");
 
                 return true;
             }
@@ -2078,6 +2078,8 @@ namespace HonkTrooper
                     top: -500);
 
                 enemy.IsAnimating = false;
+
+                //Console.WriteLine("Enemy Recycled");
             }
 
             return true;
@@ -2091,6 +2093,8 @@ namespace HonkTrooper
             if (enemy.IsDead)
             {
                 _game_score_bar.GainScore(5);
+
+                Console.WriteLine("Enemy dead");
             }
         }
 
@@ -2251,7 +2255,6 @@ namespace HonkTrooper
                     if (bossBomb.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
                     {
                         bossBomb.SetBlast();
-
                         LoosePlayerHealth();
                     }
                 }
