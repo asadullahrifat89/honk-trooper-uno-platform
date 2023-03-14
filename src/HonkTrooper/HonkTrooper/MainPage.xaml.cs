@@ -391,16 +391,12 @@ namespace HonkTrooper
 
                 if (_game_controller.IsAttacking)
                 {
-                    if (_scene_game.Children.OfType<Boss>().Any(x => x.IsAnimating && x.IsAttacking))
+                    if (BossExistsInScene() || EnemyExistsInScene())
                     {
-                        if (_powerUp_health_bar.HasHealth)
+                        if (_powerUp_health_bar.HasHealth && (PowerUpType)_powerUp_health_bar.Tag == PowerUpType.SEEKING_BALLS)
                             GeneratePlayerBombSeekingInScene();
                         else
                             GeneratePlayerBombInScene();
-                    }
-                    else if (EnemyExistsInScene())
-                    {
-                        GeneratePlayerBombInScene();
                     }
                     else
                     {
@@ -417,12 +413,20 @@ namespace HonkTrooper
         private void LoosePlayerHealth()
         {
             _player.SetPopping();
-            _player.LooseHealth();
-            _player.SetHitStance();
 
-            _player_health_bar.SetValue(_player.Health);
+            if (_powerUp_health_bar.HasHealth && (PowerUpType)_powerUp_health_bar.Tag == PowerUpType.FORCE_SHIELD)
+            {
+                DepletePowerUp();
+            }
+            else
+            {
+                _player.LooseHealth();
+                _player.SetHitStance();
 
-            GameOver();
+                _player_health_bar.SetValue(_player.Health);
+
+                GameOver();
+            }
         }
 
         #endregion
@@ -780,9 +784,8 @@ namespace HonkTrooper
 
                 SyncDropShadow(playerBombSeeking);
 
-                // use up the power up
-                if (_powerUp_health_bar.HasHealth)
-                    _powerUp_health_bar.SetValue(_powerUp_health_bar.GetValue() - 1);
+                if (_powerUp_health_bar.HasHealth && (PowerUpType)_powerUp_health_bar.Tag == PowerUpType.SEEKING_BALLS)
+                    DepletePowerUp();
 
                 // Console.WriteLine("Player Seeking Bomb dropped.");
 
@@ -879,6 +882,13 @@ namespace HonkTrooper
             }
 
             return false;
+        }
+
+        private void DepletePowerUp()
+        {
+            // use up the power up
+            if (_powerUp_health_bar.HasHealth)
+                _powerUp_health_bar.SetValue(_powerUp_health_bar.GetValue() - 1);
         }
 
         #endregion
@@ -1124,12 +1134,7 @@ namespace HonkTrooper
         {
             if (_scene_game.Children.OfType<RoadMark>().FirstOrDefault(x => x.IsAnimating == false) is RoadMark roadMark)
             {
-                roadMark.IsAnimating = true;
-
-                //roadMark.SetPosition(
-                //    left: 0,
-                //    top: 0,
-                //    z: 1);
+                roadMark.IsAnimating = true;              
 
                 roadMark.SetPosition(
                   left: 0,
@@ -2497,11 +2502,11 @@ namespace HonkTrooper
                     {
                         powerUpPickup1.IsPickedUp = true;
 
-                        // allow using a burst of 3 seeking bombs 3 times
+                        // if seeking balls powerup, allow using a burst of 3 seeking bombs 3 times
+                        _powerUp_health_bar.Tag = powerUpPickup1.PowerUpType;
                         _powerUp_health_bar.SetMaxiumHealth(9);
                         _powerUp_health_bar.SetValue(9);
-
-                        _powerUp_health_bar.SetIcon(Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP).Uri);
+                        _powerUp_health_bar.SetIcon(powerUpPickup1.GetContentUri());
                         _powerUp_health_bar.SetBarForegroundColor(color: Colors.Green);
                     }
                 }
@@ -2533,6 +2538,9 @@ namespace HonkTrooper
         private void MoveConstruct(Construct construct, double speed)
         {
             speed *= _scene_game.DownScaling;
+
+            if (_scene_game.IsSlowMotionActivated)
+                speed /= Constants.DEFAULT_SLOW_MOTION_REDUCTION_FACTOR;
 
             construct.SetLeft(construct.GetLeft() + speed);
             construct.SetTop(construct.GetTop() + speed * construct.IsometricDisplacement);
