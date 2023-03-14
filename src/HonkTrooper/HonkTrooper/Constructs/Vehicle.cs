@@ -148,7 +148,6 @@ namespace HonkTrooper
             }
 
             return false;
-
         }
 
         public void SetHonkDelay()
