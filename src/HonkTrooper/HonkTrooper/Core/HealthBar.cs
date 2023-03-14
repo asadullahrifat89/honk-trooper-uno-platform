@@ -12,7 +12,7 @@ namespace HonkTrooper
     {
         #region Fields
 
-        private ProgressBar _bar = new()
+        private readonly ProgressBar _bar = new()
         {
             Width = 60,
             Height = 5,
@@ -22,7 +22,7 @@ namespace HonkTrooper
             Margin = new Thickness(0, 0, 5, 0)
         };
 
-        private Image _icon = new()
+        private readonly Image _icon = new()
         {
             Height = 30,
             Width = 30,
@@ -30,7 +30,7 @@ namespace HonkTrooper
             Margin = new Thickness(5)
         };
 
-        private StackPanel _container;
+        private readonly StackPanel _container;
 
         #endregion
 

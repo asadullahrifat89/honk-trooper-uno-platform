@@ -17,7 +17,7 @@ namespace HonkTrooper
 
         private readonly double _hoverSpeed = 0.3;
 
-        private TextBlock _titleScreenText;
+        private readonly TextBlock _titleScreenText;
 
         #endregion
 

@@ -9,9 +9,9 @@ namespace HonkTrooper
     {
         #region Fields
 
-        private Random _random;
-        private Uri[] _bomb_uris;
-        private Uri[] _bomb_blast_uris;
+        private readonly Random _random;
+        private readonly Uri[] _bomb_uris;
+        private readonly Uri[] _bomb_blast_uris;
 
         private readonly Image _content_image;
 

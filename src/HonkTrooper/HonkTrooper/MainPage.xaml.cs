@@ -30,6 +30,8 @@ namespace HonkTrooper
 
         //TODO: set defaults to 40 and 100
         private readonly double _boss_threashold_point = 40;
+        private readonly double _boss_threashold_point_increase = 10;
+
         private readonly double _enemy_threashold_point = 10;
 
         #endregion
@@ -1040,17 +1042,19 @@ namespace HonkTrooper
         {
             for (int i = 0; i < 10; i++)
             {
-                Enemy Enemy = new(
+                Enemy enemy = new(
                     animateAction: AnimateEnemy,
                     recycleAction: RecycleEnemy,
                     downScaling: _scene_game.DownScaling);
 
-                _scene_game.AddToScene(Enemy);
+                _scene_game.AddToScene(enemy);
 
-                Enemy.SetPosition(
+                enemy.SetPosition(
                     left: -500,
                     top: -500,
                     z: 8);
+
+                SpawnDropShadowInScene(enemy);
             }
 
             return true;
@@ -1093,7 +1097,10 @@ namespace HonkTrooper
                         break;
                 }
 
-                // Console.WriteLine("Enemy generated.");
+                SyncDropShadow(enemy);
+
+                Console.WriteLine("Enemy generated.");
+
                 return true;
             }
 
@@ -1116,7 +1123,8 @@ namespace HonkTrooper
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
-                    var speed = (_scene_game.Speed + enemy.SpeedOffset);
+                    var speed = (_scene_game.Speed + enemy.SpeedOffset) * _scene_game.DownScaling;
+
                     enemy1.MoveDown(speed);
 
                     if (enemy1.Honk())
@@ -1137,15 +1145,18 @@ namespace HonkTrooper
 
         private bool RecycleEnemy(Construct enemy)
         {
-            if (enemy.IsShrinkingComplete)
+            var hitbox = enemy.GetHitBox();
+
+            // enemy is dead or goes out of bounds
+            if (enemy.IsShrinkingComplete ||
+                hitbox.Left > _scene_game.Width || hitbox.Top > _scene_game.Height ||
+                hitbox.Right < 0 || hitbox.Bottom < 0)
             {
                 enemy.SetPosition(
                     left: -500,
                     top: -500);
 
                 enemy.IsAnimating = false;
-
-                _game_score_bar.GainScore(5);
             }
 
             return true;
@@ -1155,6 +1166,11 @@ namespace HonkTrooper
         {
             enemy.SetPopping();
             enemy.LooseHealth();
+
+            if (enemy.IsDead)
+            {
+                _game_score_bar.GainScore(5);
+            }
         }
 
         #endregion
@@ -1858,6 +1874,7 @@ namespace HonkTrooper
 
                 // set boss health
                 boss.Health = _boss_threashold.GetReleasePointDifference() * 1.5;
+                _boss_threashold.IncreaseReleasePoint(_boss_threashold_point_increase, _game_score_bar.GetScore());
 
                 _boss_health_bar.SetMaxiumHealth(boss.Health);
                 _boss_health_bar.SetValue(boss.Health);
@@ -2088,8 +2105,6 @@ namespace HonkTrooper
                     top: -500);
 
                 boss.IsAnimating = false;
-
-                _game_score_bar.GainScore(5);
             }
 
             return true;
@@ -2105,10 +2120,14 @@ namespace HonkTrooper
 
             if (boss.IsDead && boss.IsAttacking)
             {
+                boss.IsAttacking = false;
+
+                _game_score_bar.GainScore(5);
+
                 _player.SetWinStance();
 
                 GenerateInterimScreenInScene("Boss Busted");
-                boss.IsAttacking = false;
+
                 _scene_game.ActivateSlowMotion();
             }
         }
@@ -2618,20 +2637,21 @@ namespace HonkTrooper
                 startUpAction: SpawnPowerUpPickupsInScene,
                 randomizeGenerationDelay: true));
 
-            _scene_main_menu.AddToScene(new Generator(
-                generationDelay: 0,
-                generationAction: () => { return true; },
-                startUpAction: SpawnTitleScreenInScene));
-
             _scene_game.AddToScene(new Generator(
                 generationDelay: 0,
                 generationAction: () => { return true; },
                 startUpAction: SpawnInterimScreenInScene));
 
             _scene_game.AddToScene(new Generator(
-                generationDelay: 100,
+                generationDelay: 90,
                 generationAction: GenerateEnemyInScene,
-                startUpAction: SpawnEnemysInScene));
+                startUpAction: SpawnEnemysInScene,
+                randomizeGenerationDelay: true));
+
+            _scene_main_menu.AddToScene(new Generator(
+                generationDelay: 0,
+                generationAction: () => { return true; },
+                startUpAction: SpawnTitleScreenInScene));
 
             _scene_game.Speed = 5;
             _scene_game.Play();

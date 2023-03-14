@@ -1,9 +1,11 @@
-﻿namespace HonkTrooper
+﻿using static System.Formats.Asn1.AsnWriter;
+
+namespace HonkTrooper
 {
     public partial class Threashold
     {
         #region Ctor
-        
+
         public Threashold(double value)
         {
             Reset(value);
@@ -30,19 +32,19 @@
         {
             var release = score - ReleasePoint > ReleasePointDifference;
 
-            if (release)
-            {
-                ReleasePoint = score;
-                ReleasePointDifference += 10;
-            }
-
             return release;
+        }
+
+        public void IncreaseReleasePoint(double value, double score)
+        {
+            ReleasePoint = score;
+            ReleasePointDifference += value;
         }
 
         public void Reset(double value)
         {
             ReleasePointDifference = value;
-        } 
+        }
 
         #endregion
     }

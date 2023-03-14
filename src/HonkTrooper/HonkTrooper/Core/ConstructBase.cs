@@ -19,7 +19,7 @@ namespace HonkTrooper
         };
 
         private bool _isPoppingComplete;
-        private double _popUpScalingLimit = 1.5;
+        private readonly double _popUpScalingLimit = 1.5;
 
         #endregion
 
