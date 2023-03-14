@@ -32,10 +32,12 @@ namespace HonkTrooper
         private readonly double _boss_threashold_limit = 40; // after reaching 40 score first boss will appear
         private readonly double _boss_threashold_limit_increase = 10;
 
-        //TODO: set defaults to 100 & 10
-        private readonly double _enemy_threashold_limit = 100; // after reaching 100 score first enemies will appear
+        //TODO: set defaults to 80 & 10
+        private readonly double _enemy_threashold_limit = 80; // after reaching 80 score first enemies will appear
         private readonly double _enemy_threashold_limit_increase = 10;
+
         private double _enemy_kill_count;
+        private readonly double _enemy_kill_count_limit = 20;
 
         #endregion
 
@@ -426,7 +428,7 @@ namespace HonkTrooper
 
         private bool SpawnPlayerBombsInScene()
         {
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 4; i++)
             {
                 PlayerBomb bomb = new(
                     animateAction: AnimatePlayerBomb,
@@ -588,6 +590,9 @@ namespace HonkTrooper
                         playerBomb.SetBlast();
                         LooseEnemyHealth(enemy);
                     }
+
+                    if (playerBomb.RunOutOfTimeToBlast())
+                        playerBomb.SetBlast();
                 }
             }
 
@@ -1254,238 +1259,6 @@ namespace HonkTrooper
 
         #endregion
 
-        #region HealthPickup
-
-        private bool SpawnHealthPickupsInScene()
-        {
-            for (int i = 0; i < 3; i++)
-            {
-                HealthPickup HealthPickup = new(
-                    animateAction: AnimateHealthPickup,
-                    recycleAction: RecycleHealthPickup,
-                    downScaling: _scene_game.DownScaling);
-
-                HealthPickup.SetPosition(
-                    left: -500,
-                    top: -500,
-                    z: 6);
-
-                _scene_game.AddToScene(HealthPickup);
-            }
-
-            return true;
-        }
-
-        private bool GenerateHealthPickupsInScene()
-        {
-            if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
-                HealthPickup.ShouldGenerate(_player.Health) &&
-                _scene_game.Children.OfType<HealthPickup>().FirstOrDefault(x => x.IsAnimating == false) is HealthPickup healthPickup)
-            {
-                healthPickup.IsAnimating = true;
-                healthPickup.Reset();
-
-                var topOrLeft = _random.Next(0, 2);
-
-                var lane = _random.Next(0, 2);
-
-                switch (topOrLeft)
-                {
-                    case 0:
-                        {
-                            var xLaneWidth = _scene_game.Width / 4;
-                            healthPickup.SetPosition(
-                                left: _random.Next(0, Convert.ToInt32(xLaneWidth - healthPickup.Width)) * _scene_game.DownScaling,
-                                top: healthPickup.Height * -1);
-                        }
-                        break;
-                    case 1:
-                        {
-                            var yLaneWidth = (_scene_game.Height / 2) / 2;
-                            healthPickup.SetPosition(
-                                left: healthPickup.Width * -1,
-                                top: _random.Next(0, Convert.ToInt32(yLaneWidth)) * _scene_game.DownScaling);
-                        }
-                        break;
-                    default:
-                        break;
-                }
-
-                SyncDropShadow(healthPickup);
-
-                return true;
-            }
-
-            return false;
-        }
-
-        private bool AnimateHealthPickup(Construct healthPickup)
-        {
-            var speed = _scene_game.Speed + healthPickup.SpeedOffset;
-
-            HealthPickup healthPickup1 = healthPickup as HealthPickup;
-
-            if (healthPickup1.IsPickedUp)
-            {
-                healthPickup1.Shrink();
-            }
-            else
-            {
-                MoveConstruct(construct: healthPickup, speed: speed);
-
-                if (_scene_game.SceneState == SceneState.GAME_RUNNING)
-                {
-                    var hitbox = healthPickup.GetCloseHitBox();
-
-                    if (_player.GetCloseHitBox().IntersectsWith(hitbox))
-                    {
-                        _player.GainHealth();
-                        _player_health_bar.SetValue(_player.Health);
-                        healthPickup1.IsPickedUp = true;
-                    }
-                }
-            }
-
-            return true;
-        }
-
-        private bool RecycleHealthPickup(Construct healthPickup)
-        {
-            var hitBox = healthPickup.GetHitBox();
-
-            if (hitBox.Top > _scene_game.Height || hitBox.Left > _scene_game.Width || healthPickup.IsShrinkingComplete)
-            {
-                healthPickup.SetPosition(
-                    left: -500,
-                    top: -500);
-
-                healthPickup.IsAnimating = false;
-            }
-
-            return true;
-        }
-
-        #endregion
-
-        #region PowerUpPickup
-
-        private bool SpawnPowerUpPickupsInScene()
-        {
-            for (int i = 0; i < 3; i++)
-            {
-                PowerUpPickup powerUpPickup = new(
-                    animateAction: AnimatePowerUpPickup,
-                    recycleAction: RecyclePowerUpPickup,
-                    downScaling: _scene_game.DownScaling);
-
-                powerUpPickup.SetPosition(
-                    left: -500,
-                    top: -500,
-                    z: 6);
-
-                _scene_game.AddToScene(powerUpPickup);
-            }
-
-            return true;
-        }
-
-        private bool GeneratePowerUpPickupsInScene()
-        {
-            if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
-                _scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss &&
-                _scene_game.Children.OfType<PowerUpPickup>().FirstOrDefault(x => x.IsAnimating == false) is PowerUpPickup powerUpPickup)
-            {
-                powerUpPickup.IsAnimating = true;
-                powerUpPickup.Reset();
-
-                var topOrLeft = _random.Next(0, 2);
-
-                var lane = _random.Next(0, 2);
-
-                switch (topOrLeft)
-                {
-                    case 0:
-                        {
-                            var xLaneWidth = _scene_game.Width / 4;
-                            powerUpPickup.SetPosition(
-                                left: _random.Next(0, Convert.ToInt32(xLaneWidth - powerUpPickup.Width)) * _scene_game.DownScaling,
-                                top: powerUpPickup.Height * -1);
-                        }
-                        break;
-                    case 1:
-                        {
-                            var yLaneWidth = (_scene_game.Height / 2) / 2;
-                            powerUpPickup.SetPosition(
-                                left: powerUpPickup.Width * -1,
-                                top: _random.Next(0, Convert.ToInt32(yLaneWidth)) * _scene_game.DownScaling);
-                        }
-                        break;
-                    default:
-                        break;
-                }
-
-                SyncDropShadow(powerUpPickup);
-
-                return true;
-            }
-
-            return false;
-        }
-
-        private bool AnimatePowerUpPickup(Construct powerUpPickup)
-        {
-            var speed = _scene_game.Speed + powerUpPickup.SpeedOffset;
-
-            PowerUpPickup powerUpPickup1 = powerUpPickup as PowerUpPickup;
-
-            if (powerUpPickup1.IsPickedUp)
-            {
-                powerUpPickup1.Shrink();
-            }
-            else
-            {
-                MoveConstruct(construct: powerUpPickup, speed: speed);
-
-                if (_scene_game.SceneState == SceneState.GAME_RUNNING)
-                {
-                    var hitbox = powerUpPickup.GetCloseHitBox();
-
-                    // if player picks up seeking bomb pickup
-                    if (_player.GetCloseHitBox().IntersectsWith(hitbox))
-                    {
-                        powerUpPickup1.IsPickedUp = true;
-
-                        // allow using a burst of 3 seeking bombs 3 times
-                        _powerUp_health_bar.SetMaxiumHealth(9);
-                        _powerUp_health_bar.SetValue(9);
-
-                        _powerUp_health_bar.SetIcon(Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP).Uri);
-                        _powerUp_health_bar.SetBarForegroundColor(color: Colors.Green);
-                    }
-                }
-            }
-
-            return true;
-        }
-
-        private bool RecyclePowerUpPickup(Construct powerUpPickup)
-        {
-            var hitBox = powerUpPickup.GetHitBox();
-
-            if (hitBox.Top > _scene_game.Height || hitBox.Left > _scene_game.Width || powerUpPickup.IsShrinkingComplete)
-            {
-                powerUpPickup.SetPosition(
-                    left: -500,
-                    top: -500);
-
-                powerUpPickup.IsAnimating = false;
-            }
-
-            return true;
-        }
-
-        #endregion
-
         #region Honk
 
         private bool SpawnHonksInScene()
@@ -2124,7 +1897,7 @@ namespace HonkTrooper
                 _enemy_kill_count++;
 
                 // after killing 15 enemies increase the threadhold limit
-                if (_enemy_kill_count > 15)
+                if (_enemy_kill_count > _enemy_kill_count_limit)
                 {
                     _enemy_threashold.IncreaseThreasholdLimit(_enemy_threashold_limit_increase, _game_score_bar.GetScore());
                     _enemy_kill_count = 0;
@@ -2496,6 +2269,239 @@ namespace HonkTrooper
 
                 dropShadow.Reset();
             }
+        }
+
+        #endregion
+
+        #region HealthPickup
+
+        private bool SpawnHealthPickupsInScene()
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                HealthPickup HealthPickup = new(
+                    animateAction: AnimateHealthPickup,
+                    recycleAction: RecycleHealthPickup,
+                    downScaling: _scene_game.DownScaling);
+
+                HealthPickup.SetPosition(
+                    left: -500,
+                    top: -500,
+                    z: 6);
+
+                _scene_game.AddToScene(HealthPickup);
+            }
+
+            return true;
+        }
+
+        private bool GenerateHealthPickupsInScene()
+        {
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
+                HealthPickup.ShouldGenerate(_player.Health) &&
+                _scene_game.Children.OfType<HealthPickup>().FirstOrDefault(x => x.IsAnimating == false) is HealthPickup healthPickup)
+            {
+                healthPickup.IsAnimating = true;
+                healthPickup.Reset();
+
+                var topOrLeft = _random.Next(0, 2);
+
+                var lane = _random.Next(0, 2);
+
+                switch (topOrLeft)
+                {
+                    case 0:
+                        {
+                            var xLaneWidth = _scene_game.Width / 4;
+                            healthPickup.SetPosition(
+                                left: _random.Next(0, Convert.ToInt32(xLaneWidth - healthPickup.Width)) * _scene_game.DownScaling,
+                                top: healthPickup.Height * -1);
+                        }
+                        break;
+                    case 1:
+                        {
+                            var yLaneWidth = (_scene_game.Height / 2) / 2;
+                            healthPickup.SetPosition(
+                                left: healthPickup.Width * -1,
+                                top: _random.Next(0, Convert.ToInt32(yLaneWidth)) * _scene_game.DownScaling);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+
+                SyncDropShadow(healthPickup);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimateHealthPickup(Construct healthPickup)
+        {
+            var speed = _scene_game.Speed + healthPickup.SpeedOffset;
+
+            HealthPickup healthPickup1 = healthPickup as HealthPickup;
+
+            if (healthPickup1.IsPickedUp)
+            {
+                healthPickup1.Shrink();
+            }
+            else
+            {
+                MoveConstruct(construct: healthPickup, speed: speed);
+
+                if (_scene_game.SceneState == SceneState.GAME_RUNNING)
+                {
+                    var hitbox = healthPickup.GetCloseHitBox();
+
+                    if (_player.GetCloseHitBox().IntersectsWith(hitbox))
+                    {
+                        healthPickup1.IsPickedUp = true;
+
+                        _player.GainHealth();
+                        _player_health_bar.SetValue(_player.Health);
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        private bool RecycleHealthPickup(Construct healthPickup)
+        {
+            var hitBox = healthPickup.GetHitBox();
+
+            if (hitBox.Top > _scene_game.Height || hitBox.Left > _scene_game.Width || healthPickup.IsShrinkingComplete)
+            {
+                healthPickup.SetPosition(
+                    left: -500,
+                    top: -500);
+
+                healthPickup.IsAnimating = false;
+            }
+
+            return true;
+        }
+
+        #endregion
+
+        #region PowerUpPickup
+
+        private bool SpawnPowerUpPickupsInScene()
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                PowerUpPickup powerUpPickup = new(
+                    animateAction: AnimatePowerUpPickup,
+                    recycleAction: RecyclePowerUpPickup,
+                    downScaling: _scene_game.DownScaling);
+
+                powerUpPickup.SetPosition(
+                    left: -500,
+                    top: -500,
+                    z: 6);
+
+                _scene_game.AddToScene(powerUpPickup);
+            }
+
+            return true;
+        }
+
+        private bool GeneratePowerUpPickupsInScene()
+        {
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
+                _scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss &&
+                _scene_game.Children.OfType<PowerUpPickup>().FirstOrDefault(x => x.IsAnimating == false) is PowerUpPickup powerUpPickup)
+            {
+                powerUpPickup.IsAnimating = true;
+                powerUpPickup.Reset();
+
+                var topOrLeft = _random.Next(0, 2);
+
+                var lane = _random.Next(0, 2);
+
+                switch (topOrLeft)
+                {
+                    case 0:
+                        {
+                            var xLaneWidth = _scene_game.Width / 4;
+                            powerUpPickup.SetPosition(
+                                left: _random.Next(0, Convert.ToInt32(xLaneWidth - powerUpPickup.Width)) * _scene_game.DownScaling,
+                                top: powerUpPickup.Height * -1);
+                        }
+                        break;
+                    case 1:
+                        {
+                            var yLaneWidth = (_scene_game.Height / 2) / 2;
+                            powerUpPickup.SetPosition(
+                                left: powerUpPickup.Width * -1,
+                                top: _random.Next(0, Convert.ToInt32(yLaneWidth)) * _scene_game.DownScaling);
+                        }
+                        break;
+                    default:
+                        break;
+                }
+
+                SyncDropShadow(powerUpPickup);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimatePowerUpPickup(Construct powerUpPickup)
+        {
+            var speed = _scene_game.Speed + powerUpPickup.SpeedOffset;
+
+            PowerUpPickup powerUpPickup1 = powerUpPickup as PowerUpPickup;
+
+            if (powerUpPickup1.IsPickedUp)
+            {
+                powerUpPickup1.Shrink();
+            }
+            else
+            {
+                MoveConstruct(construct: powerUpPickup, speed: speed);
+
+                if (_scene_game.SceneState == SceneState.GAME_RUNNING)
+                {
+                    var hitbox = powerUpPickup.GetCloseHitBox();
+
+                    // if player picks up seeking bomb pickup
+                    if (_player.GetCloseHitBox().IntersectsWith(hitbox))
+                    {
+                        powerUpPickup1.IsPickedUp = true;
+
+                        // allow using a burst of 3 seeking bombs 3 times
+                        _powerUp_health_bar.SetMaxiumHealth(9);
+                        _powerUp_health_bar.SetValue(9);
+
+                        _powerUp_health_bar.SetIcon(Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP).Uri);
+                        _powerUp_health_bar.SetBarForegroundColor(color: Colors.Green);
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        private bool RecyclePowerUpPickup(Construct powerUpPickup)
+        {
+            var hitBox = powerUpPickup.GetHitBox();
+
+            if (hitBox.Top > _scene_game.Height || hitBox.Left > _scene_game.Width || powerUpPickup.IsShrinkingComplete)
+            {
+                powerUpPickup.SetPosition(
+                    left: -500,
+                    top: -500);
+
+                powerUpPickup.IsAnimating = false;
+            }
+
+            return true;
         }
 
         #endregion
