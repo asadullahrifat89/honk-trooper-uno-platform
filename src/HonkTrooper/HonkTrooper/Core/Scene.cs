@@ -70,6 +70,7 @@ namespace HonkTrooper
         /// <param name="generator"></param>
         public void AddToScene(Generator generator)
         {
+            generator.Scene = this;
             _generators.Add(generator);
         }
 
