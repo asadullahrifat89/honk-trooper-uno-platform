@@ -1829,7 +1829,6 @@ namespace HonkTrooper
                 return true;
             }
 
-
             return false;
         }
 
