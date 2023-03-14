@@ -1,0 +1,216 @@
+{
+  "assemblyRootFolder": "managed",
+  "debugLevel": 0,
+  "assets": [
+    {
+      "name": "Uno.Wasm.TimezoneData.dll",
+      "behavior": "assembly",
+      "url": "Uno.Wasm.TimezoneData.dll"
+    },
+    {
+      "name": "netstandard.dll",
+      "behavior": "assembly",
+      "url": "netstandard.dll"
+    },
+    {
+      "name": "System.Private.CoreLib.dll",
+      "behavior": "assembly",
+      "url": "System.Private.CoreLib.dll"
+    },
+    {
+      "name": "System.Private.Uri.dll",
+      "behavior": "assembly",
+      "url": "System.Private.Uri.dll"
+    },
+    {
+      "name": "System.ComponentModel.Primitives.dll",
+      "behavior": "assembly",
+      "url": "System.ComponentModel.Primitives.dll"
+    },
+    {
+      "name": "System.ComponentModel.dll",
+      "behavior": "assembly",
+      "url": "System.ComponentModel.dll"
+    },
+    {
+      "name": "System.Collections.NonGeneric.dll",
+      "behavior": "assembly",
+      "url": "System.Collections.NonGeneric.dll"
+    },
+    {
+      "name": "System.ObjectModel.dll",
+      "behavior": "assembly",
+      "url": "System.ObjectModel.dll"
+    },
+    {
+      "name": "System.Collections.dll",
+      "behavior": "assembly",
+      "url": "System.Collections.dll"
+    },
+    {
+      "name": "System.Collections.Specialized.dll",
+      "behavior": "assembly",
+      "url": "System.Collections.Specialized.dll"
+    },
+    {
+      "name": "System.Memory.dll",
+      "behavior": "assembly",
+      "url": "System.Memory.dll"
+    },
+    {
+      "name": "System.Collections.Concurrent.dll",
+      "behavior": "assembly",
+      "url": "System.Collections.Concurrent.dll"
+    },
+    {
+      "name": "System.Net.Primitives.dll",
+      "behavior": "assembly",
+      "url": "System.Net.Primitives.dll"
+    },
+    {
+      "name": "System.ComponentModel.TypeConverter.dll",
+      "behavior": "assembly",
+      "url": "System.ComponentModel.TypeConverter.dll"
+    },
+    {
+      "name": "System.Text.RegularExpressions.dll",
+      "behavior": "assembly",
+      "url": "System.Text.RegularExpressions.dll"
+    },
+    {
+      "name": "System.Net.Security.dll",
+      "behavior": "assembly",
+      "url": "System.Net.Security.dll"
+    },
+    {
+      "name": "System.Drawing.Primitives.dll",
+      "behavior": "assembly",
+      "url": "System.Drawing.Primitives.dll"
+    },
+    {
+      "name": "System.Linq.dll",
+      "behavior": "assembly",
+      "url": "System.Linq.dll"
+    },
+    {
+      "name": "System.Net.Http.dll",
+      "behavior": "assembly",
+      "url": "System.Net.Http.dll"
+    },
+    {
+      "name": "System.Runtime.InteropServices.JavaScript.dll",
+      "behavior": "assembly",
+      "url": "System.Runtime.InteropServices.JavaScript.dll"
+    },
+    {
+      "name": "System.Linq.Expressions.dll",
+      "behavior": "assembly",
+      "url": "System.Linq.Expressions.dll"
+    },
+    {
+      "name": "System.Console.dll",
+      "behavior": "assembly",
+      "url": "System.Console.dll"
+    },
+    {
+      "name": "System.Collections.Immutable.dll",
+      "behavior": "assembly",
+      "url": "System.Collections.Immutable.dll"
+    },
+    {
+      "name": "System.Web.HttpUtility.dll",
+      "behavior": "assembly",
+      "url": "System.Web.HttpUtility.dll"
+    },
+    {
+      "name": "HonkTrooper.Wasm.dll",
+      "behavior": "assembly",
+      "url": "HonkTrooper.Wasm.dll"
+    },
+    {
+      "name": "Uno.UI.Runtime.WebAssembly.dll",
+      "behavior": "assembly",
+      "url": "Uno.UI.Runtime.WebAssembly.dll"
+    },
+    {
+      "name": "Uno.UI.dll",
+      "behavior": "assembly",
+      "url": "Uno.UI.dll"
+    },
+    {
+      "name": "Uno.Foundation.dll",
+      "behavior": "assembly",
+      "url": "Uno.Foundation.dll"
+    },
+    {
+      "name": "Uno.Foundation.Logging.dll",
+      "behavior": "assembly",
+      "url": "Uno.Foundation.Logging.dll"
+    },
+    {
+      "name": "Uno.Foundation.Runtime.WebAssembly.dll",
+      "behavior": "assembly",
+      "url": "Uno.Foundation.Runtime.WebAssembly.dll"
+    },
+    {
+      "name": "Uno.Diagnostics.Eventing.dll",
+      "behavior": "assembly",
+      "url": "Uno.Diagnostics.Eventing.dll"
+    },
+    {
+      "name": "Uno.dll",
+      "behavior": "assembly",
+      "url": "Uno.dll"
+    },
+    {
+      "name": "Uno.UI.Dispatching.dll",
+      "behavior": "assembly",
+      "url": "Uno.UI.Dispatching.dll"
+    },
+    {
+      "name": "System.Text.Json.dll",
+      "behavior": "assembly",
+      "url": "System.Text.Json.dll"
+    },
+    {
+      "name": "System.Text.Encodings.Web.dll",
+      "behavior": "assembly",
+      "url": "System.Text.Encodings.Web.dll"
+    },
+    {
+      "name": "Uno.UI.Composition.dll",
+      "behavior": "assembly",
+      "url": "Uno.UI.Composition.dll"
+    },
+    {
+      "name": "HonkTrooper.dll",
+      "behavior": "assembly",
+      "url": "HonkTrooper.dll"
+    },
+    {
+      "name": "Uno.UI.Toolkit.dll",
+      "behavior": "assembly",
+      "url": "Uno.UI.Toolkit.dll"
+    },
+    {
+      "name": "Uno.UI.FluentTheme.v2.dll",
+      "behavior": "assembly",
+      "url": "Uno.UI.FluentTheme.v2.dll"
+    },
+    {
+      "name": "Uno.UI.Lottie.dll",
+      "behavior": "assembly",
+      "url": "Uno.UI.Lottie.dll"
+    },
+    {
+      "name": "dotnet.wasm",
+      "behavior": "dotnetwasm",
+      "url": "dotnet.wasm"
+    },
+    {
+      "name": "icudt.dat",
+      "behavior": "icu",
+      "url": "icudt.dat"
+    }
+  ]
+}
