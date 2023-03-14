@@ -367,7 +367,7 @@ namespace HonkTrooper
                 {
                     MoveRight(speed);
 
-                    if (GetTop() < 0)
+                    if (GetTop() < 0 || GetLeft() > Scene.Width)
                     {
                         AwaitMoveRight = false;
                         AwaitMoveLeft = true;

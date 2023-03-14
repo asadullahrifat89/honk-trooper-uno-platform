@@ -91,7 +91,6 @@ namespace HonkTrooper
                     break;
             }
 
-            SpeedOffset = _random.Next(-4, 2);
             IsometricDisplacement = 0.5;
 
             if (WillHonk)
@@ -121,9 +120,7 @@ namespace HonkTrooper
             WillHonk = Convert.ToBoolean(_random.Next(0, 2));
 
             if (WillHonk)
-            {
                 SetHonkDelay();
-            }
         }
 
         public bool Honk()

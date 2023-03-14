@@ -28,12 +28,14 @@ namespace HonkTrooper
         private readonly Threashold _boss_threashold;
         private readonly Threashold _enemy_threashold;
 
-        //TODO: set defaults to 40 and 10
-        private readonly double _boss_threashold_point = 40;
-        private readonly double _boss_threashold_point_increase = 10;
+        //TODO: set defaults to 45 and 10
+        private readonly double _boss_threashold_limit = 40; // after reaching 40 score first boss will appear
+        private readonly double _boss_threashold_limit_increase = 10;
 
-        //TODO: set defaults to 100
-        private readonly double _enemy_threashold_point = 10;
+        //TODO: set defaults to 100 & 10
+        private readonly double _enemy_threashold_limit = 100; // after reaching 100 score first enemies will appear
+        private readonly double _enemy_threashold_limit_increase = 10;
+        private double _enemy_kill_count;
 
         #endregion
 
@@ -53,8 +55,8 @@ namespace HonkTrooper
             _game_score_bar = this.GameScoreBar;
             _health_bars = this.HealthBars;
 
-            _boss_threashold = new Threashold(_boss_threashold_point);
-            _enemy_threashold = new Threashold(_enemy_threashold_point);
+            _boss_threashold = new Threashold(_boss_threashold_limit);
+            _enemy_threashold = new Threashold(_enemy_threashold_limit);
 
             ToggleHudVisibility(Visibility.Collapsed);
 
@@ -63,10 +65,6 @@ namespace HonkTrooper
             Loaded += MainPage_Loaded;
             Unloaded += MainPage_Unloaded;
         }
-
-        #endregion
-
-        #region Properties
 
         #endregion
 
@@ -104,8 +102,9 @@ namespace HonkTrooper
             _boss_health_bar.Reset();
             _game_score_bar.Reset();
 
-            _boss_threashold.Reset(_boss_threashold_point);
-            _enemy_threashold.Reset(_enemy_threashold_point);
+            _boss_threashold.Reset(_boss_threashold_limit);
+            _enemy_threashold.Reset(_enemy_threashold_limit);
+            _enemy_kill_count = 0;
 
             GeneratePlayerInScene();
 
@@ -898,7 +897,7 @@ namespace HonkTrooper
 
         private bool GenerateVehicleInScene()
         {
-            if (_scene_game.Children.OfType<Vehicle>().FirstOrDefault(x => x.IsAnimating == false) is Vehicle vehicle)
+            if (NoBossFightOngoing() && _scene_game.Children.OfType<Vehicle>().FirstOrDefault(x => x.IsAnimating == false) is Vehicle vehicle)
             {
                 vehicle.IsAnimating = true;
                 vehicle.Reset();
@@ -997,8 +996,6 @@ namespace HonkTrooper
 
             return true;
         }
-
-
 
         #endregion
 
@@ -1566,8 +1563,7 @@ namespace HonkTrooper
         {
             // if there are no bosses or enemies in the scene the vehicles will honk
 
-            if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
-                !_scene_game.Children.OfType<Boss>().Any(x => x.IsAnimating && x.IsAttacking) &&
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING && NoBossFightOngoing() &&
                 !_scene_game.Children.OfType<Enemy>().Any(x => x.IsAnimating))
             {
                 return GenerateHonkInScene(source);
@@ -1580,8 +1576,7 @@ namespace HonkTrooper
         {
             // if there are no bosses in the scene the vehicles will honk
 
-            if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
-                !_scene_game.Children.OfType<Boss>().Any(x => x.IsAnimating && x.IsAttacking))
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING && NoBossFightOngoing())
             {
                 return GenerateHonkInScene(source);
             }
@@ -1724,7 +1719,7 @@ namespace HonkTrooper
 
                 // set boss health
                 boss.Health = _boss_threashold.GetReleasePointDifference() * 1.5;
-                _boss_threashold.IncreaseReleasePoint(_boss_threashold_point_increase, _game_score_bar.GetScore());
+                _boss_threashold.IncreaseThreasholdLimit(_boss_threashold_limit_increase, _game_score_bar.GetScore());
 
                 _boss_health_bar.SetMaxiumHealth(boss.Health);
                 _boss_health_bar.SetValue(boss.Health);
@@ -1982,6 +1977,11 @@ namespace HonkTrooper
             }
         }
 
+        private bool NoBossFightOngoing()
+        {
+            return !_scene_game.Children.OfType<Boss>().Any(x => x.IsAnimating && x.IsAttacking);
+        }
+
         #endregion
 
         #region Enemy
@@ -2010,7 +2010,7 @@ namespace HonkTrooper
 
         private bool GenerateEnemyInScene()
         {
-            if (!_scene_game.Children.OfType<Boss>().Any(x => x.IsAnimating && x.IsAttacking) &&
+            if (NoBossFightOngoing() &&
                 _enemy_threashold.ShouldRelease(_game_score_bar.GetScore()) &&
                 _scene_game.Children.OfType<Enemy>().FirstOrDefault(x => x.IsAnimating == false) is Enemy enemy)
             {
@@ -2120,6 +2120,15 @@ namespace HonkTrooper
             if (enemy.IsDead)
             {
                 _game_score_bar.GainScore(5);
+
+                _enemy_kill_count++;
+
+                // after killing 15 enemies increase the threadhold limit
+                if (_enemy_kill_count > 15)
+                {
+                    _enemy_threashold.IncreaseThreasholdLimit(_enemy_threashold_limit_increase, _game_score_bar.GetScore());
+                    _enemy_kill_count = 0;
+                }
 
                 Console.WriteLine("Enemy dead");
             }
@@ -2635,7 +2644,7 @@ namespace HonkTrooper
                 startUpAction: SpawnInterimScreenInScene));
 
             _scene_game.AddToScene(new Generator(
-                generationDelay: 120,
+                generationDelay: 180,
                 generationAction: GenerateEnemyInScene,
                 startUpAction: SpawnEnemysInScene,
                 randomizeGenerationDelay: true));

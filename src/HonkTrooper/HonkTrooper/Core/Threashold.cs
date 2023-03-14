@@ -1,23 +1,21 @@
-﻿using static System.Formats.Asn1.AsnWriter;
-
-namespace HonkTrooper
+﻿namespace HonkTrooper
 {
     public partial class Threashold
     {
         #region Ctor
 
-        public Threashold(double value)
+        public Threashold(double threasholdLimit)
         {
-            Reset(value);
+            Reset(threasholdLimit);
         }
 
         #endregion
 
         #region Properties
 
-        private double ReleasePoint { get; set; } = 0;
+        private double LastReleasePoint { get; set; } = 0;
 
-        private double ReleasePointDifference { get; set; }
+        private double ThreasholdLimit { get; set; }
 
         #endregion
 
@@ -25,25 +23,25 @@ namespace HonkTrooper
 
         public double GetReleasePointDifference()
         {
-            return ReleasePointDifference;
+            return ThreasholdLimit;
         }
 
-        public bool ShouldRelease(double score)
+        public bool ShouldRelease(double currentPoint)
         {
-            var release = score - ReleasePoint > ReleasePointDifference;
+            var release = currentPoint - LastReleasePoint > ThreasholdLimit;
 
             return release;
         }
 
-        public void IncreaseReleasePoint(double value, double score)
+        public void IncreaseThreasholdLimit(double increament, double currentPoint)
         {
-            ReleasePoint = score;
-            ReleasePointDifference += value;
+            LastReleasePoint = currentPoint;
+            ThreasholdLimit += increament;
         }
 
         public void Reset(double value)
         {
-            ReleasePointDifference = value;
+            ThreasholdLimit = value;
         }
 
         #endregion

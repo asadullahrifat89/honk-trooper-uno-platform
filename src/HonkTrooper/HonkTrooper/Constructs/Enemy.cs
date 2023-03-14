@@ -1,9 +1,6 @@
-﻿using Microsoft.UI;
-using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media;
+﻿using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace HonkTrooper
@@ -58,7 +55,6 @@ namespace HonkTrooper
 
             SetChild(_content_image);
 
-            SpeedOffset = _random.Next(-4, 2);
             IsometricDisplacement = 0.5;
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE;
         }
@@ -75,7 +71,6 @@ namespace HonkTrooper
 
         public bool IsDead => Health <= 0;
 
-
         #endregion
 
         #region Methods
@@ -91,14 +86,12 @@ namespace HonkTrooper
             WillHonk = Convert.ToBoolean(_random.Next(0, 2));
 
             if (WillHonk)
-            {
                 SetHonkDelay();
-            }
 
             var uri = _enemy_uris[_random.Next(0, _enemy_uris.Length)];
             _content_image.Source = new BitmapImage(uri);
 
-            SpeedOffset = _random.Next(-4, 2);
+            SpeedOffset = _random.Next(-3, 2);
         }
 
         public void Hover()
