@@ -58,9 +58,7 @@ namespace HonkTrooper
 
             SetChild(_content_image);
 
-            double speedOffset = _random.Next(-4, 2);
-
-            SpeedOffset = speedOffset;
+            SpeedOffset = _random.Next(-4, 2);
             IsometricDisplacement = 0.5;
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE;
         }

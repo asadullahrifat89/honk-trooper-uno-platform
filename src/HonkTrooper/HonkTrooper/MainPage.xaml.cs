@@ -474,78 +474,15 @@ namespace HonkTrooper
 
                 if (enemy is not null)
                 {
-                    playerBomb.AwaitMoveUp = true;
-                    playerBomb.SetRotation(210);
+                    SetPlayerBombDirection(playerBomb, enemy);
                 }
                 else if (bossBombSeeking is not null)
                 {
-                    // player is on the bottom right side of the boss
-                    if ((_player.GetTop() > bossBombSeeking.GetTop() && _player.GetLeft() > bossBombSeeking.GetLeft()))
-                    {
-                        playerBomb.AwaitMoveUp = true;
-                        playerBomb.SetRotation(210);
-                    }
-
-                    // player is on the bottom left side of the boss
-                    else if ((_player.GetTop() > bossBombSeeking.GetTop() && _player.GetLeft() < bossBombSeeking.GetLeft()))
-                    {
-                        playerBomb.AwaitMoveRight = true;
-                        playerBomb.SetRotation(-33);
-                    }
-
-                    // if player is on the top left side of the boss
-                    else if ((_player.GetTop() < bossBombSeeking.GetTop() && _player.GetLeft() < bossBombSeeking.GetLeft()))
-                    {
-                        playerBomb.AwaitMoveDown = true;
-                        playerBomb.SetRotation(123);
-                    }
-
-                    // if player is on the top right side of the boss
-                    else if ((_player.GetTop() < bossBombSeeking.GetTop() && _player.GetLeft() > bossBombSeeking.GetLeft()))
-                    {
-                        playerBomb.AwaitMoveLeft = true;
-                        playerBomb.SetRotation(123);
-                    }
-                    else
-                    {
-                        playerBomb.AwaitMoveUp = true;
-                        playerBomb.SetRotation(123);
-                    }
+                    SetPlayerBombDirection(playerBomb, bossBombSeeking);
                 }
                 else if (boss is not null)
                 {
-                    // player is on the bottom right side of the boss
-                    if ((_player.GetTop() > boss.GetTop() && _player.GetLeft() > boss.GetLeft()))
-                    {
-                        playerBomb.AwaitMoveUp = true;
-                        playerBomb.SetRotation(210);
-                    }
-
-                    // player is on the bottom left side of the boss
-                    else if ((_player.GetTop() > boss.GetTop() && _player.GetLeft() < boss.GetLeft()))
-                    {
-                        playerBomb.AwaitMoveRight = true;
-                        playerBomb.SetRotation(-33);
-                    }
-
-                    // if player is on the top left side of the boss
-                    else if ((_player.GetTop() < boss.GetTop() && _player.GetLeft() < boss.GetLeft()))
-                    {
-                        playerBomb.AwaitMoveDown = true;
-                        playerBomb.SetRotation(123);
-                    }
-
-                    // if player is on the top right side of the boss
-                    else if ((_player.GetTop() < boss.GetTop() && _player.GetLeft() > boss.GetLeft()))
-                    {
-                        playerBomb.AwaitMoveLeft = true;
-                        playerBomb.SetRotation(123);
-                    }
-                    else
-                    {
-                        playerBomb.AwaitMoveUp = true;
-                        playerBomb.SetRotation(123);
-                    }
+                    SetPlayerBombDirection(playerBomb, boss);
                 }
 
                 #endregion
@@ -556,11 +493,47 @@ namespace HonkTrooper
             return false;
         }
 
+        private void SetPlayerBombDirection(PlayerBomb playerBomb, Construct target)
+        {
+            // player is on the bottom right side of the boss
+            if ((_player.GetTop() > target.GetTop() && _player.GetLeft() > target.GetLeft()))
+            {
+                playerBomb.AwaitMoveUp = true;
+                playerBomb.SetRotation(210);
+            }
+
+            // player is on the bottom left side of the boss
+            else if ((_player.GetTop() > target.GetTop() && _player.GetLeft() < target.GetLeft()))
+            {
+                playerBomb.AwaitMoveRight = true;
+                playerBomb.SetRotation(-33);
+            }
+
+            // if player is on the top left side of the boss
+            else if ((_player.GetTop() < target.GetTop() && _player.GetLeft() < target.GetLeft()))
+            {
+                playerBomb.AwaitMoveDown = true;
+                playerBomb.SetRotation(123);
+            }
+
+            // if player is on the top right side of the boss
+            else if ((_player.GetTop() < target.GetTop() && _player.GetLeft() > target.GetLeft()))
+            {
+                playerBomb.AwaitMoveLeft = true;
+                playerBomb.SetRotation(123);
+            }
+            else
+            {
+                playerBomb.AwaitMoveUp = true;
+                playerBomb.SetRotation(123);
+            }
+        }
+
         private bool AnimatePlayerBomb(Construct bomb)
         {
             PlayerBomb playerBomb = bomb as PlayerBomb;
 
-            var hitBox= playerBomb.GetCloseHitBox();
+            var hitBox = playerBomb.GetCloseHitBox();
 
             var speed = (_scene_game.Speed + bomb.SpeedOffset) * _scene_game.DownScaling;
 
@@ -600,8 +573,6 @@ namespace HonkTrooper
                     {
                         playerBomb.SetBlast();
                         LooseBossHealth(boss);
-
-                        // Console.WriteLine($"Boss Health: {boss.Health}");
                     }
 
                     // if player bomb touches boss's seeking bomb, it blasts
@@ -1024,143 +995,6 @@ namespace HonkTrooper
             }
 
             return true;
-        }
-
-        #endregion
-
-        #region Enemy
-
-        private bool SpawnEnemysInScene()
-        {
-            for (int i = 0; i < 10; i++)
-            {
-                Enemy enemy = new(
-                    animateAction: AnimateEnemy,
-                    recycleAction: RecycleEnemy,
-                    downScaling: _scene_game.DownScaling);
-
-                _scene_game.AddToScene(enemy);
-
-                enemy.SetPosition(
-                    left: -500,
-                    top: -500,
-                    z: 8);
-
-                SpawnDropShadowInScene(enemy);
-            }
-
-            return true;
-        }
-
-        private bool GenerateEnemyInScene()
-        {
-            if (!_scene_game.Children.OfType<Boss>().Any(x => x.IsAnimating && x.IsAttacking) &&
-                _enemy_threashold.ShouldRelease(_game_score_bar.GetScore()) &&
-                _scene_game.Children.OfType<Enemy>().FirstOrDefault(x => x.IsAnimating == false) is Enemy enemy)
-            {
-                enemy.IsAnimating = true;
-                enemy.Reset();
-
-                var topOrLeft = _random.Next(0, 2);
-
-                switch (topOrLeft)
-                {
-                    case 0:
-                        {
-                            var xLaneWidth = _scene_game.Width / 2;
-
-                            enemy.SetPosition(
-                                left: _random.Next(0, (int)(xLaneWidth - enemy.Width)),
-                                top: enemy.Height * -1);
-                        }
-                        break;
-                    case 1:
-                        {
-                            var yLaneWidth = _scene_game.Height / 2;
-
-                            enemy.SetPosition(
-                                left: enemy.Width * -1,
-                                top: _random.Next(0, (int)(yLaneWidth - enemy.Height)));
-                        }
-                        break;
-                    default:
-                        break;
-                }
-
-                SyncDropShadow(enemy);
-
-                Console.WriteLine("Enemy generated.");
-
-                return true;
-            }
-
-
-            return false;
-        }
-
-        private bool AnimateEnemy(Construct enemy)
-        {
-            Enemy enemy1 = enemy as Enemy;
-
-            if (enemy1.IsDead)
-            {
-                enemy1.Shrink();
-            }
-            else
-            {
-                enemy1.Hover();
-                enemy1.Pop();
-
-                if (_scene_game.SceneState == SceneState.GAME_RUNNING)
-                {
-                    var speed = (_scene_game.Speed + enemy.SpeedOffset) * _scene_game.DownScaling;
-
-                    enemy1.MoveDown(speed);
-
-                    if (enemy1.Honk())
-                    {
-                        GenerateHonkInScene(enemy);
-                    }
-
-                    if (enemy1.Attack())
-                    {
-                        // TODO: generate enemy bomb
-                        //GenerateEnemyBombInScene(enemy1);
-                    }
-                }
-            }
-
-            return true;
-        }
-
-        private bool RecycleEnemy(Construct enemy)
-        {
-            var hitbox = enemy.GetHitBox();
-
-            // enemy is dead or goes out of bounds
-            if (enemy.IsShrinkingComplete ||
-                hitbox.Left > _scene_game.Width || hitbox.Top > _scene_game.Height ||
-                hitbox.Right < 0 || hitbox.Bottom < 0)
-            {
-                enemy.SetPosition(
-                    left: -500,
-                    top: -500);
-
-                enemy.IsAnimating = false;
-            }
-
-            return true;
-        }
-
-        private void LooseEnemyHealth(Enemy enemy)
-        {
-            enemy.SetPopping();
-            enemy.LooseHealth();
-
-            if (enemy.IsDead)
-            {
-                _game_score_bar.GainScore(5);
-            }
         }
 
         #endregion
@@ -1678,8 +1512,7 @@ namespace HonkTrooper
             // if there are no bosses or enemies in the scene the vehicles will honk
             if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
                 _scene_game.Children.OfType<Honk>().FirstOrDefault(x => x.IsAnimating == false) is Honk honk &&
-                !_scene_game.Children.OfType<Boss>().Any(x => x.IsAnimating && x.IsAttacking) &&
-                !_scene_game.Children.OfType<Enemy>().Any(x => x.IsAnimating))
+                !_scene_game.Children.OfType<Boss>().Any(x => x.IsAnimating && x.IsAttacking))
             {
                 honk.IsAnimating = true;
                 honk.SetPopping();
@@ -2119,6 +1952,145 @@ namespace HonkTrooper
                 GenerateInterimScreenInScene("Boss Busted");
 
                 _scene_game.ActivateSlowMotion();
+            }
+        }
+
+        #endregion
+
+        #region Enemy
+
+        private bool SpawnEnemysInScene()
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                Enemy enemy = new(
+                    animateAction: AnimateEnemy,
+                    recycleAction: RecycleEnemy,
+                    downScaling: _scene_game.DownScaling);
+
+                _scene_game.AddToScene(enemy);
+
+                enemy.SetPosition(
+                    left: -500,
+                    top: -500,
+                    z: 8);
+
+                SpawnDropShadowInScene(enemy);
+            }
+
+            return true;
+        }
+
+        private bool GenerateEnemyInScene()
+        {
+            if (!_scene_game.Children.OfType<Boss>().Any(x => x.IsAnimating && x.IsAttacking) &&
+                _enemy_threashold.ShouldRelease(_game_score_bar.GetScore()) &&
+                _scene_game.Children.OfType<Enemy>().FirstOrDefault(x => x.IsAnimating == false) is Enemy enemy)
+            {
+                enemy.IsAnimating = true;
+                enemy.Reset();
+
+                var topOrLeft = _random.Next(0, 2);
+
+                switch (topOrLeft)
+                {
+                    case 0:
+                        {
+                            var xLaneWidth = _scene_game.Width / 2;
+
+                            enemy.SetPosition(
+                                left: _random.Next(0, (int)(xLaneWidth - enemy.Width)),
+                                top: enemy.Height * -1);
+                        }
+                        break;
+                    case 1:
+                        {
+                            var yLaneWidth = _scene_game.Height / 2;
+
+                            enemy.SetPosition(
+                                left: enemy.Width * -1,
+                                top: _random.Next(0, (int)(yLaneWidth - enemy.Height)));
+                        }
+                        break;
+                    default:
+                        break;
+                }
+
+                SyncDropShadow(enemy);
+
+                Console.WriteLine("Enemy generated.");
+
+                return true;
+            }
+
+
+            return false;
+        }
+
+        private bool AnimateEnemy(Construct enemy)
+        {
+            Enemy enemy1 = enemy as Enemy;
+
+            if (enemy1.IsDead)
+            {
+                enemy1.Shrink();
+            }
+            else
+            {
+                enemy1.Hover();
+                enemy1.Pop();
+
+                //var speed = (_scene_game.Speed + enemy.SpeedOffset) * _scene_game.DownScaling;
+                //enemy1.MoveDown(speed);
+
+                var speed = (_scene_game.Speed + enemy.SpeedOffset);
+                MoveConstruct(enemy, speed);
+
+                if (_scene_game.SceneState == SceneState.GAME_RUNNING)
+                {
+                    if (enemy1.Honk())
+                    {
+                        GenerateHonkInScene(enemy);
+                    }
+
+                    if (enemy1.Attack())
+                    {
+                        // TODO: generate enemy bomb
+                        //GenerateEnemyBombInScene(enemy1);
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        private bool RecycleEnemy(Construct enemy)
+        {
+            var hitbox = enemy.GetHitBox();
+
+            // enemy is dead or goes out of bounds
+            if (enemy.IsShrinkingComplete ||
+                hitbox.Left > _scene_game.Width || hitbox.Top > _scene_game.Height ||
+                hitbox.Right < 0 || hitbox.Bottom < 0)
+            {
+                enemy.SetPosition(
+                    left: -500,
+                    top: -500);
+
+                enemy.IsAnimating = false;
+            }
+
+            return true;
+        }
+
+        private void LooseEnemyHealth(Enemy enemy)
+        {
+            enemy.SetPopping();
+            enemy.LooseHealth();
+
+            if (enemy.IsDead)
+            {
+                _game_score_bar.GainScore(5);
             }
         }
 
@@ -2633,7 +2605,7 @@ namespace HonkTrooper
                 startUpAction: SpawnInterimScreenInScene));
 
             _scene_game.AddToScene(new Generator(
-                generationDelay: 100,
+                generationDelay: 120,
                 generationAction: GenerateEnemyInScene,
                 startUpAction: SpawnEnemysInScene,
                 randomizeGenerationDelay: true));
