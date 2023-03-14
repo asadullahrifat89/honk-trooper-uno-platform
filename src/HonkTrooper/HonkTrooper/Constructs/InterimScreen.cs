@@ -46,7 +46,7 @@ namespace HonkTrooper
 
             IsometricDisplacement = 0.5;
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;
-            DropShadowDistance = 50;
+            DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE;
 
             _titleScreenText = new TextBlock()
             {

@@ -1,4 +1,6 @@
-﻿using Microsoft.UI.Xaml.Controls;
+﻿using Microsoft.UI;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -34,6 +36,7 @@ namespace HonkTrooper
             ConstructType = ConstructType.ENEMY;
 
             _random = new Random();
+
             _enemy_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.ENEMY).Select(x => x.Uri).ToArray();
 
             var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.ENEMY);
@@ -55,9 +58,11 @@ namespace HonkTrooper
 
             SetChild(_content_image);
 
-            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET - 3;
+            double speedOffset = _random.Next(-4, 2);
+
+            SpeedOffset = speedOffset;
             IsometricDisplacement = 0.5;
-            DropShadowDistance = 50;
+            DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE;
         }
 
         #endregion
@@ -80,9 +85,10 @@ namespace HonkTrooper
         public void Reset()
         {
             Opacity = 1;
+            SetScaleTransform(1);
 
             // one hit or two hit health
-            var health = _random.Next(0, 2) == 0 ? 5 : 10;
+            var health = _random.Next(5, 11);
 
             Health = health;
 
@@ -97,7 +103,7 @@ namespace HonkTrooper
             var uri = _enemy_uris[_random.Next(0, _enemy_uris.Length)];
             _content_image.Source = new BitmapImage(uri);
 
-            SetScaleTransform(1);
+            SpeedOffset = _random.Next(-4, 2);
         }
 
         public void Hover()

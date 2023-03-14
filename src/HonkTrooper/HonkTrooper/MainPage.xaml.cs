@@ -560,6 +560,8 @@ namespace HonkTrooper
         {
             PlayerBomb playerBomb = bomb as PlayerBomb;
 
+            var hitBox= playerBomb.GetCloseHitBox();
+
             var speed = (_scene_game.Speed + bomb.SpeedOffset) * _scene_game.DownScaling;
 
             if (playerBomb.AwaitMoveLeft)
@@ -594,36 +596,26 @@ namespace HonkTrooper
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
                     // if player bomb touches boss, it blasts, boss looses health
-                    if (_scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss)
+                    if (_scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss && boss.GetCloseHitBox().IntersectsWith(hitBox))
                     {
-                        if (playerBomb.GetCloseHitBox().IntersectsWith(boss.GetCloseHitBox()))
-                        {
-                            playerBomb.SetBlast();
+                        playerBomb.SetBlast();
+                        LooseBossHealth(boss);
 
-                            LooseBossHealth(boss);
-
-                            // Console.WriteLine($"Boss Health: {boss.Health}");
-                        }
+                        // Console.WriteLine($"Boss Health: {boss.Health}");
                     }
 
                     // if player bomb touches boss's seeking bomb, it blasts
-                    if (_scene_game.Children.OfType<BossBombSeeking>().FirstOrDefault(x => x.IsAnimating) is BossBombSeeking bossBombSeeking)
+                    if (_scene_game.Children.OfType<BossBombSeeking>().FirstOrDefault(x => x.IsAnimating) is BossBombSeeking bossBombSeeking && bossBombSeeking.GetCloseHitBox().IntersectsWith(hitBox))
                     {
-                        if (playerBomb.GetCloseHitBox().IntersectsWith(bossBombSeeking.GetCloseHitBox()))
-                        {
-                            playerBomb.SetBlast();
-                            bossBombSeeking.SetBlast();
-                        }
+                        playerBomb.SetBlast();
+                        bossBombSeeking.SetBlast();
                     }
 
                     // if player bomb touches enemy, it blasts, enemy looses health
-                    if (_scene_game.Children.OfType<Enemy>().FirstOrDefault(x => x.IsAnimating) is Enemy enemy)
+                    if (_scene_game.Children.OfType<Enemy>().FirstOrDefault(x => x.IsAnimating) is Enemy enemy && enemy.GetCloseHitBox().IntersectsWith(hitBox))
                     {
-                        if (playerBomb.GetCloseHitBox().IntersectsWith(enemy.GetCloseHitBox()))
-                        {
-                            playerBomb.SetBlast();
-                            LooseEnemyHealth(enemy);
-                        }
+                        playerBomb.SetBlast();
+                        LooseEnemyHealth(enemy);
                     }
                 }
             }
@@ -1011,7 +1003,7 @@ namespace HonkTrooper
 
                 if (vehicle1.Honk())
                 {
-                    GenerateHonkInScene(vehicle1);
+                    GenerateHonkInScene(vehicle);
                 }
             }
 
@@ -1070,8 +1062,6 @@ namespace HonkTrooper
                 enemy.Reset();
 
                 var topOrLeft = _random.Next(0, 2);
-
-                var lane = _random.Next(0, 2);
 
                 switch (topOrLeft)
                 {
@@ -2643,7 +2633,7 @@ namespace HonkTrooper
                 startUpAction: SpawnInterimScreenInScene));
 
             _scene_game.AddToScene(new Generator(
-                generationDelay: 90,
+                generationDelay: 100,
                 generationAction: GenerateEnemyInScene,
                 startUpAction: SpawnEnemysInScene,
                 randomizeGenerationDelay: true));
