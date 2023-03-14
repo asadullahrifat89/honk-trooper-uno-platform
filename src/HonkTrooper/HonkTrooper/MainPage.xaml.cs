@@ -28,12 +28,12 @@ namespace HonkTrooper
         private readonly Threashold _boss_threashold;
         private readonly Threashold _enemy_threashold;
 
-        //TODO: set defaults to 45 and 10
-        private readonly double _boss_threashold_limit = 40; // after reaching 40 score first boss will appear
-        private readonly double _boss_threashold_limit_increase = 10;
+        //TODO: set defaults
+        private readonly double _boss_threashold_limit = 50; // after reaching 40 score first boss will appear
+        private readonly double _boss_threashold_limit_increase = 15;
 
-        //TODO: set defaults to 70 & 10
-        private readonly double _enemy_threashold_limit = 70; // after reaching 70 score first enemies will appear
+        //TODO: set defaults
+        private readonly double _enemy_threashold_limit = 100; // after reaching 70 score first enemies will appear
         private readonly double _enemy_threashold_limit_increase = 10;
 
         private double _enemy_kill_count;
@@ -499,32 +499,32 @@ namespace HonkTrooper
 
         private void SetPlayerBombDirection(PlayerBomb playerBomb, Construct target)
         {
-            // player is on the bottom right side of the boss
-            if ((_player.GetTop() > target.GetTop() && _player.GetLeft() > target.GetLeft()))
-            {
-                playerBomb.AwaitMoveUp = true;
-                playerBomb.SetRotation(210);
+            // player is below the target
+            if ((_player.GetTop() > target.GetBottom()))
+            {                
+                if (_player.GetRight() < target.GetLeft()) // player is on the left side of the target
+                {
+                    playerBomb.AwaitMoveRight = true;
+                    playerBomb.SetRotation(-33);
+                }
+                else if (_player.GetLeft() > target.GetRight()) // player is on the right side of the target
+                {
+                    playerBomb.AwaitMoveUp = true;
+                    playerBomb.SetRotation(210);
+                }
             }
-
-            // player is on the bottom left side of the boss
-            else if ((_player.GetTop() > target.GetTop() && _player.GetLeft() < target.GetLeft()))
+            else if ((_player.GetBottom() < target.GetTop())) // player is above the target
             {
-                playerBomb.AwaitMoveRight = true;
-                playerBomb.SetRotation(-33);
-            }
-
-            // if player is on the top left side of the boss
-            else if ((_player.GetTop() < target.GetTop() && _player.GetLeft() < target.GetLeft()))
-            {
-                playerBomb.AwaitMoveDown = true;
-                playerBomb.SetRotation(123);
-            }
-
-            // if player is on the top right side of the boss
-            else if ((_player.GetTop() < target.GetTop() && _player.GetLeft() > target.GetLeft()))
-            {
-                playerBomb.AwaitMoveLeft = true;
-                playerBomb.SetRotation(123);
+                if (_player.GetRight() < target.GetLeft())  // player is on the left side of the target
+                {
+                    playerBomb.AwaitMoveDown = true;
+                    playerBomb.SetRotation(123);
+                }
+                else if (_player.GetLeft() > target.GetRight()) // player is on the right side of the target
+                {
+                    playerBomb.AwaitMoveLeft = true;
+                    playerBomb.SetRotation(123);
+                }
             }
             else
             {
@@ -972,7 +972,7 @@ namespace HonkTrooper
                 if (vehicle1.Honk())
                     GenerateVehicleHonkInScene(vehicle1);
             }
-            
+
             PreventVehicleOverlapping(vehicle);
 
             return true;
