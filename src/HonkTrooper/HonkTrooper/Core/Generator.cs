@@ -6,11 +6,11 @@ namespace HonkTrooper
     {
         #region Fields
 
-        private bool _randomizeGenerationDelay = false;
+        private readonly bool _randomizeGenerationDelay = false;
         private int _generationDelay;
         private int _generationDelayInCount;
 
-        private Random _random = new Random();
+        private readonly Random _random = new Random();
 
         #endregion
 

@@ -1,0 +1,49 @@
+﻿namespace HonkTrooper
+{
+    public partial class Threashold
+    {
+        #region Ctor
+
+        public Threashold(double threasholdLimit)
+        {
+            Reset(threasholdLimit);
+        }
+
+        #endregion
+
+        #region Properties
+
+        private double LastReleasePoint { get; set; } = 0;
+
+        private double ThreasholdLimit { get; set; }
+
+        #endregion
+
+        #region Methods
+
+        public double GetReleasePointDifference()
+        {
+            return ThreasholdLimit;
+        }
+
+        public bool ShouldRelease(double currentPoint)
+        {
+            var release = currentPoint - LastReleasePoint > ThreasholdLimit;
+
+            return release;
+        }
+
+        public void IncreaseThreasholdLimit(double increament, double currentPoint)
+        {
+            LastReleasePoint = currentPoint;
+            ThreasholdLimit += increament;
+        }
+
+        public void Reset(double value)
+        {
+            ThreasholdLimit = value;
+        }
+
+        #endregion
+    }
+}

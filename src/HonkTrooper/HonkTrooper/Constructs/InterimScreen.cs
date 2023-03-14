@@ -16,7 +16,7 @@ namespace HonkTrooper
 
         private readonly double _hoverSpeed = 0.3;
 
-        private TextBlock _titleScreenText;
+        private readonly TextBlock _titleScreenText;
 
         private double _messageOnScreenDelay;
         private readonly double _messageOnScreenDelayDefault = 20;
@@ -46,7 +46,7 @@ namespace HonkTrooper
 
             IsometricDisplacement = 0.5;
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;
-            DropShadowDistance = 50;
+            DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE;
 
             _titleScreenText = new TextBlock()
             {

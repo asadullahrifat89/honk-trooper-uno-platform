@@ -25,6 +25,9 @@ namespace HonkTrooper
             new (ConstructType.BOSS_BOMB, 80, 80),
             new (ConstructType.BOSS_BOMB_SEEKING, 80, 80),
 
+            new (ConstructType.ENEMY, 140, 140),
+            new (ConstructType.ENEMY_BOMB, 60, 60),
+
             new (ConstructType.VEHICLE_SMALL, 160, 160),
             new (ConstructType.VEHICLE_LARGE, 190, 190),
 
@@ -90,8 +93,6 @@ namespace HonkTrooper
             new (ConstructType.PLAYER_BOMB_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_seeking_1.png")),
             new (ConstructType.PLAYER_BOMB_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_seeking_2.png")),
 
-            new (ConstructType.POWERUP_PICKUP, new Uri("ms-appx:///HonkTrooper/Assets/Images/power_up_pickup.png")),
-
             new (ConstructType.BOMB_BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Images/blast_1.png")),
             new (ConstructType.BOMB_BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Images/blast_2.png")),
 
@@ -99,8 +100,6 @@ namespace HonkTrooper
             new (ConstructType.CLOUD, new Uri("ms-appx:///HonkTrooper/Assets/Images/cloud_2.png")),
             new (ConstructType.CLOUD, new Uri("ms-appx:///HonkTrooper/Assets/Images/cloud_3.png")),
 
-            //new (ConstructType.BOSS, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_1.png")),
-            //new (ConstructType.BOSS, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_2.png")),
             new (ConstructType.BOSS, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_3_idle.png")),
             new (ConstructType.BOSS_HIT, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_3_hit.png")),
 
@@ -108,13 +107,15 @@ namespace HonkTrooper
             new (ConstructType.BOSS_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_2.png")),
             new (ConstructType.BOSS_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_3.png")),
 
-            //new (ConstructType.BOSS_BOMB_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_seeking_1.png")),
-            //new (ConstructType.BOSS_BOMB_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_seeking_2.png")),
-            //new (ConstructType.BOSS_BOMB_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_seeking_3.png")),
-
             new (ConstructType.BOSS_BOMB_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_seeking.png")),
 
+            new (ConstructType.ENEMY, new Uri("ms-appx:///HonkTrooper/Assets/Images/enemy_1.png")),
+            new (ConstructType.ENEMY, new Uri("ms-appx:///HonkTrooper/Assets/Images/enemy_2.png")),
+
+            new (ConstructType.ENEMY_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/enemy_bomb.png")),
+
             new (ConstructType.HEALTH_PICKUP, new Uri("ms-appx:///HonkTrooper/Assets/Images/health_pickup.png")),
+            new (ConstructType.POWERUP_PICKUP, new Uri("ms-appx:///HonkTrooper/Assets/Images/power_up_pickup.png")),
         };
     }
 
@@ -150,6 +151,9 @@ namespace HonkTrooper
 
         BOSS_BOMB,
         BOSS_BOMB_SEEKING,
+
+        ENEMY,
+        ENEMY_BOMB,
 
         HEALTH_PICKUP,
         POWERUP_PICKUP,

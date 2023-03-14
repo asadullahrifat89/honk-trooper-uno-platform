@@ -9,10 +9,10 @@ namespace HonkTrooper
     {
         #region Fields
 
-        private Random _random;
+        private readonly Random _random;
 
-        private Uri[] _vehicle_small_uris;
-        private Uri[] _vehicle_large_uris;
+        private readonly Uri[] _vehicle_small_uris;
+        private readonly Uri[] _vehicle_large_uris;
 
         private double _honkDelay;
 
@@ -36,8 +36,6 @@ namespace HonkTrooper
 
             (ConstructType ConstructType, double Height, double Width) size;
             Uri uri;
-
-            double speedOffset = _random.Next(-4, 2);
 
             switch (vehicleType)
             {
@@ -63,8 +61,6 @@ namespace HonkTrooper
                             Source = new BitmapImage(uriSource: uri)
                         };
                         SetChild(content);
-
-                        SpeedOffset = speedOffset;
                     }
                     break;
                 case 1:
@@ -89,8 +85,6 @@ namespace HonkTrooper
                             Source = new BitmapImage(uriSource: uri)
                         };
                         SetChild(content);
-
-                        SpeedOffset = speedOffset;
                     }
                     break;
                 default:
@@ -126,9 +120,7 @@ namespace HonkTrooper
             WillHonk = Convert.ToBoolean(_random.Next(0, 2));
 
             if (WillHonk)
-            {
                 SetHonkDelay();
-            }
         }
 
         public bool Honk()
@@ -148,7 +140,6 @@ namespace HonkTrooper
             }
 
             return false;
-
         }
 
         public void SetHonkDelay()

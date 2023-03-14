@@ -17,7 +17,7 @@ namespace HonkTrooper
 
         private readonly double _hoverSpeed = 0.3;
 
-        private TextBlock _titleScreenText;
+        private readonly TextBlock _titleScreenText;
 
         #endregion
 
@@ -45,7 +45,7 @@ namespace HonkTrooper
 
             IsometricDisplacement = 0.5;
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;
-            DropShadowDistance = 50;
+            DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE;
 
             Grid grid = new();
             grid.Children.Add(new Border()

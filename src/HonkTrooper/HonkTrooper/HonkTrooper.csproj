@@ -53,6 +53,9 @@
     <None Remove="Assets\Images\cloud_1.png" />
     <None Remove="Assets\Images\cloud_2.png" />
     <None Remove="Assets\Images\cloud_3.png" />
+    <None Remove="Assets\Images\enemy_1.png" />
+    <None Remove="Assets\Images\enemy_2.png" />
+    <None Remove="Assets\Images\enemy_bomb.png" />
     <None Remove="Assets\Images\health_pickup.png" />
     <None Remove="Assets\Images\honk_1.png" />
     <None Remove="Assets\Images\honk_2.png" />

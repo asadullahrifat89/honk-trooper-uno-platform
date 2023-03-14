@@ -9,10 +9,10 @@ namespace HonkTrooper
     {
         #region Fields
 
-        private Random _random;
+        private readonly Random _random;
 
-        private Uri[] _bomb_uris;
-        private Uri[] _bomb_blast_uris;
+        private readonly Uri[] _bomb_uris;
+        private readonly Uri[] _bomb_blast_uris;
 
         private readonly Image _content_image;
 
@@ -90,7 +90,7 @@ namespace HonkTrooper
             IsBlasting = false;
 
             var uri = _bomb_uris[_random.Next(0, _bomb_uris.Length)];
-            _content_image.Source = new BitmapImage(uri);            
+            _content_image.Source = new BitmapImage(uri);
 
             AwaitMoveLeft = false;
             AwaitMoveRight = false;
