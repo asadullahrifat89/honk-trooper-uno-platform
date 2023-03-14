@@ -9,10 +9,10 @@ namespace HonkTrooper
     {
         #region Fields
 
-        private Random _random;
+        private readonly Random _random;
 
-        private Uri[] _vehicle_small_uris;
-        private Uri[] _vehicle_large_uris;
+        private readonly Uri[] _vehicle_small_uris;
+        private readonly Uri[] _vehicle_large_uris;
 
         private double _honkDelay;
 

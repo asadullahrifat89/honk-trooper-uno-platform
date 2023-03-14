@@ -16,7 +16,7 @@ namespace HonkTrooper
 
         private readonly double _hoverSpeed = 0.3;
 
-        private TextBlock _titleScreenText;
+        private readonly TextBlock _titleScreenText;
 
         private double _messageOnScreenDelay;
         private readonly double _messageOnScreenDelayDefault = 20;

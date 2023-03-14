@@ -10,9 +10,9 @@ namespace HonkTrooper
     {
         #region Fields
 
-        private Random _random;
-        private Uri[] _boss_uris;
-        private Uri[] _boss_hit_uris;
+        private readonly Random _random;
+        private readonly Uri[] _boss_uris;
+        private readonly Uri[] _boss_hit_uris;
 
         private double _hoverDelay;
         private readonly double _hoverDelayDefault = 15;

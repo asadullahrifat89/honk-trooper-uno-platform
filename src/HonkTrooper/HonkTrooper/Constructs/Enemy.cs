@@ -10,8 +10,8 @@ namespace HonkTrooper
     {
         #region Fields
 
-        private Random _random;
-        private Uri[] _enemy_uris;
+        private readonly Random _random;
+        private readonly Uri[] _enemy_uris;
 
         private double _hoverDelay;
         private readonly double _hoverDelayDefault = 15;
@@ -31,11 +31,10 @@ namespace HonkTrooper
             Func<Construct, bool> recycleAction,
             double downScaling)
         {
-            _random = new Random();
-
-            _enemy_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.ENEMY).Select(x => x.Uri).ToArray();
-
             ConstructType = ConstructType.ENEMY;
+
+            _random = new Random();
+            _enemy_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.ENEMY).Select(x => x.Uri).ToArray();
 
             var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.ENEMY);
 
@@ -56,9 +55,9 @@ namespace HonkTrooper
 
             SetChild(_content_image);
 
-            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;
+            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET - 3;
             IsometricDisplacement = 0.5;
-            DropShadowDistance = -20;
+            DropShadowDistance = 50;
         }
 
         #endregion
