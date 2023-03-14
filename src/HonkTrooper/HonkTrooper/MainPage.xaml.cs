@@ -11,6 +11,9 @@ namespace HonkTrooper
     {
         #region Fields
 
+        private Player _player;
+        private readonly Random _random;
+
         private readonly Scene _scene_game;
         private readonly Scene _scene_main_menu;
         private readonly Controller _game_controller;
@@ -22,9 +25,6 @@ namespace HonkTrooper
         private readonly ScoreBar _game_score_bar;
         private readonly StackPanel _health_bars;
 
-        private readonly Random _random;
-        private Player _player;
-
         private readonly Threashold _boss_threashold;
         private readonly Threashold _enemy_threashold;
 
@@ -32,8 +32,8 @@ namespace HonkTrooper
         private readonly double _boss_threashold_limit = 40; // after reaching 40 score first boss will appear
         private readonly double _boss_threashold_limit_increase = 10;
 
-        //TODO: set defaults to 80 & 10
-        private readonly double _enemy_threashold_limit = 80; // after reaching 80 score first enemies will appear
+        //TODO: set defaults to 70 & 10
+        private readonly double _enemy_threashold_limit = 70; // after reaching 70 score first enemies will appear
         private readonly double _enemy_threashold_limit_increase = 10;
 
         private double _enemy_kill_count;
@@ -395,7 +395,7 @@ namespace HonkTrooper
                         else
                             GeneratePlayerBombInScene();
                     }
-                    else if (_scene_game.Children.OfType<Enemy>().Any(x => x.IsAnimating))
+                    else if (EnemyExistsInScene())
                     {
                         GeneratePlayerBombInScene();
                     }
@@ -796,25 +796,26 @@ namespace HonkTrooper
             return false;
         }
 
-        private bool AnimatePlayerBombSeeking(Construct bomb)
+        private bool AnimatePlayerBombSeeking(Construct playerBombSeeking)
         {
-            PlayerBombSeeking playerBombSeeking = bomb as PlayerBombSeeking;
+            PlayerBombSeeking playerBombSeeking1 = playerBombSeeking as PlayerBombSeeking;
 
-            var speed = (_scene_game.Speed + bomb.SpeedOffset) * _scene_game.DownScaling;
-
-            if (playerBombSeeking.IsBlasting)
+            if (playerBombSeeking1.IsBlasting)
             {
-                MoveConstruct(construct: playerBombSeeking, speed: speed);
+                var speed = _scene_game.Speed + playerBombSeeking.SpeedOffset;
 
-                bomb.Expand();
-                bomb.Fade(0.02);
+                MoveConstruct(construct: playerBombSeeking1, speed: speed);
 
-                DropShadow dropShadow = _scene_game.Children.OfType<DropShadow>().First(x => x.Id == bomb.Id);
-                dropShadow.Opacity = bomb.Opacity;
+                playerBombSeeking.Expand();
+                playerBombSeeking.Fade(0.02);
+
+                DropShadow dropShadow = _scene_game.Children.OfType<DropShadow>().First(x => x.Id == playerBombSeeking.Id);
+                dropShadow.Opacity = playerBombSeeking.Opacity;
             }
             else
             {
-                bomb.Pop();
+                playerBombSeeking.Pop();
+                playerBombSeeking.Rotate(rotationSpeed: 1.5);
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
@@ -822,11 +823,11 @@ namespace HonkTrooper
 
                     if (_scene_game.Children.OfType<BossBombSeeking>().FirstOrDefault(x => x.IsAnimating) is BossBombSeeking bossBombSeeking)
                     {
-                        playerBombSeeking.Seek(bossBombSeeking.GetCloseHitBox());
+                        playerBombSeeking1.Seek(bossBombSeeking.GetCloseHitBox());
 
-                        if (playerBombSeeking.GetCloseHitBox().IntersectsWith(bossBombSeeking.GetCloseHitBox()))
+                        if (playerBombSeeking1.GetCloseHitBox().IntersectsWith(bossBombSeeking.GetCloseHitBox()))
                         {
-                            playerBombSeeking.SetBlast();
+                            playerBombSeeking1.SetBlast();
                             bossBombSeeking.SetBlast();
                         }
                     }
@@ -835,39 +836,46 @@ namespace HonkTrooper
 
                     if (_scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss)
                     {
-                        playerBombSeeking.Seek(boss.GetCloseHitBox());
+                        playerBombSeeking1.Seek(boss.GetCloseHitBox());
 
-                        if (playerBombSeeking.GetCloseHitBox().IntersectsWith(boss.GetCloseHitBox()))
+                        if (playerBombSeeking1.GetCloseHitBox().IntersectsWith(boss.GetCloseHitBox()))
                         {
-                            playerBombSeeking.SetBlast();
+                            playerBombSeeking1.SetBlast();
                             LooseBossHealth(boss);
                         }
-                        else
+                    }
+
+                    // make the player bomb seek enemy
+
+                    if (_scene_game.Children.OfType<Enemy>().FirstOrDefault(x => x.IsAnimating) is Enemy enemy)
+                    {
+                        playerBombSeeking1.Seek(enemy.GetCloseHitBox());
+
+                        if (playerBombSeeking1.GetCloseHitBox().IntersectsWith(enemy.GetCloseHitBox()))
                         {
-                            if (playerBombSeeking.RunOutOfTimeToBlast())
-                                playerBombSeeking.SetBlast();
+                            playerBombSeeking1.SetBlast();
+                            LooseEnemyHealth(enemy);
                         }
                     }
-                    else
-                    {
-                        playerBombSeeking.SetBlast();
-                    }
+
+                    if (playerBombSeeking1.RunOutOfTimeToBlast())
+                        playerBombSeeking1.SetBlast();
                 }
             }
 
             return true;
         }
 
-        private bool RecyclePlayerBombSeeking(Construct bomb)
+        private bool RecyclePlayerBombSeeking(Construct playerBombSeeking)
         {
-            var hitbox = bomb.GetHitBox();
+            var hitbox = playerBombSeeking.GetHitBox();
 
             // if bomb is blasted and faed or goes out of scene bounds
-            if (bomb.IsFadingComplete || hitbox.Left > _scene_game.Width || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Bottom > _scene_game.Height)
+            if (playerBombSeeking.IsFadingComplete || hitbox.Left > _scene_game.Width || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Bottom > _scene_game.Height)
             {
-                bomb.IsAnimating = false;
+                playerBombSeeking.IsAnimating = false;
 
-                bomb.SetPosition(
+                playerBombSeeking.SetPosition(
                     left: -500,
                     top: -500);
 
@@ -902,7 +910,7 @@ namespace HonkTrooper
 
         private bool GenerateVehicleInScene()
         {
-            if (NoBossFightOngoing() && _scene_game.Children.OfType<Vehicle>().FirstOrDefault(x => x.IsAnimating == false) is Vehicle vehicle)
+            if (!BossExistsInScene() && _scene_game.Children.OfType<Vehicle>().FirstOrDefault(x => x.IsAnimating == false) is Vehicle vehicle)
             {
                 vehicle.IsAnimating = true;
                 vehicle.Reset();
@@ -1336,8 +1344,7 @@ namespace HonkTrooper
         {
             // if there are no bosses or enemies in the scene the vehicles will honk
 
-            if (_scene_game.SceneState == SceneState.GAME_RUNNING && NoBossFightOngoing() &&
-                !_scene_game.Children.OfType<Enemy>().Any(x => x.IsAnimating))
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING && !BossExistsInScene() && !EnemyExistsInScene())
             {
                 return GenerateHonkInScene(source);
             }
@@ -1349,7 +1356,7 @@ namespace HonkTrooper
         {
             // if there are no bosses in the scene the vehicles will honk
 
-            if (_scene_game.SceneState == SceneState.GAME_RUNNING && NoBossFightOngoing())
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING && !BossExistsInScene())
             {
                 return GenerateHonkInScene(source);
             }
@@ -1750,9 +1757,9 @@ namespace HonkTrooper
             }
         }
 
-        private bool NoBossFightOngoing()
+        private bool BossExistsInScene()
         {
-            return !_scene_game.Children.OfType<Boss>().Any(x => x.IsAnimating && x.IsAttacking);
+            return _scene_game.Children.OfType<Boss>().Any(x => x.IsAnimating && x.IsAttacking);
         }
 
         #endregion
@@ -1783,7 +1790,7 @@ namespace HonkTrooper
 
         private bool GenerateEnemyInScene()
         {
-            if (NoBossFightOngoing() &&
+            if (!BossExistsInScene() &&
                 _enemy_threashold.ShouldRelease(_game_score_bar.GetScore()) &&
                 _scene_game.Children.OfType<Enemy>().FirstOrDefault(x => x.IsAnimating == false) is Enemy enemy)
             {
@@ -1840,18 +1847,14 @@ namespace HonkTrooper
                 enemy1.Hover();
                 enemy1.Pop();
 
-                //var speed = (_scene_game.Speed + enemy.SpeedOffset) * _scene_game.DownScaling;
-                //enemy1.MoveDown(speed);
+                var speed = _scene_game.Speed + enemy.SpeedOffset;
 
-                var speed = (_scene_game.Speed + enemy.SpeedOffset);
-                MoveConstruct(enemy, speed);
+                MoveConstruct(construct: enemy, speed: speed);
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
                     if (enemy1.Honk())
-                    {
                         GenerateEnemyHonkInScene(enemy1);
-                    }
 
                     if (enemy1.Attack())
                     {
@@ -1905,6 +1908,11 @@ namespace HonkTrooper
 
                 Console.WriteLine("Enemy dead");
             }
+        }
+
+        private bool EnemyExistsInScene()
+        {
+            return _scene_game.Children.OfType<Enemy>().Any(x => x.IsAnimating);
         }
 
         #endregion
@@ -2411,42 +2419,46 @@ namespace HonkTrooper
 
         private bool GeneratePowerUpPickupsInScene()
         {
-            if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
-                _scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss &&
-                _scene_game.Children.OfType<PowerUpPickup>().FirstOrDefault(x => x.IsAnimating == false) is PowerUpPickup powerUpPickup)
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING)
             {
-                powerUpPickup.IsAnimating = true;
-                powerUpPickup.Reset();
-
-                var topOrLeft = _random.Next(0, 2);
-
-                var lane = _random.Next(0, 2);
-
-                switch (topOrLeft)
+                if (BossExistsInScene() || EnemyExistsInScene())
                 {
-                    case 0:
+                    if (_scene_game.Children.OfType<PowerUpPickup>().FirstOrDefault(x => x.IsAnimating == false) is PowerUpPickup powerUpPickup)
+                    {
+                        powerUpPickup.IsAnimating = true;
+                        powerUpPickup.Reset();
+
+                        var topOrLeft = _random.Next(0, 2);
+
+                        var lane = _random.Next(0, 2);
+
+                        switch (topOrLeft)
                         {
-                            var xLaneWidth = _scene_game.Width / 4;
-                            powerUpPickup.SetPosition(
-                                left: _random.Next(0, Convert.ToInt32(xLaneWidth - powerUpPickup.Width)) * _scene_game.DownScaling,
-                                top: powerUpPickup.Height * -1);
+                            case 0:
+                                {
+                                    var xLaneWidth = _scene_game.Width / 4;
+                                    powerUpPickup.SetPosition(
+                                        left: _random.Next(0, Convert.ToInt32(xLaneWidth - powerUpPickup.Width)) * _scene_game.DownScaling,
+                                        top: powerUpPickup.Height * -1);
+                                }
+                                break;
+                            case 1:
+                                {
+                                    var yLaneWidth = (_scene_game.Height / 2) / 2;
+                                    powerUpPickup.SetPosition(
+                                        left: powerUpPickup.Width * -1,
+                                        top: _random.Next(0, Convert.ToInt32(yLaneWidth)) * _scene_game.DownScaling);
+                                }
+                                break;
+                            default:
+                                break;
                         }
-                        break;
-                    case 1:
-                        {
-                            var yLaneWidth = (_scene_game.Height / 2) / 2;
-                            powerUpPickup.SetPosition(
-                                left: powerUpPickup.Width * -1,
-                                top: _random.Next(0, Convert.ToInt32(yLaneWidth)) * _scene_game.DownScaling);
-                        }
-                        break;
-                    default:
-                        break;
+
+                        SyncDropShadow(powerUpPickup);
+
+                        return true;
+                    }
                 }
-
-                SyncDropShadow(powerUpPickup);
-
-                return true;
             }
 
             return false;
