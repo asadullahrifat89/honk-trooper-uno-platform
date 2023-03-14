@@ -70,6 +70,8 @@ namespace HonkTrooper
 
         public bool AwaitMoveDown { get; set; }
 
+        public double TimeLeftUntilBlast { get; set; }
+
         #endregion
 
         #region Methods
@@ -97,6 +99,8 @@ namespace HonkTrooper
 
             AwaitMoveUp = false;
             AwaitMoveDown = false;
+
+            TimeLeftUntilBlast = 8;
         }
 
         public void SetBlast()
@@ -128,6 +132,16 @@ namespace HonkTrooper
         {
             SetLeft(GetLeft() + speed);
             SetTop(GetTop() + speed * IsometricDisplacement);
+        }
+
+        public bool RunOutOfTimeToBlast()
+        {
+            TimeLeftUntilBlast -= 0.1;
+
+            if (TimeLeftUntilBlast <= 0)
+                return true;
+
+            return false;
         }
 
         #endregion

@@ -43,7 +43,7 @@ namespace HonkTrooper
 
         public static bool ShouldGenerate(double playerHealth)
         {
-            return playerHealth <= 30;
+            return playerHealth <= 50;
         }
 
         public void Reset()

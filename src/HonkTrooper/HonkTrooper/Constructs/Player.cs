@@ -529,7 +529,7 @@ namespace HonkTrooper
 
         public void GainHealth()
         {
-            Health += 10;
+            Health += 15;
         }
 
         private void SetIdleStance()
