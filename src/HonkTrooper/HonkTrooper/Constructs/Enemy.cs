@@ -129,13 +129,7 @@ namespace HonkTrooper
                         _hoverDelay = _hoverDelayDefault;
                 }
             }
-        }
-
-        public void MoveDown(double speed)
-        {
-            SetLeft(GetLeft() + speed);
-            SetTop(GetTop() + speed * IsometricDisplacement);
-        }
+        }      
 
         public bool Attack()
         {
