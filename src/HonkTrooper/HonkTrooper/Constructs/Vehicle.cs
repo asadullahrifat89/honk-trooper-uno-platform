@@ -14,7 +14,7 @@ namespace HonkTrooper
         private readonly Uri[] _vehicle_small_uris;
         private readonly Uri[] _vehicle_large_uris;
 
-        private double _honkDelay;
+        private double _honkDelay;       
 
         #endregion
 

@@ -33,10 +33,10 @@
             return release;
         }
 
-        public void IncreaseThreasholdLimit(double increament, double currentPoint)
+        public void IncreaseThreasholdLimit(double increment, double currentPoint)
         {
             LastReleasePoint = currentPoint;
-            ThreasholdLimit += increament;
+            ThreasholdLimit += increment;
         }
 
         public void Reset(double value)
