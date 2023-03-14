@@ -2662,12 +2662,13 @@ namespace HonkTrooper
                 startUpAction: SpawnPlayerBombSeekingsInScene));
 
             _scene_game.AddToScene(new Generator(
-                generationDelay: 250,
+                generationDelay: 500,
                 generationAction: GenerateHealthPickupsInScene,
-                startUpAction: SpawnHealthPickupsInScene));
+                startUpAction: SpawnHealthPickupsInScene,
+                randomizeGenerationDelay: true));
 
             _scene_game.AddToScene(new Generator(
-                generationDelay: 600,
+                generationDelay: 500,
                 generationAction: GeneratePowerUpPickupsInScene,
                 startUpAction: SpawnPowerUpPickupsInScene,
                 randomizeGenerationDelay: true));
