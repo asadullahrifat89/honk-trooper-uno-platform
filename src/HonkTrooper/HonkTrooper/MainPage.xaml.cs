@@ -28,10 +28,11 @@ namespace HonkTrooper
         private readonly Threashold _boss_threashold;
         private readonly Threashold _enemy_threashold;
 
-        //TODO: set defaults to 40 and 100
+        //TODO: set defaults to 40 and 10
         private readonly double _boss_threashold_point = 40;
         private readonly double _boss_threashold_point_increase = 10;
 
+        //TODO: set defaults to 100
         private readonly double _enemy_threashold_point = 10;
 
         #endregion
@@ -974,7 +975,7 @@ namespace HonkTrooper
 
                 if (vehicle1.Honk())
                 {
-                    GenerateHonkInScene(vehicle);
+                    GenerateVehicleHonkInScene(vehicle1);
                 }
             }
 
@@ -996,6 +997,8 @@ namespace HonkTrooper
 
             return true;
         }
+
+
 
         #endregion
 
@@ -1509,10 +1512,7 @@ namespace HonkTrooper
 
         private bool GenerateHonkInScene(Construct source)
         {
-            // if there are no bosses or enemies in the scene the vehicles will honk
-            if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
-                _scene_game.Children.OfType<Honk>().FirstOrDefault(x => x.IsAnimating == false) is Honk honk &&
-                !_scene_game.Children.OfType<Boss>().Any(x => x.IsAnimating && x.IsAttacking))
+            if (_scene_game.Children.OfType<Honk>().FirstOrDefault(x => x.IsAnimating == false) is Honk honk)
             {
                 honk.IsAnimating = true;
                 honk.SetPopping();
@@ -1558,6 +1558,33 @@ namespace HonkTrooper
                     top: -500);
             }
             //_scene.DisposeFromScene(honk);
+
+            return true;
+        }
+
+        private bool GenerateVehicleHonkInScene(Vehicle source)
+        {
+            // if there are no bosses or enemies in the scene the vehicles will honk
+
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
+                !_scene_game.Children.OfType<Boss>().Any(x => x.IsAnimating && x.IsAttacking) &&
+                !_scene_game.Children.OfType<Enemy>().Any(x => x.IsAnimating))
+            {
+                return GenerateHonkInScene(source);
+            }
+
+            return true;
+        }
+
+        private bool GenerateEnemyHonkInScene(Enemy source)
+        {
+            // if there are no bosses in the scene the vehicles will honk
+
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
+                !_scene_game.Children.OfType<Boss>().Any(x => x.IsAnimating && x.IsAttacking))
+            {
+                return GenerateHonkInScene(source);
+            }
 
             return true;
         }
@@ -2050,7 +2077,7 @@ namespace HonkTrooper
                 {
                     if (enemy1.Honk())
                     {
-                        GenerateHonkInScene(enemy);
+                        GenerateEnemyHonkInScene(enemy1);
                     }
 
                     if (enemy1.Attack())
