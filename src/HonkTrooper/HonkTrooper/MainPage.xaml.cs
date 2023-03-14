@@ -450,8 +450,7 @@ namespace HonkTrooper
 
         private bool GeneratePlayerBombInScene()
         {
-            if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
-                //_scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss &&
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING && !_scene_game.IsSlowMotionActivated &&
                 _scene_game.Children.OfType<PlayerBomb>().FirstOrDefault(x => x.IsAnimating == false) is PlayerBomb playerBomb)
             {
                 _player.SetAttackStance();
@@ -648,7 +647,7 @@ namespace HonkTrooper
 
         private bool GeneratePlayerBombGroundInScene()
         {
-            if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING && !_scene_game.IsSlowMotionActivated &&
                 _scene_game.Children.OfType<PlayerBombGround>().FirstOrDefault(x => x.IsAnimating == false) is PlayerBombGround bomb)
             {
                 _player.SetAttackStance();
@@ -768,7 +767,7 @@ namespace HonkTrooper
         private bool GeneratePlayerBombSeekingInScene()
         {
             // generate a seeking bomb if one is not in scene
-            if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING && !_scene_game.IsSlowMotionActivated &&
                 _scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss &&
                 _scene_game.Children.OfType<PlayerBombSeeking>().FirstOrDefault(x => x.IsAnimating == false) is PlayerBombSeeking playerBombSeeking)
             {
@@ -815,7 +814,7 @@ namespace HonkTrooper
             else
             {
                 playerBombSeeking.Pop();
-                playerBombSeeking.Rotate(rotationSpeed: 1.5);
+                playerBombSeeking.Rotate(rotationSpeed: 3.5);
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
