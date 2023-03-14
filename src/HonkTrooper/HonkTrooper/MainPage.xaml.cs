@@ -39,6 +39,8 @@ namespace HonkTrooper
         private double _enemy_kill_count;
         private readonly double _enemy_kill_count_limit = 20;
 
+        private bool _enemy_appeared;
+
         #endregion
 
         #region Ctor
@@ -107,6 +109,7 @@ namespace HonkTrooper
             _boss_threashold.Reset(_boss_threashold_limit);
             _enemy_threashold.Reset(_enemy_threashold_limit);
             _enemy_kill_count = 0;
+            _enemy_appeared = false;
 
             GeneratePlayerInScene();
 
@@ -956,39 +959,21 @@ namespace HonkTrooper
 
         private bool AnimateVehicle(Construct vehicle)
         {
+            Vehicle vehicle1 = vehicle as Vehicle;
+
             vehicle.Pop();
 
             var speed = (_scene_game.Speed + vehicle.SpeedOffset);
 
             MoveConstruct(construct: vehicle, speed: speed);
 
-            // TODO: fix hitbox for safe distance between vehicles
-
-            var hitHox = vehicle.GetHorizontalHitBox();
-
-            // prevent overlapping
-
-            if (_scene_game.Children.OfType<Vehicle>().FirstOrDefault(x => x.IsAnimating && x.GetHorizontalHitBox().IntersectsWith(hitHox)) is Construct collidingVehicle)
-            {
-                if (collidingVehicle.SpeedOffset < vehicle.SpeedOffset)
-                {
-                    collidingVehicle.SpeedOffset = vehicle.SpeedOffset;
-                }
-                else if (collidingVehicle.SpeedOffset > vehicle.SpeedOffset)
-                {
-                    vehicle.SpeedOffset = collidingVehicle.SpeedOffset;
-                }
-            }
-
             if (_scene_game.SceneState == SceneState.GAME_RUNNING)
             {
-                Vehicle vehicle1 = vehicle as Vehicle;
-
                 if (vehicle1.Honk())
-                {
                     GenerateVehicleHonkInScene(vehicle1);
-                }
             }
+            
+            PreventVehicleOverlapping(vehicle);
 
             return true;
         }
@@ -1007,6 +992,31 @@ namespace HonkTrooper
             }
 
             return true;
+        }
+
+        private void PreventVehicleOverlapping(Construct vehicle)
+        {
+            if (_scene_game.Children.OfType<Vehicle>().FirstOrDefault(x => x.IsAnimating && x.GetHorizontalHitBox().IntersectsWith(vehicle.GetHorizontalHitBox())) is Construct collidingVehicle)
+            {
+                var hitBox = vehicle.GetHitBox();
+
+                if (hitBox.Top > 0 && hitBox.Left > 0 && vehicle.SpeedOffset == collidingVehicle.SpeedOffset)
+                {
+                    if (vehicle.SpeedOffset > -2)
+                        vehicle.SpeedOffset--;
+                }
+                else
+                {
+                    if (collidingVehicle.SpeedOffset < vehicle.SpeedOffset)
+                    {
+                        collidingVehicle.SpeedOffset = vehicle.SpeedOffset;
+                    }
+                    else if (collidingVehicle.SpeedOffset > vehicle.SpeedOffset)
+                    {
+                        vehicle.SpeedOffset = collidingVehicle.SpeedOffset;
+                    }
+                }
+            }
         }
 
         #endregion
@@ -1498,7 +1508,8 @@ namespace HonkTrooper
 
                 // set boss health
                 boss.Health = _boss_threashold.GetReleasePointDifference() * 1.5;
-                _boss_threashold.IncreaseThreasholdLimit(_boss_threashold_limit_increase, _game_score_bar.GetScore());
+
+                _boss_threashold.IncreaseThreasholdLimit(increment: _boss_threashold_limit_increase, currentPoint: _game_score_bar.GetScore());
 
                 _boss_health_bar.SetMaxiumHealth(boss.Health);
                 _boss_health_bar.SetValue(boss.Health);
@@ -1506,7 +1517,6 @@ namespace HonkTrooper
                 _boss_health_bar.SetBarForegroundColor(color: Colors.Crimson);
 
                 GenerateInterimScreenInScene("Beware of Boss");
-
                 _scene_game.ActivateSlowMotion();
 
                 return true;
@@ -1826,6 +1836,13 @@ namespace HonkTrooper
 
                 //Console.WriteLine("Enemy generated.");
 
+                if (!_enemy_appeared)
+                {
+                    GenerateInterimScreenInScene("Beware of Aliens");
+                    _scene_game.ActivateSlowMotion();
+                    _enemy_appeared = true;
+                }
+
                 return true;
             }
 
@@ -1900,8 +1917,9 @@ namespace HonkTrooper
                 // after killing 15 enemies increase the threadhold limit
                 if (_enemy_kill_count > _enemy_kill_count_limit)
                 {
-                    _enemy_threashold.IncreaseThreasholdLimit(_enemy_threashold_limit_increase, _game_score_bar.GetScore());
+                    _enemy_threashold.IncreaseThreasholdLimit(increment: _enemy_threashold_limit_increase, currentPoint: _game_score_bar.GetScore());
                     _enemy_kill_count = 0;
+                    _enemy_appeared = false;
                 }
 
                 Console.WriteLine("Enemy dead");
