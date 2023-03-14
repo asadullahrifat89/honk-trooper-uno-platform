@@ -7,6 +7,12 @@ namespace HonkTrooper
 {
     public partial class Tree : Construct
     {
+        #region Fields
+        
+        private readonly Image _content_image; 
+
+        #endregion
+
         #region Ctor
 
         public Tree(
@@ -26,12 +32,13 @@ namespace HonkTrooper
 
             SetSize(width: width, height: height);
 
-            var content = new Image()
+            _content_image = new Image()
             {
                 Source = new BitmapImage(uriSource: Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.TREE).Uri)
             };
 
-            SetChild(content);
+            SetChild(_content_image);
+
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;
             IsometricDisplacement = 0.5;
             DropShadowDistance = -20;

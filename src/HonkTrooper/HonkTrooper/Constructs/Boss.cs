@@ -16,10 +16,10 @@ namespace HonkTrooper
 
         private double _hoverDelay;
         private readonly double _hoverDelayDefault = 15;
+        private readonly double _hoverSpeed = 0.5;
 
         private readonly double _grace = 7;
         private readonly double _lag = 125;
-        private readonly double _hoverSpeed = 0.5;
 
         private double _changeMovementPatternDelay;
 
@@ -89,7 +89,6 @@ namespace HonkTrooper
         public bool IsDead => Health <= 0;
 
         public BossMovementPattern MovementPattern { get; set; }
-
 
         #endregion
 
