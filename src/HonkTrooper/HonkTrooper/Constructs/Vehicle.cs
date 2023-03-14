@@ -37,8 +37,6 @@ namespace HonkTrooper
             (ConstructType ConstructType, double Height, double Width) size;
             Uri uri;
 
-            double speedOffset = _random.Next(-4, 2);
-
             switch (vehicleType)
             {
                 case 0:
@@ -63,8 +61,6 @@ namespace HonkTrooper
                             Source = new BitmapImage(uriSource: uri)
                         };
                         SetChild(content);
-
-                        SpeedOffset = speedOffset;
                     }
                     break;
                 case 1:
@@ -89,14 +85,13 @@ namespace HonkTrooper
                             Source = new BitmapImage(uriSource: uri)
                         };
                         SetChild(content);
-
-                        SpeedOffset = speedOffset;
                     }
                     break;
                 default:
                     break;
             }
 
+            SpeedOffset = _random.Next(-4, 2);
             IsometricDisplacement = 0.5;
 
             if (WillHonk)
