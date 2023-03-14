@@ -90,7 +90,7 @@ namespace HonkTrooper
             IsBlasting = false;
 
             var uri = _bomb_uris[_random.Next(0, _bomb_uris.Length)];
-            _content_image.Source = new BitmapImage(uri);            
+            _content_image.Source = new BitmapImage(uri);
 
             AwaitMoveLeft = false;
             AwaitMoveRight = false;
