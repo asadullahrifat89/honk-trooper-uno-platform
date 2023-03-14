@@ -85,10 +85,7 @@ namespace HonkTrooper
             Opacity = 1;
             SetScaleTransform(1);
 
-            // one hit or two hit health
-            var health = _random.Next(5, 11);
-
-            Health = health;
+            Health = _random.Next(5, 11);
 
             WillAttack = Convert.ToBoolean(_random.Next(0, 2));
             WillHonk = Convert.ToBoolean(_random.Next(0, 2));
