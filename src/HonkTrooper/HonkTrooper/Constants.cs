@@ -121,28 +121,32 @@ namespace HonkTrooper
 
         public static (SoundType SoundType, Uri Uri)[] SOUND_TEMPLATES = new (SoundType, Uri)[]
         {
-             new (SoundType.CRACKER_DROP, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/cracker_drop_1.mp3")),
-             new (SoundType.CRACKER_DROP, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/cracker_drop_2.mp3")),
+            new (SoundType.CRACKER_DROP, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/cracker_drop_1.mp3")),
+            new (SoundType.CRACKER_DROP, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/cracker_drop_2.mp3")),
 
-             new (SoundType.CRACKER_BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/cracker_blast_1.mp3")),
-             new (SoundType.CRACKER_BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/cracker_blast_2.mp3")),
-             new (SoundType.CRACKER_BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/cracker_blast_3.mp3")),
-             new (SoundType.CRACKER_BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/cracker_blast_4.mp3")),
+            new (SoundType.CRACKER_BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/cracker_blast_1.mp3")),
+            new (SoundType.CRACKER_BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/cracker_blast_2.mp3")),
+            new (SoundType.CRACKER_BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/cracker_blast_3.mp3")),
+            new (SoundType.CRACKER_BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/cracker_blast_4.mp3")),
 
-             new (SoundType.ROCKET_LAUNCH, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/rocket_launch_1.mp3")),
-             new (SoundType.ROCKET_LAUNCH, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/rocket_launch_2.mp3")),
-             new (SoundType.ROCKET_LAUNCH, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/rocket_launch_3.mp3")),
+            new (SoundType.ROCKET_LAUNCH, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/rocket_launch_1.mp3")),
+            new (SoundType.ROCKET_LAUNCH, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/rocket_launch_2.mp3")),
+            new (SoundType.ROCKET_LAUNCH, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/rocket_launch_3.mp3")),
 
-             new (SoundType.ROCKET_BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/rocket_blast_1.mp3")),
-             new (SoundType.ROCKET_BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/rocket_blast_2.mp3")),
-             new (SoundType.ROCKET_BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/rocket_blast_3.mp3")),
+            new (SoundType.ROCKET_BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/rocket_blast_1.mp3")),
+            new (SoundType.ROCKET_BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/rocket_blast_2.mp3")),
+            new (SoundType.ROCKET_BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/rocket_blast_3.mp3")),
 
-             new (SoundType.CAR_HONK, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/car_honk_1.mp3")),
-             new (SoundType.CAR_HONK, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/car_honk_2.mp3")),
-             new (SoundType.CAR_HONK, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/car_honk_3.mp3")),
+            new (SoundType.CAR_HONK, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/car_honk_1.mp3")),
+            new (SoundType.CAR_HONK, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/car_honk_2.mp3")),
+            new (SoundType.CAR_HONK, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/car_honk_3.mp3")),
 
-             new (SoundType.SEEKER_ROCKET_LAUNCH, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/seeker_rocket_launch_1.mp3")),
-             new (SoundType.SEEKER_ROCKET_LAUNCH, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/seeker_rocket_launch_2.mp3")),
+            new (SoundType.SEEKER_ROCKET_LAUNCH, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/seeker_rocket_launch_1.mp3")),
+            new (SoundType.SEEKER_ROCKET_LAUNCH, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/seeker_rocket_launch_2.mp3")),
+
+            new (SoundType.AMBIENCE, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/ambience_1.mp3")),
+            new (SoundType.AMBIENCE, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/ambience_2.mp3")),
+            new (SoundType.AMBIENCE, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/ambience_3.mp3")),
         };
     }
 
@@ -157,6 +161,8 @@ namespace HonkTrooper
         CAR_HONK,
 
         SEEKER_ROCKET_LAUNCH,
+
+        AMBIENCE,
     }
 
     public enum ConstructType

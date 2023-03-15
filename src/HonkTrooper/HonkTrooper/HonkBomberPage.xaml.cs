@@ -41,6 +41,9 @@ namespace HonkTrooper
 
         private bool _enemy_appeared;
 
+        private readonly Sound[] _ambience_sounds;
+        private Sound _ambience_sound_playing;
+
         #endregion
 
         #region Ctor
@@ -66,6 +69,8 @@ namespace HonkTrooper
 
             _random = new Random();
 
+            _ambience_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.AMBIENCE).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 0.8, loop: true)).ToArray();
+
             Loaded += HonkBomberPage_Loaded;
             Unloaded += HonkBomberPage_Unloaded;
         }
@@ -78,6 +83,8 @@ namespace HonkTrooper
 
         private void PauseGame()
         {
+            _ambience_sound_playing?.Pause();
+
             ToggleHudVisibility(Visibility.Collapsed);
 
             _scene_game.Pause();
@@ -88,6 +95,8 @@ namespace HonkTrooper
 
         private void ResumeGame(TitleScreen se)
         {
+            _ambience_sound_playing?.Play();
+
             ToggleHudVisibility(Visibility.Visible);
 
             _scene_game.Play();
@@ -100,6 +109,9 @@ namespace HonkTrooper
 
         private void NewGame(TitleScreen se)
         {
+            _ambience_sound_playing = _ambience_sounds[_random.Next(0, _ambience_sounds.Length)];
+            _ambience_sound_playing.Play();
+
             _game_controller.Reset();
 
             _powerUp_health_bar.Reset();
