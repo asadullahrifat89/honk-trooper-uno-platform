@@ -12,7 +12,7 @@ namespace HonkTrooper
         private readonly Random _random;
         private readonly Image _content_image;
 
-        private readonly Sound[] _power_up_pickup_sounds;
+        private readonly Audio[] _power_up_pickup_sounds;
 
         #endregion
 
@@ -67,7 +67,7 @@ namespace HonkTrooper
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE;
             IsometricDisplacement = 0.5;
 
-            _power_up_pickup_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.POWERUP_PICKUP).Select(x => x.Uri).Select(uri => new Sound(uri: uri)).ToArray();
+            _power_up_pickup_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.POWERUP_PICKUP).Select(x => x.Uri).Select(uri => new Audio(uri: uri)).ToArray();
         }
 
         #endregion

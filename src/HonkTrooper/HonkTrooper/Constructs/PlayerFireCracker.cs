@@ -16,8 +16,8 @@ namespace HonkTrooper
 
         private readonly Image _content_image;
 
-        private readonly Sound[] _cracker_drop_sounds;
-        private readonly Sound[] _cracker_blast_sounds;
+        private readonly Audio[] _cracker_drop_sounds;
+        private readonly Audio[] _cracker_blast_sounds;
 
         #endregion
 
@@ -58,8 +58,8 @@ namespace HonkTrooper
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE - 10;
 
-            _cracker_drop_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.CRACKER_DROP).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 0.3)).ToArray();
-            _cracker_blast_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.CRACKER_BLAST).Select(x => x.Uri).Select(uri => new Sound(uri: uri)).ToArray();
+            _cracker_drop_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.CRACKER_DROP).Select(x => x.Uri).Select(uri => new Audio(uri: uri, volume: 0.3)).ToArray();
+            _cracker_blast_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.CRACKER_BLAST).Select(x => x.Uri).Select(uri => new Audio(uri: uri)).ToArray();
         }
 
         #endregion
