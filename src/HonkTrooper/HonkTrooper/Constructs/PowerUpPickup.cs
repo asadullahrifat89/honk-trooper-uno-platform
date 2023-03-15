@@ -36,7 +36,7 @@ namespace HonkTrooper
 
             SetSize(width: width, height: height);
 
-            PowerUpType = (PowerUpType)_random.Next(0, Enum.GetNames(typeof(PowerUpType)).Length);
+            PowerUpType = (PowerUpType)_random.Next( Enum.GetNames(typeof(PowerUpType)).Length);
 
             switch (PowerUpType)
             {
@@ -77,7 +77,7 @@ namespace HonkTrooper
         {
             IsPickedUp = false;
 
-            PowerUpType = (PowerUpType)_random.Next(0, Enum.GetNames(typeof(PowerUpType)).Length);
+            PowerUpType = (PowerUpType)_random.Next( Enum.GetNames(typeof(PowerUpType)).Length);
 
             switch (PowerUpType)
             {

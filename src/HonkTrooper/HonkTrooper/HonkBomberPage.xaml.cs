@@ -336,6 +336,9 @@ namespace HonkTrooper
                 titleScreen.IsAnimating = true;
                 titleScreen.Reposition();
 
+                if (_player is not null)
+                    titleScreen.SetContent(_player.GetContentUri());
+
                 // Console.WriteLine("Game title generated.");
 
                 return true;
@@ -423,10 +426,14 @@ namespace HonkTrooper
 
         private bool SpawnPlayerInScene()
         {
+            var playerTemplate = _random.Next(1, 3);
+            Console.WriteLine($"Player Template: {playerTemplate}");
+
             _player = new(
                 animateAction: AnimatePlayer,
                 recycleAction: (_player) => { return true; },
-                downScaling: _scene_game.DownScaling);
+                downScaling: _scene_game.DownScaling,
+                playerTemplate: playerTemplate);
 
             _player.SetPosition(
                   left: -500,
@@ -1046,9 +1053,9 @@ namespace HonkTrooper
 
                 // generate top and left corner lane wise vehicles
 
-                var topOrLeft = _random.Next(0, 2);
+                var topOrLeft = _random.Next(2);
 
-                var lane = _random.Next(0, 2);
+                var lane = _random.Next(2);
 
                 switch (topOrLeft)
                 {
@@ -1517,9 +1524,9 @@ namespace HonkTrooper
                 cloud.IsAnimating = true;
                 cloud.Reset();
 
-                var topOrLeft = _random.Next(0, 2);
+                var topOrLeft = _random.Next(2);
 
-                var lane = _random.Next(0, 2);
+                var lane = _random.Next(2);
 
                 switch (topOrLeft)
                 {
@@ -1527,7 +1534,7 @@ namespace HonkTrooper
                         {
                             var xLaneWidth = _scene_game.Width / 4;
                             cloud.SetPosition(
-                                left: _random.Next(0, Convert.ToInt32(xLaneWidth - cloud.Width)) * _scene_game.DownScaling,
+                                left: _random.Next(Convert.ToInt32(xLaneWidth - cloud.Width)) * _scene_game.DownScaling,
                                 top: cloud.Height * -1);
                         }
                         break;
@@ -1536,7 +1543,7 @@ namespace HonkTrooper
                             var yLaneWidth = (_scene_game.Height / 2) / 2;
                             cloud.SetPosition(
                                 left: cloud.Width * -1,
-                                top: _random.Next(0, Convert.ToInt32(yLaneWidth)) * _scene_game.DownScaling);
+                                top: _random.Next(Convert.ToInt32(yLaneWidth)) * _scene_game.DownScaling);
                         }
                         break;
                     default:
@@ -1771,7 +1778,7 @@ namespace HonkTrooper
                 enemy.IsAnimating = true;
                 enemy.Reset();
 
-                var topOrLeft = _random.Next(0, 2);
+                var topOrLeft = _random.Next(2);
 
                 switch (topOrLeft)
                 {
@@ -1780,7 +1787,7 @@ namespace HonkTrooper
                             var xLaneWidth = _scene_game.Width / 2;
 
                             enemy.SetPosition(
-                                left: _random.Next(0, (int)(xLaneWidth - enemy.Width)),
+                                left: _random.Next((int)(xLaneWidth - enemy.Width)),
                                 top: enemy.Height * -1);
                         }
                         break;
@@ -1790,7 +1797,7 @@ namespace HonkTrooper
 
                             enemy.SetPosition(
                                 left: enemy.Width * -1,
-                                top: _random.Next(0, (int)(yLaneWidth - enemy.Height)));
+                                top: _random.Next((int)(yLaneWidth - enemy.Height)));
                         }
                         break;
                     default:
@@ -2357,9 +2364,9 @@ namespace HonkTrooper
                 healthPickup.IsAnimating = true;
                 healthPickup.Reset();
 
-                var topOrLeft = _random.Next(0, 2);
+                var topOrLeft = _random.Next(2);
 
-                var lane = _random.Next(0, 2);
+                var lane = _random.Next(2);
 
                 switch (topOrLeft)
                 {
@@ -2367,7 +2374,7 @@ namespace HonkTrooper
                         {
                             var xLaneWidth = _scene_game.Width / 4;
                             healthPickup.SetPosition(
-                                left: _random.Next(0, Convert.ToInt32(xLaneWidth - healthPickup.Width)) * _scene_game.DownScaling,
+                                left: _random.Next(Convert.ToInt32(xLaneWidth - healthPickup.Width)) * _scene_game.DownScaling,
                                 top: healthPickup.Height * -1);
                         }
                         break;
@@ -2376,7 +2383,7 @@ namespace HonkTrooper
                             var yLaneWidth = (_scene_game.Height / 2) / 2;
                             healthPickup.SetPosition(
                                 left: healthPickup.Width * -1,
-                                top: _random.Next(0, Convert.ToInt32(yLaneWidth)) * _scene_game.DownScaling);
+                                top: _random.Next(Convert.ToInt32(yLaneWidth)) * _scene_game.DownScaling);
                         }
                         break;
                     default:
@@ -2473,9 +2480,9 @@ namespace HonkTrooper
                         powerUpPickup.IsAnimating = true;
                         powerUpPickup.Reset();
 
-                        var topOrLeft = _random.Next(0, 2);
+                        var topOrLeft = _random.Next(2);
 
-                        var lane = _random.Next(0, 2);
+                        var lane = _random.Next(2);
 
                         switch (topOrLeft)
                         {
@@ -2483,7 +2490,7 @@ namespace HonkTrooper
                                 {
                                     var xLaneWidth = _scene_game.Width / 4;
                                     powerUpPickup.SetPosition(
-                                        left: _random.Next(0, Convert.ToInt32(xLaneWidth - powerUpPickup.Width)) * _scene_game.DownScaling,
+                                        left: _random.Next(Convert.ToInt32(xLaneWidth - powerUpPickup.Width)) * _scene_game.DownScaling,
                                         top: powerUpPickup.Height * -1);
                                 }
                                 break;
@@ -2492,7 +2499,7 @@ namespace HonkTrooper
                                     var yLaneWidth = (_scene_game.Height / 2) / 2;
                                     powerUpPickup.SetPosition(
                                         left: powerUpPickup.Width * -1,
-                                        top: _random.Next(0, Convert.ToInt32(yLaneWidth)) * _scene_game.DownScaling);
+                                        top: _random.Next(Convert.ToInt32(yLaneWidth)) * _scene_game.DownScaling);
                                 }
                                 break;
                             default:
