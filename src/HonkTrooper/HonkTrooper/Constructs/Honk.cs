@@ -52,7 +52,7 @@ namespace HonkTrooper
 
             IsometricDisplacement = 0.6;
 
-            _car_honk_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.CAR_HONK).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 0.8)).ToArray();
+            _car_honk_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.CAR_HONK).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 0.7)).ToArray();
         }
 
         #endregion

@@ -57,7 +57,7 @@ namespace HonkTrooper
             IsometricDisplacement = 0.5;
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE;
 
-            _rocket_launch_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.SEEKER_ROCKET_LAUNCH).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 0.2)).ToArray();
+            _rocket_launch_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.SEEKER_ROCKET_LAUNCH).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 0.3)).ToArray();
             _rocket_blast_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.ROCKET_BLAST).Select(x => x.Uri).Select(uri => new Sound(uri: uri)).ToArray();
         }
 
