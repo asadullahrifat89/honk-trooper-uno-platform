@@ -12,7 +12,8 @@ namespace HonkTrooper
         private readonly Random _random;
         private readonly Image _content_image;
 
-        private readonly Audio[] _health_pickup_sounds; 
+        
+        private readonly AudioStub _audioStub;
 
         #endregion
 
@@ -48,7 +49,7 @@ namespace HonkTrooper
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE;
             IsometricDisplacement = 0.5;
 
-            _health_pickup_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.HEALTH_PICKUP).Select(x => x.Uri).Select(uri => new Audio(uri: uri)).ToArray();
+            _audioStub = new AudioStub((SoundType.HEALTH_PICKUP, 1, false));            
         }
 
         #endregion
@@ -66,9 +67,8 @@ namespace HonkTrooper
         }
 
         public void PickedUp()
-        {
-            var sound = _health_pickup_sounds[_random.Next(0, _health_pickup_sounds.Length)];
-            sound.Play();
+        {            
+            _audioStub.Play(SoundType.HEALTH_PICKUP);
 
             IsPickedUp = true;
         }

@@ -28,11 +28,7 @@ namespace HonkTrooper
         private double _hitStanceDelay;
         private readonly double _hitStanceDelayDefault = 1.5;
 
-        private readonly Audio[] _boss_hovering_sounds;
-        private readonly Audio[] _boss_entry_sounds;
-        private readonly Audio[] _boss_dead_sounds;
-
-        private Audio _boss_hovering_sound_playing;
+        private readonly AudioStub _audioStub;
 
         #endregion
 
@@ -75,10 +71,11 @@ namespace HonkTrooper
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET - 0.5;
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE;
 
-            _boss_hovering_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.BOSS_HOVERING).Select(x => x.Uri).Select(uri => new Audio(uri: uri, volume: 0.8, loop: true)).ToArray();
-
-            _boss_entry_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.BOSS_ENTRY).Select(x => x.Uri).Select(uri => new Audio(uri: uri, volume: 0.8)).ToArray();
-            _boss_dead_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.BOSS_DEAD).Select(x => x.Uri).Select(uri => new Audio(uri: uri)).ToArray();
+            _audioStub = new AudioStub(
+                (SoundType.BOSS_HOVERING, 0.8, true),
+                (SoundType.BOSS_ENTRY, 0.8, false),
+                (SoundType.BOSS_DEAD, 1, false)
+                );
         }
 
         #endregion
@@ -106,9 +103,8 @@ namespace HonkTrooper
         #region Methods
 
         public void Reset()
-        {
-            var sound = _boss_entry_sounds[_random.Next(0, _boss_entry_sounds.Length)];
-            sound.Play();
+        {            
+            _audioStub.Play(SoundType.BOSS_ENTRY);
 
             PlaySoundLoop();
 
@@ -216,22 +212,19 @@ namespace HonkTrooper
 
             if (IsDead)
             {
-                StopSoundLoop();
-
-                var sound = _boss_dead_sounds[_random.Next(0, _boss_dead_sounds.Length)];
-                sound.Play();
+                StopSoundLoop();               
+                _audioStub.Play(SoundType.BOSS_DEAD);
             }
         }
 
         public void PlaySoundLoop()
         {
-            _boss_hovering_sound_playing = _boss_hovering_sounds[_random.Next(0, _boss_hovering_sounds.Length)];
-            _boss_hovering_sound_playing.Play();
+            _audioStub.Play(SoundType.BOSS_HOVERING);
         }
 
         public void StopSoundLoop()
-        {
-            _boss_hovering_sound_playing?.Stop();
+        {            
+            _audioStub.Stop(SoundType.BOSS_HOVERING);
         }
 
         public void Move(double speed, double sceneWidth, double sceneHeight, Rect playerPoint)

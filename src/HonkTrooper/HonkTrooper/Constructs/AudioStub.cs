@@ -38,8 +38,8 @@ namespace HonkTrooper
         {
             foreach (var soundType in soundTypes)
             {
-                var audioTuple = _audioTuples.FirstOrDefault(x => x.SoundType == soundType && x.AudioInstance is not null && x.AudioInstance.IsPlaying);
-                audioTuple.AudioInstance?.Pause();
+                if (_audioTuples.FirstOrDefault(x => x.SoundType == soundType && x.AudioInstance is not null && x.AudioInstance.IsPlaying) is AudioTuple audioTuple)
+                    audioTuple.AudioInstance?.Pause();
             }
         }
 
@@ -47,8 +47,8 @@ namespace HonkTrooper
         {
             foreach (var soundType in soundTypes)
             {
-                var audioTuple = _audioTuples.FirstOrDefault(x => x.SoundType == soundType && x.AudioInstance is not null && x.AudioInstance.IsPaused);
-                audioTuple.AudioInstance?.Resume();
+                if (_audioTuples.FirstOrDefault(x => x.SoundType == soundType && x.AudioInstance is not null && x.AudioInstance.IsPaused) is AudioTuple audioTuple)
+                    audioTuple.AudioInstance?.Resume();
             }
         }
 
@@ -56,15 +56,15 @@ namespace HonkTrooper
         {
             foreach (var soundType in soundTypes)
             {
-                var audioTuple = _audioTuples.FirstOrDefault(x => x.SoundType == soundType && x.AudioInstance is not null && x.AudioInstance.IsPlaying);
-                audioTuple.AudioInstance?.Stop();
+                if (_audioTuples.FirstOrDefault(x => x.SoundType == soundType && x.AudioInstance is not null && (x.AudioInstance.IsPlaying || x.AudioInstance.IsPaused)) is AudioTuple audioTuple)
+                    audioTuple.AudioInstance?.Stop();
             }
         }
 
         public void SetVolume(SoundType soundType, double volume)
         {
-            var audioTuple = _audioTuples.FirstOrDefault(x => x.SoundType == soundType && x.AudioInstance is not null && x.AudioInstance.IsPlaying);
-            audioTuple.AudioInstance?.SetVolume(volume);
+            if (_audioTuples.FirstOrDefault(x => x.SoundType == soundType && x.AudioInstance is not null && x.AudioInstance.IsPlaying) is AudioTuple audioTuple)
+                audioTuple.AudioInstance?.SetVolume(volume);
         }
     }
 }
