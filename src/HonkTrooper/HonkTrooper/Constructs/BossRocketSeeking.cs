@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace HonkTrooper
 {
-    public partial class PlayerBombSeeking : BombSeeking
+    public partial class BossRocketSeeking : BombSeeking
     {
         #region Fields
 
@@ -19,19 +19,19 @@ namespace HonkTrooper
 
         #region Ctor
 
-        public PlayerBombSeeking(
+        public BossRocketSeeking(
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction,
             double downScaling)
         {
             _random = new Random();
 
-            _bomb_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BOMB_SEEKING).Select(x => x.Uri).ToArray();
+            _bomb_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BOSS_ROCKET_SEEKING).Select(x => x.Uri).ToArray();
             _bomb_blast_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BOMB_BLAST).Select(x => x.Uri).ToArray();
 
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.PLAYER_BOMB_SEEKING);
+            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.BOSS_ROCKET_SEEKING);
 
-            ConstructType = ConstructType.PLAYER_BOMB_SEEKING;
+            ConstructType = ConstructType.BOSS_ROCKET_SEEKING;
 
             var width = size.Width * downScaling;
             var height = size.Height * downScaling;
@@ -67,11 +67,11 @@ namespace HonkTrooper
 
         #region Methods
 
-        public void Reposition(Player player, double downScaling)
+        public void Reposition(Boss boss, double downScaling)
         {
             SetPosition(
-                left: (player.GetLeft() + player.Width / 2) - Width / 2,
-                top: player.GetBottom() - (40 * downScaling),
+                left: (boss.GetLeft() + boss.Width / 2) - Width / 2,
+                top: boss.GetBottom() - (40 * downScaling),
                 z: 7);
         }
 

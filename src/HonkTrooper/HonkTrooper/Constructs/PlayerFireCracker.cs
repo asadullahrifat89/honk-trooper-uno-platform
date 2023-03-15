@@ -5,7 +5,7 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace HonkTrooper
 {
-    public partial class BossBomb : Construct
+    public partial class PlayerFireCracker : Construct
     {
         #region Fields
 
@@ -20,19 +20,19 @@ namespace HonkTrooper
 
         #region Ctor
 
-        public BossBomb(
-           Func<Construct, bool> animateAction,
-           Func<Construct, bool> recycleAction,
-           double downScaling)
+        public PlayerFireCracker(
+            Func<Construct, bool> animateAction,
+            Func<Construct, bool> recycleAction,
+            double downScaling)
         {
             _random = new Random();
 
-            _bomb_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BOSS_BOMB).Select(x => x.Uri).ToArray();
+            _bomb_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_FIRE_CRACKER).Select(x => x.Uri).ToArray();
             _bomb_blast_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BOMB_BLAST).Select(x => x.Uri).ToArray();
 
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.BOSS_BOMB);
+            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.PLAYER_FIRE_CRACKER);
 
-            ConstructType = ConstructType.BOSS_BOMB;
+            ConstructType = ConstructType.PLAYER_FIRE_CRACKER;
 
             var width = size.Width * downScaling;
             var height = size.Height * downScaling;
@@ -52,8 +52,8 @@ namespace HonkTrooper
             SetChild(_content_image);
 
             IsometricDisplacement = 0.5;
-            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET + 2;
-            DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE + 10;
+            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;
+            DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE - 10;
         }
 
         #endregion
@@ -62,23 +62,15 @@ namespace HonkTrooper
 
         public bool IsBlasting { get; set; }
 
-        public bool AwaitMoveRight { get; set; }
-
-        public bool AwaitMoveLeft { get; set; }
-
-        public bool AwaitMoveUp { get; set; }
-
-        public bool AwaitMoveDown { get; set; }
-
         #endregion
 
         #region Methods
 
-        public void Reposition(Boss boss, double downScaling)
+        public void Reposition(Player player, double downScaling)
         {
             SetPosition(
-                left: (boss.GetLeft() + boss.Width / 2) - Width / 2,
-                top: boss.GetBottom() - (50 * downScaling),
+                left: (player.GetLeft() + player.Width / 2) - Width / 2,
+                top: player.GetBottom() - (40 * downScaling),
                 z: 7);
         }
 
@@ -91,44 +83,13 @@ namespace HonkTrooper
 
             var uri = _bomb_uris[_random.Next(0, _bomb_uris.Length)];
             _content_image.Source = new BitmapImage(uri);
-
-            AwaitMoveLeft = false;
-            AwaitMoveRight = false;
-
-            AwaitMoveUp = false;
-            AwaitMoveDown = false;
         }
 
         public void SetBlast()
         {
             var uri = _bomb_blast_uris[_random.Next(0, _bomb_blast_uris.Length)];
             _content_image.Source = new BitmapImage(uri);
-
             IsBlasting = true;
-        }
-
-        public void MoveLeft(double speed)
-        {
-            SetLeft(GetLeft() - speed);
-            SetTop(GetTop() + speed);
-        }
-
-        public void MoveRight(double speed)
-        {
-            SetLeft(GetLeft() + speed);
-            SetTop(GetTop() - speed);
-        }
-
-        public void MoveUp(double speed)
-        {
-            SetLeft(GetLeft() - speed);
-            SetTop(GetTop() - speed * IsometricDisplacement);
-        }
-
-        public void MoveDown(double speed)
-        {
-            SetLeft(GetLeft() + speed);
-            SetTop(GetTop() + speed * IsometricDisplacement);
         }
 
         #endregion

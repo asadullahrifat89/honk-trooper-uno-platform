@@ -1,8 +1,10 @@
 ﻿using Microsoft.UI.Xaml;
 using System;
+using Uno.UI.Runtime.WebAssembly;
 
 namespace HonkTrooper.Wasm
 {
+    [HtmlElement("audio")]
     public partial class Audio : FrameworkElement
     {
         #region Fields
@@ -12,9 +14,9 @@ namespace HonkTrooper.Wasm
 
         #endregion
 
-        #region Ctor
+        #region Methods
 
-        public Audio(
+        public void Initialize(
             Uri uri,
             double volume = 1.0,
             bool loop = false,
@@ -42,10 +44,6 @@ namespace HonkTrooper.Wasm
 
             Console.WriteLine("source: " + uri + " volume: " + volume.ToString() + " loop: " + loop.ToString().ToLower());
         }
-
-        #endregion
-
-        #region Methods
 
         public void SetSource(Uri uri)
         {

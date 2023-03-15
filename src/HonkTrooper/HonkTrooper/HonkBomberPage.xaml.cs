@@ -394,13 +394,13 @@ namespace HonkTrooper
                     if (BossExistsInScene() || EnemyExistsInScene())
                     {
                         if (_powerUp_health_bar.HasHealth && (PowerUpType)_powerUp_health_bar.Tag == PowerUpType.SEEKING_BALLS)
-                            GeneratePlayerBombSeekingInScene();
+                            GeneratePlayerRocketSeekingInScene();
                         else
-                            GeneratePlayerBombInScene();
+                            GeneratePlayerRocketInScene();
                     }
                     else
                     {
-                        GeneratePlayerBombGroundInScene();
+                        GeneratePlayerFireCrackerInScene();
                     }
 
                     _game_controller.IsAttacking = false;
@@ -431,15 +431,15 @@ namespace HonkTrooper
 
         #endregion
 
-        #region PlayerBomb
+        #region PlayerRocket
 
-        private bool SpawnPlayerBombsInScene()
+        private bool SpawnPlayerRocketsInScene()
         {
             for (int i = 0; i < 4; i++)
             {
-                PlayerBomb bomb = new(
-                    animateAction: AnimatePlayerBomb,
-                    recycleAction: RecyclePlayerBomb,
+                PlayerRocket bomb = new(
+                    animateAction: AnimatePlayerRocket,
+                    recycleAction: RecyclePlayerRocket,
                     downScaling: _scene_game.DownScaling);
 
                 bomb.SetPosition(
@@ -455,24 +455,24 @@ namespace HonkTrooper
             return true;
         }
 
-        private bool GeneratePlayerBombInScene()
+        private bool GeneratePlayerRocketInScene()
         {
             if (_scene_game.SceneState == SceneState.GAME_RUNNING && !_scene_game.IsSlowMotionActivated &&
-                _scene_game.Children.OfType<PlayerBomb>().FirstOrDefault(x => x.IsAnimating == false) is PlayerBomb playerBomb)
+                _scene_game.Children.OfType<PlayerRocket>().FirstOrDefault(x => x.IsAnimating == false) is PlayerRocket PlayerRocket)
             {
                 _player.SetAttackStance();
 
-                playerBomb.Reset();
-                playerBomb.IsAnimating = true;
-                playerBomb.SetPopping();
+                PlayerRocket.Reset();
+                PlayerRocket.IsAnimating = true;
+                PlayerRocket.SetPopping();
 
-                playerBomb.Reposition(
+                PlayerRocket.Reposition(
                     Player: _player,
                     downScaling: _scene_game.DownScaling);
 
-                SyncDropShadow(playerBomb);
+                SyncDropShadow(PlayerRocket);
 
-                BossBombSeeking bossBombSeeking = _scene_game.Children.OfType<BossBombSeeking>().FirstOrDefault(x => x.IsAnimating);
+                BossRocketSeeking BossRocketSeeking = _scene_game.Children.OfType<BossRocketSeeking>().FirstOrDefault(x => x.IsAnimating);
                 Boss boss = _scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking);
                 Enemy enemy = _scene_game.Children.OfType<Enemy>().FirstOrDefault(x => x.IsAnimating);
 
@@ -482,15 +482,15 @@ namespace HonkTrooper
 
                 if (enemy is not null)
                 {
-                    SetPlayerBombDirection(playerBomb, enemy);
+                    SetPlayerRocketDirection(PlayerRocket, enemy);
                 }
-                else if (bossBombSeeking is not null)
+                else if (BossRocketSeeking is not null)
                 {
-                    SetPlayerBombDirection(playerBomb, bossBombSeeking);
+                    SetPlayerRocketDirection(PlayerRocket, BossRocketSeeking);
                 }
                 else if (boss is not null)
                 {
-                    SetPlayerBombDirection(playerBomb, boss);
+                    SetPlayerRocketDirection(PlayerRocket, boss);
                 }
 
                 #endregion
@@ -501,63 +501,63 @@ namespace HonkTrooper
             return false;
         }
 
-        private void SetPlayerBombDirection(PlayerBomb playerBomb, Construct target)
+        private void SetPlayerRocketDirection(PlayerRocket PlayerRocket, Construct target)
         {
             if (_player.GetLeft() < target.GetLeft()) // player is on the left side of the target
             {
                 if ((_player.GetTop() > target.GetTop())) // player is below the target
                 {
-                    playerBomb.AwaitMoveRight = true;
-                    playerBomb.SetRotation(-33);
+                    PlayerRocket.AwaitMoveRight = true;
+                    PlayerRocket.SetRotation(-33);
                 }
                 else // player is above the target
                 {
-                    playerBomb.AwaitMoveDown = true;
-                    playerBomb.SetRotation(123);
+                    PlayerRocket.AwaitMoveDown = true;
+                    PlayerRocket.SetRotation(123);
                 }
             }
             else if (_player.GetLeft() > target.GetLeft()) // player is on the right side of the target
             {
                 if ((_player.GetTop() > target.GetTop())) // player is below the target
                 {
-                    playerBomb.AwaitMoveUp = true;
-                    playerBomb.SetRotation(213);
+                    PlayerRocket.AwaitMoveUp = true;
+                    PlayerRocket.SetRotation(213);
 
                 }
                 else // player is above the target
                 {
-                    playerBomb.AwaitMoveLeft = true;
-                    playerBomb.SetRotation(123);
+                    PlayerRocket.AwaitMoveLeft = true;
+                    PlayerRocket.SetRotation(123);
                 }
             }
         }
 
-        private bool AnimatePlayerBomb(Construct bomb)
+        private bool AnimatePlayerRocket(Construct bomb)
         {
-            PlayerBomb playerBomb = bomb as PlayerBomb;
+            PlayerRocket PlayerRocket = bomb as PlayerRocket;
 
-            var hitBox = playerBomb.GetCloseHitBox();
+            var hitBox = PlayerRocket.GetCloseHitBox();
 
             var speed = (_scene_game.Speed + bomb.SpeedOffset) * _scene_game.DownScaling;
 
-            if (playerBomb.AwaitMoveLeft)
+            if (PlayerRocket.AwaitMoveLeft)
             {
-                playerBomb.MoveLeft(speed);
+                PlayerRocket.MoveLeft(speed);
             }
-            else if (playerBomb.AwaitMoveRight)
+            else if (PlayerRocket.AwaitMoveRight)
             {
-                playerBomb.MoveRight(speed);
+                PlayerRocket.MoveRight(speed);
             }
-            else if (playerBomb.AwaitMoveUp)
+            else if (PlayerRocket.AwaitMoveUp)
             {
-                playerBomb.MoveUp(speed);
+                PlayerRocket.MoveUp(speed);
             }
-            else if (playerBomb.AwaitMoveDown)
+            else if (PlayerRocket.AwaitMoveDown)
             {
-                playerBomb.MoveDown(speed);
+                PlayerRocket.MoveDown(speed);
             }
 
-            if (playerBomb.IsBlasting)
+            if (PlayerRocket.IsBlasting)
             {
                 bomb.Expand();
                 bomb.Fade(0.02);
@@ -574,33 +574,33 @@ namespace HonkTrooper
                     // if player bomb touches boss, it blasts, boss looses health
                     if (_scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetCloseHitBox().IntersectsWith(hitBox)) is Boss boss)
                     {
-                        playerBomb.SetBlast();
+                        PlayerRocket.SetBlast();
                         LooseBossHealth(boss);
                     }
 
                     // if player bomb touches boss's seeking bomb, it blasts
-                    if (_scene_game.Children.OfType<BossBombSeeking>().FirstOrDefault(x => x.IsAnimating && x.GetCloseHitBox().IntersectsWith(hitBox)) is BossBombSeeking bossBombSeeking)
+                    if (_scene_game.Children.OfType<BossRocketSeeking>().FirstOrDefault(x => x.IsAnimating && x.GetCloseHitBox().IntersectsWith(hitBox)) is BossRocketSeeking BossRocketSeeking)
                     {
-                        playerBomb.SetBlast();
-                        bossBombSeeking.SetBlast();
+                        PlayerRocket.SetBlast();
+                        BossRocketSeeking.SetBlast();
                     }
 
                     // if player bomb touches enemy, it blasts, enemy looses health
                     if (_scene_game.Children.OfType<Enemy>().FirstOrDefault(x => x.IsAnimating && x.GetCloseHitBox().IntersectsWith(hitBox)) is Enemy enemy)
                     {
-                        playerBomb.SetBlast();
+                        PlayerRocket.SetBlast();
                         LooseEnemyHealth(enemy);
                     }
 
-                    if (playerBomb.RunOutOfTimeToBlast())
-                        playerBomb.SetBlast();
+                    if (PlayerRocket.RunOutOfTimeToBlast())
+                        PlayerRocket.SetBlast();
                 }
             }
 
             return true;
         }
 
-        private bool RecyclePlayerBomb(Construct bomb)
+        private bool RecyclePlayerRocket(Construct bomb)
         {
             var hitbox = bomb.GetHitBox();
 
@@ -623,15 +623,15 @@ namespace HonkTrooper
 
         #endregion
 
-        #region PlayerBombGround
+        #region PlayerFireCracker
 
-        private bool SpawnPlayerBombGroundsInScene()
+        private bool SpawnPlayerFireCrackersInScene()
         {
             for (int i = 0; i < 3; i++)
             {
-                PlayerBombGround bomb = new(
-                    animateAction: AnimatePlayerBombGround,
-                    recycleAction: RecyclePlayerBombGround,
+                PlayerFireCracker bomb = new(
+                    animateAction: AnimatePlayerFireCracker,
+                    recycleAction: RecyclePlayerFireCracker,
                     downScaling: _scene_game.DownScaling);
 
                 bomb.SetPosition(
@@ -647,10 +647,10 @@ namespace HonkTrooper
             return true;
         }
 
-        private bool GeneratePlayerBombGroundInScene()
+        private bool GeneratePlayerFireCrackerInScene()
         {
             if (_scene_game.SceneState == SceneState.GAME_RUNNING && !_scene_game.IsSlowMotionActivated &&
-                _scene_game.Children.OfType<PlayerBombGround>().FirstOrDefault(x => x.IsAnimating == false) is PlayerBombGround bomb)
+                _scene_game.Children.OfType<PlayerFireCracker>().FirstOrDefault(x => x.IsAnimating == false) is PlayerFireCracker bomb)
             {
                 _player.SetAttackStance();
 
@@ -675,13 +675,13 @@ namespace HonkTrooper
             return false;
         }
 
-        private bool AnimatePlayerBombGround(Construct bomb)
+        private bool AnimatePlayerFireCracker(Construct bomb)
         {
-            PlayerBombGround playerBombGround = bomb as PlayerBombGround;
+            PlayerFireCracker PlayerFireCracker = bomb as PlayerFireCracker;
 
             DropShadow dropShadow = _scene_game.Children.OfType<DropShadow>().First(x => x.Id == bomb.Id);
 
-            if (playerBombGround.IsBlasting)
+            if (PlayerFireCracker.IsBlasting)
             {
                 var speed = (_scene_game.Speed + bomb.SpeedOffset);
 
@@ -716,14 +716,14 @@ namespace HonkTrooper
                 {
                     // start blast animation when the bomb touches it's shadow
                     if (dropShadow.GetCloseHitBox().IntersectsWith(bomb.GetCloseHitBox()))
-                        playerBombGround.SetBlast();
+                        PlayerFireCracker.SetBlast();
                 }
             }
 
             return true;
         }
 
-        private bool RecyclePlayerBombGround(Construct bomb)
+        private bool RecyclePlayerFireCracker(Construct bomb)
         {
             if (bomb.IsFadingComplete)
             {
@@ -742,15 +742,15 @@ namespace HonkTrooper
 
         #endregion
 
-        #region PlayerBombSeeking
+        #region PlayerRocketSeeking
 
-        private bool SpawnPlayerBombSeekingsInScene()
+        private bool SpawnPlayerRocketSeekingsInScene()
         {
             for (int i = 0; i < 3; i++)
             {
-                PlayerBombSeeking bomb = new(
-                    animateAction: AnimatePlayerBombSeeking,
-                    recycleAction: RecyclePlayerBombSeeking,
+                PlayerRocketSeeking bomb = new(
+                    animateAction: AnimatePlayerRocketSeeking,
+                    recycleAction: RecyclePlayerRocketSeeking,
                     downScaling: _scene_game.DownScaling);
 
                 bomb.SetPosition(
@@ -766,24 +766,24 @@ namespace HonkTrooper
             return true;
         }
 
-        private bool GeneratePlayerBombSeekingInScene()
+        private bool GeneratePlayerRocketSeekingInScene()
         {
             // generate a seeking bomb if one is not in scene
             if (_scene_game.SceneState == SceneState.GAME_RUNNING && !_scene_game.IsSlowMotionActivated &&
                 _scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss &&
-                _scene_game.Children.OfType<PlayerBombSeeking>().FirstOrDefault(x => x.IsAnimating == false) is PlayerBombSeeking playerBombSeeking)
+                _scene_game.Children.OfType<PlayerRocketSeeking>().FirstOrDefault(x => x.IsAnimating == false) is PlayerRocketSeeking PlayerRocketSeeking)
             {
                 _player.SetAttackStance();
 
-                playerBombSeeking.Reset();
-                playerBombSeeking.IsAnimating = true;
-                playerBombSeeking.SetPopping();
+                PlayerRocketSeeking.Reset();
+                PlayerRocketSeeking.IsAnimating = true;
+                PlayerRocketSeeking.SetPopping();
 
-                playerBombSeeking.Reposition(
+                PlayerRocketSeeking.Reposition(
                     player: _player,
                     downScaling: _scene_game.DownScaling);
 
-                SyncDropShadow(playerBombSeeking);
+                SyncDropShadow(PlayerRocketSeeking);
 
                 if (_powerUp_health_bar.HasHealth && (PowerUpType)_powerUp_health_bar.Tag == PowerUpType.SEEKING_BALLS)
                     DepletePowerUp();
@@ -796,39 +796,39 @@ namespace HonkTrooper
             return false;
         }
 
-        private bool AnimatePlayerBombSeeking(Construct playerBombSeeking)
+        private bool AnimatePlayerRocketSeeking(Construct PlayerRocketSeeking)
         {
-            PlayerBombSeeking playerBombSeeking1 = playerBombSeeking as PlayerBombSeeking;
+            PlayerRocketSeeking PlayerRocketSeeking1 = PlayerRocketSeeking as PlayerRocketSeeking;
 
-            if (playerBombSeeking1.IsBlasting)
+            if (PlayerRocketSeeking1.IsBlasting)
             {
-                var speed = _scene_game.Speed + playerBombSeeking.SpeedOffset;
+                var speed = _scene_game.Speed + PlayerRocketSeeking.SpeedOffset;
 
-                MoveConstruct(construct: playerBombSeeking1, speed: speed);
+                MoveConstruct(construct: PlayerRocketSeeking1, speed: speed);
 
-                playerBombSeeking.Expand();
-                playerBombSeeking.Fade(0.02);
+                PlayerRocketSeeking.Expand();
+                PlayerRocketSeeking.Fade(0.02);
 
-                DropShadow dropShadow = _scene_game.Children.OfType<DropShadow>().First(x => x.Id == playerBombSeeking.Id);
-                dropShadow.Opacity = playerBombSeeking.Opacity;
+                DropShadow dropShadow = _scene_game.Children.OfType<DropShadow>().First(x => x.Id == PlayerRocketSeeking.Id);
+                dropShadow.Opacity = PlayerRocketSeeking.Opacity;
             }
             else
             {
-                playerBombSeeking.Pop();
-                playerBombSeeking.Rotate(rotationSpeed: 3.5);
+                PlayerRocketSeeking.Pop();
+                PlayerRocketSeeking.Rotate(rotationSpeed: 3.5);
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
                     // if there a boss bomb seeking the player then target that first and if they hit both bombs blast
 
-                    if (_scene_game.Children.OfType<BossBombSeeking>().FirstOrDefault(x => x.IsAnimating) is BossBombSeeking bossBombSeeking)
+                    if (_scene_game.Children.OfType<BossRocketSeeking>().FirstOrDefault(x => x.IsAnimating) is BossRocketSeeking BossRocketSeeking)
                     {
-                        playerBombSeeking1.Seek(bossBombSeeking.GetCloseHitBox());
+                        PlayerRocketSeeking1.Seek(BossRocketSeeking.GetCloseHitBox());
 
-                        if (playerBombSeeking1.GetCloseHitBox().IntersectsWith(bossBombSeeking.GetCloseHitBox()))
+                        if (PlayerRocketSeeking1.GetCloseHitBox().IntersectsWith(BossRocketSeeking.GetCloseHitBox()))
                         {
-                            playerBombSeeking1.SetBlast();
-                            bossBombSeeking.SetBlast();
+                            PlayerRocketSeeking1.SetBlast();
+                            BossRocketSeeking.SetBlast();
                         }
                     }
 
@@ -836,11 +836,11 @@ namespace HonkTrooper
 
                     if (_scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss)
                     {
-                        playerBombSeeking1.Seek(boss.GetCloseHitBox());
+                        PlayerRocketSeeking1.Seek(boss.GetCloseHitBox());
 
-                        if (playerBombSeeking1.GetCloseHitBox().IntersectsWith(boss.GetCloseHitBox()))
+                        if (PlayerRocketSeeking1.GetCloseHitBox().IntersectsWith(boss.GetCloseHitBox()))
                         {
-                            playerBombSeeking1.SetBlast();
+                            PlayerRocketSeeking1.SetBlast();
                             LooseBossHealth(boss);
                         }
                     }
@@ -849,33 +849,33 @@ namespace HonkTrooper
 
                     if (_scene_game.Children.OfType<Enemy>().FirstOrDefault(x => x.IsAnimating) is Enemy enemy)
                     {
-                        playerBombSeeking1.Seek(enemy.GetCloseHitBox());
+                        PlayerRocketSeeking1.Seek(enemy.GetCloseHitBox());
 
-                        if (playerBombSeeking1.GetCloseHitBox().IntersectsWith(enemy.GetCloseHitBox()))
+                        if (PlayerRocketSeeking1.GetCloseHitBox().IntersectsWith(enemy.GetCloseHitBox()))
                         {
-                            playerBombSeeking1.SetBlast();
+                            PlayerRocketSeeking1.SetBlast();
                             LooseEnemyHealth(enemy);
                         }
                     }
 
-                    if (playerBombSeeking1.RunOutOfTimeToBlast())
-                        playerBombSeeking1.SetBlast();
+                    if (PlayerRocketSeeking1.RunOutOfTimeToBlast())
+                        PlayerRocketSeeking1.SetBlast();
                 }
             }
 
             return true;
         }
 
-        private bool RecyclePlayerBombSeeking(Construct playerBombSeeking)
+        private bool RecyclePlayerRocketSeeking(Construct PlayerRocketSeeking)
         {
-            var hitbox = playerBombSeeking.GetHitBox();
+            var hitbox = PlayerRocketSeeking.GetHitBox();
 
             // if bomb is blasted and faed or goes out of scene bounds
-            if (playerBombSeeking.IsFadingComplete || hitbox.Left > _scene_game.Width || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Bottom > _scene_game.Height)
+            if (PlayerRocketSeeking.IsFadingComplete || hitbox.Left > _scene_game.Width || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Bottom > _scene_game.Height)
             {
-                playerBombSeeking.IsAnimating = false;
+                PlayerRocketSeeking.IsAnimating = false;
 
-                playerBombSeeking.SetPosition(
+                PlayerRocketSeeking.SetPosition(
                     left: -500,
                     top: -500);
 
@@ -1932,15 +1932,15 @@ namespace HonkTrooper
 
         #endregion
 
-        #region BossBomb
+        #region BossRocket
 
-        private bool SpawnBossBombsInScene()
+        private bool SpawnBossRocketsInScene()
         {
             for (int i = 0; i < 5; i++)
             {
-                BossBomb bomb = new(
-                    animateAction: AnimateBossBomb,
-                    recycleAction: RecycleBossBomb,
+                BossRocket bomb = new(
+                    animateAction: AnimateBossRocket,
+                    recycleAction: RecycleBossRocket,
                     downScaling: _scene_game.DownScaling);
 
                 bomb.SetPosition(
@@ -1956,21 +1956,21 @@ namespace HonkTrooper
             return true;
         }
 
-        private bool GenerateBossBombInScene()
+        private bool GenerateBossRocketInScene()
         {
             if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
                 _scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss &&
-                _scene_game.Children.OfType<BossBomb>().FirstOrDefault(x => x.IsAnimating == false) is BossBomb bossBomb)
+                _scene_game.Children.OfType<BossRocket>().FirstOrDefault(x => x.IsAnimating == false) is BossRocket BossRocket)
             {
-                bossBomb.Reset();
-                bossBomb.IsAnimating = true;
-                bossBomb.SetPopping();
+                BossRocket.Reset();
+                BossRocket.IsAnimating = true;
+                BossRocket.SetPopping();
 
-                bossBomb.Reposition(
+                BossRocket.Reposition(
                     boss: boss,
                     downScaling: _scene_game.DownScaling);
 
-                SyncDropShadow(bossBomb);
+                SyncDropShadow(BossRocket);
 
                 #region [OBSOLETE] Back & Forth Movement
 
@@ -1979,13 +1979,13 @@ namespace HonkTrooper
                 //    // player is on the right side of the boss
                 //    if (_player.GetLeft() > boss.GetRight())
                 //    {
-                //        bossBomb.AwaitMoveDown = true;
-                //        bossBomb.SetRotation(33);
+                //        BossRocket.AwaitMoveDown = true;
+                //        BossRocket.SetRotation(33);
                 //    }
                 //    else
                 //    {
-                //        bossBomb.AwaitMoveUp = true;
-                //        bossBomb.SetRotation(125);
+                //        BossRocket.AwaitMoveUp = true;
+                //        BossRocket.SetRotation(125);
                 //    }
                 //}
                 //else if (boss.AwaitMoveUp || boss.AwaitMoveDown)
@@ -1993,13 +1993,13 @@ namespace HonkTrooper
                 //    // player is above the boss
                 //    if (_player.GetBottom() < boss.GetTop())
                 //    {
-                //        bossBomb.AwaitMoveRight = true;
-                //        bossBomb.SetRotation(-33);
+                //        BossRocket.AwaitMoveRight = true;
+                //        BossRocket.SetRotation(-33);
                 //    }
                 //    else
                 //    {
-                //        bossBomb.AwaitMoveLeft = true;
-                //        bossBomb.SetRotation(125);
+                //        BossRocket.AwaitMoveLeft = true;
+                //        BossRocket.SetRotation(125);
                 //    }
                 //} 
 
@@ -2010,31 +2010,31 @@ namespace HonkTrooper
                 // player is on the bottom right side of the boss
                 if (_player.GetTop() > boss.GetTop() && _player.GetLeft() > boss.GetLeft())
                 {
-                    bossBomb.AwaitMoveDown = true;
-                    bossBomb.SetRotation(33);
+                    BossRocket.AwaitMoveDown = true;
+                    BossRocket.SetRotation(33);
                 }
                 // player is on the bottom left side of the boss
                 else if (_player.GetTop() > boss.GetTop() && _player.GetLeft() < boss.GetLeft())
                 {
-                    bossBomb.AwaitMoveLeft = true;
-                    bossBomb.SetRotation(123);
+                    BossRocket.AwaitMoveLeft = true;
+                    BossRocket.SetRotation(123);
                 }
                 // if player is on the top left side of the boss
                 else if (_player.GetTop() < boss.GetTop() && _player.GetLeft() < boss.GetLeft())
                 {
-                    bossBomb.AwaitMoveUp = true;
-                    bossBomb.SetRotation(123);
+                    BossRocket.AwaitMoveUp = true;
+                    BossRocket.SetRotation(123);
                 }
                 // if player is on the top right side of the boss
                 else if (_player.GetTop() < boss.GetTop() && _player.GetLeft() > boss.GetLeft())
                 {
-                    bossBomb.AwaitMoveRight = true;
-                    bossBomb.SetRotation(-33);
+                    BossRocket.AwaitMoveRight = true;
+                    BossRocket.SetRotation(-33);
                 }
                 else
                 {
-                    bossBomb.AwaitMoveDown = true;
-                    bossBomb.SetRotation(33);
+                    BossRocket.AwaitMoveDown = true;
+                    BossRocket.SetRotation(33);
                 }
 
                 #endregion
@@ -2047,30 +2047,30 @@ namespace HonkTrooper
             return false;
         }
 
-        private bool AnimateBossBomb(Construct bomb)
+        private bool AnimateBossRocket(Construct bomb)
         {
-            BossBomb bossBomb = bomb as BossBomb;
+            BossRocket BossRocket = bomb as BossRocket;
 
             var speed = (_scene_game.Speed + bomb.SpeedOffset) * _scene_game.DownScaling;
 
-            if (bossBomb.AwaitMoveLeft)
+            if (BossRocket.AwaitMoveLeft)
             {
-                bossBomb.MoveLeft(speed);
+                BossRocket.MoveLeft(speed);
             }
-            else if (bossBomb.AwaitMoveRight)
+            else if (BossRocket.AwaitMoveRight)
             {
-                bossBomb.MoveRight(speed);
+                BossRocket.MoveRight(speed);
             }
-            else if (bossBomb.AwaitMoveUp)
+            else if (BossRocket.AwaitMoveUp)
             {
-                bossBomb.MoveUp(speed);
+                BossRocket.MoveUp(speed);
             }
-            else if (bossBomb.AwaitMoveDown)
+            else if (BossRocket.AwaitMoveDown)
             {
-                bossBomb.MoveDown(speed);
+                BossRocket.MoveDown(speed);
             }
 
-            if (bossBomb.IsBlasting)
+            if (BossRocket.IsBlasting)
             {
                 bomb.Expand();
                 bomb.Fade(0.02);
@@ -2084,9 +2084,9 @@ namespace HonkTrooper
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
-                    if (bossBomb.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
+                    if (BossRocket.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
                     {
-                        bossBomb.SetBlast();
+                        BossRocket.SetBlast();
                         LoosePlayerHealth();
                     }
                 }
@@ -2095,7 +2095,7 @@ namespace HonkTrooper
             return true;
         }
 
-        private bool RecycleBossBomb(Construct bomb)
+        private bool RecycleBossRocket(Construct bomb)
         {
             var hitbox = bomb.GetHitBox();
 
@@ -2116,15 +2116,15 @@ namespace HonkTrooper
 
         #endregion
 
-        #region BossBombSeeking
+        #region BossRocketSeeking
 
-        private bool SpawnBossBombSeekingsInScene()
+        private bool SpawnBossRocketSeekingsInScene()
         {
             for (int i = 0; i < 2; i++)
             {
-                BossBombSeeking bomb = new(
-                    animateAction: AnimateBossBombSeeking,
-                    recycleAction: RecycleBossBombSeeking,
+                BossRocketSeeking bomb = new(
+                    animateAction: AnimateBossRocketSeeking,
+                    recycleAction: RecycleBossRocketSeeking,
                     downScaling: _scene_game.DownScaling);
 
                 bomb.SetPosition(
@@ -2140,23 +2140,23 @@ namespace HonkTrooper
             return true;
         }
 
-        private bool GenerateBossBombSeekingInScene()
+        private bool GenerateBossRocketSeekingInScene()
         {
             // generate a seeking bomb if one is not in scene
             if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
                 _scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss &&
-                !_scene_game.Children.OfType<BossBombSeeking>().Any(x => x.IsAnimating) &&
-                _scene_game.Children.OfType<BossBombSeeking>().FirstOrDefault(x => x.IsAnimating == false) is BossBombSeeking bossBombSeeking)
+                !_scene_game.Children.OfType<BossRocketSeeking>().Any(x => x.IsAnimating) &&
+                _scene_game.Children.OfType<BossRocketSeeking>().FirstOrDefault(x => x.IsAnimating == false) is BossRocketSeeking BossRocketSeeking)
             {
-                bossBombSeeking.Reset();
-                bossBombSeeking.IsAnimating = true;
-                bossBombSeeking.SetPopping();
+                BossRocketSeeking.Reset();
+                BossRocketSeeking.IsAnimating = true;
+                BossRocketSeeking.SetPopping();
 
-                bossBombSeeking.Reposition(
+                BossRocketSeeking.Reposition(
                     boss: boss,
                     downScaling: _scene_game.DownScaling);
 
-                SyncDropShadow(bossBombSeeking);
+                SyncDropShadow(BossRocketSeeking);
 
                 // Console.WriteLine("Boss Seeking Bomb dropped.");
 
@@ -2166,15 +2166,15 @@ namespace HonkTrooper
             return false;
         }
 
-        private bool AnimateBossBombSeeking(Construct bomb)
+        private bool AnimateBossRocketSeeking(Construct bomb)
         {
-            BossBombSeeking bossBombSeeking = bomb as BossBombSeeking;
+            BossRocketSeeking BossRocketSeeking = bomb as BossRocketSeeking;
 
             var speed = (_scene_game.Speed + bomb.SpeedOffset) * _scene_game.DownScaling;
 
-            if (bossBombSeeking.IsBlasting)
+            if (BossRocketSeeking.IsBlasting)
             {
-                MoveConstruct(construct: bossBombSeeking, speed: speed);
+                MoveConstruct(construct: BossRocketSeeking, speed: speed);
 
                 bomb.Expand();
                 bomb.Fade(0.02);
@@ -2190,23 +2190,23 @@ namespace HonkTrooper
                 {
                     if (_scene_game.Children.OfType<Boss>().Any(x => x.IsAnimating && x.IsAttacking))
                     {
-                        bossBombSeeking.Seek(_player.GetCloseHitBox());
+                        BossRocketSeeking.Seek(_player.GetCloseHitBox());
 
-                        if (bossBombSeeking.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
+                        if (BossRocketSeeking.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
                         {
-                            bossBombSeeking.SetBlast();
+                            BossRocketSeeking.SetBlast();
 
                             LoosePlayerHealth();
                         }
                         else
                         {
-                            if (bossBombSeeking.RunOutOfTimeToBlast())
-                                bossBombSeeking.SetBlast();
+                            if (BossRocketSeeking.RunOutOfTimeToBlast())
+                                BossRocketSeeking.SetBlast();
                         }
                     }
                     else
                     {
-                        bossBombSeeking.SetBlast();
+                        BossRocketSeeking.SetBlast();
                     }
                 }
             }
@@ -2214,7 +2214,7 @@ namespace HonkTrooper
             return true;
         }
 
-        private bool RecycleBossBombSeeking(Construct bomb)
+        private bool RecycleBossRocketSeeking(Construct bomb)
         {
             var hitbox = bomb.GetHitBox();
 
@@ -2640,12 +2640,12 @@ namespace HonkTrooper
                 new Generator(
                     generationDelay: 0,
                     generationAction: () => { return true; },
-                    startUpAction: SpawnPlayerBombsInScene),
+                    startUpAction: SpawnPlayerRocketsInScene),
 
                 new Generator(
                     generationDelay: 0,
                     generationAction: () => { return true; },
-                    startUpAction: SpawnPlayerBombGroundsInScene),
+                    startUpAction: SpawnPlayerFireCrackersInScene),
 
                 // add the clouds which are above the player z
                 new Generator(
@@ -2660,20 +2660,20 @@ namespace HonkTrooper
 
                 new Generator(
                     generationDelay: 50,
-                    generationAction: GenerateBossBombInScene,
-                    startUpAction: SpawnBossBombsInScene,
+                    generationAction: GenerateBossRocketInScene,
+                    startUpAction: SpawnBossRocketsInScene,
                     randomizeGenerationDelay: true),
 
                 new Generator(
                     generationDelay: 200,
-                    generationAction: GenerateBossBombSeekingInScene,
-                    startUpAction: SpawnBossBombSeekingsInScene,
+                    generationAction: GenerateBossRocketSeekingInScene,
+                    startUpAction: SpawnBossRocketSeekingsInScene,
                     randomizeGenerationDelay: true),
 
                 new Generator(
                     generationDelay: 0,
                     generationAction: () => { return true; },
-                    startUpAction: SpawnPlayerBombSeekingsInScene),
+                    startUpAction: SpawnPlayerRocketSeekingsInScene),
 
                 new Generator(
                     generationDelay: 600,
