@@ -28,6 +28,12 @@ namespace HonkTrooper
         private double _hitStanceDelay;
         private readonly double _hitStanceDelayDefault = 1.5;
 
+        private readonly Sound[] _boss_hovering_sounds;
+        private readonly Sound[] _boss_entry_sounds;
+        private readonly Sound[] _boss_dead_sounds;
+
+        private Sound _boss_hovering_sound_playing;
+
         #endregion
 
         #region Ctor
@@ -68,6 +74,10 @@ namespace HonkTrooper
             IsometricDisplacement = 0.5;
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET - 0.5;
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE;
+                        
+            _boss_hovering_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.BOSS_HOVERING).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 0.9, loop: true)).ToArray();
+            _boss_entry_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.BOSS_ENTRY).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 0.8)).ToArray();
+            _boss_dead_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.BOSS_DEAD).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 0.8)).ToArray();
         }
 
         #endregion
@@ -96,6 +106,12 @@ namespace HonkTrooper
 
         public void Reset()
         {
+            var sound = _boss_entry_sounds[_random.Next(0, _boss_entry_sounds.Length)];
+            sound.Play();
+
+            _boss_hovering_sound_playing = _boss_hovering_sounds[_random.Next(0, _boss_hovering_sounds.Length)];
+            _boss_hovering_sound_playing.Play();
+
             Opacity = 1;
             Health = 100;
             IsAttacking = false;
@@ -197,6 +213,14 @@ namespace HonkTrooper
         public void LooseHealth()
         {
             Health -= 5;
+
+            if (IsDead)
+            {
+                _boss_hovering_sound_playing?.Stop();
+
+                var sound = _boss_dead_sounds[_random.Next(0, _boss_dead_sounds.Length)];
+                sound.Play();
+            }                
         }
 
         public void Move(double speed, double sceneWidth, double sceneHeight, Rect playerPoint)

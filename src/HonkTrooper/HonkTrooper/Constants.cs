@@ -147,6 +147,14 @@ namespace HonkTrooper
             new (SoundType.AMBIENCE, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/ambience_1.mp3")),
             new (SoundType.AMBIENCE, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/ambience_2.mp3")),
             new (SoundType.AMBIENCE, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/ambience_3.mp3")),
+
+            new (SoundType.BOSS_HOVERING, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/boss_hovering_1.mp3")),
+            new (SoundType.BOSS_HOVERING, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/boss_hovering_2.mp3")),
+
+            new (SoundType.BOSS_ENTRY, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/boss_entry_1.mp3")),
+            new (SoundType.BOSS_ENTRY, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/boss_entry_2.mp3")),
+
+            new (SoundType.BOSS_DEAD, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/boss_dead_1.mp3")),
         };
     }
 
@@ -163,6 +171,10 @@ namespace HonkTrooper
         SEEKER_ROCKET_LAUNCH,
 
         AMBIENCE,
+
+        BOSS_ENTRY,
+        BOSS_HOVERING,
+        BOSS_DEAD,
     }
 
     public enum ConstructType
