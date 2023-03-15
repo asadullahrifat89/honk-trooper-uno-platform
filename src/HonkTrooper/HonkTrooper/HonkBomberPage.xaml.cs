@@ -143,6 +143,24 @@ namespace HonkTrooper
 
             GeneratePlayerInScene();
 
+            foreach (var vehicle in _scene_game.Children.OfType<Vehicle>())
+            {
+                vehicle.SetPosition(
+                     left: -500,
+                     top: -500);
+
+                vehicle.IsAnimating = false;
+            }
+
+            foreach (var honk in _scene_game.Children.OfType<Honk>())
+            {
+                honk.SetPosition(
+                     left: -500,
+                     top: -500);
+
+                honk.IsAnimating = false;
+            }
+
             foreach (var playerRocket in _scene_game.Children.OfType<PlayerRocket>())
             {
                 playerRocket.SetPosition(
