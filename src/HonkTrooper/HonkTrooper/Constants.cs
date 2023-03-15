@@ -17,13 +17,13 @@ namespace HonkTrooper
         public static (ConstructType ConstructType, double Height, double Width)[] CONSTRUCT_SIZES = new (ConstructType, double, double)[]
         {
             new (ConstructType.PLAYER, 170, 170),
-            new (ConstructType.PLAYER_BOMB, 80, 80),
-            new (ConstructType.PLAYER_BOMB_GROUND, 80, 80),
-            new (ConstructType.PLAYER_BOMB_SEEKING, 80, 80),
+            new (ConstructType.PLAYER_ROCKET, 80, 80),
+            new (ConstructType.PLAYER_FIRE_CRACKER, 80, 80),
+            new (ConstructType.PLAYER_ROCKET_SEEKING, 80, 80),
 
             new (ConstructType.BOSS, 180, 180),
-            new (ConstructType.BOSS_BOMB, 80, 80),
-            new (ConstructType.BOSS_BOMB_SEEKING, 80, 80),
+            new (ConstructType.BOSS_ROCKET, 80, 80),
+            new (ConstructType.BOSS_ROCKET_SEEKING, 80, 80),
 
             new (ConstructType.ENEMY, 140, 140),
             new (ConstructType.ENEMY_BOMB, 60, 60),
@@ -83,15 +83,15 @@ namespace HonkTrooper
             new (ConstructType.PLAYER_WIN, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_1_win.png")),
             new (ConstructType.PLAYER_HIT, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_1_hit.png")),
 
-            new (ConstructType.PLAYER_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_1.png")),
-            new (ConstructType.PLAYER_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_2.png")),
-            new (ConstructType.PLAYER_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_3.png")),
+            new (ConstructType.PLAYER_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_1.png")),
+            new (ConstructType.PLAYER_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_2.png")),
+            new (ConstructType.PLAYER_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_3.png")),
 
-            new (ConstructType.PLAYER_BOMB_GROUND, new Uri("ms-appx:///HonkTrooper/Assets/Images/cracker_1.png")),
-            new (ConstructType.PLAYER_BOMB_GROUND, new Uri("ms-appx:///HonkTrooper/Assets/Images/cracker_2.png")),
+            new (ConstructType.PLAYER_FIRE_CRACKER, new Uri("ms-appx:///HonkTrooper/Assets/Images/cracker_1.png")),
+            new (ConstructType.PLAYER_FIRE_CRACKER, new Uri("ms-appx:///HonkTrooper/Assets/Images/cracker_2.png")),
 
-            new (ConstructType.PLAYER_BOMB_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_seeking_1.png")),
-            new (ConstructType.PLAYER_BOMB_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_seeking_2.png")),
+            new (ConstructType.PLAYER_ROCKET_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_seeking_1.png")),
+            new (ConstructType.PLAYER_ROCKET_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_seeking_2.png")),
 
             new (ConstructType.BOMB_BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Images/blast_1.png")),
             new (ConstructType.BOMB_BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Images/blast_2.png")),
@@ -103,11 +103,11 @@ namespace HonkTrooper
             new (ConstructType.BOSS, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_3_idle.png")),
             new (ConstructType.BOSS_HIT, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_3_hit.png")),
 
-            new (ConstructType.BOSS_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_1.png")),
-            new (ConstructType.BOSS_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_2.png")),
-            new (ConstructType.BOSS_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_3.png")),
+            new (ConstructType.BOSS_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_1.png")),
+            new (ConstructType.BOSS_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_2.png")),
+            new (ConstructType.BOSS_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_3.png")),
 
-            new (ConstructType.BOSS_BOMB_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_seeking.png")),
+            new (ConstructType.BOSS_ROCKET_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_seeking.png")),
 
             new (ConstructType.ENEMY, new Uri("ms-appx:///HonkTrooper/Assets/Images/enemy_1.png")),
             new (ConstructType.ENEMY, new Uri("ms-appx:///HonkTrooper/Assets/Images/enemy_2.png")),
@@ -140,7 +140,7 @@ namespace HonkTrooper
     }
 
     public enum SoundType
-    {        
+    {
         CRACKER_DROP,
         CRACKER_BLAST,
 
@@ -158,9 +158,9 @@ namespace HonkTrooper
         PLAYER_WIN,
         PLAYER_HIT,
 
-        PLAYER_BOMB,
-        PLAYER_BOMB_GROUND,
-        PLAYER_BOMB_SEEKING,
+        PLAYER_ROCKET,
+        PLAYER_ROCKET_SEEKING,
+        PLAYER_FIRE_CRACKER,
 
         VEHICLE_SMALL,
         VEHICLE_LARGE,
@@ -178,8 +178,8 @@ namespace HonkTrooper
         BOSS_IDLE,
         BOSS_HIT,
 
-        BOSS_BOMB,
-        BOSS_BOMB_SEEKING,
+        BOSS_ROCKET,
+        BOSS_ROCKET_SEEKING,
 
         ENEMY,
         ENEMY_BOMB,

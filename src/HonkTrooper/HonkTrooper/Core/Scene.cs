@@ -57,7 +57,7 @@ namespace HonkTrooper
         /// <summary>
         /// Adds constructs to the scene.
         /// </summary>
-        /// <param name="construct"></param>
+        /// <param name="constructs"></param>
         public void AddToScene(params Construct[] constructs)
         {
             if (constructs is not null)
@@ -73,7 +73,7 @@ namespace HonkTrooper
         /// <summary>
         /// Adds generators to the scene.
         /// </summary>
-        /// <param name="generator"></param>
+        /// <param name="generators"></param>
         public void AddToScene(params Generator[] generators)
         {
             if (generators is not null)

@@ -5,7 +5,7 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace HonkTrooper
 {
-    public partial class PlayerBomb : Construct
+    public partial class BossRocket : Construct
     {
         #region Fields
 
@@ -20,19 +20,19 @@ namespace HonkTrooper
 
         #region Ctor
 
-        public PlayerBomb(
+        public BossRocket(
            Func<Construct, bool> animateAction,
            Func<Construct, bool> recycleAction,
            double downScaling)
         {
             _random = new Random();
 
-            _bomb_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BOMB).Select(x => x.Uri).ToArray();
+            _bomb_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BOSS_ROCKET).Select(x => x.Uri).ToArray();
             _bomb_blast_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BOMB_BLAST).Select(x => x.Uri).ToArray();
 
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.PLAYER_BOMB);
+            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.BOSS_ROCKET);
 
-            ConstructType = ConstructType.PLAYER_BOMB;
+            ConstructType = ConstructType.BOSS_ROCKET;
 
             var width = size.Width * downScaling;
             var height = size.Height * downScaling;
@@ -70,17 +70,15 @@ namespace HonkTrooper
 
         public bool AwaitMoveDown { get; set; }
 
-        public double TimeLeftUntilBlast { get; set; }
-
         #endregion
 
         #region Methods
 
-        public void Reposition(Player Player, double downScaling)
+        public void Reposition(Boss boss, double downScaling)
         {
             SetPosition(
-                left: (Player.GetLeft() + Player.Width / 2) - Width / 2,
-                top: Player.GetBottom() - (40 * downScaling),
+                left: (boss.GetLeft() + boss.Width / 2) - Width / 2,
+                top: boss.GetBottom() - (50 * downScaling),
                 z: 7);
         }
 
@@ -99,14 +97,13 @@ namespace HonkTrooper
 
             AwaitMoveUp = false;
             AwaitMoveDown = false;
-
-            TimeLeftUntilBlast = 8;
         }
 
         public void SetBlast()
         {
             var uri = _bomb_blast_uris[_random.Next(0, _bomb_blast_uris.Length)];
             _content_image.Source = new BitmapImage(uri);
+
             IsBlasting = true;
         }
 
@@ -132,16 +129,6 @@ namespace HonkTrooper
         {
             SetLeft(GetLeft() + speed);
             SetTop(GetTop() + speed * IsometricDisplacement);
-        }
-
-        public bool RunOutOfTimeToBlast()
-        {
-            TimeLeftUntilBlast -= 0.1;
-
-            if (TimeLeftUntilBlast <= 0)
-                return true;
-
-            return false;
         }
 
         #endregion
