@@ -140,6 +140,9 @@ namespace HonkTrooper
              new (SoundType.CAR_HONK, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/car_honk_1.mp3")),
              new (SoundType.CAR_HONK, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/car_honk_2.mp3")),
              new (SoundType.CAR_HONK, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/car_honk_3.mp3")),
+
+             new (SoundType.SEEKER_ROCKET_LAUNCH, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/seeker_rocket_launch_1.mp3")),
+             new (SoundType.SEEKER_ROCKET_LAUNCH, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/seeker_rocket_launch_2.mp3")),
         };
     }
 
@@ -152,6 +155,8 @@ namespace HonkTrooper
         ROCKET_BLAST,
 
         CAR_HONK,
+
+        SEEKER_ROCKET_LAUNCH,
     }
 
     public enum ConstructType
