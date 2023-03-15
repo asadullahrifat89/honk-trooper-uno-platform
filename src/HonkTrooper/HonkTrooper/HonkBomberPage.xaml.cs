@@ -44,7 +44,12 @@ namespace HonkTrooper
         private readonly Sound[] _ambience_sounds;
         private readonly Sound[] _game_background_music_sounds;
         private readonly Sound[] _enemy_entry_sounds;
+        private readonly Sound[] _game_start_sounds;
+        private readonly Sound[] _game_over_sounds;
 
+
+        private Sound _game_start_sound_playing;
+        private Sound _game_over_sound_playing;
         private Sound _ambience_sound_playing;
         private Sound _game_background_music_sound_playing;
 
@@ -76,6 +81,8 @@ namespace HonkTrooper
             _ambience_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.AMBIENCE).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 0.8, loop: true)).ToArray();
             _game_background_music_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.GAME_BACKGROUND_MUSIC).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 0.7, loop: true)).ToArray();
 
+            _game_start_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.GAME_START).Select(x => x.Uri).Select(uri => new Sound(uri: uri)).ToArray();
+            _game_over_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.GAME_OVER).Select(x => x.Uri).Select(uri => new Sound(uri: uri)).ToArray();
             _enemy_entry_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.ENEMY_ENTRY).Select(x => x.Uri).Select(uri => new Sound(uri: uri)).ToArray();
 
             Loaded += HonkBomberPage_Loaded;
@@ -90,8 +97,7 @@ namespace HonkTrooper
 
         private void PauseGame()
         {
-            PauseAmbienceSound();
-            PauseGameBackgroundSound();
+            PauseSoundLoops();
 
             ToggleHudVisibility(Visibility.Collapsed);
 
@@ -103,8 +109,7 @@ namespace HonkTrooper
 
         private void ResumeGame(TitleScreen se)
         {
-            ResumeAmbienceSound();
-            ResumeGameBackgroundSound();
+            ResumeSoundLoops();
 
             ToggleHudVisibility(Visibility.Visible);
 
@@ -118,8 +123,7 @@ namespace HonkTrooper
 
         private void NewGame(TitleScreen se)
         {
-            PlayAmbienceSound();
-            PlayGameBackgroundSound();
+            PlaySoundLoops();
 
             _game_controller.Reset();
 
@@ -184,8 +188,14 @@ namespace HonkTrooper
             // if player is dead game keeps playing in the background but scene state goes to game over
             if (_player.IsDead)
             {
-                StopAmbienceSound();
-                PlayGameBackgroundSound();
+                StopSoundLoops();
+
+                if (_scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating) is Boss boss)
+                    boss.StopSoundLoops();
+
+                PlayGameOverSound();
+
+                //TODO: play game over sound
 
                 _scene_main_menu.Play();
                 _scene_game.SceneState = SceneState.GAME_STOPPED;
@@ -209,6 +219,8 @@ namespace HonkTrooper
                 downScaling: _scene_game.DownScaling,
                 playAction: () =>
                 {
+                    PlayGameStartSound();
+
                     if (_scene_game.SceneState == SceneState.GAME_STOPPED)
                     {
                         if (ScreenExtensions.RequiredDisplayOrientation == ScreenExtensions.GetDisplayOrienation())
@@ -2745,16 +2757,50 @@ namespace HonkTrooper
 
         #region Sound
 
-        private void PlayAmbienceSound()
+        private void PlaySoundLoops()
         {
-            StopAmbienceSound();
+            _ambience_sound_playing?.Stop();
             _ambience_sound_playing = _ambience_sounds[_random.Next(0, _ambience_sounds.Length)];
             _ambience_sound_playing.Play();
+
+            _game_background_music_sound_playing?.Stop();
+            _game_background_music_sound_playing = _game_background_music_sounds[_random.Next(0, _game_background_music_sounds.Length)];
+            _game_background_music_sound_playing.Play();
+        }
+
+        private void PauseSoundLoops()
+        {
+            _ambience_sound_playing?.Pause();
+            _game_background_music_sound_playing?.Pause();
+        }
+
+        private void ResumeSoundLoops()
+        {
+            _ambience_sound_playing?.Resume();
+            _game_background_music_sound_playing?.Resume();
+        }
+
+        private void StopSoundLoops()
+        {
+            _ambience_sound_playing?.Stop();
+            _game_background_music_sound_playing?.Stop();
+        }
+
+        private void PlayGameStartSound()
+        {
+            _game_start_sound_playing = _game_start_sounds[_random.Next(0, _game_start_sounds.Length)];
+            _game_start_sound_playing.Play();
+        }
+
+        private void PlayGameOverSound()
+        {
+            _game_over_sound_playing = _game_over_sounds[_random.Next(0, _game_over_sounds.Length)];
+            _game_over_sound_playing.Play();
         }
 
         private void PlayGameBackgroundSound()
         {
-            StopGameBackgroundSound();
+            _game_background_music_sound_playing?.Stop();
             _game_background_music_sound_playing = _game_background_music_sounds[_random.Next(0, _game_background_music_sounds.Length)];
             _game_background_music_sound_playing.Play();
         }
@@ -2762,31 +2808,6 @@ namespace HonkTrooper
         private void StopGameBackgroundSound()
         {
             _game_background_music_sound_playing?.Stop();
-        }
-
-        private void StopAmbienceSound()
-        {
-            _ambience_sound_playing?.Stop();
-        }
-
-        private void ResumeGameBackgroundSound()
-        {
-            _game_background_music_sound_playing?.Resume();
-        }
-
-        private void ResumeAmbienceSound()
-        {
-            _ambience_sound_playing?.Resume();
-        }
-
-        private void PauseGameBackgroundSound()
-        {
-            _game_background_music_sound_playing?.Pause();
-        }
-
-        private void PauseAmbienceSound()
-        {
-            _ambience_sound_playing?.Pause();
         }
 
         #endregion
