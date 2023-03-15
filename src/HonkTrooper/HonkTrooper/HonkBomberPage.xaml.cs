@@ -95,7 +95,7 @@ namespace HonkTrooper
 
         private void ResumeGame(TitleScreen se)
         {
-            _ambience_sound_playing?.Play();
+            _ambience_sound_playing?.Resume();
 
             ToggleHudVisibility(Visibility.Visible);
 
