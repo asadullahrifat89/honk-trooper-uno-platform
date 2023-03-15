@@ -177,6 +177,8 @@ namespace HonkTrooper
             new (SoundType.GAME_START, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/game_start.mp3")),
             new (SoundType.GAME_PAUSE, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/game_pause.mp3")),
             new (SoundType.GAME_OVER, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/game_over.mp3")),
+
+            new (SoundType.ORB_LAUNCH, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/orb_launch.mp3")),
         };
     }
 
@@ -211,6 +213,8 @@ namespace HonkTrooper
 
         GAME_BACKGROUND_MUSIC,
         BOSS_BACKGROUND_MUSIC,
+
+        ORB_LAUNCH,
     }
 
     public enum ConstructType

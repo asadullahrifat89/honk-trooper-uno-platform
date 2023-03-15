@@ -77,7 +77,7 @@ namespace HonkTrooper
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET - 0.5;
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE;
 
-            _boss_hovering_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.BOSS_HOVERING).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 1.0, loop: true)).ToArray();
+            _boss_hovering_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.BOSS_HOVERING).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 0.8, loop: true)).ToArray();
             _boss_background_music_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.BOSS_BACKGROUND_MUSIC).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 0.5, loop: true)).ToArray();
 
             _boss_entry_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.BOSS_ENTRY).Select(x => x.Uri).Select(uri => new Sound(uri: uri)).ToArray();

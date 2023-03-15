@@ -85,6 +85,13 @@ namespace HonkTrooper
             WillAttack = Convert.ToBoolean(_random.Next(0, 2));
             WillHonk = Convert.ToBoolean(_random.Next(0, 2));
 
+            // role dice again
+            if (!WillHonk && !WillAttack)
+            {
+                WillAttack = Convert.ToBoolean(_random.Next(0, 2));
+                WillHonk = Convert.ToBoolean(_random.Next(0, 2));
+            }
+
             if (WillHonk)
                 SetHonkDelay();
 
@@ -129,7 +136,7 @@ namespace HonkTrooper
                         _hoverDelay = _hoverDelayDefault;
                 }
             }
-        }      
+        }
 
         public bool Attack()
         {
