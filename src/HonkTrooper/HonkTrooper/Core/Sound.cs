@@ -5,7 +5,7 @@ using Uno.UI.Runtime.WebAssembly;
 namespace HonkTrooper
 {
     [HtmlElement("audio")]
-    public partial class Audio : FrameworkElement
+    public partial class Sound : FrameworkElement
     {
         #region Fields
 
@@ -16,7 +16,7 @@ namespace HonkTrooper
 
         #region Ctor
 
-        public Audio(
+        public Sound(
            Uri uri,
            double volume = 1.0,
            bool loop = false,
@@ -27,7 +27,7 @@ namespace HonkTrooper
                 volume: volume,
                 loop: loop,
                 playback: playback);
-        } 
+        }
 
         #endregion
 
@@ -59,7 +59,7 @@ namespace HonkTrooper
                 this.RegisterHtmlEventHandler("ended", EndedEvent);
             }
 
-            Console.WriteLine("source: " + uri + " volume: " + volume.ToString() + " loop: " + loop.ToString().ToLower());
+            //Console.WriteLine("source: " + uri + " volume: " + volume.ToString() + " loop: " + loop.ToString().ToLower());
         }
 
         public void SetSource(Uri uri)
@@ -67,6 +67,8 @@ namespace HonkTrooper
             var source = $"{_baseUrl}/{uri.AbsoluteUri.Replace("ms-appx:///", "")}";
 
             this.ExecuteJavascript($"element.src = \"{source}\"; ");
+
+            Console.WriteLine("source: " + source);
         }
 
         public void SetLoop(bool loop)

@@ -16,6 +16,9 @@ namespace HonkTrooper
 
         private readonly Image _content_image;
 
+        private readonly Sound[] _cracker_drop_sounds;
+        private readonly Sound[] _cracker_blast_sounds;
+
         #endregion
 
         #region Ctor
@@ -54,6 +57,9 @@ namespace HonkTrooper
             IsometricDisplacement = 0.5;
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE - 10;
+
+            _cracker_drop_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.CRACKER_DROP).Select(x => x.Uri).Select(uri => new Sound(uri)).ToArray();
+            _cracker_blast_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.CRACKER_BLAST).Select(x => x.Uri).Select(uri => new Sound(uri)).ToArray();
         }
 
         #endregion
@@ -83,6 +89,9 @@ namespace HonkTrooper
 
             var uri = _bomb_uris[_random.Next(0, _bomb_uris.Length)];
             _content_image.Source = new BitmapImage(uri);
+
+            var sound = _cracker_drop_sounds[_random.Next(0, _cracker_drop_sounds.Length)];
+            sound.Play();
         }
 
         public void SetBlast()
@@ -90,6 +99,9 @@ namespace HonkTrooper
             var uri = _bomb_blast_uris[_random.Next(0, _bomb_blast_uris.Length)];
             _content_image.Source = new BitmapImage(uri);
             IsBlasting = true;
+
+            var sound = _cracker_blast_sounds[_random.Next(0, _cracker_blast_sounds.Length)];
+            sound.Play();
         }
 
         #endregion
