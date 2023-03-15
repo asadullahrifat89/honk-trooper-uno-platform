@@ -17,16 +17,16 @@ namespace HonkTrooper
         public static (ConstructType ConstructType, double Height, double Width)[] CONSTRUCT_SIZES = new (ConstructType, double, double)[]
         {
             new (ConstructType.PLAYER, 170, 170),
-            new (ConstructType.PLAYER_BOMB, 80, 80),
-            new (ConstructType.PLAYER_BOMB_GROUND, 80, 80),
-            new (ConstructType.PLAYER_BOMB_SEEKING, 80, 80),
+            new (ConstructType.PLAYER_ROCKET, 80, 80),
+            new (ConstructType.PLAYER_FIRE_CRACKER, 70, 70),
+            new (ConstructType.PLAYER_ROCKET_SEEKING, 80, 80),
 
             new (ConstructType.BOSS, 180, 180),
-            new (ConstructType.BOSS_BOMB, 80, 80),
-            new (ConstructType.BOSS_BOMB_SEEKING, 80, 80),
+            new (ConstructType.BOSS_ROCKET, 80, 80),
+            new (ConstructType.BOSS_ROCKET_SEEKING, 80, 80),
 
             new (ConstructType.ENEMY, 140, 140),
-            new (ConstructType.ENEMY_BOMB, 60, 60),
+            new (ConstructType.ENEMY_ROCKET, 60, 60),
 
             new (ConstructType.VEHICLE_SMALL, 160, 160),
             new (ConstructType.VEHICLE_LARGE, 190, 190),
@@ -83,15 +83,15 @@ namespace HonkTrooper
             new (ConstructType.PLAYER_WIN, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_1_win.png")),
             new (ConstructType.PLAYER_HIT, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_1_hit.png")),
 
-            new (ConstructType.PLAYER_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_1.png")),
-            new (ConstructType.PLAYER_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_2.png")),
-            new (ConstructType.PLAYER_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_3.png")),
+            new (ConstructType.PLAYER_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_1.png")),
+            new (ConstructType.PLAYER_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_2.png")),
+            new (ConstructType.PLAYER_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_3.png")),
 
-            new (ConstructType.PLAYER_BOMB_GROUND, new Uri("ms-appx:///HonkTrooper/Assets/Images/cracker_1.png")),
-            new (ConstructType.PLAYER_BOMB_GROUND, new Uri("ms-appx:///HonkTrooper/Assets/Images/cracker_2.png")),
+            new (ConstructType.PLAYER_FIRE_CRACKER, new Uri("ms-appx:///HonkTrooper/Assets/Images/cracker_1.png")),
+            new (ConstructType.PLAYER_FIRE_CRACKER, new Uri("ms-appx:///HonkTrooper/Assets/Images/cracker_2.png")),
 
-            new (ConstructType.PLAYER_BOMB_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_seeking_1.png")),
-            new (ConstructType.PLAYER_BOMB_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_seeking_2.png")),
+            new (ConstructType.PLAYER_ROCKET_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_seeking_1.png")),
+            new (ConstructType.PLAYER_ROCKET_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_seeking_2.png")),
 
             new (ConstructType.BOMB_BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Images/blast_1.png")),
             new (ConstructType.BOMB_BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Images/blast_2.png")),
@@ -103,21 +103,122 @@ namespace HonkTrooper
             new (ConstructType.BOSS, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_3_idle.png")),
             new (ConstructType.BOSS_HIT, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_3_hit.png")),
 
-            new (ConstructType.BOSS_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_1.png")),
-            new (ConstructType.BOSS_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_2.png")),
-            new (ConstructType.BOSS_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_3.png")),
+            new (ConstructType.BOSS_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_1.png")),
+            new (ConstructType.BOSS_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_2.png")),
+            new (ConstructType.BOSS_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_3.png")),
 
-            new (ConstructType.BOSS_BOMB_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_seeking.png")),
+            new (ConstructType.BOSS_ROCKET_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_seeking.png")),
 
             new (ConstructType.ENEMY, new Uri("ms-appx:///HonkTrooper/Assets/Images/enemy_1.png")),
             new (ConstructType.ENEMY, new Uri("ms-appx:///HonkTrooper/Assets/Images/enemy_2.png")),
 
-            new (ConstructType.ENEMY_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/enemy_bomb.png")),
+            new (ConstructType.ENEMY_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/enemy_bomb.png")),
 
             new (ConstructType.HEALTH_PICKUP, new Uri("ms-appx:///HonkTrooper/Assets/Images/health_pickup.png")),
             new (ConstructType.POWERUP_PICKUP_SEEKING_BALLS, new Uri("ms-appx:///HonkTrooper/Assets/Images/power_up_pickup_seeking_balls.png")),
             new (ConstructType.POWERUP_PICKUP_FORCE_SHIELD, new Uri("ms-appx:///HonkTrooper/Assets/Images/power_up_pickup_force_shield.png")),
         };
+
+        public static (SoundType SoundType, Uri Uri)[] SOUND_TEMPLATES = new (SoundType, Uri)[]
+        {
+            new (SoundType.CRACKER_DROP, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/cracker_drop_1.mp3")),
+            new (SoundType.CRACKER_DROP, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/cracker_drop_2.mp3")),
+
+            new (SoundType.CRACKER_BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/cracker_blast_1.mp3")),
+            new (SoundType.CRACKER_BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/cracker_blast_2.mp3")),
+            new (SoundType.CRACKER_BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/cracker_blast_3.mp3")),
+            new (SoundType.CRACKER_BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/cracker_blast_4.mp3")),
+
+            new (SoundType.ROCKET_LAUNCH, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/rocket_launch_1.mp3")),
+            new (SoundType.ROCKET_LAUNCH, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/rocket_launch_2.mp3")),
+            new (SoundType.ROCKET_LAUNCH, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/rocket_launch_3.mp3")),
+
+            new (SoundType.ROCKET_BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/rocket_blast_1.mp3")),
+            new (SoundType.ROCKET_BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/rocket_blast_2.mp3")),
+            new (SoundType.ROCKET_BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/rocket_blast_3.mp3")),
+
+            new (SoundType.CAR_HONK, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/car_honk_1.mp3")),
+            new (SoundType.CAR_HONK, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/car_honk_2.mp3")),
+            new (SoundType.CAR_HONK, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/car_honk_3.mp3")),
+
+            new (SoundType.SEEKER_ROCKET_LAUNCH, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/seeker_rocket_launch_1.mp3")),
+            new (SoundType.SEEKER_ROCKET_LAUNCH, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/seeker_rocket_launch_2.mp3")),
+
+            new (SoundType.AMBIENCE, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/ambience_1.mp3")),
+            new (SoundType.AMBIENCE, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/ambience_2.mp3")),
+            new (SoundType.AMBIENCE, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/ambience_3.mp3")),
+
+            new (SoundType.BOSS_HOVERING, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/boss_hovering_1.mp3")),
+            new (SoundType.BOSS_HOVERING, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/boss_hovering_2.mp3")),
+            new (SoundType.BOSS_HOVERING, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/boss_hovering_3.mp3")),
+
+            new (SoundType.BOSS_ENTRY, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/boss_entry_1.mp3")),
+            new (SoundType.BOSS_ENTRY, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/boss_entry_2.mp3")),
+
+            new (SoundType.BOSS_DEAD, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/boss_dead_1.mp3")),
+            new (SoundType.BOSS_DEAD, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/boss_dead_2.mp3")),
+
+            new (SoundType.POWERUP_PICKUP, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/power_up_pickup_1.mp3")),
+            new (SoundType.HEALTH_PICKUP, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/health_pickup_1.mp3")),
+
+            new (SoundType.PLAYER_HEALTH_LOSS, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/player_health_loss_1.mp3")),
+
+            new (SoundType.ENEMY_ENTRY, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/enemy_entry_1.mp3")),
+            new (SoundType.ENEMY_ENTRY, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/enemy_entry_2.mp3")),
+
+            new (SoundType.GAME_BACKGROUND_MUSIC, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/game_background_music_1.mp3")),
+            new (SoundType.GAME_BACKGROUND_MUSIC, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/game_background_music_2.mp3")),
+            new (SoundType.GAME_BACKGROUND_MUSIC, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/game_background_music_3.mp3")),            
+
+            new (SoundType.BOSS_BACKGROUND_MUSIC, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/boss_background_music_1.mp3")),
+            new (SoundType.BOSS_BACKGROUND_MUSIC, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/boss_background_music_2.mp3")),
+            new (SoundType.BOSS_BACKGROUND_MUSIC, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/boss_background_music_3.mp3")),
+
+            new (SoundType.GAME_START, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/game_start.mp3")),
+            new (SoundType.GAME_PAUSE, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/game_pause.mp3")),
+            new (SoundType.GAME_OVER, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/game_over.mp3")),
+
+            new (SoundType.ORB_LAUNCH, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/orb_launch.mp3")),
+
+            new (SoundType.LEVEL_UP, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/level_up.mp3")),
+        };
+    }
+
+    public enum SoundType
+    {
+        GAME_START,
+        GAME_PAUSE,
+        GAME_OVER,
+
+        CRACKER_DROP,
+        CRACKER_BLAST,
+
+        ROCKET_LAUNCH,
+        ROCKET_BLAST,
+
+        CAR_HONK,
+
+        SEEKER_ROCKET_LAUNCH,
+
+        AMBIENCE,
+
+        BOSS_ENTRY,
+        BOSS_HOVERING,
+        BOSS_DEAD,
+
+        POWERUP_PICKUP,
+        HEALTH_PICKUP,
+
+        PLAYER_HEALTH_LOSS,
+
+        ENEMY_ENTRY,
+
+        GAME_BACKGROUND_MUSIC,
+        BOSS_BACKGROUND_MUSIC,
+
+        ORB_LAUNCH,
+
+        LEVEL_UP
     }
 
     public enum ConstructType
@@ -130,9 +231,9 @@ namespace HonkTrooper
         PLAYER_WIN,
         PLAYER_HIT,
 
-        PLAYER_BOMB,
-        PLAYER_BOMB_GROUND,
-        PLAYER_BOMB_SEEKING,
+        PLAYER_ROCKET,
+        PLAYER_ROCKET_SEEKING,
+        PLAYER_FIRE_CRACKER,
 
         VEHICLE_SMALL,
         VEHICLE_LARGE,
@@ -150,11 +251,11 @@ namespace HonkTrooper
         BOSS_IDLE,
         BOSS_HIT,
 
-        BOSS_BOMB,
-        BOSS_BOMB_SEEKING,
+        BOSS_ROCKET,
+        BOSS_ROCKET_SEEKING,
 
         ENEMY,
-        ENEMY_BOMB,
+        ENEMY_ROCKET,
 
         HEALTH_PICKUP,
         POWERUP_PICKUP,
