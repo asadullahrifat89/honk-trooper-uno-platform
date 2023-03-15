@@ -80,7 +80,7 @@ namespace HonkTrooper
             Opacity = 1;
             SetScaleTransform(1);
 
-            Health = _random.Next(5, 11);
+            Health = 5 * _random.Next(4);
 
             WillAttack = Convert.ToBoolean(_random.Next(0, 2));
             WillHonk = Convert.ToBoolean(_random.Next(0, 2));
