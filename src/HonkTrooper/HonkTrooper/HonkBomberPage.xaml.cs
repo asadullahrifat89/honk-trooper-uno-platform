@@ -45,10 +45,12 @@ namespace HonkTrooper
         private readonly Sound[] _game_background_music_sounds;
         private readonly Sound[] _enemy_entry_sounds;
         private readonly Sound[] _game_start_sounds;
+        private readonly Sound[] _game_pause_sounds;
         private readonly Sound[] _game_over_sounds;
 
 
         private Sound _game_start_sound_playing;
+        private Sound _game_pause_sound_playing;
         private Sound _game_over_sound_playing;
         private Sound _ambience_sound_playing;
         private Sound _game_background_music_sound_playing;
@@ -78,11 +80,13 @@ namespace HonkTrooper
 
             _random = new Random();
 
-            _ambience_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.AMBIENCE).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 0.6, loop: true)).ToArray();
             _game_background_music_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.GAME_BACKGROUND_MUSIC).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 0.5, loop: true)).ToArray();
+            _ambience_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.AMBIENCE).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 0.4, loop: true)).ToArray();            
 
             _game_start_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.GAME_START).Select(x => x.Uri).Select(uri => new Sound(uri: uri)).ToArray();
+            _game_pause_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.GAME_PAUSE).Select(x => x.Uri).Select(uri => new Sound(uri: uri)).ToArray();
             _game_over_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.GAME_OVER).Select(x => x.Uri).Select(uri => new Sound(uri: uri)).ToArray();
+
             _enemy_entry_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.ENEMY_ENTRY).Select(x => x.Uri).Select(uri => new Sound(uri: uri)).ToArray();
 
             Loaded += HonkBomberPage_Loaded;
@@ -97,6 +101,7 @@ namespace HonkTrooper
 
         private void PauseGame()
         {
+            PlayGamePauseSound();
             PauseSoundLoops();
 
             ToggleHudVisibility(Visibility.Collapsed);
@@ -2790,6 +2795,12 @@ namespace HonkTrooper
         {
             _game_start_sound_playing = _game_start_sounds[_random.Next(0, _game_start_sounds.Length)];
             _game_start_sound_playing.Play();
+        }
+
+        private void PlayGamePauseSound()
+        {
+            _game_pause_sound_playing = _game_pause_sounds[_random.Next(0, _game_pause_sounds.Length)];
+            _game_pause_sound_playing.Play();
         }
 
         private void PlayGameOverSound()
