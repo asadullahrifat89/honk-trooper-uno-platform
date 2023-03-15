@@ -336,6 +336,9 @@ namespace HonkTrooper
                 titleScreen.IsAnimating = true;
                 titleScreen.Reposition();
 
+                if (_player is not null)
+                    titleScreen.SetContent(_player.GetContentUri());
+
                 // Console.WriteLine("Game title generated.");
 
                 return true;
@@ -438,7 +441,7 @@ namespace HonkTrooper
 
             SpawnDropShadowInScene(_player);
 
-            _scene_game.AddToScene(_player);            
+            _scene_game.AddToScene(_player);
 
             return true;
         }
