@@ -55,23 +55,35 @@ namespace HonkTrooper
         #region Methods
 
         /// <summary>
-        /// Adds a construct to the scene.
+        /// Adds constructs to the scene.
         /// </summary>
         /// <param name="construct"></param>
-        public void AddToScene(Construct construct)
+        public void AddToScene(params Construct[] constructs)
         {
-            construct.Scene = this;
-            Children.Add(construct);
+            if (constructs is not null)
+            {
+                foreach (var construct in constructs)
+                {
+                    construct.Scene = this;
+                    Children.Add(construct);
+                }
+            }
         }
 
         /// <summary>
-        /// Adds a generator to the scene.
+        /// Adds generators to the scene.
         /// </summary>
         /// <param name="generator"></param>
-        public void AddToScene(Generator generator)
+        public void AddToScene(params Generator[] generators)
         {
-            generator.Scene = this;
-            _generators.Add(generator);
+            if (generators is not null)
+            {
+                foreach (var generator in generators)
+                {
+                    generator.Scene = this;
+                    _generators.Add(generator);
+                }
+            }
         }
 
         public void DisposeFromScene(Construct construct)

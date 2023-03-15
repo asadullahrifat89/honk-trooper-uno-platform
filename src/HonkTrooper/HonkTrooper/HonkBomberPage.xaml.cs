@@ -270,8 +270,8 @@ namespace HonkTrooper
         {
             if (_scene_game.Children.OfType<InterimScreen>().FirstOrDefault(x => x.IsAnimating == false) is InterimScreen interimScreen)
             {
-                interimScreen.SetTitle(title);
                 interimScreen.IsAnimating = true;
+                interimScreen.SetTitle(title);                
                 interimScreen.Reposition();
                 interimScreen.Reset();
 
@@ -1755,10 +1755,9 @@ namespace HonkTrooper
             if (boss.IsDead && boss.IsAttacking)
             {
                 boss.IsAttacking = false;
-
-                _game_score_bar.GainScore(5);
-
+                
                 _player.SetWinStance();
+                _game_score_bar.GainScore(5);                
 
                 GenerateInterimScreenInScene("Boss Busted");
 
@@ -2577,6 +2576,17 @@ namespace HonkTrooper
             _boss_health_bar.Reset();
             _game_score_bar.Reset();
 
+            AddGeneratorsToScene();
+
+            _scene_game.Speed = 5;
+            _scene_game.Play();
+
+            _scene_main_menu.Speed = 5;
+            _scene_main_menu.Play();
+        }
+
+        private void AddGeneratorsToScene()
+        {
             //// first add road slabs
             //_scene_game.AddToScene(new Generator(
             //    generationDelay: 70,
@@ -2589,113 +2599,110 @@ namespace HonkTrooper
             //    generationAction: GenerateRoadSlabInSceneBottom,
             //    startUpAction: SpawnRoadSlabsInScene));
 
-            // then add road marks
-            _scene_game.AddToScene(new Generator(
-                generationDelay: 30,
-                generationAction: GenerateRoadMarkInScene,
-                startUpAction: SpawnRoadMarksInScene));
+            _scene_game.AddToScene(
 
-            // then add the top trees
-            _scene_game.AddToScene(new Generator(
-                generationDelay: 30,
-                generationAction: GenerateTreeInSceneTop,
-                startUpAction: SpawnTreesInScene));
+                // then add road marks
+                new Generator(
+                    generationDelay: 30,
+                    generationAction: GenerateRoadMarkInScene,
+                    startUpAction: SpawnRoadMarksInScene),
 
-            // then add the vehicles which will appear forward in z wrt the top trees
-            _scene_game.AddToScene(new Generator(
-                generationDelay: 80,
-                generationAction: GenerateVehicleInScene,
-                startUpAction: SpawnVehiclesInScene));
+                // then add the top trees
+                new Generator(
+                    generationDelay: 30,
+                    generationAction: GenerateTreeInSceneTop,
+                    startUpAction: SpawnTreesInScene),
 
-            // then add the bottom trees which will appear forward in z wrt to the vehicles
-            _scene_game.AddToScene(new Generator(
-                generationDelay: 30,
-                generationAction: GenerateTreeInSceneBottom,
-                startUpAction: SpawnTreesInScene));
+                // then add the vehicles which will appear forward in z wrt the top trees
+                new Generator(
+                    generationDelay: 80,
+                    generationAction: GenerateVehicleInScene,
+                    startUpAction: SpawnVehiclesInScene),
 
-            // add the honks which will appear forward in z wrt to everything on the road
-            _scene_game.AddToScene(new Generator(
-                generationDelay: 0,
-                generationAction: () => { return true; },
-                startUpAction: SpawnHonksInScene));
+                // then add the bottom trees which will appear forward in z wrt to the vehicles
+                new Generator(
+                    generationDelay: 30,
+                    generationAction: GenerateTreeInSceneBottom,
+                    startUpAction: SpawnTreesInScene),
 
-            // add the player in scene which will appear forward in z wrt to all else
-            _scene_game.AddToScene(new Generator(
-                generationDelay: 0,
-                generationAction: () => { return true; },
-                startUpAction: SpawnPlayerInScene));
+                // add the honks which will appear forward in z wrt to everything on the road
+                new Generator(
+                    generationDelay: 0,
+                    generationAction: () => { return true; },
+                    startUpAction: SpawnHonksInScene),
 
-            _scene_game.AddToScene(new Generator(
-                generationDelay: 0,
-                generationAction: () => { return true; },
-                startUpAction: SpawnPlayerBombsInScene));
+                // add the player in scene which will appear forward in z wrt to all else
+                new Generator(
+                    generationDelay: 0,
+                    generationAction: () => { return true; },
+                    startUpAction: SpawnPlayerInScene),
 
-            _scene_game.AddToScene(new Generator(
-                generationDelay: 0,
-                generationAction: () => { return true; },
-                startUpAction: SpawnPlayerBombGroundsInScene));
+                new Generator(
+                    generationDelay: 0,
+                    generationAction: () => { return true; },
+                    startUpAction: SpawnPlayerBombsInScene),
 
-            // add the clouds which are above the player z
-            _scene_game.AddToScene(new Generator(
-                generationDelay: 100,
-                generationAction: GenerateCloudInScene,
-                startUpAction: SpawnCloudsInScene));
+                new Generator(
+                    generationDelay: 0,
+                    generationAction: () => { return true; },
+                    startUpAction: SpawnPlayerBombGroundsInScene),
 
-            _scene_game.AddToScene(new Generator(
-                generationDelay: 100,
-                generationAction: GenerateBossInScene,
-                startUpAction: SpawnBossesInScene));
+                // add the clouds which are above the player z
+                new Generator(
+                    generationDelay: 100,
+                    generationAction: GenerateCloudInScene,
+                    startUpAction: SpawnCloudsInScene),
 
-            _scene_game.AddToScene(new Generator(
-                generationDelay: 50,
-                generationAction: GenerateBossBombInScene,
-                startUpAction: SpawnBossBombsInScene,
-                randomizeGenerationDelay: true));
+                new Generator(
+                    generationDelay: 100,
+                    generationAction: GenerateBossInScene,
+                    startUpAction: SpawnBossesInScene),
 
-            _scene_game.AddToScene(new Generator(
-                generationDelay: 200,
-                generationAction: GenerateBossBombSeekingInScene,
-                startUpAction: SpawnBossBombSeekingsInScene,
-                randomizeGenerationDelay: true));
+                new Generator(
+                    generationDelay: 50,
+                    generationAction: GenerateBossBombInScene,
+                    startUpAction: SpawnBossBombsInScene,
+                    randomizeGenerationDelay: true),
 
-            _scene_game.AddToScene(new Generator(
-                generationDelay: 0,
-                generationAction: () => { return true; },
-                startUpAction: SpawnPlayerBombSeekingsInScene));
+                new Generator(
+                    generationDelay: 200,
+                    generationAction: GenerateBossBombSeekingInScene,
+                    startUpAction: SpawnBossBombSeekingsInScene,
+                    randomizeGenerationDelay: true),
 
-            _scene_game.AddToScene(new Generator(
-                generationDelay: 600,
-                generationAction: GenerateHealthPickupsInScene,
-                startUpAction: SpawnHealthPickupsInScene,
-                randomizeGenerationDelay: true));
+                new Generator(
+                    generationDelay: 0,
+                    generationAction: () => { return true; },
+                    startUpAction: SpawnPlayerBombSeekingsInScene),
 
-            _scene_game.AddToScene(new Generator(
-                generationDelay: 600,
-                generationAction: GeneratePowerUpPickupsInScene,
-                startUpAction: SpawnPowerUpPickupsInScene,
-                randomizeGenerationDelay: true));
+                new Generator(
+                    generationDelay: 600,
+                    generationAction: GenerateHealthPickupsInScene,
+                    startUpAction: SpawnHealthPickupsInScene,
+                    randomizeGenerationDelay: true),
 
-            _scene_game.AddToScene(new Generator(
-                generationDelay: 0,
-                generationAction: () => { return true; },
-                startUpAction: SpawnInterimScreenInScene));
+                new Generator(
+                    generationDelay: 600,
+                    generationAction: GeneratePowerUpPickupsInScene,
+                    startUpAction: SpawnPowerUpPickupsInScene,
+                    randomizeGenerationDelay: true),
 
-            _scene_game.AddToScene(new Generator(
-                generationDelay: 180,
-                generationAction: GenerateEnemyInScene,
-                startUpAction: SpawnEnemysInScene,
-                randomizeGenerationDelay: true));
+                new Generator(
+                    generationDelay: 0,
+                    generationAction: () => { return true; },
+                    startUpAction: SpawnInterimScreenInScene),
+
+                new Generator(
+                    generationDelay: 180,
+                    generationAction: GenerateEnemyInScene,
+                    startUpAction: SpawnEnemysInScene,
+                    randomizeGenerationDelay: true)
+                );
 
             _scene_main_menu.AddToScene(new Generator(
                 generationDelay: 0,
                 generationAction: () => { return true; },
                 startUpAction: SpawnTitleScreenInScene));
-
-            _scene_game.Speed = 5;
-            _scene_game.Play();
-
-            _scene_main_menu.Speed = 5;
-            _scene_main_menu.Play();
         }
 
         #endregion
