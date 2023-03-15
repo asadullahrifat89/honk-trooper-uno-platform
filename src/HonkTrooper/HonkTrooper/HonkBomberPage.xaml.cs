@@ -654,8 +654,8 @@ namespace HonkTrooper
                 bomb.Expand();
                 bomb.Fade(0.02);
 
-                DropShadow dropShadow = _scene_game.Children.OfType<DropShadow>().First(x => x.Id == bomb.Id);
-                dropShadow.Opacity = bomb.Opacity;
+                //DropShadow dropShadow = _scene_game.Children.OfType<DropShadow>().First(x => x.Id == bomb.Id);
+                //dropShadow.Opacity = bomb.Opacity;
             }
             else
             {
@@ -784,7 +784,7 @@ namespace HonkTrooper
                 bomb.Fade(0.02);
 
                 // make the shadow fade with the bomb blast
-                dropShadow.Opacity = bomb.Opacity;
+                //dropShadow.Opacity = bomb.Opacity;
 
                 // while in blast check if it intersects with any vehicle, if it does then the vehicle stops honking and slows down
                 if (_scene_game.Children.OfType<Vehicle>()
@@ -901,8 +901,8 @@ namespace HonkTrooper
                 PlayerRocketSeeking.Expand();
                 PlayerRocketSeeking.Fade(0.02);
 
-                DropShadow dropShadow = _scene_game.Children.OfType<DropShadow>().First(x => x.Id == PlayerRocketSeeking.Id);
-                dropShadow.Opacity = PlayerRocketSeeking.Opacity;
+                //DropShadow dropShadow = _scene_game.Children.OfType<DropShadow>().First(x => x.Id == PlayerRocketSeeking.Id);
+                //dropShadow.Opacity = PlayerRocketSeeking.Opacity;
             }
             else
             {
@@ -2093,8 +2093,8 @@ namespace HonkTrooper
                 bomb.Expand();
                 bomb.Fade(0.02);
 
-                DropShadow dropShadow = _scene_game.Children.OfType<DropShadow>().First(x => x.Id == bomb.Id);
-                dropShadow.Opacity = bomb.Opacity;
+                //DropShadow dropShadow = _scene_game.Children.OfType<DropShadow>().First(x => x.Id == bomb.Id);
+                //dropShadow.Opacity = bomb.Opacity;
             }
             else
             {
@@ -2280,8 +2280,8 @@ namespace HonkTrooper
                 bomb.Expand();
                 bomb.Fade(0.02);
 
-                DropShadow dropShadow = _scene_game.Children.OfType<DropShadow>().First(x => x.Id == bomb.Id);
-                dropShadow.Opacity = bomb.Opacity;
+                //DropShadow dropShadow = _scene_game.Children.OfType<DropShadow>().First(x => x.Id == bomb.Id);
+                //dropShadow.Opacity = bomb.Opacity;
             }
             else
             {
@@ -2387,8 +2387,8 @@ namespace HonkTrooper
                 BossRocketSeeking.Expand();
                 BossRocketSeeking.Fade(0.02);
 
-                DropShadow dropShadow = _scene_game.Children.OfType<DropShadow>().First(x => x.Id == BossRocketSeeking.Id);
-                dropShadow.Opacity = BossRocketSeeking.Opacity;
+                //DropShadow dropShadow = _scene_game.Children.OfType<DropShadow>().First(x => x.Id == BossRocketSeeking.Id);
+                //dropShadow.Opacity = BossRocketSeeking.Opacity;
             }
             else
             {
@@ -2492,7 +2492,7 @@ namespace HonkTrooper
         {
             if (_scene_game.Children.OfType<DropShadow>().FirstOrDefault(x => x.Id == source.Id) is DropShadow dropShadow)
             {
-                dropShadow.Opacity = 1;
+                //dropShadow.Opacity = 1;
                 dropShadow.ParentConstructSpeed = _scene_game.Speed + source.SpeedOffset;
                 dropShadow.IsAnimating = true;
 
