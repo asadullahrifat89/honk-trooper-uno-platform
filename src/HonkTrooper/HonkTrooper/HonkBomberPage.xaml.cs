@@ -41,22 +41,22 @@ namespace HonkTrooper
 
         private bool _enemy_appeared;
 
-        private readonly Audio[] _ambience_sounds;
-        private readonly Audio[] _game_background_music_sounds;
-        private readonly Audio[] _boss_background_music_sounds;
+        //private readonly Audio[] _ambience_sounds;
+        //private readonly Audio[] _game_background_music_sounds;
+        //private readonly Audio[] _boss_background_music_sounds;
 
-        private readonly Audio[] _enemy_entry_sounds;
-        private readonly Audio[] _game_start_sounds;
-        private readonly Audio[] _game_pause_sounds;
-        private readonly Audio[] _game_over_sounds;
+        //private readonly Audio[] _enemy_entry_sounds;
+        //private readonly Audio[] _game_start_sounds;
+        //private readonly Audio[] _game_pause_sounds;
+        //private readonly Audio[] _game_over_sounds;
 
 
-        private Audio _game_start_sound_playing;
-        private Audio _game_pause_sound_playing;
-        private Audio _game_over_sound_playing;
-        private Audio _ambience_sound_playing;
-        private Audio _game_background_music_sound_playing;
-        private Audio _boss_background_music_sound_playing;
+        //private Audio _game_start_sound_playing;
+        //private Audio _game_pause_sound_playing;
+        //private Audio _game_over_sound_playing;
+        //private Audio _ambience_sound_playing;
+        //private Audio _game_background_music_sound_playing;
+        //private Audio _boss_background_music_sound_playing;
 
         private AudioStub _audio_stub;
 
@@ -1668,7 +1668,8 @@ namespace HonkTrooper
                 //PlayBossBackgroundMusic();
                 _audio_stub.Play(SoundType.BOSS_BACKGROUND_MUSIC);
 
-                _ambience_sound_playing?.SetVolume(0.2);
+                //_ambience_sound_playing?.SetVolume(0.2);
+                _audio_stub.SetVolume(SoundType.AMBIENCE, 0.2);
 
                 boss.IsAnimating = true;
                 boss.Reset();
@@ -1932,7 +1933,8 @@ namespace HonkTrooper
                 //PlayGameBackgroundMusic();
                 _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
 
-                _ambience_sound_playing?.SetVolume(0.8);
+                //_ambience_sound_playing?.SetVolume(0.8);
+                _audio_stub.SetVolume(SoundType.AMBIENCE, 0.8);
 
                 boss.IsAttacking = false;
 
@@ -2017,8 +2019,9 @@ namespace HonkTrooper
 
                 if (!_enemy_appeared)
                 {
-                    var sound = _enemy_entry_sounds[_random.Next(0, _enemy_entry_sounds.Length)];
-                    sound.Play();
+                    //var sound = _enemy_entry_sounds[_random.Next(0, _enemy_entry_sounds.Length)];
+                    //sound.Play();
+                    _audio_stub.Play(SoundType.ENEMY_ENTRY);
 
                     GenerateInterimScreenInScene("Beware of Aliens");
                     _scene_game.ActivateSlowMotion();
