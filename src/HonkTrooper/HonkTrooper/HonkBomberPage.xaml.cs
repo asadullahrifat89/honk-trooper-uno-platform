@@ -267,7 +267,10 @@ namespace HonkTrooper
                 _audio_stub.Stop(SoundType.AMBIENCE, SoundType.GAME_BACKGROUND_MUSIC, SoundType.BOSS_BACKGROUND_MUSIC);
 
                 if (_scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating) is Boss boss)
+                {
+                    boss.SetWinStance();
                     boss.StopSoundLoop();
+                }
 
                 _audio_stub.Play(SoundType.GAME_OVER);
 
@@ -534,6 +537,9 @@ namespace HonkTrooper
                 _player.SetHitStance();
 
                 _player_health_bar.SetValue(_player.Health);
+
+                if (_scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss)
+                    boss.SetWinStance();
 
                 GameOver();
             }
@@ -1449,7 +1455,7 @@ namespace HonkTrooper
                 honk.SetPosition(
                     left: -500,
                     top: -500);
-            }            
+            }
 
             return true;
         }
@@ -1646,9 +1652,10 @@ namespace HonkTrooper
             }
             else
             {
-                boss1.Hover();
                 boss.Pop();
+                boss1.Hover();
                 boss1.DepleteHitStance();
+                boss1.DepleteWinStance();
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
@@ -2221,7 +2228,6 @@ namespace HonkTrooper
                         if (BossRocketSeeking1.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
                         {
                             BossRocketSeeking1.SetBlast();
-
                             LoosePlayerHealth();
                         }
                         else

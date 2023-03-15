@@ -13,6 +13,7 @@ namespace HonkTrooper
         private readonly Random _random;
         private readonly Uri[] _boss_uris;
         private readonly Uri[] _boss_hit_uris;
+        private readonly Uri[] _boss_win_uris;
 
         private double _hoverDelay;
         private readonly double _hoverDelayDefault = 15;
@@ -27,6 +28,9 @@ namespace HonkTrooper
 
         private double _hitStanceDelay;
         private readonly double _hitStanceDelayDefault = 1.5;
+
+        private double _winStanceDelay;
+        private readonly double _winStanceDelayDefault = 8;
 
         private readonly AudioStub _audioStub;
 
@@ -45,6 +49,7 @@ namespace HonkTrooper
 
             _boss_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BOSS).Select(x => x.Uri).ToArray();
             _boss_hit_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BOSS_HIT).Select(x => x.Uri).ToArray();
+            _boss_win_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BOSS_WIN).Select(x => x.Uri).ToArray();
 
             var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.BOSS);
 
@@ -176,6 +181,26 @@ namespace HonkTrooper
                 _hitStanceDelay -= 0.1;
 
                 if (_hitStanceDelay <= 0)
+                {
+                    SetIdleStance();
+                }
+            }
+        }
+
+        public void SetWinStance()
+        {
+            var uri = _boss_win_uris[_random.Next(0, _boss_win_uris.Length)];
+            _content_image.Source = new BitmapImage(uriSource: uri);
+            _winStanceDelay = _winStanceDelayDefault;
+        }
+
+        public void DepleteWinStance()
+        {
+            if (_winStanceDelay > 0)
+            {
+                _winStanceDelay -= 0.1;
+
+                if (_winStanceDelay <= 0)
                 {
                     SetIdleStance();
                 }
