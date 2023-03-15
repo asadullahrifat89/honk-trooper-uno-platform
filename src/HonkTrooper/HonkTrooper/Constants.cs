@@ -18,7 +18,7 @@ namespace HonkTrooper
         {
             new (ConstructType.PLAYER, 170, 170),
             new (ConstructType.PLAYER_ROCKET, 80, 80),
-            new (ConstructType.PLAYER_FIRE_CRACKER, 80, 80),
+            new (ConstructType.PLAYER_FIRE_CRACKER, 70, 70),
             new (ConstructType.PLAYER_ROCKET_SEEKING, 80, 80),
 
             new (ConstructType.BOSS, 180, 180),
