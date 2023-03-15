@@ -81,7 +81,7 @@ namespace HonkTrooper
             _random = new Random();
 
             _game_background_music_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.GAME_BACKGROUND_MUSIC).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 0.5, loop: true)).ToArray();
-            _ambience_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.AMBIENCE).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 0.4, loop: true)).ToArray();            
+            _ambience_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.AMBIENCE).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 0.4, loop: true)).ToArray();
 
             _game_start_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.GAME_START).Select(x => x.Uri).Select(uri => new Sound(uri: uri)).ToArray();
             _game_pause_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.GAME_PAUSE).Select(x => x.Uri).Select(uri => new Sound(uri: uri)).ToArray();
@@ -199,8 +199,6 @@ namespace HonkTrooper
                     boss.StopSoundLoops();
 
                 PlayGameOverSound();
-
-                //TODO: play game over sound
 
                 _scene_main_menu.Play();
                 _scene_game.SceneState = SceneState.GAME_STOPPED;
@@ -1921,10 +1919,7 @@ namespace HonkTrooper
                         GenerateEnemyHonkInScene(enemy1);
 
                     if (enemy1.Attack())
-                    {
-                        // TODO: generate enemy bomb
-                        //GenerateEnemyRocketInScene(enemy1);
-                    }
+                        GenerateEnemyRocketInScene(enemy1);
                 }
             }
 
@@ -1978,6 +1973,110 @@ namespace HonkTrooper
         private bool EnemyExistsInScene()
         {
             return _scene_game.Children.OfType<Enemy>().Any(x => x.IsAnimating);
+        }
+
+        #endregion
+
+        #region EnemyRocket
+
+        private bool SpawnEnemyRocketsInScene()
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                EnemyRocket bomb = new(
+                    animateAction: AnimateEnemyRocket,
+                    recycleAction: RecycleEnemyRocket,
+                    downScaling: _scene_game.DownScaling);
+
+                bomb.SetPosition(
+                    left: -500,
+                    top: -500,
+                    z: 8);
+
+                _scene_game.AddToScene(bomb);
+
+                SpawnDropShadowInScene(source: bomb);
+            }
+
+            return true;
+        }
+
+        private bool GenerateEnemyRocketInScene(Enemy source)
+        {
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
+                _scene_game.Children.OfType<EnemyRocket>().FirstOrDefault(x => x.IsAnimating == false) is EnemyRocket EnemyRocket)
+            {
+                EnemyRocket.Reset();
+                EnemyRocket.IsAnimating = true;
+                EnemyRocket.SetPopping();
+
+                EnemyRocket.Reposition(
+                    Enemy: source,
+                    downScaling: _scene_game.DownScaling);
+
+                SyncDropShadow(EnemyRocket);
+
+                // Console.WriteLine("Enemy Bomb dropped.");
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimateEnemyRocket(Construct bomb)
+        {
+            EnemyRocket EnemyRocket = bomb as EnemyRocket;
+
+            var speed = _scene_game.Speed + bomb.SpeedOffset;
+
+            MoveConstruct(construct: EnemyRocket, speed: speed);
+
+            if (EnemyRocket.IsBlasting)
+            {
+                bomb.Expand();
+                bomb.Fade(0.02);
+
+                DropShadow dropShadow = _scene_game.Children.OfType<DropShadow>().First(x => x.Id == bomb.Id);
+                dropShadow.Opacity = bomb.Opacity;
+            }
+            else
+            {
+                bomb.Pop();
+
+                if (_scene_game.SceneState == SceneState.GAME_RUNNING)
+                {
+                    if (EnemyRocket.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
+                    {
+                        EnemyRocket.SetBlast();
+                        LoosePlayerHealth();
+                    }
+
+                    if (EnemyRocket.AutoBlast())
+                        EnemyRocket.SetBlast();
+                }
+            }
+
+            return true;
+        }
+
+        private bool RecycleEnemyRocket(Construct bomb)
+        {
+            var hitbox = bomb.GetHitBox();
+
+            // if bomb is blasted and faed or goes out of scene bounds
+            if (bomb.IsFadingComplete || hitbox.Left > _scene_game.Width || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Bottom > _scene_game.Height)
+            {
+                bomb.IsAnimating = false;
+
+                bomb.SetPosition(
+                    left: -500,
+                    top: -500);
+
+                return true;
+            }
+
+            return false;
         }
 
         #endregion
@@ -2219,47 +2318,47 @@ namespace HonkTrooper
             return false;
         }
 
-        private bool AnimateBossRocketSeeking(Construct bomb)
+        private bool AnimateBossRocketSeeking(Construct BossRocketSeeking)
         {
-            BossRocketSeeking BossRocketSeeking = bomb as BossRocketSeeking;
+            BossRocketSeeking BossRocketSeeking1 = BossRocketSeeking as BossRocketSeeking;
 
-            var speed = (_scene_game.Speed + bomb.SpeedOffset) * _scene_game.DownScaling;
+            var speed = (_scene_game.Speed + BossRocketSeeking.SpeedOffset) * _scene_game.DownScaling;
 
-            if (BossRocketSeeking.IsBlasting)
+            if (BossRocketSeeking1.IsBlasting)
             {
-                MoveConstruct(construct: BossRocketSeeking, speed: speed);
+                MoveConstruct(construct: BossRocketSeeking1, speed: speed);
 
-                bomb.Expand();
-                bomb.Fade(0.02);
+                BossRocketSeeking.Expand();
+                BossRocketSeeking.Fade(0.02);
 
-                DropShadow dropShadow = _scene_game.Children.OfType<DropShadow>().First(x => x.Id == bomb.Id);
-                dropShadow.Opacity = bomb.Opacity;
+                DropShadow dropShadow = _scene_game.Children.OfType<DropShadow>().First(x => x.Id == BossRocketSeeking.Id);
+                dropShadow.Opacity = BossRocketSeeking.Opacity;
             }
             else
             {
-                bomb.Pop();
+                BossRocketSeeking.Pop();
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
                     if (_scene_game.Children.OfType<Boss>().Any(x => x.IsAnimating && x.IsAttacking))
                     {
-                        BossRocketSeeking.Seek(_player.GetCloseHitBox());
+                        BossRocketSeeking1.Seek(_player.GetCloseHitBox());
 
-                        if (BossRocketSeeking.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
+                        if (BossRocketSeeking1.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
                         {
-                            BossRocketSeeking.SetBlast();
+                            BossRocketSeeking1.SetBlast();
 
                             LoosePlayerHealth();
                         }
                         else
                         {
-                            if (BossRocketSeeking.RunOutOfTimeToBlast())
-                                BossRocketSeeking.SetBlast();
+                            if (BossRocketSeeking1.RunOutOfTimeToBlast())
+                                BossRocketSeeking1.SetBlast();
                         }
                     }
                     else
                     {
-                        BossRocketSeeking.SetBlast();
+                        BossRocketSeeking1.SetBlast();
                     }
                 }
             }
@@ -2749,7 +2848,12 @@ namespace HonkTrooper
                     generationDelay: 180,
                     generationAction: GenerateEnemyInScene,
                     startUpAction: SpawnEnemysInScene,
-                    randomizeGenerationDelay: true)
+                    randomizeGenerationDelay: true),
+
+                 new Generator(
+                    generationDelay: 0,
+                    generationAction: () => { return true; },
+                    startUpAction: SpawnEnemyRocketsInScene)
                 );
 
             _scene_main_menu.AddToScene(new Generator(
