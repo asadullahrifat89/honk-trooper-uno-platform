@@ -522,7 +522,7 @@ namespace HonkTrooper
                 {
                     playerBomb.AwaitMoveUp = true;
                     playerBomb.SetRotation(213);
-                    
+
                 }
                 else // player is above the target
                 {
@@ -2321,8 +2321,7 @@ namespace HonkTrooper
 
         private bool GenerateHealthPickupsInScene()
         {
-            if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
-                HealthPickup.ShouldGenerate(_player.Health) &&
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING && HealthPickup.ShouldGenerate(_player.Health) &&
                 _scene_game.Children.OfType<HealthPickup>().FirstOrDefault(x => x.IsAnimating == false) is HealthPickup healthPickup)
             {
                 healthPickup.IsAnimating = true;
@@ -2437,7 +2436,7 @@ namespace HonkTrooper
         {
             if (_scene_game.SceneState == SceneState.GAME_RUNNING)
             {
-                if (BossExistsInScene() || EnemyExistsInScene())
+                if ((BossExistsInScene() || EnemyExistsInScene()) && !_powerUp_health_bar.HasHealth) // if a boss or enemy exists and currently player has no other power up
                 {
                     if (_scene_game.Children.OfType<PowerUpPickup>().FirstOrDefault(x => x.IsAnimating == false) is PowerUpPickup powerUpPickup)
                     {
@@ -2665,13 +2664,13 @@ namespace HonkTrooper
                 startUpAction: SpawnPlayerBombSeekingsInScene));
 
             _scene_game.AddToScene(new Generator(
-                generationDelay: 500,
+                generationDelay: 600,
                 generationAction: GenerateHealthPickupsInScene,
                 startUpAction: SpawnHealthPickupsInScene,
                 randomizeGenerationDelay: true));
 
             _scene_game.AddToScene(new Generator(
-                generationDelay: 500,
+                generationDelay: 600,
                 generationAction: GeneratePowerUpPickupsInScene,
                 startUpAction: SpawnPowerUpPickupsInScene,
                 randomizeGenerationDelay: true));
