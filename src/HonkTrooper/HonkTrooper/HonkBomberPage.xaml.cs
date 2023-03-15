@@ -7,7 +7,7 @@ using Windows.Graphics.Display;
 
 namespace HonkTrooper
 {
-    public sealed partial class MainPage : Page
+    public sealed partial class HonkBomberPage : Page
     {
         #region Fields
 
@@ -45,7 +45,7 @@ namespace HonkTrooper
 
         #region Ctor
 
-        public MainPage()
+        public HonkBomberPage()
         {
             this.InitializeComponent();
 
@@ -66,8 +66,8 @@ namespace HonkTrooper
 
             _random = new Random();
 
-            Loaded += MainPage_Loaded;
-            Unloaded += MainPage_Unloaded;
+            Loaded += HonkBomberPage_Loaded;
+            Unloaded += HonkBomberPage_Unloaded;
         }
 
         #endregion
@@ -2704,7 +2704,7 @@ namespace HonkTrooper
 
         #region Events
 
-        private void MainPage_Loaded(object sender, RoutedEventArgs e)
+        private void HonkBomberPage_Loaded(object sender, RoutedEventArgs e)
         {
             _scene_game.Width = 1920;
             _scene_game.Height = 1080;
@@ -2716,7 +2716,7 @@ namespace HonkTrooper
             SetScene();
             GenerateTitleScreenInScene("Honk Trooper");
 
-            SizeChanged += MainPage_SizeChanged;
+            SizeChanged += HonkBomberPage_SizeChanged;
 
             ScreenExtensions.DisplayInformation.OrientationChanged += DisplayInformation_OrientationChanged;
             ScreenExtensions.RequiredDisplayOrientation = DisplayOrientations.Landscape;
@@ -2728,15 +2728,15 @@ namespace HonkTrooper
             ScreenExtensions.EnterFullScreen(true);
         }
 
-        private void MainPage_Unloaded(object sender, RoutedEventArgs e)
+        private void HonkBomberPage_Unloaded(object sender, RoutedEventArgs e)
         {
-            SizeChanged -= MainPage_SizeChanged;
+            SizeChanged -= HonkBomberPage_SizeChanged;
             ScreenExtensions.DisplayInformation.OrientationChanged -= DisplayInformation_OrientationChanged;
             _game_controller.RequiresScreenOrientationChange -= Controller_RequiresScreenOrientationChange;
             _game_controller.PauseButton.Click -= PauseButton_Click;
         }
 
-        private void MainPage_SizeChanged(object sender, SizeChangedEventArgs args)
+        private void HonkBomberPage_SizeChanged(object sender, SizeChangedEventArgs args)
         {
             var _windowWidth = args.NewSize.Width;
             var _windowHeight = args.NewSize.Height;
