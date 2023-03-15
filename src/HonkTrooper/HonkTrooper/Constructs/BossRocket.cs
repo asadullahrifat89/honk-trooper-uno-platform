@@ -19,6 +19,9 @@ namespace HonkTrooper
         private readonly Sound[] _rocket_launch_sounds;
         private readonly Sound[] _rocket_blast_sounds;
 
+        private double _autoBlastDelay;
+        private readonly double _autoBlastDelayDefault = 9;
+
         #endregion
 
         #region Ctor
@@ -106,6 +109,8 @@ namespace HonkTrooper
 
             AwaitMoveUp = false;
             AwaitMoveDown = false;
+
+            _autoBlastDelay = _autoBlastDelayDefault;
         }
 
         public void SetBlast()
@@ -141,6 +146,16 @@ namespace HonkTrooper
         {
             SetLeft(GetLeft() + speed);
             SetTop(GetTop() + speed * IsometricDisplacement);
+        }
+
+        public bool AutoBlast()
+        {
+            _autoBlastDelay -= 0.1;
+
+            if (_autoBlastDelay <= 0)
+                return true;
+
+            return false;
         }
 
         #endregion

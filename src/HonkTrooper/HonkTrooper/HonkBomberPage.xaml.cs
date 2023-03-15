@@ -271,7 +271,7 @@ namespace HonkTrooper
             if (_scene_game.Children.OfType<InterimScreen>().FirstOrDefault(x => x.IsAnimating == false) is InterimScreen interimScreen)
             {
                 interimScreen.IsAnimating = true;
-                interimScreen.SetTitle(title);                
+                interimScreen.SetTitle(title);
                 interimScreen.Reposition();
                 interimScreen.Reset();
 
@@ -592,7 +592,7 @@ namespace HonkTrooper
                         LooseEnemyHealth(enemy);
                     }
 
-                    if (PlayerRocket.RunOutOfTimeToBlast())
+                    if (PlayerRocket.AutoBlast())
                         PlayerRocket.SetBlast();
                 }
             }
@@ -600,18 +600,18 @@ namespace HonkTrooper
             return true;
         }
 
-        private bool RecyclePlayerRocket(Construct bomb)
+        private bool RecyclePlayerRocket(Construct PlayerRocket)
         {
-            var hitbox = bomb.GetHitBox();
+            var hitbox = PlayerRocket.GetHitBox();
 
             // if bomb is blasted and faed or goes out of scene bounds
-            if (bomb.IsFadingComplete ||
+            if (PlayerRocket.IsFadingComplete ||
                 hitbox.Left > _scene_game.Width || hitbox.Top > _scene_game.Height ||
                 hitbox.Right < 0 || hitbox.Bottom < 0)
             {
-                bomb.IsAnimating = false;
+                PlayerRocket.IsAnimating = false;
 
-                bomb.SetPosition(
+                PlayerRocket.SetPosition(
                     left: -500,
                     top: -500);
 
@@ -1755,9 +1755,9 @@ namespace HonkTrooper
             if (boss.IsDead && boss.IsAttacking)
             {
                 boss.IsAttacking = false;
-                
+
                 _player.SetWinStance();
-                _game_score_bar.GainScore(5);                
+                _game_score_bar.GainScore(5);
 
                 GenerateInterimScreenInScene("Boss Busted");
 
@@ -2089,6 +2089,9 @@ namespace HonkTrooper
                         BossRocket.SetBlast();
                         LoosePlayerHealth();
                     }
+
+                    if (BossRocket.AutoBlast())
+                        BossRocket.SetBlast();
                 }
             }
 
