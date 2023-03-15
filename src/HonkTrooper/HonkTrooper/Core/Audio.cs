@@ -1,11 +1,13 @@
 ﻿using Microsoft.UI.Xaml;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Uno.UI.Runtime.WebAssembly;
 
 namespace HonkTrooper
 {
     [HtmlElement("audio")]
-    public partial class Sound : FrameworkElement
+    public partial class Audio : FrameworkElement
     {
         #region Fields
 
@@ -16,7 +18,7 @@ namespace HonkTrooper
 
         #region Ctor
 
-        public Sound(
+        public Audio(
            Uri uri,
            double volume = 1.0,
            bool loop = false,

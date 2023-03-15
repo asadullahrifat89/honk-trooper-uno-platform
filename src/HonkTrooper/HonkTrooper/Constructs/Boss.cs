@@ -28,11 +28,11 @@ namespace HonkTrooper
         private double _hitStanceDelay;
         private readonly double _hitStanceDelayDefault = 1.5;
 
-        private readonly Sound[] _boss_hovering_sounds;
-        private readonly Sound[] _boss_entry_sounds;
-        private readonly Sound[] _boss_dead_sounds;
+        private readonly Audio[] _boss_hovering_sounds;
+        private readonly Audio[] _boss_entry_sounds;
+        private readonly Audio[] _boss_dead_sounds;
 
-        private Sound _boss_hovering_sound_playing;
+        private Audio _boss_hovering_sound_playing;
 
         #endregion
 
@@ -75,10 +75,10 @@ namespace HonkTrooper
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET - 0.5;
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE;
 
-            _boss_hovering_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.BOSS_HOVERING).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 0.8, loop: true)).ToArray();
+            _boss_hovering_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.BOSS_HOVERING).Select(x => x.Uri).Select(uri => new Audio(uri: uri, volume: 0.8, loop: true)).ToArray();
 
-            _boss_entry_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.BOSS_ENTRY).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 0.8)).ToArray();
-            _boss_dead_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.BOSS_DEAD).Select(x => x.Uri).Select(uri => new Sound(uri: uri)).ToArray();
+            _boss_entry_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.BOSS_ENTRY).Select(x => x.Uri).Select(uri => new Audio(uri: uri, volume: 0.8)).ToArray();
+            _boss_dead_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.BOSS_DEAD).Select(x => x.Uri).Select(uri => new Audio(uri: uri)).ToArray();
         }
 
         #endregion

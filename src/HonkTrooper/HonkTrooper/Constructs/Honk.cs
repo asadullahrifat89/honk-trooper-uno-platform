@@ -14,7 +14,7 @@ namespace HonkTrooper
 
         private readonly Image _content_image;
 
-        private readonly Sound[] _car_honk_sounds;
+        private readonly Audio[] _car_honk_sounds;
 
         #endregion
 
@@ -52,7 +52,7 @@ namespace HonkTrooper
 
             IsometricDisplacement = 0.6;
 
-            _car_honk_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.CAR_HONK).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 0.7)).ToArray();
+            _car_honk_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.CAR_HONK).Select(x => x.Uri).Select(uri => new Audio(uri: uri, volume: 0.7)).ToArray();
         }
 
         #endregion

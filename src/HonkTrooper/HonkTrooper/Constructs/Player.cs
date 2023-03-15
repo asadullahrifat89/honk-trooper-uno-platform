@@ -45,7 +45,7 @@ namespace HonkTrooper
 
         private readonly Image _content_image;
 
-        private readonly Sound[] _health_loss_sounds;
+        private readonly Audio[] _health_loss_sounds;
 
         #endregion
 
@@ -89,7 +89,7 @@ namespace HonkTrooper
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE;
             Health = 100;
 
-            _health_loss_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.PLAYER_HEALTH_LOSS).Select(x => x.Uri).Select(uri => new Sound(uri: uri)).ToArray();
+            _health_loss_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.PLAYER_HEALTH_LOSS).Select(x => x.Uri).Select(uri => new Audio(uri: uri)).ToArray();
         }
 
         #endregion
