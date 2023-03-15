@@ -42,11 +42,11 @@ namespace HonkTrooper
         private bool _enemy_appeared;
 
         private readonly Sound[] _ambience_sounds;
-        private readonly Sound[] _game_background_sounds;
+        private readonly Sound[] _game_background_music_sounds;
         private readonly Sound[] _enemy_entry_sounds;
 
         private Sound _ambience_sound_playing;
-        private Sound _game_background_sound_playing;
+        private Sound _game_background_music_sound_playing;
 
         #endregion
 
@@ -74,7 +74,7 @@ namespace HonkTrooper
             _random = new Random();
 
             _ambience_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.AMBIENCE).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 0.8, loop: true)).ToArray();
-            _game_background_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.GAME_BACKGROUND_MUSIC).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 0.8, loop: true)).ToArray();
+            _game_background_music_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.GAME_BACKGROUND_MUSIC).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 0.7, loop: true)).ToArray();
 
             _enemy_entry_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.ENEMY_ENTRY).Select(x => x.Uri).Select(uri => new Sound(uri: uri)).ToArray();
 
@@ -90,8 +90,8 @@ namespace HonkTrooper
 
         private void PauseGame()
         {
-            _ambience_sound_playing?.Pause();
-            _game_background_sound_playing?.Pause();
+            PauseAmbienceSound();
+            PauseGameBackgroundSound();
 
             ToggleHudVisibility(Visibility.Collapsed);
 
@@ -103,8 +103,8 @@ namespace HonkTrooper
 
         private void ResumeGame(TitleScreen se)
         {
-            _ambience_sound_playing?.Resume();
-            _game_background_sound_playing?.Resume();
+            ResumeAmbienceSound();
+            ResumeGameBackgroundSound();
 
             ToggleHudVisibility(Visibility.Visible);
 
@@ -184,6 +184,9 @@ namespace HonkTrooper
             // if player is dead game keeps playing in the background but scene state goes to game over
             if (_player.IsDead)
             {
+                StopAmbienceSound();
+                PlayGameBackgroundSound();
+
                 _scene_main_menu.Play();
                 _scene_game.SceneState = SceneState.GAME_STOPPED;
 
@@ -1519,6 +1522,7 @@ namespace HonkTrooper
                 !_scene_game.Children.OfType<Boss>().Any(x => x.IsAnimating) &&
                 _scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating == false) is Boss boss)
             {
+                StopGameBackgroundSound();
                 _ambience_sound_playing?.SetVolume(0.2);
 
                 boss.IsAnimating = true;
@@ -1777,6 +1781,7 @@ namespace HonkTrooper
 
             if (boss.IsDead && boss.IsAttacking)
             {
+                PlayGameBackgroundSound();
                 _ambience_sound_playing?.SetVolume(0.8);
 
                 boss.IsAttacking = false;
@@ -2750,18 +2755,38 @@ namespace HonkTrooper
         private void PlayGameBackgroundSound()
         {
             StopGameBackgroundSound();
-            _game_background_sound_playing = _game_background_sounds[_random.Next(0, _game_background_sounds.Length)];
-            _game_background_sound_playing.Play();
+            _game_background_music_sound_playing = _game_background_music_sounds[_random.Next(0, _game_background_music_sounds.Length)];
+            _game_background_music_sound_playing.Play();
         }
 
         private void StopGameBackgroundSound()
         {
-            _game_background_sound_playing?.Stop();
+            _game_background_music_sound_playing?.Stop();
         }
 
         private void StopAmbienceSound()
         {
             _ambience_sound_playing?.Stop();
+        }
+
+        private void ResumeGameBackgroundSound()
+        {
+            _game_background_music_sound_playing?.Resume();
+        }
+
+        private void ResumeAmbienceSound()
+        {
+            _ambience_sound_playing?.Resume();
+        }
+
+        private void PauseGameBackgroundSound()
+        {
+            _game_background_music_sound_playing?.Pause();
+        }
+
+        private void PauseAmbienceSound()
+        {
+            _ambience_sound_playing?.Pause();
         }
 
         #endregion
