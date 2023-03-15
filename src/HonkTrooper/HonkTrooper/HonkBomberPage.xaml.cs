@@ -37,9 +37,9 @@ namespace HonkTrooper
         private readonly double _enemy_threashold_limit_increase = 10;
 
         private double _enemy_kill_count;
-        private readonly double _enemy_kill_count_limit = 30;
+        private readonly double _enemy_kill_count_limit = 20;
 
-        private bool _enemy_appeared;
+        private bool _enemy_fleet_appeared;
 
         private AudioStub _audio_stub;
 
@@ -139,7 +139,7 @@ namespace HonkTrooper
             _boss_threashold.Reset(_boss_threashold_limit);
             _enemy_threashold.Reset(_enemy_threashold_limit);
             _enemy_kill_count = 0;
-            _enemy_appeared = false;
+            _enemy_fleet_appeared = false;
 
             GeneratePlayerInScene();
 
@@ -1801,13 +1801,13 @@ namespace HonkTrooper
 
                 //Console.WriteLine("Enemy generated.");
 
-                if (!_enemy_appeared)
+                if (!_enemy_fleet_appeared)
                 {
                     _audio_stub.Play(SoundType.ENEMY_ENTRY);
 
                     GenerateInterimScreenInScene("Beware of Aliens");
                     _scene_game.ActivateSlowMotion();
-                    _enemy_appeared = true;
+                    _enemy_fleet_appeared = true;
                 }
 
                 return true;
@@ -1883,9 +1883,9 @@ namespace HonkTrooper
                 {
                     _enemy_threashold.IncreaseThreasholdLimit(increment: _enemy_threashold_limit_increase, currentPoint: _game_score_bar.GetScore());
                     _enemy_kill_count = 0;
-                    _enemy_appeared = false;
+                    _enemy_fleet_appeared = false;
 
-                    GenerateInterimScreenInScene("Alien Fleet Busted");
+                    GenerateInterimScreenInScene("Alien Fleet Vanquished");
                     _scene_game.ActivateSlowMotion();
                 }
 
