@@ -30,9 +30,9 @@ namespace HonkTrooper
             _vehicle_small_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.VEHICLE_SMALL).Select(x => x.Uri).ToArray();
             _vehicle_large_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.VEHICLE_LARGE).Select(x => x.Uri).ToArray();
 
-            WillHonk = Convert.ToBoolean(_random.Next(0, 2));
+            WillHonk = Convert.ToBoolean(_random.Next( 2));
 
-            var vehicleType = _random.Next(0, 2);
+            var vehicleType = _random.Next( 2);
 
             (ConstructType ConstructType, double Height, double Width) size;
             Uri uri;
@@ -44,7 +44,7 @@ namespace HonkTrooper
                         size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.VEHICLE_SMALL);
 
                         var vehicles = _vehicle_small_uris;
-                        uri = vehicles[_random.Next(0, vehicles.Length)];
+                        uri = vehicles[_random.Next( vehicles.Length)];
 
                         ConstructType = ConstructType.VEHICLE_SMALL;
 
@@ -68,7 +68,7 @@ namespace HonkTrooper
                         size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.VEHICLE_LARGE);
 
                         var vehicles = _vehicle_large_uris;
-                        uri = vehicles[_random.Next(0, vehicles.Length)];
+                        uri = vehicles[_random.Next( vehicles.Length)];
 
                         ConstructType = ConstructType.VEHICLE_LARGE;
 
@@ -117,7 +117,7 @@ namespace HonkTrooper
 
             SpeedOffset = _random.Next(-4, 2);
 
-            WillHonk = Convert.ToBoolean(_random.Next(0, 2));
+            WillHonk = Convert.ToBoolean(_random.Next( 2));
 
             if (WillHonk)
                 SetHonkDelay();

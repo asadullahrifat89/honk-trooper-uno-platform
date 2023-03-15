@@ -46,7 +46,7 @@ namespace HonkTrooper
 
             SetSize(width: width, height: height);
 
-            var uri = _enemy_uris[_random.Next(0, _enemy_uris.Length)];
+            var uri = _enemy_uris[_random.Next( _enemy_uris.Length)];
 
             _content_image = new Image()
             {
@@ -82,20 +82,20 @@ namespace HonkTrooper
 
             Health = 5 * _random.Next(4);
 
-            WillAttack = Convert.ToBoolean(_random.Next(0, 2));
-            WillHonk = Convert.ToBoolean(_random.Next(0, 2));
+            WillAttack = Convert.ToBoolean(_random.Next( 2));
+            WillHonk = Convert.ToBoolean(_random.Next( 2));
 
             // role dice again
             if (!WillHonk && !WillAttack)
             {
-                WillAttack = Convert.ToBoolean(_random.Next(0, 2));
-                WillHonk = Convert.ToBoolean(_random.Next(0, 2));
+                WillAttack = Convert.ToBoolean(_random.Next( 2));
+                WillHonk = Convert.ToBoolean(_random.Next( 2));
             }
 
             if (WillHonk)
                 SetHonkDelay();
 
-            var uri = _enemy_uris[_random.Next(0, _enemy_uris.Length)];
+            var uri = _enemy_uris[_random.Next( _enemy_uris.Length)];
             _content_image.Source = new BitmapImage(uri);
 
             SpeedOffset = _random.Next(-3, 2);

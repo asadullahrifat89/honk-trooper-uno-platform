@@ -63,7 +63,7 @@ namespace HonkTrooper
 
             SetSize(width: width, height: height);
 
-            var uri = _boss_uris[_random.Next(0, _boss_uris.Length)];
+            var uri = _boss_uris[_random.Next( _boss_uris.Length)];
 
             _content_image = new Image()
             {
@@ -123,7 +123,7 @@ namespace HonkTrooper
             AwaitMoveUp = false;
             AwaitMoveDown = false;
 
-            var uri = _boss_uris[_random.Next(0, _boss_uris.Length)];
+            var uri = _boss_uris[_random.Next( _boss_uris.Length)];
             _content_image.Source = new BitmapImage(uri);
 
             RandomizeMovementPattern();
@@ -169,7 +169,7 @@ namespace HonkTrooper
 
         public void SetHitStance()
         {
-            var uri = _boss_hit_uris[_random.Next(0, _boss_hit_uris.Length)];
+            var uri = _boss_hit_uris[_random.Next( _boss_hit_uris.Length)];
             _content_image.Source = new BitmapImage(uriSource: uri);
             _hitStanceDelay = _hitStanceDelayDefault;
         }
@@ -189,7 +189,7 @@ namespace HonkTrooper
 
         public void SetWinStance()
         {
-            var uri = _boss_win_uris[_random.Next(0, _boss_win_uris.Length)];
+            var uri = _boss_win_uris[_random.Next( _boss_win_uris.Length)];
             _content_image.Source = new BitmapImage(uriSource: uri);
             _winStanceDelay = _winStanceDelayDefault;
         }
@@ -447,12 +447,12 @@ namespace HonkTrooper
         private void RandomizeMovementPattern()
         {
             _changeMovementPatternDelay = _random.Next(40, 60);
-            MovementPattern = (BossMovementPattern)_random.Next(0, Enum.GetNames(typeof(BossMovementPattern)).Length);
+            MovementPattern = (BossMovementPattern)_random.Next( Enum.GetNames(typeof(BossMovementPattern)).Length);
         }
 
         private void SetIdleStance()
         {
-            var uri = _boss_uris[_random.Next(0, _boss_uris.Length)];
+            var uri = _boss_uris[_random.Next( _boss_uris.Length)];
             _content_image.Source = new BitmapImage(uriSource: uri);
         }
 

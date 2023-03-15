@@ -67,6 +67,10 @@
     <None Remove="Assets\Images\player_1_hit.png" />
     <None Remove="Assets\Images\player_1_idle.png" />
     <None Remove="Assets\Images\player_1_win.png" />
+    <None Remove="Assets\Images\player_2_attack.png" />
+    <None Remove="Assets\Images\player_2_hit.png" />
+    <None Remove="Assets\Images\player_2_idle.png" />
+    <None Remove="Assets\Images\player_2_win.png" />
     <None Remove="Assets\Images\player_bomb_seeking_2.png" />
     <None Remove="Assets\Images\power_up_pickup_force_shield.png" />
     <None Remove="Assets\Images\power_up_pickup_seeking_balls.png" />

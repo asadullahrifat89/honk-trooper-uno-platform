@@ -41,7 +41,7 @@ namespace HonkTrooper
 
             SetSize(width: width, height: height);
 
-            var uri = _honk_uris[_random.Next(0, _honk_uris.Length)];
+            var uri = _honk_uris[_random.Next( _honk_uris.Length)];
 
             _content_image = new Image()
             {

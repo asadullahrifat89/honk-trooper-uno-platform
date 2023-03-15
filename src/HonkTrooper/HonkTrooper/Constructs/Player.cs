@@ -54,15 +54,16 @@ namespace HonkTrooper
         public Player(
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction,
-            double downScaling)
+            double downScaling,
+            int playerTemplate = 1)
         {
             _hoverDelay = _hoverDelayDefault;
-            _random = new Random();
+            _random = new Random();           
 
-            _player_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER).Select(x => x.Uri).ToArray();
-            _player_win_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_WIN).Select(x => x.Uri).ToArray();
-            _player_hit_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_HIT).Select(x => x.Uri).ToArray();
-            _player_attack_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_ATTACK).Select(x => x.Uri).ToArray();
+            _player_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER && x.Uri.OriginalString.Contains($"player_{playerTemplate}")).Select(x => x.Uri).ToArray();
+            _player_win_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_WIN && x.Uri.OriginalString.Contains($"player_{playerTemplate}")).Select(x => x.Uri).ToArray();
+            _player_hit_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_HIT && x.Uri.OriginalString.Contains($"player_{playerTemplate}")).Select(x => x.Uri).ToArray();
+            _player_attack_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_ATTACK && x.Uri.OriginalString.Contains($"player_{playerTemplate}")).Select(x => x.Uri).ToArray();
 
             ConstructType = ConstructType.PLAYER;
 
@@ -76,7 +77,7 @@ namespace HonkTrooper
 
             SetSize(width: width, height: height);
 
-            var uri = _player_uris[_random.Next(0, _player_uris.Length)];
+            var uri = _player_uris[_random.Next(_player_uris.Length)];
 
             _content_image = new Image()
             {
@@ -114,7 +115,7 @@ namespace HonkTrooper
             _isMovingLeft = false;
             _isMovingRight = false;
 
-            var uri = _player_uris[_random.Next(0, _player_uris.Length)];
+            var uri = _player_uris[_random.Next(_player_uris.Length)];
             _content_image.Source = new BitmapImage(uriSource: uri);
 
             _movementStopDelay = _movementStopDelayDefault;
@@ -131,21 +132,21 @@ namespace HonkTrooper
 
         public void SetAttackStance()
         {
-            var uri = _player_attack_uris[_random.Next(0, _player_attack_uris.Length)];
+            var uri = _player_attack_uris[_random.Next(_player_attack_uris.Length)];
             _content_image.Source = new BitmapImage(uriSource: uri);
             _attackStanceDelay = _attackStanceDelayDefault;
         }
 
         public void SetWinStance()
         {
-            var uri = _player_win_uris[_random.Next(0, _player_win_uris.Length)];
+            var uri = _player_win_uris[_random.Next(_player_win_uris.Length)];
             _content_image.Source = new BitmapImage(uriSource: uri);
             _winStanceDelay = _winStanceDelayDefault;
         }
 
         public void SetHitStance()
         {
-            var uri = _player_hit_uris[_random.Next(0, _player_hit_uris.Length)];
+            var uri = _player_hit_uris[_random.Next(_player_hit_uris.Length)];
             _content_image.Source = new BitmapImage(uriSource: uri);
             _hitStanceDelay = _hitStanceDelayDefault;
         }
@@ -539,7 +540,7 @@ namespace HonkTrooper
 
         private void SetIdleStance()
         {
-            var uri = _player_uris[_random.Next(0, _player_uris.Length)];
+            var uri = _player_uris[_random.Next(_player_uris.Length)];
             _content_image.Source = new BitmapImage(uriSource: uri);
         }
 
