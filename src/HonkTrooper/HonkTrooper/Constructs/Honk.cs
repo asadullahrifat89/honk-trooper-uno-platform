@@ -14,7 +14,7 @@ namespace HonkTrooper
 
         private readonly Image _content_image;
 
-        private readonly Sound[] _car_honk_sounds;
+        private readonly AudioStub _audioStub;
 
         #endregion
 
@@ -51,8 +51,8 @@ namespace HonkTrooper
             SetChild(_content_image);
 
             IsometricDisplacement = 0.6;
-
-            _car_honk_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.CAR_HONK).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 0.7)).ToArray();
+            
+            _audioStub = new AudioStub((SoundType.CAR_HONK, 0.7, false));
         }
 
         #endregion
@@ -61,8 +61,7 @@ namespace HonkTrooper
 
         public void Reset()
         {
-            var sound = _car_honk_sounds[_random.Next(0, _car_honk_sounds.Length)];
-            sound.Play();
+            _audioStub.Play(SoundType.CAR_HONK);
 
             Opacity = 1;
         }

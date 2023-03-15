@@ -16,8 +16,7 @@ namespace HonkTrooper
 
         private readonly Image _content_image;
 
-        private readonly Sound[] _cracker_drop_sounds;
-        private readonly Sound[] _cracker_blast_sounds;
+        private readonly AudioStub _audioStub;
 
         #endregion
 
@@ -58,8 +57,7 @@ namespace HonkTrooper
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE - 10;
 
-            _cracker_drop_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.CRACKER_DROP).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 0.3)).ToArray();
-            _cracker_blast_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.CRACKER_BLAST).Select(x => x.Uri).Select(uri => new Sound(uri: uri)).ToArray();
+            _audioStub = new AudioStub((SoundType.CRACKER_DROP, 0.3, false), (SoundType.CRACKER_BLAST, 1, false));
         }
 
         #endregion
@@ -82,8 +80,7 @@ namespace HonkTrooper
 
         public void Reset()
         {
-            var sound = _cracker_drop_sounds[_random.Next(0, _cracker_drop_sounds.Length)];
-            sound.Play();
+            _audioStub.Play(SoundType.CRACKER_DROP);
 
             Opacity = 1;
             SetScaleTransform(1);
@@ -91,19 +88,18 @@ namespace HonkTrooper
             IsBlasting = false;
 
             var uri = _bomb_uris[_random.Next(0, _bomb_uris.Length)];
-            _content_image.Source = new BitmapImage(uri);          
+            _content_image.Source = new BitmapImage(uri);
         }
 
         public void SetBlast()
         {
-            var sound = _cracker_blast_sounds[_random.Next(0, _cracker_blast_sounds.Length)];
-            sound.Play();
+            _audioStub.Play(SoundType.CRACKER_BLAST);
 
             var uri = _bomb_blast_uris[_random.Next(0, _bomb_blast_uris.Length)];
             _content_image.Source = new BitmapImage(uri);
             IsBlasting = true;
 
-           
+
         }
 
         #endregion

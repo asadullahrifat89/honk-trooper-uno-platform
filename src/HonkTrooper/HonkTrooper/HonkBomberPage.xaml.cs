@@ -41,22 +41,8 @@ namespace HonkTrooper
 
         private bool _enemy_appeared;
 
-        private readonly Sound[] _ambience_sounds;
-        private readonly Sound[] _game_background_music_sounds;
-        private readonly Sound[] _boss_background_music_sounds;
+        private AudioStub _audio_stub;
 
-        private readonly Sound[] _enemy_entry_sounds;
-        private readonly Sound[] _game_start_sounds;
-        private readonly Sound[] _game_pause_sounds;
-        private readonly Sound[] _game_over_sounds;
-
-
-        private Sound _game_start_sound_playing;
-        private Sound _game_pause_sound_playing;
-        private Sound _game_over_sound_playing;
-        private Sound _ambience_sound_playing;
-        private Sound _game_background_music_sound_playing;
-        private Sound _boss_background_music_sound_playing;
 
         #endregion
 
@@ -83,16 +69,14 @@ namespace HonkTrooper
 
             _random = new Random();
 
-            _game_background_music_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.GAME_BACKGROUND_MUSIC).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 0.5, loop: true)).ToArray();
-            _boss_background_music_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.BOSS_BACKGROUND_MUSIC).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 0.6, loop: true)).ToArray();
-
-            _ambience_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.AMBIENCE).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 0.4, loop: true)).ToArray();
-
-            _game_start_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.GAME_START).Select(x => x.Uri).Select(uri => new Sound(uri: uri)).ToArray();
-            _game_pause_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.GAME_PAUSE).Select(x => x.Uri).Select(uri => new Sound(uri: uri)).ToArray();
-            _game_over_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.GAME_OVER).Select(x => x.Uri).Select(uri => new Sound(uri: uri)).ToArray();
-
-            _enemy_entry_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.ENEMY_ENTRY).Select(x => x.Uri).Select(uri => new Sound(uri: uri)).ToArray();
+            _audio_stub = new AudioStub(
+                (SoundType.GAME_BACKGROUND_MUSIC, 0.5, true),
+                (SoundType.BOSS_BACKGROUND_MUSIC, 0.6, true),
+                (SoundType.AMBIENCE, 0.4, true),
+                (SoundType.GAME_START, 1, false),
+                (SoundType.GAME_PAUSE, 1, false),
+                (SoundType.GAME_OVER, 1, false),
+                (SoundType.ENEMY_ENTRY, 1, false));
 
             Loaded += HonkBomberPage_Loaded;
             Unloaded += HonkBomberPage_Unloaded;
@@ -106,9 +90,14 @@ namespace HonkTrooper
 
         private void PauseGame()
         {
-            PlayGamePauseSound();
+            _audio_stub.Play(SoundType.GAME_PAUSE);
 
-            PauseSoundLoops();
+            _audio_stub.Pause(SoundType.AMBIENCE);
+
+            if (BossExistsInScene())
+                _audio_stub.Pause(SoundType.BOSS_BACKGROUND_MUSIC);
+            else
+                _audio_stub.Pause(SoundType.GAME_BACKGROUND_MUSIC);
 
             ToggleHudVisibility(Visibility.Collapsed);
 
@@ -120,7 +109,12 @@ namespace HonkTrooper
 
         private void ResumeGame(TitleScreen se)
         {
-            ResumeSoundLoops();
+            _audio_stub.Resume(SoundType.AMBIENCE);
+
+            if (BossExistsInScene())
+                _audio_stub.Resume(SoundType.BOSS_BACKGROUND_MUSIC);
+            else
+                _audio_stub.Resume(SoundType.GAME_BACKGROUND_MUSIC);
 
             ToggleHudVisibility(Visibility.Visible);
 
@@ -134,7 +128,7 @@ namespace HonkTrooper
 
         private void NewGame(TitleScreen se)
         {
-            PlaySoundLoops();
+            _audio_stub.Play(SoundType.AMBIENCE, SoundType.GAME_BACKGROUND_MUSIC);
 
             _game_controller.Reset();
 
@@ -270,13 +264,15 @@ namespace HonkTrooper
             // if player is dead game keeps playing in the background but scene state goes to game over
             if (_player.IsDead)
             {
-                StopSoundLoops();
-                StopBossBackgroundMusic();
+                _audio_stub.Stop(SoundType.AMBIENCE, SoundType.GAME_BACKGROUND_MUSIC, SoundType.BOSS_BACKGROUND_MUSIC);
 
                 if (_scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating) is Boss boss)
+                {
+                    boss.SetWinStance();
                     boss.StopSoundLoop();
+                }
 
-                PlayGameOverSound();
+                _audio_stub.Play(SoundType.GAME_OVER);
 
                 _scene_main_menu.Play();
                 _scene_game.SceneState = SceneState.GAME_STOPPED;
@@ -300,7 +296,7 @@ namespace HonkTrooper
                 downScaling: _scene_game.DownScaling,
                 playAction: () =>
                 {
-                    PlayGameStartSound();
+                    _audio_stub.Play(SoundType.GAME_START);
 
                     if (_scene_game.SceneState == SceneState.GAME_STOPPED)
                     {
@@ -542,6 +538,9 @@ namespace HonkTrooper
 
                 _player_health_bar.SetValue(_player.Health);
 
+                if (_scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss)
+                    boss.SetWinStance();
+
                 GameOver();
             }
         }
@@ -686,9 +685,6 @@ namespace HonkTrooper
             {
                 bomb.Expand();
                 bomb.Fade(0.02);
-
-                //DropShadow dropShadow = _scene_game.Children.OfType<DropShadow>().First(x => x.Id == bomb.Id);
-                //dropShadow.Opacity = bomb.Opacity;
             }
             else
             {
@@ -823,9 +819,6 @@ namespace HonkTrooper
                 bomb.Expand();
                 bomb.Fade(0.02);
 
-                // make the shadow fade with the bomb blast
-                //dropShadow.Opacity = bomb.Opacity;
-
                 // while in blast check if it intersects with any vehicle, if it does then the vehicle stops honking and slows down
                 if (_scene_game.Children.OfType<Vehicle>()
                     .Where(x => x.IsAnimating && x.WillHonk)
@@ -940,9 +933,6 @@ namespace HonkTrooper
 
                 PlayerRocketSeeking.Expand();
                 PlayerRocketSeeking.Fade(0.02);
-
-                //DropShadow dropShadow = _scene_game.Children.OfType<DropShadow>().First(x => x.Id == PlayerRocketSeeking.Id);
-                //dropShadow.Opacity = PlayerRocketSeeking.Opacity;
             }
             else
             {
@@ -1337,11 +1327,6 @@ namespace HonkTrooper
             {
                 tree.IsAnimating = true;
 
-                //tree.SetPosition(
-                //    left: (_scene_game.Width / 2 - tree.Width) * _scene_game.DownScaling,
-                //    top: (0 - tree.Width) * _scene_game.DownScaling,
-                //    z: 2);
-
                 tree.SetPosition(
                   left: _scene_game.Width / 2 - tree.Width * _scene_game.DownScaling,
                   top: tree.Height * -1,
@@ -1362,11 +1347,6 @@ namespace HonkTrooper
             if (_scene_game.Children.OfType<Tree>().FirstOrDefault(x => x.IsAnimating == false) is Tree tree)
             {
                 tree.IsAnimating = true;
-
-                //tree.SetPosition(
-                //    left: (-1 * tree.Width) * _scene_game.DownScaling,
-                //    top: (_scene_game.Height / 2.5) * _scene_game.DownScaling,
-                //    z: 4);
 
                 tree.SetPosition(
                   left: -1 * tree.Width * _scene_game.DownScaling,
@@ -1476,7 +1456,6 @@ namespace HonkTrooper
                     left: -500,
                     top: -500);
             }
-            //_scene.DisposeFromScene(honk);
 
             return true;
         }
@@ -1630,10 +1609,11 @@ namespace HonkTrooper
                 !_scene_game.Children.OfType<Boss>().Any(x => x.IsAnimating) &&
                 _scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating == false) is Boss boss)
             {
-                StopGameBackgroundMusic();
-                PlayBossBackgroundMusic();
+                _audio_stub.Stop(SoundType.GAME_BACKGROUND_MUSIC);
 
-                _ambience_sound_playing?.SetVolume(0.2);
+                _audio_stub.Play(SoundType.BOSS_BACKGROUND_MUSIC);
+
+                _audio_stub.SetVolume(SoundType.AMBIENCE, 0.2);
 
                 boss.IsAnimating = true;
                 boss.Reset();
@@ -1672,9 +1652,10 @@ namespace HonkTrooper
             }
             else
             {
-                boss1.Hover();
                 boss.Pop();
+                boss1.Hover();
                 boss1.DepleteHitStance();
+                boss1.DepleteWinStance();
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
@@ -1703,164 +1684,6 @@ namespace HonkTrooper
                     }
 
                     #endregion
-
-                    #region [SEEKING] Player Seeking Movement
-
-                    //if (boss1.IsAttacking)
-                    //{
-                    //    boss1.SeekPlayer(_player.GetCloseHitBox());
-                    //}
-                    //else
-                    //{
-                    //    if (boss.GetLeft() > (_scene.Width / 3) * 1.5)
-                    //    {
-                    //        boss1.IsAttacking = true;
-                    //    }
-                    //}
-
-                    #endregion
-
-                    #region [L SSHAPED] Back and Forth Movement
-
-                    //if (boss.GetLeft() > (_scene.Width / 3) * 1.5)
-                    //{
-                    //    if (boss1.IsAttacking &&
-                    //        !boss1.AwaitMoveLeft && !boss1.AwaitMoveRight &&
-                    //        !boss1.AwaitMoveUp && !boss1.AwaitMoveDown)
-                    //    {
-                    //        boss1.AwaitMoveLeft = true;
-                    //    }
-                    //    else
-                    //    {
-                    //        boss1.IsAttacking = true;
-                    //    }
-                    //}
-
-                    //if (boss1.IsAttacking)
-                    //{
-                    //    if (boss1.AwaitMoveLeft)
-                    //    {
-                    //        boss1.MoveLeft(speed);
-
-                    //        if (boss.GetLeft() < 0 || boss.GetBottom() > _scene.Height)
-                    //        {
-                    //            boss1.AwaitMoveLeft = false;
-                    //            boss1.AwaitMoveRight = true;
-                    //        }
-                    //    }
-                    //    else
-                    //    {
-                    //        if (boss1.AwaitMoveRight)
-                    //        {
-                    //            boss1.MoveRight(speed);
-
-                    //            if (boss.GetTop() < 0)
-                    //            {
-                    //                boss1.AwaitMoveRight = false;
-                    //                boss1.AwaitMoveDown = true;
-                    //            }
-                    //        }
-                    //        else
-                    //        {
-                    //            if (boss1.AwaitMoveDown)
-                    //            {
-                    //                boss1.MoveDown(speed);
-
-                    //                if (boss1.GetRight() > _scene.Width || boss1.GetBottom() > _scene.Height)
-                    //                {
-                    //                    boss1.AwaitMoveUp = true;
-                    //                    boss1.AwaitMoveDown = false;
-                    //                }
-                    //            }
-                    //            else
-                    //            {
-                    //                if (boss1.AwaitMoveUp)
-                    //                {
-                    //                    boss1.MoveUp(speed);
-
-                    //                    if (boss1.GetTop() < 0 || boss1.GetLeft() < 0)
-                    //                    {
-                    //                        boss1.AwaitMoveUp = false;
-                    //                        boss1.AwaitMoveLeft = true;
-                    //                    }
-                    //                }
-                    //            }
-                    //        }
-                    //    }
-                    //}
-
-                    #endregion
-
-                    #region [SQUARE] Rounding Movement
-
-                    //if (boss.GetLeft() > (_scene.Width / 3) * 1.5)
-                    //{
-                    //    if (boss1.IsAttacking &&
-                    //        !boss1.AwaitMoveLeft && !boss1.AwaitMoveRight &&
-                    //        !boss1.AwaitMoveUp && !boss1.AwaitMoveDown)
-                    //    {
-                    //        boss1.AwaitMoveRight = true;
-                    //    }
-                    //    else
-                    //    {
-                    //        boss1.IsAttacking = true;
-                    //    }
-                    //}
-
-                    //if (boss1.IsAttacking)
-                    //{
-                    //    if (boss1.AwaitMoveRight)
-                    //    {
-                    //        boss1.MoveRight(speed);
-
-                    //        if (boss.GetTop() < 0)
-                    //        {
-                    //            boss1.AwaitMoveRight = false;
-                    //            boss1.AwaitMoveDown = true;
-                    //        }
-                    //    }
-                    //    else
-                    //    {
-                    //        if (boss1.AwaitMoveDown)
-                    //        {
-                    //            boss1.MoveDown(speed);
-
-                    //            if (boss1.GetRight() > _scene.Width || boss1.GetBottom() > _scene.Height)
-                    //            {
-                    //                boss1.AwaitMoveDown = false;
-                    //                boss1.AwaitMoveLeft = true;
-                    //            }
-                    //        }
-                    //        else
-                    //        {
-                    //            if (boss1.AwaitMoveLeft)
-                    //            {
-                    //                boss1.MoveLeft(speed);
-
-                    //                if (boss.GetLeft() < 0 || boss.GetBottom() > _scene.Height)
-                    //                {
-                    //                    boss1.AwaitMoveLeft = false;
-                    //                    boss1.AwaitMoveUp = true;
-                    //                }
-                    //            }
-                    //            else
-                    //            {
-                    //                if (boss1.AwaitMoveUp)
-                    //                {
-                    //                    boss1.MoveUp(speed);
-
-                    //                    if (boss1.GetTop() < 0 || boss1.GetLeft() < 0)
-                    //                    {
-                    //                        boss1.AwaitMoveUp = false;
-                    //                        boss1.AwaitMoveRight = true;
-                    //                    }
-                    //                }
-                    //            }
-                    //        }
-                    //    }
-                    //}
-
-                    #endregion 
                 }
             }
 
@@ -1891,9 +1714,11 @@ namespace HonkTrooper
 
             if (boss.IsDead && boss.IsAttacking)
             {
-                StopBossBackgroundMusic();
-                PlayGameBackgroundMusic();
-                _ambience_sound_playing?.SetVolume(0.8);
+                _audio_stub.Stop(SoundType.BOSS_BACKGROUND_MUSIC);
+
+                _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
+
+                _audio_stub.SetVolume(SoundType.AMBIENCE, 0.8);
 
                 boss.IsAttacking = false;
 
@@ -1978,8 +1803,7 @@ namespace HonkTrooper
 
                 if (!_enemy_appeared)
                 {
-                    var sound = _enemy_entry_sounds[_random.Next(0, _enemy_entry_sounds.Length)];
-                    sound.Play();
+                    _audio_stub.Play(SoundType.ENEMY_ENTRY);
 
                     GenerateInterimScreenInScene("Beware of Aliens");
                     _scene_game.ActivateSlowMotion();
@@ -2135,9 +1959,6 @@ namespace HonkTrooper
             {
                 bomb.Expand();
                 bomb.Fade(0.02);
-
-                //DropShadow dropShadow = _scene_game.Children.OfType<DropShadow>().First(x => x.Id == bomb.Id);
-                //dropShadow.Opacity = bomb.Opacity;
             }
             else
             {
@@ -2220,39 +2041,6 @@ namespace HonkTrooper
 
                 SyncDropShadow(BossRocket);
 
-                #region [OBSOLETE] Back & Forth Movement
-
-                //if (boss.AwaitMoveLeft || boss.AwaitMoveRight)
-                //{
-                //    // player is on the right side of the boss
-                //    if (_player.GetLeft() > boss.GetRight())
-                //    {
-                //        BossRocket.AwaitMoveDown = true;
-                //        BossRocket.SetRotation(33);
-                //    }
-                //    else
-                //    {
-                //        BossRocket.AwaitMoveUp = true;
-                //        BossRocket.SetRotation(125);
-                //    }
-                //}
-                //else if (boss.AwaitMoveUp || boss.AwaitMoveDown)
-                //{
-                //    // player is above the boss
-                //    if (_player.GetBottom() < boss.GetTop())
-                //    {
-                //        BossRocket.AwaitMoveRight = true;
-                //        BossRocket.SetRotation(-33);
-                //    }
-                //    else
-                //    {
-                //        BossRocket.AwaitMoveLeft = true;
-                //        BossRocket.SetRotation(125);
-                //    }
-                //} 
-
-                #endregion
-
                 #region Target Based Movement
 
                 // player is on the bottom right side of the boss
@@ -2322,9 +2110,6 @@ namespace HonkTrooper
             {
                 bomb.Expand();
                 bomb.Fade(0.02);
-
-                //DropShadow dropShadow = _scene_game.Children.OfType<DropShadow>().First(x => x.Id == bomb.Id);
-                //dropShadow.Opacity = bomb.Opacity;
             }
             else
             {
@@ -2429,9 +2214,6 @@ namespace HonkTrooper
 
                 BossRocketSeeking.Expand();
                 BossRocketSeeking.Fade(0.02);
-
-                //DropShadow dropShadow = _scene_game.Children.OfType<DropShadow>().First(x => x.Id == BossRocketSeeking.Id);
-                //dropShadow.Opacity = BossRocketSeeking.Opacity;
             }
             else
             {
@@ -2446,7 +2228,6 @@ namespace HonkTrooper
                         if (BossRocketSeeking1.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
                         {
                             BossRocketSeeking1.SetBlast();
-
                             LoosePlayerHealth();
                         }
                         else
@@ -2535,7 +2316,6 @@ namespace HonkTrooper
         {
             if (_scene_game.Children.OfType<DropShadow>().FirstOrDefault(x => x.Id == source.Id) is DropShadow dropShadow)
             {
-                //dropShadow.Opacity = 1;
                 dropShadow.ParentConstructSpeed = _scene_game.Speed + source.SpeedOffset;
                 dropShadow.IsAnimating = true;
 
@@ -2963,130 +2743,6 @@ namespace HonkTrooper
 
         #endregion
 
-        #region Sound
-
-        private void PlaySoundLoops()
-        {
-            PlayAmbienceSound();
-            PlayGameBackgroundMusic();
-        }
-
-        private void PauseSoundLoops()
-        {
-            PauseAmbienceSound();
-            PauseGameBackgroundMusic();
-
-            if (BossExistsInScene())
-                PauseBossBackgroundMusic();
-        }
-
-        private void ResumeSoundLoops()
-        {
-            ResumeAmbienceSound();
-
-            if (BossExistsInScene())
-                ResumeBossBackgroundMusic();
-            else
-                ResumeGameBackgroundMusic();
-        }
-
-        private void StopSoundLoops()
-        {
-            StopAmbienceSound();
-            StopGameBackgroundMusic();
-        }
-
-
-        private void PlayAmbienceSound()
-        {
-            _ambience_sound_playing?.Stop();
-            _ambience_sound_playing = _ambience_sounds[_random.Next(0, _ambience_sounds.Length)];
-            _ambience_sound_playing.Play();
-        }
-
-        private void PauseAmbienceSound()
-        {
-            _ambience_sound_playing?.Pause();
-        }
-
-        private void ResumeAmbienceSound()
-        {
-            _ambience_sound_playing?.Resume();
-        }
-
-        private void StopAmbienceSound()
-        {
-            _ambience_sound_playing?.Stop();
-        }
-
-
-
-        private void PlayGameBackgroundMusic()
-        {
-            _game_background_music_sound_playing?.Stop();
-            _game_background_music_sound_playing = _game_background_music_sounds[_random.Next(0, _game_background_music_sounds.Length)];
-            _game_background_music_sound_playing.Play();
-        }
-
-        private void PauseGameBackgroundMusic()
-        {
-            _game_background_music_sound_playing.Pause();
-        }
-
-        private void ResumeGameBackgroundMusic()
-        {
-            _game_background_music_sound_playing.Play();
-        }
-
-        private void StopGameBackgroundMusic()
-        {
-            _game_background_music_sound_playing?.Stop();
-        }
-
-
-        private void PlayBossBackgroundMusic()
-        {
-            _boss_background_music_sound_playing?.Stop();
-            _boss_background_music_sound_playing = _boss_background_music_sounds[_random.Next(0, _boss_background_music_sounds.Length)];
-            _boss_background_music_sound_playing.Play();
-        }
-
-        private void PauseBossBackgroundMusic()
-        {
-            _boss_background_music_sound_playing?.Pause();
-        }
-
-        private void ResumeBossBackgroundMusic()
-        {
-            _boss_background_music_sound_playing?.Resume();
-        }
-
-        private void StopBossBackgroundMusic()
-        {
-            _boss_background_music_sound_playing?.Stop();
-        }
-
-
-        private void PlayGameStartSound()
-        {
-            _game_start_sound_playing = _game_start_sounds[_random.Next(0, _game_start_sounds.Length)];
-            _game_start_sound_playing.Play();
-        }
-
-        private void PlayGamePauseSound()
-        {
-            _game_pause_sound_playing = _game_pause_sounds[_random.Next(0, _game_pause_sounds.Length)];
-            _game_pause_sound_playing.Play();
-        }
-
-        private void PlayGameOverSound()
-        {
-            _game_over_sound_playing = _game_over_sounds[_random.Next(0, _game_over_sounds.Length)];
-            _game_over_sound_playing.Play();
-        }
-
-        #endregion
-
         #endregion
 
         #region Events
@@ -3114,7 +2770,7 @@ namespace HonkTrooper
 
             ScreenExtensions.EnterFullScreen(true);
 
-            PlayGameBackgroundMusic();
+            _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
         }
 
         private void HonkBomberPage_Unloaded(object sender, RoutedEventArgs e)

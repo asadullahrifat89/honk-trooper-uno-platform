@@ -51,6 +51,7 @@
     <None Remove="Assets\Fonts\Gameplay.ttf" />
     <None Remove="Assets\Images\boss_3_hit.png" />
     <None Remove="Assets\Images\boss_3_idle.png" />
+    <None Remove="Assets\Images\boss_3_win.png" />
     <None Remove="Assets\Images\boss_bomb_seeking.png" />
     <None Remove="Assets\Images\cloud_1.png" />
     <None Remove="Assets\Images\cloud_2.png" />

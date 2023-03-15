@@ -45,7 +45,7 @@ namespace HonkTrooper
 
         private readonly Image _content_image;
 
-        private readonly Sound[] _health_loss_sounds;
+        private readonly AudioStub _audioStub;
 
         #endregion
 
@@ -89,7 +89,7 @@ namespace HonkTrooper
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE;
             Health = 100;
 
-            _health_loss_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.PLAYER_HEALTH_LOSS).Select(x => x.Uri).Select(uri => new Sound(uri: uri)).ToArray();
+            _audioStub = new AudioStub((SoundType.PLAYER_HEALTH_LOSS, 1, false));
         }
 
         #endregion
@@ -529,9 +529,7 @@ namespace HonkTrooper
         public void LooseHealth()
         {
             Health -= 5;
-
-            var sound = _health_loss_sounds[_random.Next(0, _health_loss_sounds.Length)];
-            sound.Play();
+            _audioStub.Play(SoundType.PLAYER_HEALTH_LOSS);
         }
 
         public void GainHealth()
