@@ -18,6 +18,9 @@ namespace HonkTrooper
         private readonly double _hoverSpeed = 0.3;
 
         private readonly TextBlock _titleScreenText;
+        private readonly Image _content_image;
+
+        private readonly Random _random;
 
         #endregion
 
@@ -30,6 +33,8 @@ namespace HonkTrooper
             double downScaling)
         {
             ConstructType = ConstructType.TITLE_SCREEN;
+
+            _random = new Random();
 
             var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.TITLE_SCREEN);
 
@@ -64,9 +69,11 @@ namespace HonkTrooper
                 VerticalAlignment = VerticalAlignment.Center,
             };
 
-            Image titleScreenIcon = new Image()
+            var playerUris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER).Select(x => x.Uri).ToArray();
+
+            _content_image = new Image()
             {
-                Source = new BitmapImage(Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.PLAYER).Uri),
+                Source = new BitmapImage(playerUris[_random.Next(playerUris.Length)]),
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 Stretch = Stretch.Uniform,
                 Margin = new Thickness(0, 0, 0, 5),
@@ -74,7 +81,7 @@ namespace HonkTrooper
                 Width = 110,
             };
 
-            container.Children.Add(titleScreenIcon);
+            container.Children.Add(_content_image);
 
             _titleScreenText = new TextBlock()
             {
@@ -121,6 +128,11 @@ namespace HonkTrooper
                   left: ((Scene.Width / 4) * 2) - Width / 2,
                   top: (Scene.Height / 2) - Height / 2,
                   z: 10);
+        }
+
+        public void SetContent(Uri uri)
+        {
+            _content_image.Source = new BitmapImage(uri);
         }
 
         public void SetTitle(string title)
