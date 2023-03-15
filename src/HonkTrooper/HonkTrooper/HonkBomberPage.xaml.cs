@@ -42,6 +42,8 @@ namespace HonkTrooper
         private bool _enemy_appeared;
 
         private readonly Sound[] _ambience_sounds;
+        private readonly Sound[] _enemy_entry_sounds;
+
         private Sound _ambience_sound_playing;
 
         #endregion
@@ -70,6 +72,7 @@ namespace HonkTrooper
             _random = new Random();
 
             _ambience_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.AMBIENCE).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 0.8, loop: true)).ToArray();
+            _enemy_entry_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.ENEMY_ENTRY).Select(x => x.Uri).Select(uri => new Sound(uri: uri)).ToArray();
 
             Loaded += HonkBomberPage_Loaded;
             Unloaded += HonkBomberPage_Unloaded;
@@ -1853,6 +1856,9 @@ namespace HonkTrooper
 
                 if (!_enemy_appeared)
                 {
+                    var sound = _enemy_entry_sounds[_random.Next(0, _enemy_entry_sounds.Length)];
+                    sound.Play();
+
                     GenerateInterimScreenInScene("Beware of Aliens");
                     _scene_game.ActivateSlowMotion();
                     _enemy_appeared = true;
