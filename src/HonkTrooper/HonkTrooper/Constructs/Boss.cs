@@ -80,7 +80,7 @@ namespace HonkTrooper
             _boss_hovering_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.BOSS_HOVERING).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 0.8, loop: true)).ToArray();
             _boss_background_music_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.BOSS_BACKGROUND_MUSIC).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 0.5, loop: true)).ToArray();
 
-            _boss_entry_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.BOSS_ENTRY).Select(x => x.Uri).Select(uri => new Sound(uri: uri)).ToArray();
+            _boss_entry_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.BOSS_ENTRY).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 0.8)).ToArray();
             _boss_dead_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.BOSS_DEAD).Select(x => x.Uri).Select(uri => new Sound(uri: uri)).ToArray();
         }
 
@@ -225,6 +225,7 @@ namespace HonkTrooper
                 sound.Play();
             }
         }
+
         public void PlaySoundLoops()
         {
             _boss_hovering_sound_playing = _boss_hovering_sounds[_random.Next(0, _boss_hovering_sounds.Length)];

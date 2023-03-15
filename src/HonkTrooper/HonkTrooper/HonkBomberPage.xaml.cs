@@ -143,16 +143,69 @@ namespace HonkTrooper
 
             GeneratePlayerInScene();
 
-            // if there is a boss already in the picture then remove it
+            foreach (var playerRocket in _scene_game.Children.OfType<PlayerRocket>())
+            {
+                playerRocket.SetPosition(
+                     left: -500,
+                     top: -500);
+
+                playerRocket.IsAnimating = false;
+            }
+
+            foreach (var playerRocket in _scene_game.Children.OfType<PlayerRocketSeeking>())
+            {
+                playerRocket.SetPosition(
+                     left: -500,
+                     top: -500);
+
+                playerRocket.IsAnimating = false;
+            }
+
             if (_scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating) is Boss boss)
             {
                 boss.Health = 0;
                 boss.IsAttacking = false;
-                boss.SetPosition(left: -500, top: -500);
-
                 boss.IsAnimating = false;
 
-                Console.WriteLine("Boss relocated");
+                boss.SetPosition(left: -500, top: -500);
+
+                //Console.WriteLine("Boss relocated");
+            }
+
+            foreach (var bossRocket in _scene_game.Children.OfType<BossRocket>())
+            {
+                bossRocket.SetPosition(
+                     left: -500,
+                     top: -500);
+
+                bossRocket.IsAnimating = false;
+            }
+
+            foreach (var bossRocket in _scene_game.Children.OfType<BossRocketSeeking>())
+            {
+                bossRocket.SetPosition(
+                     left: -500,
+                     top: -500);
+
+                bossRocket.IsAnimating = false;
+            }
+
+            foreach (var enemy in _scene_game.Children.OfType<Enemy>())
+            {
+                enemy.SetPosition(
+                     left: -500,
+                     top: -500);
+
+                enemy.IsAnimating = false;
+            }
+
+            foreach (var enemyRocket in _scene_game.Children.OfType<EnemyRocket>())
+            {
+                enemyRocket.SetPosition(
+                     left: -500,
+                     top: -500);
+
+                enemyRocket.IsAnimating = false;
             }
 
             foreach (var powerUpPickup in _scene_game.Children.OfType<PowerUpPickup>())
@@ -1964,6 +2017,9 @@ namespace HonkTrooper
                     _enemy_threashold.IncreaseThreasholdLimit(increment: _enemy_threashold_limit_increase, currentPoint: _game_score_bar.GetScore());
                     _enemy_kill_count = 0;
                     _enemy_appeared = false;
+
+                    GenerateInterimScreenInScene("Alien Fleet Busted");
+                    _scene_game.ActivateSlowMotion();
                 }
 
                 Console.WriteLine("Enemy dead");
