@@ -86,6 +86,11 @@
     <None Remove="Assets\Sounds\ambience_1.mp3" />
     <None Remove="Assets\Sounds\ambience_2.mp3" />
     <None Remove="Assets\Sounds\ambience_3.mp3" />
+    <None Remove="Assets\Sounds\boss_dead_1.mp3" />
+    <None Remove="Assets\Sounds\boss_entry_1.mp3" />
+    <None Remove="Assets\Sounds\boss_entry_2.mp3" />
+    <None Remove="Assets\Sounds\boss_hovering_1.mp3" />
+    <None Remove="Assets\Sounds\boss_hovering_2.mp3" />
     <None Remove="Assets\Sounds\car_honk_1.mp3" />
     <None Remove="Assets\Sounds\car_honk_2.mp3" />
     <None Remove="Assets\Sounds\car_honk_3.mp3" />
