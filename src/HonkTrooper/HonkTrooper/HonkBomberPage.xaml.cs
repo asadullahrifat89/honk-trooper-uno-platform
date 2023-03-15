@@ -521,7 +521,8 @@ namespace HonkTrooper
                 if ((_player.GetTop() > target.GetTop())) // player is below the target
                 {
                     playerBomb.AwaitMoveUp = true;
-                    playerBomb.SetRotation(123);
+                    playerBomb.SetRotation(213);
+                    
                 }
                 else // player is above the target
                 {
@@ -1134,7 +1135,7 @@ namespace HonkTrooper
         {
             if (_scene_game.Children.OfType<RoadMark>().FirstOrDefault(x => x.IsAnimating == false) is RoadMark roadMark)
             {
-                roadMark.IsAnimating = true;              
+                roadMark.IsAnimating = true;
 
                 roadMark.SetPosition(
                   left: 0,
