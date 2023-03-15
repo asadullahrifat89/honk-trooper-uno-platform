@@ -157,6 +157,8 @@ namespace HonkTrooper
 
             new (SoundType.BOSS_DEAD, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/boss_dead_1.mp3")),
             new (SoundType.BOSS_DEAD, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/boss_dead_2.mp3")),
+
+            new (SoundType.POWERUP_PICKUP, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/power_up_pickup_1.mp3")),
         };
     }
 
@@ -177,6 +179,8 @@ namespace HonkTrooper
         BOSS_ENTRY,
         BOSS_HOVERING,
         BOSS_DEAD,
+
+        POWERUP_PICKUP,
     }
 
     public enum ConstructType
