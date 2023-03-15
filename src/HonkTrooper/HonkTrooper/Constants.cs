@@ -26,7 +26,7 @@ namespace HonkTrooper
             new (ConstructType.BOSS_ROCKET_SEEKING, 80, 80),
 
             new (ConstructType.ENEMY, 140, 140),
-            new (ConstructType.ENEMY_BOMB, 60, 60),
+            new (ConstructType.ENEMY_ROCKET, 60, 60),
 
             new (ConstructType.VEHICLE_SMALL, 160, 160),
             new (ConstructType.VEHICLE_LARGE, 190, 190),
@@ -112,7 +112,7 @@ namespace HonkTrooper
             new (ConstructType.ENEMY, new Uri("ms-appx:///HonkTrooper/Assets/Images/enemy_1.png")),
             new (ConstructType.ENEMY, new Uri("ms-appx:///HonkTrooper/Assets/Images/enemy_2.png")),
 
-            new (ConstructType.ENEMY_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/enemy_bomb.png")),
+            new (ConstructType.ENEMY_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/enemy_bomb.png")),
 
             new (ConstructType.HEALTH_PICKUP, new Uri("ms-appx:///HonkTrooper/Assets/Images/health_pickup.png")),
             new (ConstructType.POWERUP_PICKUP_SEEKING_BALLS, new Uri("ms-appx:///HonkTrooper/Assets/Images/power_up_pickup_seeking_balls.png")),
@@ -247,7 +247,7 @@ namespace HonkTrooper
         BOSS_ROCKET_SEEKING,
 
         ENEMY,
-        ENEMY_BOMB,
+        ENEMY_ROCKET,
 
         HEALTH_PICKUP,
         POWERUP_PICKUP,

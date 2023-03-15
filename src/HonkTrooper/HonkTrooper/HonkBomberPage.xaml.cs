@@ -1923,7 +1923,7 @@ namespace HonkTrooper
                     if (enemy1.Attack())
                     {
                         // TODO: generate enemy bomb
-                        //GenerateEnemyBombInScene(enemy1);
+                        //GenerateEnemyRocketInScene(enemy1);
                     }
                 }
             }
