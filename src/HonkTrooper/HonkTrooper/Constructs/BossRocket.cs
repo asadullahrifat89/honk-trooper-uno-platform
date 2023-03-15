@@ -58,7 +58,7 @@ namespace HonkTrooper
             SetChild(_content_image);
 
             IsometricDisplacement = 0.5;
-            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET * 2;
+            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET * 2.5;
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE + 10;
 
             _rocket_launch_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.ROCKET_LAUNCH).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 0.1)).ToArray();
