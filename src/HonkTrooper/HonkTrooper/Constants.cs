@@ -170,6 +170,9 @@ namespace HonkTrooper
             new (SoundType.GAME_BACKGROUND_MUSIC, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/game_background_music_2.mp3")),
             new (SoundType.GAME_BACKGROUND_MUSIC, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/game_background_music_3.mp3")),
             new (SoundType.GAME_BACKGROUND_MUSIC, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/game_background_music_4.mp3")),
+
+            new (SoundType.BOSS_BACKGROUND_MUSIC, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/boss_background_music_1.mp3")),
+            new (SoundType.BOSS_BACKGROUND_MUSIC, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/boss_background_music_2.mp3")),
         };
     }
 
@@ -198,7 +201,8 @@ namespace HonkTrooper
 
         ENEMY_ENTRY,
 
-        GAME_BACKGROUND_MUSIC
+        GAME_BACKGROUND_MUSIC,
+        BOSS_BACKGROUND_MUSIC,
     }
 
     public enum ConstructType

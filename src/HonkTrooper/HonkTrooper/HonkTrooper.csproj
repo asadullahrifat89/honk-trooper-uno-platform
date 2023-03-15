@@ -86,6 +86,8 @@
     <None Remove="Assets\Sounds\ambience_1.mp3" />
     <None Remove="Assets\Sounds\ambience_2.mp3" />
     <None Remove="Assets\Sounds\ambience_3.mp3" />
+    <None Remove="Assets\Sounds\boss_background_music_1.mp3" />
+    <None Remove="Assets\Sounds\boss_background_music_2.mp3" />
     <None Remove="Assets\Sounds\boss_dead_1.mp3" />
     <None Remove="Assets\Sounds\boss_dead_2.mp3" />
     <None Remove="Assets\Sounds\boss_entry_1.mp3" />
