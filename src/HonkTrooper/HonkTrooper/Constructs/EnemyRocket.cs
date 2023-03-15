@@ -61,7 +61,7 @@ namespace HonkTrooper
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET + 2;
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE + 10;
 
-            _audioStub = new AudioStub((SoundType.ORB_LAUNCH, 0.3, false), (SoundType.ROCKET_BLAST, 1, false));
+            _audioStub = new AudioStub((SoundType.ORB_LAUNCH, 0.5, false), (SoundType.ROCKET_BLAST, 1, false));
 
         }
 
