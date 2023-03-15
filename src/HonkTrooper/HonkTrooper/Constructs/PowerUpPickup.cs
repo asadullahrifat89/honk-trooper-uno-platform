@@ -67,7 +67,7 @@ namespace HonkTrooper
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE;
             IsometricDisplacement = 0.5;
 
-            _power_up_pickup_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.POWERUP_PICKUP).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 0.8)).ToArray();
+            _power_up_pickup_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.POWERUP_PICKUP).Select(x => x.Uri).Select(uri => new Sound(uri: uri)).ToArray();
         }
 
         #endregion

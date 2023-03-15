@@ -2405,7 +2405,7 @@ namespace HonkTrooper
 
                     if (_player.GetCloseHitBox().IntersectsWith(hitbox))
                     {
-                        healthPickup1.IsPickedUp = true;
+                        healthPickup1.PickedUp();
 
                         _player.GainHealth();
                         _player_health_bar.SetValue(_player.Health);
