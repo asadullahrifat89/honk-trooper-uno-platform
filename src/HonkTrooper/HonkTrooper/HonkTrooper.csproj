@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
 
     <TargetFrameworks>$(TargetFrameworks);net7.0</TargetFrameworks>
@@ -81,8 +81,17 @@
     <None Remove="Assets\Images\vehicle_7.png" />
     <None Remove="Assets\Images\vehicle_8.png" />
     <None Remove="Assets\Images\vehicle_9.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Assets\Sounds\" />
+    <None Remove="Assets\Sounds\cracker_blast_1.mp3" />
+    <None Remove="Assets\Sounds\cracker_blast_2.mp3" />
+    <None Remove="Assets\Sounds\cracker_blast_3.mp3" />
+    <None Remove="Assets\Sounds\cracker_blast_4.mp3" />
+    <None Remove="Assets\Sounds\cracker_drop_1.mp3" />
+    <None Remove="Assets\Sounds\cracker_drop_2.mp3" />
+    <None Remove="Assets\Sounds\rocket_blast_1.mp3" />
+    <None Remove="Assets\Sounds\rocket_blast_2.mp3" />
+    <None Remove="Assets\Sounds\rocket_blast_3.mp3" />
+    <None Remove="Assets\Sounds\rocket_launch_1.mp3" />
+    <None Remove="Assets\Sounds\rocket_launch_2.mp3" />
+    <None Remove="Assets\Sounds\rocket_launch_3.mp3" />
   </ItemGroup> 
 </Project>
