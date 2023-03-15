@@ -2635,7 +2635,7 @@ namespace HonkTrooper
                 generationAction: () => { return true; },
                 startUpAction: SpawnPlayerBombGroundsInScene));
 
-            // add the clouds which are abve the player z
+            // add the clouds which are above the player z
             _scene_game.AddToScene(new Generator(
                 generationDelay: 100,
                 generationAction: GenerateCloudInScene,
