@@ -1510,6 +1510,8 @@ namespace HonkTrooper
                 !_scene_game.Children.OfType<Boss>().Any(x => x.IsAnimating) &&
                 _scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating == false) is Boss boss)
             {
+                _ambience_sound_playing?.SetVolume(0.2);
+
                 boss.IsAnimating = true;
                 boss.Reset();
                 boss.SetPosition(
@@ -1766,6 +1768,8 @@ namespace HonkTrooper
 
             if (boss.IsDead && boss.IsAttacking)
             {
+                _ambience_sound_playing?.SetVolume(0.8);
+
                 boss.IsAttacking = false;
 
                 _player.SetWinStance();
