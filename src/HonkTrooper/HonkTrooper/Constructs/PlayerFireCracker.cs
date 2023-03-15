@@ -58,7 +58,7 @@ namespace HonkTrooper
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE - 10;
 
-            _cracker_drop_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.CRACKER_DROP).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 0.1)).ToArray();
+            _cracker_drop_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.CRACKER_DROP).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 0.3)).ToArray();
             _cracker_blast_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.CRACKER_BLAST).Select(x => x.Uri).Select(uri => new Sound(uri: uri)).ToArray();
         }
 
