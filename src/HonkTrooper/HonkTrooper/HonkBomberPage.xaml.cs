@@ -2518,7 +2518,7 @@ namespace HonkTrooper
                     // if player picks up seeking bomb pickup
                     if (_player.GetCloseHitBox().IntersectsWith(hitbox))
                     {
-                        powerUpPickup1.IsPickedUp = true;
+                        powerUpPickup1.PickedUp();
 
                         // if seeking balls powerup, allow using a burst of 3 seeking bombs 3 times
                         _powerUp_health_bar.Tag = powerUpPickup1.PowerUpType;

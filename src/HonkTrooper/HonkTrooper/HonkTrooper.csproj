@@ -102,6 +102,7 @@
     <None Remove="Assets\Sounds\cracker_blast_4.mp3" />
     <None Remove="Assets\Sounds\cracker_drop_1.mp3" />
     <None Remove="Assets\Sounds\cracker_drop_2.mp3" />
+    <None Remove="Assets\Sounds\power_up_pickup_1.mp3" />
     <None Remove="Assets\Sounds\rocket_blast_1.mp3" />
     <None Remove="Assets\Sounds\rocket_blast_2.mp3" />
     <None Remove="Assets\Sounds\rocket_blast_3.mp3" />
