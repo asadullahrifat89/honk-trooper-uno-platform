@@ -37,9 +37,9 @@ namespace HonkTrooper
 
             SetSize(width: width, height: height);
 
-            Background = new SolidColorBrush(Colors.DarkGray);
+            Background = new SolidColorBrush(Colors.Black);
             CornerRadius = new CornerRadius(100);
-            Opacity = 0.8;
+            Opacity = 0.3;
 
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;
             IsometricDisplacement = 0.5;
@@ -51,8 +51,6 @@ namespace HonkTrooper
 
         public void SetParent(Construct construct)
         {
-            // linking this shadow instance with a construct
-
             Id = construct.Id;
             ParentConstruct = construct;
         }
@@ -65,8 +63,7 @@ namespace HonkTrooper
         }
 
         public void SyncWidth()
-        {
-            // adjust shadow with with the source
+        {            
             if (Width != ParentConstruct.Width * 0.6)
                 Width = ParentConstruct.Width * 0.6;
         }
