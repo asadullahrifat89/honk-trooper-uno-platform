@@ -767,28 +767,34 @@ namespace HonkTrooper
 
         private bool GeneratePlayerFireCrackerInScene()
         {
-            if (_scene_game.SceneState == SceneState.GAME_RUNNING && !_scene_game.IsSlowMotionActivated &&
-                _scene_game.Children.OfType<Vehicle>().Any(x => x.IsAnimating && x.WillHonk) &&
-                _scene_game.Children.OfType<PlayerFireCracker>().FirstOrDefault(x => x.IsAnimating == false) is PlayerFireCracker bomb)
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING && !_scene_game.IsSlowMotionActivated)
             {
-                _player.SetAttackStance();
+                if (_scene_game.Children.OfType<Vehicle>().Any(x => x.IsAnimating && x.WillHonk) &&
+                    _scene_game.Children.OfType<PlayerFireCracker>().FirstOrDefault(x => x.IsAnimating == false) is PlayerFireCracker bomb)
+                {
+                    _player.SetAttackStance();
 
-                bomb.Reset();
-                bomb.IsAnimating = true;
-                bomb.IsGravitating = true;
-                bomb.SetPopping();
+                    bomb.Reset();
+                    bomb.IsAnimating = true;
+                    bomb.IsGravitating = true;
+                    bomb.SetPopping();
 
-                bomb.SetRotation(_random.Next(-30, 30));
+                    bomb.SetRotation(_random.Next(-30, 30));
 
-                bomb.Reposition(
-                    player: _player,
-                    downScaling: _scene_game.DownScaling);
+                    bomb.Reposition(
+                        player: _player,
+                        downScaling: _scene_game.DownScaling);
 
-                SyncDropShadow(bomb);
+                    SyncDropShadow(bomb);
 
-                // Console.WriteLine("Player Ground Bomb dropped.");
+                    // Console.WriteLine("Player Ground Bomb dropped.");
 
-                return true;
+                    return true;
+                }
+                else
+                {
+                    _player.SetWinStance();
+                }
             }
 
             return false;
