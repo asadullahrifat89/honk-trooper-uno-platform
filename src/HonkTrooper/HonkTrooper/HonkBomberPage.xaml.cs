@@ -2763,27 +2763,27 @@ namespace HonkTrooper
             _ambience_sound_playing = _ambience_sounds[_random.Next(0, _ambience_sounds.Length)];
             _ambience_sound_playing.Play();
 
-            _game_background_music_sound_playing?.Stop();
-            _game_background_music_sound_playing = _game_background_music_sounds[_random.Next(0, _game_background_music_sounds.Length)];
-            _game_background_music_sound_playing.Play();
+            //_game_background_music_sound_playing?.Stop();
+            //_game_background_music_sound_playing = _game_background_music_sounds[_random.Next(0, _game_background_music_sounds.Length)];
+            //_game_background_music_sound_playing.Play();
         }
 
         private void PauseSoundLoops()
         {
             _ambience_sound_playing?.Pause();
-            _game_background_music_sound_playing?.Pause();
+            //_game_background_music_sound_playing?.Pause();
         }
 
         private void ResumeSoundLoops()
         {
             _ambience_sound_playing?.Resume();
-            _game_background_music_sound_playing?.Resume();
+            //_game_background_music_sound_playing?.Resume();
         }
 
         private void StopSoundLoops()
         {
             _ambience_sound_playing?.Stop();
-            _game_background_music_sound_playing?.Stop();
+            //_game_background_music_sound_playing?.Stop();
         }
 
         private void PlayGameStartSound()
@@ -2800,9 +2800,9 @@ namespace HonkTrooper
 
         private void PlayGameBackgroundSound()
         {
-            _game_background_music_sound_playing?.Stop();
-            _game_background_music_sound_playing = _game_background_music_sounds[_random.Next(0, _game_background_music_sounds.Length)];
-            _game_background_music_sound_playing.Play();
+            //_game_background_music_sound_playing?.Stop();
+            //_game_background_music_sound_playing = _game_background_music_sounds[_random.Next(0, _game_background_music_sounds.Length)];
+            //_game_background_music_sound_playing.Play();
         }
 
         private void StopGameBackgroundSound()
