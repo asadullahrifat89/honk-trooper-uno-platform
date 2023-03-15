@@ -16,6 +16,16 @@ namespace HonkTrooper
 
         #endregion
 
+        #region Properties
+
+        public bool IsPlaying { get; set; }
+
+        public bool IsPaused { get; set; }
+
+        public bool IsStopped { get; set; }
+
+        #endregion
+
         #region Ctor
 
         public Audio(
@@ -80,21 +90,29 @@ namespace HonkTrooper
 
         public void Play()
         {
+            IsPlaying = true;
+            IsStopped = false;
             this.ExecuteJavascript("element.currentTime = 0; element.play();");
         }
 
         public void Stop()
         {
+            IsPlaying = false;
+            IsStopped = true;
             this.ExecuteJavascript("element.pause(); element.currentTime = 0;");
         }
 
         public void Pause()
         {
+            IsPlaying = false;
+            IsPaused = true;
             this.ExecuteJavascript("element.pause();");
         }
 
         public void Resume()
         {
+            IsPlaying = true;
+            IsPaused = true;
             this.ExecuteJavascript("element.play();");
         }
 
