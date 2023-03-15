@@ -76,7 +76,7 @@ namespace HonkTrooper
             IsometricDisplacement = 0.5;
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET - 0.5;
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE;
-                        
+
             _boss_hovering_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.BOSS_HOVERING).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 0.9, loop: true)).ToArray();
             _boss_background_music_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.BOSS_BACKGROUND_MUSIC).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 0.7, loop: true)).ToArray();
 
@@ -113,11 +113,7 @@ namespace HonkTrooper
             var sound = _boss_entry_sounds[_random.Next(0, _boss_entry_sounds.Length)];
             sound.Play();
 
-            _boss_hovering_sound_playing = _boss_hovering_sounds[_random.Next(0, _boss_hovering_sounds.Length)];
-            _boss_hovering_sound_playing.Play();
-
-            _boss_background_music_sound_playing = _boss_background_music_sounds[_random.Next(0, _boss_background_music_sounds.Length)];
-            _boss_background_music_sound_playing.Play();
+            PlaySoundLoops();
 
             Opacity = 1;
             Health = 100;
@@ -223,12 +219,17 @@ namespace HonkTrooper
 
             if (IsDead)
             {
-                _boss_hovering_sound_playing?.Stop();
-                _boss_background_music_sound_playing?.Stop();
+                StopSoundLoops();
 
                 var sound = _boss_dead_sounds[_random.Next(0, _boss_dead_sounds.Length)];
                 sound.Play();
-            }                
+            }
+        }
+
+        public void StopSoundLoops()
+        {
+            _boss_hovering_sound_playing?.Stop();
+            _boss_background_music_sound_playing?.Stop();
         }
 
         public void Move(double speed, double sceneWidth, double sceneHeight, Rect playerPoint)
@@ -443,6 +444,15 @@ namespace HonkTrooper
             //return flightSpeed < Constants.DEFAULT_SPEED_OFFSET - 1 
             //    ? Constants.DEFAULT_SPEED_OFFSET - 1 
             //    : flightSpeed;
+        }
+
+        private void PlaySoundLoops()
+        {
+            _boss_hovering_sound_playing = _boss_hovering_sounds[_random.Next(0, _boss_hovering_sounds.Length)];
+            _boss_hovering_sound_playing.Play();
+
+            _boss_background_music_sound_playing = _boss_background_music_sounds[_random.Next(0, _boss_background_music_sounds.Length)];
+            _boss_background_music_sound_playing.Play();
         }
 
         #endregion
