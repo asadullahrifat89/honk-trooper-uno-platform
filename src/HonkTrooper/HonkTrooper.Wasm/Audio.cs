@@ -8,27 +8,31 @@ namespace HonkTrooper.Wasm
         #region Fields
 
         private Action _playback;
-        //private string _source;
-        //private double _volume;
-        //private bool _loop;
+        private string _baseUrl;
 
         #endregion
 
         #region Ctor
 
         public Audio(
-            string source,
+            Uri uri,
             double volume = 1.0,
             bool loop = false,
             Action playback = null)
         {
+            var indexUrl = Uno.Foundation.WebAssemblyRuntime.InvokeJS("window.location.href;");
+            var appPackageId = Environment.GetEnvironmentVariable("UNO_BOOTSTRAP_APP_BASE");
+
+            _baseUrl = $"{indexUrl}{appPackageId}";
+
             var audio = "element.style.display = \"none\"; " +
-                "element.controls = false; " +
-                $"element.src = \"{source}\"; " +
-                $"element.volume = {volume}; " +
-                $"element.loop = {loop.ToString().ToLower()}; ";
+                "element.controls = false;";
 
             this.ExecuteJavascript(audio);
+
+            SetSource(uri);
+            SetVolume(volume);
+            SetLoop(loop);
 
             if (playback is not null)
             {
@@ -36,16 +40,23 @@ namespace HonkTrooper.Wasm
                 this.RegisterHtmlEventHandler("ended", EndedEvent);
             }
 
-            Console.WriteLine("source: " + source + " volume: " + volume.ToString() + " loop: " + loop.ToString().ToLower());
+            Console.WriteLine("source: " + uri + " volume: " + volume.ToString() + " loop: " + loop.ToString().ToLower());
         }
 
         #endregion
 
         #region Methods
 
-        public void SetSource(string source)
+        public void SetSource(Uri uri)
         {
+            var source = $"{_baseUrl}/{uri.AbsoluteUri.Replace("ms-appx:///", "")}";
+
             this.ExecuteJavascript($"element.src = \"{source}\"; ");
+        }
+
+        public void SetLoop(bool loop)
+        {
+            this.ExecuteJavascript($"element.loop = {loop.ToString().ToLower()};");
         }
 
         public void Play()

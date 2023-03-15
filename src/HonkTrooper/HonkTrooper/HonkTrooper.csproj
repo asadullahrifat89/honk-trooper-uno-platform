@@ -81,5 +81,8 @@
     <None Remove="Assets\Images\vehicle_7.png" />
     <None Remove="Assets\Images\vehicle_8.png" />
     <None Remove="Assets\Images\vehicle_9.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Assets\Sounds\" />
   </ItemGroup> 
 </Project>
