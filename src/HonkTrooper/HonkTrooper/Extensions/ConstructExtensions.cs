@@ -97,8 +97,8 @@ namespace HonkTrooper
 
         public static Rect GetDistantHitBox(this Construct Construct)
         {
-            var maxWidth = (Construct.Width * 4);
-            var maxHeight = (Construct.Height * 4);
+            var maxWidth = (Construct.Width * 3);
+            var maxHeight = (Construct.Height * 3);
 
             return new Rect(
                 x: Construct.GetLeft() - maxWidth,

@@ -582,9 +582,17 @@ namespace HonkTrooper
 
                 SyncDropShadow(PlayerRocket);
 
-                BossRocketSeeking BossRocketSeeking = _scene_game.Children.OfType<BossRocketSeeking>().FirstOrDefault(x => x.IsAnimating);
-                Boss boss = _scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking);
-                Enemy enemy = _scene_game.Children.OfType<Enemy>().FirstOrDefault(x => x.IsAnimating);
+                var playerDistantHitBox = _player.GetDistantHitBox();
+
+                // get closest possible target
+                BossRocketSeeking bossRocketSeeking = _scene_game.Children.OfType<BossRocketSeeking>().FirstOrDefault(x => x.IsAnimating && x.GetHitBox().IntersectsWith(playerDistantHitBox));
+                Boss boss = _scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetHitBox().IntersectsWith(playerDistantHitBox));
+                Enemy enemy = _scene_game.Children.OfType<Enemy>().FirstOrDefault(x => x.IsAnimating && x.GetHitBox().IntersectsWith(playerDistantHitBox));
+
+                // if not found then find random target
+                bossRocketSeeking ??= _scene_game.Children.OfType<BossRocketSeeking>().FirstOrDefault(x => x.IsAnimating);
+                boss ??= _scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking);
+                enemy ??= _scene_game.Children.OfType<Enemy>().FirstOrDefault(x => x.IsAnimating);
 
                 // Console.WriteLine("Player Bomb dropped.");
 
@@ -592,15 +600,15 @@ namespace HonkTrooper
 
                 if (enemy is not null)
                 {
-                    SetPlayerRocketDirection(PlayerRocket, enemy);
+                    SetPlayerRocketDirection(playerRocket: PlayerRocket, target: enemy);
                 }
-                else if (BossRocketSeeking is not null)
+                else if (bossRocketSeeking is not null)
                 {
-                    SetPlayerRocketDirection(PlayerRocket, BossRocketSeeking);
+                    SetPlayerRocketDirection(playerRocket: PlayerRocket, target: bossRocketSeeking);
                 }
                 else if (boss is not null)
                 {
-                    SetPlayerRocketDirection(PlayerRocket, boss);
+                    SetPlayerRocketDirection(playerRocket: PlayerRocket, target: boss);
                 }
 
                 #endregion
@@ -611,33 +619,33 @@ namespace HonkTrooper
             return false;
         }
 
-        private void SetPlayerRocketDirection(PlayerRocket PlayerRocket, Construct target)
+        private void SetPlayerRocketDirection(PlayerRocket playerRocket, Construct target)
         {
             if (_player.GetLeft() < target.GetLeft()) // player is on the left side of the target
             {
                 if ((_player.GetTop() > target.GetTop())) // player is below the target
                 {
-                    PlayerRocket.AwaitMoveRight = true;
-                    PlayerRocket.SetRotation(-33);
+                    playerRocket.AwaitMoveRight = true;
+                    playerRocket.SetRotation(-33);
                 }
                 else // player is above the target
                 {
-                    PlayerRocket.AwaitMoveDown = true;
-                    PlayerRocket.SetRotation(123);
+                    playerRocket.AwaitMoveDown = true;
+                    playerRocket.SetRotation(123);
                 }
             }
             else if (_player.GetLeft() > target.GetLeft()) // player is on the right side of the target
             {
                 if ((_player.GetTop() > target.GetTop())) // player is below the target
                 {
-                    PlayerRocket.AwaitMoveUp = true;
-                    PlayerRocket.SetRotation(213);
+                    playerRocket.AwaitMoveUp = true;
+                    playerRocket.SetRotation(213);
 
                 }
                 else // player is above the target
                 {
-                    PlayerRocket.AwaitMoveLeft = true;
-                    PlayerRocket.SetRotation(123);
+                    playerRocket.AwaitMoveLeft = true;
+                    playerRocket.SetRotation(123);
                 }
             }
         }
@@ -760,6 +768,7 @@ namespace HonkTrooper
         private bool GeneratePlayerFireCrackerInScene()
         {
             if (_scene_game.SceneState == SceneState.GAME_RUNNING && !_scene_game.IsSlowMotionActivated &&
+                _scene_game.Children.OfType<Vehicle>().Any(x => x.IsAnimating && x.WillHonk) &&
                 _scene_game.Children.OfType<PlayerFireCracker>().FirstOrDefault(x => x.IsAnimating == false) is PlayerFireCracker bomb)
             {
                 _player.SetAttackStance();
