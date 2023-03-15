@@ -113,6 +113,7 @@
     <None Remove="Assets\Sounds\game_pause.mp3" />
     <None Remove="Assets\Sounds\game_start.mp3" />
     <None Remove="Assets\Sounds\health_pickup_1.mp3" />
+    <None Remove="Assets\Sounds\level_up.mp3" />
     <None Remove="Assets\Sounds\orb_launch.mp3" />
     <None Remove="Assets\Sounds\player_health_loss_1.mp3" />
     <None Remove="Assets\Sounds\power_up_pickup_1.mp3" />
