@@ -14,6 +14,23 @@ namespace HonkTrooper
 
         #endregion
 
+        #region Ctor
+
+        public Audio(
+           Uri uri,
+           double volume = 1.0,
+           bool loop = false,
+           Action playback = null)
+        {
+            Initialize(
+                uri: uri,
+                volume: volume,
+                loop: loop,
+                playback: playback);
+        } 
+
+        #endregion
+
         #region Methods
 
         public void Initialize(
