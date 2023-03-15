@@ -43,6 +43,8 @@ namespace HonkTrooper
 
         private readonly Sound[] _ambience_sounds;
         private readonly Sound[] _game_background_music_sounds;
+        private readonly Sound[] _boss_background_music_sounds;
+
         private readonly Sound[] _enemy_entry_sounds;
         private readonly Sound[] _game_start_sounds;
         private readonly Sound[] _game_pause_sounds;
@@ -54,6 +56,7 @@ namespace HonkTrooper
         private Sound _game_over_sound_playing;
         private Sound _ambience_sound_playing;
         private Sound _game_background_music_sound_playing;
+        private Sound _boss_background_music_sound_playing;
 
         #endregion
 
@@ -81,6 +84,8 @@ namespace HonkTrooper
             _random = new Random();
 
             _game_background_music_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.GAME_BACKGROUND_MUSIC).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 0.5, loop: true)).ToArray();
+            _boss_background_music_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.BOSS_BACKGROUND_MUSIC).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 0.6, loop: true)).ToArray();
+
             _ambience_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.AMBIENCE).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 0.4, loop: true)).ToArray();
 
             _game_start_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.GAME_START).Select(x => x.Uri).Select(uri => new Sound(uri: uri)).ToArray();
@@ -102,6 +107,7 @@ namespace HonkTrooper
         private void PauseGame()
         {
             PlayGamePauseSound();
+
             PauseSoundLoops();
 
             ToggleHudVisibility(Visibility.Collapsed);
@@ -265,9 +271,10 @@ namespace HonkTrooper
             if (_player.IsDead)
             {
                 StopSoundLoops();
+                StopBossBackgroundMusic();
 
                 if (_scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating) is Boss boss)
-                    boss.StopSoundLoops();
+                    boss.StopSoundLoop();
 
                 PlayGameOverSound();
 
@@ -1623,7 +1630,9 @@ namespace HonkTrooper
                 !_scene_game.Children.OfType<Boss>().Any(x => x.IsAnimating) &&
                 _scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating == false) is Boss boss)
             {
-                StopGameBackgroundSound();
+                StopGameBackgroundMusic();
+                PlayBossBackgroundMusic();
+
                 _ambience_sound_playing?.SetVolume(0.2);
 
                 boss.IsAnimating = true;
@@ -1882,7 +1891,8 @@ namespace HonkTrooper
 
             if (boss.IsDead && boss.IsAttacking)
             {
-                PlayGameBackgroundSound();
+                StopBossBackgroundMusic();
+                PlayGameBackgroundMusic();
                 _ambience_sound_playing?.SetVolume(0.8);
 
                 boss.IsAttacking = false;
@@ -2957,32 +2967,105 @@ namespace HonkTrooper
 
         private void PlaySoundLoops()
         {
-            _ambience_sound_playing?.Stop();
-            _ambience_sound_playing = _ambience_sounds[_random.Next(0, _ambience_sounds.Length)];
-            _ambience_sound_playing.Play();
-
-            //_game_background_music_sound_playing?.Stop();
-            //_game_background_music_sound_playing = _game_background_music_sounds[_random.Next(0, _game_background_music_sounds.Length)];
-            //_game_background_music_sound_playing.Play();
+            PlayAmbienceSound();
+            PlayGameBackgroundMusic();
         }
 
         private void PauseSoundLoops()
         {
-            _ambience_sound_playing?.Pause();
-            //_game_background_music_sound_playing?.Pause();
+            PauseAmbienceSound();
+            PauseGameBackgroundMusic();
+
+            if (BossExistsInScene())
+                PauseBossBackgroundMusic();
         }
 
         private void ResumeSoundLoops()
         {
-            _ambience_sound_playing?.Resume();
-            //_game_background_music_sound_playing?.Resume();
+            ResumeAmbienceSound();
+
+            if (BossExistsInScene())
+                ResumeBossBackgroundMusic();
+            else
+                ResumeGameBackgroundMusic();
         }
 
         private void StopSoundLoops()
         {
-            _ambience_sound_playing?.Stop();
-            //_game_background_music_sound_playing?.Stop();
+            StopAmbienceSound();
+            StopGameBackgroundMusic();
         }
+
+
+        private void PlayAmbienceSound()
+        {
+            _ambience_sound_playing?.Stop();
+            _ambience_sound_playing = _ambience_sounds[_random.Next(0, _ambience_sounds.Length)];
+            _ambience_sound_playing.Play();
+        }
+
+        private void PauseAmbienceSound()
+        {
+            _ambience_sound_playing?.Pause();
+        }
+
+        private void ResumeAmbienceSound()
+        {
+            _ambience_sound_playing?.Resume();
+        }
+
+        private void StopAmbienceSound()
+        {
+            _ambience_sound_playing?.Stop();
+        }
+
+
+
+        private void PlayGameBackgroundMusic()
+        {
+            _game_background_music_sound_playing?.Stop();
+            _game_background_music_sound_playing = _game_background_music_sounds[_random.Next(0, _game_background_music_sounds.Length)];
+            _game_background_music_sound_playing.Play();
+        }
+
+        private void PauseGameBackgroundMusic()
+        {
+            _game_background_music_sound_playing.Pause();
+        }
+
+        private void ResumeGameBackgroundMusic()
+        {
+            _game_background_music_sound_playing.Play();
+        }
+
+        private void StopGameBackgroundMusic()
+        {
+            _game_background_music_sound_playing?.Stop();
+        }
+
+
+        private void PlayBossBackgroundMusic()
+        {
+            _boss_background_music_sound_playing?.Stop();
+            _boss_background_music_sound_playing = _boss_background_music_sounds[_random.Next(0, _boss_background_music_sounds.Length)];
+            _boss_background_music_sound_playing.Play();
+        }
+
+        private void PauseBossBackgroundMusic()
+        {
+            _boss_background_music_sound_playing?.Pause();
+        }
+
+        private void ResumeBossBackgroundMusic()
+        {
+            _boss_background_music_sound_playing?.Resume();
+        }
+
+        private void StopBossBackgroundMusic()
+        {
+            _boss_background_music_sound_playing?.Stop();
+        }
+
 
         private void PlayGameStartSound()
         {
@@ -3000,18 +3083,6 @@ namespace HonkTrooper
         {
             _game_over_sound_playing = _game_over_sounds[_random.Next(0, _game_over_sounds.Length)];
             _game_over_sound_playing.Play();
-        }
-
-        private void PlayGameBackgroundSound()
-        {
-            //_game_background_music_sound_playing?.Stop();
-            //_game_background_music_sound_playing = _game_background_music_sounds[_random.Next(0, _game_background_music_sounds.Length)];
-            //_game_background_music_sound_playing.Play();
-        }
-
-        private void StopGameBackgroundSound()
-        {
-            _game_background_music_sound_playing?.Stop();
         }
 
         #endregion
@@ -3043,7 +3114,7 @@ namespace HonkTrooper
 
             ScreenExtensions.EnterFullScreen(true);
 
-            PlayGameBackgroundSound();
+            PlayGameBackgroundMusic();
         }
 
         private void HonkBomberPage_Unloaded(object sender, RoutedEventArgs e)
