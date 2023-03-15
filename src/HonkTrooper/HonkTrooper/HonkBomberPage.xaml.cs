@@ -42,9 +42,11 @@ namespace HonkTrooper
         private bool _enemy_appeared;
 
         private readonly Sound[] _ambience_sounds;
+        private readonly Sound[] _game_background_sounds;
         private readonly Sound[] _enemy_entry_sounds;
 
         private Sound _ambience_sound_playing;
+        private Sound _game_background_sound_playing;
 
         #endregion
 
@@ -72,6 +74,8 @@ namespace HonkTrooper
             _random = new Random();
 
             _ambience_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.AMBIENCE).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 0.8, loop: true)).ToArray();
+            _game_background_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.GAME_BACKGROUND_MUSIC).Select(x => x.Uri).Select(uri => new Sound(uri: uri, volume: 0.8, loop: true)).ToArray();
+
             _enemy_entry_sounds = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == SoundType.ENEMY_ENTRY).Select(x => x.Uri).Select(uri => new Sound(uri: uri)).ToArray();
 
             Loaded += HonkBomberPage_Loaded;
@@ -87,6 +91,7 @@ namespace HonkTrooper
         private void PauseGame()
         {
             _ambience_sound_playing?.Pause();
+            _game_background_sound_playing?.Pause();
 
             ToggleHudVisibility(Visibility.Collapsed);
 
@@ -99,6 +104,7 @@ namespace HonkTrooper
         private void ResumeGame(TitleScreen se)
         {
             _ambience_sound_playing?.Resume();
+            _game_background_sound_playing?.Resume();
 
             ToggleHudVisibility(Visibility.Visible);
 
@@ -112,8 +118,8 @@ namespace HonkTrooper
 
         private void NewGame(TitleScreen se)
         {
-            _ambience_sound_playing = _ambience_sounds[_random.Next(0, _ambience_sounds.Length)];
-            _ambience_sound_playing.Play();
+            PlayAmbienceSound();
+            PlayGameBackgroundSound();
 
             _game_controller.Reset();
 
@@ -2732,6 +2738,34 @@ namespace HonkTrooper
 
         #endregion
 
+        #region Sound
+
+        private void PlayAmbienceSound()
+        {
+            StopAmbienceSound();
+            _ambience_sound_playing = _ambience_sounds[_random.Next(0, _ambience_sounds.Length)];
+            _ambience_sound_playing.Play();
+        }
+
+        private void PlayGameBackgroundSound()
+        {
+            StopGameBackgroundSound();
+            _game_background_sound_playing = _game_background_sounds[_random.Next(0, _game_background_sounds.Length)];
+            _game_background_sound_playing.Play();
+        }
+
+        private void StopGameBackgroundSound()
+        {
+            _game_background_sound_playing?.Stop();
+        }
+
+        private void StopAmbienceSound()
+        {
+            _ambience_sound_playing?.Stop();
+        }
+
+        #endregion
+
         #endregion
 
         #region Events
@@ -2758,6 +2792,8 @@ namespace HonkTrooper
                 ScreenExtensions.SetDisplayOrientation(ScreenExtensions.RequiredDisplayOrientation);
 
             ScreenExtensions.EnterFullScreen(true);
+
+            PlayGameBackgroundSound();
         }
 
         private void HonkBomberPage_Unloaded(object sender, RoutedEventArgs e)
