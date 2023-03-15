@@ -102,6 +102,7 @@ namespace HonkTrooper
 
             new (ConstructType.BOSS, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_3_idle.png")),
             new (ConstructType.BOSS_HIT, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_3_hit.png")),
+            new (ConstructType.BOSS_WIN, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_3_win.png")),
 
             new (ConstructType.BOSS_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_1.png")),
             new (ConstructType.BOSS_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_2.png")),
@@ -182,6 +183,53 @@ namespace HonkTrooper
 
             new (SoundType.LEVEL_UP, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/level_up.mp3")),
         };
+    }    
+
+    public enum ConstructType
+    {
+        NONE,
+
+        PLAYER,
+        PLAYER_IDLE,
+        PLAYER_ATTACK,
+        PLAYER_WIN,
+        PLAYER_HIT,
+
+        PLAYER_ROCKET,
+        PLAYER_ROCKET_SEEKING,
+        PLAYER_FIRE_CRACKER,
+
+        VEHICLE_SMALL,
+        VEHICLE_LARGE,
+
+        ROAD_SLAB,
+        ROAD_MARK,
+        HONK,
+        TREE,
+        CLOUD,
+
+        BOMB_BLAST,
+        DROP_SHADOW,
+
+        BOSS,
+        BOSS_IDLE,
+        BOSS_HIT,
+        BOSS_WIN,
+
+        BOSS_ROCKET,
+        BOSS_ROCKET_SEEKING,
+
+        ENEMY,
+        ENEMY_ROCKET,
+
+        HEALTH_PICKUP,
+        POWERUP_PICKUP,
+        POWERUP_PICKUP_SEEKING_BALLS,
+        POWERUP_PICKUP_FORCE_SHIELD,
+        COLLECTABLE_PICKUP,
+
+        TITLE_SCREEN,
+        INTERIM_SCREEN,
     }
 
     public enum SoundType
@@ -219,51 +267,5 @@ namespace HonkTrooper
         ORB_LAUNCH,
 
         LEVEL_UP
-    }
-
-    public enum ConstructType
-    {
-        NONE,
-
-        PLAYER,
-        PLAYER_IDLE,
-        PLAYER_ATTACK,
-        PLAYER_WIN,
-        PLAYER_HIT,
-
-        PLAYER_ROCKET,
-        PLAYER_ROCKET_SEEKING,
-        PLAYER_FIRE_CRACKER,
-
-        VEHICLE_SMALL,
-        VEHICLE_LARGE,
-
-        ROAD_SLAB,
-        ROAD_MARK,
-        HONK,
-        TREE,
-        CLOUD,
-
-        BOMB_BLAST,
-        DROP_SHADOW,
-
-        BOSS,
-        BOSS_IDLE,
-        BOSS_HIT,
-
-        BOSS_ROCKET,
-        BOSS_ROCKET_SEEKING,
-
-        ENEMY,
-        ENEMY_ROCKET,
-
-        HEALTH_PICKUP,
-        POWERUP_PICKUP,
-        POWERUP_PICKUP_SEEKING_BALLS,
-        POWERUP_PICKUP_FORCE_SHIELD,
-        COLLECTABLE_PICKUP,
-
-        TITLE_SCREEN,
-        INTERIM_SCREEN,
     }
 }
