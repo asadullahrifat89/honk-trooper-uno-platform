@@ -1133,6 +1133,25 @@ namespace HonkTrooper
 
         private void PreventVehicleOverlapping(Construct vehicle)
         {
+            var vehicle_distantHitBox = vehicle.GetDistantHitBox();
+
+            // fix vehicle z order
+            //if (_scene_game.Children.OfType<Vehicle>().FirstOrDefault(x => x.GetDistantHitBox() is Rect x_DistantHitBox &&
+            //    x_DistantHitBox.IntersectsWith(vehicle_distantHitBox) &&
+            //    vehicle_distantHitBox.Bottom > x_DistantHitBox.Bottom &&
+            //    vehicle.GetZ() <= x.GetZ()) is Vehicle belowVehicle)
+            //{
+            //    vehicle.SetZ(belowVehicle.GetZ() + 1);
+            //}
+
+            //if (_scene_game.Children.OfType<Vehicle>().FirstOrDefault(x => x.GetDistantHitBox() is Rect x_DistantHitBox &&
+            //    x_DistantHitBox.IntersectsWith(vehicle_distantHitBox) &&
+            //    vehicle_distantHitBox.Bottom < x_DistantHitBox.Bottom &&
+            //    vehicle.GetZ() >= x.GetZ()) is Vehicle overVehicle)
+            //{
+            //    vehicle.SetZ(overVehicle.GetZ() - 1);
+            //}
+
             if (_scene_game.Children.OfType<Vehicle>().FirstOrDefault(x => x.IsAnimating && x.GetHorizontalHitBox().IntersectsWith(vehicle.GetHorizontalHitBox())) is Construct collidingVehicle)
             {
                 var hitBox = vehicle.GetHitBox();
