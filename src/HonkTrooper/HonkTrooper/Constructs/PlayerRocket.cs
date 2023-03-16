@@ -120,25 +120,25 @@ namespace HonkTrooper
             IsBlasting = true;
         }
 
-        public void MoveLeft(double speed)
+        public void MoveBottomLeft(double speed)
         {
             SetLeft(GetLeft() - speed);
             SetTop(GetTop() + speed);
         }
 
-        public void MoveRight(double speed)
+        public void MoveTopRight(double speed)
         {
             SetLeft(GetLeft() + speed);
             SetTop(GetTop() - speed);
         }
 
-        public void MoveUp(double speed)
+        public void MoveTopLeft(double speed)
         {
             SetLeft(GetLeft() - speed);
             SetTop(GetTop() - speed * IsometricDisplacement);
         }
 
-        public void MoveDown(double speed)
+        public void MoveBottomRight(double speed)
         {
             SetLeft(GetLeft() + speed);
             SetTop(GetTop() + speed * IsometricDisplacement);
