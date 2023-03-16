@@ -10,7 +10,6 @@ namespace HonkTrooper
 {
     public partial class Controller : ControllerBase
     {
-
         #region Fields
 
         //private int _move_up_activator;
@@ -25,7 +24,9 @@ namespace HonkTrooper
 
         #region Properties
 
-        public Grid Joystick { get; set; }
+        public Border JoyStick { get; set; }
+
+        public Grid Keypad { get; set; }
 
         public Button AttackButton { get; set; }
 
@@ -38,6 +39,8 @@ namespace HonkTrooper
         public double AngularVelocityY { get; set; }
 
         public double AngularVelocityZ { get; set; }
+
+        public bool JoyStickActive { get; set; }
 
         #endregion
 
@@ -53,9 +56,8 @@ namespace HonkTrooper
             KeyUp += Controller_KeyUp;
             KeyDown += Controller_KeyDown;
 
-            SetJoyStick();
-
-            // TODO: this to be set upon player confirmation
+            SetJoystick();
+            //SetKeypad();            
             //SetGyrometer();             
         }
 
@@ -63,22 +65,310 @@ namespace HonkTrooper
 
         #region Methods
 
-        public void SetJoyStick()
+        public void SetJoystick()
         {
-            Joystick = new()
+            JoyStick = new Border()
+            {
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 3,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 3,
+                Background = new SolidColorBrush(Colors.Goldenrod),
+                CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS * 3),
+                BorderBrush = new SolidColorBrush(Colors.White),
+                BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
+                HorizontalAlignment = HorizontalAlignment.Right,
+                VerticalAlignment = VerticalAlignment.Bottom,
+                Margin = new Thickness(20),
+            };
+
+            Canvas canvas = new Canvas()
+            {
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 3,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 3,
+            };
+
+
+            Construct upLeft = new()
+            {
+                Tag = MovementDirection.UpLeft,
+                Background = new SolidColorBrush(Colors.Goldenrod),
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                Child = new SymbolIcon()
+                {
+                    Symbol = Symbol.Up,
+                },
+                RenderTransformOrigin = new Point(0.5, 0.5),
+                RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = -45 },
+            };
+
+            Construct up = new()
+            {
+                Tag = MovementDirection.Up,
+                Background = new SolidColorBrush(Colors.Goldenrod),
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                Child = new SymbolIcon()
+                {
+                    Symbol = Symbol.Up,
+                },
+                RenderTransformOrigin = new Point(0.5, 0.5),
+            };
+
+            Construct upRight = new()
+            {
+                Tag = MovementDirection.UpRight,
+                Background = new SolidColorBrush(Colors.Goldenrod),
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                Child = new SymbolIcon()
+                {
+                    Symbol = Symbol.Forward,
+                },
+                RenderTransformOrigin = new Point(0.5, 0.5),
+                RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = -45 },
+            };
+
+            Construct left = new()
+            {
+                Tag = MovementDirection.Left,
+                Background = new SolidColorBrush(Colors.Goldenrod),
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                Child = new SymbolIcon()
+                {
+                    Symbol = Symbol.Back,
+                },
+                RenderTransformOrigin = new Point(0.5, 0.5),
+            };
+
+            Construct right = new()
+            {
+                Tag = MovementDirection.Right,
+                Background = new SolidColorBrush(Colors.Goldenrod),
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                Child = new SymbolIcon()
+                {
+                    Symbol = Symbol.Forward,
+                },
+
+                RenderTransformOrigin = new Point(0.5, 0.5),
+            };
+
+            Construct downLeft = new()
+            {
+                Tag = MovementDirection.DownLeft,
+                Background = new SolidColorBrush(Colors.Goldenrod),
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                Child = new SymbolIcon()
+                {
+                    Symbol = Symbol.Back,
+                },
+                RenderTransformOrigin = new Point(0.5, 0.5),
+                RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = -45 },
+            };
+
+            Construct down = new()
+            {
+                Tag = MovementDirection.Down,
+                Background = new SolidColorBrush(Colors.Goldenrod),
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                Child = new SymbolIcon()
+                {
+                    Symbol = Symbol.Up
+                },
+                RenderTransformOrigin = new Point(0.5, 0.5),
+                RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = 180 },
+            };
+
+            Construct downRight = new()
+            {
+                Tag = MovementDirection.DownRight,
+                Background = new SolidColorBrush(Colors.Goldenrod),
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                Child = new SymbolIcon()
+                {
+                    Symbol = Symbol.Forward
+                },
+                RenderTransformOrigin = new Point(0.5, 0.5),
+                RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = 45 },
+            };
+
+            Construct thumb = new()
+            {
+                Tag = MovementDirection.None,
+                Background = new SolidColorBrush(Colors.Goldenrod),
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS),
+                BorderBrush = new SolidColorBrush(Colors.White),
+                BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
+            };
+
+            //upLeft.SetPosition(left: 0, top: 0);
+            //canvas.Children.Add(upLeft);
+
+            up.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE, top: 0);
+            canvas.Children.Add(up);
+
+            //upRight.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2, top: 0);
+            //canvas.Children.Add(upRight);
+
+            left.SetPosition(left: 0, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE);
+            canvas.Children.Add(left);
+
+            right.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE);
+            canvas.Children.Add(right);
+
+            //downLeft.SetPosition(left: 0, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2);
+            //canvas.Children.Add(downLeft);
+
+            down.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2);
+            canvas.Children.Add(down);
+
+            //downRight.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2);
+            //canvas.Children.Add(downRight);
+
+            thumb.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE);
+            canvas.Children.Add(thumb);
+
+            canvas.PointerPressed += (s, e) =>
+            {
+                DeactivateMoveUp();
+                DeactivateMoveDown();
+                DeactivateMoveLeft();
+                DeactivateMoveRight();
+
+                //Microsoft.UI.Input.PointerPoint point = e.GetCurrentPoint(canvas);
+
+                //thumb.SetPosition(left: point.Position.X - thumb.Width / 2, top: point.Position.Y - thumb.Height / 2);
+
+                JoyStickActive = true;
+            };
+            canvas.PointerMoved += (s, e) =>
+            {
+                if (JoyStickActive)
+                {
+                    Microsoft.UI.Input.PointerPoint point = e.GetCurrentPoint(canvas);
+                    thumb.SetPosition(left: point.Position.X - thumb.Width / 2, top: point.Position.Y - thumb.Height / 2);
+
+                    //if (thumb.GetHitBox().IntersectsWith(upLeft.GetCloseHitBox()))
+                    //{
+                    //    ActivateMoveUp();
+                    //    ActivateMoveLeft();
+                    //}
+                    //else
+                    //{
+                    //    DeactivateMoveUp();
+                    //    DeactivateMoveLeft();
+                    //}
+
+                    if (thumb.GetHitBox().IntersectsWith(up.GetCloseHitBox()))
+                    {
+                        ActivateMoveUp();
+                    }
+                    else
+                    {
+                        DeactivateMoveUp();
+                    }
+
+                    //if (thumb.GetHitBox().IntersectsWith(upRight.GetCloseHitBox()))
+                    //{
+                    //    ActivateMoveUp();
+                    //    ActivateMoveRight();
+                    //}
+                    //else
+                    //{
+                    //    DeactivateMoveUp();
+                    //    DeactivateMoveRight();
+                    //}
+
+                    if (thumb.GetHitBox().IntersectsWith(left.GetCloseHitBox()))
+                    {
+                        ActivateMoveLeft();
+                    }
+                    else
+                    {
+                        DeactivateMoveLeft();
+                    }
+
+                    if (thumb.GetHitBox().IntersectsWith(right.GetCloseHitBox()))
+                    {
+                        ActivateMoveRight();
+                    }
+                    else
+                    {
+                        DeactivateMoveRight();
+                    }
+
+                    //if (thumb.GetHitBox().IntersectsWith(downLeft.GetCloseHitBox()))
+                    //{
+                    //    ActivateMoveDown();
+                    //    ActivateMoveLeft();
+                    //}
+                    //else
+                    //{
+                    //    DeactivateMoveDown();
+                    //    DeactivateMoveLeft();
+                    //}
+
+                    if (thumb.GetHitBox().IntersectsWith(down.GetCloseHitBox()))
+                    {
+                        ActivateMoveDown();
+                    }
+                    else
+                    {
+                        DeactivateMoveDown();
+                    }
+
+                    //if (thumb.GetHitBox().IntersectsWith(downRight.GetCloseHitBox()))
+                    //{
+                    //    ActivateMoveDown();
+                    //    ActivateMoveRight();
+                    //}
+                    //else
+                    //{
+                    //    DeactivateMoveDown();
+                    //    DeactivateMoveRight();
+                    //}
+                }
+            };
+            canvas.PointerReleased += (s, e) =>
+            {
+                DeactivateMoveUp();
+                DeactivateMoveDown();
+                DeactivateMoveLeft();
+                DeactivateMoveRight();
+
+                JoyStickActive = false;
+
+                thumb.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE);
+            };
+
+            JoyStick.Child = canvas;
+
+            this.Children.Add(JoyStick);
+        }
+
+        public void SetKeypad()
+        {
+            Keypad = new()
             {
                 HorizontalAlignment = HorizontalAlignment.Right,
                 VerticalAlignment = VerticalAlignment.Bottom,
                 Margin = new Thickness(20),
             };
 
-            Joystick.RowDefinitions.Add(new RowDefinition());
-            Joystick.RowDefinitions.Add(new RowDefinition());
-            Joystick.RowDefinitions.Add(new RowDefinition());
+            Keypad.RowDefinitions.Add(new RowDefinition());
+            Keypad.RowDefinitions.Add(new RowDefinition());
+            Keypad.RowDefinitions.Add(new RowDefinition());
 
-            Joystick.ColumnDefinitions.Add(new ColumnDefinition());
-            Joystick.ColumnDefinitions.Add(new ColumnDefinition());
-            Joystick.ColumnDefinitions.Add(new ColumnDefinition());
+            Keypad.ColumnDefinitions.Add(new ColumnDefinition());
+            Keypad.ColumnDefinitions.Add(new ColumnDefinition());
+            Keypad.ColumnDefinitions.Add(new ColumnDefinition());
 
             #region UpLeft
 
@@ -144,7 +434,7 @@ namespace HonkTrooper
 
             #region UpRight
 
-            Border UpRight = new()
+            Border upRight = new()
             {
                 Background = new SolidColorBrush(Colors.Goldenrod),
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
@@ -161,19 +451,19 @@ namespace HonkTrooper
                 Margin = new Thickness(Constants.DEFAULT_CONTROLLER_DIRECTION_KEYS_MARGIN),
             };
 
-            UpRight.PointerEntered += (s, e) =>
+            upRight.PointerEntered += (s, e) =>
             {
                 ActivateMoveUp();
                 ActivateMoveRight();
             };
-            UpRight.PointerExited += (s, e) =>
+            upRight.PointerExited += (s, e) =>
             {
                 DeactivateMoveUp();
                 DeactivateMoveRight();
             };
 
-            Grid.SetRow(UpRight, 0);
-            Grid.SetColumn(UpRight, 2);
+            Grid.SetRow(upRight, 0);
+            Grid.SetColumn(upRight, 2);
 
             #endregion 
 
@@ -330,18 +620,18 @@ namespace HonkTrooper
 
             #endregion
 
-            Joystick.Children.Add(upLeft);
-            Joystick.Children.Add(up);
-            Joystick.Children.Add(UpRight);
+            Keypad.Children.Add(upLeft);
+            Keypad.Children.Add(up);
+            Keypad.Children.Add(upRight);
 
-            Joystick.Children.Add(left);
-            Joystick.Children.Add(right);
+            Keypad.Children.Add(left);
+            Keypad.Children.Add(right);
 
-            Joystick.Children.Add(downLeft);
-            Joystick.Children.Add(down);
-            Joystick.Children.Add(downRight);            
+            Keypad.Children.Add(downLeft);
+            Keypad.Children.Add(down);
+            Keypad.Children.Add(downRight);
 
-            this.Children.Add(Joystick);
+            this.Children.Add(Keypad);
         }
 
         private void SetAttackButton()
