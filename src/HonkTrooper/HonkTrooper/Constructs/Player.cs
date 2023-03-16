@@ -10,10 +10,10 @@ namespace HonkTrooper
         #region Fields
 
         private readonly Random _random;
-        private readonly Uri[] _player_uris;
-        private readonly Uri[] _player_attack_uris;
-        private readonly Uri[] _player_win_uris;
-        private readonly Uri[] _player_hit_uris;
+        private Uri[] _player_uris;
+        private Uri[] _player_attack_uris;
+        private Uri[] _player_win_uris;
+        private Uri[] _player_hit_uris;
 
         private double _hoverDelay;
         private readonly double _hoverDelayDefault = 15;
@@ -54,16 +54,10 @@ namespace HonkTrooper
         public Player(
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction,
-            double downScaling,
-            int playerTemplate = 1)
+            double downScaling)
         {
             _hoverDelay = _hoverDelayDefault;
-            _random = new Random();           
-
-            _player_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER && x.Uri.OriginalString.Contains($"player_{playerTemplate}")).Select(x => x.Uri).ToArray();
-            _player_win_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_WIN && x.Uri.OriginalString.Contains($"player_{playerTemplate}")).Select(x => x.Uri).ToArray();
-            _player_hit_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_HIT && x.Uri.OriginalString.Contains($"player_{playerTemplate}")).Select(x => x.Uri).ToArray();
-            _player_attack_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_ATTACK && x.Uri.OriginalString.Contains($"player_{playerTemplate}")).Select(x => x.Uri).ToArray();
+            _random = new Random();
 
             ConstructType = ConstructType.PLAYER;
 
@@ -77,6 +71,7 @@ namespace HonkTrooper
 
             SetSize(width: width, height: height);
 
+            _player_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER).Select(x => x.Uri).ToArray();
             var uri = ConstructExtensions.GetRandomContentUri(_player_uris);
 
             _content_image = new Image()
@@ -115,8 +110,8 @@ namespace HonkTrooper
             _isMovingLeft = false;
             _isMovingRight = false;
 
-            var uri = ConstructExtensions.GetRandomContentUri(_player_uris);
-            _content_image.Source = new BitmapImage(uriSource: uri);
+            //var uri = ConstructExtensions.GetRandomContentUri(_player_uris);
+            //_content_image.Source = new BitmapImage(uriSource: uri);
 
             _movementStopDelay = _movementStopDelayDefault;
             _lastSpeed = 0;
@@ -128,6 +123,17 @@ namespace HonkTrooper
                   left: ((Scene.Width / 4) * 2) - Width / 2,
                   top: (Scene.Height / 2 - Height / 2) - 150 * Scene.DownScaling,
                   z: 6);
+        }
+
+        public void SetPlayerTemplate(int playerTemplate)
+        {
+            _player_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER && x.Uri.OriginalString.Contains($"player_{playerTemplate}")).Select(x => x.Uri).ToArray();
+            _player_win_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_WIN && x.Uri.OriginalString.Contains($"player_{playerTemplate}")).Select(x => x.Uri).ToArray();
+            _player_hit_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_HIT && x.Uri.OriginalString.Contains($"player_{playerTemplate}")).Select(x => x.Uri).ToArray();
+            _player_attack_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_ATTACK && x.Uri.OriginalString.Contains($"player_{playerTemplate}")).Select(x => x.Uri).ToArray();
+
+            var uri = ConstructExtensions.GetRandomContentUri(_player_uris);
+            _content_image.Source = new BitmapImage(uriSource: uri);
         }
 
         public void SetAttackStance()

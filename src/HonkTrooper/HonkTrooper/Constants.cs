@@ -189,6 +189,8 @@ namespace HonkTrooper
             new (SoundType.ORB_LAUNCH, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/orb_launch.mp3")),
 
             new (SoundType.LEVEL_UP, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/level_up.mp3")),
+
+            new (SoundType.OPTION_SELECT, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/option_select.mp3")),
         };
     }    
 
@@ -273,6 +275,7 @@ namespace HonkTrooper
 
         ORB_LAUNCH,
 
-        LEVEL_UP
+        LEVEL_UP,
+        OPTION_SELECT
     }
 }
