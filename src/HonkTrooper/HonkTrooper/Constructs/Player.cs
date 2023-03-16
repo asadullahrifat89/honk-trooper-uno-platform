@@ -232,7 +232,7 @@ namespace HonkTrooper
 
         #region Isometric Movement
 
-        public void MoveUp(double speed)
+        public void MoveTopLeft(double speed)
         {
             _isMovingUp = true;
             _isMovingDown = false;
@@ -252,7 +252,7 @@ namespace HonkTrooper
                 rotationSpeed: _rotationSpeed);
         }
 
-        public void MoveDown(double speed)
+        public void MoveBottomRight(double speed)
         {
             _isMovingDown = true;
             _isMovingUp = false;
@@ -272,7 +272,7 @@ namespace HonkTrooper
                 rotationSpeed: _rotationSpeed);
         }
 
-        public void MoveLeft(double speed)
+        public void MoveBottomLeft(double speed)
         {
             _isMovingUp = false;
             _isMovingDown = false;
@@ -292,7 +292,7 @@ namespace HonkTrooper
                 rotationSpeed: _rotationSpeed);
         }
 
-        public void MoveRight(double speed)
+        public void MoveTopRight(double speed)
         {
             _isMovingUp = false;
             _isMovingDown = false;
@@ -312,91 +312,7 @@ namespace HonkTrooper
                 rotationSpeed: _rotationSpeed);
         }
 
-        #endregion
-
-        #region Isometric Movement V2
-
-        //public void MoveLeft(double speed)
-        //{
-        //    _isMovingUp = false;
-        //    _isMovingDown = false;
-
-        //    _isMovingLeft = true;
-        //    _isMovingRight = false;
-
-        //    SetLeft(GetLeft() - speed * 2);
-        //    SetTop(GetTop() - speed);
-
-        //    _movementStopDelay = _movementStopDelayDefault;
-        //    _lastSpeed = speed;
-
-        //    Rotate(
-        //        rotationDirection: RotationDirection.Backward,
-        //        threadhold: _rotationThreadhold,
-        //        rotationSpeed: _rotationSpeed);
-        //}
-
-        //public void MoveRight(double speed)
-        //{
-        //    _isMovingDown = false;
-        //    _isMovingUp = false;
-
-        //    _isMovingLeft = false;
-        //    _isMovingRight = true;
-
-        //    SetLeft(GetLeft() + speed * 2);
-        //    SetTop(GetTop() + speed);
-
-        //    _movementStopDelay = _movementStopDelayDefault;
-        //    _lastSpeed = speed;
-
-        //    Rotate(
-        //        rotationDirection: RotationDirection.Forward,
-        //        threadhold: _rotationThreadhold,
-        //        rotationSpeed: _rotationSpeed);
-        //}
-
-        //public void MoveDown(double speed)
-        //{
-        //    _isMovingUp = false;
-        //    _isMovingDown = true;
-
-        //    _isMovingLeft = false;
-        //    _isMovingRight = false;
-
-        //    SetLeft(GetLeft() - speed);
-        //    SetTop(GetTop() + speed);
-
-        //    _movementStopDelay = _movementStopDelayDefault;
-        //    _lastSpeed = speed;
-
-        //    Rotate(
-        //        rotationDirection: RotationDirection.Backward,
-        //        threadhold: _rotationThreadhold,
-        //        rotationSpeed: _rotationSpeed);
-        //}
-
-        //public void MoveUp(double speed)
-        //{
-        //    _isMovingUp = true;
-        //    _isMovingDown = false;
-
-        //    _isMovingLeft = false;
-        //    _isMovingRight = false;
-
-        //    SetLeft(GetLeft() + speed);
-        //    SetTop(GetTop() - speed);
-
-        //    _movementStopDelay = _movementStopDelayDefault;
-        //    _lastSpeed = speed;
-
-        //    Rotate(
-        //        rotationDirection: RotationDirection.Forward,
-        //        threadhold: _rotationThreadhold,
-        //        rotationSpeed: _rotationSpeed);
-        //}
-
-        #endregion
+        #endregion        
 
         #region Linear Movement
 
@@ -494,28 +410,28 @@ namespace HonkTrooper
                 {
                     if (_lastSpeed > 0)
                     {
-                        MoveUp(_lastSpeed - mvmntSpdLs);
+                        MoveTopLeft(_lastSpeed - mvmntSpdLs);
                     }
                 }
                 else if (_isMovingDown)
                 {
                     if (_lastSpeed > 0)
                     {
-                        MoveDown(_lastSpeed - mvmntSpdLs);
+                        MoveBottomRight(_lastSpeed - mvmntSpdLs);
                     }
                 }
                 else if (_isMovingLeft)
                 {
                     if (_lastSpeed > 0)
                     {
-                        MoveLeft(_lastSpeed - mvmntSpdLs);
+                        MoveBottomLeft(_lastSpeed - mvmntSpdLs);
                     }
                 }
                 else if (_isMovingRight)
                 {
                     if (_lastSpeed > 0)
                     {
-                        MoveRight(_lastSpeed - mvmntSpdLs);
+                        MoveTopRight(_lastSpeed - mvmntSpdLs);
                     }
                 }
 
