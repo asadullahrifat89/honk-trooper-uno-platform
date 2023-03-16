@@ -10,7 +10,6 @@ namespace HonkTrooper
 {
     public partial class Controller : ControllerBase
     {
-
         #region Fields
 
         //private int _move_up_activator;
@@ -40,6 +39,8 @@ namespace HonkTrooper
         public double AngularVelocityY { get; set; }
 
         public double AngularVelocityZ { get; set; }
+
+        public bool JoyStickActive { get; set; }
 
         #endregion
 
@@ -236,11 +237,24 @@ namespace HonkTrooper
 
             canvas.PointerPressed += (s, e) =>
             {
+                DeactivateMoveUp();
+                DeactivateMoveDown();
+                DeactivateMoveLeft();
+                DeactivateMoveRight();
 
+                //Microsoft.UI.Input.PointerPoint point = e.GetCurrentPoint(canvas);
+
+                //thumb.SetPosition(left: point.Position.X - thumb.Width / 2, top: point.Position.Y - thumb.Height / 2);
+
+                JoyStickActive = true;
             };
             canvas.PointerMoved += (s, e) =>
             {
-
+                if (JoyStickActive)
+                {
+                    Microsoft.UI.Input.PointerPoint point = e.GetCurrentPoint(canvas);
+                    thumb.SetPosition(left: point.Position.X - thumb.Width / 2, top: point.Position.Y - thumb.Height / 2); 
+                }
             };
             canvas.PointerReleased += (s, e) =>
             {
@@ -248,6 +262,8 @@ namespace HonkTrooper
                 DeactivateMoveDown();
                 DeactivateMoveLeft();
                 DeactivateMoveRight();
+
+                JoyStickActive = false;
             };
 
             JoyStick.Child = canvas;
