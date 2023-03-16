@@ -18,12 +18,6 @@ namespace HonkTrooper
         private double _hoverDelay;
         private readonly double _hoverDelayDefault = 15;
 
-        //private bool _isMovingUp;
-        //private bool _isMovingDown;
-
-        //private bool _isMovingLeft;
-        //private bool _isMovingRight;
-
         private double _movementStopDelay;
         private readonly double _movementStopDelayDefault = 6;
         private readonly double _movementStopSpeedLoss = 0.5;
@@ -106,14 +100,7 @@ namespace HonkTrooper
         {
             Health = 100;
 
-            //_isMovingUp = false;
-            //_isMovingDown = false;
-
-            //_isMovingLeft = false;
-            //_isMovingRight = false;
-
             _movementDirection = MovementDirection.None;
-
             _movementStopDelay = _movementStopDelayDefault;
             _lastSpeed = 0;
         }
