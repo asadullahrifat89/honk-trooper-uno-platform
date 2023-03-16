@@ -48,7 +48,7 @@ namespace HonkTrooper
 
             SetSize(width: width, height: height);
 
-            var uri = _bomb_uris[_random.Next( _bomb_uris.Length)];
+            var uri = _bomb_uris[_random.Next(_bomb_uris.Length)];
 
             _content_image = new Image()
             {
@@ -61,10 +61,7 @@ namespace HonkTrooper
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET * 2.5;
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE + 10;
 
-            _audioStub = new AudioStub(
-               (SoundType.ROCKET_LAUNCH, 0.2, false),
-               (SoundType.ROCKET_BLAST, 1, false)
-               );
+            _audioStub = new AudioStub((SoundType.ROCKET_LAUNCH, 0.3, false), (SoundType.ROCKET_BLAST, 1, false));
         }
 
         #endregion
@@ -102,7 +99,7 @@ namespace HonkTrooper
 
             IsBlasting = false;
 
-            var uri = _bomb_uris[_random.Next( _bomb_uris.Length)];
+            var uri = _bomb_uris[_random.Next(_bomb_uris.Length)];
             _content_image.Source = new BitmapImage(uri);
 
             AwaitMoveLeft = false;
@@ -118,7 +115,7 @@ namespace HonkTrooper
         {
             _audioStub.Play(SoundType.ROCKET_BLAST);
 
-            var uri = _bomb_blast_uris[_random.Next( _bomb_blast_uris.Length)];
+            var uri = _bomb_blast_uris[_random.Next(_bomb_blast_uris.Length)];
             _content_image.Source = new BitmapImage(uri);
 
             IsBlasting = true;

@@ -16,7 +16,7 @@ namespace HonkTrooper
 
         public static (ConstructType ConstructType, double Height, double Width)[] CONSTRUCT_SIZES = new (ConstructType, double, double)[]
         {
-            new (ConstructType.PLAYER, 170, 170),
+            new (ConstructType.PLAYER, 165, 165),
             new (ConstructType.PLAYER_ROCKET, 80, 80),
             new (ConstructType.PLAYER_FIRE_CRACKER, 70, 70),
             new (ConstructType.PLAYER_ROCKET_SEEKING, 80, 80),
