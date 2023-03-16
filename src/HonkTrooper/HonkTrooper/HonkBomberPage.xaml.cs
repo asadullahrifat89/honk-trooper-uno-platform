@@ -526,33 +526,57 @@ namespace HonkTrooper
 
             if (_scene_game.SceneState == SceneState.GAME_RUNNING)
             {
-                if (_game_controller.IsMoveUp)
+                if (_game_controller.IsMoveUp && _game_controller.IsMoveLeft)
                 {
                     if (_player.GetBottom() > 0 && _player.GetRight() > 0)
+                        _player.MoveUpLeft(speed);
+                }
+                else if (_game_controller.IsMoveUp && _game_controller.IsMoveRight)
+                {
+                    if (_player.GetLeft() < _scene_game.Width && _player.GetBottom() > 0)
+                        _player.MoveUpRight(speed);
+                }
+                else if (_game_controller.IsMoveUp)
+                {
+                    if (_player.GetBottom() > 0)
                         _player.MoveUp(speed);
+                }
+                else if (_game_controller.IsMoveDown && _game_controller.IsMoveRight)
+                {
+                    if (_player.GetTop() < _scene_game.Height && _player.GetLeft() < _scene_game.Width)
+                        _player.MoveDownRight(speed);
+                }
+                else if (_game_controller.IsMoveDown && _game_controller.IsMoveLeft)
+                {
+                    if (_player.GetRight() > 0 && _player.GetTop() < _scene_game.Height)
+                        _player.MoveDownLeft(speed);
                 }
                 else if (_game_controller.IsMoveDown)
                 {
-                    if (_player.GetTop() < _scene_game.Height && _player.GetLeft() < _scene_game.Width)
+                    if ( _player.GetBottom() < _scene_game.Height)
                         _player.MoveDown(speed);
-                }
-                else if (_game_controller.IsMoveLeft)
-                {
-                    if (_player.GetRight() > 0 && _player.GetTop() < _scene_game.Height)
-                        _player.MoveLeft(speed);
                 }
                 else if (_game_controller.IsMoveRight)
                 {
-                    if (_player.GetLeft() < _scene_game.Width && _player.GetBottom() > 0)
+                    if (_player.GetRight() < _scene_game.Width)
                         _player.MoveRight(speed);
+                }
+                else if (_game_controller.IsMoveLeft)
+                {
+                    if (_player.GetLeft() > 0)
+                        _player.MoveLeft(speed);
                 }
                 else
                 {
-                    if (_player.GetBottom() > 0 && _player.GetRight() > 0
-                        && _player.GetTop() < _scene_game.Height && _player.GetLeft() < _scene_game.Width
-                        && _player.GetRight() > 0 && _player.GetTop() < _scene_game.Height
-                        && _player.GetLeft() < _scene_game.Width && _player.GetBottom() > 0)
+                    // if player is already out of bounds then prevent stop movement animation
+
+                    if (_player.GetBottom() > 0 && _player.GetRight() > 0 &&
+                        _player.GetTop() < _scene_game.Height && _player.GetLeft() < _scene_game.Width &&
+                        _player.GetRight() > 0 && _player.GetTop() < _scene_game.Height &&
+                        _player.GetLeft() < _scene_game.Width && _player.GetBottom() > 0)
+                    {
                         _player.StopMovement();
+                    }
                 }
 
                 if (_game_controller.IsAttacking)
@@ -719,19 +743,19 @@ namespace HonkTrooper
 
             if (PlayerRocket.AwaitMoveLeft)
             {
-                PlayerRocket.MoveLeft(speed);
+                PlayerRocket.MoveBottomLeft(speed);
             }
             else if (PlayerRocket.AwaitMoveRight)
             {
-                PlayerRocket.MoveRight(speed);
+                PlayerRocket.MoveTopRight(speed);
             }
             else if (PlayerRocket.AwaitMoveUp)
             {
-                PlayerRocket.MoveUp(speed);
+                PlayerRocket.MoveTopLeft(speed);
             }
             else if (PlayerRocket.AwaitMoveDown)
             {
-                PlayerRocket.MoveDown(speed);
+                PlayerRocket.MoveBottomRight(speed);
             }
 
             if (PlayerRocket.IsBlasting)
@@ -983,7 +1007,7 @@ namespace HonkTrooper
             {
                 var speed = _scene_game.Speed + PlayerRocketSeeking.SpeedOffset;
 
-                MoveConstruct(construct: PlayerRocketSeeking1, speed: speed);
+                MoveConstructBottomRight(construct: PlayerRocketSeeking1, speed: speed);
 
                 PlayerRocketSeeking.Expand();
                 PlayerRocketSeeking.Fade(0.02);
@@ -1143,7 +1167,7 @@ namespace HonkTrooper
 
             var speed = (_scene_game.Speed + vehicle.SpeedOffset);
 
-            MoveConstruct(construct: vehicle, speed: speed);
+            MoveConstructBottomRight(construct: vehicle, speed: speed);
 
             if (_scene_game.SceneState == SceneState.GAME_RUNNING)
             {
@@ -1345,7 +1369,7 @@ namespace HonkTrooper
         private bool AnimateRoadMark(Construct roadMark)
         {
             var speed = (_scene_game.Speed + roadMark.SpeedOffset);
-            MoveConstruct(construct: roadMark, speed: speed);
+            MoveConstructBottomRight(construct: roadMark, speed: speed);
             return true;
         }
 
@@ -1436,7 +1460,7 @@ namespace HonkTrooper
         private bool AnimateTree(Construct tree)
         {
             var speed = (_scene_game.Speed + tree.SpeedOffset);
-            MoveConstruct(construct: tree, speed: speed);
+            MoveConstructBottomRight(construct: tree, speed: speed);
             return true;
         }
 
@@ -1508,7 +1532,7 @@ namespace HonkTrooper
         {
             honk.Pop();
             var speed = (_scene_game.Speed + honk.SpeedOffset);
-            MoveConstruct(construct: honk, speed: speed);
+            MoveConstructBottomRight(construct: honk, speed: speed);
             return true;
         }
 
@@ -1624,7 +1648,7 @@ namespace HonkTrooper
         private bool AnimateCloud(Construct cloud)
         {
             var speed = (_scene_game.Speed + cloud.SpeedOffset);
-            MoveConstruct(construct: cloud, speed: speed);
+            MoveConstructBottomRight(construct: cloud, speed: speed);
             return true;
         }
 
@@ -1745,7 +1769,7 @@ namespace HonkTrooper
                     }
                     else
                     {
-                        MoveConstruct(construct: boss, speed: speed);
+                        MoveConstructBottomRight(construct: boss, speed: speed);
 
                         if (boss.GetLeft() > (_scene_game.Width / 3) * 1.5)
                         {
@@ -1901,7 +1925,7 @@ namespace HonkTrooper
 
                 var speed = _scene_game.Speed + enemy.SpeedOffset;
 
-                MoveConstruct(construct: enemy, speed: speed);
+                MoveConstructBottomRight(construct: enemy, speed: speed);
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
@@ -2023,7 +2047,7 @@ namespace HonkTrooper
 
             var speed = _scene_game.Speed + bomb.SpeedOffset;
 
-            MoveConstruct(construct: EnemyRocket, speed: speed);
+            MoveConstructBottomRight(construct: EnemyRocket, speed: speed);
 
             if (EnemyRocket.IsBlasting)
             {
@@ -2280,7 +2304,7 @@ namespace HonkTrooper
 
             if (BossRocketSeeking1.IsBlasting)
             {
-                MoveConstruct(construct: BossRocketSeeking1, speed: speed);
+                MoveConstructBottomRight(construct: BossRocketSeeking1, speed: speed);
 
                 BossRocketSeeking.Expand();
                 BossRocketSeeking.Fade(0.02);
@@ -2473,7 +2497,7 @@ namespace HonkTrooper
             }
             else
             {
-                MoveConstruct(construct: healthPickup, speed: speed);
+                MoveConstructBottomRight(construct: healthPickup, speed: speed);
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
@@ -2591,7 +2615,7 @@ namespace HonkTrooper
             }
             else
             {
-                MoveConstruct(construct: powerUpPickup, speed: speed);
+                MoveConstructBottomRight(construct: powerUpPickup, speed: speed);
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
@@ -2635,7 +2659,7 @@ namespace HonkTrooper
 
         #region Construct
 
-        private void MoveConstruct(Construct construct, double speed)
+        private void MoveConstructBottomRight(Construct construct, double speed)
         {
             speed *= _scene_game.DownScaling;
 
@@ -2840,11 +2864,6 @@ namespace HonkTrooper
             _scene_main_menu.Width = 1920;
             _scene_main_menu.Height = 1080;
 
-            SetController();
-            SetScene();
-
-            ScreenExtensions.EnterFullScreen(true);
-
             SizeChanged += HonkBomberPage_SizeChanged;
 
             ScreenExtensions.DisplayInformation.OrientationChanged += DisplayInformation_OrientationChanged;
@@ -2853,6 +2872,11 @@ namespace HonkTrooper
             // set display orientation to required orientation
             if (ScreenExtensions.GetDisplayOrienation() != ScreenExtensions.RequiredDisplayOrientation)
                 ScreenExtensions.SetDisplayOrientation(ScreenExtensions.RequiredDisplayOrientation);
+
+            SetController();
+            SetScene();
+
+            ScreenExtensions.EnterFullScreen(true);
 
             if (ScreenExtensions.GetDisplayOrienation() == ScreenExtensions.RequiredDisplayOrientation)
             {

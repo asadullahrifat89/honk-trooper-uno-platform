@@ -8,8 +8,8 @@ namespace HonkTrooper
     public partial class Tree : Construct
     {
         #region Fields
-        
-        private readonly Image _content_image; 
+
+        private readonly Image _content_image;
 
         #endregion
 

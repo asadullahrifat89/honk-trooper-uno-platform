@@ -72,23 +72,17 @@ namespace HonkTrooper
                 Margin = new Thickness(20),
             };
 
-            #region Isometric Movement
-
-            #region Placeholder
-
+            Joystick.RowDefinitions.Add(new RowDefinition());
             Joystick.RowDefinitions.Add(new RowDefinition());
             Joystick.RowDefinitions.Add(new RowDefinition());
 
             Joystick.ColumnDefinitions.Add(new ColumnDefinition());
             Joystick.ColumnDefinitions.Add(new ColumnDefinition());
+            Joystick.ColumnDefinitions.Add(new ColumnDefinition());
 
-            #endregion
+            #region UpLeft
 
-            #region Player Perspective Movement
-
-            #region Up
-
-            Border up = new()
+            Border upLeft = new()
             {
                 Background = new SolidColorBrush(Colors.Goldenrod),
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
@@ -105,17 +99,25 @@ namespace HonkTrooper
                 Margin = new Thickness(Constants.DEFAULT_CONTROLLER_DIRECTION_KEYS_MARGIN),
             };
 
-            up.PointerEntered += (s, e) => { ActivateMoveUp(); };
-            up.PointerExited += (s, e) => { DeactivateMoveUp(); };
+            upLeft.PointerEntered += (s, e) =>
+            {
+                ActivateMoveUp();
+                ActivateMoveLeft();
+            };
+            upLeft.PointerExited += (s, e) =>
+            {
+                DeactivateMoveUp();
+                DeactivateMoveLeft();
+            };
 
-            Grid.SetRow(up, 0);
-            Grid.SetColumn(up, 0);
+            Grid.SetRow(upLeft, 0);
+            Grid.SetColumn(upLeft, 0);
 
             #endregion
 
-            #region Down
+            #region Up
 
-            Border down = new()
+            Border up = new()
             {
                 Background = new SolidColorBrush(Colors.Goldenrod),
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
@@ -123,22 +125,57 @@ namespace HonkTrooper
                 CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS),
                 Child = new SymbolIcon()
                 {
-                    Symbol = Symbol.Forward
+                    Symbol = Symbol.Up,
                 },
                 BorderBrush = new SolidColorBrush(Colors.White),
                 BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
                 RenderTransformOrigin = new Point(0.5, 0.5),
-                RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = 45 },
+                //RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = -45 },
                 Margin = new Thickness(Constants.DEFAULT_CONTROLLER_DIRECTION_KEYS_MARGIN),
             };
 
-            down.PointerEntered += (s, e) => { ActivateMoveDown(); };
-            down.PointerExited += (s, e) => { DeactivateMoveDown(); };
+            up.PointerEntered += (s, e) => { ActivateMoveUp(); };
+            up.PointerExited += (s, e) => { DeactivateMoveUp(); };
 
-            Grid.SetRow(down, 1);
-            Grid.SetColumn(down, 1);
+            Grid.SetRow(up, 0);
+            Grid.SetColumn(up, 1);
 
             #endregion
+
+            #region UpRight
+
+            Border UpRight = new()
+            {
+                Background = new SolidColorBrush(Colors.Goldenrod),
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS),
+                Child = new SymbolIcon()
+                {
+                    Symbol = Symbol.Forward,
+                },
+                BorderBrush = new SolidColorBrush(Colors.White),
+                BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
+                RenderTransformOrigin = new Point(0.5, 0.5),
+                RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = -45 },
+                Margin = new Thickness(Constants.DEFAULT_CONTROLLER_DIRECTION_KEYS_MARGIN),
+            };
+
+            UpRight.PointerEntered += (s, e) =>
+            {
+                ActivateMoveUp();
+                ActivateMoveRight();
+            };
+            UpRight.PointerExited += (s, e) =>
+            {
+                DeactivateMoveUp();
+                DeactivateMoveRight();
+            };
+
+            Grid.SetRow(UpRight, 0);
+            Grid.SetColumn(UpRight, 2);
+
+            #endregion 
 
             #region Left
 
@@ -155,7 +192,7 @@ namespace HonkTrooper
                 BorderBrush = new SolidColorBrush(Colors.White),
                 BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
                 RenderTransformOrigin = new Point(0.5, 0.5),
-                RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = -45 },
+                //RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = -45 },
                 Margin = new Thickness(Constants.DEFAULT_CONTROLLER_DIRECTION_KEYS_MARGIN),
             };
 
@@ -182,262 +219,127 @@ namespace HonkTrooper
                 BorderBrush = new SolidColorBrush(Colors.White),
                 BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
                 RenderTransformOrigin = new Point(0.5, 0.5),
-                RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = -45 },
+                //RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = -45 },
                 Margin = new Thickness(Constants.DEFAULT_CONTROLLER_DIRECTION_KEYS_MARGIN),
             };
 
             right.PointerEntered += (s, e) => { ActivateMoveRight(); };
             right.PointerExited += (s, e) => { DeactivateMoveRight(); };
 
-            Grid.SetRow(right, 0);
-            Grid.SetColumn(right, 1);
-
-            #endregion 
-
-            #endregion
-
-            #region Axial Movement
-
-            //#region Left
-
-            //Border l = new()
-            //{
-            //    Background = new SolidColorBrush(Colors.Goldenrod),
-            //    Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-            //    Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-            //    CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS),
-            //    Child = new SymbolIcon()
-            //    {
-            //        Symbol = Symbol.Up,
-            //    },
-            //    BorderBrush = new SolidColorBrush(Colors.White),
-            //    BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
-            //    RenderTransformOrigin = new Point(0.5, 0.5),
-            //    RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = -45 },
-            //    Margin = new Thickness(Constants.DEFAULT_CONTROLLER_DIRECTION_KEYS_MARGIN),
-            //};
-
-            //l.PointerEntered += (s, e) => { ActivateMoveLeft(); };
-            //l.PointerExited += (s, e) => { DeactivateMoveLeft(); };
-
-            //Grid.SetRow(l, 0);
-            //Grid.SetColumn(l, 0);
-
-            //#endregion
-
-            //#region Right
-
-            //Border r = new()
-            //{
-            //    Background = new SolidColorBrush(Colors.Goldenrod),
-            //    Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-            //    Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-            //    CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS),
-            //    Child = new SymbolIcon()
-            //    {
-            //        Symbol = Symbol.Forward
-            //    },
-            //    BorderBrush = new SolidColorBrush(Colors.White),
-            //    BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
-            //    RenderTransformOrigin = new Point(0.5, 0.5),
-            //    RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = 45 },
-            //    Margin = new Thickness(Constants.DEFAULT_CONTROLLER_DIRECTION_KEYS_MARGIN),
-            //};
-
-            //r.PointerEntered += (s, e) => { ActivateMoveRight(); };
-            //r.PointerExited += (s, e) => { DeactivateMoveRight(); };
-
-            //Grid.SetRow(r, 1);
-            //Grid.SetColumn(r, 1);
-
-            //#endregion
-
-            //#region Down
-
-            //Border d = new()
-            //{
-            //    Background = new SolidColorBrush(Colors.Goldenrod),
-            //    Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-            //    Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-            //    CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS),
-            //    Child = new SymbolIcon()
-            //    {
-            //        Symbol = Symbol.Back,
-            //    },
-            //    BorderBrush = new SolidColorBrush(Colors.White),
-            //    BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
-            //    RenderTransformOrigin = new Point(0.5, 0.5),
-            //    RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = -45 },
-            //    Margin = new Thickness(Constants.DEFAULT_CONTROLLER_DIRECTION_KEYS_MARGIN),
-            //};
-
-            //d.PointerEntered += (s, e) => { ActivateMoveDown(); };
-            //d.PointerExited += (s, e) => { DeactivateMoveDown(); };
-
-            //Grid.SetRow(d, 1);
-            //Grid.SetColumn(d, 0);
-
-            //#endregion
-
-            //#region Up
-
-            //Border u = new()
-            //{
-            //    Background = new SolidColorBrush(Colors.Goldenrod),
-            //    Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-            //    Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-            //    CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS),
-            //    Child = new SymbolIcon()
-            //    {
-            //        Symbol = Symbol.Forward,
-            //    },
-            //    BorderBrush = new SolidColorBrush(Colors.White),
-            //    BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
-            //    RenderTransformOrigin = new Point(0.5, 0.5),
-            //    RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = -45 },
-            //    Margin = new Thickness(Constants.DEFAULT_CONTROLLER_DIRECTION_KEYS_MARGIN),
-            //};
-
-            //u.PointerEntered += (s, e) => { ActivateMoveUp(); };
-            //u.PointerExited += (s, e) => { DeactivateMoveUp(); };
-
-            //Grid.SetRow(u, 0);
-            //Grid.SetColumn(u, 1);
-
-            //#endregion 
-
-            #endregion
-
-            #endregion
-
-            #region Linear Movement
-
-            //#region Placeholder
-
-            //Joystick.RowDefinitions.Add(new RowDefinition());
-            //Joystick.RowDefinitions.Add(new RowDefinition());
-            //Joystick.RowDefinitions.Add(new RowDefinition());
-
-            //Joystick.ColumnDefinitions.Add(new ColumnDefinition());
-            //Joystick.ColumnDefinitions.Add(new ColumnDefinition());
-            //Joystick.ColumnDefinitions.Add(new ColumnDefinition()); 
-
-            //#endregion
-
-            //#region Up
-
-            //Border up = new()
-            //{
-            //    Background = new SolidColorBrush(Colors.Goldenrod),
-            //    Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-            //    Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-            //    CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS),
-            //    Child = new SymbolIcon()
-            //    {
-            //        Symbol = Symbol.Up,
-            //    },
-            //    BorderBrush = new SolidColorBrush(Colors.White),
-            //    BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
-            //    RenderTransformOrigin = new Point(0.5, 0.5),
-            //    //RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = -45 },
-            //    Margin = new Thickness(Constants.DEFAULT_CONTROLLER_DIRECTION_KEYS_MARGIN),
-            //};
-
-            //up.PointerEntered += (s, e) => { ActivateMoveUp(); };
-            //up.PointerExited += (s, e) => { DeactivateMoveUp(); };
-
-            //Grid.SetRow(up, 0);
-            //Grid.SetColumn(up, 1);
-
-            //#endregion
-
-            //#region Down
-
-            //Border r = new()
-            //{
-            //    Background = new SolidColorBrush(Colors.Goldenrod),
-            //    Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-            //    Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-            //    CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS),
-            //    Child = new SymbolIcon()
-            //    {
-            //        Symbol = Symbol.Up
-            //    },
-            //    BorderBrush = new SolidColorBrush(Colors.White),
-            //    BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
-            //    RenderTransformOrigin = new Point(0.5, 0.5),
-            //    RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = 180 },
-            //    Margin = new Thickness(Constants.DEFAULT_CONTROLLER_DIRECTION_KEYS_MARGIN),
-            //};
-
-            //r.PointerEntered += (s, e) => { ActivateMoveDown(); };
-            //r.PointerExited += (s, e) => { DeactivateMoveDown(); };
-
-            //Grid.SetRow(r, 2);
-            //Grid.SetColumn(r, 1);
-
-            //#endregion
-
-            //#region Left
-
-            //Border d = new()
-            //{
-            //    Background = new SolidColorBrush(Colors.Goldenrod),
-            //    Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-            //    Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-            //    CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS),
-            //    Child = new SymbolIcon()
-            //    {
-            //        Symbol = Symbol.Back,
-            //    },
-            //    BorderBrush = new SolidColorBrush(Colors.White),
-            //    BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
-            //    RenderTransformOrigin = new Point(0.5, 0.5),
-            //    //RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = -45 },
-            //    Margin = new Thickness(Constants.DEFAULT_CONTROLLER_DIRECTION_KEYS_MARGIN),
-            //};
-
-            //d.PointerEntered += (s, e) => { ActivateMoveLeft(); };
-            //d.PointerExited += (s, e) => { DeactivateMoveLeft(); };
-
-            //Grid.SetRow(d, 1);
-            //Grid.SetColumn(d, 0);
-
-            //#endregion
-
-            //#region Right
-
-            //Border right = new()
-            //{
-            //    Background = new SolidColorBrush(Colors.Goldenrod),
-            //    Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-            //    Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-            //    CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS),
-            //    Child = new SymbolIcon()
-            //    {
-            //        Symbol = Symbol.Forward,
-            //    },
-            //    BorderBrush = new SolidColorBrush(Colors.White),
-            //    BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
-            //    RenderTransformOrigin = new Point(0.5, 0.5),
-            //    //RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = -45 },
-            //    Margin = new Thickness(Constants.DEFAULT_CONTROLLER_DIRECTION_KEYS_MARGIN),
-            //};
-
-            //right.PointerEntered += (s, e) => { ActivateMoveRight(); };
-            //right.PointerExited += (s, e) => { DeactivateMoveRight(); };
-
-            //Grid.SetRow(right, 1);
-            //Grid.SetColumn(right, 2);
+            Grid.SetRow(right, 1);
+            Grid.SetColumn(right, 2);
 
             //#endregion
 
             #endregion
+
+            #region DownLeft
+
+            Border downLeft = new()
+            {
+                Background = new SolidColorBrush(Colors.Goldenrod),
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS),
+                Child = new SymbolIcon()
+                {
+                    Symbol = Symbol.Back,
+                },
+                BorderBrush = new SolidColorBrush(Colors.White),
+                BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
+                RenderTransformOrigin = new Point(0.5, 0.5),
+                RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = -45 },
+                Margin = new Thickness(Constants.DEFAULT_CONTROLLER_DIRECTION_KEYS_MARGIN),
+            };
+
+            downLeft.PointerEntered += (s, e) =>
+            {
+                ActivateMoveDown();
+                ActivateMoveLeft();
+            };
+            downLeft.PointerExited += (s, e) =>
+            {
+                DeactivateMoveDown();
+                DeactivateMoveLeft();
+            };
+
+            Grid.SetRow(downLeft, 2);
+            Grid.SetColumn(downLeft, 0);
+
+            #endregion            
+
+            #region Down
+
+            Border down = new()
+            {
+                Background = new SolidColorBrush(Colors.Goldenrod),
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS),
+                Child = new SymbolIcon()
+                {
+                    Symbol = Symbol.Up
+                },
+                BorderBrush = new SolidColorBrush(Colors.White),
+                BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
+                RenderTransformOrigin = new Point(0.5, 0.5),
+                RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = 180 },
+                Margin = new Thickness(Constants.DEFAULT_CONTROLLER_DIRECTION_KEYS_MARGIN),
+            };
+
+            down.PointerEntered += (s, e) => { ActivateMoveDown(); };
+            down.PointerExited += (s, e) => { DeactivateMoveDown(); };
+
+            Grid.SetRow(down, 2);
+            Grid.SetColumn(down, 1);
+
+            #endregion
+
+            #region DownRight
+
+            Border downRight = new()
+            {
+                Background = new SolidColorBrush(Colors.Goldenrod),
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS),
+                Child = new SymbolIcon()
+                {
+                    Symbol = Symbol.Forward
+                },
+                BorderBrush = new SolidColorBrush(Colors.White),
+                BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
+                RenderTransformOrigin = new Point(0.5, 0.5),
+                RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = 45 },
+                Margin = new Thickness(Constants.DEFAULT_CONTROLLER_DIRECTION_KEYS_MARGIN),
+            };
+
+            downRight.PointerEntered += (s, e) =>
+            {
+                ActivateMoveDown();
+                ActivateMoveRight();
+            };
+            downRight.PointerExited += (s, e) =>
+            {
+                DeactivateMoveDown();
+                DeactivateMoveRight();
+            };
+
+            Grid.SetRow(downRight, 2);
+            Grid.SetColumn(downRight, 2);
+
+            #endregion
+
+            Joystick.Children.Add(upLeft);
+            Joystick.Children.Add(up);
+            Joystick.Children.Add(UpRight);
 
             Joystick.Children.Add(left);
             Joystick.Children.Add(right);
+
+            Joystick.Children.Add(downLeft);
             Joystick.Children.Add(down);
-            Joystick.Children.Add(up);
+            Joystick.Children.Add(downRight);            
 
             this.Children.Add(Joystick);
         }
@@ -447,9 +349,9 @@ namespace HonkTrooper
             AttackButton = new()
             {
                 Background = new SolidColorBrush(Colors.Goldenrod),
-                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-                CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS),
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.5,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.5,
+                CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS * 1.5),
                 Content = new SymbolIcon()
                 {
                     Symbol = Symbol.Target,
@@ -458,7 +360,7 @@ namespace HonkTrooper
                 BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
                 HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Bottom,
-                Margin = new Thickness(20),
+                Margin = new Thickness(30),
             };
 
             AttackButton.Click += (s, e) => { ActivateAttack(); };
@@ -512,11 +414,11 @@ namespace HonkTrooper
         #region Events
 
         private void Gyrometer_ReadingChanged(Gyrometer sender, GyrometerReadingChangedEventArgs args)
-        {            
+        {
             AngularVelocityX = args.Reading.AngularVelocityX;
             AngularVelocityY = args.Reading.AngularVelocityY;
             AngularVelocityZ = args.Reading.AngularVelocityZ;
-         
+
             Console.WriteLine($"AngularVelocityX: {AngularVelocityX}");
             Console.WriteLine($"AngularVelocityY: {AngularVelocityY}");
             Console.WriteLine($"AngularVelocityZ: {AngularVelocityZ}");
