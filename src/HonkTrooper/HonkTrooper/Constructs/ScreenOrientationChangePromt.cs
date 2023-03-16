@@ -68,8 +68,11 @@ namespace HonkTrooper
 
             _titleScreenText = new TextBlock()
             {
-                Text = "Pls\nSwitch to\nlandscape Orientation",
-                FontSize = Constants.DEFAULT_GUI_FONT_SIZE - 10,
+                Text =
+                "Pls" + Environment.NewLine +
+                "Rotate" + Environment.NewLine +
+                "Your Screen",
+                FontSize = Constants.DEFAULT_GUI_FONT_SIZE - 5,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 Margin = new Thickness(5),
                 Foreground = new SolidColorBrush(Colors.White),
