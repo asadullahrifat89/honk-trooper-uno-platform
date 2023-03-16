@@ -93,8 +93,8 @@ namespace HonkTrooper
                 Margin = new Thickness(0, 5, 0, 5),
             };
 
-            ToggleButton player1btn = new();
-            ToggleButton player2btn = new();
+            ToggleButton player1btn = new() { Margin = new Thickness(5) };
+            ToggleButton player2btn = new() { Margin = new Thickness(5) };
 
             player1btn.Content = new Image()
             {
@@ -106,7 +106,7 @@ namespace HonkTrooper
             player1btn.Checked += (s, e) =>
             {
                 _audioStub.Play(SoundType.OPTION_SELECT);
-                    
+
                 if (player2btn.IsChecked == true)
                     player2btn.IsChecked = false;
             };
