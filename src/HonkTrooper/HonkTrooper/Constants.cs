@@ -28,8 +28,8 @@ namespace HonkTrooper
             new (ConstructType.ENEMY, 140, 140),
             new (ConstructType.ENEMY_ROCKET, 60, 60),
 
-            new (ConstructType.VEHICLE_SMALL, 200, 200),
-            new (ConstructType.VEHICLE_LARGE, 230, 230),
+            new (ConstructType.VEHICLE_SMALL, 210, 210),
+            new (ConstructType.VEHICLE_LARGE, 240, 240),
 
             new (ConstructType.HONK, 90, 90),
             new (ConstructType.CLOUD, 220, 220),

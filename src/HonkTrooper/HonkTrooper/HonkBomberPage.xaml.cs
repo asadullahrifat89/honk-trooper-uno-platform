@@ -707,14 +707,14 @@ namespace HonkTrooper
                     }
 
                     // if player bomb touches boss's seeking bomb, it blasts
-                    if (_scene_game.Children.OfType<BossRocketSeeking>().FirstOrDefault(x => x.IsAnimating && x.GetCloseHitBox().IntersectsWith(hitBox)) is BossRocketSeeking BossRocketSeeking)
+                    if (_scene_game.Children.OfType<BossRocketSeeking>().FirstOrDefault(x => x.IsAnimating && !x.IsBlasting && x.GetCloseHitBox().IntersectsWith(hitBox)) is BossRocketSeeking bossRocketSeeking)
                     {
                         PlayerRocket.SetBlast();
-                        BossRocketSeeking.SetBlast();
+                        bossRocketSeeking.SetBlast();
                     }
 
                     // if player bomb touches enemy, it blasts, enemy looses health
-                    if (_scene_game.Children.OfType<Enemy>().FirstOrDefault(x => x.IsAnimating && x.GetCloseHitBox().IntersectsWith(hitBox)) is Enemy enemy)
+                    if (_scene_game.Children.OfType<Enemy>().FirstOrDefault(x => x.IsAnimating && !x.IsDead && x.GetCloseHitBox().IntersectsWith(hitBox)) is Enemy enemy)
                     {
                         PlayerRocket.SetBlast();
                         LooseEnemyHealth(enemy);
