@@ -6,7 +6,7 @@ namespace HonkTrooper
     {
         public const double DEFAULT_FRAME_TIME = 19;
         public const double DEFAULT_SPEED_OFFSET = 3;
-        public const double DEFAULT_DROP_SHADOW_DISTANCE = 50;
+        public const double DEFAULT_DROP_SHADOW_DISTANCE = 70;
         public const double DEFAULT_SLOW_MOTION_REDUCTION_FACTOR = 3;
         public const double DEFAULT_CONTROLLER_KEY_SIZE = 55;
         public const double DEFAULT_CONTROLLER_KEY_CORNER_RADIUS = 30;
@@ -28,8 +28,8 @@ namespace HonkTrooper
             new (ConstructType.ENEMY, 140, 140),
             new (ConstructType.ENEMY_ROCKET, 60, 60),
 
-            new (ConstructType.VEHICLE_SMALL, 160, 160),
-            new (ConstructType.VEHICLE_LARGE, 190, 190),
+            new (ConstructType.VEHICLE_SMALL, 200, 200),
+            new (ConstructType.VEHICLE_LARGE, 230, 230),
 
             new (ConstructType.HONK, 90, 90),
             new (ConstructType.CLOUD, 220, 220),

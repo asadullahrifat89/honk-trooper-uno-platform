@@ -11,7 +11,7 @@ namespace HonkTrooper
 
         public static ApplicationView ApplicationView => ApplicationView.GetForCurrentView();
 
-        public static DisplayOrientations RequiredDisplayOrientation { get; set; } 
+        public static DisplayOrientations RequiredDisplayOrientation { get; set; }
 
         #endregion
 
@@ -64,9 +64,11 @@ namespace HonkTrooper
                 <= 700 => 0.60,
                 <= 900 => 0.65,
                 <= 950 => 0.70,
-                <= 1000 => 0.80,
-                <= 1400 => 0.85,
-                <= 2000 => 0.95,
+                <= 1000 => 0.85,
+                <= 1400 => 0.90,
+                <= 1900 => 0.95,
+                <= 2000 => 1,
+                <= 2500 => 1.2,
                 _ => 1,
             };
         }
