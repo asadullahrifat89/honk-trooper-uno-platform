@@ -48,6 +48,7 @@ namespace HonkTrooper
         private readonly AudioStub _audioStub;
 
         private MovementDirection _movementDirection;
+
         #endregion
 
         #region Ctor
