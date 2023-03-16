@@ -253,7 +253,87 @@ namespace HonkTrooper
                 if (JoyStickActive)
                 {
                     Microsoft.UI.Input.PointerPoint point = e.GetCurrentPoint(canvas);
-                    thumb.SetPosition(left: point.Position.X - thumb.Width / 2, top: point.Position.Y - thumb.Height / 2); 
+                    thumb.SetPosition(left: point.Position.X - thumb.Width / 2, top: point.Position.Y - thumb.Height / 2);
+
+                    //if (thumb.GetCloseHitBox().IntersectsWith(upLeft.GetCloseHitBox()))
+                    //{
+                    //    ActivateMoveUp();
+                    //    ActivateMoveLeft();
+                    //}
+                    //else
+                    //{
+                    //    DeactivateMoveUp();
+                    //    DeactivateMoveLeft();
+                    //}
+
+                    if (thumb.GetCloseHitBox().IntersectsWith(up.GetCloseHitBox()))
+                    {
+                        ActivateMoveUp();
+                    }
+                    else
+                    {
+                        DeactivateMoveUp();
+                    }
+
+                    //if (thumb.GetCloseHitBox().IntersectsWith(upRight.GetCloseHitBox()))
+                    //{
+                    //    ActivateMoveUp();
+                    //    ActivateMoveRight();
+                    //}
+                    //else
+                    //{
+                    //    DeactivateMoveUp();
+                    //    DeactivateMoveRight();
+                    //}
+
+                    if (thumb.GetCloseHitBox().IntersectsWith(left.GetCloseHitBox()))
+                    {
+                        ActivateMoveLeft();
+                    }
+                    else
+                    {
+                        DeactivateMoveLeft();
+                    }
+
+                    if (thumb.GetCloseHitBox().IntersectsWith(right.GetCloseHitBox()))
+                    {
+                        ActivateMoveRight();
+                    }
+                    else
+                    {
+                        DeactivateMoveRight();
+                    }
+
+                    //if (thumb.GetCloseHitBox().IntersectsWith(downLeft.GetCloseHitBox()))
+                    //{
+                    //    ActivateMoveDown();
+                    //    ActivateMoveLeft();
+                    //}
+                    //else
+                    //{
+                    //    DeactivateMoveDown();
+                    //    DeactivateMoveLeft();
+                    //}
+
+                    if (thumb.GetCloseHitBox().IntersectsWith(down.GetCloseHitBox()))
+                    {
+                        ActivateMoveDown();
+                    }
+                    else
+                    {
+                        DeactivateMoveDown();
+                    }
+
+                    //if (thumb.GetCloseHitBox().IntersectsWith(downRight.GetCloseHitBox()))
+                    //{
+                    //    ActivateMoveDown();
+                    //    ActivateMoveRight();
+                    //}
+                    //else
+                    //{
+                    //    DeactivateMoveDown();
+                    //    DeactivateMoveRight();
+                    //}
                 }
             };
             canvas.PointerReleased += (s, e) =>
