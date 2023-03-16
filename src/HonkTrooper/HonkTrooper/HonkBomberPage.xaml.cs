@@ -2831,12 +2831,6 @@ namespace HonkTrooper
             {
                 screen.Reposition();
             }
-
-            //if (_scene_main_menu.Children.OfType<TitleScreen>().FirstOrDefault(x => x.IsAnimating) is TitleScreen titleScreen)
-            //    titleScreen.Reposition();
-
-            //if (_scene_main_menu.Children.OfType<PlayerSelectionScreen>().FirstOrDefault(x => x.IsAnimating) is PlayerSelectionScreen playerSelectionScreen)
-            //    playerSelectionScreen.Reposition();
         }
 
         private void Controller_RequiresScreenOrientationChange(object sender, DisplayOrientations e)
