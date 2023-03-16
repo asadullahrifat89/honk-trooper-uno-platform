@@ -447,9 +447,9 @@ namespace HonkTrooper
             AttackButton = new()
             {
                 Background = new SolidColorBrush(Colors.Goldenrod),
-                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-                CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS),
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.5,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.5,
+                CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS * 1.5),
                 Content = new SymbolIcon()
                 {
                     Symbol = Symbol.Target,
@@ -458,7 +458,7 @@ namespace HonkTrooper
                 BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
                 HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Bottom,
-                Margin = new Thickness(20),
+                Margin = new Thickness(30),
             };
 
             AttackButton.Click += (s, e) => { ActivateAttack(); };
@@ -512,11 +512,11 @@ namespace HonkTrooper
         #region Events
 
         private void Gyrometer_ReadingChanged(Gyrometer sender, GyrometerReadingChangedEventArgs args)
-        {            
+        {
             AngularVelocityX = args.Reading.AngularVelocityX;
             AngularVelocityY = args.Reading.AngularVelocityY;
             AngularVelocityZ = args.Reading.AngularVelocityZ;
-         
+
             Console.WriteLine($"AngularVelocityX: {AngularVelocityX}");
             Console.WriteLine($"AngularVelocityY: {AngularVelocityY}");
             Console.WriteLine($"AngularVelocityZ: {AngularVelocityZ}");
