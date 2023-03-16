@@ -72,7 +72,7 @@ namespace HonkTrooper
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 3,
                 Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 3,
                 Background = new SolidColorBrush(Colors.Goldenrod),
-                CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS),
+                CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS * 3),
                 BorderBrush = new SolidColorBrush(Colors.White),
                 BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
                 HorizontalAlignment = HorizontalAlignment.Right,
@@ -208,14 +208,14 @@ namespace HonkTrooper
                 BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
             };
 
-            upLeft.SetPosition(left: 0, top: 0);
-            canvas.Children.Add(upLeft);
+            //upLeft.SetPosition(left: 0, top: 0);
+            //canvas.Children.Add(upLeft);
 
             up.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE, top: 0);
             canvas.Children.Add(up);
 
-            upRight.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2, top: 0);
-            canvas.Children.Add(upRight);
+            //upRight.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2, top: 0);
+            //canvas.Children.Add(upRight);
 
             left.SetPosition(left: 0, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE);
             canvas.Children.Add(left);
@@ -223,14 +223,14 @@ namespace HonkTrooper
             right.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE);
             canvas.Children.Add(right);
 
-            downLeft.SetPosition(left: 0, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2);
-            canvas.Children.Add(downLeft);
+            //downLeft.SetPosition(left: 0, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2);
+            //canvas.Children.Add(downLeft);
 
             down.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2);
             canvas.Children.Add(down);
 
-            downRight.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2);
-            canvas.Children.Add(downRight);
+            //downRight.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2);
+            //canvas.Children.Add(downRight);
 
             thumb.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE);
             canvas.Children.Add(thumb);
@@ -255,7 +255,7 @@ namespace HonkTrooper
                     Microsoft.UI.Input.PointerPoint point = e.GetCurrentPoint(canvas);
                     thumb.SetPosition(left: point.Position.X - thumb.Width / 2, top: point.Position.Y - thumb.Height / 2);
 
-                    //if (thumb.GetCloseHitBox().IntersectsWith(upLeft.GetCloseHitBox()))
+                    //if (thumb.GetHitBox().IntersectsWith(upLeft.GetCloseHitBox()))
                     //{
                     //    ActivateMoveUp();
                     //    ActivateMoveLeft();
@@ -266,7 +266,7 @@ namespace HonkTrooper
                     //    DeactivateMoveLeft();
                     //}
 
-                    if (thumb.GetCloseHitBox().IntersectsWith(up.GetCloseHitBox()))
+                    if (thumb.GetHitBox().IntersectsWith(up.GetCloseHitBox()))
                     {
                         ActivateMoveUp();
                     }
@@ -275,7 +275,7 @@ namespace HonkTrooper
                         DeactivateMoveUp();
                     }
 
-                    //if (thumb.GetCloseHitBox().IntersectsWith(upRight.GetCloseHitBox()))
+                    //if (thumb.GetHitBox().IntersectsWith(upRight.GetCloseHitBox()))
                     //{
                     //    ActivateMoveUp();
                     //    ActivateMoveRight();
@@ -286,7 +286,7 @@ namespace HonkTrooper
                     //    DeactivateMoveRight();
                     //}
 
-                    if (thumb.GetCloseHitBox().IntersectsWith(left.GetCloseHitBox()))
+                    if (thumb.GetHitBox().IntersectsWith(left.GetCloseHitBox()))
                     {
                         ActivateMoveLeft();
                     }
@@ -295,7 +295,7 @@ namespace HonkTrooper
                         DeactivateMoveLeft();
                     }
 
-                    if (thumb.GetCloseHitBox().IntersectsWith(right.GetCloseHitBox()))
+                    if (thumb.GetHitBox().IntersectsWith(right.GetCloseHitBox()))
                     {
                         ActivateMoveRight();
                     }
@@ -304,7 +304,7 @@ namespace HonkTrooper
                         DeactivateMoveRight();
                     }
 
-                    //if (thumb.GetCloseHitBox().IntersectsWith(downLeft.GetCloseHitBox()))
+                    //if (thumb.GetHitBox().IntersectsWith(downLeft.GetCloseHitBox()))
                     //{
                     //    ActivateMoveDown();
                     //    ActivateMoveLeft();
@@ -315,7 +315,7 @@ namespace HonkTrooper
                     //    DeactivateMoveLeft();
                     //}
 
-                    if (thumb.GetCloseHitBox().IntersectsWith(down.GetCloseHitBox()))
+                    if (thumb.GetHitBox().IntersectsWith(down.GetCloseHitBox()))
                     {
                         ActivateMoveDown();
                     }
@@ -324,7 +324,7 @@ namespace HonkTrooper
                         DeactivateMoveDown();
                     }
 
-                    //if (thumb.GetCloseHitBox().IntersectsWith(downRight.GetCloseHitBox()))
+                    //if (thumb.GetHitBox().IntersectsWith(downRight.GetCloseHitBox()))
                     //{
                     //    ActivateMoveDown();
                     //    ActivateMoveRight();
@@ -344,6 +344,8 @@ namespace HonkTrooper
                 DeactivateMoveRight();
 
                 JoyStickActive = false;
+
+                thumb.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE);
             };
 
             JoyStick.Child = canvas;
