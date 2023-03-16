@@ -816,10 +816,10 @@ namespace HonkTrooper
 
             DropShadow dropShadow = _scene_game.Children.OfType<DropShadow>().First(x => x.Id == bomb.Id);
 
+            var speed = (_scene_game.Speed + bomb.SpeedOffset); // this remains fixed no matter the screen size
+
             if (PlayerFireCracker.IsBlasting)
             {
-                var speed = (_scene_game.Speed + bomb.SpeedOffset);
-
                 bomb.SetLeft(bomb.GetLeft() + speed);
                 bomb.SetTop(bomb.GetTop() + speed * bomb.IsometricDisplacement);
 
@@ -837,8 +837,6 @@ namespace HonkTrooper
             }
             else
             {
-                var speed = (_scene_game.Speed + bomb.SpeedOffset);
-
                 bomb.Pop();
 
                 bomb.SetLeft(bomb.GetLeft() + speed);
