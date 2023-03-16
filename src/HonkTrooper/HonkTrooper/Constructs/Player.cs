@@ -227,7 +227,7 @@ namespace HonkTrooper
         {
             _movementDirection = MovementDirection.Up;
 
-            SetTop(GetTop() - speed);
+            SetTop(GetTop() - speed * 2);
 
             _movementStopDelay = _movementStopDelayDefault;
             _lastSpeed = speed;
@@ -274,7 +274,7 @@ namespace HonkTrooper
         {
             _movementDirection = MovementDirection.Down;
 
-            SetTop(GetTop() + speed);
+            SetTop(GetTop() + speed * 2);
 
             _movementStopDelay = _movementStopDelayDefault;
             _lastSpeed = speed;
