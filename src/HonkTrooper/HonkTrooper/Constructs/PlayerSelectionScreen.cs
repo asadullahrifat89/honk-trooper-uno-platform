@@ -15,6 +15,8 @@ namespace HonkTrooper
 
         private readonly TextBlock _titleScreenText;
 
+        private readonly AudioStub _audioStub;
+
         #endregion
 
         #region Ctor
@@ -73,7 +75,7 @@ namespace HonkTrooper
             {
                 Text = "Select Player",
                 FontSize = Constants.DEFAULT_GUI_FONT_SIZE - 5,
-                HorizontalAlignment = HorizontalAlignment.Stretch,             
+                HorizontalAlignment = HorizontalAlignment.Center,
                 Foreground = new SolidColorBrush(Colors.White),
             };
 
@@ -103,12 +105,14 @@ namespace HonkTrooper
             };
             player1btn.Checked += (s, e) =>
             {
+                _audioStub.Play(SoundType.OPTION_SELECT);
+                    
                 if (player2btn.IsChecked == true)
                     player2btn.IsChecked = false;
             };
 
             playerTemplates.Children.Add(player1btn);
-           
+
             player2btn.Content = new Image()
             {
                 Width = 100,
@@ -118,6 +122,8 @@ namespace HonkTrooper
             };
             player2btn.Checked += (s, e) =>
             {
+                _audioStub.Play(SoundType.OPTION_SELECT);
+
                 if (player1btn.IsChecked == true)
                     player1btn.IsChecked = false;
             };
@@ -151,6 +157,8 @@ namespace HonkTrooper
 
             rootGrid.Children.Add(container);
             SetChild(rootGrid);
+
+            _audioStub = new AudioStub((SoundType.OPTION_SELECT, 1, false));
         }
 
         #endregion
