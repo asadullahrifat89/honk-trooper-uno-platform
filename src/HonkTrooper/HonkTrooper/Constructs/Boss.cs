@@ -34,6 +34,8 @@ namespace HonkTrooper
 
         private readonly AudioStub _audioStub;
 
+        private MovementDirection _movementDirection;
+
         #endregion
 
         #region Ctor
@@ -89,19 +91,19 @@ namespace HonkTrooper
 
         public bool IsAttacking { get; set; }
 
-        public bool AwaitMoveRight { get; set; }
-
-        public bool AwaitMoveLeft { get; set; }
-
-        public bool AwaitMoveUp { get; set; }
-
-        public bool AwaitMoveDown { get; set; }
-
         public double Health { get; set; }
 
         public bool IsDead => Health <= 0;
 
         public BossMovementPattern MovementPattern { get; set; }
+
+        //private bool AwaitMoveRight { get; set; }
+
+        //private bool AwaitMoveLeft { get; set; }
+
+        //private bool AwaitMoveUp { get; set; }
+
+        //private bool AwaitMoveDown { get; set; }
 
         #endregion
 
@@ -117,11 +119,13 @@ namespace HonkTrooper
             Health = 100;
             IsAttacking = false;
 
-            AwaitMoveLeft = false;
-            AwaitMoveRight = false;
+            _movementDirection = MovementDirection.None;
 
-            AwaitMoveUp = false;
-            AwaitMoveDown = false;
+            //AwaitMoveLeft = false;
+            //AwaitMoveRight = false;
+
+            //AwaitMoveUp = false;
+            //AwaitMoveDown = false;
 
             var uri = ConstructExtensions.GetRandomContentUri(_boss_uris);
             _content_image.Source = new BitmapImage(uriSource: uri);
@@ -207,28 +211,48 @@ namespace HonkTrooper
             }
         }
 
+        public void MoveUp(double speed)
+        {
+            SetTop(GetTop() - speed);
+        }
+
+        public void MoveDown(double speed)
+        {
+            SetTop(GetTop() + speed);
+        }
+
         public void MoveLeft(double speed)
         {
             SetLeft(GetLeft() - speed);
-            SetTop(GetTop() + speed);
         }
 
         public void MoveRight(double speed)
         {
             SetLeft(GetLeft() + speed);
+        }
+
+        public void MoveUpRight(double speed)
+        {
+            SetLeft(GetLeft() + speed);
             SetTop(GetTop() - speed);
         }
 
-        public void MoveUp(double speed)
+        public void MoveUpLeft(double speed)
         {
             SetLeft(GetLeft() - speed);
             SetTop(GetTop() - speed * IsometricDisplacement);
         }
 
-        public void MoveDown(double speed)
+        public void MoveDownRight(double speed)
         {
             SetLeft(GetLeft() + speed);
             SetTop(GetTop() + speed * IsometricDisplacement);
+        }
+
+        public void MoveDownLeft(double speed)
+        {
+            SetLeft(GetLeft() - speed);
+            SetTop(GetTop() + speed);
         }
 
         public void LooseHealth()
@@ -259,11 +283,17 @@ namespace HonkTrooper
                 case BossMovementPattern.PLAYER_SEEKING:
                     SeekPlayer(playerPoint);
                     break;
-                case BossMovementPattern.SQUARE:
-                    MoveInSquares(speed: speed, sceneWidth: sceneWidth, sceneHeight: sceneHeight);
+                case BossMovementPattern.ISOMETRIC_SQUARE:
+                    MoveInIsometricSquares(speed: speed, sceneWidth: sceneWidth, sceneHeight: sceneHeight);
                     break;
-                case BossMovementPattern.LEFT_RIGHT:
-                    MoveLeftAndRight(speed: speed, sceneWidth: sceneWidth, sceneHeight: sceneHeight);
+                case BossMovementPattern.UPRIGHT_DOWNLEFT:
+                    MoveUpRightDownLeft(speed: speed, sceneWidth: sceneWidth, sceneHeight: sceneHeight);
+                    break;
+                case BossMovementPattern.RIGHT_LEFT:
+                    MoveRightLeft(speed: speed, sceneWidth: sceneWidth, sceneHeight: sceneHeight);
+                    break;
+                case BossMovementPattern.UP_DOWN:
+                    MoveUpDown(speed: speed, sceneWidth: sceneWidth, sceneHeight: sceneHeight);
                     break;
             }
         }
@@ -320,7 +350,7 @@ namespace HonkTrooper
             }
         }
 
-        private bool MoveInSquares(double speed, double sceneWidth, double sceneHeight)
+        private bool MoveInIsometricSquares(double speed, double sceneWidth, double sceneHeight)
         {
             _changeMovementPatternDelay -= 0.1;
 
@@ -330,9 +360,9 @@ namespace HonkTrooper
                 return true;
             }
 
-            if (IsAttacking && !AwaitMoveLeft && !AwaitMoveRight && !AwaitMoveUp && !AwaitMoveDown)
+            if (IsAttacking && _movementDirection == MovementDirection.None)
             {
-                AwaitMoveRight = true;
+                _movementDirection = MovementDirection.UpRight;
             }
             else
             {
@@ -341,50 +371,46 @@ namespace HonkTrooper
 
             if (IsAttacking)
             {
-                if (AwaitMoveRight)
+                if (_movementDirection == MovementDirection.UpRight)
                 {
-                    MoveRight(speed);
+                    MoveUpRight(speed);
 
                     if (GetTop() < 0)
                     {
-                        AwaitMoveRight = false;
-                        AwaitMoveDown = true;
+                        _movementDirection = MovementDirection.DownRight;
                     }
                 }
                 else
                 {
-                    if (AwaitMoveDown)
+                    if (_movementDirection == MovementDirection.DownRight)
                     {
-                        MoveDown(speed);
+                        MoveDownRight(speed);
 
                         if (GetRight() > sceneWidth || GetBottom() > sceneHeight)
                         {
-                            AwaitMoveDown = false;
-                            AwaitMoveLeft = true;
+                            _movementDirection = MovementDirection.DownLeft;
                         }
                     }
                     else
                     {
-                        if (AwaitMoveLeft)
+                        if (_movementDirection == MovementDirection.DownLeft)
                         {
-                            MoveLeft(speed);
+                            MoveDownLeft(speed);
 
                             if (GetLeft() < 0 || GetBottom() > sceneHeight)
                             {
-                                AwaitMoveLeft = false;
-                                AwaitMoveUp = true;
+                                _movementDirection = MovementDirection.UpLeft;
                             }
                         }
                         else
                         {
-                            if (AwaitMoveUp)
+                            if (_movementDirection == MovementDirection.UpLeft)
                             {
-                                MoveUp(speed);
+                                MoveUpLeft(speed);
 
                                 if (GetTop() < 0 || GetLeft() < 0)
                                 {
-                                    AwaitMoveUp = false;
-                                    AwaitMoveRight = true;
+                                    _movementDirection = MovementDirection.UpRight;
                                 }
                             }
                         }
@@ -395,7 +421,7 @@ namespace HonkTrooper
             return false;
         }
 
-        private bool MoveLeftAndRight(double speed, double sceneWidth, double sceneHeight)
+        private bool MoveUpRightDownLeft(double speed, double sceneWidth, double sceneHeight)
         {
             _changeMovementPatternDelay -= 0.1;
 
@@ -405,9 +431,11 @@ namespace HonkTrooper
                 return true;
             }
 
-            if (IsAttacking && !AwaitMoveLeft && !AwaitMoveRight)
+            if (IsAttacking && _movementDirection == MovementDirection.None)
             {
-                AwaitMoveRight = true;
+                //AwaitMoveRight = true;
+
+                _movementDirection = MovementDirection.UpRight;
             }
             else
             {
@@ -416,26 +444,124 @@ namespace HonkTrooper
 
             if (IsAttacking)
             {
-                if (AwaitMoveRight)
+                if (_movementDirection == MovementDirection.UpRight)
                 {
-                    MoveRight(speed);
+                    MoveUpRight(speed);
 
                     if (GetTop() < 0 || GetLeft() > Scene.Width)
                     {
-                        AwaitMoveRight = false;
-                        AwaitMoveLeft = true;
+                        //AwaitMoveRight = false;
+                        //AwaitMoveLeft = true;
+
+                        _movementDirection = MovementDirection.DownLeft;
                     }
                 }
                 else
                 {
-                    if (AwaitMoveLeft)
+                    if (_movementDirection == MovementDirection.DownLeft)
                     {
-                        MoveLeft(speed);
+                        MoveDownLeft(speed);
 
                         if (GetLeft() < 0 || GetBottom() > sceneHeight)
                         {
-                            AwaitMoveLeft = false;
-                            AwaitMoveRight = true;
+                            //AwaitMoveLeft = false;
+                            //AwaitMoveRight = true;
+
+                            _movementDirection = MovementDirection.UpRight;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private bool MoveRightLeft(double speed, double sceneWidth, double sceneHeight)
+        {
+            _changeMovementPatternDelay -= 0.1;
+
+            if (_changeMovementPatternDelay < 0)
+            {
+                RandomizeMovementPattern();
+                return true;
+            }
+
+            if (IsAttacking && _movementDirection == MovementDirection.None)
+            {
+                _movementDirection = MovementDirection.Right;
+            }
+            else
+            {
+                IsAttacking = true;
+            }
+
+            if (IsAttacking)
+            {
+                if (_movementDirection == MovementDirection.Right)
+                {
+                    MoveRight(speed);
+
+                    if (GetRight() > Scene.Width)
+                    {
+                        _movementDirection = MovementDirection.Left;
+                    }
+                }
+                else
+                {
+                    if (_movementDirection == MovementDirection.Left)
+                    {
+                        MoveLeft(speed);
+
+                        if (GetLeft() < 0)
+                        {
+                            _movementDirection = MovementDirection.Right;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private bool MoveUpDown(double speed, double sceneWidth, double sceneHeight)
+        {
+            _changeMovementPatternDelay -= 0.1;
+
+            if (_changeMovementPatternDelay < 0)
+            {
+                RandomizeMovementPattern();
+                return true;
+            }
+
+            if (IsAttacking && _movementDirection == MovementDirection.None)
+            {
+                _movementDirection = MovementDirection.Up;
+            }
+            else
+            {
+                IsAttacking = true;
+            }
+
+            if (IsAttacking)
+            {
+                if (_movementDirection == MovementDirection.Up)
+                {
+                    MoveUp(speed);
+
+                    if (GetTop() < 0)
+                    {
+                        _movementDirection = MovementDirection.Down;
+                    }
+                }
+                else
+                {
+                    if (_movementDirection == MovementDirection.Down)
+                    {
+                        MoveDown(speed);
+
+                        if (GetBottom() > Scene.Height)
+                        {
+                            _movementDirection = MovementDirection.Up;
                         }
                     }
                 }
@@ -448,6 +574,7 @@ namespace HonkTrooper
         {
             _changeMovementPatternDelay = _random.Next(40, 60);
             MovementPattern = (BossMovementPattern)_random.Next(Enum.GetNames(typeof(BossMovementPattern)).Length);
+            _movementDirection = MovementDirection.None;
         }
 
         private void SetIdleStance()
@@ -472,7 +599,9 @@ namespace HonkTrooper
     public enum BossMovementPattern
     {
         PLAYER_SEEKING,
-        SQUARE,
-        LEFT_RIGHT,
+        ISOMETRIC_SQUARE,
+        UPRIGHT_DOWNLEFT,
+        RIGHT_LEFT,
+        UP_DOWN,
     }
 }
