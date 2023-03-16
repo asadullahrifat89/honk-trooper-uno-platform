@@ -77,7 +77,7 @@ namespace HonkTrooper
 
             SetSize(width: width, height: height);
 
-            var uri = _player_uris[_random.Next(_player_uris.Length)];
+            var uri = ConstructExtensions.GetRandomContentUri(_player_uris);
 
             _content_image = new Image()
             {
@@ -115,7 +115,7 @@ namespace HonkTrooper
             _isMovingLeft = false;
             _isMovingRight = false;
 
-            var uri = _player_uris[_random.Next(_player_uris.Length)];
+            var uri = ConstructExtensions.GetRandomContentUri(_player_uris);
             _content_image.Source = new BitmapImage(uriSource: uri);
 
             _movementStopDelay = _movementStopDelayDefault;
@@ -132,21 +132,21 @@ namespace HonkTrooper
 
         public void SetAttackStance()
         {
-            var uri = _player_attack_uris[_random.Next(_player_attack_uris.Length)];
+            var uri = ConstructExtensions.GetRandomContentUri(_player_attack_uris);
             _content_image.Source = new BitmapImage(uriSource: uri);
             _attackStanceDelay = _attackStanceDelayDefault;
         }
 
         public void SetWinStance()
         {
-            var uri = _player_win_uris[_random.Next(_player_win_uris.Length)];
+            var uri = ConstructExtensions.GetRandomContentUri(_player_win_uris);
             _content_image.Source = new BitmapImage(uriSource: uri);
             _winStanceDelay = _winStanceDelayDefault;
         }
 
         public void SetHitStance()
         {
-            var uri = _player_hit_uris[_random.Next(_player_hit_uris.Length)];
+            var uri = ConstructExtensions.GetRandomContentUri(_player_hit_uris);
             _content_image.Source = new BitmapImage(uriSource: uri);
             _hitStanceDelay = _hitStanceDelayDefault;
         }
@@ -540,7 +540,7 @@ namespace HonkTrooper
 
         private void SetIdleStance()
         {
-            var uri = _player_uris[_random.Next(_player_uris.Length)];
+            var uri = ConstructExtensions.GetRandomContentUri(_player_uris);
             _content_image.Source = new BitmapImage(uriSource: uri);
         }
 

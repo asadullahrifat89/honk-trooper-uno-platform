@@ -63,7 +63,7 @@ namespace HonkTrooper
 
             SetSize(width: width, height: height);
 
-            var uri = _boss_uris[_random.Next( _boss_uris.Length)];
+            var uri = ConstructExtensions.GetRandomContentUri(_boss_uris);
 
             _content_image = new Image()
             {
@@ -108,7 +108,7 @@ namespace HonkTrooper
         #region Methods
 
         public void Reset()
-        {            
+        {
             _audioStub.Play(SoundType.BOSS_ENTRY);
 
             PlaySoundLoop();
@@ -123,8 +123,8 @@ namespace HonkTrooper
             AwaitMoveUp = false;
             AwaitMoveDown = false;
 
-            var uri = _boss_uris[_random.Next( _boss_uris.Length)];
-            _content_image.Source = new BitmapImage(uri);
+            var uri = ConstructExtensions.GetRandomContentUri(_boss_uris);
+            _content_image.Source = new BitmapImage(uriSource: uri);
 
             RandomizeMovementPattern();
             SetScaleTransform(1);
@@ -169,7 +169,7 @@ namespace HonkTrooper
 
         public void SetHitStance()
         {
-            var uri = _boss_hit_uris[_random.Next( _boss_hit_uris.Length)];
+            var uri = ConstructExtensions.GetRandomContentUri(_boss_hit_uris);
             _content_image.Source = new BitmapImage(uriSource: uri);
             _hitStanceDelay = _hitStanceDelayDefault;
         }
@@ -189,7 +189,7 @@ namespace HonkTrooper
 
         public void SetWinStance()
         {
-            var uri = _boss_win_uris[_random.Next( _boss_win_uris.Length)];
+            var uri = ConstructExtensions.GetRandomContentUri(_boss_win_uris);
             _content_image.Source = new BitmapImage(uriSource: uri);
             _winStanceDelay = _winStanceDelayDefault;
         }
@@ -237,7 +237,7 @@ namespace HonkTrooper
 
             if (IsDead)
             {
-                StopSoundLoop();               
+                StopSoundLoop();
                 _audioStub.Play(SoundType.BOSS_DEAD);
             }
         }
@@ -248,7 +248,7 @@ namespace HonkTrooper
         }
 
         public void StopSoundLoop()
-        {            
+        {
             _audioStub.Stop(SoundType.BOSS_HOVERING);
         }
 
@@ -447,12 +447,12 @@ namespace HonkTrooper
         private void RandomizeMovementPattern()
         {
             _changeMovementPatternDelay = _random.Next(40, 60);
-            MovementPattern = (BossMovementPattern)_random.Next( Enum.GetNames(typeof(BossMovementPattern)).Length);
+            MovementPattern = (BossMovementPattern)_random.Next(Enum.GetNames(typeof(BossMovementPattern)).Length);
         }
 
         private void SetIdleStance()
         {
-            var uri = _boss_uris[_random.Next( _boss_uris.Length)];
+            var uri = ConstructExtensions.GetRandomContentUri(_boss_uris);
             _content_image.Source = new BitmapImage(uriSource: uri);
         }
 

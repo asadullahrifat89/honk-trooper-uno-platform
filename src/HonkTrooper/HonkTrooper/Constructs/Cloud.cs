@@ -39,7 +39,7 @@ namespace HonkTrooper
 
             SetSize(width: width, height: height);
 
-            var uri = _cloud_uris[_random.Next( _cloud_uris.Length)];
+            var uri = ConstructExtensions.GetRandomContentUri(_cloud_uris);
 
             _content_image = new Image()
             {
@@ -62,7 +62,7 @@ namespace HonkTrooper
         {
             SpeedOffset = _random.Next(3, 7);
 
-            var uri = _cloud_uris[_random.Next( _cloud_uris.Length)];
+            var uri = ConstructExtensions.GetRandomContentUri(_cloud_uris);
             _content_image.Source = new BitmapImage(uri);
         }
 

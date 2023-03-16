@@ -46,7 +46,7 @@ namespace HonkTrooper
 
             SetSize(width: width, height: height);
 
-            var uri = _enemy_uris[_random.Next( _enemy_uris.Length)];
+            var uri = ConstructExtensions.GetRandomContentUri(_enemy_uris);
 
             _content_image = new Image()
             {
@@ -95,7 +95,7 @@ namespace HonkTrooper
             if (WillHonk)
                 SetHonkDelay();
 
-            var uri = _enemy_uris[_random.Next( _enemy_uris.Length)];
+            var uri = ConstructExtensions.GetRandomContentUri(_enemy_uris);
             _content_image.Source = new BitmapImage(uri);
 
             SpeedOffset = _random.Next(-3, 2);
