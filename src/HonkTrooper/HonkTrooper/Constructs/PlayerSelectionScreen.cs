@@ -93,8 +93,8 @@ namespace HonkTrooper
                 Margin = new Thickness(0, 5, 0, 5),
             };
 
-            ToggleButton player1btn = new() { Margin = new Thickness(5) };
-            ToggleButton player2btn = new() { Margin = new Thickness(5) };
+            ToggleButton player1btn = new() { Margin = new Thickness(5), CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS - 10) };
+            ToggleButton player2btn = new() { Margin = new Thickness(5), CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS - 10) };
 
             player1btn.Content = new Image()
             {
@@ -149,7 +149,11 @@ namespace HonkTrooper
                 Foreground = new SolidColorBrush(Colors.White),
             };
 
-            playButton.Click += (s, e) => { playAction(player2btn.IsChecked == true ? 2 : 1); };
+            playButton.Click += (s, e) =>
+            {
+                _audioStub.Play(SoundType.GAME_START);
+                playAction(player2btn.IsChecked == true ? 2 : 1);
+            };
 
             container.Children.Add(playButton);
 
@@ -158,7 +162,7 @@ namespace HonkTrooper
             rootGrid.Children.Add(container);
             SetChild(rootGrid);
 
-            _audioStub = new AudioStub((SoundType.OPTION_SELECT, 1, false));
+            _audioStub = new AudioStub((SoundType.OPTION_SELECT, 1, false), (SoundType.GAME_START, 1, false));
         }
 
         #endregion

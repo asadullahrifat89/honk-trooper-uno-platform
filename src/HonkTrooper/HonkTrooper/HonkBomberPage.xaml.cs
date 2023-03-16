@@ -145,105 +145,29 @@ namespace HonkTrooper
 
             GeneratePlayerInScene();
 
-            foreach (var vehicle in _scene_game.Children.OfType<Vehicle>())
+            foreach (var construct in _scene_game.Children.OfType<Construct>()
+                .Where(x => x.ConstructType is
+                ConstructType.VEHICLE_LARGE or
+                ConstructType.VEHICLE_SMALL or
+                ConstructType.HONK or
+                ConstructType.PLAYER_ROCKET or
+                ConstructType.PLAYER_ROCKET_SEEKING or
+                ConstructType.PLAYER_FIRE_CRACKER or
+                ConstructType.BOSS_ROCKET or
+                ConstructType.BOSS_ROCKET_SEEKING or
+                ConstructType.ENEMY or ConstructType.ENEMY_ROCKET or ConstructType.POWERUP_PICKUP or ConstructType.HEALTH_PICKUP or ConstructType.BOSS))
             {
-                vehicle.SetPosition(
+                construct.SetPosition(
                      left: -500,
                      top: -500);
 
-                vehicle.IsAnimating = false;
-            }
+                construct.IsAnimating = false;
 
-            foreach (var honk in _scene_game.Children.OfType<Honk>())
-            {
-                honk.SetPosition(
-                     left: -500,
-                     top: -500);
-
-                honk.IsAnimating = false;
-            }
-
-            foreach (var playerRocket in _scene_game.Children.OfType<PlayerRocket>())
-            {
-                playerRocket.SetPosition(
-                     left: -500,
-                     top: -500);
-
-                playerRocket.IsAnimating = false;
-            }
-
-            foreach (var playerRocket in _scene_game.Children.OfType<PlayerRocketSeeking>())
-            {
-                playerRocket.SetPosition(
-                     left: -500,
-                     top: -500);
-
-                playerRocket.IsAnimating = false;
-            }
-
-            if (_scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating) is Boss boss)
-            {
-                boss.Health = 0;
-                boss.IsAttacking = false;
-                boss.IsAnimating = false;
-
-                boss.SetPosition(left: -500, top: -500);
-
-                //Console.WriteLine("Boss relocated");
-            }
-
-            foreach (var bossRocket in _scene_game.Children.OfType<BossRocket>())
-            {
-                bossRocket.SetPosition(
-                     left: -500,
-                     top: -500);
-
-                bossRocket.IsAnimating = false;
-            }
-
-            foreach (var bossRocket in _scene_game.Children.OfType<BossRocketSeeking>())
-            {
-                bossRocket.SetPosition(
-                     left: -500,
-                     top: -500);
-
-                bossRocket.IsAnimating = false;
-            }
-
-            foreach (var enemy in _scene_game.Children.OfType<Enemy>())
-            {
-                enemy.SetPosition(
-                     left: -500,
-                     top: -500);
-
-                enemy.IsAnimating = false;
-            }
-
-            foreach (var enemyRocket in _scene_game.Children.OfType<EnemyRocket>())
-            {
-                enemyRocket.SetPosition(
-                     left: -500,
-                     top: -500);
-
-                enemyRocket.IsAnimating = false;
-            }
-
-            foreach (var powerUpPickup in _scene_game.Children.OfType<PowerUpPickup>())
-            {
-                powerUpPickup.SetPosition(
-                     left: -500,
-                     top: -500);
-
-                powerUpPickup.IsAnimating = false;
-            }
-
-            foreach (var healthPickup in _scene_game.Children.OfType<HealthPickup>())
-            {
-                healthPickup.SetPosition(
-                     left: -500,
-                     top: -500);
-
-                healthPickup.IsAnimating = false;
+                if (construct is Boss boss1)
+                {
+                    boss1.IsAttacking = false;
+                    boss1.Health = 0;
+                }
             }
 
             _scene_game.SceneState = SceneState.GAME_RUNNING;
@@ -297,8 +221,6 @@ namespace HonkTrooper
                 downScaling: _scene_game.DownScaling,
                 playAction: () =>
                 {
-                    _audio_stub.Play(SoundType.GAME_START);
-
                     if (_scene_game.SceneState == SceneState.GAME_STOPPED)
                     {
                         if (ScreenExtensions.RequiredDisplayOrientation == ScreenExtensions.GetDisplayOrienation())
@@ -385,13 +307,11 @@ namespace HonkTrooper
                 {
                     _selected_player_template = playerTemplate;
 
-                    _audio_stub.Play(SoundType.GAME_START);
-
                     if (_scene_game.SceneState == SceneState.GAME_STOPPED)
                     {
                         RecyclePlayerSelectionScreen(playerSelectionScreen);
                         NewGame();
-                    }                       
+                    }
 
                     return true;
                 });
@@ -2907,8 +2827,10 @@ namespace HonkTrooper
                 SyncDropShadow(_player);
             }
 
-            if (_scene_main_menu.Children.OfType<TitleScreen>().FirstOrDefault(x => x.IsAnimating) is TitleScreen GamePlay)
-                GamePlay.Reposition();
+            foreach (var screen in _scene_main_menu.Children.OfType<HoveringTitleScreen>().Where(x => x.IsAnimating))
+            {
+                screen.Reposition();
+            }
         }
 
         private void Controller_RequiresScreenOrientationChange(object sender, DisplayOrientations e)
