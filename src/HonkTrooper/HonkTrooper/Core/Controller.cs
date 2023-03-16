@@ -78,6 +78,7 @@ namespace HonkTrooper
                 HorizontalAlignment = HorizontalAlignment.Right,
                 VerticalAlignment = VerticalAlignment.Bottom,
                 Margin = new Thickness(20),
+                Opacity = 0.6,
             };
 
             Canvas canvas = new Canvas()
@@ -90,7 +91,7 @@ namespace HonkTrooper
             Construct upLeft = new()
             {
                 Tag = MovementDirection.UpLeft,
-                Background = new SolidColorBrush(Colors.Goldenrod),
+                //Background = new SolidColorBrush(Colors.Goldenrod),
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
                 Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
                 Child = new SymbolIcon()
@@ -104,7 +105,7 @@ namespace HonkTrooper
             Construct up = new()
             {
                 Tag = MovementDirection.Up,
-                Background = new SolidColorBrush(Colors.Goldenrod),
+                //Background = new SolidColorBrush(Colors.Goldenrod),
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
                 Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
                 Child = new SymbolIcon()
@@ -117,7 +118,7 @@ namespace HonkTrooper
             Construct upRight = new()
             {
                 Tag = MovementDirection.UpRight,
-                Background = new SolidColorBrush(Colors.Goldenrod),
+                //Background = new SolidColorBrush(Colors.Goldenrod),
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
                 Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
                 Child = new SymbolIcon()
@@ -131,7 +132,7 @@ namespace HonkTrooper
             Construct left = new()
             {
                 Tag = MovementDirection.Left,
-                Background = new SolidColorBrush(Colors.Goldenrod),
+                //Background = new SolidColorBrush(Colors.Goldenrod),
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
                 Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
                 Child = new SymbolIcon()
@@ -144,7 +145,7 @@ namespace HonkTrooper
             Construct right = new()
             {
                 Tag = MovementDirection.Right,
-                Background = new SolidColorBrush(Colors.Goldenrod),
+                //Background = new SolidColorBrush(Colors.Goldenrod),
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
                 Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
                 Child = new SymbolIcon()
@@ -158,7 +159,7 @@ namespace HonkTrooper
             Construct downLeft = new()
             {
                 Tag = MovementDirection.DownLeft,
-                Background = new SolidColorBrush(Colors.Goldenrod),
+                //Background = new SolidColorBrush(Colors.Goldenrod),
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
                 Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
                 Child = new SymbolIcon()
@@ -172,7 +173,7 @@ namespace HonkTrooper
             Construct down = new()
             {
                 Tag = MovementDirection.Down,
-                Background = new SolidColorBrush(Colors.Goldenrod),
+                //Background = new SolidColorBrush(Colors.Goldenrod),
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
                 Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
                 Child = new SymbolIcon()
@@ -186,7 +187,7 @@ namespace HonkTrooper
             Construct downRight = new()
             {
                 Tag = MovementDirection.DownRight,
-                Background = new SolidColorBrush(Colors.Goldenrod),
+                //Background = new SolidColorBrush(Colors.Goldenrod),
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
                 Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
                 Child = new SymbolIcon()
