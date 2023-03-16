@@ -43,6 +43,8 @@ namespace HonkTrooper
 
         private AudioStub _audio_stub;
 
+        private int _selected_player_template;
+
 
         #endregion
 
@@ -107,7 +109,7 @@ namespace HonkTrooper
             GenerateTitleScreenInScene("Game Paused");
         }
 
-        private void ResumeGame(TitleScreen se)
+        private void ResumeGame()
         {
             _audio_stub.Resume(SoundType.AMBIENCE);
 
@@ -121,13 +123,13 @@ namespace HonkTrooper
             _scene_game.Play();
             _scene_main_menu.Pause();
 
-            RecycleTitleScreen(se);
-
             _game_controller.AttackButton.Focus(FocusState.Programmatic);
         }
 
-        private void NewGame(TitleScreen se)
+        private void NewGame()
         {
+            Console.WriteLine("New Game Started.");
+
             _audio_stub.Play(SoundType.AMBIENCE, SoundType.GAME_BACKGROUND_MUSIC);
 
             _game_controller.Reset();
@@ -251,7 +253,6 @@ namespace HonkTrooper
 
             _scene_main_menu.Pause();
 
-            RecycleTitleScreen(se);
             ToggleHudVisibility(Visibility.Visible);
 
             ScreenExtensions.EnterFullScreen(true);
@@ -288,9 +289,9 @@ namespace HonkTrooper
 
         private bool SpawnTitleScreenInScene()
         {
-            TitleScreen TitleScreen = null;
+            TitleScreen titleScreen = null;
 
-            TitleScreen = new(
+            titleScreen = new(
                 animateAction: AnimateTitleScreen,
                 recycleAction: (se) => { return true; },
                 downScaling: _scene_game.DownScaling,
@@ -301,29 +302,39 @@ namespace HonkTrooper
                     if (_scene_game.SceneState == SceneState.GAME_STOPPED)
                     {
                         if (ScreenExtensions.RequiredDisplayOrientation == ScreenExtensions.GetDisplayOrienation())
-                            NewGame(TitleScreen);
+                        {
+                            RecycleTitleScreen(titleScreen);
+                            GeneratePlayerSelectionScreenInScene();
+                        }
                         else
+                        {
                             ScreenExtensions.SetDisplayOrientation(ScreenExtensions.RequiredDisplayOrientation);
+                        }
                     }
                     else
                     {
                         if (!_scene_game.IsAnimating)
                         {
                             if (ScreenExtensions.RequiredDisplayOrientation == ScreenExtensions.GetDisplayOrienation())
-                                ResumeGame(TitleScreen);
+                            {
+                                ResumeGame();
+                                RecycleTitleScreen(titleScreen);
+                            }
                             else
+                            {
                                 ScreenExtensions.SetDisplayOrientation(ScreenExtensions.RequiredDisplayOrientation);
+                            }
                         }
                     }
 
                     return true;
                 });
 
-            TitleScreen.SetPosition(
+            titleScreen.SetPosition(
                 left: -500,
                 top: -500);
 
-            _scene_main_menu.AddToScene(TitleScreen);
+            _scene_main_menu.AddToScene(titleScreen);
 
             return true;
         }
@@ -339,7 +350,69 @@ namespace HonkTrooper
                 if (_player is not null)
                     titleScreen.SetContent(_player.GetContentUri());
 
-                // Console.WriteLine("Game title generated.");
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimateTitleScreen(Construct titleScreen)
+        {
+            TitleScreen screen1 = titleScreen as TitleScreen;
+            screen1.Hover();
+            return true;
+        }
+
+        private void RecycleTitleScreen(TitleScreen titleScreen)
+        {
+            titleScreen.SetPosition(left: -500, top: -500);
+            titleScreen.IsAnimating = false;
+        }
+
+        #endregion
+
+        #region PlayerSelectionScreen
+
+        private bool SpawnPlayerSelectionScreenInScene()
+        {
+            PlayerSelectionScreen playerSelectionScreen = null;
+
+            playerSelectionScreen = new(
+                animateAction: AnimatePlayerSelectionScreen,
+                recycleAction: (se) => { return true; },
+                downScaling: _scene_game.DownScaling,
+                playAction: (int playerTemplate) =>
+                {
+                    _selected_player_template = playerTemplate;
+
+                    _audio_stub.Play(SoundType.GAME_START);
+
+                    if (_scene_game.SceneState == SceneState.GAME_STOPPED)
+                    {
+                        RecyclePlayerSelectionScreen(playerSelectionScreen);
+                        NewGame();
+                    }                       
+
+                    return true;
+                });
+
+            playerSelectionScreen.SetPosition(
+                left: -500,
+                top: -500);
+
+            _scene_main_menu.AddToScene(playerSelectionScreen);
+
+            return true;
+        }
+
+        private bool GeneratePlayerSelectionScreenInScene()
+        {
+            if (_scene_main_menu.Children.OfType<PlayerSelectionScreen>().FirstOrDefault(x => x.IsAnimating == false) is PlayerSelectionScreen playerSelectionScreen)
+            {
+                playerSelectionScreen.IsAnimating = true;
+                playerSelectionScreen.Reposition();
+
+                Console.WriteLine("Player Selection Screen Generated.");
 
                 return true;
             }
@@ -347,17 +420,19 @@ namespace HonkTrooper
             return false;
         }
 
-        private bool AnimateTitleScreen(Construct se)
+        private bool AnimatePlayerSelectionScreen(Construct playerSelectionScreen)
         {
-            TitleScreen screen1 = se as TitleScreen;
+            PlayerSelectionScreen screen1 = playerSelectionScreen as PlayerSelectionScreen;
             screen1.Hover();
             return true;
         }
 
-        private void RecycleTitleScreen(TitleScreen TitleScreen)
+        private void RecyclePlayerSelectionScreen(PlayerSelectionScreen playerSelectionScreen)
         {
-            TitleScreen.SetPosition(left: -500, top: -500);
-            TitleScreen.IsAnimating = false;
+            playerSelectionScreen.SetPosition(left: -500, top: -500);
+            playerSelectionScreen.IsAnimating = false;
+
+            Console.WriteLine("Player Selection Screen Recyled.");
         }
 
         #endregion
@@ -432,8 +507,7 @@ namespace HonkTrooper
             _player = new(
                 animateAction: AnimatePlayer,
                 recycleAction: (_player) => { return true; },
-                downScaling: _scene_game.DownScaling,
-                playerTemplate: playerTemplate);
+                downScaling: _scene_game.DownScaling);
 
             _player.SetPosition(
                   left: -500,
@@ -451,9 +525,9 @@ namespace HonkTrooper
             _player.IsAnimating = true;
             _player.Reset();
             _player.Reposition();
+            _player.SetPlayerTemplate(_selected_player_template);
 
             SyncDropShadow(_player);
-
             SetPlayerHealthBar();
 
             return true;
@@ -2759,10 +2833,18 @@ namespace HonkTrooper
                     startUpAction: SpawnEnemyRocketsInScene)
                 );
 
-            _scene_main_menu.AddToScene(new Generator(
-                generationDelay: 0,
-                generationAction: () => { return true; },
-                startUpAction: SpawnTitleScreenInScene));
+            _scene_main_menu.AddToScene(
+
+                new Generator(
+                    generationDelay: 0,
+                    generationAction: () => { return true; },
+                    startUpAction: SpawnTitleScreenInScene),
+
+                new Generator(
+                    generationDelay: 0,
+                    generationAction: () => { return true; },
+                    startUpAction: SpawnPlayerSelectionScreenInScene)
+                );
         }
 
         #endregion
