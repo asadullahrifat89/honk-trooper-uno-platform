@@ -526,33 +526,57 @@ namespace HonkTrooper
 
             if (_scene_game.SceneState == SceneState.GAME_RUNNING)
             {
-                if (_game_controller.IsMoveUp)
+                if (_game_controller.IsMoveUp && _game_controller.IsMoveLeft)
                 {
                     if (_player.GetBottom() > 0 && _player.GetRight() > 0)
-                        _player.MoveTopLeft(speed);
+                        _player.MoveUpLeft(speed);
+                }
+                else if (_game_controller.IsMoveUp && _game_controller.IsMoveRight)
+                {
+                    if (_player.GetLeft() < _scene_game.Width && _player.GetBottom() > 0)
+                        _player.MoveUpRight(speed);
+                }
+                else if (_game_controller.IsMoveUp)
+                {
+                    if (_player.GetBottom() > 0)
+                        _player.MoveUp(speed);
+                }
+                else if (_game_controller.IsMoveDown && _game_controller.IsMoveRight)
+                {
+                    if (_player.GetTop() < _scene_game.Height && _player.GetLeft() < _scene_game.Width)
+                        _player.MoveDownRight(speed);
+                }
+                else if (_game_controller.IsMoveDown && _game_controller.IsMoveLeft)
+                {
+                    if (_player.GetRight() > 0 && _player.GetTop() < _scene_game.Height)
+                        _player.MoveDownLeft(speed);
                 }
                 else if (_game_controller.IsMoveDown)
                 {
-                    if (_player.GetTop() < _scene_game.Height && _player.GetLeft() < _scene_game.Width)
-                        _player.MoveBottomRight(speed);
-                }
-                else if (_game_controller.IsMoveLeft)
-                {
-                    if (_player.GetRight() > 0 && _player.GetTop() < _scene_game.Height)
-                        _player.MoveBottomLeft(speed);
+                    if ( _player.GetBottom() < _scene_game.Height)
+                        _player.MoveDown(speed);
                 }
                 else if (_game_controller.IsMoveRight)
                 {
-                    if (_player.GetLeft() < _scene_game.Width && _player.GetBottom() > 0)
-                        _player.MoveTopRight(speed);
+                    if (_player.GetRight() < _scene_game.Width)
+                        _player.MoveRight(speed);
+                }
+                else if (_game_controller.IsMoveLeft)
+                {
+                    if (_player.GetLeft() > 0)
+                        _player.MoveLeft(speed);
                 }
                 else
                 {
-                    if (_player.GetBottom() > 0 && _player.GetRight() > 0
-                        && _player.GetTop() < _scene_game.Height && _player.GetLeft() < _scene_game.Width
-                        && _player.GetRight() > 0 && _player.GetTop() < _scene_game.Height
-                        && _player.GetLeft() < _scene_game.Width && _player.GetBottom() > 0)
+                    // if player is already out of bounds then prevent stop movement animation
+
+                    if (_player.GetBottom() > 0 && _player.GetRight() > 0 &&
+                        _player.GetTop() < _scene_game.Height && _player.GetLeft() < _scene_game.Width &&
+                        _player.GetRight() > 0 && _player.GetTop() < _scene_game.Height &&
+                        _player.GetLeft() < _scene_game.Width && _player.GetBottom() > 0)
+                    {
                         _player.StopMovement();
+                    }
                 }
 
                 if (_game_controller.IsAttacking)
@@ -2852,7 +2876,7 @@ namespace HonkTrooper
             SetController();
             SetScene();
 
-            ScreenExtensions.EnterFullScreen(true);            
+            ScreenExtensions.EnterFullScreen(true);
 
             if (ScreenExtensions.GetDisplayOrienation() == ScreenExtensions.RequiredDisplayOrientation)
             {
