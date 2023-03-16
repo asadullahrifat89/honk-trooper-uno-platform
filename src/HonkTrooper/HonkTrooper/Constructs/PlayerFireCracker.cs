@@ -44,7 +44,7 @@ namespace HonkTrooper
 
             SetSize(width: width, height: height);
 
-            var uri = _bomb_uris[_random.Next(_bomb_uris.Length)];
+            var uri = ConstructExtensions.GetRandomContentUri(_bomb_uris);
 
             _content_image = new Image()
             {
@@ -87,7 +87,7 @@ namespace HonkTrooper
 
             IsBlasting = false;
 
-            var uri = _bomb_uris[_random.Next(_bomb_uris.Length)];
+            var uri = ConstructExtensions.GetRandomContentUri(_bomb_uris);
             _content_image.Source = new BitmapImage(uri);
         }
 
@@ -95,11 +95,9 @@ namespace HonkTrooper
         {
             _audioStub.Play(SoundType.CRACKER_BLAST);
 
-            var uri = _bomb_blast_uris[_random.Next(_bomb_blast_uris.Length)];
+            var uri = ConstructExtensions.GetRandomContentUri(_bomb_blast_uris);
             _content_image.Source = new BitmapImage(uri);
             IsBlasting = true;
-
-
         }
 
         #endregion

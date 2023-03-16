@@ -58,19 +58,6 @@ namespace HonkTrooper
             Child = uIElement;
         }
 
-        public Uri GetContentUri()
-        {
-            if (Child is not null && Child is Image image)
-            {
-                var bitmapImage = image.Source as BitmapImage;
-                return bitmapImage.UriSource;
-            }
-            else
-            {
-                return null;
-            }
-        }
-
         #endregion
     }
 }

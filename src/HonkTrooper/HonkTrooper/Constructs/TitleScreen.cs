@@ -71,9 +71,11 @@ namespace HonkTrooper
 
             var playerUris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER).Select(x => x.Uri).ToArray();
 
+            var uri = ConstructExtensions.GetRandomContentUri(playerUris);
+
             _content_image = new Image()
             {
-                Source = new BitmapImage(playerUris[_random.Next(playerUris.Length)]),
+                Source = new BitmapImage(uriSource: uri),
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 Stretch = Stretch.Uniform,
                 Margin = new Thickness(0, 0, 0, 5),

@@ -1,10 +1,33 @@
-﻿using Windows.Foundation;
+﻿using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media.Imaging;
+using System;
+using Windows.Foundation;
 
 namespace HonkTrooper
 {
     public static class ConstructExtensions
     {
-        #region Methods      
+        private static Random _random = new Random();
+
+        #region Methods
+
+        public static Uri GetContentUri(this Construct construct)
+        {
+            if (construct.Child is not null && construct.Child is Image image)
+            {
+                var bitmapImage = image.Source as BitmapImage;
+                return bitmapImage.UriSource;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public static Uri GetRandomContentUri(Uri[] uris)
+        {
+            return uris[_random.Next(uris.Length)];
+        }
 
         /// <summary>
         /// Checks if a two rects intersect.
