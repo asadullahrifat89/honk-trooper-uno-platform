@@ -71,7 +71,7 @@ namespace HonkTrooper
 
             _audio_stub = new AudioStub(
                 (SoundType.GAME_BACKGROUND_MUSIC, 0.5, true),
-                (SoundType.BOSS_BACKGROUND_MUSIC, 0.6, true),
+                (SoundType.BOSS_BACKGROUND_MUSIC, 0.5, true),
                 (SoundType.AMBIENCE, 0.4, true),
                 (SoundType.GAME_START, 1, false),
                 (SoundType.GAME_PAUSE, 1, false),
