@@ -110,9 +110,6 @@ namespace HonkTrooper
             _isMovingLeft = false;
             _isMovingRight = false;
 
-            //var uri = ConstructExtensions.GetRandomContentUri(_player_uris);
-            //_content_image.Source = new BitmapImage(uriSource: uri);
-
             _movementStopDelay = _movementStopDelayDefault;
             _lastSpeed = 0;
         }

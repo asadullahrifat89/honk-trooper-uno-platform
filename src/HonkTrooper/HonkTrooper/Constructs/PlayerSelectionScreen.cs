@@ -93,8 +93,8 @@ namespace HonkTrooper
                 Margin = new Thickness(0, 5, 0, 5),
             };
 
-            ToggleButton player1btn = new() { Margin = new Thickness(5) };
-            ToggleButton player2btn = new() { Margin = new Thickness(5) };
+            ToggleButton player1btn = new() { Margin = new Thickness(5), CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS) };
+            ToggleButton player2btn = new() { Margin = new Thickness(5), CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS) };
 
             player1btn.Content = new Image()
             {
