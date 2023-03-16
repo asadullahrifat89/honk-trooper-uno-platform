@@ -391,7 +391,7 @@ namespace HonkTrooper
                     {
                         RecyclePlayerSelectionScreen(playerSelectionScreen);
                         NewGame();
-                    }                       
+                    }
 
                     return true;
                 });
@@ -2907,11 +2907,16 @@ namespace HonkTrooper
                 SyncDropShadow(_player);
             }
 
-            if (_scene_main_menu.Children.OfType<TitleScreen>().FirstOrDefault(x => x.IsAnimating) is TitleScreen titleScreen)
-                titleScreen.Reposition();
+            foreach (var screen in _scene_main_menu.Children.OfType<HoveringTitleScreen>().Where(x => x.IsAnimating))
+            {
+                screen.Reposition();
+            }
 
-            if (_scene_main_menu.Children.OfType<PlayerSelectionScreen>().FirstOrDefault(x => x.IsAnimating) is PlayerSelectionScreen playerSelectionScreen)
-                playerSelectionScreen.Reposition();
+            //if (_scene_main_menu.Children.OfType<TitleScreen>().FirstOrDefault(x => x.IsAnimating) is TitleScreen titleScreen)
+            //    titleScreen.Reposition();
+
+            //if (_scene_main_menu.Children.OfType<PlayerSelectionScreen>().FirstOrDefault(x => x.IsAnimating) is PlayerSelectionScreen playerSelectionScreen)
+            //    playerSelectionScreen.Reposition();
         }
 
         private void Controller_RequiresScreenOrientationChange(object sender, DisplayOrientations e)
