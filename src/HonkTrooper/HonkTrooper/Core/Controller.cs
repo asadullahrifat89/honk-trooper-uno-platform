@@ -348,6 +348,17 @@ namespace HonkTrooper
 
                 thumb.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE);
             };
+            //canvas.PointerExited += (s, e) =>
+            //{
+            //    DeactivateMoveUp();
+            //    DeactivateMoveDown();
+            //    DeactivateMoveLeft();
+            //    DeactivateMoveRight();
+
+            //    JoyStickActive = false;
+
+            //    thumb.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE);
+            //};
 
             JoyStick.Child = canvas;
 
