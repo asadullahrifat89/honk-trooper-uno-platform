@@ -2840,11 +2840,6 @@ namespace HonkTrooper
             _scene_main_menu.Width = 1920;
             _scene_main_menu.Height = 1080;
 
-            SetController();
-            SetScene();
-
-            ScreenExtensions.EnterFullScreen(true);
-
             SizeChanged += HonkBomberPage_SizeChanged;
 
             ScreenExtensions.DisplayInformation.OrientationChanged += DisplayInformation_OrientationChanged;
@@ -2853,6 +2848,11 @@ namespace HonkTrooper
             // set display orientation to required orientation
             if (ScreenExtensions.GetDisplayOrienation() != ScreenExtensions.RequiredDisplayOrientation)
                 ScreenExtensions.SetDisplayOrientation(ScreenExtensions.RequiredDisplayOrientation);
+
+            SetController();
+            SetScene();
+
+            ScreenExtensions.EnterFullScreen(true);            
 
             if (ScreenExtensions.GetDisplayOrienation() == ScreenExtensions.RequiredDisplayOrientation)
             {
