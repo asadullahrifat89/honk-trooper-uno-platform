@@ -846,8 +846,11 @@ namespace HonkTrooper
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
+                    var drpShdwHitBox = dropShadow.GetCloseHitBox();
+                    var bmbHitBox = bomb.GetCloseHitBox();
+
                     // start blast animation when the bomb touches it's shadow
-                    if (dropShadow.GetCloseHitBox().IntersectsWith(bomb.GetCloseHitBox()))
+                    if (drpShdwHitBox.IntersectsWith(drpShdwHitBox) && bomb.GetBottom() > dropShadow.GetBottom())
                         PlayerFireCracker.SetBlast();
                 }
             }
