@@ -14,7 +14,7 @@ namespace HonkTrooper
 
         private double _sceneWidth, _sceneHeight;
 
-        private Stopwatch _stopwatch;
+        //private Stopwatch _stopwatch;
 
         private PeriodicTimer _gameViewTimer;
         private readonly TimeSpan _frameTime = TimeSpan.FromMilliseconds(Constants.DEFAULT_FRAME_TIME);
@@ -97,7 +97,8 @@ namespace HonkTrooper
         public async void Play()
         {
             IsAnimating = true;
-            _stopwatch = Stopwatch.StartNew();
+
+            //_stopwatch = Stopwatch.StartNew();
             _gameViewTimer = new PeriodicTimer(_frameTime);
 
             while (await _gameViewTimer.WaitForNextTickAsync())
@@ -110,7 +111,7 @@ namespace HonkTrooper
         public void Pause()
         {
             IsAnimating = false;
-            _stopwatch?.Stop();
+            //_stopwatch?.Stop();
             _gameViewTimer?.Dispose();
         }
 
@@ -125,7 +126,7 @@ namespace HonkTrooper
         public void Stop()
         {
             IsAnimating = false;
-            _stopwatch?.Stop();
+            //_stopwatch?.Stop();
             _gameViewTimer?.Dispose();
 
             Clear();
