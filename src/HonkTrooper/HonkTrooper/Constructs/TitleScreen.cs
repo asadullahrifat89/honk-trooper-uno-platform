@@ -15,6 +15,8 @@ namespace HonkTrooper
         private readonly TextBlock _titleScreenText;
         private readonly Image _content_image;
 
+        private readonly AudioStub _audioStub;
+
         #endregion
 
         #region Ctor
@@ -114,7 +116,11 @@ namespace HonkTrooper
                 Foreground = new SolidColorBrush(Colors.White),
             };
 
-            playButton.Click += (s, e) => { playAction(); };
+            playButton.Click += (s, e) =>
+            {
+                _audioStub.Play(SoundType.GAME_START);
+                playAction();
+            };
 
             container.Children.Add(playButton);
 
@@ -122,6 +128,8 @@ namespace HonkTrooper
 
             rootGrid.Children.Add(container);
             SetChild(rootGrid);
+
+            _audioStub = new AudioStub((SoundType.GAME_START, 1, false));
         }
 
         #endregion      
