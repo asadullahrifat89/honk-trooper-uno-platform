@@ -78,7 +78,7 @@ namespace HonkTrooper
                 HorizontalAlignment = HorizontalAlignment.Right,
                 VerticalAlignment = VerticalAlignment.Bottom,
                 Margin = new Thickness(20),
-                Opacity = 0.6,
+                Opacity = 0.5,
             };
 
             Canvas canvas = new Canvas()
