@@ -1054,11 +1054,8 @@ namespace HonkTrooper
                 vehicle.IsAnimating = true;
                 vehicle.Reset();
 
-                // generate top and left corner lane wise vehicles
-
-                var topOrLeft = _random.Next(2);
-
-                var lane = _random.Next(2);
+                var topOrLeft = _random.Next(2); // generate top and left corner lane wise vehicles
+                var lane = _scene_game.Height < 1000 ? 0 : _random.Next(2); // generate number of lanes based of screen height
 
                 switch (topOrLeft)
                 {
@@ -1067,7 +1064,7 @@ namespace HonkTrooper
                             var xLaneWidth = _scene_game.Width / 4;
 
                             vehicle.SetPosition(
-                                left: lane == 0 ? 0 : xLaneWidth - vehicle.Width * _scene_game.DownScaling,
+                                left: lane == 0 ? 0 : (xLaneWidth - vehicle.Width / 2) * _scene_game.DownScaling,
                                 top: vehicle.Height * -1);
                         }
                         break;
@@ -1077,7 +1074,7 @@ namespace HonkTrooper
 
                             vehicle.SetPosition(
                                 left: vehicle.Width * -1,
-                                top: lane == 0 ? 0 : yLaneWidth * _scene_game.DownScaling);
+                                top: lane == 0 ? 0 : (yLaneWidth + vehicle.Height / 2) * _scene_game.DownScaling);
                         }
                         break;
                     default:
@@ -1156,20 +1153,20 @@ namespace HonkTrooper
             {
                 var hitBox = vehicle.GetHitBox();
 
-                if (hitBox.Top > 0 && hitBox.Left > 0 && vehicle.SpeedOffset == collidingVehicle.SpeedOffset)
+                if (vehicle.SpeedOffset == collidingVehicle.SpeedOffset)
                 {
                     if (vehicle.SpeedOffset > -2)
                         vehicle.SpeedOffset--;
                 }
                 else
                 {
-                    if (collidingVehicle.SpeedOffset < vehicle.SpeedOffset)
-                    {
-                        collidingVehicle.SpeedOffset = vehicle.SpeedOffset;
-                    }
-                    else if (collidingVehicle.SpeedOffset > vehicle.SpeedOffset)
+                    if (vehicle.SpeedOffset > collidingVehicle.SpeedOffset) // vehicle is faster
                     {
                         vehicle.SpeedOffset = collidingVehicle.SpeedOffset;
+                    }
+                    else if (collidingVehicle.SpeedOffset > vehicle.SpeedOffset) // colliding vehicle is faster
+                    {
+                        collidingVehicle.SpeedOffset = vehicle.SpeedOffset;
                     }
                 }
             }
@@ -2675,7 +2672,7 @@ namespace HonkTrooper
 
                 // then add the vehicles which will appear forward in z wrt the top trees
                 new Generator(
-                    generationDelay: 80,
+                    generationDelay: 100,
                     generationAction: GenerateVehicleInScene,
                     startUpAction: SpawnVehiclesInScene),
 
