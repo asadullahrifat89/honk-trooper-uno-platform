@@ -117,9 +117,9 @@ namespace HonkTrooper
         public void Reposition()
         {
             SetPosition(
-                  left: ((Scene.Width / 4) * 2) - Width / 2,
-                  top: (Scene.Height / 2 - Height / 2) - 150 * Scene.DownScaling,
-                  z: 6);
+                left: ((Scene.Width / 4) * 2) - Width / 2,
+                top: (Scene.Height / 2 - Height / 2) - 150 * Scene.DownScaling,
+                z: 6);
         }
 
         public void SetPlayerTemplate(int playerTemplate)
@@ -400,38 +400,37 @@ namespace HonkTrooper
             {
                 _movementStopDelay--;
 
-                double mvmntSpdLs = _movementStopSpeedLoss;
+                double movementSpeedLoss = _movementStopSpeedLoss;
 
                 if (Scene.IsSlowMotionActivated)
-                    mvmntSpdLs = _movementStopSpeedLoss / Constants.DEFAULT_SLOW_MOTION_REDUCTION_FACTOR;
-
+                    movementSpeedLoss = _movementStopSpeedLoss / Constants.DEFAULT_SLOW_MOTION_REDUCTION_FACTOR;
 
                 if (_isMovingUp)
                 {
                     if (_lastSpeed > 0)
                     {
-                        MoveTopLeft(_lastSpeed - mvmntSpdLs);
+                        MoveTopLeft(_lastSpeed - movementSpeedLoss);
                     }
                 }
                 else if (_isMovingDown)
                 {
                     if (_lastSpeed > 0)
                     {
-                        MoveBottomRight(_lastSpeed - mvmntSpdLs);
+                        MoveBottomRight(_lastSpeed - movementSpeedLoss);
                     }
                 }
                 else if (_isMovingLeft)
                 {
                     if (_lastSpeed > 0)
                     {
-                        MoveBottomLeft(_lastSpeed - mvmntSpdLs);
+                        MoveBottomLeft(_lastSpeed - movementSpeedLoss);
                     }
                 }
                 else if (_isMovingRight)
                 {
                     if (_lastSpeed > 0)
                     {
-                        MoveTopRight(_lastSpeed - mvmntSpdLs);
+                        MoveTopRight(_lastSpeed - movementSpeedLoss);
                     }
                 }
 
