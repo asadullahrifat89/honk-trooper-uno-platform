@@ -7,28 +7,17 @@ using Uno.UI.Runtime.WebAssembly;
 namespace HonkTrooper
 {
     [HtmlElement("audio")]
-    public partial class Audio : FrameworkElement
+    public partial class AudioWasm : AudioBase
     {
         #region Fields
 
-        private Action _playback;
         private string _baseUrl;
 
-        #endregion
-
-        #region Properties
-
-        public bool IsPlaying { get; set; }
-
-        public bool IsPaused { get; set; }
-
-        public bool IsStopped { get; set; }
-
-        #endregion
+        #endregion      
 
         #region Ctor
 
-        public Audio(
+        public AudioWasm(
            Uri uri,
            double volume = 1.0,
            bool loop = false,
@@ -38,7 +27,7 @@ namespace HonkTrooper
                 uri: uri,
                 volume: volume,
                 loop: loop,
-                playback: playback);
+                trackEnded: playback);
         }
 
         #endregion
@@ -49,7 +38,7 @@ namespace HonkTrooper
             Uri uri,
             double volume = 1.0,
             bool loop = false,
-            Action playback = null)
+            Action trackEnded = null)
         {
             var indexUrl = Uno.Foundation.WebAssemblyRuntime.InvokeJS("window.location.href;");
             var appPackageId = Environment.GetEnvironmentVariable("UNO_BOOTSTRAP_APP_BASE");
@@ -65,9 +54,9 @@ namespace HonkTrooper
             SetVolume(volume);
             SetLoop(loop);
 
-            if (playback is not null)
+            if (trackEnded is not null)
             {
-                _playback = playback;
+                TrackEnded = trackEnded;
                 this.RegisterHtmlEventHandler("ended", EndedEvent);
             }
 
@@ -88,49 +77,37 @@ namespace HonkTrooper
             this.ExecuteJavascript($"element.loop = {loop.ToString().ToLower()};");
         }
 
-        public void Play()
+        public new void Play()
         {
-            IsPlaying = true;
-            IsStopped = false;
+            base.Play();
             this.ExecuteJavascript("element.currentTime = 0; element.play();");
         }
 
-        public void Stop()
+        public new void Stop()
         {
-            IsPlaying = false;
-            IsStopped = true;
+            base.Stop();
             this.ExecuteJavascript("element.pause(); element.currentTime = 0;");
         }
 
-        public void Pause()
+        public new void Pause()
         {
-            IsPlaying = false;
-            IsPaused = true;
+            base.Pause();
             this.ExecuteJavascript("element.pause();");
         }
 
-        public void Resume()
+        public new void Resume()
         {
-            IsPlaying = true;
-            IsPaused = true;
+            base.Resume();
             this.ExecuteJavascript("element.play();");
         }
 
-        public void SetVolume(double volume)
+        public new void SetVolume(double volume)
         {
+            base.SetVolume(volume);
             var audio = $"element.volume = {volume}; ";
             this.ExecuteJavascript(audio);
         }
 
-        #endregion
-
-        #region Events
-
-        private void EndedEvent(object sender, EventArgs e)
-        {
-            _playback?.Invoke();
-        }
-
-        #endregion
+        #endregion     
     }
 }

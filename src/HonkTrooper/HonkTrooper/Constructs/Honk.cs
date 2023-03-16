@@ -52,7 +52,7 @@ namespace HonkTrooper
 
             IsometricDisplacement = 0.6;
             
-            _audioStub = new AudioStub((SoundType.CAR_HONK, 0.7, false));
+            _audioStub = new AudioStub((SoundType.CAR_HONK, 0.5, false));
         }
 
         #endregion

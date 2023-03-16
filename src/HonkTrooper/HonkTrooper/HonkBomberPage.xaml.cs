@@ -71,7 +71,7 @@ namespace HonkTrooper
 
             _audio_stub = new AudioStub(
                 (SoundType.GAME_BACKGROUND_MUSIC, 0.5, true),
-                (SoundType.BOSS_BACKGROUND_MUSIC, 0.6, true),
+                (SoundType.BOSS_BACKGROUND_MUSIC, 0.5, true),
                 (SoundType.AMBIENCE, 0.4, true),
                 (SoundType.GAME_START, 1, false),
                 (SoundType.GAME_PAUSE, 1, false),
@@ -707,14 +707,14 @@ namespace HonkTrooper
                     }
 
                     // if player bomb touches boss's seeking bomb, it blasts
-                    if (_scene_game.Children.OfType<BossRocketSeeking>().FirstOrDefault(x => x.IsAnimating && x.GetCloseHitBox().IntersectsWith(hitBox)) is BossRocketSeeking BossRocketSeeking)
+                    if (_scene_game.Children.OfType<BossRocketSeeking>().FirstOrDefault(x => x.IsAnimating && !x.IsBlasting && x.GetCloseHitBox().IntersectsWith(hitBox)) is BossRocketSeeking bossRocketSeeking)
                     {
                         PlayerRocket.SetBlast();
-                        BossRocketSeeking.SetBlast();
+                        bossRocketSeeking.SetBlast();
                     }
 
                     // if player bomb touches enemy, it blasts, enemy looses health
-                    if (_scene_game.Children.OfType<Enemy>().FirstOrDefault(x => x.IsAnimating && x.GetCloseHitBox().IntersectsWith(hitBox)) is Enemy enemy)
+                    if (_scene_game.Children.OfType<Enemy>().FirstOrDefault(x => x.IsAnimating && !x.IsDead && x.GetCloseHitBox().IntersectsWith(hitBox)) is Enemy enemy)
                     {
                         PlayerRocket.SetBlast();
                         LooseEnemyHealth(enemy);
@@ -816,10 +816,10 @@ namespace HonkTrooper
 
             DropShadow dropShadow = _scene_game.Children.OfType<DropShadow>().First(x => x.Id == bomb.Id);
 
+            var speed = (_scene_game.Speed + bomb.SpeedOffset); // this remains fixed no matter the screen size
+
             if (PlayerFireCracker.IsBlasting)
             {
-                var speed = (_scene_game.Speed + bomb.SpeedOffset);
-
                 bomb.SetLeft(bomb.GetLeft() + speed);
                 bomb.SetTop(bomb.GetTop() + speed * bomb.IsometricDisplacement);
 
@@ -837,8 +837,6 @@ namespace HonkTrooper
             }
             else
             {
-                var speed = (_scene_game.Speed + bomb.SpeedOffset);
-
                 bomb.Pop();
 
                 bomb.SetLeft(bomb.GetLeft() + speed);
@@ -1054,11 +1052,8 @@ namespace HonkTrooper
                 vehicle.IsAnimating = true;
                 vehicle.Reset();
 
-                // generate top and left corner lane wise vehicles
-
-                var topOrLeft = _random.Next(2);
-
-                var lane = _random.Next(2);
+                var topOrLeft = _random.Next(2); // generate top and left corner lane wise vehicles
+                var lane = _scene_game.Height < 1000 ? 0 : _random.Next(2); // generate number of lanes based of screen height
 
                 switch (topOrLeft)
                 {
@@ -1067,7 +1062,7 @@ namespace HonkTrooper
                             var xLaneWidth = _scene_game.Width / 4;
 
                             vehicle.SetPosition(
-                                left: lane == 0 ? 0 : xLaneWidth - vehicle.Width * _scene_game.DownScaling,
+                                left: lane == 0 ? 0 : (xLaneWidth - vehicle.Width / 2) * _scene_game.DownScaling,
                                 top: vehicle.Height * -1);
                         }
                         break;
@@ -1077,7 +1072,7 @@ namespace HonkTrooper
 
                             vehicle.SetPosition(
                                 left: vehicle.Width * -1,
-                                top: lane == 0 ? 0 : yLaneWidth * _scene_game.DownScaling);
+                                top: lane == 0 ? 0 : (yLaneWidth + vehicle.Height / 2) * _scene_game.DownScaling);
                         }
                         break;
                     default:
@@ -1133,24 +1128,43 @@ namespace HonkTrooper
 
         private void PreventVehicleOverlapping(Construct vehicle)
         {
+            var vehicle_distantHitBox = vehicle.GetDistantHitBox();
+
+            // fix vehicle z order
+            //if (_scene_game.Children.OfType<Vehicle>().FirstOrDefault(x => x.GetDistantHitBox() is Rect x_DistantHitBox &&
+            //    x_DistantHitBox.IntersectsWith(vehicle_distantHitBox) &&
+            //    vehicle_distantHitBox.Bottom > x_DistantHitBox.Bottom &&
+            //    vehicle.GetZ() <= x.GetZ()) is Vehicle belowVehicle)
+            //{
+            //    vehicle.SetZ(belowVehicle.GetZ() + 1);
+            //}
+
+            //if (_scene_game.Children.OfType<Vehicle>().FirstOrDefault(x => x.GetDistantHitBox() is Rect x_DistantHitBox &&
+            //    x_DistantHitBox.IntersectsWith(vehicle_distantHitBox) &&
+            //    vehicle_distantHitBox.Bottom < x_DistantHitBox.Bottom &&
+            //    vehicle.GetZ() >= x.GetZ()) is Vehicle overVehicle)
+            //{
+            //    vehicle.SetZ(overVehicle.GetZ() - 1);
+            //}
+
             if (_scene_game.Children.OfType<Vehicle>().FirstOrDefault(x => x.IsAnimating && x.GetHorizontalHitBox().IntersectsWith(vehicle.GetHorizontalHitBox())) is Construct collidingVehicle)
             {
                 var hitBox = vehicle.GetHitBox();
 
-                if (hitBox.Top > 0 && hitBox.Left > 0 && vehicle.SpeedOffset == collidingVehicle.SpeedOffset)
+                if (vehicle.SpeedOffset == collidingVehicle.SpeedOffset)
                 {
                     if (vehicle.SpeedOffset > -2)
                         vehicle.SpeedOffset--;
                 }
                 else
                 {
-                    if (collidingVehicle.SpeedOffset < vehicle.SpeedOffset)
-                    {
-                        collidingVehicle.SpeedOffset = vehicle.SpeedOffset;
-                    }
-                    else if (collidingVehicle.SpeedOffset > vehicle.SpeedOffset)
+                    if (vehicle.SpeedOffset > collidingVehicle.SpeedOffset) // vehicle is faster
                     {
                         vehicle.SpeedOffset = collidingVehicle.SpeedOffset;
+                    }
+                    else if (collidingVehicle.SpeedOffset > vehicle.SpeedOffset) // colliding vehicle is faster
+                    {
+                        collidingVehicle.SpeedOffset = vehicle.SpeedOffset;
                     }
                 }
             }
@@ -2656,7 +2670,7 @@ namespace HonkTrooper
 
                 // then add the vehicles which will appear forward in z wrt the top trees
                 new Generator(
-                    generationDelay: 80,
+                    generationDelay: 100,
                     generationAction: GenerateVehicleInScene,
                     startUpAction: SpawnVehiclesInScene),
 

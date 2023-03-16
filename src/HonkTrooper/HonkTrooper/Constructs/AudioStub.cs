@@ -15,7 +15,7 @@ namespace HonkTrooper
 
             foreach (var soundInput in soundInputs)
             {
-                var audioSources = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == soundInput.SoundType).Select(x => x.Uri).Select(uri => new Audio(uri: uri, volume: soundInput.Volume, loop: soundInput.Loop)).ToArray();
+                var audioSources = Constants.SOUND_TEMPLATES.Where(x => x.SoundType == soundInput.SoundType).Select(x => x.Uri).Select(uri => new AudioWasm(uri: uri, volume: soundInput.Volume, loop: soundInput.Loop)).ToArray();
                 var audioInstance = audioSources[_random.Next(audioSources.Length)];
                 var soundType = soundInput.SoundType;
 

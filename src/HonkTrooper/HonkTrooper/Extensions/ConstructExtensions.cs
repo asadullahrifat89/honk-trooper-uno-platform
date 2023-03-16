@@ -50,14 +50,14 @@ namespace HonkTrooper
 
         public static Rect GetCloseHitBox(this Construct Construct)
         {
-            var fourthWidht = Construct.Width / 5;
-            var fourthHeight = Construct.Height / 5;
+            var diviWidth = Construct.Width / 5;
+            var diviHeight = Construct.Height / 5;
 
             var rect = new Rect(
-                x: Construct.GetLeft() + fourthWidht,
-                y: Construct.GetTop() + fourthHeight,
-                width: Construct.Width - fourthWidht,
-                height: Construct.Height - fourthHeight);
+                x: Construct.GetLeft() + diviWidth,
+                y: Construct.GetTop() + diviHeight,
+                width: Construct.Width - diviWidth,
+                height: Construct.Height - diviHeight);
 
             //Construct.SetHitBoxBorder(rect);
 
@@ -66,13 +66,24 @@ namespace HonkTrooper
 
         public static Rect GetHorizontalHitBox(this Construct Construct)
         {
-            var fourthHeight = Construct.Height / 4;
+            /*
+             *   __________
+             *   |        |
+             *  =============
+             * ||     x     ||
+             *  =============
+             *   |        |
+             *   ----------
+             */
+
+            var diviWidth = Construct.Width / 4;
+            //var diviHeight = Construct.Height / 4;
 
             var rect = new Rect(
-                x: Construct.GetLeft(),
-                y: Construct.GetTop() + fourthHeight,
-                width: Construct.Width,
-                height: Construct.Height - fourthHeight);
+                x: Construct.GetLeft() - diviWidth,
+                y: Construct.GetTop(),
+                width: Construct.Width + diviWidth,
+                height: Construct.Height);
 
             //Construct.SetHitBoxBorder(rect);
 
@@ -81,14 +92,14 @@ namespace HonkTrooper
 
         public static Rect GetOverlappingHitBox(this Construct Construct)
         {
-            var fourthWidht = Construct.Width / 3;
-            var fourthHeight = Construct.Height / 3;
+            var diviWidth = Construct.Width / 3;
+            var diviHeight = Construct.Height / 3;
 
             var rect = new Rect(
-                x: Construct.GetLeft() + fourthWidht,
-                y: Construct.GetTop() + fourthHeight,
-                width: Construct.Width - fourthWidht,
-                height: Construct.Height - fourthHeight);
+                x: Construct.GetLeft() + diviWidth,
+                y: Construct.GetTop() + diviHeight,
+                width: Construct.Width - diviWidth,
+                height: Construct.Height - diviHeight);
 
             //Construct.SetHitBoxBorder(rect);
 
@@ -97,14 +108,14 @@ namespace HonkTrooper
 
         public static Rect GetDistantHitBox(this Construct Construct)
         {
-            var maxWidth = (Construct.Width * 3);
-            var maxHeight = (Construct.Height * 3);
+            var multiWidth = (Construct.Width * 3);
+            var multiHeight = (Construct.Height * 3);
 
             return new Rect(
-                x: Construct.GetLeft() - maxWidth,
-                y: Construct.GetTop() - maxHeight,
-                width: Construct.Width + maxWidth,
-                height: Construct.Height + maxHeight);
+                x: Construct.GetLeft() - multiWidth,
+                y: Construct.GetTop() - multiHeight,
+                width: Construct.Width + multiWidth,
+                height: Construct.Height + multiHeight);
         }
 
         #endregion
