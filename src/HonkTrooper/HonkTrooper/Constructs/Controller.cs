@@ -93,8 +93,10 @@ namespace HonkTrooper
                 Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * sizeXY,
                 HorizontalAlignment = HorizontalAlignment.Right,
                 VerticalAlignment = VerticalAlignment.Bottom,
-                Margin = new Thickness(10),
+                Margin = new Thickness(5),
                 Background = new SolidColorBrush(Colors.Transparent),
+                RenderTransformOrigin = new Point(1, 1),
+                RenderTransform = new ScaleTransform() { CenterX = 0.5, CenterY = 0.5, ScaleX = 0.75, ScaleY = 0.75 }
             };
 
             Construct upLeft = new()
@@ -284,15 +286,15 @@ namespace HonkTrooper
                 ActivateJoystick(upLeft, up, upRight, left, right, downLeft, down, downRight, thumb);
             };
             Joystick.PointerMoved += (s, e) =>
-            {
-                if (IsJoystickActive)
-                {
-                    var point = e.GetCurrentPoint(Joystick);
-                    thumb.SetPosition(left: point.Position.X - thumb.Width / 2, top: point.Position.Y - thumb.Height / 2);
+                    {
+                        if (IsJoystickActive)
+                        {
+                            var point = e.GetCurrentPoint(Joystick);
+                            thumb.SetPosition(left: point.Position.X - thumb.Width / 2, top: point.Position.Y - thumb.Height / 2);
 
-                    ActivateJoystick(upLeft, up, upRight, left, right, downLeft, down, downRight, thumb);
-                }
-            };
+                            ActivateJoystick(upLeft, up, upRight, left, right, downLeft, down, downRight, thumb);
+                        }
+                    };
             Joystick.PointerReleased += (s, e) =>
             {
                 DeactivateMoveUp();
@@ -507,7 +509,7 @@ namespace HonkTrooper
             Grid.SetRow(upRight, 0);
             Grid.SetColumn(upRight, 2);
 
-            #endregion 
+            #endregion
 
             #region Left
 
@@ -598,7 +600,7 @@ namespace HonkTrooper
             Grid.SetRow(downLeft, 2);
             Grid.SetColumn(downLeft, 0);
 
-            #endregion            
+            #endregion
 
             #region Down
 
@@ -759,7 +761,7 @@ namespace HonkTrooper
                 }
             }
 
-            #endregion           
+            #endregion
 
             #region Linear Movement
 
@@ -836,7 +838,7 @@ namespace HonkTrooper
                 BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
                 HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Bottom,
-                Margin = new Thickness(30),
+                Margin = new Thickness(40),
             };
 
             AttackButton.Click += (s, e) => { ActivateAttack(); };
@@ -852,8 +854,8 @@ namespace HonkTrooper
             PauseButton = new()
             {
                 Background = new SolidColorBrush(Colors.Goldenrod),
-                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 0.75,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 0.75,
                 CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS * 2),
                 Content = new SymbolIcon()
                 {
