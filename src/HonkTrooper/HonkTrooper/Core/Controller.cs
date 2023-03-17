@@ -69,22 +69,26 @@ namespace HonkTrooper
         {
             JoyStick = new Border()
             {
-                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 3,
-                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 3,
-                Background = new SolidColorBrush(Colors.Goldenrod),
-                CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS * 3),
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 3.5,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 3.5,
+                //Background = new SolidColorBrush(Colors.Goldenrod),
+                CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS * 3.5),
                 BorderBrush = new SolidColorBrush(Colors.White),
                 BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
                 HorizontalAlignment = HorizontalAlignment.Right,
                 VerticalAlignment = VerticalAlignment.Bottom,
                 Margin = new Thickness(20),
-                Opacity = 0.5,
+
             };
 
             Canvas canvas = new Canvas()
             {
-                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 3,
-                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 3,
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 3.5,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 3.5,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+                Background = new SolidColorBrush(Colors.Goldenrod),
+                Opacity = 0.5,
             };
 
 
@@ -212,28 +216,28 @@ namespace HonkTrooper
             //upLeft.SetPosition(left: 0, top: 0);
             //canvas.Children.Add(upLeft);
 
-            up.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE, top: 0);
+            up.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.25, top: 0);
             canvas.Children.Add(up);
 
             //upRight.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2, top: 0);
             //canvas.Children.Add(upRight);
 
-            left.SetPosition(left: 0, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE);
+            left.SetPosition(left: 0, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.25);
             canvas.Children.Add(left);
 
-            right.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE);
+            right.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2 * 1.25, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.25);
             canvas.Children.Add(right);
 
             //downLeft.SetPosition(left: 0, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2);
             //canvas.Children.Add(downLeft);
 
-            down.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2);
+            down.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.25, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2 * 1.25);
             canvas.Children.Add(down);
 
             //downRight.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2);
             //canvas.Children.Add(downRight);
 
-            thumb.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE);
+            thumb.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.25, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.20);
             canvas.Children.Add(thumb);
 
             canvas.PointerPressed += (s, e) =>
