@@ -941,8 +941,8 @@ namespace HonkTrooper
         private bool GeneratePlayerRocketSeekingInScene()
         {
             // generate a seeking bomb if one is not in scene
-            if (_scene_game.SceneState == SceneState.GAME_RUNNING && !_scene_game.IsSlowMotionActivated &&
-                _scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss &&
+
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING && !_scene_game.IsSlowMotionActivated &&                
                 _scene_game.Children.OfType<PlayerRocketSeeking>().FirstOrDefault(x => x.IsAnimating == false) is PlayerRocketSeeking PlayerRocketSeeking)
             {
                 _player.SetAttackStance();
@@ -988,9 +988,7 @@ namespace HonkTrooper
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
-                    // if there a boss bomb seeking the player then target that first and if they hit both bombs blast
-
-                    if (_scene_game.Children.OfType<BossRocketSeeking>().FirstOrDefault(x => x.IsAnimating) is BossRocketSeeking BossRocketSeeking)
+                    if (_scene_game.Children.OfType<BossRocketSeeking>().FirstOrDefault(x => x.IsAnimating) is BossRocketSeeking BossRocketSeeking) // target boss bomb seeking
                     {
                         PlayerRocketSeeking1.Seek(BossRocketSeeking.GetCloseHitBox());
 
@@ -1000,10 +998,7 @@ namespace HonkTrooper
                             BossRocketSeeking.SetBlast();
                         }
                     }
-
-                    // make the player bomb seek boss
-
-                    if (_scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss)
+                    else if (_scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss) // target boss
                     {
                         PlayerRocketSeeking1.Seek(boss.GetCloseHitBox());
 
@@ -1013,10 +1008,7 @@ namespace HonkTrooper
                             LooseBossHealth(boss);
                         }
                     }
-
-                    // make the player bomb seek enemy
-
-                    if (_scene_game.Children.OfType<Enemy>().FirstOrDefault(x => x.IsAnimating) is Enemy enemy)
+                    else if (_scene_game.Children.OfType<Enemy>().FirstOrDefault(x => x.IsAnimating) is Enemy enemy) // target enemy
                     {
                         PlayerRocketSeeking1.Seek(enemy.GetCloseHitBox());
 
@@ -2985,7 +2977,7 @@ namespace HonkTrooper
 
                         if (!_scene_main_menu.IsAnimating)
                             _scene_main_menu.Play();
-                    }                    
+                    }
                 }
                 else // ask to change orientation
                 {
