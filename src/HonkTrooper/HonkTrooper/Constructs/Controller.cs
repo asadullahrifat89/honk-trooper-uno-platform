@@ -1,8 +1,6 @@
 ﻿using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
 using System;
 using Windows.Devices.Sensors;
@@ -71,21 +69,20 @@ namespace HonkTrooper
 
         public void SetJoystick()
         {
-            //var joyStickContainer = new Border()
-            //{
-            //    Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 3.5,
-            //    Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 3.5,
-            //    Background = new SolidColorBrush(Colors.Goldenrod),
-            //    CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS * 3.5),
-            //    BorderBrush = new SolidColorBrush(Colors.White),
-            //    BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
-            //    HorizontalAlignment = HorizontalAlignment.Right,
-            //    VerticalAlignment = VerticalAlignment.Bottom,
-            //    Margin = new Thickness(20),
-            //    Opacity = 0.5,
-            //};
-
             var sizeXY = 3.5;
+
+            var saveZone = new Construct()
+            {
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.55,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.55,
+                Background = new SolidColorBrush(Colors.Goldenrod),
+                CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS * sizeXY),
+                BorderBrush = new SolidColorBrush(Colors.White),
+                BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
+                HorizontalAlignment = HorizontalAlignment.Right,
+                VerticalAlignment = VerticalAlignment.Bottom,
+                Opacity = 0.3,
+            };
 
             Joystick = new Canvas()
             {
@@ -96,7 +93,7 @@ namespace HonkTrooper
                 Margin = new Thickness(5),
                 Background = new SolidColorBrush(Colors.Transparent),
                 RenderTransformOrigin = new Point(1, 1),
-                RenderTransform = new ScaleTransform() { CenterX = 0.5, CenterY = 0.5, ScaleX = 0.75, ScaleY = 0.75 }
+                //RenderTransform = new ScaleTransform() { CenterX = 0.5, CenterY = 0.5, ScaleX = 0.70, ScaleY = 0.70 }
             };
 
             Construct upLeft = new()
@@ -245,6 +242,9 @@ namespace HonkTrooper
                 BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
             };
 
+            saveZone.SetPosition(left: Joystick.Width / 2 - saveZone.Width / 2, top: Joystick.Height / 2 - saveZone.Height / 2);
+            Joystick.Children.Add(saveZone);
+
             upLeft.SetPosition(left: 0, top: 0);
             Joystick.Children.Add(upLeft);
 
@@ -269,7 +269,7 @@ namespace HonkTrooper
             downRight.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2 * 1.25, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2 * 1.25);
             Joystick.Children.Add(downRight);
 
-            thumb.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.30, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.25);
+            thumb.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.30, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.30);
             Joystick.Children.Add(thumb);
 
             Joystick.PointerPressed += (s, e) =>
@@ -304,7 +304,7 @@ namespace HonkTrooper
 
                 IsJoystickActive = false;
 
-                thumb.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.30, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.25);
+                thumb.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.30, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.30);
             };
 
             this.Children.Add(Joystick);
