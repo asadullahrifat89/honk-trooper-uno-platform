@@ -74,7 +74,7 @@ namespace HonkTrooper
         {
             SetPosition(
                 left: (player.GetLeft() + player.Width / 2) - Width / 2,
-                top: player.GetBottom() - (45 * downScaling),
+                top: player.GetBottom() - (35 * downScaling),
                 z: 7);
         }
 
