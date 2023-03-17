@@ -192,8 +192,6 @@ namespace HonkTrooper
 
             ToggleHudVisibility(Visibility.Visible);
 
-            ScreenExtensions.EnterFullScreen(true);
-
             _game_controller.AttackButton.Focus(FocusState.Programmatic);
         }
 
@@ -292,6 +290,7 @@ namespace HonkTrooper
                         {
                             RecycleTitleScreen(titleScreen);
                             GeneratePlayerSelectionScreenInScene();
+                            ScreenExtensions.EnterFullScreen(true);
                         }
                         else
                         {
