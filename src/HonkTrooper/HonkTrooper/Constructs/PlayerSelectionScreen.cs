@@ -61,7 +61,7 @@ namespace HonkTrooper
             StackPanel container = new()
             {
                 Orientation = Orientation.Vertical,
-                HorizontalAlignment = HorizontalAlignment.Center,
+                HorizontalAlignment = HorizontalAlignment.Stretch,
                 VerticalAlignment = VerticalAlignment.Center,
             };
 
@@ -69,7 +69,7 @@ namespace HonkTrooper
 
             #region Content
 
-            // title screen text
+            #region Title
 
             _titleScreenText = new TextBlock()
             {
@@ -77,11 +77,15 @@ namespace HonkTrooper
                 FontSize = Constants.DEFAULT_GUI_FONT_SIZE - 5,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 Foreground = new SolidColorBrush(Colors.White),
+                Margin = new Thickness(0, 10, 0, 0),
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 3.5,
             };
 
             container.Children.Add(_titleScreenText);
 
-            // player toggle buttons
+            #endregion
+
+            #region Player Select Buttons
 
             var playerUris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER).Select(x => x.Uri).ToArray();
 
@@ -132,12 +136,15 @@ namespace HonkTrooper
 
             container.Children.Add(playerTemplates);
 
-            // selection button
+            #endregion
+
+            #region Play Button
 
             Button playButton = new()
             {
                 Background = new SolidColorBrush(Colors.Goldenrod),
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 3,
                 CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS),
                 Content = new SymbolIcon()
                 {
@@ -145,7 +152,7 @@ namespace HonkTrooper
                 },
                 BorderBrush = new SolidColorBrush(Colors.White),
                 BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
-                HorizontalAlignment = HorizontalAlignment.Stretch,
+                HorizontalAlignment = HorizontalAlignment.Center,
                 Foreground = new SolidColorBrush(Colors.White),
             };
 
@@ -155,7 +162,9 @@ namespace HonkTrooper
                 playAction(player2btn.IsChecked == true ? 2 : 1);
             };
 
-            container.Children.Add(playButton);
+            container.Children.Add(playButton); 
+
+            #endregion
 
             #endregion
 
