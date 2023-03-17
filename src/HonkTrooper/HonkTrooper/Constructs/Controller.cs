@@ -85,10 +85,12 @@ namespace HonkTrooper
             //    Opacity = 0.5,
             //};
 
+            var sizeXY = 3.5;
+
             Joystick = new Canvas()
             {
-                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 3.5,
-                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 3.5,
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * sizeXY,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * sizeXY,
                 HorizontalAlignment = HorizontalAlignment.Right,
                 VerticalAlignment = VerticalAlignment.Bottom,
                 Margin = new Thickness(10),
@@ -116,7 +118,7 @@ namespace HonkTrooper
             {
                 Tag = MovementDirection.Up,
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 3.5,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * sizeXY,
                 Child = new SymbolIcon()
                 {
                     Symbol = Symbol.Up,
@@ -148,7 +150,7 @@ namespace HonkTrooper
             Construct left = new()
             {
                 Tag = MovementDirection.Left,
-                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 3.5,
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * sizeXY,
                 Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
                 Child = new SymbolIcon()
                 {
@@ -164,7 +166,7 @@ namespace HonkTrooper
             Construct right = new()
             {
                 Tag = MovementDirection.Right,
-                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 3.5,
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * sizeXY,
                 Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
                 Child = new SymbolIcon()
                 {
@@ -199,7 +201,7 @@ namespace HonkTrooper
             {
                 Tag = MovementDirection.Down,
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 3.5,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * sizeXY,
                 Child = new SymbolIcon()
                 {
                     Symbol = Symbol.Up
