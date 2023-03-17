@@ -529,27 +529,27 @@ namespace HonkTrooper
             {
                 if (_game_controller.IsMoveUp && _game_controller.IsMoveLeft)
                 {
-                    if (_player.GetBottom() > 0 && _player.GetRight() > 0)
+                    if (_player.GetTop() > 0 && _player.GetLeft() > 0)
                         _player.MoveUpLeft(speed);
                 }
                 else if (_game_controller.IsMoveUp && _game_controller.IsMoveRight)
                 {
-                    if (_player.GetLeft() < _scene_game.Width && _player.GetBottom() > 0)
+                    if (_player.GetRight() < _scene_game.Width && _player.GetTop() > 0)
                         _player.MoveUpRight(speed);
                 }
                 else if (_game_controller.IsMoveUp)
                 {
-                    if (_player.GetBottom() > 0)
+                    if (_player.GetTop() > 0)
                         _player.MoveUp(speed);
                 }
                 else if (_game_controller.IsMoveDown && _game_controller.IsMoveRight)
                 {
-                    if (_player.GetTop() < _scene_game.Height && _player.GetLeft() < _scene_game.Width)
+                    if (_player.GetBottom() < _scene_game.Height && _player.GetRight() < _scene_game.Width)
                         _player.MoveDownRight(speed);
                 }
                 else if (_game_controller.IsMoveDown && _game_controller.IsMoveLeft)
                 {
-                    if (_player.GetRight() > 0 && _player.GetTop() < _scene_game.Height)
+                    if (_player.GetLeft() > 0 && _player.GetBottom() < _scene_game.Height)
                         _player.MoveDownLeft(speed);
                 }
                 else if (_game_controller.IsMoveDown)
