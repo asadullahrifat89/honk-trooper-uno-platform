@@ -553,7 +553,7 @@ namespace HonkTrooper
                 }
                 else if (_game_controller.IsMoveDown && _game_controller.IsMoveLeft)
                 {
-                    if (_player.GetLeft()+ halfWidth > 0 && _player.GetBottom()- halfHeight < _scene_game.Height)
+                    if (_player.GetLeft() + halfWidth > 0 && _player.GetBottom() - halfHeight < _scene_game.Height)
                         _player.MoveDownLeft(speed);
                 }
                 else if (_game_controller.IsMoveDown)
@@ -820,22 +820,22 @@ namespace HonkTrooper
             if (_scene_game.SceneState == SceneState.GAME_RUNNING && !_scene_game.IsSlowMotionActivated)
             {
                 if (_scene_game.Children.OfType<Vehicle>().Any(x => x.IsAnimating) &&
-                    _scene_game.Children.OfType<PlayerFireCracker>().FirstOrDefault(x => x.IsAnimating == false) is PlayerFireCracker bomb)
+                    _scene_game.Children.OfType<PlayerFireCracker>().FirstOrDefault(x => x.IsAnimating == false) is PlayerFireCracker playerFireCracker)
                 {
                     _player.SetAttackStance();
 
-                    bomb.Reset();
-                    bomb.IsAnimating = true;
-                    bomb.IsGravitating = true;
-                    bomb.SetPopping();
+                    playerFireCracker.Reset();
+                    playerFireCracker.IsAnimating = true;
+                    playerFireCracker.IsGravitating = true;
+                    playerFireCracker.SetPopping();
 
-                    bomb.SetRotation(_random.Next(-30, 30));
+                    playerFireCracker.SetRotation(_random.Next(-30, 30));
 
-                    bomb.Reposition(
+                    playerFireCracker.Reposition(
                         player: _player,
                         downScaling: _scene_game.DownScaling);
 
-                    SyncDropShadow(bomb);
+                    SyncDropShadow(playerFireCracker);
 
                     // Console.WriteLine("Player Ground Bomb dropped.");
 
@@ -850,26 +850,23 @@ namespace HonkTrooper
             return false;
         }
 
-        private bool AnimatePlayerFireCracker(Construct bomb)
+        private bool AnimatePlayerFireCracker(Construct playerFireCracker)
         {
-            PlayerFireCracker PlayerFireCracker = bomb as PlayerFireCracker;
+            PlayerFireCracker playerFireCracker1 = playerFireCracker as PlayerFireCracker;
 
-            DropShadow dropShadow = _scene_game.Children.OfType<DropShadow>().First(x => x.Id == bomb.Id);
+            var speed = (_scene_game.Speed + playerFireCracker.SpeedOffset); // this remains fixed no matter the screen size
 
-            var speed = (_scene_game.Speed + bomb.SpeedOffset); // this remains fixed no matter the screen size
-
-            if (PlayerFireCracker.IsBlasting)
+            if (playerFireCracker1.IsBlasting)
             {
-                bomb.SetLeft(bomb.GetLeft() + speed);
-                bomb.SetTop(bomb.GetTop() + speed * bomb.IsometricDisplacement);
+                playerFireCracker.Expand();
+                playerFireCracker.Fade(0.02);
 
-                bomb.Expand();
-                bomb.Fade(0.02);
+                MoveConstructBottomRight(construct: playerFireCracker, speed: speed);
 
                 // while in blast check if it intersects with any vehicle, if it does then the vehicle stops honking and slows down
                 if (_scene_game.Children.OfType<Vehicle>()
                     .Where(x => x.IsAnimating && x.WillHonk)
-                    .FirstOrDefault(x => x.GetCloseHitBox().IntersectsWith(bomb.GetCloseHitBox())) is Vehicle vehicle)
+                    .FirstOrDefault(x => x.GetCloseHitBox().IntersectsWith(playerFireCracker.GetCloseHitBox())) is Vehicle vehicle)
                 {
                     vehicle.SetBlast();
                     _game_score_bar.GainScore(5);
@@ -877,33 +874,35 @@ namespace HonkTrooper
             }
             else
             {
-                bomb.Pop();
+                playerFireCracker.Pop();
 
-                bomb.SetLeft(bomb.GetLeft() + speed);
-                bomb.SetTop(bomb.GetTop() + speed);
+                playerFireCracker.SetLeft(playerFireCracker.GetLeft() + speed);
+                playerFireCracker.SetTop(playerFireCracker.GetTop() + speed * 1.2);
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
+                    DropShadow dropShadow = _scene_game.Children.OfType<DropShadow>().First(x => x.Id == playerFireCracker.Id);
+
                     var drpShdwHitBox = dropShadow.GetCloseHitBox();
-                    var bmbHitBox = bomb.GetCloseHitBox();
+                    var bmbHitBox = playerFireCracker.GetCloseHitBox();
 
                     // start blast animation when the bomb touches it's shadow
-                    if (drpShdwHitBox.IntersectsWith(drpShdwHitBox) && bomb.GetBottom() > dropShadow.GetBottom())
-                        PlayerFireCracker.SetBlast();
+                    if (drpShdwHitBox.IntersectsWith(drpShdwHitBox) && playerFireCracker.GetBottom() > dropShadow.GetBottom())
+                        playerFireCracker1.SetBlast();
                 }
             }
 
             return true;
         }
 
-        private bool RecyclePlayerFireCracker(Construct bomb)
+        private bool RecyclePlayerFireCracker(Construct playerFireCracker)
         {
-            if (bomb.IsFadingComplete)
+            if (playerFireCracker.IsFadingComplete)
             {
-                bomb.IsAnimating = false;
-                bomb.IsGravitating = false;
+                playerFireCracker.IsAnimating = false;
+                playerFireCracker.IsGravitating = false;
 
-                bomb.SetPosition(
+                playerFireCracker.SetPosition(
                     left: -500,
                     top: -500);
 
@@ -2717,7 +2716,6 @@ namespace HonkTrooper
         private void SetController()
         {
             _game_controller.SetScene(_scene_game);
-            _game_controller.RequiresScreenOrientationChange += Controller_RequiresScreenOrientationChange;
             _game_controller.PauseButton.Click += PauseButton_Click;
         }
 
@@ -2933,7 +2931,6 @@ namespace HonkTrooper
         {
             SizeChanged -= HonkBomberPage_SizeChanged;
             ScreenExtensions.DisplayInformation.OrientationChanged -= DisplayInformation_OrientationChanged;
-            _game_controller.RequiresScreenOrientationChange -= Controller_RequiresScreenOrientationChange;
             _game_controller.PauseButton.Click -= PauseButton_Click;
         }
 
@@ -2981,6 +2978,8 @@ namespace HonkTrooper
                 {
                     if (_scene_main_menu.Children.OfType<ScreenOrientationChangePromt>().FirstOrDefault(x => x.IsAnimating) is ScreenOrientationChangePromt screenOrientationChangePromt)
                     {
+                        ScreenExtensions.EnterFullScreen(true);
+
                         RecycleScreenOrientationChangePromt(screenOrientationChangePromt);
 
                         _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
