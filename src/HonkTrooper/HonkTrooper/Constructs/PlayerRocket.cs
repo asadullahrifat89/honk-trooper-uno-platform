@@ -5,7 +5,7 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace HonkTrooper
 {
-    public partial class PlayerRocket : Construct
+    public partial class PlayerRocket : Rocket
     {
         #region Fields
 
@@ -86,7 +86,7 @@ namespace HonkTrooper
         {
             SetPosition(
                 left: (Player.GetLeft() + Player.Width / 2) - Width / 2,
-                top: Player.GetBottom() - (50 * downScaling),
+                top: Player.GetBottom() - (40 * downScaling),
                 z: 7);
         }
 
@@ -118,30 +118,6 @@ namespace HonkTrooper
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_blast_uris);
             _content_image.Source = new BitmapImage(uri);
             IsBlasting = true;
-        }
-
-        public void MoveBottomLeft(double speed)
-        {
-            SetLeft(GetLeft() - speed);
-            SetTop(GetTop() + speed);
-        }
-
-        public void MoveTopRight(double speed)
-        {
-            SetLeft(GetLeft() + speed);
-            SetTop(GetTop() - speed);
-        }
-
-        public void MoveTopLeft(double speed)
-        {
-            SetLeft(GetLeft() - speed);
-            SetTop(GetTop() - speed * IsometricDisplacement);
-        }
-
-        public void MoveBottomRight(double speed)
-        {
-            SetLeft(GetLeft() + speed);
-            SetTop(GetTop() + speed * IsometricDisplacement);
         }
 
         public bool AutoBlast()
