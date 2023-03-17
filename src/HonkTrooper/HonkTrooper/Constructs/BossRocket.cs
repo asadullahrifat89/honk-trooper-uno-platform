@@ -5,7 +5,7 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace HonkTrooper
 {
-    public partial class BossRocket : Construct
+    public partial class BossRocket : Rocket
     {
         #region Fields
 
@@ -119,31 +119,7 @@ namespace HonkTrooper
             _content_image.Source = new BitmapImage(uri);
 
             IsBlasting = true;
-        }
-
-        public void MoveLeft(double speed)
-        {
-            SetLeft(GetLeft() - speed);
-            SetTop(GetTop() + speed);
-        }
-
-        public void MoveRight(double speed)
-        {
-            SetLeft(GetLeft() + speed);
-            SetTop(GetTop() - speed);
-        }
-
-        public void MoveUp(double speed)
-        {
-            SetLeft(GetLeft() - speed);
-            SetTop(GetTop() - speed * IsometricDisplacement);
-        }
-
-        public void MoveDown(double speed)
-        {
-            SetLeft(GetLeft() + speed);
-            SetTop(GetTop() + speed * IsometricDisplacement);
-        }
+        }       
 
         public bool AutoBlast()
         {
