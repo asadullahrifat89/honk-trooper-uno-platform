@@ -92,6 +92,7 @@ namespace HonkTrooper
                 HorizontalAlignment = HorizontalAlignment.Right,
                 VerticalAlignment = VerticalAlignment.Bottom,
                 Margin = new Thickness(10),
+                Background = new SolidColorBrush(Colors.Transparent),
             };
 
             //Construct upLeft = new()

@@ -121,6 +121,7 @@ namespace HonkTrooper
                 BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
                 HorizontalAlignment = HorizontalAlignment.Center,
                 Foreground = new SolidColorBrush(Colors.White),
+                Margin = new Thickness(0, 0, 0, 5),
             };
 
             playButton.Click += (s, e) =>
