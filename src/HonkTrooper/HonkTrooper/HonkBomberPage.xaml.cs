@@ -98,9 +98,13 @@ namespace HonkTrooper
             _audio_stub.Pause(SoundType.AMBIENCE);
 
             if (BossExistsInScene())
-                _audio_stub.Pause(SoundType.BOSS_BACKGROUND_MUSIC);
+            {
+                //_audio_stub.Pause(SoundType.BOSS_BACKGROUND_MUSIC);
+            }
             else
+            {
                 _audio_stub.Pause(SoundType.GAME_BACKGROUND_MUSIC);
+            }                
 
             ToggleHudVisibility(Visibility.Collapsed);
 
@@ -115,9 +119,13 @@ namespace HonkTrooper
             _audio_stub.Resume(SoundType.AMBIENCE);
 
             if (BossExistsInScene())
-                _audio_stub.Resume(SoundType.BOSS_BACKGROUND_MUSIC);
+            {
+                //_audio_stub.Resume(SoundType.BOSS_BACKGROUND_MUSIC);
+            }
             else
+            {
                 _audio_stub.Resume(SoundType.GAME_BACKGROUND_MUSIC);
+            }                
 
             ToggleHudVisibility(Visibility.Visible);
 
@@ -190,7 +198,7 @@ namespace HonkTrooper
             // if player is dead game keeps playing in the background but scene state goes to game over
             if (_player.IsDead)
             {
-                _audio_stub.Stop(SoundType.AMBIENCE, SoundType.GAME_BACKGROUND_MUSIC, SoundType.BOSS_BACKGROUND_MUSIC);
+                _audio_stub.Stop(SoundType.AMBIENCE, SoundType.GAME_BACKGROUND_MUSIC/*, SoundType.BOSS_BACKGROUND_MUSIC*/);
 
                 if (_scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating) is Boss boss)
                 {
@@ -1764,7 +1772,7 @@ namespace HonkTrooper
             {
                 _audio_stub.Stop(SoundType.GAME_BACKGROUND_MUSIC);
 
-                _audio_stub.Play(SoundType.BOSS_BACKGROUND_MUSIC);
+                //_audio_stub.Play(SoundType.BOSS_BACKGROUND_MUSIC);
 
                 _audio_stub.SetVolume(SoundType.AMBIENCE, 0.2);
 
@@ -1861,7 +1869,7 @@ namespace HonkTrooper
 
             if (boss.IsDead && boss.IsAttacking)
             {
-                _audio_stub.Stop(SoundType.BOSS_BACKGROUND_MUSIC);
+                //_audio_stub.Stop(SoundType.BOSS_BACKGROUND_MUSIC);
 
                 _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
 
