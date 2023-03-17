@@ -6,7 +6,7 @@
 
         public Threashold(double threasholdLimit)
         {
-            Reset(threasholdLimit);
+            ThreasholdLimit = threasholdLimit;
         }
 
         #endregion
