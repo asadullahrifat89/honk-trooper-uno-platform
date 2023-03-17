@@ -38,10 +38,10 @@ namespace HonkTrooper
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
 #if DEBUG
-		if (System.Diagnostics.Debugger.IsAttached)
-		{
-			// this.DebugSettings.EnableFrameRateCounter = true;
-		}
+            if (System.Diagnostics.Debugger.IsAttached)
+            {
+                // this.DebugSettings.EnableFrameRateCounter = true;
+            }
 #endif
 
 #if NET6_0_OR_GREATER && WINDOWS && !HAS_UNO
@@ -107,6 +107,6 @@ namespace HonkTrooper
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save the application state and stop any background activity
             deferral.Complete();
-        }       
+        }
     }
 }
