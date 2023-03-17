@@ -164,7 +164,11 @@ namespace HonkTrooper
                 ConstructType.PLAYER_FIRE_CRACKER or
                 ConstructType.BOSS_ROCKET or
                 ConstructType.BOSS_ROCKET_SEEKING or
-                ConstructType.ENEMY or ConstructType.ENEMY_ROCKET or ConstructType.POWERUP_PICKUP or ConstructType.HEALTH_PICKUP or ConstructType.BOSS))
+                ConstructType.ENEMY or 
+                ConstructType.ENEMY_ROCKET or 
+                ConstructType.POWERUP_PICKUP or 
+                ConstructType.HEALTH_PICKUP or 
+                ConstructType.BOSS))
             {
                 construct.SetPosition(
                      left: -500,
