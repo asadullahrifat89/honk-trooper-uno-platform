@@ -220,8 +220,8 @@ namespace HonkTrooper
             Construct thumb = new()
             {
                 Tag = MovementDirection.None,
-                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 0.90,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 0.90,
                 CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS * 2),
 
                 Background = new SolidColorBrush(Colors.Goldenrod),
@@ -253,7 +253,7 @@ namespace HonkTrooper
             //downRight.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2);
             //JoyStick.Children.Add(downRight);
 
-            thumb.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.25, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.20);
+            thumb.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.30, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.25);
             Joystick.Children.Add(thumb);
 
             Joystick.PointerPressed += (s, e) =>
@@ -295,7 +295,7 @@ namespace HonkTrooper
 
             IsJoystickActive = false;
 
-            thumb.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.25, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.20);
+            thumb.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.30, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.25);
         }
 
         private void JoystickMovement(
