@@ -42,6 +42,7 @@
         public void Reset(double value)
         {
             ThreasholdLimit = value;
+            LastReleasePoint = 0;
         }
 
         #endregion
