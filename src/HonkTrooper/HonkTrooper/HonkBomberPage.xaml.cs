@@ -553,7 +553,7 @@ namespace HonkTrooper
                 }
                 else if (_game_controller.IsMoveDown)
                 {
-                    if ( _player.GetBottom() < _scene_game.Height)
+                    if (_player.GetBottom() < _scene_game.Height)
                         _player.MoveDown(speed);
                 }
                 else if (_game_controller.IsMoveRight)
@@ -581,7 +581,7 @@ namespace HonkTrooper
 
                 if (_game_controller.IsAttacking)
                 {
-                    if (BossExistsInScene() || EnemyExistsInScene())
+                    if (EnemyExistsInScene() || BossExistsInScene())
                     {
                         if (_powerUp_health_bar.HasHealth && (PowerUpType)_powerUp_health_bar.Tag == PowerUpType.SEEKING_BALLS)
                             GeneratePlayerRocketSeekingInScene();
@@ -849,7 +849,7 @@ namespace HonkTrooper
         {
             if (_scene_game.SceneState == SceneState.GAME_RUNNING && !_scene_game.IsSlowMotionActivated)
             {
-                if (_scene_game.Children.OfType<Vehicle>().Any(x => x.IsAnimating && x.WillHonk) &&
+                if (_scene_game.Children.OfType<Vehicle>().Any(x => x.IsAnimating) &&
                     _scene_game.Children.OfType<PlayerFireCracker>().FirstOrDefault(x => x.IsAnimating == false) is PlayerFireCracker bomb)
                 {
                     _player.SetAttackStance();
