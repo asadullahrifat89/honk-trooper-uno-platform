@@ -34,7 +34,7 @@ namespace HonkTrooper
 
 		var factory = LoggerFactory.Create(builder =>
 		{
-#if __WASM__ && !__IOS__ && !__ANDROID__
+#if __WASM__
 			builder.AddProvider(new global::Uno.Extensions.Logging.WebAssembly.WebAssemblyConsoleLoggerProvider());
 #elif __IOS__ && !__MACCATALYST__
 			builder.AddProvider(new global::Uno.Extensions.Logging.OSLogLoggerProvider());
