@@ -91,9 +91,8 @@ namespace HonkTrooper
                 Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 3.5,
                 HorizontalAlignment = HorizontalAlignment.Right,
                 VerticalAlignment = VerticalAlignment.Bottom,
-                Margin = new Thickness(20),
+                Margin = new Thickness(10),
             };
-
 
             //Construct upLeft = new()
             //{
@@ -112,7 +111,6 @@ namespace HonkTrooper
             Construct up = new()
             {
                 Tag = MovementDirection.Up,
-                //Background = new SolidColorBrush(Colors.Goldenrod),
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
                 Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 3.5,
                 Child = new SymbolIcon()
@@ -120,6 +118,10 @@ namespace HonkTrooper
                     Symbol = Symbol.Up,
                 },
                 RenderTransformOrigin = new Point(0.5, 0.5),
+
+                //Background = new SolidColorBrush(Colors.Goldenrod),
+                //BorderBrush = new SolidColorBrush(Colors.White),
+                //BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
             };
 
             //Construct upRight = new()
@@ -139,22 +141,23 @@ namespace HonkTrooper
             Construct left = new()
             {
                 Tag = MovementDirection.Left,
-                //Background = new SolidColorBrush(Colors.Goldenrod),
-                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.52,
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 3.5,
                 Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
                 Child = new SymbolIcon()
                 {
                     Symbol = Symbol.Back,
                 },
                 RenderTransformOrigin = new Point(0.5, 0.5),
-                
+
+                //Background = new SolidColorBrush(Colors.Goldenrod),
+                //BorderBrush = new SolidColorBrush(Colors.White),
+                //BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
             };
 
             Construct right = new()
             {
                 Tag = MovementDirection.Right,
-                //Background = new SolidColorBrush(Colors.Goldenrod),
-                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.52,
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 3.5,
                 Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
                 Child = new SymbolIcon()
                 {
@@ -162,6 +165,10 @@ namespace HonkTrooper
                 },
 
                 RenderTransformOrigin = new Point(0.5, 0.5),
+
+                //Background = new SolidColorBrush(Colors.Goldenrod),
+                //BorderBrush = new SolidColorBrush(Colors.White),
+                //BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
             };
 
             //Construct downLeft = new()
@@ -181,7 +188,6 @@ namespace HonkTrooper
             Construct down = new()
             {
                 Tag = MovementDirection.Down,
-                //Background = new SolidColorBrush(Colors.Goldenrod),
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
                 Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 3.5,
                 Child = new SymbolIcon()
@@ -190,6 +196,10 @@ namespace HonkTrooper
                 },
                 RenderTransformOrigin = new Point(0.5, 0.5),
                 RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = 180 },
+
+                //Background = new SolidColorBrush(Colors.Goldenrod),
+                //BorderBrush = new SolidColorBrush(Colors.White),
+                //BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
             };
 
             //Construct downRight = new()
@@ -209,10 +219,11 @@ namespace HonkTrooper
             Construct thumb = new()
             {
                 Tag = MovementDirection.None,
-                Background = new SolidColorBrush(Colors.Goldenrod),
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
                 Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-                CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS),
+                CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS * 2),
+
+                Background = new SolidColorBrush(Colors.Goldenrod),
                 BorderBrush = new SolidColorBrush(Colors.White),
                 BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
             };
@@ -226,10 +237,10 @@ namespace HonkTrooper
             //upRight.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2, top: 0);
             //JoyStick.Children.Add(upRight);
 
-            left.SetPosition(left: 0, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1);
+            left.SetPosition(left: 0, top: 0);
             Joystick.Children.Add(left);
 
-            right.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2 * 1.25, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1);
+            right.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2 * 1.25, top: 0);
             Joystick.Children.Add(right);
 
             //downLeft.SetPosition(left: 0, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2);
@@ -251,9 +262,7 @@ namespace HonkTrooper
             Joystick.PointerMoved += (s, e) =>
             {
                 if (IsJoystickActive)
-                {
-                    JoystickMovement(e, up, left, right, down, thumb);
-                }
+                    JoystickMovement(e: e, up: up, left: left, right: right, down: down, thumb: thumb);
             };
             Joystick.PointerReleased += (s, e) =>
             {
@@ -814,9 +823,9 @@ namespace HonkTrooper
             AttackButton = new()
             {
                 Background = new SolidColorBrush(Colors.Goldenrod),
-                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.5,
-                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.5,
-                CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS * 1.5),
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS * 2),
                 Content = new SymbolIcon()
                 {
                     Symbol = Symbol.Target,
@@ -843,7 +852,7 @@ namespace HonkTrooper
                 Background = new SolidColorBrush(Colors.Goldenrod),
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
                 Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-                CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS),
+                CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS * 2),
                 Content = new SymbolIcon()
                 {
                     Symbol = Symbol.Pause,
