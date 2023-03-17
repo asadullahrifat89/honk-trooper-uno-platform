@@ -10,8 +10,6 @@ namespace HonkTrooper
     {
         #region Fields
 
-        public event EventHandler<DisplayOrientations> RequiresScreenOrientationChange;
-
         private Scene Scene;
 
         #endregion

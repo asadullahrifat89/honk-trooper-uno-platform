@@ -553,7 +553,7 @@ namespace HonkTrooper
                 }
                 else if (_game_controller.IsMoveDown && _game_controller.IsMoveLeft)
                 {
-                    if (_player.GetLeft()+ halfWidth > 0 && _player.GetBottom()- halfHeight < _scene_game.Height)
+                    if (_player.GetLeft() + halfWidth > 0 && _player.GetBottom() - halfHeight < _scene_game.Height)
                         _player.MoveDownLeft(speed);
                 }
                 else if (_game_controller.IsMoveDown)
@@ -860,7 +860,7 @@ namespace HonkTrooper
 
             if (PlayerFireCracker.IsBlasting)
             {
-                bomb.SetLeft(bomb.GetLeft() + speed);
+                bomb.SetLeft(bomb.GetLeft() + speed * bomb.IsometricDisplacement);
                 bomb.SetTop(bomb.GetTop() + speed * bomb.IsometricDisplacement);
 
                 bomb.Expand();
@@ -2717,7 +2717,6 @@ namespace HonkTrooper
         private void SetController()
         {
             _game_controller.SetScene(_scene_game);
-            _game_controller.RequiresScreenOrientationChange += Controller_RequiresScreenOrientationChange;
             _game_controller.PauseButton.Click += PauseButton_Click;
         }
 
@@ -2933,7 +2932,6 @@ namespace HonkTrooper
         {
             SizeChanged -= HonkBomberPage_SizeChanged;
             ScreenExtensions.DisplayInformation.OrientationChanged -= DisplayInformation_OrientationChanged;
-            _game_controller.RequiresScreenOrientationChange -= Controller_RequiresScreenOrientationChange;
             _game_controller.PauseButton.Click -= PauseButton_Click;
         }
 
@@ -2981,6 +2979,8 @@ namespace HonkTrooper
                 {
                     if (_scene_main_menu.Children.OfType<ScreenOrientationChangePromt>().FirstOrDefault(x => x.IsAnimating) is ScreenOrientationChangePromt screenOrientationChangePromt)
                     {
+                        ScreenExtensions.EnterFullScreen(true);
+
                         RecycleScreenOrientationChangePromt(screenOrientationChangePromt);
 
                         _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
