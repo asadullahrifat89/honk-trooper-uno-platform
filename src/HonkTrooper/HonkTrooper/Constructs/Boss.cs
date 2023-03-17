@@ -6,7 +6,7 @@ using Windows.Foundation;
 
 namespace HonkTrooper
 {
-    public partial class Boss : Construct
+    public partial class Boss : Rocket
     {
         #region Fields
 
@@ -211,49 +211,51 @@ namespace HonkTrooper
             }
         }
 
-        public void MoveUp(double speed)
-        {
-            SetTop(GetTop() - speed);
-        }
 
-        public void MoveDown(double speed)
-        {
-            SetTop(GetTop() + speed);
-        }
+        //public void MoveUp(double speed)
+        //{
+        //    SetTop(GetTop() - speed);
+        //}
 
-        public void MoveLeft(double speed)
-        {
-            SetLeft(GetLeft() - speed);
-        }
+        //public void MoveDown(double speed)
+        //{
+        //    SetTop(GetTop() + speed);
+        //}
 
-        public void MoveRight(double speed)
-        {
-            SetLeft(GetLeft() + speed);
-        }
+        //public void MoveLeft(double speed)
+        //{
+        //    SetLeft(GetLeft() - speed);
+        //}
 
-        public void MoveUpRight(double speed)
-        {
-            SetLeft(GetLeft() + speed);
-            SetTop(GetTop() - speed);
-        }
+        //public void MoveRight(double speed)
+        //{
+        //    SetLeft(GetLeft() + speed);
+        //}
 
-        public void MoveUpLeft(double speed)
-        {
-            SetLeft(GetLeft() - speed);
-            SetTop(GetTop() - speed * IsometricDisplacement);
-        }
+        //public void MoveUpRight(double speed)
+        //{
+        //    SetLeft(GetLeft() + speed);
+        //    SetTop(GetTop() - speed);
+        //}
 
-        public void MoveDownRight(double speed)
-        {
-            SetLeft(GetLeft() + speed);
-            SetTop(GetTop() + speed * IsometricDisplacement);
-        }
+        //public void MoveUpLeft(double speed)
+        //{
+        //    SetLeft(GetLeft() - speed);
+        //    SetTop(GetTop() - speed * IsometricDisplacement);
+        //}
 
-        public void MoveDownLeft(double speed)
-        {
-            SetLeft(GetLeft() - speed);
-            SetTop(GetTop() + speed);
-        }
+        //public void MoveDownRight(double speed)
+        //{
+        //    SetLeft(GetLeft() + speed);
+        //    SetTop(GetTop() + speed * IsometricDisplacement);
+        //}
+
+        //public void MoveDownLeft(double speed)
+        //{
+        //    SetLeft(GetLeft() - speed);
+        //    SetTop(GetTop() + speed);
+        //}
+
 
         public void LooseHealth()
         {
