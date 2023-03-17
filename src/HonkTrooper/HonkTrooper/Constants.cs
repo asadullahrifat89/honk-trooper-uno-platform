@@ -6,7 +6,7 @@ namespace HonkTrooper
     {
         public const double DEFAULT_FRAME_TIME = 19;
         public const double DEFAULT_SPEED_OFFSET = 3;
-        public const double DEFAULT_DROP_SHADOW_DISTANCE = 70;
+        public const double DEFAULT_DROP_SHADOW_DISTANCE = 65;
         public const double DEFAULT_SLOW_MOTION_REDUCTION_FACTOR = 3;
         public const double DEFAULT_CONTROLLER_KEY_SIZE = 70;
         public const double DEFAULT_CONTROLLER_KEY_CORNER_RADIUS = 30;
