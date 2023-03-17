@@ -34,14 +34,14 @@ namespace HonkTrooper
 
 		var factory = LoggerFactory.Create(builder =>
 		{
-#if __WASM__
+#if __WASM__ && !__IOS__ && !__ANDROID__
 			builder.AddProvider(new global::Uno.Extensions.Logging.WebAssembly.WebAssemblyConsoleLoggerProvider());
 #elif __IOS__ && !__MACCATALYST__
 			builder.AddProvider(new global::Uno.Extensions.Logging.OSLogLoggerProvider());
 #elif NETFX_CORE
 			builder.AddDebug();
 #else
-			builder.AddConsole();
+            builder.AddConsole();
 #endif
 
 			// Exclude logs below this level
