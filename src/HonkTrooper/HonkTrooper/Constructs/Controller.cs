@@ -71,6 +71,18 @@ namespace HonkTrooper
         {
             var sizeXY = 3.5;
 
+            Joystick = new Canvas()
+            {
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * sizeXY,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * sizeXY,
+                HorizontalAlignment = HorizontalAlignment.Right,
+                VerticalAlignment = VerticalAlignment.Bottom,
+                Margin = new Thickness(5),
+                Background = new SolidColorBrush(Colors.Transparent),
+                RenderTransformOrigin = new Point(1, 1),
+                //RenderTransform = new ScaleTransform() { CenterX = 0.5, CenterY = 0.5, ScaleX = 0.70, ScaleY = 0.70 }
+            };
+
             var saveZone = new Construct()
             {
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.55,
@@ -84,27 +96,15 @@ namespace HonkTrooper
                 Opacity = 0.3,
             };
 
-            Joystick = new Canvas()
-            {
-                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * sizeXY,
-                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * sizeXY,
-                HorizontalAlignment = HorizontalAlignment.Right,
-                VerticalAlignment = VerticalAlignment.Bottom,
-                Margin = new Thickness(5),
-                Background = new SolidColorBrush(Colors.Transparent),
-                RenderTransformOrigin = new Point(1, 1),
-                //RenderTransform = new ScaleTransform() { CenterX = 0.5, CenterY = 0.5, ScaleX = 0.70, ScaleY = 0.70 }
-            };
-
             Construct upLeft = new()
             {
                 Tag = MovementDirection.UpLeft,
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
                 Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-                Child = new SymbolIcon()
-                {
-                    Symbol = Symbol.Up,
-                },
+                //Child = new SymbolIcon()
+                //{
+                //    Symbol = Symbol.Up,
+                //},
                 RenderTransformOrigin = new Point(0.5, 0.5),
                 RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = -45 },
 
@@ -118,10 +118,10 @@ namespace HonkTrooper
                 Tag = MovementDirection.Up,
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
                 Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * sizeXY,
-                Child = new SymbolIcon()
-                {
-                    Symbol = Symbol.Up,
-                },
+                //Child = new SymbolIcon()
+                //{
+                //    Symbol = Symbol.Up,
+                //},
                 RenderTransformOrigin = new Point(0.5, 0.5),
 
                 //Background = new SolidColorBrush(Colors.Goldenrod),
@@ -134,10 +134,10 @@ namespace HonkTrooper
                 Tag = MovementDirection.UpRight,
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
                 Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-                Child = new SymbolIcon()
-                {
-                    Symbol = Symbol.Forward,
-                },
+                //Child = new SymbolIcon()
+                //{
+                //    Symbol = Symbol.Forward,
+                //},
                 RenderTransformOrigin = new Point(0.5, 0.5),
                 RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = -45 },
 
@@ -151,10 +151,10 @@ namespace HonkTrooper
                 Tag = MovementDirection.Left,
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * sizeXY,
                 Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-                Child = new SymbolIcon()
-                {
-                    Symbol = Symbol.Back,
-                },
+                //Child = new SymbolIcon()
+                //{
+                //    Symbol = Symbol.Back,
+                //},
                 RenderTransformOrigin = new Point(0.5, 0.5),
 
                 //Background = new SolidColorBrush(Colors.Goldenrod),
@@ -167,11 +167,10 @@ namespace HonkTrooper
                 Tag = MovementDirection.Right,
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * sizeXY,
                 Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-                Child = new SymbolIcon()
-                {
-                    Symbol = Symbol.Forward,
-                },
-
+                //Child = new SymbolIcon()
+                //{
+                //    Symbol = Symbol.Forward,
+                //},
                 RenderTransformOrigin = new Point(0.5, 0.5),
 
                 //Background = new SolidColorBrush(Colors.Goldenrod),
@@ -184,10 +183,10 @@ namespace HonkTrooper
                 Tag = MovementDirection.DownLeft,
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
                 Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-                Child = new SymbolIcon()
-                {
-                    Symbol = Symbol.Back,
-                },
+                //Child = new SymbolIcon()
+                //{
+                //    Symbol = Symbol.Back,
+                //},
                 RenderTransformOrigin = new Point(0.5, 0.5),
                 RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = -45 },
 
@@ -201,10 +200,10 @@ namespace HonkTrooper
                 Tag = MovementDirection.Down,
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
                 Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * sizeXY,
-                Child = new SymbolIcon()
-                {
-                    Symbol = Symbol.Up
-                },
+                //Child = new SymbolIcon()
+                //{
+                //    Symbol = Symbol.Up
+                //},
                 RenderTransformOrigin = new Point(0.5, 0.5),
                 RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = 180 },
 
@@ -218,10 +217,10 @@ namespace HonkTrooper
                 Tag = MovementDirection.DownRight,
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
                 Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-                Child = new SymbolIcon()
-                {
-                    Symbol = Symbol.Forward
-                },
+                //Child = new SymbolIcon()
+                //{
+                //    Symbol = Symbol.Forward
+                //},
                 RenderTransformOrigin = new Point(0.5, 0.5),
                 RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = 45 },
 
