@@ -95,19 +95,22 @@ namespace HonkTrooper
                 Background = new SolidColorBrush(Colors.Transparent),
             };
 
-            //Construct upLeft = new()
-            //{
-            //    Tag = MovementDirection.UpLeft,
-            //    //Background = new SolidColorBrush(Colors.Goldenrod),
-            //    Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-            //    Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-            //    Child = new SymbolIcon()
-            //    {
-            //        Symbol = Symbol.Up,
-            //    },
-            //    RenderTransformOrigin = new Point(0.5, 0.5),
-            //    RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = -45 },
-            //};
+            Construct upLeft = new()
+            {
+                Tag = MovementDirection.UpLeft,                
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                Child = new SymbolIcon()
+                {
+                    Symbol = Symbol.Up,
+                },
+                RenderTransformOrigin = new Point(0.5, 0.5),
+                RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = -45 },
+
+                //Background = new SolidColorBrush(Colors.Goldenrod),
+                //BorderBrush = new SolidColorBrush(Colors.White),
+                //BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
+            };
 
             Construct up = new()
             {
@@ -125,19 +128,22 @@ namespace HonkTrooper
                 //BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
             };
 
-            //Construct upRight = new()
-            //{
-            //    Tag = MovementDirection.UpRight,
-            //    //Background = new SolidColorBrush(Colors.Goldenrod),
-            //    Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-            //    Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-            //    Child = new SymbolIcon()
-            //    {
-            //        Symbol = Symbol.Forward,
-            //    },
-            //    RenderTransformOrigin = new Point(0.5, 0.5),
-            //    RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = -45 },
-            //};
+            Construct upRight = new()
+            {
+                Tag = MovementDirection.UpRight,                
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                Child = new SymbolIcon()
+                {
+                    Symbol = Symbol.Forward,
+                },
+                RenderTransformOrigin = new Point(0.5, 0.5),
+                RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = -45 },
+
+                //Background = new SolidColorBrush(Colors.Goldenrod),
+                //BorderBrush = new SolidColorBrush(Colors.White),
+                //BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
+            };
 
             Construct left = new()
             {
@@ -172,19 +178,22 @@ namespace HonkTrooper
                 //BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
             };
 
-            //Construct downLeft = new()
-            //{
-            //    Tag = MovementDirection.DownLeft,
-            //    //Background = new SolidColorBrush(Colors.Goldenrod),
-            //    Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-            //    Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-            //    Child = new SymbolIcon()
-            //    {
-            //        Symbol = Symbol.Back,
-            //    },
-            //    RenderTransformOrigin = new Point(0.5, 0.5),
-            //    RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = -45 },
-            //};
+            Construct downLeft = new()
+            {
+                Tag = MovementDirection.DownLeft,                
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                Child = new SymbolIcon()
+                {
+                    Symbol = Symbol.Back,
+                },
+                RenderTransformOrigin = new Point(0.5, 0.5),
+                RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = -45 },
+
+                //Background = new SolidColorBrush(Colors.Goldenrod),
+                //BorderBrush = new SolidColorBrush(Colors.White),
+                //BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
+            };
 
             Construct down = new()
             {
@@ -203,19 +212,22 @@ namespace HonkTrooper
                 //BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
             };
 
-            //Construct downRight = new()
-            //{
-            //    Tag = MovementDirection.DownRight,
-            //    //Background = new SolidColorBrush(Colors.Goldenrod),
-            //    Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-            //    Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-            //    Child = new SymbolIcon()
-            //    {
-            //        Symbol = Symbol.Forward
-            //    },
-            //    RenderTransformOrigin = new Point(0.5, 0.5),
-            //    RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = 45 },
-            //};
+            Construct downRight = new()
+            {
+                Tag = MovementDirection.DownRight,                
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                Child = new SymbolIcon()
+                {
+                    Symbol = Symbol.Forward
+                },
+                RenderTransformOrigin = new Point(0.5, 0.5),
+                RenderTransform = new RotateTransform() { CenterX = 0.5, CenterY = 0.5, Angle = 45 },
+
+                //Background = new SolidColorBrush(Colors.Goldenrod),
+                //BorderBrush = new SolidColorBrush(Colors.White),
+                //BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
+            };
 
             Construct thumb = new()
             {
@@ -229,14 +241,14 @@ namespace HonkTrooper
                 BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
             };
 
-            //upLeft.SetPosition(left: 0, top: 0);
-            //JoyStick.Children.Add(upLeft);
+            upLeft.SetPosition(left: 0, top: 0);
+            Joystick.Children.Add(upLeft);
 
             up.SetPosition(left: 0 * 1.25, top: 0);
             Joystick.Children.Add(up);
 
-            //upRight.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2, top: 0);
-            //JoyStick.Children.Add(upRight);
+            upRight.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2 * 1.25, top: 0);
+            Joystick.Children.Add(upRight);
 
             left.SetPosition(left: 0, top: 0);
             Joystick.Children.Add(left);
@@ -244,14 +256,14 @@ namespace HonkTrooper
             right.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2 * 1.25, top: 0);
             Joystick.Children.Add(right);
 
-            //downLeft.SetPosition(left: 0, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2);
-            //JoyStick.Children.Add(downLeft);
+            downLeft.SetPosition(left: 0, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2 * 1.25);
+            Joystick.Children.Add(downLeft);
 
             down.SetPosition(left: 0 * 1.25, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2 * 1.25);
             Joystick.Children.Add(down);
 
-            //downRight.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2);
-            //JoyStick.Children.Add(downRight);
+            downRight.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2 * 1.25, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2 * 1.25);
+            Joystick.Children.Add(downRight);
 
             thumb.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.30, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.25);
             Joystick.Children.Add(thumb);
