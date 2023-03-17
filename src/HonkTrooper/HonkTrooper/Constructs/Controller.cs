@@ -91,7 +91,7 @@ namespace HonkTrooper
                 Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 3.5,
                 HorizontalAlignment = HorizontalAlignment.Right,
                 VerticalAlignment = VerticalAlignment.Bottom,
-                Margin = new Thickness(20),
+                Margin = new Thickness(10),
             };
 
             //Construct upLeft = new()
@@ -823,8 +823,8 @@ namespace HonkTrooper
             AttackButton = new()
             {
                 Background = new SolidColorBrush(Colors.Goldenrod),
-                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.5,
-                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.5,
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
                 CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS * 2),
                 Content = new SymbolIcon()
                 {
