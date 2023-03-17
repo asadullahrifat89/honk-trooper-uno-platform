@@ -1141,7 +1141,7 @@ namespace HonkTrooper
             else if (rocketTarget.GetTop() < source.GetTop() && rocketTarget.GetLeft() < source.GetLeft())
             {
                 rocket.AwaitMoveUpLeft = true;
-                rocket.SetRotation(123);
+                rocket.SetRotation(213);
             }
             // if rocket target is on the top right side of the boss
             else if (rocketTarget.GetTop() < source.GetTop() && rocketTarget.GetLeft() > source.GetLeft())
