@@ -858,11 +858,10 @@ namespace HonkTrooper
 
             if (playerFireCracker1.IsBlasting)
             {
-                playerFireCracker.SetLeft(playerFireCracker.GetLeft() + speed * playerFireCracker.IsometricDisplacement);
-                playerFireCracker.SetTop(playerFireCracker.GetTop() + speed * playerFireCracker.IsometricDisplacement);
-
                 playerFireCracker.Expand();
                 playerFireCracker.Fade(0.02);
+
+                MoveConstructBottomRight(construct: playerFireCracker, speed: speed);
 
                 // while in blast check if it intersects with any vehicle, if it does then the vehicle stops honking and slows down
                 if (_scene_game.Children.OfType<Vehicle>()
@@ -878,7 +877,7 @@ namespace HonkTrooper
                 playerFireCracker.Pop();
 
                 playerFireCracker.SetLeft(playerFireCracker.GetLeft() + speed);
-                playerFireCracker.SetTop(playerFireCracker.GetTop() + speed);
+                playerFireCracker.SetTop(playerFireCracker.GetTop() + speed * 1.2);
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
