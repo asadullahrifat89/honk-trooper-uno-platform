@@ -37,9 +37,9 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Orientation="Horizontal">
-            <HealthBar x:Name="BossHealthBar" Margin="5" />
             <HealthBar x:Name="PlayerHealthBar" Margin="5" />
             <HealthBar x:Name="PowerUpHealthBar" Margin="5" />
+            <HealthBar x:Name="BossHealthBar" Margin="5" />
         </StackPanel>
 
     </Grid>
