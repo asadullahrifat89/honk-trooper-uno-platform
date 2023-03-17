@@ -5,7 +5,7 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace HonkTrooper
 {
-    public partial class PlayerRocket : Construct
+    public partial class PlayerRocket : Rocket
     {
         #region Fields
 
@@ -58,25 +58,11 @@ namespace HonkTrooper
             SetChild(_content_image);
 
             IsometricDisplacement = 0.5;
-            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET * 2;
+            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET - 2;
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE + 10;
 
             _audioStub = new AudioStub((SoundType.ROCKET_LAUNCH, 0.3, false), (SoundType.ROCKET_BLAST, 1, false));
         }
-
-        #endregion
-
-        #region Properties
-
-        public bool IsBlasting { get; set; }
-
-        public bool AwaitMoveRight { get; set; }
-
-        public bool AwaitMoveLeft { get; set; }
-
-        public bool AwaitMoveUp { get; set; }
-
-        public bool AwaitMoveDown { get; set; }
 
         #endregion
 
@@ -86,7 +72,7 @@ namespace HonkTrooper
         {
             SetPosition(
                 left: (Player.GetLeft() + Player.Width / 2) - Width / 2,
-                top: Player.GetBottom() - (50 * downScaling),
+                top: Player.GetBottom() - (40 * downScaling),
                 z: 7);
         }
 
@@ -102,11 +88,11 @@ namespace HonkTrooper
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_uris);
             _content_image.Source = new BitmapImage(uri);
 
-            AwaitMoveLeft = false;
-            AwaitMoveRight = false;
+            AwaitMoveDownLeft = false;
+            AwaitMoveUpRight = false;
 
-            AwaitMoveUp = false;
-            AwaitMoveDown = false;
+            AwaitMoveUpLeft = false;
+            AwaitMoveDownRight = false;
 
             _autoBlastDelay = _autoBlastDelayDefault;
         }
@@ -118,30 +104,6 @@ namespace HonkTrooper
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_blast_uris);
             _content_image.Source = new BitmapImage(uri);
             IsBlasting = true;
-        }
-
-        public void MoveBottomLeft(double speed)
-        {
-            SetLeft(GetLeft() - speed);
-            SetTop(GetTop() + speed);
-        }
-
-        public void MoveTopRight(double speed)
-        {
-            SetLeft(GetLeft() + speed);
-            SetTop(GetTop() - speed);
-        }
-
-        public void MoveTopLeft(double speed)
-        {
-            SetLeft(GetLeft() - speed);
-            SetTop(GetTop() - speed * IsometricDisplacement);
-        }
-
-        public void MoveBottomRight(double speed)
-        {
-            SetLeft(GetLeft() + speed);
-            SetTop(GetTop() + speed * IsometricDisplacement);
         }
 
         public bool AutoBlast()

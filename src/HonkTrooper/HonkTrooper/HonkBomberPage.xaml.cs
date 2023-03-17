@@ -3,6 +3,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Linq;
+using System.Net.Sockets;
 using Windows.Graphics.Display;
 
 namespace HonkTrooper
@@ -28,12 +29,12 @@ namespace HonkTrooper
         private readonly Threashold _boss_threashold;
         private readonly Threashold _enemy_threashold;
 
-        //TODO: set defaults
-        private readonly double _boss_threashold_limit = 50; // after reaching 50 score first boss will appear
+        //TODO: set defaults _boss_threashold_limit = 50
+        private readonly double _boss_threashold_limit = 50; // first boss will appear
         private readonly double _boss_threashold_limit_increase = 15;
 
-        //TODO: set defaults
-        private readonly double _enemy_threashold_limit = 100; // after reaching 100 score first enemies will appear
+        //TODO: set defaults _enemy_threashold_limit = 80
+        private readonly double _enemy_threashold_limit = 80; // after first enemies will appear
         private readonly double _enemy_threashold_limit_increase = 10;
 
         private double _enemy_kill_count;
@@ -651,87 +652,52 @@ namespace HonkTrooper
         private bool GeneratePlayerRocketInScene()
         {
             if (_scene_game.SceneState == SceneState.GAME_RUNNING && !_scene_game.IsSlowMotionActivated &&
-                _scene_game.Children.OfType<PlayerRocket>().FirstOrDefault(x => x.IsAnimating == false) is PlayerRocket PlayerRocket)
+                _scene_game.Children.OfType<PlayerRocket>().FirstOrDefault(x => x.IsAnimating == false) is PlayerRocket playerRocket)
             {
                 _player.SetAttackStance();
 
-                PlayerRocket.Reset();
-                PlayerRocket.IsAnimating = true;
-                PlayerRocket.SetPopping();
+                playerRocket.Reset();
+                playerRocket.IsAnimating = true;
+                playerRocket.SetPopping();
 
-                PlayerRocket.Reposition(
+                playerRocket.Reposition(
                     Player: _player,
                     downScaling: _scene_game.DownScaling);
 
-                SyncDropShadow(PlayerRocket);
+                SyncDropShadow(playerRocket);
 
                 var playerDistantHitBox = _player.GetDistantHitBox();
 
                 // get closest possible target
-                BossRocketSeeking bossRocketSeeking = _scene_game.Children.OfType<BossRocketSeeking>().FirstOrDefault(x => x.IsAnimating && x.GetHitBox().IntersectsWith(playerDistantHitBox));
-                Boss boss = _scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetHitBox().IntersectsWith(playerDistantHitBox));
-                Enemy enemy = _scene_game.Children.OfType<Enemy>().FirstOrDefault(x => x.IsAnimating && x.GetHitBox().IntersectsWith(playerDistantHitBox));
+                BossRocketSeeking bossRocketSeeking = _scene_game.Children.OfType<BossRocketSeeking>()?.FirstOrDefault(x => x.IsAnimating && x.GetHitBox().IntersectsWith(playerDistantHitBox));
+                Boss boss = _scene_game.Children.OfType<Boss>()?.FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetHitBox().IntersectsWith(playerDistantHitBox));
+                Enemy enemy = _scene_game.Children.OfType<Enemy>()?.FirstOrDefault(x => x.IsAnimating && x.GetHitBox().IntersectsWith(playerDistantHitBox));
 
                 // if not found then find random target
                 bossRocketSeeking ??= _scene_game.Children.OfType<BossRocketSeeking>().FirstOrDefault(x => x.IsAnimating);
                 boss ??= _scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking);
                 enemy ??= _scene_game.Children.OfType<Enemy>().FirstOrDefault(x => x.IsAnimating);
 
-                // Console.WriteLine("Player Bomb dropped.");
-
-                #region Target Based Movement
+                // Console.WriteLine("Player Bomb dropped.");                             
 
                 if (enemy is not null)
                 {
-                    SetPlayerRocketDirection(playerRocket: PlayerRocket, target: enemy);
+                    SetPlayerRocketDirection(source: _player, rocket: playerRocket, rocketTarget: enemy);
                 }
                 else if (bossRocketSeeking is not null)
                 {
-                    SetPlayerRocketDirection(playerRocket: PlayerRocket, target: bossRocketSeeking);
+                    SetPlayerRocketDirection(source: _player, rocket: playerRocket, rocketTarget: bossRocketSeeking);
                 }
                 else if (boss is not null)
                 {
-                    SetPlayerRocketDirection(playerRocket: PlayerRocket, target: boss);
+                    SetPlayerRocketDirection(source: _player, rocket: playerRocket, rocketTarget: boss);
                 }
-
-                #endregion
 
                 return true;
             }
 
             return false;
-        }
-
-        private void SetPlayerRocketDirection(PlayerRocket playerRocket, Construct target)
-        {
-            if (_player.GetLeft() < target.GetLeft()) // player is on the left side of the target
-            {
-                if ((_player.GetTop() > target.GetTop())) // player is below the target
-                {
-                    playerRocket.AwaitMoveRight = true;
-                    playerRocket.SetRotation(-33);
-                }
-                else // player is above the target
-                {
-                    playerRocket.AwaitMoveDown = true;
-                    playerRocket.SetRotation(123);
-                }
-            }
-            else if (_player.GetLeft() > target.GetLeft()) // player is on the right side of the target
-            {
-                if ((_player.GetTop() > target.GetTop())) // player is below the target
-                {
-                    playerRocket.AwaitMoveUp = true;
-                    playerRocket.SetRotation(213);
-
-                }
-                else // player is above the target
-                {
-                    playerRocket.AwaitMoveLeft = true;
-                    playerRocket.SetRotation(123);
-                }
-            }
-        }
+        }       
 
         private bool AnimatePlayerRocket(Construct bomb)
         {
@@ -741,21 +707,21 @@ namespace HonkTrooper
 
             var speed = (_scene_game.Speed + bomb.SpeedOffset) * _scene_game.DownScaling;
 
-            if (PlayerRocket.AwaitMoveLeft)
+            if (PlayerRocket.AwaitMoveDownLeft)
             {
-                PlayerRocket.MoveBottomLeft(speed);
+                PlayerRocket.MoveDownLeft(speed);
             }
-            else if (PlayerRocket.AwaitMoveRight)
+            else if (PlayerRocket.AwaitMoveUpRight)
             {
-                PlayerRocket.MoveTopRight(speed);
+                PlayerRocket.MoveUpRight(speed);
             }
-            else if (PlayerRocket.AwaitMoveUp)
+            else if (PlayerRocket.AwaitMoveUpLeft)
             {
-                PlayerRocket.MoveTopLeft(speed);
+                PlayerRocket.MoveUpLeft(speed);
             }
-            else if (PlayerRocket.AwaitMoveDown)
+            else if (PlayerRocket.AwaitMoveDownRight)
             {
-                PlayerRocket.MoveBottomRight(speed);
+                PlayerRocket.MoveDownRight(speed);
             }
 
             if (PlayerRocket.IsBlasting)
@@ -798,18 +764,18 @@ namespace HonkTrooper
             return true;
         }
 
-        private bool RecyclePlayerRocket(Construct PlayerRocket)
+        private bool RecyclePlayerRocket(Construct playerRocket)
         {
-            var hitbox = PlayerRocket.GetHitBox();
+            var hitbox = playerRocket.GetHitBox();
 
             // if bomb is blasted and faed or goes out of scene bounds
-            if (PlayerRocket.IsFadingComplete ||
+            if (playerRocket.IsFadingComplete ||
                 hitbox.Left > _scene_game.Width || hitbox.Top > _scene_game.Height ||
                 hitbox.Right < 0 || hitbox.Bottom < 0)
             {
-                PlayerRocket.IsAnimating = false;
+                playerRocket.IsAnimating = false;
 
-                PlayerRocket.SetPosition(
+                playerRocket.SetPosition(
                     left: -500,
                     top: -500);
 
@@ -1090,6 +1056,104 @@ namespace HonkTrooper
             // use up the power up
             if (_powerUp_health_bar.HasHealth)
                 _powerUp_health_bar.SetValue(_powerUp_health_bar.GetValue() - 1);
+        }
+
+        #endregion
+
+        #region Rocket
+
+        private void SetPlayerRocketDirection(Construct source, Rocket rocket, Construct rocketTarget)
+        {
+            //if (source.GetLeft() < rocketTarget.GetLeft()) // player is on the left side of the target
+            //{
+            //    if ((source.GetTop() > rocketTarget.GetTop())) // player is below the target
+            //    {
+            //        rocket.AwaitMoveUpRight = true;
+            //        rocket.SetRotation(-33);
+            //    }
+            //    else // player is above the target
+            //    {
+            //        rocket.AwaitMoveDownRight = true;
+            //        rocket.SetRotation(123);
+            //    }
+            //}
+            //else if (source.GetLeft() > rocketTarget.GetLeft()) // player is on the right side of the target
+            //{
+            //    if ((source.GetTop() > rocketTarget.GetTop())) // player is below the target
+            //    {
+            //        rocket.AwaitMoveUpLeft = true;
+            //        rocket.SetRotation(213);
+
+            //    }
+            //    else // player is above the target
+            //    {
+            //        rocket.AwaitMoveDownLeft = true;
+            //        rocket.SetRotation(123);
+            //    }
+            //}
+
+            // rocket target is on the bottom right side of the boss
+            if (rocketTarget.GetTop() > source.GetTop() && rocketTarget.GetLeft() > source.GetLeft())
+            {
+                rocket.AwaitMoveDownRight = true;
+                rocket.SetRotation(33);
+            }
+            // rocket target is on the bottom left side of the boss
+            else if (rocketTarget.GetTop() > source.GetTop() && rocketTarget.GetLeft() < source.GetLeft())
+            {
+                rocket.AwaitMoveDownLeft = true;
+                rocket.SetRotation(133);
+            }
+            // if rocket target is on the top left side of the boss
+            else if (rocketTarget.GetTop() < source.GetTop() && rocketTarget.GetLeft() < source.GetLeft())
+            {
+                rocket.AwaitMoveUpLeft = true;
+                rocket.SetRotation(213);
+            }
+            // if rocket target is on the top right side of the boss
+            else if (rocketTarget.GetTop() < source.GetTop() && rocketTarget.GetLeft() > source.GetLeft())
+            {
+                rocket.AwaitMoveUpRight = true;
+                rocket.SetRotation(-33);
+            }
+            else
+            {
+                rocket.AwaitMoveUpLeft = true;
+                rocket.SetRotation(213);
+            }
+        }
+
+        private void SetBossRocketDirection(Construct source, Rocket rocket, Construct rocketTarget)
+        {
+            // rocket target is on the bottom right side of the boss
+            if (rocketTarget.GetTop() > source.GetTop() && rocketTarget.GetLeft() > source.GetLeft())
+            {
+                rocket.AwaitMoveDownRight = true;
+                rocket.SetRotation(33);
+            }
+            // rocket target is on the bottom left side of the boss
+            else if (rocketTarget.GetTop() > source.GetTop() && rocketTarget.GetLeft() < source.GetLeft())
+            {
+                rocket.AwaitMoveDownLeft = true;
+                rocket.SetRotation(133);
+            }
+            // if rocket target is on the top left side of the boss
+            else if (rocketTarget.GetTop() < source.GetTop() && rocketTarget.GetLeft() < source.GetLeft())
+            {
+                rocket.AwaitMoveUpLeft = true;
+                rocket.SetRotation(213);
+            }
+            // if rocket target is on the top right side of the boss
+            else if (rocketTarget.GetTop() < source.GetTop() && rocketTarget.GetLeft() > source.GetLeft())
+            {
+                rocket.AwaitMoveUpRight = true;
+                rocket.SetRotation(-33);
+            }
+            else
+            {
+                rocket.AwaitMoveDownRight = true;
+                rocket.SetRotation(33);
+            }
         }
 
         #endregion
@@ -2123,49 +2187,21 @@ namespace HonkTrooper
         {
             if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
                 _scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss &&
-                _scene_game.Children.OfType<BossRocket>().FirstOrDefault(x => x.IsAnimating == false) is BossRocket BossRocket)
+                _scene_game.Children.OfType<BossRocket>().FirstOrDefault(x => x.IsAnimating == false) is BossRocket bossRocket)
             {
-                BossRocket.Reset();
-                BossRocket.IsAnimating = true;
-                BossRocket.SetPopping();
+                bossRocket.Reset();
+                bossRocket.IsAnimating = true;
+                bossRocket.SetPopping();
 
-                BossRocket.Reposition(
+                bossRocket.Reposition(
                     boss: boss,
                     downScaling: _scene_game.DownScaling);
 
-                SyncDropShadow(BossRocket);
+                SyncDropShadow(bossRocket);
 
                 #region Target Based Movement
 
-                // player is on the bottom right side of the boss
-                if (_player.GetTop() > boss.GetTop() && _player.GetLeft() > boss.GetLeft())
-                {
-                    BossRocket.AwaitMoveDown = true;
-                    BossRocket.SetRotation(33);
-                }
-                // player is on the bottom left side of the boss
-                else if (_player.GetTop() > boss.GetTop() && _player.GetLeft() < boss.GetLeft())
-                {
-                    BossRocket.AwaitMoveLeft = true;
-                    BossRocket.SetRotation(123);
-                }
-                // if player is on the top left side of the boss
-                else if (_player.GetTop() < boss.GetTop() && _player.GetLeft() < boss.GetLeft())
-                {
-                    BossRocket.AwaitMoveUp = true;
-                    BossRocket.SetRotation(123);
-                }
-                // if player is on the top right side of the boss
-                else if (_player.GetTop() < boss.GetTop() && _player.GetLeft() > boss.GetLeft())
-                {
-                    BossRocket.AwaitMoveRight = true;
-                    BossRocket.SetRotation(-33);
-                }
-                else
-                {
-                    BossRocket.AwaitMoveDown = true;
-                    BossRocket.SetRotation(33);
-                }
+                SetBossRocketDirection(source: boss, rocket: bossRocket, rocketTarget: _player);
 
                 #endregion
 
@@ -2183,21 +2219,21 @@ namespace HonkTrooper
 
             var speed = (_scene_game.Speed + bomb.SpeedOffset) * _scene_game.DownScaling;
 
-            if (BossRocket.AwaitMoveLeft)
+            if (BossRocket.AwaitMoveDownLeft)
             {
-                BossRocket.MoveLeft(speed);
+                BossRocket.MoveDownLeft(speed);
             }
-            else if (BossRocket.AwaitMoveRight)
+            else if (BossRocket.AwaitMoveUpRight)
             {
-                BossRocket.MoveRight(speed);
+                BossRocket.MoveUpRight(speed);
             }
-            else if (BossRocket.AwaitMoveUp)
+            else if (BossRocket.AwaitMoveUpLeft)
             {
-                BossRocket.MoveUp(speed);
+                BossRocket.MoveUpLeft(speed);
             }
-            else if (BossRocket.AwaitMoveDown)
+            else if (BossRocket.AwaitMoveDownRight)
             {
-                BossRocket.MoveDown(speed);
+                BossRocket.MoveDownRight(speed);
             }
 
             if (BossRocket.IsBlasting)
