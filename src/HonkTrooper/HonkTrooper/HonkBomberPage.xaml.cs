@@ -28,11 +28,11 @@ namespace HonkTrooper
         private readonly Threashold _boss_threashold;
         private readonly Threashold _enemy_threashold;
 
-        //TODO: set defaults
-        private readonly double _boss_threashold_limit = 50; // after reaching 50 score first boss will appear
+        //TODO: set defaults _boss_threashold_limit = 50
+        private readonly double _boss_threashold_limit = 10; // after reaching 50 score first boss will appear
         private readonly double _boss_threashold_limit_increase = 15;
 
-        //TODO: set defaults
+        //TODO: set defaults _enemy_threashold_limit = 100
         private readonly double _enemy_threashold_limit = 100; // after reaching 100 score first enemies will appear
         private readonly double _enemy_threashold_limit_increase = 10;
 

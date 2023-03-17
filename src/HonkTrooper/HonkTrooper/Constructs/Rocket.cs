@@ -2,15 +2,35 @@
 {
     public partial class Rocket : Construct
     {
+        public void MoveUp(double speed)
+        {
+            SetTop(GetTop() - speed);
+        }
+
+        public void MoveDown(double speed)
+        {
+            SetTop(GetTop() + speed);
+        }
+
+        public void MoveLeft(double speed)
+        {
+            SetLeft(GetLeft() - speed);
+        }
+
+        public void MoveRight(double speed)
+        {
+            SetLeft(GetLeft() + speed);
+        }
+
         public void MoveDownLeft(double speed)
         {
-            SetLeft(GetLeft() - speed * 2);
+            SetLeft(GetLeft() - speed);
             SetTop(GetTop() + speed);
         }
 
         public void MoveUpRight(double speed)
         {
-            SetLeft(GetLeft() + speed * 2);
+            SetLeft(GetLeft() + speed);
             SetTop(GetTop() - speed);
         }
 

@@ -103,6 +103,8 @@ namespace HonkTrooper
             _movementDirection = MovementDirection.None;
             _movementStopDelay = _movementStopDelayDefault;
             _lastSpeed = 0;
+
+            SetRotation(0);
         }
 
         public void Reposition()
@@ -221,7 +223,7 @@ namespace HonkTrooper
             }
         }
 
-        #region Isometric Movement
+
 
         public void MoveUp(double speed)
         {
@@ -238,11 +240,56 @@ namespace HonkTrooper
             //    rotationSpeed: _rotationSpeed);
         }
 
+        public void MoveDown(double speed)
+        {
+            _movementDirection = MovementDirection.Down;
+
+            SetTop(GetTop() + speed * 2);
+
+            _movementStopDelay = _movementStopDelayDefault;
+            _lastSpeed = speed;
+
+            //Rotate(
+            //    rotationDirection: RotationDirection.Forward,
+            //    threadhold: _rotationThreadhold,
+            //    rotationSpeed: _rotationSpeed);
+        }
+
+        public void MoveLeft(double speed)
+        {
+            _movementDirection = MovementDirection.Left;
+
+            SetLeft(GetLeft() - speed * 2);
+
+            _movementStopDelay = _movementStopDelayDefault;
+            _lastSpeed = speed;
+
+            Rotate(
+                rotationDirection: RotationDirection.Backward,
+                threadhold: _rotationThreadhold,
+                rotationSpeed: _rotationSpeed);
+        }
+
+        public void MoveRight(double speed)
+        {
+            _movementDirection = MovementDirection.Right;
+
+            SetLeft(GetLeft() + speed * 2);
+
+            _movementStopDelay = _movementStopDelayDefault;
+            _lastSpeed = speed;
+
+            Rotate(
+                rotationDirection: RotationDirection.Forward,
+                threadhold: _rotationThreadhold,
+                rotationSpeed: _rotationSpeed);
+        }
+
         public void MoveUpRight(double speed)
         {
             _movementDirection = MovementDirection.UpRight;
 
-            SetLeft(GetLeft() + speed);
+            SetLeft(GetLeft() + speed * 2);
             SetTop(GetTop() - speed);
 
             _movementStopDelay = _movementStopDelayDefault;
@@ -270,21 +317,6 @@ namespace HonkTrooper
                 rotationSpeed: _rotationSpeed);
         }
 
-        public void MoveDown(double speed)
-        {
-            _movementDirection = MovementDirection.Down;
-
-            SetTop(GetTop() + speed * 2);
-
-            _movementStopDelay = _movementStopDelayDefault;
-            _lastSpeed = speed;
-
-            //Rotate(
-            //    rotationDirection: RotationDirection.Forward,
-            //    threadhold: _rotationThreadhold,
-            //    rotationSpeed: _rotationSpeed);
-        }
-
         public void MoveDownRight(double speed)
         {
             _movementDirection = MovementDirection.DownRight;
@@ -305,7 +337,7 @@ namespace HonkTrooper
         {
             _movementDirection = MovementDirection.DownLeft;
 
-            SetLeft(GetLeft() - speed);
+            SetLeft(GetLeft() - speed * 2);
             SetTop(GetTop() + speed);
 
             _movementStopDelay = _movementStopDelayDefault;
@@ -317,37 +349,6 @@ namespace HonkTrooper
                 rotationSpeed: _rotationSpeed);
         }
 
-        public void MoveRight(double speed)
-        {
-            _movementDirection = MovementDirection.Right;
-
-            SetLeft(GetLeft() + speed * 2);
-
-            _movementStopDelay = _movementStopDelayDefault;
-            _lastSpeed = speed;
-
-            Rotate(
-                rotationDirection: RotationDirection.Forward,
-                threadhold: _rotationThreadhold,
-                rotationSpeed: _rotationSpeed);
-        }
-
-        public void MoveLeft(double speed)
-        {
-            _movementDirection = MovementDirection.Left;
-
-            SetLeft(GetLeft() - speed * 2);
-
-            _movementStopDelay = _movementStopDelayDefault;
-            _lastSpeed = speed;
-
-            Rotate(
-                rotationDirection: RotationDirection.Backward,
-                threadhold: _rotationThreadhold,
-                rotationSpeed: _rotationSpeed);
-        }
-
-        #endregion
 
         public void StopMovement()
         {
