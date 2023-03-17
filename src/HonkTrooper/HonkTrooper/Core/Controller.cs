@@ -350,7 +350,7 @@ namespace HonkTrooper
 
                 JoyStickActive = false;
 
-                thumb.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE);
+                thumb.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.25, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.20);
             };
             //canvas.PointerExited += (s, e) =>
             //{
