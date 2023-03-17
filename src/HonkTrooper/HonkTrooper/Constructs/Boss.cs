@@ -6,7 +6,7 @@ using Windows.Foundation;
 
 namespace HonkTrooper
 {
-    public partial class Boss : Rocket
+    public partial class Boss : DirectionalMovingConstruct
     {
         #region Fields
 

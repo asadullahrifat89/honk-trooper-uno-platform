@@ -66,20 +66,6 @@ namespace HonkTrooper
 
         #endregion
 
-        #region Properties
-
-        public bool IsBlasting { get; set; }
-
-        public bool AwaitMoveRight { get; set; }
-
-        public bool AwaitMoveLeft { get; set; }
-
-        public bool AwaitMoveUp { get; set; }
-
-        public bool AwaitMoveDown { get; set; }
-
-        #endregion
-
         #region Methods
 
         public void Reposition(Player Player, double downScaling)
@@ -102,11 +88,11 @@ namespace HonkTrooper
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_uris);
             _content_image.Source = new BitmapImage(uri);
 
-            AwaitMoveLeft = false;
-            AwaitMoveRight = false;
+            AwaitMoveDownLeft = false;
+            AwaitMoveUpRight = false;
 
-            AwaitMoveUp = false;
-            AwaitMoveDown = false;
+            AwaitMoveUpLeft = false;
+            AwaitMoveDownRight = false;
 
             _autoBlastDelay = _autoBlastDelayDefault;
         }
