@@ -13,11 +13,9 @@
         <Border
             Background="{ThemeResource RoadBackgroundColor}"
             BorderBrush="#111111"
-            BorderThickness="3">
+            BorderThickness="3" />
 
-            <Scene x:Name="GameScene" Background="Transparent" />
-
-        </Border>
+        <Scene x:Name="GameScene" Background="Transparent" />
 
         <Scene x:Name="MainMenuScene" Background="Transparent" />
 
