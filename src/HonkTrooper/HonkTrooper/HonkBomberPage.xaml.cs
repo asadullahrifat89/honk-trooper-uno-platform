@@ -30,11 +30,11 @@ namespace HonkTrooper
         private readonly Threashold _enemy_threashold;
 
         //TODO: set defaults _boss_threashold_limit = 50
-        private readonly double _boss_threashold_limit = 10; // after reaching 50 score first boss will appear
+        private readonly double _boss_threashold_limit = 50; // first boss will appear
         private readonly double _boss_threashold_limit_increase = 15;
 
-        //TODO: set defaults _enemy_threashold_limit = 100
-        private readonly double _enemy_threashold_limit = 100; // after reaching 100 score first enemies will appear
+        //TODO: set defaults _enemy_threashold_limit = 80
+        private readonly double _enemy_threashold_limit = 80; // after first enemies will appear
         private readonly double _enemy_threashold_limit_increase = 10;
 
         private double _enemy_kill_count;
@@ -1064,63 +1064,63 @@ namespace HonkTrooper
 
         private void SetPlayerRocketDirection(Construct source, Rocket rocket, Construct rocketTarget)
         {
-            if (source.GetLeft() < rocketTarget.GetLeft()) // player is on the left side of the target
-            {
-                if ((source.GetTop() > rocketTarget.GetTop())) // player is below the target
-                {
-                    rocket.AwaitMoveUpRight = true;
-                    rocket.SetRotation(-33);
-                }
-                else // player is above the target
-                {
-                    rocket.AwaitMoveDownRight = true;
-                    rocket.SetRotation(123);
-                }
-            }
-            else if (source.GetLeft() > rocketTarget.GetLeft()) // player is on the right side of the target
-            {
-                if ((source.GetTop() > rocketTarget.GetTop())) // player is below the target
-                {
-                    rocket.AwaitMoveUpLeft = true;
-                    rocket.SetRotation(213);
+            //if (source.GetLeft() < rocketTarget.GetLeft()) // player is on the left side of the target
+            //{
+            //    if ((source.GetTop() > rocketTarget.GetTop())) // player is below the target
+            //    {
+            //        rocket.AwaitMoveUpRight = true;
+            //        rocket.SetRotation(-33);
+            //    }
+            //    else // player is above the target
+            //    {
+            //        rocket.AwaitMoveDownRight = true;
+            //        rocket.SetRotation(123);
+            //    }
+            //}
+            //else if (source.GetLeft() > rocketTarget.GetLeft()) // player is on the right side of the target
+            //{
+            //    if ((source.GetTop() > rocketTarget.GetTop())) // player is below the target
+            //    {
+            //        rocket.AwaitMoveUpLeft = true;
+            //        rocket.SetRotation(213);
 
-                }
-                else // player is above the target
-                {
-                    rocket.AwaitMoveDownLeft = true;
-                    rocket.SetRotation(123);
-                }
-            }
+            //    }
+            //    else // player is above the target
+            //    {
+            //        rocket.AwaitMoveDownLeft = true;
+            //        rocket.SetRotation(123);
+            //    }
+            //}
 
-            //// rocket target is on the bottom right side of the boss
-            //if (rocketTarget.GetTop() > source.GetTop() && rocketTarget.GetLeft() > source.GetLeft())
-            //{
-            //    rocket.AwaitMoveDownRight = true;
-            //    rocket.SetRotation(33);
-            //}
-            //// rocket target is on the bottom left side of the boss
-            //else if (rocketTarget.GetTop() > source.GetTop() && rocketTarget.GetLeft() < source.GetLeft())
-            //{
-            //    rocket.AwaitMoveDownLeft = true;
-            //    rocket.SetRotation(123);
-            //}
-            //// if rocket target is on the top left side of the boss
-            //else if (rocketTarget.GetTop() < source.GetTop() && rocketTarget.GetLeft() < source.GetLeft())
-            //{
-            //    rocket.AwaitMoveUpLeft = true;
-            //    rocket.SetRotation(123);
-            //}
-            //// if rocket target is on the top right side of the boss
-            //else if (rocketTarget.GetTop() < source.GetTop() && rocketTarget.GetLeft() > source.GetLeft())
-            //{
-            //    rocket.AwaitMoveUpRight = true;
-            //    rocket.SetRotation(-33);
-            //}
-            //else
-            //{
-            //    rocket.AwaitMoveDownRight = true;
-            //    rocket.SetRotation(33);
-            //}
+            // rocket target is on the bottom right side of the boss
+            if (rocketTarget.GetTop() > source.GetTop() && rocketTarget.GetLeft() > source.GetLeft())
+            {
+                rocket.AwaitMoveDownRight = true;
+                rocket.SetRotation(33);
+            }
+            // rocket target is on the bottom left side of the boss
+            else if (rocketTarget.GetTop() > source.GetTop() && rocketTarget.GetLeft() < source.GetLeft())
+            {
+                rocket.AwaitMoveDownLeft = true;
+                rocket.SetRotation(133);
+            }
+            // if rocket target is on the top left side of the boss
+            else if (rocketTarget.GetTop() < source.GetTop() && rocketTarget.GetLeft() < source.GetLeft())
+            {
+                rocket.AwaitMoveUpLeft = true;
+                rocket.SetRotation(213);
+            }
+            // if rocket target is on the top right side of the boss
+            else if (rocketTarget.GetTop() < source.GetTop() && rocketTarget.GetLeft() > source.GetLeft())
+            {
+                rocket.AwaitMoveUpRight = true;
+                rocket.SetRotation(-33);
+            }
+            else
+            {
+                rocket.AwaitMoveUpLeft = true;
+                rocket.SetRotation(213);
+            }
         }
 
         private void SetBossRocketDirection(Construct source, Rocket rocket, Construct rocketTarget)
