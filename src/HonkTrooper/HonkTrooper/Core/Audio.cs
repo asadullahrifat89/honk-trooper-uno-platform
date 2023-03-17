@@ -2,22 +2,106 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
+#if !__ANDROID__ && !__IOS__
 using Uno.UI.Runtime.WebAssembly;
+#endif
 
 namespace HonkTrooper
 {
+
+#if __ANDROID__ || __IOS__
+
+    public partial class Audio : AudioBase
+    {
+        public Audio(
+            Uri uri,
+            double volume = 1.0,
+            bool loop = false,
+            Action playback = null)
+        {
+            Initialize(
+                uri: uri,
+                volume: volume,
+                loop: loop,
+                trackEnded: playback);
+        }
+
+        #region Methods
+
+        public void Initialize(
+            Uri uri,
+            double volume = 1.0,
+            bool loop = false,
+            Action trackEnded = null)
+        {
+            SetSource(uri);
+            SetVolume(volume);
+            SetLoop(loop);
+
+            if (trackEnded is not null)
+            {
+                TrackEnded = trackEnded;
+            }
+        }
+
+        public void SetSource(Uri uri)
+        {
+
+
+
+        }
+
+        public void SetLoop(bool loop)
+        {
+
+        }
+
+        public new void Play()
+        {
+            base.Play();
+
+        }
+
+        public new void Stop()
+        {
+            base.Stop();
+
+        }
+
+        public new void Pause()
+        {
+            base.Pause();
+        }
+
+        public new void Resume()
+        {
+            base.Resume();
+        }
+
+        public new void SetVolume(double volume)
+        {
+            base.SetVolume(volume);
+        }
+
+        #endregion
+    }
+
+#else
+
+
     [HtmlElement("audio")]
-    public partial class AudioWasm : AudioBase
+    public partial class Audio : AudioBase
     {
         #region Fields
 
         private string _baseUrl;
 
-        #endregion      
+        #endregion
 
         #region Ctor
 
-        public AudioWasm(
+        public Audio(
            Uri uri,
            double volume = 1.0,
            bool loop = false,
@@ -108,6 +192,8 @@ namespace HonkTrooper
             this.ExecuteJavascript(audio);
         }
 
-        #endregion     
+        #endregion
     }
+
+#endif
 }
