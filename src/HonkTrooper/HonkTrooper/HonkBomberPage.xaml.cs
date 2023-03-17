@@ -1814,10 +1814,6 @@ namespace HonkTrooper
                 {
                     var speed = (_scene_game.Speed + boss.SpeedOffset) * _scene_game.DownScaling;
 
-                    // bring boss to a suitable distance from player and then start attacking
-
-                    #region [PATTERN CHANGING] Unpredictable Movement
-
                     if (boss1.IsAttacking)
                     {
                         boss1.Move(
@@ -1830,13 +1826,11 @@ namespace HonkTrooper
                     {
                         MoveConstructBottomRight(construct: boss, speed: speed);
 
-                        if (boss.GetLeft() > (_scene_game.Width / 3) * 1.5)
+                        if (boss.GetLeft() > (_scene_game.Width / 3)) // bring boss to a suitable distance from player and then start attacking
                         {
                             boss1.IsAttacking = true;
                         }
                     }
-
-                    #endregion
                 }
             }
 
