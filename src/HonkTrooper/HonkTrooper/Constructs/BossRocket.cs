@@ -58,7 +58,7 @@ namespace HonkTrooper
             SetChild(_content_image);
 
             IsometricDisplacement = 0.5;
-            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET * 2.5;
+            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET - 2;
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE + 10;
 
             _audioStub = new AudioStub((SoundType.ROCKET_LAUNCH, 0.3, false), (SoundType.ROCKET_BLAST, 1, false));
@@ -119,7 +119,7 @@ namespace HonkTrooper
             _content_image.Source = new BitmapImage(uri);
 
             IsBlasting = true;
-        }       
+        }
 
         public bool AutoBlast()
         {
