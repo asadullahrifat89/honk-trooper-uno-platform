@@ -55,7 +55,7 @@ namespace HonkTrooper
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center,
                 Margin = new Thickness(0, 0, 0, 5),
-                Foreground = new SolidColorBrush(Colors.White),
+                Foreground = new SolidColorBrush(Colors.White),                
             };
 
             SetChild(_titleScreenText);

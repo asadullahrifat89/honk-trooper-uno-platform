@@ -2960,13 +2960,10 @@ namespace HonkTrooper
             }
         }
 
-        private void Controller_RequiresScreenOrientationChange(object sender, DisplayOrientations e)
-        {
-            // Console.WriteLine($"Required Orientation {e}");
-        }
-
         private void DisplayInformation_OrientationChanged(DisplayInformation sender, object args)
         {
+            //
+
             if (_scene_game.SceneState == SceneState.GAME_RUNNING) // if screen orientation is changed while game is running, pause the game
             {
                 if (_scene_game.IsAnimating)
@@ -2978,8 +2975,6 @@ namespace HonkTrooper
                 {
                     if (_scene_main_menu.Children.OfType<ScreenOrientationChangePromt>().FirstOrDefault(x => x.IsAnimating) is ScreenOrientationChangePromt screenOrientationChangePromt)
                     {
-                        ScreenExtensions.EnterFullScreen(true);
-
                         RecycleScreenOrientationChangePromt(screenOrientationChangePromt);
 
                         _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
@@ -2988,11 +2983,11 @@ namespace HonkTrooper
                         if (!_scene_game.IsAnimating)
                             _scene_game.Play();
 
-                        if (_scene_main_menu.IsAnimating)
-                            _scene_main_menu.Pause();
-                    }
+                        if (!_scene_main_menu.IsAnimating)
+                            _scene_main_menu.Play();
+                    }                    
                 }
-                else
+                else // ask to change orientation
                 {
                     if (_scene_game.IsAnimating)
                         _scene_game.Pause();
@@ -3014,6 +3009,8 @@ namespace HonkTrooper
 
                     GenerateScreenOrientationChangePromtInScene();
                 }
+
+                ScreenExtensions.EnterFullScreen(true);
             }
 
             // Console.WriteLine($"{sender.CurrentOrientation}");
