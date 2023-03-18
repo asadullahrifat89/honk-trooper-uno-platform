@@ -63,7 +63,7 @@ namespace HonkTrooper
                 //    break;
                 //case Windows.System.VirtualKey.Escape:
                 //    {
-                //        // Console.WriteLine("Escape");
+                //        Console.WriteLine("Escape");
                 //    }
                 //    break;
                 case Windows.System.VirtualKey.Space:

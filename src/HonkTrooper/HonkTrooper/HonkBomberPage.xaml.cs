@@ -137,7 +137,7 @@ namespace HonkTrooper
 
         private void NewGame()
         {
-            Console.WriteLine("New Game Started.");
+            //Console.WriteLine("New Game Started.");
 
             _audio_stub.Play(SoundType.AMBIENCE, SoundType.GAME_BACKGROUND_MUSIC);
 
@@ -247,7 +247,7 @@ namespace HonkTrooper
                 DisplayOrientationChangeScreen.IsAnimating = true;
                 DisplayOrientationChangeScreen.Reposition();
 
-                Console.WriteLine("Screen Orientation Change Promt Generated.");
+                //Console.WriteLine("Screen Orientation Change Promt Generated.");
 
                 return true;
             }
@@ -267,7 +267,7 @@ namespace HonkTrooper
             displayOrientationChangeScreen.SetPosition(left: -500, top: -500);
             displayOrientationChangeScreen.IsAnimating = false;
 
-            Console.WriteLine("Screen Orientation Change Promt Recyled.");
+            //Console.WriteLine("Screen Orientation Change Promt Recyled.");
         }
 
         #endregion
@@ -396,7 +396,7 @@ namespace HonkTrooper
                 playerSelectionScreen.IsAnimating = true;
                 playerSelectionScreen.Reposition();
 
-                Console.WriteLine("Player Selection Screen Generated.");
+                //Console.WriteLine("Player Selection Screen Generated.");
 
                 return true;
             }
@@ -416,7 +416,7 @@ namespace HonkTrooper
             playerSelectionScreen.SetPosition(left: -500, top: -500);
             playerSelectionScreen.IsAnimating = false;
 
-            Console.WriteLine("Player Selection Screen Recyled.");
+            //Console.WriteLine("Player Selection Screen Recyled.");
         }
 
         #endregion
@@ -486,7 +486,7 @@ namespace HonkTrooper
         private bool SpawnPlayerInScene()
         {
             var playerTemplate = _random.Next(1, 3);
-            Console.WriteLine($"Player Template: {playerTemplate}");
+            //Console.WriteLine($"Player Template: {playerTemplate}");
 
             _player = new(
                 animateAction: AnimatePlayer,
@@ -1344,7 +1344,7 @@ namespace HonkTrooper
         //            top: (0 - roadSlab.Width) * _scene_game.DownScaling,
         //            z: 0);
 
-        //        // Console.WriteLine("RoadSlab Mark generated.");
+        //        Console.WriteLine("RoadSlab Mark generated.");
 
         //        return true;
         //    }
@@ -1363,7 +1363,7 @@ namespace HonkTrooper
         //            top: (_scene_game.Height / 2.5) * _scene_game.DownScaling,
         //            z: 0);
 
-        //        // Console.WriteLine("RoadSlab Mark generated.");
+        //        Console.WriteLine("RoadSlab Mark generated.");
 
         //        return true;
         //    }
@@ -2047,7 +2047,7 @@ namespace HonkTrooper
                     _scene_game.ActivateSlowMotion();
                 }
 
-                Console.WriteLine("Enemy dead");
+                //Console.WriteLine("Enemy dead");
             }
         }
 

@@ -153,7 +153,7 @@ namespace HonkTrooper
 
             this.ExecuteJavascript($"element.src = \"{source}\"; ");
 
-            Console.WriteLine("source: " + source);
+            // Console.WriteLine("source: " + source);
         }
 
         public void SetLoop(bool loop)
