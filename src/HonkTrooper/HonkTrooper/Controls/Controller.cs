@@ -186,9 +186,9 @@ namespace HonkTrooper
                 //},
                 RenderTransformOrigin = new Point(0.5, 0.5),
 
-                //Background = new SolidColorBrush(Colors.Goldenrod),
-                //BorderBrush = new SolidColorBrush(Colors.White),
-                //BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
+                Background = new SolidColorBrush(Colors.Goldenrod),
+                BorderBrush = new SolidColorBrush(Colors.White),
+                BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
             };
 
             ThumbstickRight = new()
@@ -202,9 +202,9 @@ namespace HonkTrooper
                 //},
                 RenderTransformOrigin = new Point(0.5, 0.5),
 
-                //Background = new SolidColorBrush(Colors.Goldenrod),
-                //BorderBrush = new SolidColorBrush(Colors.White),
-                //BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
+                Background = new SolidColorBrush(Colors.Goldenrod),
+                BorderBrush = new SolidColorBrush(Colors.White),
+                BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
             };
 
             ThumbstickDownLeft = new()
@@ -426,7 +426,7 @@ namespace HonkTrooper
                 DeactivateMoveLeft();
             }
 
-            if (ThumbstickThumb.GetHitBox().IntersectsWith(ThumbstickRight.GetCloseHitBox()))
+            if (ThumbstickThumb.GetHitBox().IntersectsWith(ThumbstickRight.GetHitBox()))
             {
                 ActivateMoveRight();
             }
@@ -435,7 +435,7 @@ namespace HonkTrooper
                 DeactivateMoveRight();
             }
 
-            if (ThumbstickThumb.GetHitBox().IntersectsWith(ThumbstickDown.GetCloseHitBox()))
+            if (ThumbstickThumb.GetHitBox().IntersectsWith(ThumbstickDown.GetHitBox()))
             {
                 ActivateMoveDown();
             }
@@ -787,9 +787,9 @@ namespace HonkTrooper
                 LoggerExtensions.Log($"AngularVelocityZ: {AngularVelocityZ}");
 
 #if __ANDROID__ || __IOS__
-                MoveThumbstickThumbWithGyrometer(AngularVelocityX / 2.0, AngularVelocityY * -1 / 2.0); // less sensitive on mobile
+                MoveThumbstickThumbWithGyrometer(AngularVelocityX / 1.8, AngularVelocityY * -1 / 1.8); // less sensitive on mobile
 #else
-                MoveThumbstickThumbWithGyrometer(AngularVelocityX / 1.2, AngularVelocityY * -1 / 1.2); // more sensitive on web
+                MoveThumbstickThumbWithGyrometer(AngularVelocityX / 1.1, AngularVelocityY * -1 / 1.1); // more sensitive on web
 #endif
             }
         }
