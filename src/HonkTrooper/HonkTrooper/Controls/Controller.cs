@@ -83,7 +83,7 @@ namespace HonkTrooper
                 //RenderTransform = new ScaleTransform() { CenterX = 0.5, CenterY = 0.5, ScaleX = 0.70, ScaleY = 0.70 }
             };
 
-            var saveZone = new Construct()
+            var safeZone = new Construct()
             {
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.55,
                 Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.55,
@@ -241,8 +241,8 @@ namespace HonkTrooper
                 BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
             };
 
-            saveZone.SetPosition(left: Joystick.Width / 2 - saveZone.Width / 2, top: Joystick.Height / 2 - saveZone.Height / 2);
-            Joystick.Children.Add(saveZone);
+            safeZone.SetPosition(left: Joystick.Width / 2 - safeZone.Width / 2, top: Joystick.Height / 2 - safeZone.Height / 2);
+            Joystick.Children.Add(safeZone);
 
             upLeft.SetPosition(left: 0, top: 0);
             Joystick.Children.Add(upLeft);
