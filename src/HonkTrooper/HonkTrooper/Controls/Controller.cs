@@ -344,7 +344,7 @@ namespace HonkTrooper
                                 top: point.Position.Y - ThumbstickThumb.Height / 2);
         }
 
-        private void SetDefaultThumbstickPosition()
+        public void SetDefaultThumbstickPosition()
         {
             ThumbstickThumb.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.30, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.30);
         }
@@ -737,7 +737,7 @@ namespace HonkTrooper
             Gyrometer = Gyrometer.GetDefault();
 
             if (Gyrometer is not null)
-            {               
+            {
                 GyrometerReadingsActive = false;
                 LoggerExtensions.Log($"Gyrometer detected.");
             }
@@ -785,9 +785,9 @@ namespace HonkTrooper
                 LoggerExtensions.Log($"AngularVelocityZ: {AngularVelocityZ}");
 
 #if __ANDROID__ || __IOS__
-                MoveThumbstickThumbWithGyrometer(AngularVelocityX / 2.5, AngularVelocityY * -1 / 2.5);
-#else
                 MoveThumbstickThumbWithGyrometer(AngularVelocityX / 2.0, AngularVelocityY * -1 / 2.0);
+#else
+                MoveThumbstickThumbWithGyrometer(AngularVelocityX / 1.5, AngularVelocityY * -1 / 1.5);
 #endif
             }
         }
