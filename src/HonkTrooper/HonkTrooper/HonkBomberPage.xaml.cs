@@ -111,6 +111,8 @@ namespace HonkTrooper
             _scene_game.Pause();
             _scene_main_menu.Play();
 
+            _game_controller.DeactivateGyrometerReading();
+
             GenerateTitleScreenInScene("Game Paused");
         }
 
@@ -131,6 +133,8 @@ namespace HonkTrooper
 
             _scene_game.Play();
             _scene_main_menu.Pause();
+
+            _game_controller.ActivateGyrometerReading();
 
             _game_controller.AttackButton.Focus(FocusState.Programmatic);
         }
@@ -193,6 +197,8 @@ namespace HonkTrooper
             ToggleHudVisibility(Visibility.Visible);
 
             _game_controller.AttackButton.Focus(FocusState.Programmatic);
+
+            _game_controller.ActivateGyrometerReading();
         }
 
         private void GameOver()
@@ -215,6 +221,8 @@ namespace HonkTrooper
 
                 ToggleHudVisibility(Visibility.Collapsed);
                 GenerateTitleScreenInScene("Game Over");
+
+                _game_controller.DeactivateGyrometerReading();
             }
         }
 

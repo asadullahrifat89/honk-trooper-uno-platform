@@ -58,6 +58,8 @@ namespace HonkTrooper
 
         private Gyrometer Gyrometer { get; set; }
 
+        private bool GyrometerReadingsActive { get; set; }
+
         private double AngularVelocityX { get; set; }
 
         private double AngularVelocityY { get; set; }
@@ -729,90 +731,52 @@ namespace HonkTrooper
 
             if (Gyrometer is not null)
             {
+                GyrometerReadingsActive = false;
                 LoggerExtensions.Log($"Gyrometer detected.");
-                Gyrometer.ReadingChanged += Gyrometer_ReadingChanged;
             }
         }
 
         public void UnsetGyrometer()
         {
-
             if (Gyrometer is not null)
             {
                 LoggerExtensions.Log($"Gyrometer detected.");
+                DeactivateGyrometerReading();
+            }
+        }
+
+        public void ActivateGyrometerReading()
+        {
+            if (!GyrometerReadingsActive && Gyrometer is not null)
+            {
+                GyrometerReadingsActive = true;
+                Gyrometer.ReadingChanged += Gyrometer_ReadingChanged;
+            }
+        }
+
+        public void DeactivateGyrometerReading()
+        {
+            if (GyrometerReadingsActive && Gyrometer is not null)
+            {
+                GyrometerReadingsActive = false;
                 Gyrometer.ReadingChanged -= Gyrometer_ReadingChanged;
             }
         }
 
         private void Gyrometer_ReadingChanged(Gyrometer sender, GyrometerReadingChangedEventArgs args)
         {
-            AngularVelocityX = args.Reading.AngularVelocityX;
-            AngularVelocityY = args.Reading.AngularVelocityY;
-            AngularVelocityZ = args.Reading.AngularVelocityZ;
+            if (GyrometerReadingsActive)
+            {
+                AngularVelocityX = args.Reading.AngularVelocityX;
+                AngularVelocityY = args.Reading.AngularVelocityY;
+                AngularVelocityZ = args.Reading.AngularVelocityZ;
 
-            LoggerExtensions.Log($"AngularVelocityX: {AngularVelocityX}");
-            LoggerExtensions.Log($"AngularVelocityY: {AngularVelocityY}");
-            LoggerExtensions.Log($"AngularVelocityZ: {AngularVelocityZ}");
+                LoggerExtensions.Log($"AngularVelocityX: {AngularVelocityX}");
+                LoggerExtensions.Log($"AngularVelocityY: {AngularVelocityY}");
+                LoggerExtensions.Log($"AngularVelocityZ: {AngularVelocityZ}");
 
-            #region Thumbstick Movement
-
-            MoveThumbstickThumbWithGyrometer(AngularVelocityX / 2, AngularVelocityY / 2);
-
-            #endregion
-
-            #region Linear Movement
-
-            //if (AngularVelocityY > 0)
-            //{
-            //    if (AngularVelocityY > 20)
-            //    {
-            //        ActivateMoveUp();
-            //    }
-            //    else
-            //    {
-            //        DeactivateMoveUp();
-            //        DeactivateMoveDown();
-            //    }
-            //}
-            //else
-            //{
-            //    if (Math.Abs(AngularVelocityY) > 20)
-            //    {
-            //        ActivateMoveDown();
-            //    }
-            //    else
-            //    {
-            //        DeactivateMoveUp();
-            //        DeactivateMoveDown();
-            //    }
-            //}
-
-            //if (AngularVelocityX > 0)
-            //{
-            //    if (AngularVelocityX > 15)
-            //    {
-            //        ActivateMoveRight();
-            //    }
-            //    else
-            //    {
-            //        DeactivateMoveRight();
-            //        DeactivateMoveLeft();
-            //    }
-            //}
-            //else
-            //{
-            //    if (Math.Abs(AngularVelocityX) > 15)
-            //    {
-            //        ActivateMoveLeft();
-            //    }
-            //    else
-            //    {
-            //        DeactivateMoveRight();
-            //        DeactivateMoveLeft();
-            //    }
-            //}
-
-            #endregion
+                MoveThumbstickThumbWithGyrometer(AngularVelocityX / 2.5, AngularVelocityY * -1 / 2.5);
+            }
         }
 
         #endregion
