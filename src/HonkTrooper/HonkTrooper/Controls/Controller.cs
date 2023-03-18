@@ -826,8 +826,8 @@ namespace HonkTrooper
             AttackButton = new()
             {
                 Background = new SolidColorBrush(Colors.Goldenrod),
-                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.2,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.2,
                 CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS * 2),
                 Content = new SymbolIcon()
                 {
