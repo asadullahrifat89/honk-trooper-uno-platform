@@ -1,4 +1,5 @@
 ﻿using Microsoft.UI;
+using Microsoft.UI.Input;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
@@ -54,8 +55,6 @@ namespace HonkTrooper
 
         private Construct ThumbstickDownRight { get; set; }
 
-        private Grid Keypad { get; set; }
-
         private Gyrometer Gyrometer { get; set; }
 
         private bool GyrometerReadingsActive { get; set; }
@@ -67,6 +66,8 @@ namespace HonkTrooper
         private double AngularVelocityZ { get; set; }
 
         private bool IsThumbstickActive { get; set; }
+
+        private Grid Keypad { get; set; }
 
         #endregion
 
@@ -302,7 +303,7 @@ namespace HonkTrooper
             Thumbstick.PointerPressed += (s, e) =>
             {
                 var point = e.GetCurrentPoint(Thumbstick);
-                ThumbstickThumb.SetPosition(left: point.Position.X - ThumbstickThumb.Width / 2, top: point.Position.Y - ThumbstickThumb.Height / 2);
+                SetThumbstickThumbPosition(point);
 
                 DeactivateMoveUp();
                 DeactivateMoveDown();
@@ -317,7 +318,7 @@ namespace HonkTrooper
                 if (IsThumbstickActive)
                 {
                     var point = e.GetCurrentPoint(Thumbstick);
-                    ThumbstickThumb.SetPosition(left: point.Position.X - ThumbstickThumb.Width / 2, top: point.Position.Y - ThumbstickThumb.Height / 2);
+                    SetThumbstickThumbPosition(point);
 
                     ActivateThumbstick();
                 }
@@ -330,11 +331,17 @@ namespace HonkTrooper
                 DeactivateMoveRight();
 
                 IsThumbstickActive = false;
-
                 SetDefaultThumbstickPosition();
             };
 
             this.Children.Add(Thumbstick);
+        }
+
+        private void SetThumbstickThumbPosition(PointerPoint point)
+        {
+            ThumbstickThumb.SetPosition(
+                                left: point.Position.X - ThumbstickThumb.Width / 2,
+                                top: point.Position.Y - ThumbstickThumb.Height / 2);
         }
 
         private void SetDefaultThumbstickPosition()
