@@ -58,12 +58,10 @@ namespace HonkTrooper
                 BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
             });
 
-            StackPanel container = new()
-            {
-                Orientation = Orientation.Vertical,
-                HorizontalAlignment = HorizontalAlignment.Stretch,
-                VerticalAlignment = VerticalAlignment.Center,
-            };
+            Grid container = new() { VerticalAlignment = VerticalAlignment.Center };
+            container.RowDefinitions.Add(new RowDefinition());
+            container.RowDefinitions.Add(new RowDefinition());
+            container.RowDefinitions.Add(new RowDefinition());
 
             #endregion
 
@@ -78,12 +76,14 @@ namespace HonkTrooper
             _content_image = new Image()
             {
                 Source = new BitmapImage(uriSource: uri),
-                HorizontalAlignment = HorizontalAlignment.Stretch,
+                HorizontalAlignment = HorizontalAlignment.Center,
                 Stretch = Stretch.Uniform,
                 Margin = new Thickness(0, 10, 0, 5),
                 Height = 110,
                 Width = 110,
             };
+
+            Grid.SetRow(container, 0);
 
             container.Children.Add(_content_image);
 
@@ -97,9 +97,10 @@ namespace HonkTrooper
                 FontSize = Constants.DEFAULT_GUI_FONT_SIZE,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 Margin = new Thickness(0, 0, 0, 5),
-                Foreground = new SolidColorBrush(Colors.White),
-                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 3.7,
+                Foreground = new SolidColorBrush(Colors.White),                
             };
+
+            Grid.SetRow(_titleScreenText, 1);
 
             container.Children.Add(_titleScreenText);
 
@@ -129,6 +130,8 @@ namespace HonkTrooper
                 _audioStub.Play(SoundType.GAME_START);
                 playAction();
             };
+
+            Grid.SetRow(playButton, 2);
 
             container.Children.Add(playButton);
 
