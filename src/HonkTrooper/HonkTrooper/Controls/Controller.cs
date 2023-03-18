@@ -339,14 +339,16 @@ namespace HonkTrooper
 
         private void SetThumbstickThumbPosition(PointerPoint point)
         {
-            ThumbstickThumb.SetPosition(
-                                left: point.Position.X - ThumbstickThumb.Width / 2,
-                                top: point.Position.Y - ThumbstickThumb.Height / 2);
+            ThumbstickThumb?.SetPosition(
+                left: point.Position.X - ThumbstickThumb.Width / 2,
+                top: point.Position.Y - ThumbstickThumb.Height / 2);
         }
 
         public void SetDefaultThumbstickPosition()
         {
-            ThumbstickThumb.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.30, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.30);
+            ThumbstickThumb?.SetPosition(
+                left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.30,
+                top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.30);
         }
 
         private void MoveThumbstickThumbWithGyrometer(double speedX, double speedY)
@@ -785,9 +787,9 @@ namespace HonkTrooper
                 LoggerExtensions.Log($"AngularVelocityZ: {AngularVelocityZ}");
 
 #if __ANDROID__ || __IOS__
-                MoveThumbstickThumbWithGyrometer(AngularVelocityX / 2.0, AngularVelocityY * -1 / 2.0);
+                MoveThumbstickThumbWithGyrometer(AngularVelocityX / 2.0, AngularVelocityY * -1 / 2.0); // less sensitive on mobile
 #else
-                MoveThumbstickThumbWithGyrometer(AngularVelocityX / 1.5, AngularVelocityY * -1 / 1.5);
+                MoveThumbstickThumbWithGyrometer(AngularVelocityX / 1.2, AngularVelocityY * -1 / 1.2); // more sensitive on web
 #endif
             }
         }
