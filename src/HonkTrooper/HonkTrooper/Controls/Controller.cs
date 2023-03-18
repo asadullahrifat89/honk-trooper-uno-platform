@@ -737,7 +737,8 @@ namespace HonkTrooper
             Gyrometer = Gyrometer.GetDefault();
 
             if (Gyrometer is not null)
-            {                
+            {
+                Gyrometer.ReportInterval = (int)Constants.DEFAULT_FRAME_TIME;
                 GyrometerReadingsActive = false;
                 LoggerExtensions.Log($"Gyrometer detected.");
             }
@@ -787,8 +788,6 @@ namespace HonkTrooper
 #else
                 MoveThumbstickThumbWithGyrometer(AngularVelocityX / 2.0, AngularVelocityY * -1 / 2.0);
 #endif
-
-
             }
         }
 
