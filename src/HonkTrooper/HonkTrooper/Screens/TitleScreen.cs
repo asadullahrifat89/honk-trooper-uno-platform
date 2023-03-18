@@ -83,7 +83,7 @@ namespace HonkTrooper
                 Width = 110,
             };
 
-            Grid.SetRow(container, 0);
+            Grid.SetRow(_content_image, 0);
 
             container.Children.Add(_content_image);
 
