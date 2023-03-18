@@ -737,7 +737,7 @@ namespace HonkTrooper
             Gyrometer = Gyrometer.GetDefault();
 
             if (Gyrometer is not null)
-            {               
+            {
                 GyrometerReadingsActive = false;
                 LoggerExtensions.Log($"Gyrometer detected.");
             }
@@ -784,11 +784,11 @@ namespace HonkTrooper
                 LoggerExtensions.Log($"AngularVelocityY: {AngularVelocityY}");
                 LoggerExtensions.Log($"AngularVelocityZ: {AngularVelocityZ}");
 
-#if __ANDROID__ || __IOS__
-                MoveThumbstickThumbWithGyrometer(AngularVelocityX / 2.5, AngularVelocityY * -1 / 2.5);
-#else
+                //#if __ANDROID__ || __IOS__
+                //                MoveThumbstickThumbWithGyrometer(AngularVelocityX / 2.5, AngularVelocityY * -1 / 2.5);
+                //#else
                 MoveThumbstickThumbWithGyrometer(AngularVelocityX / 2.0, AngularVelocityY * -1 / 2.0);
-#endif
+                //#endif
             }
         }
 
