@@ -111,6 +111,8 @@ namespace HonkTrooper
             _scene_game.Pause();
             _scene_main_menu.Play();
 
+            _game_controller.DeactivateGyrometerReading();
+
             GenerateTitleScreenInScene("Game Paused");
         }
 
@@ -131,6 +133,8 @@ namespace HonkTrooper
 
             _scene_game.Play();
             _scene_main_menu.Pause();
+
+            _game_controller.ActivateGyrometerReading();
 
             _game_controller.AttackButton.Focus(FocusState.Programmatic);
         }
@@ -193,6 +197,8 @@ namespace HonkTrooper
             ToggleHudVisibility(Visibility.Visible);
 
             _game_controller.AttackButton.Focus(FocusState.Programmatic);
+
+            _game_controller.ActivateGyrometerReading();
         }
 
         private void GameOver()
@@ -215,6 +221,8 @@ namespace HonkTrooper
 
                 ToggleHudVisibility(Visibility.Collapsed);
                 GenerateTitleScreenInScene("Game Over");
+
+                _game_controller.DeactivateGyrometerReading();
             }
         }
 
@@ -548,78 +556,87 @@ namespace HonkTrooper
 
             if (_scene_game.SceneState == SceneState.GAME_RUNNING)
             {
-                if (_game_controller.IsMoveUp && _game_controller.IsMoveLeft)
-                {
-                    if (_player.GetTop() + halfHeight > 0 && _player.GetLeft() + halfWidth > 0)
-                        _player.MoveUpLeft(speed);
-                }
-                else if (_game_controller.IsMoveUp && _game_controller.IsMoveRight)
-                {
-                    if (_player.GetRight() - halfWidth < _scene_game.Width && _player.GetTop() + halfHeight > 0)
-                        _player.MoveUpRight(speed);
-                }
-                else if (_game_controller.IsMoveUp)
-                {
-                    if (_player.GetTop() + halfHeight > 0)
-                        _player.MoveUp(speed);
-                }
-                else if (_game_controller.IsMoveDown && _game_controller.IsMoveRight)
-                {
-                    if (_player.GetBottom() - halfHeight < _scene_game.Height && _player.GetRight() - halfWidth < _scene_game.Width)
-                        _player.MoveDownRight(speed);
-                }
-                else if (_game_controller.IsMoveDown && _game_controller.IsMoveLeft)
-                {
-                    if (_player.GetLeft() + halfWidth > 0 && _player.GetBottom() - halfHeight < _scene_game.Height)
-                        _player.MoveDownLeft(speed);
-                }
-                else if (_game_controller.IsMoveDown)
-                {
-                    if (_player.GetBottom() - halfHeight < _scene_game.Height)
-                        _player.MoveDown(speed);
-                }
-                else if (_game_controller.IsMoveRight)
-                {
-                    if (_player.GetRight() - halfWidth < _scene_game.Width)
-                        _player.MoveRight(speed);
-                }
-                else if (_game_controller.IsMoveLeft)
-                {
-                    if (_player.GetLeft() + halfWidth > 0)
-                        _player.MoveLeft(speed);
-                }
-                else
-                {
-                    // if player is already out of bounds then prevent stop movement animation
-
-                    if (_player.GetBottom() > 0 && _player.GetRight() > 0 &&
-                        _player.GetTop() < _scene_game.Height && _player.GetLeft() < _scene_game.Width &&
-                        _player.GetRight() > 0 && _player.GetTop() < _scene_game.Height &&
-                        _player.GetLeft() < _scene_game.Width && _player.GetBottom() > 0)
-                    {
-                        _player.StopMovement();
-                    }
-                }
-
-                if (_game_controller.IsAttacking)
-                {
-                    if (EnemyExistsInScene() || BossExistsInScene())
-                    {
-                        if (_powerUp_health_bar.HasHealth && (PowerUpType)_powerUp_health_bar.Tag == PowerUpType.SEEKING_BALLS)
-                            GeneratePlayerRocketSeekingInScene();
-                        else
-                            GeneratePlayerRocketInScene();
-                    }
-                    else
-                    {
-                        GeneratePlayerFireCrackerInScene();
-                    }
-
-                    _game_controller.IsAttacking = false;
-                }
+                ProcessPlayerMovement(speed, halfHeight, halfWidth);
+                ProcessPlayerAttack();
             }
 
             return true;
+        }
+
+        private void ProcessPlayerAttack()
+        {
+            if (_game_controller.IsAttacking)
+            {
+                if (EnemyExistsInScene() || BossExistsInScene())
+                {
+                    if (_powerUp_health_bar.HasHealth && (PowerUpType)_powerUp_health_bar.Tag == PowerUpType.SEEKING_BALLS)
+                        GeneratePlayerRocketSeekingInScene();
+                    else
+                        GeneratePlayerRocketInScene();
+                }
+                else
+                {
+                    GeneratePlayerFireCrackerInScene();
+                }
+
+                _game_controller.IsAttacking = false;
+            }
+        }
+
+        private void ProcessPlayerMovement(double speed, double halfHeight, double halfWidth)
+        {
+            if (_game_controller.IsMoveUp && _game_controller.IsMoveLeft)
+            {
+                if (_player.GetTop() + halfHeight > 0 && _player.GetLeft() + halfWidth > 0)
+                    _player.MoveUpLeft(speed);
+            }
+            else if (_game_controller.IsMoveUp && _game_controller.IsMoveRight)
+            {
+                if (_player.GetRight() - halfWidth < _scene_game.Width && _player.GetTop() + halfHeight > 0)
+                    _player.MoveUpRight(speed);
+            }
+            else if (_game_controller.IsMoveUp)
+            {
+                if (_player.GetTop() + halfHeight > 0)
+                    _player.MoveUp(speed);
+            }
+            else if (_game_controller.IsMoveDown && _game_controller.IsMoveRight)
+            {
+                if (_player.GetBottom() - halfHeight < _scene_game.Height && _player.GetRight() - halfWidth < _scene_game.Width)
+                    _player.MoveDownRight(speed);
+            }
+            else if (_game_controller.IsMoveDown && _game_controller.IsMoveLeft)
+            {
+                if (_player.GetLeft() + halfWidth > 0 && _player.GetBottom() - halfHeight < _scene_game.Height)
+                    _player.MoveDownLeft(speed);
+            }
+            else if (_game_controller.IsMoveDown)
+            {
+                if (_player.GetBottom() - halfHeight < _scene_game.Height)
+                    _player.MoveDown(speed);
+            }
+            else if (_game_controller.IsMoveRight)
+            {
+                if (_player.GetRight() - halfWidth < _scene_game.Width)
+                    _player.MoveRight(speed);
+            }
+            else if (_game_controller.IsMoveLeft)
+            {
+                if (_player.GetLeft() + halfWidth > 0)
+                    _player.MoveLeft(speed);
+            }
+            else
+            {
+                // if player is already out of bounds then prevent stop movement animation
+
+                if (_player.GetBottom() > 0 && _player.GetRight() > 0 &&
+                    _player.GetTop() < _scene_game.Height && _player.GetLeft() < _scene_game.Width &&
+                    _player.GetRight() > 0 && _player.GetTop() < _scene_game.Height &&
+                    _player.GetLeft() < _scene_game.Width && _player.GetBottom() > 0)
+                {
+                    _player.StopMovement();
+                }
+            }
         }
 
         private void LoosePlayerHealth()
@@ -2720,6 +2737,14 @@ namespace HonkTrooper
         {
             _game_controller.SetScene(_scene_game);
             _game_controller.PauseButton.Click += PauseButton_Click;
+            _game_controller.SetGyrometer();
+        }
+
+        private void UnsetController()
+        {
+            _game_controller.SetScene(null);
+            _game_controller.PauseButton.Click -= PauseButton_Click;
+            _game_controller.UnsetGyrometer();
         }
 
         private void ToggleHudVisibility(Visibility visibility)
@@ -2934,7 +2959,7 @@ namespace HonkTrooper
         {
             SizeChanged -= HonkBomberPage_SizeChanged;
             ScreenExtensions.DisplayInformation.OrientationChanged -= DisplayInformation_OrientationChanged;
-            _game_controller.PauseButton.Click -= PauseButton_Click;
+            UnsetController();
         }
 
         private void HonkBomberPage_SizeChanged(object sender, SizeChangedEventArgs args)
