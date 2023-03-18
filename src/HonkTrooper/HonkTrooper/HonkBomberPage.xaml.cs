@@ -548,78 +548,87 @@ namespace HonkTrooper
 
             if (_scene_game.SceneState == SceneState.GAME_RUNNING)
             {
-                if (_game_controller.IsMoveUp && _game_controller.IsMoveLeft)
-                {
-                    if (_player.GetTop() + halfHeight > 0 && _player.GetLeft() + halfWidth > 0)
-                        _player.MoveUpLeft(speed);
-                }
-                else if (_game_controller.IsMoveUp && _game_controller.IsMoveRight)
-                {
-                    if (_player.GetRight() - halfWidth < _scene_game.Width && _player.GetTop() + halfHeight > 0)
-                        _player.MoveUpRight(speed);
-                }
-                else if (_game_controller.IsMoveUp)
-                {
-                    if (_player.GetTop() + halfHeight > 0)
-                        _player.MoveUp(speed);
-                }
-                else if (_game_controller.IsMoveDown && _game_controller.IsMoveRight)
-                {
-                    if (_player.GetBottom() - halfHeight < _scene_game.Height && _player.GetRight() - halfWidth < _scene_game.Width)
-                        _player.MoveDownRight(speed);
-                }
-                else if (_game_controller.IsMoveDown && _game_controller.IsMoveLeft)
-                {
-                    if (_player.GetLeft() + halfWidth > 0 && _player.GetBottom() - halfHeight < _scene_game.Height)
-                        _player.MoveDownLeft(speed);
-                }
-                else if (_game_controller.IsMoveDown)
-                {
-                    if (_player.GetBottom() - halfHeight < _scene_game.Height)
-                        _player.MoveDown(speed);
-                }
-                else if (_game_controller.IsMoveRight)
-                {
-                    if (_player.GetRight() - halfWidth < _scene_game.Width)
-                        _player.MoveRight(speed);
-                }
-                else if (_game_controller.IsMoveLeft)
-                {
-                    if (_player.GetLeft() + halfWidth > 0)
-                        _player.MoveLeft(speed);
-                }
-                else
-                {
-                    // if player is already out of bounds then prevent stop movement animation
-
-                    if (_player.GetBottom() > 0 && _player.GetRight() > 0 &&
-                        _player.GetTop() < _scene_game.Height && _player.GetLeft() < _scene_game.Width &&
-                        _player.GetRight() > 0 && _player.GetTop() < _scene_game.Height &&
-                        _player.GetLeft() < _scene_game.Width && _player.GetBottom() > 0)
-                    {
-                        _player.StopMovement();
-                    }
-                }
-
-                if (_game_controller.IsAttacking)
-                {
-                    if (EnemyExistsInScene() || BossExistsInScene())
-                    {
-                        if (_powerUp_health_bar.HasHealth && (PowerUpType)_powerUp_health_bar.Tag == PowerUpType.SEEKING_BALLS)
-                            GeneratePlayerRocketSeekingInScene();
-                        else
-                            GeneratePlayerRocketInScene();
-                    }
-                    else
-                    {
-                        GeneratePlayerFireCrackerInScene();
-                    }
-
-                    _game_controller.IsAttacking = false;
-                }
+                ProcessPlayerMovement(speed, halfHeight, halfWidth);
+                ProcessPlayerAttack();
             }
 
             return true;
+        }
+
+        private void ProcessPlayerAttack()
+        {
+            if (_game_controller.IsAttacking)
+            {
+                if (EnemyExistsInScene() || BossExistsInScene())
+                {
+                    if (_powerUp_health_bar.HasHealth && (PowerUpType)_powerUp_health_bar.Tag == PowerUpType.SEEKING_BALLS)
+                        GeneratePlayerRocketSeekingInScene();
+                    else
+                        GeneratePlayerRocketInScene();
+                }
+                else
+                {
+                    GeneratePlayerFireCrackerInScene();
+                }
+
+                _game_controller.IsAttacking = false;
+            }
+        }
+
+        private void ProcessPlayerMovement(double speed, double halfHeight, double halfWidth)
+        {
+            if (_game_controller.IsMoveUp && _game_controller.IsMoveLeft)
+            {
+                if (_player.GetTop() + halfHeight > 0 && _player.GetLeft() + halfWidth > 0)
+                    _player.MoveUpLeft(speed);
+            }
+            else if (_game_controller.IsMoveUp && _game_controller.IsMoveRight)
+            {
+                if (_player.GetRight() - halfWidth < _scene_game.Width && _player.GetTop() + halfHeight > 0)
+                    _player.MoveUpRight(speed);
+            }
+            else if (_game_controller.IsMoveUp)
+            {
+                if (_player.GetTop() + halfHeight > 0)
+                    _player.MoveUp(speed);
+            }
+            else if (_game_controller.IsMoveDown && _game_controller.IsMoveRight)
+            {
+                if (_player.GetBottom() - halfHeight < _scene_game.Height && _player.GetRight() - halfWidth < _scene_game.Width)
+                    _player.MoveDownRight(speed);
+            }
+            else if (_game_controller.IsMoveDown && _game_controller.IsMoveLeft)
+            {
+                if (_player.GetLeft() + halfWidth > 0 && _player.GetBottom() - halfHeight < _scene_game.Height)
+                    _player.MoveDownLeft(speed);
+            }
+            else if (_game_controller.IsMoveDown)
+            {
+                if (_player.GetBottom() - halfHeight < _scene_game.Height)
+                    _player.MoveDown(speed);
+            }
+            else if (_game_controller.IsMoveRight)
+            {
+                if (_player.GetRight() - halfWidth < _scene_game.Width)
+                    _player.MoveRight(speed);
+            }
+            else if (_game_controller.IsMoveLeft)
+            {
+                if (_player.GetLeft() + halfWidth > 0)
+                    _player.MoveLeft(speed);
+            }
+            else
+            {
+                // if player is already out of bounds then prevent stop movement animation
+
+                if (_player.GetBottom() > 0 && _player.GetRight() > 0 &&
+                    _player.GetTop() < _scene_game.Height && _player.GetLeft() < _scene_game.Width &&
+                    _player.GetRight() > 0 && _player.GetTop() < _scene_game.Height &&
+                    _player.GetLeft() < _scene_game.Width && _player.GetBottom() > 0)
+                {
+                    _player.StopMovement();
+                }
+            }
         }
 
         private void LoosePlayerHealth()
