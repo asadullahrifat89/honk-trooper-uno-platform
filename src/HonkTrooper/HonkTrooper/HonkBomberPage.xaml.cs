@@ -137,7 +137,7 @@ namespace HonkTrooper
 
         private void NewGame()
         {
-            //Console.WriteLine("New Game Started.");
+            LoggerExtensions.Log("New Game Started.");
 
             _audio_stub.Play(SoundType.AMBIENCE, SoundType.GAME_BACKGROUND_MUSIC);
 
@@ -247,7 +247,7 @@ namespace HonkTrooper
                 DisplayOrientationChangeScreen.IsAnimating = true;
                 DisplayOrientationChangeScreen.Reposition();
 
-                //Console.WriteLine("Screen Orientation Change Promt Generated.");
+                LoggerExtensions.Log("Screen Orientation Change Promt Generated.");
 
                 return true;
             }
@@ -267,7 +267,7 @@ namespace HonkTrooper
             displayOrientationChangeScreen.SetPosition(left: -500, top: -500);
             displayOrientationChangeScreen.IsAnimating = false;
 
-            //Console.WriteLine("Screen Orientation Change Promt Recyled.");
+            LoggerExtensions.Log("Screen Orientation Change Promt Recyled.");
         }
 
         #endregion
@@ -396,7 +396,7 @@ namespace HonkTrooper
                 playerSelectionScreen.IsAnimating = true;
                 playerSelectionScreen.Reposition();
 
-                //Console.WriteLine("Player Selection Screen Generated.");
+                LoggerExtensions.Log("Player Selection Screen Generated.");
 
                 return true;
             }
@@ -416,7 +416,7 @@ namespace HonkTrooper
             playerSelectionScreen.SetPosition(left: -500, top: -500);
             playerSelectionScreen.IsAnimating = false;
 
-            //Console.WriteLine("Player Selection Screen Recyled.");
+            LoggerExtensions.Log("Player Selection Screen Recyled.");
         }
 
         #endregion
@@ -450,7 +450,7 @@ namespace HonkTrooper
                 interimScreen.Reposition();
                 interimScreen.Reset();
 
-                // Console.WriteLine("Game title generated.");
+                LoggerExtensions.Log("Game title generated.");
 
                 return true;
             }
@@ -486,7 +486,7 @@ namespace HonkTrooper
         private bool SpawnPlayerInScene()
         {
             var playerTemplate = _random.Next(1, 3);
-            //Console.WriteLine($"Player Template: {playerTemplate}");
+            LoggerExtensions.Log($"Player Template: {playerTemplate}");
 
             _player = new(
                 animateAction: AnimatePlayer,
@@ -693,7 +693,7 @@ namespace HonkTrooper
                 boss ??= _scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking);
                 enemy ??= _scene_game.Children.OfType<Enemy>().FirstOrDefault(x => x.IsAnimating);
 
-                // Console.WriteLine("Player Bomb dropped.");                             
+                LoggerExtensions.Log("Player Bomb dropped.");                             
 
                 if (enemy is not null)
                 {
@@ -848,7 +848,7 @@ namespace HonkTrooper
 
                     SyncDropShadow(playerFireCracker);
 
-                    // Console.WriteLine("Player Ground Bomb dropped.");
+                    LoggerExtensions.Log("Player Ground Bomb dropped.");
 
                     return true;
                 }
@@ -971,7 +971,7 @@ namespace HonkTrooper
                 if (_powerUp_health_bar.HasHealth && (PowerUpType)_powerUp_health_bar.Tag == PowerUpType.SEEKING_BALLS)
                     DepletePowerUp();
 
-                // Console.WriteLine("Player Seeking Bomb dropped.");
+                LoggerExtensions.Log("Player Seeking Bomb dropped.");
 
                 return true;
             }
@@ -1221,7 +1221,7 @@ namespace HonkTrooper
 
                 vehicle.SetZ(3);
 
-                // Console.WriteLine("Vehicle generated.");
+                LoggerExtensions.Log("Vehicle generated.");
                 return true;
             }
 
@@ -1344,7 +1344,7 @@ namespace HonkTrooper
         //            top: (0 - roadSlab.Width) * _scene_game.DownScaling,
         //            z: 0);
 
-        //        Console.WriteLine("RoadSlab Mark generated.");
+        //        LoggerExtensions.Log("RoadSlab Mark generated.");
 
         //        return true;
         //    }
@@ -1363,7 +1363,7 @@ namespace HonkTrooper
         //            top: (_scene_game.Height / 2.5) * _scene_game.DownScaling,
         //            z: 0);
 
-        //        Console.WriteLine("RoadSlab Mark generated.");
+        //        LoggerExtensions.Log("RoadSlab Mark generated.");
 
         //        return true;
         //    }
@@ -1428,7 +1428,7 @@ namespace HonkTrooper
                   top: roadMark.Height / 2,
                   z: 1);
 
-                // Console.WriteLine("Road Mark generated.");
+                LoggerExtensions.Log("Road Mark generated.");
 
                 return true;
             }
@@ -1498,7 +1498,7 @@ namespace HonkTrooper
 
                 SyncDropShadow(tree);
 
-                // Console.WriteLine("Tree generated.");
+                LoggerExtensions.Log("Tree generated.");
 
                 return true;
             }
@@ -1519,7 +1519,7 @@ namespace HonkTrooper
 
                 SyncDropShadow(tree);
 
-                // Console.WriteLine("Tree generated.");
+                LoggerExtensions.Log("Tree generated.");
 
                 return true;
             }
@@ -1957,7 +1957,7 @@ namespace HonkTrooper
 
                 SyncDropShadow(enemy);
 
-                //Console.WriteLine("Enemy generated.");
+                LoggerExtensions.Log("Enemy generated.");
 
                 if (!_enemy_fleet_appeared)
                 {
@@ -2019,7 +2019,7 @@ namespace HonkTrooper
 
                 enemy.IsAnimating = false;
 
-                //Console.WriteLine("Enemy Recycled");
+                LoggerExtensions.Log("Enemy Recycled");
             }
 
             return true;
@@ -2047,7 +2047,7 @@ namespace HonkTrooper
                     _scene_game.ActivateSlowMotion();
                 }
 
-                //Console.WriteLine("Enemy dead");
+                LoggerExtensions.Log("Enemy dead");
             }
         }
 
@@ -2097,7 +2097,7 @@ namespace HonkTrooper
 
                 SyncDropShadow(EnemyRocket);
 
-                // Console.WriteLine("Enemy Bomb dropped.");
+                LoggerExtensions.Log("Enemy Bomb dropped.");
 
                 return true;
             }
@@ -2205,7 +2205,7 @@ namespace HonkTrooper
 
                 #endregion
 
-                // Console.WriteLine("Boss Bomb dropped.");
+                LoggerExtensions.Log("Boss Bomb dropped.");
 
                 return true;
             }
@@ -2324,7 +2324,7 @@ namespace HonkTrooper
 
                 SyncDropShadow(BossRocketSeeking);
 
-                // Console.WriteLine("Boss Seeking Bomb dropped.");
+                LoggerExtensions.Log("Boss Seeking Bomb dropped.");
 
                 return true;
             }
@@ -3010,7 +3010,7 @@ namespace HonkTrooper
                 ScreenExtensions.EnterFullScreen(true);
             }
 
-            // Console.WriteLine($"{sender.CurrentOrientation}");
+            LoggerExtensions.Log($"{sender.CurrentOrientation}");
         }
 
         private void PauseButton_Click(object sender, RoutedEventArgs e)

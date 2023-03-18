@@ -144,7 +144,7 @@ namespace HonkTrooper
                 this.RegisterHtmlEventHandler("ended", EndedEvent);
             }
 
-            //Console.WriteLine("source: " + uri + " volume: " + volume.ToString() + " loop: " + loop.ToString().ToLower());
+            LoggerExtensions.Log("source: " + uri + " volume: " + volume.ToString() + " loop: " + loop.ToString().ToLower());
         }
 
         public void SetSource(Uri uri)
@@ -153,7 +153,7 @@ namespace HonkTrooper
 
             this.ExecuteJavascript($"element.src = \"{source}\"; ");
 
-            // Console.WriteLine("source: " + source);
+            LoggerExtensions.Log("source: " + source);
         }
 
         public void SetLoop(bool loop)
