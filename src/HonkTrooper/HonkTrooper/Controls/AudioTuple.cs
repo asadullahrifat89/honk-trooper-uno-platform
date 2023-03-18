@@ -2,9 +2,9 @@
 {
     public partial class AudioTuple
     {
-        public Audio[] AudioSources { get; set; } // TODO: audio to implement for mobile native
+        public Audio[] AudioSources { get; set; }
 
-        public Audio AudioInstance { get; set; } // TODO: audio to implement for mobile native
+        public Audio AudioInstance { get; set; }
 
         public SoundType SoundType { get; set; }
 
