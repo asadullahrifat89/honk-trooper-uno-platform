@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace HonkTrooper
 {
-    public partial class ScreenOrientationChangePromt : HoveringTitleScreen
+    public partial class DisplayOrientationChangeScreen : HoveringTitleScreen
     {
         #region Fields       
 
@@ -17,7 +17,7 @@ namespace HonkTrooper
 
         #region Ctor
 
-        public ScreenOrientationChangePromt(
+        public DisplayOrientationChangeScreen(
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction,
             double downScaling)

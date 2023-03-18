@@ -687,7 +687,7 @@ namespace HonkTrooper
 
             if (Gyrometer is not null)
             {
-                // Console.WriteLine($"Gyrometer detected.");
+                LoggerExtensions.Log($"Gyrometer detected.");
                 Gyrometer.ReadingChanged += Gyrometer_ReadingChanged;
             }
         }
@@ -697,7 +697,7 @@ namespace HonkTrooper
 
             if (Gyrometer is not null)
             {
-                // Console.WriteLine($"Gyrometer detected.");
+                LoggerExtensions.Log($"Gyrometer detected.");
                 Gyrometer.ReadingChanged -= Gyrometer_ReadingChanged;
             }
         }
@@ -708,9 +708,9 @@ namespace HonkTrooper
             AngularVelocityY = args.Reading.AngularVelocityY;
             AngularVelocityZ = args.Reading.AngularVelocityZ;
 
-            Console.WriteLine($"AngularVelocityX: {AngularVelocityX}");
-            Console.WriteLine($"AngularVelocityY: {AngularVelocityY}");
-            Console.WriteLine($"AngularVelocityZ: {AngularVelocityZ}");
+            LoggerExtensions.Log($"AngularVelocityX: {AngularVelocityX}");
+            LoggerExtensions.Log($"AngularVelocityY: {AngularVelocityY}");
+            LoggerExtensions.Log($"AngularVelocityZ: {AngularVelocityZ}");
 
             #region Isometric Movement V1
 
