@@ -84,7 +84,7 @@ namespace HonkTrooper
 
             SetThumbstick();
             //SetKeypad();            
-            SetGyrometer();
+            //SetGyrometer();
         }
 
         #endregion
@@ -756,7 +756,7 @@ namespace HonkTrooper
 
             #region Thumbstick Movement
 
-            MoveThumbstickThumbWithGyrometer(AngularVelocityX, AngularVelocityY);
+            MoveThumbstickThumbWithGyrometer(AngularVelocityX / 2, AngularVelocityY / 2);
 
             #endregion
 

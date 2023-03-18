@@ -2729,6 +2729,14 @@ namespace HonkTrooper
         {
             _game_controller.SetScene(_scene_game);
             _game_controller.PauseButton.Click += PauseButton_Click;
+            _game_controller.SetGyrometer();
+        }
+
+        private void UnsetController()
+        {
+            _game_controller.SetScene(null);
+            _game_controller.PauseButton.Click -= PauseButton_Click;
+            _game_controller.UnsetGyrometer();
         }
 
         private void ToggleHudVisibility(Visibility visibility)
@@ -2943,7 +2951,7 @@ namespace HonkTrooper
         {
             SizeChanged -= HonkBomberPage_SizeChanged;
             ScreenExtensions.DisplayInformation.OrientationChanged -= DisplayInformation_OrientationChanged;
-            _game_controller.PauseButton.Click -= PauseButton_Click;
+            UnsetController();
         }
 
         private void HonkBomberPage_SizeChanged(object sender, SizeChangedEventArgs args)
