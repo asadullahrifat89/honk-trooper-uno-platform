@@ -63,7 +63,7 @@ namespace HonkTrooper
                 //    break;
                 //case Windows.System.VirtualKey.Escape:
                 //    {
-                //        Console.WriteLine("Escape");
+                //        LoggerExtensions.Log("Escape");
                 //    }
                 //    break;
                 case Windows.System.VirtualKey.Space:
@@ -144,7 +144,7 @@ namespace HonkTrooper
         {
             IsAttacking = true;
 
-            // Console.WriteLine("Space");
+            LoggerExtensions.Log("Space");
         }
 
         public void ActivateMoveDown()
@@ -152,7 +152,7 @@ namespace HonkTrooper
             IsMoveDown = true;
             IsMoveUp = false;
 
-            // Console.WriteLine("Down");
+            LoggerExtensions.Log("Down");
         }
 
         public void ActivateMoveUp()
@@ -160,7 +160,7 @@ namespace HonkTrooper
             IsMoveUp = true;
             IsMoveDown = false;
 
-            // Console.WriteLine("Up");
+            LoggerExtensions.Log("Up");
         }
 
         public void ActivateMoveRight()
@@ -168,7 +168,7 @@ namespace HonkTrooper
             IsMoveLeft = false;
             IsMoveRight = true;
 
-            // Console.WriteLine("Right");
+            LoggerExtensions.Log("Right");
         }
 
         public void ActivateMoveLeft()
@@ -176,7 +176,7 @@ namespace HonkTrooper
             IsMoveLeft = true;
             IsMoveRight = false;
 
-            // Console.WriteLine("Left");
+            LoggerExtensions.Log("Left");
         }
 
         public void DeactivateAttack()

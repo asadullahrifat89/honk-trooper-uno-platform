@@ -282,14 +282,14 @@ namespace HonkTrooper
                 {
                     _compositeTransform.Rotation += rotationSpeed;
 
-                    // Console.WriteLine($"Rotation: {_compositeTransform.Rotation}");
+                    LoggerExtensions.Log($"Rotation: {_compositeTransform.Rotation}");
                     return;
                 }
 
                 if (_compositeTransform.Rotation > 0)
                 {
                     _compositeTransform.Rotation -= rotationSpeed;
-                    // Console.WriteLine($"Rotation: {_compositeTransform.Rotation}");
+                    LoggerExtensions.Log($"Rotation: {_compositeTransform.Rotation}");
                 }
             }
         }

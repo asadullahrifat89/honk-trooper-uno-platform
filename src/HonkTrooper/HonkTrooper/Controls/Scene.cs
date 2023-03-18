@@ -170,7 +170,7 @@ namespace HonkTrooper
 
             DepleteSlowMotion();
 
-            // Console.WriteLine($"Animating Objects: {Children.OfType<Construct>().Count(x => x.IsAnimating)} ~ Total Objects: {Children.OfType<Construct>().Count()}");            
+            LoggerExtensions.Log($"Animating Objects: {Children.OfType<Construct>().Count(x => x.IsAnimating)} ~ Total Objects: {Children.OfType<Construct>().Count()}");            
         }
 
         public void ActivateSlowMotion()
@@ -216,11 +216,11 @@ namespace HonkTrooper
             _sceneWidth = args.NewSize.Width;
             _sceneHeight = args.NewSize.Height;
 
-            // Console.WriteLine($"{_sceneWidth}x{_sceneHeight}");
+            LoggerExtensions.Log($"{_sceneWidth}x{_sceneHeight}");
 
             DownScaling = ScreenExtensions.GetDownScaling(_sceneWidth);
 
-            // Console.WriteLine($"Down Scaling {Scaling}");
+            LoggerExtensions.Log($"Down Scaling {DownScaling}");
 
             foreach (var construct in Children.OfType<Construct>())
             {
