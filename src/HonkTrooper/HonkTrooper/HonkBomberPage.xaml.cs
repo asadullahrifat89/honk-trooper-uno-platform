@@ -220,32 +220,32 @@ namespace HonkTrooper
 
         #endregion
 
-        #region ScreenOrientationChangePromt
+        #region DisplayOrientationChangeScreen
 
-        private bool SpawnScreenOrientationChangePromtInScene()
+        private bool SpawnDisplayOrientationChangeScreenInScene()
         {
-            ScreenOrientationChangePromt ScreenOrientationChangePromt = null;
+            DisplayOrientationChangeScreen DisplayOrientationChangeScreen = null;
 
-            ScreenOrientationChangePromt = new(
-                animateAction: AnimateScreenOrientationChangePromt,
+            DisplayOrientationChangeScreen = new(
+                animateAction: AnimateDisplayOrientationChangeScreen,
                 recycleAction: (se) => { return true; },
                 downScaling: _scene_game.DownScaling);
 
-            ScreenOrientationChangePromt.SetPosition(
+            DisplayOrientationChangeScreen.SetPosition(
                 left: -500,
                 top: -500);
 
-            _scene_main_menu.AddToScene(ScreenOrientationChangePromt);
+            _scene_main_menu.AddToScene(DisplayOrientationChangeScreen);
 
             return true;
         }
 
-        private bool GenerateScreenOrientationChangePromtInScene()
+        private bool GenerateDisplayOrientationChangeScreenInScene()
         {
-            if (_scene_main_menu.Children.OfType<ScreenOrientationChangePromt>().FirstOrDefault(x => x.IsAnimating == false) is ScreenOrientationChangePromt ScreenOrientationChangePromt)
+            if (_scene_main_menu.Children.OfType<DisplayOrientationChangeScreen>().FirstOrDefault(x => x.IsAnimating == false) is DisplayOrientationChangeScreen DisplayOrientationChangeScreen)
             {
-                ScreenOrientationChangePromt.IsAnimating = true;
-                ScreenOrientationChangePromt.Reposition();
+                DisplayOrientationChangeScreen.IsAnimating = true;
+                DisplayOrientationChangeScreen.Reposition();
 
                 Console.WriteLine("Screen Orientation Change Promt Generated.");
 
@@ -255,17 +255,17 @@ namespace HonkTrooper
             return false;
         }
 
-        private bool AnimateScreenOrientationChangePromt(Construct ScreenOrientationChangePromt)
+        private bool AnimateDisplayOrientationChangeScreen(Construct displayOrientationChangeScreen)
         {
-            ScreenOrientationChangePromt screen1 = ScreenOrientationChangePromt as ScreenOrientationChangePromt;
+            DisplayOrientationChangeScreen screen1 = displayOrientationChangeScreen as DisplayOrientationChangeScreen;
             screen1.Hover();
             return true;
         }
 
-        private void RecycleScreenOrientationChangePromt(ScreenOrientationChangePromt ScreenOrientationChangePromt)
+        private void RecycleDisplayOrientationChangeScreen(DisplayOrientationChangeScreen displayOrientationChangeScreen)
         {
-            ScreenOrientationChangePromt.SetPosition(left: -500, top: -500);
-            ScreenOrientationChangePromt.IsAnimating = false;
+            displayOrientationChangeScreen.SetPosition(left: -500, top: -500);
+            displayOrientationChangeScreen.IsAnimating = false;
 
             Console.WriteLine("Screen Orientation Change Promt Recyled.");
         }
@@ -2881,7 +2881,7 @@ namespace HonkTrooper
                   new Generator(
                     generationDelay: 0,
                     generationAction: () => { return true; },
-                    startUpAction: SpawnScreenOrientationChangePromtInScene)
+                    startUpAction: SpawnDisplayOrientationChangeScreenInScene)
                 );
         }
 
@@ -2920,7 +2920,7 @@ namespace HonkTrooper
             }
             else
             {
-                GenerateScreenOrientationChangePromtInScene();
+                GenerateDisplayOrientationChangeScreenInScene();
             }
         }
 
@@ -2970,9 +2970,9 @@ namespace HonkTrooper
             {
                 if (ScreenExtensions.GetDisplayOrienation() == ScreenExtensions.RequiredDisplayOrientation)
                 {
-                    if (_scene_main_menu.Children.OfType<ScreenOrientationChangePromt>().FirstOrDefault(x => x.IsAnimating) is ScreenOrientationChangePromt screenOrientationChangePromt)
+                    if (_scene_main_menu.Children.OfType<DisplayOrientationChangeScreen>().FirstOrDefault(x => x.IsAnimating) is DisplayOrientationChangeScreen DisplayOrientationChangeScreen)
                     {
-                        RecycleScreenOrientationChangePromt(screenOrientationChangePromt);
+                        RecycleDisplayOrientationChangeScreen(DisplayOrientationChangeScreen);
 
                         _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
                         GenerateTitleScreenInScene("Honk Trooper");
@@ -3004,7 +3004,7 @@ namespace HonkTrooper
                         construct.IsAnimating = false;
                     }
 
-                    GenerateScreenOrientationChangePromtInScene();
+                    GenerateDisplayOrientationChangeScreenInScene();
                 }
 
                 ScreenExtensions.EnterFullScreen(true);
