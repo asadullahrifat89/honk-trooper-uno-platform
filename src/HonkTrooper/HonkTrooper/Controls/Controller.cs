@@ -350,17 +350,6 @@ namespace HonkTrooper
                 top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.30);
         }
 
-        private void MoveThumbstickThumbWithGyrometer(double speedX, double speedY)
-        {
-            if (ThumbstickThumb.GetLeft() + speedX > 0 && ThumbstickThumb.GetRight() + speedX < Thumbstick.Width)
-                ThumbstickThumb.SetLeft(ThumbstickThumb.GetLeft() + speedX);
-
-            if (ThumbstickThumb.GetTop() + speedY > 0 && ThumbstickThumb.GetBottom() + speedY < Thumbstick.Height)
-                ThumbstickThumb.SetTop(ThumbstickThumb.GetTop() + speedY);
-
-            ActivateThumbstick();
-        }
-
         private void ActivateThumbstick()
         {
             if (ThumbstickThumb.GetHitBox().IntersectsWith(ThumbstickUpLeft.GetCloseHitBox())) // up left
@@ -787,6 +776,17 @@ namespace HonkTrooper
                 Gyrometer.ReadingChanged -= Gyrometer_ReadingChanged;
             }
 #endif
+        }
+
+        private void MoveThumbstickThumbWithGyrometer(double speedX, double speedY)
+        {
+            if (ThumbstickThumb.GetLeft() + speedX > 0 && ThumbstickThumb.GetRight() + speedX < Thumbstick.Width)
+                ThumbstickThumb.SetLeft(ThumbstickThumb.GetLeft() + speedX);
+
+            if (ThumbstickThumb.GetTop() + speedY > 0 && ThumbstickThumb.GetBottom() + speedY < Thumbstick.Height)
+                ThumbstickThumb.SetTop(ThumbstickThumb.GetTop() + speedY);
+
+            ActivateThumbstick();
         }
 
         private void Gyrometer_ReadingChanged(Gyrometer sender, GyrometerReadingChangedEventArgs args)
