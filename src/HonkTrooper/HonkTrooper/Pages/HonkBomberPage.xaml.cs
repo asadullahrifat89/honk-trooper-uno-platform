@@ -175,11 +175,11 @@ namespace HonkTrooper
                 ConstructType.HEALTH_PICKUP or
                 ConstructType.BOSS))
             {
+                construct.IsAnimating = false;
+
                 construct.SetPosition(
                      left: -500,
                      top: -500);
-
-                construct.IsAnimating = false;
 
                 if (construct is Boss boss1)
                 {
@@ -274,8 +274,8 @@ namespace HonkTrooper
 
         private void RecycleDisplayOrientationChangeScreen(DisplayOrientationChangeScreen displayOrientationChangeScreen)
         {
-            displayOrientationChangeScreen.SetPosition(left: -500, top: -500);
             displayOrientationChangeScreen.IsAnimating = false;
+            displayOrientationChangeScreen.SetPosition(left: -500, top: -500);
 
             LoggerExtensions.Log("Screen Orientation Change Promt Recyled.");
         }
@@ -361,8 +361,8 @@ namespace HonkTrooper
 
         private void RecycleTitleScreen(TitleScreen titleScreen)
         {
-            titleScreen.SetPosition(left: -500, top: -500);
             titleScreen.IsAnimating = false;
+            titleScreen.SetPosition(left: -500, top: -500);
         }
 
         #endregion
@@ -429,8 +429,8 @@ namespace HonkTrooper
 
         private void RecyclePlayerSelectionScreen(PlayerSelectionScreen playerSelectionScreen)
         {
-            playerSelectionScreen.SetPosition(left: -500, top: -500);
             playerSelectionScreen.IsAnimating = false;
+            playerSelectionScreen.SetPosition(left: -500, top: -500);
 
             LoggerExtensions.Log("Player Selection Screen Recyled.");
         }
@@ -486,8 +486,8 @@ namespace HonkTrooper
         {
             if (interimScreen is InterimScreen interimScreen1 && interimScreen1.IsDepleted)
             {
-                interimScreen.SetPosition(left: -500, top: -500);
                 interimScreen.IsAnimating = false;
+                interimScreen.SetPosition(left: -500, top: -500);
 
                 return true;
             }
@@ -757,11 +757,11 @@ namespace HonkTrooper
 
             if (hitBox.Top > _scene_game.Height || hitBox.Left > _scene_game.Width)
             {
+                vehicle.IsAnimating = false;
+
                 vehicle.SetPosition(
                     left: -500,
                     top: -500);
-
-                vehicle.IsAnimating = false;
             }
 
             return true;
@@ -885,11 +885,13 @@ namespace HonkTrooper
 
         //    if (hitBox.Top > _scene_game.Height || hitBox.Left > _scene_game.Width)
         //    {
+        //        roadSlab.IsAnimating = false;
+
         //        roadSlab.SetPosition(
         //            left: -1500,
         //            top: -1500);
 
-        //        roadSlab.IsAnimating = false;
+
         //    }
 
         //    return true;
@@ -950,11 +952,11 @@ namespace HonkTrooper
 
             if (hitBox.Top > _scene_game.Height || hitBox.Left > _scene_game.Width)
             {
+                roadMark.IsAnimating = false;
+
                 roadMark.SetPosition(
                     left: -500,
                     top: -500);
-
-                roadMark.IsAnimating = false;
             }
 
             return true;
@@ -1041,11 +1043,11 @@ namespace HonkTrooper
 
             if (hitBox.Top > _scene_game.Height || hitBox.Left > _scene_game.Width)
             {
+                tree.IsAnimating = false;
+
                 tree.SetPosition(
                     left: -500,
                     top: -500);
-
-                tree.IsAnimating = false;
             }
 
             return true;
@@ -1229,11 +1231,12 @@ namespace HonkTrooper
 
             if (hitBox.Top > _scene_game.Height || hitBox.Left > _scene_game.Width)
             {
+                cloud.IsAnimating = false;
+
                 cloud.SetPosition(
                     left: -500,
                     top: -500);
 
-                cloud.IsAnimating = false;
             }
 
             return true;
@@ -1353,11 +1356,11 @@ namespace HonkTrooper
         {
             if (boss.IsShrinkingComplete)
             {
+                boss.IsAnimating = false;
+
                 boss.SetPosition(
                     left: -500,
                     top: -500);
-
-                boss.IsAnimating = false;
             }
 
             return true;
@@ -1514,11 +1517,11 @@ namespace HonkTrooper
                 hitbox.Left > _scene_game.Width || hitbox.Top > _scene_game.Height ||
                 hitbox.Right < 0 || hitbox.Bottom < 0)
             {
+                enemy.IsAnimating = false;
+
                 enemy.SetPosition(
                     left: -500,
                     top: -500);
-
-                enemy.IsAnimating = false;
 
                 LoggerExtensions.Log("Enemy Recycled");
             }
@@ -1921,12 +1924,10 @@ namespace HonkTrooper
 
         private bool RecyclePlayerRocket(Construct playerRocket)
         {
-            var hitbox = playerRocket.GetHitBox();
+            //var hitbox = playerRocket.GetHitBox();
 
             // if bomb is blasted and faed or goes out of scene bounds
-            if (playerRocket.IsFadingComplete /*||*/
-                //hitbox.Left > _scene_game.Width || hitbox.Top > _scene_game.Height ||
-                /*hitbox.Right < 0 || hitbox.Bottom < 0*/)
+            if (playerRocket.IsFadingComplete /*|| hitbox.Left > _scene_game.Width || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Top > _scene_game.Height*/)
             {
                 playerRocket.IsAnimating = false;
 
@@ -2147,10 +2148,10 @@ namespace HonkTrooper
 
         private bool RecycleBossRocket(Construct bomb)
         {
-            var hitbox = bomb.GetHitBox();
+            //var hitbox = bomb.GetHitBox();
 
             // if bomb is blasted and faed or goes out of scene bounds
-            if (bomb.IsFadingComplete /*|| hitbox.Left > _scene_game.Width || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Bottom > _scene_game.Height*/)
+            if (bomb.IsFadingComplete /*|| hitbox.Left > _scene_game.Width || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Top > _scene_game.Height*/)
             {
                 bomb.IsAnimating = false;
 
@@ -2706,11 +2707,11 @@ namespace HonkTrooper
 
             if (hitBox.Top > _scene_game.Height || hitBox.Left > _scene_game.Width || powerUpPickup.IsShrinkingComplete)
             {
+                powerUpPickup.IsAnimating = false;
+
                 powerUpPickup.SetPosition(
                     left: -500,
                     top: -500);
-
-                powerUpPickup.IsAnimating = false;
             }
 
             return true;
@@ -3027,14 +3028,14 @@ namespace HonkTrooper
 
                     foreach (var hoveringTitleScreen in _scene_main_menu.Children.OfType<HoveringTitleScreen>().Where(x => x.IsAnimating))
                     {
-                        hoveringTitleScreen.SetPosition(left: -500, top: -500);
                         hoveringTitleScreen.IsAnimating = false;
+                        hoveringTitleScreen.SetPosition(left: -500, top: -500);
                     }
 
                     foreach (var construct in _scene_game.Children.OfType<Construct>())
                     {
-                        construct.SetPosition(left: -500, top: -500);
                         construct.IsAnimating = false;
+                        construct.SetPosition(left: -500, top: -500);
                     }
 
                     GenerateDisplayOrientationChangeScreenInScene();
