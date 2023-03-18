@@ -768,7 +768,7 @@ namespace HonkTrooper
 
             if (!IsGyrometerReadingsActive && Gyrometer is not null)
             {
-                Gyrometer.ReportInterval = 100;
+                Gyrometer.ReportInterval = 30;
                 IsGyrometerReadingsActive = true;
                 Gyrometer.ReadingChanged += Gyrometer_ReadingChanged;
             }
