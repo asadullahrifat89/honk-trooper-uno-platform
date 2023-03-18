@@ -57,7 +57,7 @@ namespace HonkTrooper
 
         private Gyrometer Gyrometer { get; set; }
 
-        private bool GyrometerReadingsActive { get; set; }
+        private bool IsGyrometerReadingsActive { get; set; }
 
         private double AngularVelocityX { get; set; }
 
@@ -65,7 +65,7 @@ namespace HonkTrooper
 
         private double AngularVelocityZ { get; set; }
 
-        private bool IsThumbstickActive { get; set; }
+        private bool IsThumbstickGripActive { get; set; }
 
         private Grid Keypad { get; set; }
 
@@ -310,12 +310,12 @@ namespace HonkTrooper
                 DeactivateMoveLeft();
                 DeactivateMoveRight();
 
-                IsThumbstickActive = true;
+                IsThumbstickGripActive = true;
                 ActivateThumbstick();
             };
             Thumbstick.PointerMoved += (s, e) =>
             {
-                if (IsThumbstickActive)
+                if (IsThumbstickGripActive)
                 {
                     var point = e.GetCurrentPoint(Thumbstick);
                     SetThumbstickThumbPosition(point);
@@ -329,7 +329,7 @@ namespace HonkTrooper
                 DeactivateMoveLeft();
                 DeactivateMoveRight();
 
-                IsThumbstickActive = false;
+                IsThumbstickGripActive = false;
                 SetDefaultThumbstickPosition();
             };
 
@@ -735,47 +735,63 @@ namespace HonkTrooper
 
         public void SetGyrometer()
         {
+
+#if __ANDROID__ || __IOS__
+
             Gyrometer = Gyrometer.GetDefault();
 
             if (Gyrometer is not null)
             {
-                GyrometerReadingsActive = false;
+                IsGyrometerReadingsActive = false;
                 LoggerExtensions.Log($"Gyrometer detected.");
             }
+#endif
         }
 
         public void UnsetGyrometer()
         {
+
+#if __ANDROID__ || __IOS__
+
             if (Gyrometer is not null)
             {
                 LoggerExtensions.Log($"Gyrometer detected.");
                 DeactivateGyrometerReading();
             }
+#endif
         }
 
         public void ActivateGyrometerReading()
         {
-            if (!GyrometerReadingsActive && Gyrometer is not null)
+
+#if __ANDROID__ || __IOS__
+
+            if (!IsGyrometerReadingsActive && Gyrometer is not null)
             {
-                Gyrometer.ReportInterval = (int)Constants.DEFAULT_FRAME_TIME;
-                GyrometerReadingsActive = true;
+                Gyrometer.ReportInterval = 100;
+                IsGyrometerReadingsActive = true;
                 Gyrometer.ReadingChanged += Gyrometer_ReadingChanged;
             }
+#endif
         }
 
         public void DeactivateGyrometerReading()
         {
-            if (GyrometerReadingsActive && Gyrometer is not null)
+
+#if __ANDROID__ || __IOS__
+
+            if (IsGyrometerReadingsActive && Gyrometer is not null)
             {
                 Gyrometer.ReportInterval = 0;
-                GyrometerReadingsActive = false;
+                IsGyrometerReadingsActive = false;
                 Gyrometer.ReadingChanged -= Gyrometer_ReadingChanged;
             }
+#endif
         }
 
         private void Gyrometer_ReadingChanged(Gyrometer sender, GyrometerReadingChangedEventArgs args)
         {
-            if (GyrometerReadingsActive)
+            if (IsGyrometerReadingsActive && !IsThumbstickGripActive)
             {
                 AngularVelocityX = args.Reading.AngularVelocityX;
                 AngularVelocityY = args.Reading.AngularVelocityY;
@@ -788,7 +804,7 @@ namespace HonkTrooper
 #if __ANDROID__ || __IOS__
                 MoveThumbstickThumbWithGyrometer(AngularVelocityX / 1.8, AngularVelocityY * -1 / 1.8); // less sensitive on mobile
 #else
-                MoveThumbstickThumbWithGyrometer(AngularVelocityX / 1.1, AngularVelocityY * -1 / 1.1); // more sensitive on web
+                //MoveThumbstickThumbWithGyrometer(AngularVelocityX / 1.1, AngularVelocityY * -1 / 1.1); // more sensitive on web
 #endif
             }
         }
