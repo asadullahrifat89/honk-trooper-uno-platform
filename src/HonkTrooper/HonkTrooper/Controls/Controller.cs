@@ -787,8 +787,6 @@ namespace HonkTrooper
 #else
                 MoveThumbstickThumbWithGyrometer(AngularVelocityX / 2.0, AngularVelocityY * -1 / 2.0);
 #endif
-
-
             }
         }
 
