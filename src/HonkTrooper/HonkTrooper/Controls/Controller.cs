@@ -737,7 +737,8 @@ namespace HonkTrooper
             Gyrometer = Gyrometer.GetDefault();
 
             if (Gyrometer is not null)
-            {                
+            {
+                Gyrometer.ReportInterval = (int)Constants.DEFAULT_FRAME_TIME;
                 GyrometerReadingsActive = false;
                 LoggerExtensions.Log($"Gyrometer detected.");
             }
