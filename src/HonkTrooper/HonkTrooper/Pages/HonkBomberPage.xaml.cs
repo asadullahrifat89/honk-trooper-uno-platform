@@ -75,7 +75,7 @@ namespace HonkTrooper
             _audio_stub = new AudioStub(
                 (SoundType.GAME_BACKGROUND_MUSIC, 0.5, true),
                 (SoundType.BOSS_BACKGROUND_MUSIC, 0.5, true),
-                (SoundType.AMBIENCE, 0.4, true),
+                (SoundType.AMBIENCE, 0.5, true),
                 (SoundType.GAME_START, 1, false),
                 (SoundType.GAME_PAUSE, 1, false),
                 (SoundType.GAME_OVER, 1, false),
@@ -1380,7 +1380,7 @@ namespace HonkTrooper
 
                 _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
 
-                _audio_stub.SetVolume(SoundType.AMBIENCE, 0.8);
+                _audio_stub.SetVolume(SoundType.AMBIENCE, 0.5);
 
                 boss.IsAttacking = false;
 
@@ -1689,34 +1689,6 @@ namespace HonkTrooper
 
         private void SetPlayerRocketDirection(Construct source, Rocket rocket, Construct rocketTarget)
         {
-            //if (source.GetLeft() < rocketTarget.GetLeft()) // player is on the left side of the target
-            //{
-            //    if ((source.GetTop() > rocketTarget.GetTop())) // player is below the target
-            //    {
-            //        rocket.AwaitMoveUpRight = true;
-            //        rocket.SetRotation(-33);
-            //    }
-            //    else // player is above the target
-            //    {
-            //        rocket.AwaitMoveDownRight = true;
-            //        rocket.SetRotation(123);
-            //    }
-            //}
-            //else if (source.GetLeft() > rocketTarget.GetLeft()) // player is on the right side of the target
-            //{
-            //    if ((source.GetTop() > rocketTarget.GetTop())) // player is below the target
-            //    {
-            //        rocket.AwaitMoveUpLeft = true;
-            //        rocket.SetRotation(213);
-
-            //    }
-            //    else // player is above the target
-            //    {
-            //        rocket.AwaitMoveDownLeft = true;
-            //        rocket.SetRotation(123);
-            //    }
-            //}
-
             // rocket target is on the bottom right side of the boss
             if (rocketTarget.GetTop() > source.GetTop() && rocketTarget.GetLeft() > source.GetLeft())
             {
@@ -1727,7 +1699,7 @@ namespace HonkTrooper
             else if (rocketTarget.GetTop() > source.GetTop() && rocketTarget.GetLeft() < source.GetLeft())
             {
                 rocket.AwaitMoveDownLeft = true;
-                rocket.SetRotation(133);
+                rocket.SetRotation(-213);
             }
             // if rocket target is on the top left side of the boss
             else if (rocketTarget.GetTop() < source.GetTop() && rocketTarget.GetLeft() < source.GetLeft())
@@ -1760,7 +1732,7 @@ namespace HonkTrooper
             else if (rocketTarget.GetTop() > source.GetTop() && rocketTarget.GetLeft() < source.GetLeft())
             {
                 rocket.AwaitMoveDownLeft = true;
-                rocket.SetRotation(133);
+                rocket.SetRotation(-213);
             }
             // if rocket target is on the top left side of the boss
             else if (rocketTarget.GetTop() < source.GetTop() && rocketTarget.GetLeft() < source.GetLeft())
