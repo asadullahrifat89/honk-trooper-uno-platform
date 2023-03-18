@@ -186,9 +186,9 @@ namespace HonkTrooper
                 //},
                 RenderTransformOrigin = new Point(0.5, 0.5),
 
-                Background = new SolidColorBrush(Colors.Goldenrod),
-                BorderBrush = new SolidColorBrush(Colors.White),
-                BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
+                //Background = new SolidColorBrush(Colors.Goldenrod),
+                //BorderBrush = new SolidColorBrush(Colors.White),
+                //BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
             };
 
             ThumbstickRight = new()
@@ -202,9 +202,9 @@ namespace HonkTrooper
                 //},
                 RenderTransformOrigin = new Point(0.5, 0.5),
 
-                Background = new SolidColorBrush(Colors.Goldenrod),
-                BorderBrush = new SolidColorBrush(Colors.White),
-                BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
+                //Background = new SolidColorBrush(Colors.Goldenrod),
+                //BorderBrush = new SolidColorBrush(Colors.White),
+                //BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
             };
 
             ThumbstickDownLeft = new()
