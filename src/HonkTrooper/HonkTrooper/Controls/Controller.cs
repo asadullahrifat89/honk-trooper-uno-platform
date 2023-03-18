@@ -319,7 +319,6 @@ namespace HonkTrooper
                 {
                     var point = e.GetCurrentPoint(Thumbstick);
                     SetThumbstickThumbPosition(point);
-
                     ActivateThumbstick();
                 }
             };
@@ -364,7 +363,7 @@ namespace HonkTrooper
 
         private void ActivateThumbstick()
         {
-            if (ThumbstickThumb.GetHitBox().IntersectsWith(ThumbstickUpLeft.GetCloseHitBox()))
+            if (ThumbstickThumb.GetHitBox().IntersectsWith(ThumbstickUpLeft.GetCloseHitBox())) // up left
             {
                 ActivateMoveUp();
                 ActivateMoveLeft();
@@ -375,7 +374,7 @@ namespace HonkTrooper
                 DeactivateMoveLeft();
             }
 
-            if (ThumbstickThumb.GetHitBox().IntersectsWith(ThumbstickUpRight.GetCloseHitBox()))
+            if (ThumbstickThumb.GetHitBox().IntersectsWith(ThumbstickUpRight.GetCloseHitBox())) // up right
             {
                 ActivateMoveUp();
                 ActivateMoveRight();
@@ -386,7 +385,7 @@ namespace HonkTrooper
                 DeactivateMoveRight();
             }
 
-            if (ThumbstickThumb.GetHitBox().IntersectsWith(ThumbstickDownLeft.GetCloseHitBox()))
+            if (ThumbstickThumb.GetHitBox().IntersectsWith(ThumbstickDownLeft.GetCloseHitBox())) // down left
             {
                 ActivateMoveDown();
                 ActivateMoveLeft();
@@ -397,7 +396,7 @@ namespace HonkTrooper
                 DeactivateMoveLeft();
             }
 
-            if (ThumbstickThumb.GetHitBox().IntersectsWith(ThumbstickDownRight.GetCloseHitBox()))
+            if (ThumbstickThumb.GetHitBox().IntersectsWith(ThumbstickDownRight.GetCloseHitBox())) // down right
             {
                 ActivateMoveDown();
                 ActivateMoveRight();
@@ -408,7 +407,7 @@ namespace HonkTrooper
                 DeactivateMoveRight();
             }
 
-            if (ThumbstickThumb.GetHitBox().IntersectsWith(ThumbstickUp.GetCloseHitBox()))
+            if (ThumbstickThumb.GetHitBox().IntersectsWith(ThumbstickUp.GetCloseHitBox())) // up
             {
                 ActivateMoveUp();
             }
@@ -417,7 +416,7 @@ namespace HonkTrooper
                 DeactivateMoveUp();
             }
 
-            if (ThumbstickThumb.GetHitBox().IntersectsWith(ThumbstickLeft.GetCloseHitBox()))
+            if (ThumbstickThumb.GetHitBox().IntersectsWith(ThumbstickLeft.GetCloseHitBox())) // left
             {
                 ActivateMoveLeft();
             }
@@ -426,7 +425,7 @@ namespace HonkTrooper
                 DeactivateMoveLeft();
             }
 
-            if (ThumbstickThumb.GetHitBox().IntersectsWith(ThumbstickRight.GetHitBox()))
+            if (ThumbstickThumb.GetHitBox().IntersectsWith(ThumbstickRight.GetHitBox())) // right
             {
                 ActivateMoveRight();
             }
@@ -435,7 +434,7 @@ namespace HonkTrooper
                 DeactivateMoveRight();
             }
 
-            if (ThumbstickThumb.GetHitBox().IntersectsWith(ThumbstickDown.GetHitBox()))
+            if (ThumbstickThumb.GetHitBox().IntersectsWith(ThumbstickDown.GetHitBox())) // down
             {
                 ActivateMoveDown();
             }
