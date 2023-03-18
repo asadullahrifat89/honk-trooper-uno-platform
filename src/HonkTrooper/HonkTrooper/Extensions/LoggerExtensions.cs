@@ -8,7 +8,7 @@ namespace HonkTrooper
         {
             #if DEBUG
             
-            Console.WriteLine(message);
+            //Console.WriteLine(message);
             
             #endif
         }
