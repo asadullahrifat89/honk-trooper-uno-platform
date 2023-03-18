@@ -352,8 +352,11 @@ namespace HonkTrooper
 
         private void MoveThumbstickThumbWithGyrometer(double speedX, double speedY)
         {
-            ThumbstickThumb.SetLeft(ThumbstickThumb.GetLeft() + speedX);
-            ThumbstickThumb.SetTop(ThumbstickThumb.GetTop() + speedY);
+            if (ThumbstickThumb.GetLeft() + speedX > 0 && ThumbstickThumb.GetRight() + speedX < Thumbstick.Width)
+                ThumbstickThumb.SetLeft(ThumbstickThumb.GetLeft() + speedX);
+
+            if (ThumbstickThumb.GetTop() + speedY > 0 && ThumbstickThumb.GetBottom() + speedY < Thumbstick.Height)
+                ThumbstickThumb.SetTop(ThumbstickThumb.GetTop() + speedY);
 
             ActivateThumbstick();
         }
