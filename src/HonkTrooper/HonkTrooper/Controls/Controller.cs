@@ -789,7 +789,7 @@ namespace HonkTrooper
 #if __ANDROID__ || __IOS__
                 MoveThumbstickThumbWithGyrometer(AngularVelocityX / 2.0, AngularVelocityY * -1 / 2.0); // less sensitive on mobile
 #else
-                MoveThumbstickThumbWithGyrometer(AngularVelocityX / 1.5, AngularVelocityY * -1 / 1.5); // more sensitive on web
+                MoveThumbstickThumbWithGyrometer(AngularVelocityX / 1.2, AngularVelocityY * -1 / 1.2); // more sensitive on web
 #endif
             }
         }
