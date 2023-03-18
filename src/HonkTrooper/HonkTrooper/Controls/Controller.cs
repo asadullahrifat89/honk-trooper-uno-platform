@@ -352,13 +352,10 @@ namespace HonkTrooper
 
         private void MoveThumbstickThumbWithGyrometer(double speedX, double speedY)
         {
-            if (ThumbstickThumb is not null)
-            {
-                ThumbstickThumb.SetLeft(ThumbstickThumb.GetLeft() + speedX);
-                ThumbstickThumb.SetTop(ThumbstickThumb.GetTop() + speedY);
+            ThumbstickThumb.SetLeft(ThumbstickThumb.GetLeft() + speedX);
+            ThumbstickThumb.SetTop(ThumbstickThumb.GetTop() + speedY);
 
-                ActivateThumbstick();
-            }
+            ActivateThumbstick();
         }
 
         private void ActivateThumbstick()
@@ -768,7 +765,7 @@ namespace HonkTrooper
 
             if (!IsGyrometerReadingsActive && Gyrometer is not null)
             {
-                Gyrometer.ReportInterval = 30;
+                Gyrometer.ReportInterval = 25;
                 IsGyrometerReadingsActive = true;
                 Gyrometer.ReadingChanged += Gyrometer_ReadingChanged;
             }
