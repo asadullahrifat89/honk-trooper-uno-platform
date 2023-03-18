@@ -787,9 +787,9 @@ namespace HonkTrooper
                 LoggerExtensions.Log($"AngularVelocityZ: {AngularVelocityZ}");
 
 #if __ANDROID__ || __IOS__
-                MoveThumbstickThumbWithGyrometer(AngularVelocityX / 2.0, AngularVelocityY * -1 / 2.0);
+                MoveThumbstickThumbWithGyrometer(AngularVelocityX / 2.0, AngularVelocityY * -1 / 2.0); // less sensitive on mobile
 #else
-                MoveThumbstickThumbWithGyrometer(AngularVelocityX / 1.5, AngularVelocityY * -1 / 1.5);
+                MoveThumbstickThumbWithGyrometer(AngularVelocityX / 1.5, AngularVelocityY * -1 / 1.5); // more sensitive on web
 #endif
             }
         }
