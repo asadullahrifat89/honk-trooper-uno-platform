@@ -25,6 +25,7 @@ namespace HonkTrooper
            (Func<Construct, bool> animateAction,
            Func<Construct, bool> recycleAction,
            Func<int, bool> playAction,
+           Func<bool> backAction,
            double downScaling)
         {
             ConstructType = ConstructType.TITLE_SCREEN;
@@ -66,6 +67,35 @@ namespace HonkTrooper
             #endregion
 
             #region Content
+
+            #region Back Button
+
+            Button backButton = new()
+            {
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE - 10,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE - 10,
+                CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS * 2),
+                Content = new SymbolIcon()
+                {
+                    Symbol = Symbol.Back,
+                },
+                HorizontalAlignment = HorizontalAlignment.Left,
+                VerticalAlignment = VerticalAlignment.Top,
+                Foreground = new SolidColorBrush(Colors.White),
+                Margin = new Thickness(20),
+            };
+
+            backButton.Click += (s, e) =>
+            {
+                _audioStub.Play(SoundType.OPTION_SELECT);
+                backAction();
+            };
+
+            Grid.SetRow(backButton, 0);
+
+            rootGrid.Children.Add(backButton);
+
+            #endregion
 
             #region Title
 

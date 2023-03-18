@@ -104,7 +104,7 @@ namespace HonkTrooper
             else
             {
                 _audio_stub.Pause(SoundType.GAME_BACKGROUND_MUSIC);
-            }                
+            }
 
             ToggleHudVisibility(Visibility.Collapsed);
 
@@ -125,7 +125,7 @@ namespace HonkTrooper
             else
             {
                 _audio_stub.Resume(SoundType.GAME_BACKGROUND_MUSIC);
-            }                
+            }
 
             ToggleHudVisibility(Visibility.Visible);
 
@@ -164,10 +164,10 @@ namespace HonkTrooper
                 ConstructType.PLAYER_FIRE_CRACKER or
                 ConstructType.BOSS_ROCKET or
                 ConstructType.BOSS_ROCKET_SEEKING or
-                ConstructType.ENEMY or 
-                ConstructType.ENEMY_ROCKET or 
-                ConstructType.POWERUP_PICKUP or 
-                ConstructType.HEALTH_PICKUP or 
+                ConstructType.ENEMY or
+                ConstructType.ENEMY_ROCKET or
+                ConstructType.POWERUP_PICKUP or
+                ConstructType.HEALTH_PICKUP or
                 ConstructType.BOSS))
             {
                 construct.SetPosition(
@@ -377,6 +377,12 @@ namespace HonkTrooper
                         NewGame();
                     }
 
+                    return true;
+                },
+                backAction: () =>
+                {
+                    RecyclePlayerSelectionScreen(playerSelectionScreen);
+                    GenerateTitleScreenInScene("Honk Trooper");
                     return true;
                 });
 
@@ -693,7 +699,7 @@ namespace HonkTrooper
                 boss ??= _scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking);
                 enemy ??= _scene_game.Children.OfType<Enemy>().FirstOrDefault(x => x.IsAnimating);
 
-                LoggerExtensions.Log("Player Bomb dropped.");                             
+                LoggerExtensions.Log("Player Bomb dropped.");
 
                 if (enemy is not null)
                 {
@@ -953,7 +959,7 @@ namespace HonkTrooper
         {
             // generate a seeking bomb if one is not in scene
 
-            if (_scene_game.SceneState == SceneState.GAME_RUNNING && !_scene_game.IsSlowMotionActivated &&                
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING && !_scene_game.IsSlowMotionActivated &&
                 _scene_game.Children.OfType<PlayerRocketSeeking>().FirstOrDefault(x => x.IsAnimating == false) is PlayerRocketSeeking PlayerRocketSeeking)
             {
                 _player.SetAttackStance();
