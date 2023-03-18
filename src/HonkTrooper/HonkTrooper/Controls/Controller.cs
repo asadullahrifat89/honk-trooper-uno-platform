@@ -339,14 +339,16 @@ namespace HonkTrooper
 
         private void SetThumbstickThumbPosition(PointerPoint point)
         {
-            ThumbstickThumb.SetPosition(
-                                left: point.Position.X - ThumbstickThumb.Width / 2,
-                                top: point.Position.Y - ThumbstickThumb.Height / 2);
+            ThumbstickThumb?.SetPosition(
+                left: point.Position.X - ThumbstickThumb.Width / 2,
+                top: point.Position.Y - ThumbstickThumb.Height / 2);
         }
 
         public void SetDefaultThumbstickPosition()
         {
-            ThumbstickThumb.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.30, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.30);
+            ThumbstickThumb?.SetPosition(
+                left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.30,
+                top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.30);
         }
 
         private void MoveThumbstickThumbWithGyrometer(double speedX, double speedY)
