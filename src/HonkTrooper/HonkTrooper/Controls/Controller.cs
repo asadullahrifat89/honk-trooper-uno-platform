@@ -708,9 +708,9 @@ namespace HonkTrooper
             AngularVelocityY = args.Reading.AngularVelocityY;
             AngularVelocityZ = args.Reading.AngularVelocityZ;
 
-            Console.WriteLine($"AngularVelocityX: {AngularVelocityX}");
-            Console.WriteLine($"AngularVelocityY: {AngularVelocityY}");
-            Console.WriteLine($"AngularVelocityZ: {AngularVelocityZ}");
+            //Console.WriteLine($"AngularVelocityX: {AngularVelocityX}");
+            //Console.WriteLine($"AngularVelocityY: {AngularVelocityY}");
+            //Console.WriteLine($"AngularVelocityZ: {AngularVelocityZ}");
 
             #region Isometric Movement V1
 
