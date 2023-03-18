@@ -24,25 +24,49 @@ namespace HonkTrooper
 
         #region Properties
 
-        public Canvas Thumbstick { get; set; }
-
-        public Construct ThumbstickThumb { get; set; }
-
-        public Grid Keypad { get; set; }
+        #region Public
 
         public Button AttackButton { get; set; }
 
         public Button PauseButton { get; set; }
 
-        public Gyrometer Gyrometer { get; set; }
+        #endregion
 
-        public double AngularVelocityX { get; set; }
+        #region Private
 
-        public double AngularVelocityY { get; set; }
+        private Canvas Thumbstick { get; set; }
 
-        public double AngularVelocityZ { get; set; }
+        private Construct ThumbstickThumb { get; set; }
 
-        public bool IsThumbstickActive { get; set; }
+        private Construct ThumbstickUpLeft { get; set; }
+
+        private Construct ThumbstickUp { get; set; }
+
+        private Construct ThumbstickUpRight { get; set; }
+
+        private Construct ThumbstickLeft { get; set; }
+
+        private Construct ThumbstickRight { get; set; }
+
+        private Construct ThumbstickDownLeft { get; set; }
+
+        private Construct ThumbstickDown { get; set; }
+
+        private Construct ThumbstickDownRight { get; set; }
+
+        private Grid Keypad { get; set; }
+
+        private Gyrometer Gyrometer { get; set; }
+
+        private double AngularVelocityX { get; set; }
+
+        private double AngularVelocityY { get; set; }
+
+        private double AngularVelocityZ { get; set; }
+
+        private bool IsThumbstickActive { get; set; }
+
+        #endregion
 
         #endregion
 
@@ -60,7 +84,7 @@ namespace HonkTrooper
 
             SetThumbstick();
             //SetKeypad();            
-            //SetGyrometer();             
+            SetGyrometer();
         }
 
         #endregion
@@ -69,7 +93,7 @@ namespace HonkTrooper
 
         #region Thumbstick
 
-        public void SetThumbstick()
+        private void SetThumbstick()
         {
             var sizeXY = 3.5;
 
@@ -98,7 +122,7 @@ namespace HonkTrooper
                 Opacity = 0.3,
             };
 
-            Construct upLeft = new()
+            ThumbstickUpLeft = new()
             {
                 Tag = MovementDirection.UpLeft,
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
@@ -115,7 +139,7 @@ namespace HonkTrooper
                 //BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
             };
 
-            Construct up = new()
+            ThumbstickUp = new()
             {
                 Tag = MovementDirection.Up,
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
@@ -131,7 +155,7 @@ namespace HonkTrooper
                 //BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
             };
 
-            Construct upRight = new()
+            ThumbstickUpRight = new()
             {
                 Tag = MovementDirection.UpRight,
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
@@ -148,7 +172,7 @@ namespace HonkTrooper
                 //BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
             };
 
-            Construct left = new()
+            ThumbstickLeft = new()
             {
                 Tag = MovementDirection.Left,
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * sizeXY,
@@ -164,7 +188,7 @@ namespace HonkTrooper
                 //BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
             };
 
-            Construct right = new()
+            ThumbstickRight = new()
             {
                 Tag = MovementDirection.Right,
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * sizeXY,
@@ -180,7 +204,7 @@ namespace HonkTrooper
                 //BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
             };
 
-            Construct downLeft = new()
+            ThumbstickDownLeft = new()
             {
                 Tag = MovementDirection.DownLeft,
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
@@ -197,7 +221,7 @@ namespace HonkTrooper
                 //BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
             };
 
-            Construct down = new()
+            ThumbstickDown = new()
             {
                 Tag = MovementDirection.Down,
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
@@ -214,7 +238,7 @@ namespace HonkTrooper
                 //BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
             };
 
-            Construct downRight = new()
+            ThumbstickDownRight = new()
             {
                 Tag = MovementDirection.DownRight,
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
@@ -246,31 +270,31 @@ namespace HonkTrooper
             safeZone.SetPosition(left: Thumbstick.Width / 2 - safeZone.Width / 2, top: Thumbstick.Height / 2 - safeZone.Height / 2);
             Thumbstick.Children.Add(safeZone);
 
-            upLeft.SetPosition(left: 0, top: 0);
-            Thumbstick.Children.Add(upLeft);
+            ThumbstickUpLeft.SetPosition(left: 0, top: 0);
+            Thumbstick.Children.Add(ThumbstickUpLeft);
 
-            up.SetPosition(left: 0 * 1.25, top: 0);
-            Thumbstick.Children.Add(up);
+            ThumbstickUp.SetPosition(left: 0 * 1.25, top: 0);
+            Thumbstick.Children.Add(ThumbstickUp);
 
-            upRight.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2 * 1.25, top: 0);
-            Thumbstick.Children.Add(upRight);
+            ThumbstickUpRight.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2 * 1.25, top: 0);
+            Thumbstick.Children.Add(ThumbstickUpRight);
 
-            left.SetPosition(left: 0, top: 0);
-            Thumbstick.Children.Add(left);
+            ThumbstickLeft.SetPosition(left: 0, top: 0);
+            Thumbstick.Children.Add(ThumbstickLeft);
 
-            right.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2 * 1.25, top: 0);
-            Thumbstick.Children.Add(right);
+            ThumbstickRight.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2 * 1.25, top: 0);
+            Thumbstick.Children.Add(ThumbstickRight);
 
-            downLeft.SetPosition(left: 0, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2 * 1.25);
-            Thumbstick.Children.Add(downLeft);
+            ThumbstickDownLeft.SetPosition(left: 0, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2 * 1.25);
+            Thumbstick.Children.Add(ThumbstickDownLeft);
 
-            down.SetPosition(left: 0 * 1.25, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2 * 1.25);
-            Thumbstick.Children.Add(down);
+            ThumbstickDown.SetPosition(left: 0 * 1.25, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2 * 1.25);
+            Thumbstick.Children.Add(ThumbstickDown);
 
-            downRight.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2 * 1.25, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2 * 1.25);
-            Thumbstick.Children.Add(downRight);
+            ThumbstickDownRight.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2 * 1.25, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2 * 1.25);
+            Thumbstick.Children.Add(ThumbstickDownRight);
 
-            SetThumbstickThumbDefaultPosition();
+            SetDefaultThumbstickPosition();
             Thumbstick.Children.Add(ThumbstickThumb);
 
             Thumbstick.PointerPressed += (s, e) =>
@@ -284,7 +308,7 @@ namespace HonkTrooper
                 DeactivateMoveRight();
 
                 IsThumbstickActive = true;
-                ActivateThumbstick(upLeft, up, upRight, left, right, downLeft, down, downRight, ThumbstickThumb);
+                ActivateThumbstick();
             };
             Thumbstick.PointerMoved += (s, e) =>
             {
@@ -293,7 +317,7 @@ namespace HonkTrooper
                     var point = e.GetCurrentPoint(Thumbstick);
                     ThumbstickThumb.SetPosition(left: point.Position.X - ThumbstickThumb.Width / 2, top: point.Position.Y - ThumbstickThumb.Height / 2);
 
-                    ActivateThumbstick(upLeft, up, upRight, left, right, downLeft, down, downRight, ThumbstickThumb);
+                    ActivateThumbstick();
                 }
             };
             Thumbstick.PointerReleased += (s, e) =>
@@ -305,20 +329,31 @@ namespace HonkTrooper
 
                 IsThumbstickActive = false;
 
-                SetThumbstickThumbDefaultPosition();
+                SetDefaultThumbstickPosition();
             };
 
             this.Children.Add(Thumbstick);
         }
 
-        private void SetThumbstickThumbDefaultPosition()
+        private void SetDefaultThumbstickPosition()
         {
             ThumbstickThumb.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.30, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.30);
         }
 
-        private void ActivateThumbstick(Construct upLeft, Construct up, Construct upRight, Construct left, Construct right, Construct downLeft, Construct down, Construct downRight, Construct ThumbstickThumb)
+        private void MoveThumbstickThumbWithGyrometer(double speedX, double speedY)
         {
-            if (ThumbstickThumb.GetHitBox().IntersectsWith(upLeft.GetCloseHitBox()))
+            if (ThumbstickThumb is not null)
+            {
+                ThumbstickThumb.SetLeft(ThumbstickThumb.GetLeft() + speedX);
+                ThumbstickThumb.SetTop(ThumbstickThumb.GetTop() + speedY);
+
+                ActivateThumbstick();
+            }
+        }
+
+        private void ActivateThumbstick()
+        {
+            if (ThumbstickThumb.GetHitBox().IntersectsWith(ThumbstickUpLeft.GetCloseHitBox()))
             {
                 ActivateMoveUp();
                 ActivateMoveLeft();
@@ -329,7 +364,7 @@ namespace HonkTrooper
                 DeactivateMoveLeft();
             }
 
-            if (ThumbstickThumb.GetHitBox().IntersectsWith(upRight.GetCloseHitBox()))
+            if (ThumbstickThumb.GetHitBox().IntersectsWith(ThumbstickUpRight.GetCloseHitBox()))
             {
                 ActivateMoveUp();
                 ActivateMoveRight();
@@ -340,7 +375,7 @@ namespace HonkTrooper
                 DeactivateMoveRight();
             }
 
-            if (ThumbstickThumb.GetHitBox().IntersectsWith(downLeft.GetCloseHitBox()))
+            if (ThumbstickThumb.GetHitBox().IntersectsWith(ThumbstickDownLeft.GetCloseHitBox()))
             {
                 ActivateMoveDown();
                 ActivateMoveLeft();
@@ -351,7 +386,7 @@ namespace HonkTrooper
                 DeactivateMoveLeft();
             }
 
-            if (ThumbstickThumb.GetHitBox().IntersectsWith(downRight.GetCloseHitBox()))
+            if (ThumbstickThumb.GetHitBox().IntersectsWith(ThumbstickDownRight.GetCloseHitBox()))
             {
                 ActivateMoveDown();
                 ActivateMoveRight();
@@ -362,7 +397,7 @@ namespace HonkTrooper
                 DeactivateMoveRight();
             }
 
-            if (ThumbstickThumb.GetHitBox().IntersectsWith(up.GetCloseHitBox()))
+            if (ThumbstickThumb.GetHitBox().IntersectsWith(ThumbstickUp.GetCloseHitBox()))
             {
                 ActivateMoveUp();
             }
@@ -371,7 +406,7 @@ namespace HonkTrooper
                 DeactivateMoveUp();
             }
 
-            if (ThumbstickThumb.GetHitBox().IntersectsWith(left.GetCloseHitBox()))
+            if (ThumbstickThumb.GetHitBox().IntersectsWith(ThumbstickLeft.GetCloseHitBox()))
             {
                 ActivateMoveLeft();
             }
@@ -380,7 +415,7 @@ namespace HonkTrooper
                 DeactivateMoveLeft();
             }
 
-            if (ThumbstickThumb.GetHitBox().IntersectsWith(right.GetCloseHitBox()))
+            if (ThumbstickThumb.GetHitBox().IntersectsWith(ThumbstickRight.GetCloseHitBox()))
             {
                 ActivateMoveRight();
             }
@@ -389,7 +424,7 @@ namespace HonkTrooper
                 DeactivateMoveRight();
             }
 
-            if (ThumbstickThumb.GetHitBox().IntersectsWith(down.GetCloseHitBox()))
+            if (ThumbstickThumb.GetHitBox().IntersectsWith(ThumbstickDown.GetCloseHitBox()))
             {
                 ActivateMoveDown();
             }
@@ -718,6 +753,12 @@ namespace HonkTrooper
             LoggerExtensions.Log($"AngularVelocityX: {AngularVelocityX}");
             LoggerExtensions.Log($"AngularVelocityY: {AngularVelocityY}");
             LoggerExtensions.Log($"AngularVelocityZ: {AngularVelocityZ}");
+
+            #region Thumbstick Movement
+
+            MoveThumbstickThumbWithGyrometer(AngularVelocityX, AngularVelocityY);
+
+            #endregion
 
             #region Linear Movement
 
