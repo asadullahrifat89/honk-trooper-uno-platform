@@ -112,6 +112,7 @@ namespace HonkTrooper
             _scene_main_menu.Play();
 
             _game_controller.DeactivateGyrometerReading();
+            _game_controller.SetDefaultThumbstickPosition();
 
             GenerateTitleScreenInScene("Game Paused");
         }
@@ -198,6 +199,7 @@ namespace HonkTrooper
 
             _game_controller.AttackButton.Focus(FocusState.Programmatic);
 
+            _game_controller.SetDefaultThumbstickPosition();
             _game_controller.ActivateGyrometerReading();
         }
 

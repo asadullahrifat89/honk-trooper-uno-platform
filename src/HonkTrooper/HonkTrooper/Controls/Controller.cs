@@ -344,7 +344,7 @@ namespace HonkTrooper
                                 top: point.Position.Y - ThumbstickThumb.Height / 2);
         }
 
-        private void SetDefaultThumbstickPosition()
+        public void SetDefaultThumbstickPosition()
         {
             ThumbstickThumb.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.30, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.30);
         }
