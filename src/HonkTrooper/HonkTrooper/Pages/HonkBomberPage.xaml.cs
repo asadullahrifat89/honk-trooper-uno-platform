@@ -2187,75 +2187,75 @@ namespace HonkTrooper
             return false;
         }
 
-        private bool AnimatePlayerRocketSeeking(Construct PlayerRocketSeeking)
+        private bool AnimatePlayerRocketSeeking(Construct playerRocketSeeking)
         {
-            PlayerRocketSeeking PlayerRocketSeeking1 = PlayerRocketSeeking as PlayerRocketSeeking;
+            PlayerRocketSeeking playerRocketSeeking1 = playerRocketSeeking as PlayerRocketSeeking;
 
-            if (PlayerRocketSeeking1.IsBlasting)
+            if (playerRocketSeeking1.IsBlasting)
             {
-                var speed = _scene_game.Speed + PlayerRocketSeeking.SpeedOffset;
+                var speed = _scene_game.Speed + playerRocketSeeking.SpeedOffset;
 
-                MoveConstructBottomRight(construct: PlayerRocketSeeking1, speed: speed);
+                MoveConstructBottomRight(construct: playerRocketSeeking1, speed: speed);
 
-                PlayerRocketSeeking.Expand();
-                PlayerRocketSeeking.Fade(0.02);
+                playerRocketSeeking.Expand();
+                playerRocketSeeking.Fade(0.02);
             }
             else
             {
-                PlayerRocketSeeking.Pop();
-                PlayerRocketSeeking.Rotate(rotationSpeed: 3.5);
+                playerRocketSeeking.Pop();
+                playerRocketSeeking.Rotate(rotationSpeed: 3.5);
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
-                    if (_scene_game.Children.OfType<BossRocketSeeking>().FirstOrDefault(x => x.IsAnimating) is BossRocketSeeking BossRocketSeeking) // target boss bomb seeking
+                    if (_scene_game.Children.OfType<BossRocketSeeking>().FirstOrDefault(x => x.IsAnimating) is BossRocketSeeking bossRocketSeeking) // target boss bomb seeking
                     {
-                        PlayerRocketSeeking1.Seek(BossRocketSeeking.GetCloseHitBox());
+                        playerRocketSeeking1.Seek(bossRocketSeeking.GetCloseHitBox());
 
-                        if (PlayerRocketSeeking1.GetCloseHitBox().IntersectsWith(BossRocketSeeking.GetCloseHitBox()))
+                        if (playerRocketSeeking1.GetCloseHitBox().IntersectsWith(bossRocketSeeking.GetCloseHitBox()))
                         {
-                            PlayerRocketSeeking1.SetBlast();
-                            BossRocketSeeking.SetBlast();
+                            playerRocketSeeking1.SetBlast();
+                            bossRocketSeeking.SetBlast();
                         }
                     }
                     else if (_scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss) // target boss
                     {
-                        PlayerRocketSeeking1.Seek(boss.GetCloseHitBox());
+                        playerRocketSeeking1.Seek(boss.GetCloseHitBox());
 
-                        if (PlayerRocketSeeking1.GetCloseHitBox().IntersectsWith(boss.GetCloseHitBox()))
+                        if (playerRocketSeeking1.GetCloseHitBox().IntersectsWith(boss.GetCloseHitBox()))
                         {
-                            PlayerRocketSeeking1.SetBlast();
+                            playerRocketSeeking1.SetBlast();
                             LooseBossHealth(boss);
                         }
                     }
                     else if (_scene_game.Children.OfType<Enemy>().FirstOrDefault(x => x.IsAnimating) is Enemy enemy) // target enemy
                     {
-                        PlayerRocketSeeking1.Seek(enemy.GetCloseHitBox());
+                        playerRocketSeeking1.Seek(enemy.GetCloseHitBox());
 
-                        if (PlayerRocketSeeking1.GetCloseHitBox().IntersectsWith(enemy.GetCloseHitBox()))
+                        if (playerRocketSeeking1.GetCloseHitBox().IntersectsWith(enemy.GetCloseHitBox()))
                         {
-                            PlayerRocketSeeking1.SetBlast();
+                            playerRocketSeeking1.SetBlast();
                             LooseEnemyHealth(enemy);
                         }
                     }
 
-                    if (PlayerRocketSeeking1.RunOutOfTimeToBlast())
-                        PlayerRocketSeeking1.SetBlast();
+                    if (playerRocketSeeking1.RunOutOfTimeToBlast())
+                        playerRocketSeeking1.SetBlast();
                 }
             }
 
             return true;
         }
 
-        private bool RecyclePlayerRocketSeeking(Construct PlayerRocketSeeking)
+        private bool RecyclePlayerRocketSeeking(Construct playerRocketSeeking)
         {
-            var hitbox = PlayerRocketSeeking.GetHitBox();
+            var hitbox = playerRocketSeeking.GetHitBox();
 
             // if bomb is blasted and faed or goes out of scene bounds
-            if (PlayerRocketSeeking.IsFadingComplete || hitbox.Left > _scene_game.Width || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Bottom > _scene_game.Height)
+            if (playerRocketSeeking.IsFadingComplete || hitbox.Left > _scene_game.Width || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Bottom > _scene_game.Height)
             {
-                PlayerRocketSeeking.IsAnimating = false;
+                playerRocketSeeking.IsAnimating = false;
 
-                PlayerRocketSeeking.SetPosition(
+                playerRocketSeeking.SetPosition(
                     left: -500,
                     top: -500);
 
