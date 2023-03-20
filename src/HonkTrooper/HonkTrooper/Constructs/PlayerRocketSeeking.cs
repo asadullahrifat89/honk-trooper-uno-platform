@@ -54,7 +54,7 @@ namespace HonkTrooper
             SetChild(_content_image);
 
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET - 4;
-            IsometricDisplacement = 0.5;
+            IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE;
 
             _audioStub = new AudioStub((SoundType.SEEKER_ROCKET_LAUNCH, 0.3, false), (SoundType.ROCKET_BLAST, 1, false));

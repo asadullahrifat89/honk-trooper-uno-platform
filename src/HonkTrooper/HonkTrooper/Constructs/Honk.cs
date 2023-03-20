@@ -50,8 +50,6 @@ namespace HonkTrooper
 
             SetChild(_content_image);
 
-            IsometricDisplacement = 0.6;
-
             _audioStub = new AudioStub((SoundType.CAR_HONK, 0.5, false));
         }
 

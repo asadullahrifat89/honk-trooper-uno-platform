@@ -1622,7 +1622,7 @@ namespace HonkTrooper
         {
             PlayerFireCracker playerFireCracker1 = playerFireCracker as PlayerFireCracker;
 
-            var speed = (_scene_game.Speed + playerFireCracker.SpeedOffset); // this remains fixed no matter the screen size
+            var speed = (_scene_game.Speed + playerFireCracker.SpeedOffset);
 
             if (playerFireCracker1.IsBlasting)
             {
