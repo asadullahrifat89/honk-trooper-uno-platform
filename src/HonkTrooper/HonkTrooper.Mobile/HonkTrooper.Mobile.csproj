@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFrameworks>net7.0-android</TargetFrameworks>
     <TargetFrameworks>$(TargetFrameworks);net7.0-ios</TargetFrameworks>
@@ -28,11 +28,11 @@
     <RuntimeIdentifier Condition="'$(TargetFramework)' == 'net7.0-macos'">osx-x64</RuntimeIdentifier>
   </PropertyGroup> 
   <ItemGroup>
-    <PackageReference Include="Uno.WinUI" Version="4.7.44" />
-    <PackageReference Include="Uno.WinUI.RemoteControl" Version="4.7.44" Condition="'$(Configuration)'=='Debug'" />
-    <PackageReference Include="Uno.UI.Adapter.Microsoft.Extensions.Logging" Version="4.7.44" />
+    <PackageReference Include="Uno.WinUI" Version="4.9.0-dev.119" />
+    <PackageReference Include="Uno.WinUI.RemoteControl" Version="4.9.0-dev.119" Condition="'$(Configuration)'=='Debug'" />
+    <PackageReference Include="Uno.UI.Adapter.Microsoft.Extensions.Logging" Version="4.9.0-dev.119" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="7.0.0" />
-    <PackageReference Include="Uno.WinUI.Lottie" Version="4.7.44" />
+    <PackageReference Include="Uno.WinUI.Lottie" Version="4.9.0-dev.119" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(TargetFramework)'=='net7.0-android'">
@@ -82,4 +82,228 @@
     <ProjectReference Include="..\HonkTrooper\HonkTrooper.csproj" />
   </ItemGroup>
   <Import Project="..\HonkTrooper.Base\base.props" />
+  <ItemGroup>
+    <AndroidAsset Remove="Android\Assets\Sounds\ambience_1.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Android\Assets\Sounds\ambience_1.mp3" />
+    <None Remove="Android\Assets\Sounds\ambience_2.mp3" />
+    <None Remove="Android\Assets\Sounds\ambience_3.mp3" />
+    <None Remove="Android\Assets\Sounds\boss_background_music_1.mp3" />
+    <None Remove="Android\Assets\Sounds\boss_background_music_2.mp3" />
+    <None Remove="Android\Assets\Sounds\boss_background_music_3.mp3" />
+    <None Remove="Android\Assets\Sounds\boss_dead_1.mp3" />
+    <None Remove="Android\Assets\Sounds\boss_dead_2.mp3" />
+    <None Remove="Android\Assets\Sounds\boss_entry_1.mp3" />
+    <None Remove="Android\Assets\Sounds\boss_entry_2.mp3" />
+    <None Remove="Android\Assets\Sounds\boss_hovering_1.mp3" />
+    <None Remove="Android\Assets\Sounds\boss_hovering_2.mp3" />
+    <None Remove="Android\Assets\Sounds\boss_hovering_3.mp3" />
+    <None Remove="Android\Assets\Sounds\car_honk_1.mp3" />
+    <None Remove="Android\Assets\Sounds\car_honk_2.mp3" />
+    <None Remove="Android\Assets\Sounds\car_honk_3.mp3" />
+    <None Remove="Android\Assets\Sounds\cracker_blast_1.mp3" />
+    <None Remove="Android\Assets\Sounds\cracker_blast_2.mp3" />
+    <None Remove="Android\Assets\Sounds\cracker_blast_3.mp3" />
+    <None Remove="Android\Assets\Sounds\cracker_blast_4.mp3" />
+    <None Remove="Android\Assets\Sounds\cracker_drop_1.mp3" />
+    <None Remove="Android\Assets\Sounds\cracker_drop_2.mp3" />
+    <None Remove="Android\Assets\Sounds\enemy_entry_1.mp3" />
+    <None Remove="Android\Assets\Sounds\enemy_entry_2.mp3" />
+    <None Remove="Android\Assets\Sounds\game_background_music_1.mp3" />
+    <None Remove="Android\Assets\Sounds\game_background_music_2.mp3" />
+    <None Remove="Android\Assets\Sounds\game_background_music_3.mp3" />
+    <None Remove="Android\Assets\Sounds\game_over.mp3" />
+    <None Remove="Android\Assets\Sounds\game_pause.mp3" />
+    <None Remove="Android\Assets\Sounds\game_start.mp3" />
+    <None Remove="Android\Assets\Sounds\health_pickup_1.mp3" />
+    <None Remove="Android\Assets\Sounds\level_up.mp3" />
+    <None Remove="Android\Assets\Sounds\option_select.mp3" />
+    <None Remove="Android\Assets\Sounds\orb_launch.mp3" />
+    <None Remove="Android\Assets\Sounds\player_health_loss_1.mp3" />
+    <None Remove="Android\Assets\Sounds\power_up_pickup_1.mp3" />
+    <None Remove="Android\Assets\Sounds\rocket_blast_1.mp3" />
+    <None Remove="Android\Assets\Sounds\rocket_blast_2.mp3" />
+    <None Remove="Android\Assets\Sounds\rocket_blast_3.mp3" />
+    <None Remove="Android\Assets\Sounds\rocket_launch_1.mp3" />
+    <None Remove="Android\Assets\Sounds\rocket_launch_2.mp3" />
+    <None Remove="Android\Assets\Sounds\rocket_launch_3.mp3" />
+    <None Remove="Android\Assets\Sounds\seeker_rocket_launch_1.mp3" />
+    <None Remove="Android\Assets\Sounds\seeker_rocket_launch_2.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Remove="Android\Assets\Sounds\ambience_2.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Remove="Android\Assets\Sounds\ambience_3.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Remove="Android\Assets\Sounds\boss_background_music_1.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Remove="Android\Assets\Sounds\boss_background_music_2.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Remove="Android\Assets\Sounds\boss_background_music_3.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Remove="Android\Assets\Sounds\boss_dead_1.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Remove="Android\Assets\Sounds\boss_dead_2.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Remove="Android\Assets\Sounds\boss_entry_1.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Remove="Android\Assets\Sounds\boss_entry_2.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Remove="Android\Assets\Sounds\boss_hovering_1.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Remove="Android\Assets\Sounds\boss_hovering_2.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Remove="Android\Assets\Sounds\boss_hovering_3.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Remove="Android\Assets\Sounds\car_honk_1.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Remove="Android\Assets\Sounds\car_honk_2.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Remove="Android\Assets\Sounds\car_honk_3.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Remove="Android\Assets\Sounds\cracker_blast_1.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Remove="Android\Assets\Sounds\cracker_blast_2.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Remove="Android\Assets\Sounds\cracker_blast_3.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Remove="Android\Assets\Sounds\cracker_blast_4.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Remove="Android\Assets\Sounds\cracker_drop_1.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Remove="Android\Assets\Sounds\cracker_drop_2.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Remove="Android\Assets\Sounds\enemy_entry_1.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Remove="Android\Assets\Sounds\enemy_entry_2.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Remove="Android\Assets\Sounds\game_background_music_1.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Remove="Android\Assets\Sounds\game_background_music_2.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Remove="Android\Assets\Sounds\game_background_music_3.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Remove="Android\Assets\Sounds\game_over.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Remove="Android\Assets\Sounds\game_pause.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Remove="Android\Assets\Sounds\game_start.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Remove="Android\Assets\Sounds\health_pickup_1.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Remove="Android\Assets\Sounds\level_up.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Remove="Android\Assets\Sounds\option_select.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Remove="Android\Assets\Sounds\orb_launch.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Remove="Android\Assets\Sounds\player_health_loss_1.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Remove="Android\Assets\Sounds\power_up_pickup_1.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Remove="Android\Assets\Sounds\rocket_blast_1.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Remove="Android\Assets\Sounds\rocket_blast_2.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Remove="Android\Assets\Sounds\rocket_blast_3.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Remove="Android\Assets\Sounds\rocket_launch_1.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Remove="Android\Assets\Sounds\rocket_launch_2.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Remove="Android\Assets\Sounds\rocket_launch_3.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Remove="Android\Assets\Sounds\seeker_rocket_launch_1.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Remove="Android\Assets\Sounds\seeker_rocket_launch_2.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Android\Assets\Sounds\ambience_1.mp3" />
+    <Content Include="Android\Assets\Sounds\ambience_2.mp3" />
+    <Content Include="Android\Assets\Sounds\ambience_3.mp3" />
+    <Content Include="Android\Assets\Sounds\boss_background_music_1.mp3" />
+    <Content Include="Android\Assets\Sounds\boss_background_music_2.mp3" />
+    <Content Include="Android\Assets\Sounds\boss_background_music_3.mp3" />
+    <Content Include="Android\Assets\Sounds\boss_dead_1.mp3" />
+    <Content Include="Android\Assets\Sounds\boss_dead_2.mp3" />
+    <Content Include="Android\Assets\Sounds\boss_entry_1.mp3" />
+    <Content Include="Android\Assets\Sounds\boss_entry_2.mp3" />
+    <Content Include="Android\Assets\Sounds\boss_hovering_1.mp3" />
+    <Content Include="Android\Assets\Sounds\boss_hovering_2.mp3" />
+    <Content Include="Android\Assets\Sounds\boss_hovering_3.mp3" />
+    <Content Include="Android\Assets\Sounds\car_honk_1.mp3" />
+    <Content Include="Android\Assets\Sounds\car_honk_2.mp3" />
+    <Content Include="Android\Assets\Sounds\car_honk_3.mp3" />
+    <Content Include="Android\Assets\Sounds\cracker_blast_1.mp3" />
+    <Content Include="Android\Assets\Sounds\cracker_blast_2.mp3" />
+    <Content Include="Android\Assets\Sounds\cracker_blast_3.mp3" />
+    <Content Include="Android\Assets\Sounds\cracker_blast_4.mp3" />
+    <Content Include="Android\Assets\Sounds\cracker_drop_1.mp3" />
+    <Content Include="Android\Assets\Sounds\cracker_drop_2.mp3" />
+    <Content Include="Android\Assets\Sounds\enemy_entry_1.mp3" />
+    <Content Include="Android\Assets\Sounds\enemy_entry_2.mp3" />
+    <Content Include="Android\Assets\Sounds\game_background_music_1.mp3" />
+    <Content Include="Android\Assets\Sounds\game_background_music_2.mp3" />
+    <Content Include="Android\Assets\Sounds\game_background_music_3.mp3" />
+    <Content Include="Android\Assets\Sounds\game_over.mp3" />
+    <Content Include="Android\Assets\Sounds\game_pause.mp3" />
+    <Content Include="Android\Assets\Sounds\game_start.mp3" />
+    <Content Include="Android\Assets\Sounds\health_pickup_1.mp3" />
+    <Content Include="Android\Assets\Sounds\level_up.mp3" />
+    <Content Include="Android\Assets\Sounds\option_select.mp3" />
+    <Content Include="Android\Assets\Sounds\orb_launch.mp3" />
+    <Content Include="Android\Assets\Sounds\player_health_loss_1.mp3" />
+    <Content Include="Android\Assets\Sounds\power_up_pickup_1.mp3" />
+    <Content Include="Android\Assets\Sounds\rocket_blast_1.mp3" />
+    <Content Include="Android\Assets\Sounds\rocket_blast_2.mp3" />
+    <Content Include="Android\Assets\Sounds\rocket_blast_3.mp3" />
+    <Content Include="Android\Assets\Sounds\rocket_launch_1.mp3" />
+    <Content Include="Android\Assets\Sounds\rocket_launch_2.mp3" />
+    <Content Include="Android\Assets\Sounds\rocket_launch_3.mp3" />
+    <Content Include="Android\Assets\Sounds\seeker_rocket_launch_1.mp3" />
+    <Content Include="Android\Assets\Sounds\seeker_rocket_launch_2.mp3" />
+  </ItemGroup>
 </Project>

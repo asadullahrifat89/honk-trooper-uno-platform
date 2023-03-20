@@ -25,11 +25,11 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="7.0.0" />
     <PackageReference Include="Uno.Core.Extensions.Logging.Singleton" Version="4.0.1" />
-    <PackageReference Include="Uno.WinUI" Version="4.7.44" />    
+    <PackageReference Include="Uno.WinUI" Version="4.9.0-dev.119" />    
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' != 'net7.0-android' AND '$(TargetFramework)' != 'net7.0-ios'">
-    <PackageReference Include="Uno.WinUI.Runtime.WebAssembly" Version="4.7.44" />
-    <PackageReference Include="Uno.Extensions.Logging.WebAssembly.Console" Version="1.4.0"  />
+    <PackageReference Include="Uno.WinUI.Runtime.WebAssembly" Version="4.9.0-dev.119" />
+    <PackageReference Include="Uno.Extensions.Logging.WebAssembly.Console" Version="1.4.0" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)'=='net7.0-windows10.0.18362'">
     <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.1.3" />
