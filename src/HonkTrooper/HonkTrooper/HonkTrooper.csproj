@@ -78,7 +78,10 @@
     <None Remove="Assets\Images\player_bomb_seeking_2.png" />
     <None Remove="Assets\Images\power_up_pickup_force_shield.png" />
     <None Remove="Assets\Images\power_up_pickup_seeking_balls.png" />
-    <None Remove="Assets\Images\tree_E.png" />
+    <None Remove="Assets\Images\tree_1.png" />
+    <None Remove="Assets\Images\tree_2.png" />
+    <None Remove="Assets\Images\tree_3.png" />
+    <None Remove="Assets\Images\tree_4.png" />
     <None Remove="Assets\Images\vehicle_1.png" />
     <None Remove="Assets\Images\vehicle_10.png" />
     <None Remove="Assets\Images\vehicle_11.png" />
