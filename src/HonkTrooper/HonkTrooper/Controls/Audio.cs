@@ -66,7 +66,8 @@ namespace HonkTrooper
         {
             if (_player.MediaPlayer is not null)
             {
-                _player.Source = MediaSource.CreateFromUri(uri);
+                Uri newUri = new(uri.OriginalString.Replace("ms-appx:///HonkTrooper/Assets/Sounds/", "ms-appx:///Assets/Sounds/"));
+                _player.MediaPlayer.Source = MediaSource.CreateFromUri(newUri);
             }
         }
 
@@ -118,7 +119,7 @@ namespace HonkTrooper
         {
             if (_player.MediaPlayer is not null)
             {
-                _player.MediaPlayer.Volume = volume;
+                _player.MediaPlayer.Volume = volume * 100;
                 base.SetVolume(volume);
             }
         }
