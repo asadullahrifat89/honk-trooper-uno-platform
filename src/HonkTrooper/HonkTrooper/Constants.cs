@@ -31,13 +31,13 @@ namespace HonkTrooper
             new (ConstructType.VEHICLE_SMALL, 210, 210),
             new (ConstructType.VEHICLE_LARGE, 240, 240),
 
-            new (ConstructType.HONK, 90, 90),
             new (ConstructType.CLOUD, 220, 220),
+
             new (ConstructType.TREE, 190, 190),
             new (ConstructType.HEDGE, 160, 160),
-            new (ConstructType.LANTERN, 160, 160),
+
+            new (ConstructType.HONK, 90, 90),
             new (ConstructType.ROAD_MARK, 40, 15),
-            new (ConstructType.ROAD_SLAB, 600, 600),
 
             new (ConstructType.DROP_SHADOW, 25, 60),
 
@@ -52,7 +52,6 @@ namespace HonkTrooper
         {
             new (ConstructType.TREE, new Uri("ms-appx:///HonkTrooper/Assets/Images/tree_E.png")),
             new (ConstructType.HEDGE, new Uri("ms-appx:///HonkTrooper/Assets/Images/hedge_E.png")),
-            new (ConstructType.LANTERN, new Uri("ms-appx:///HonkTrooper/Assets/Images/lantern_E.png")),
 
             new (ConstructType.VEHICLE_SMALL, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_small_1.png")),
             new (ConstructType.VEHICLE_SMALL, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_small_2.png")),
@@ -220,12 +219,10 @@ namespace HonkTrooper
         VEHICLE_SMALL,
         VEHICLE_LARGE,
 
-        ROAD_SLAB,
         ROAD_MARK,
         HONK,
         TREE,
         HEDGE,
-        LANTERN,
         CLOUD,
 
         BOMB_BLAST,
