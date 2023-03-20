@@ -25,7 +25,7 @@ namespace HonkTrooper
             new (ConstructType.BOSS_ROCKET, 80, 80),
             new (ConstructType.BOSS_ROCKET_SEEKING, 80, 80),
 
-            new (ConstructType.ENEMY, 140, 140),
+            new (ConstructType.ENEMY, 160, 160),
             new (ConstructType.ENEMY_ROCKET, 60, 60),
 
             new (ConstructType.VEHICLE_SMALL, 210, 210),
