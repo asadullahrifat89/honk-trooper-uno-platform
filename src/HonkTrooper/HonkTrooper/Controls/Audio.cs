@@ -48,8 +48,6 @@ namespace HonkTrooper
         public void SetSource(Uri uri)
         {
 
-
-
         }
 
         public void SetLoop(bool loop)
@@ -60,13 +58,11 @@ namespace HonkTrooper
         public new void Play()
         {
             base.Play();
-
         }
 
         public new void Stop()
         {
             base.Stop();
-
         }
 
         public new void Pause()
@@ -129,8 +125,7 @@ namespace HonkTrooper
 
             _baseUrl = $"{indexUrl}{appPackageId}";
 
-            var audio = "element.style.display = \"none\"; " +
-                "element.controls = false;";
+            var audio = "element.style.display = \"none\"; element.controls = false; element.hidden= \"hidden\"";
 
             this.ExecuteJavascript(audio);
 
@@ -188,8 +183,7 @@ namespace HonkTrooper
         public new void SetVolume(double volume)
         {
             base.SetVolume(volume);
-            var audio = $"element.volume = {volume}; ";
-            this.ExecuteJavascript(audio);
+            this.ExecuteJavascript($"element.volume = {volume};");
         }
 
         #endregion
