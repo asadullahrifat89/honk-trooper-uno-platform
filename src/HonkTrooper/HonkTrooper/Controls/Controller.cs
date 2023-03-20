@@ -92,15 +92,6 @@ namespace HonkTrooper
         {
             var sizeXY = 3.5;
 
-            //Grid grid = new Grid()
-            //{
-            //    Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * sizeXY,
-            //    Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * sizeXY,
-            //    HorizontalAlignment = HorizontalAlignment.Right,
-            //    VerticalAlignment = VerticalAlignment.Bottom,
-            //    Margin = new Thickness(5),
-            //};
-
             Thumbstick = new Canvas()
             {
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * sizeXY,
