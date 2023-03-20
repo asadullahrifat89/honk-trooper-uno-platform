@@ -10,6 +10,7 @@ namespace HonkTrooper
         #region Fields
 
         private readonly Image _content_image;
+        private readonly Uri[] _tree_uris;
 
         #endregion
 
@@ -20,9 +21,11 @@ namespace HonkTrooper
             Func<Construct, bool> recycleAction,
             double downScaling)
         {
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.TREE);
-
             ConstructType = ConstructType.TREE;
+
+            _tree_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.TREE).Select(x => x.Uri).ToArray();
+
+            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.TREE);
 
             var width = size.Width * downScaling;
             var height = size.Height * downScaling;
@@ -32,9 +35,11 @@ namespace HonkTrooper
 
             SetSize(width: width, height: height);
 
+            var uri = ConstructExtensions.GetRandomContentUri(_tree_uris);
+
             _content_image = new Image()
             {
-                Source = new BitmapImage(uriSource: Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.TREE).Uri)
+                Source = new BitmapImage(uriSource: uri)
             };
 
             SetChild(_content_image);

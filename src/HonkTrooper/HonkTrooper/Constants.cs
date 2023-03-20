@@ -50,7 +50,11 @@ namespace HonkTrooper
 
         public static (ConstructType ConstructType, Uri Uri)[] CONSTRUCT_TEMPLATES = new (ConstructType, Uri)[]
         {
-            new (ConstructType.TREE, new Uri("ms-appx:///HonkTrooper/Assets/Images/tree_E.png")),
+            new (ConstructType.TREE, new Uri("ms-appx:///HonkTrooper/Assets/Images/tree_1.png")),
+            new (ConstructType.TREE, new Uri("ms-appx:///HonkTrooper/Assets/Images/tree_2.png")),
+            new (ConstructType.TREE, new Uri("ms-appx:///HonkTrooper/Assets/Images/tree_3.png")),
+            new (ConstructType.TREE, new Uri("ms-appx:///HonkTrooper/Assets/Images/tree_4.png")),
+
             new (ConstructType.HEDGE, new Uri("ms-appx:///HonkTrooper/Assets/Images/hedge_E.png")),
 
             new (ConstructType.VEHICLE_SMALL, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_small_1.png")),
