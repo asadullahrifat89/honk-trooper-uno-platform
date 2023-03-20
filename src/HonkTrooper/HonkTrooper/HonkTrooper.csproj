@@ -67,6 +67,7 @@
     <None Remove="Assets\Images\honk_1.png" />
     <None Remove="Assets\Images\honk_2.png" />
     <None Remove="Assets\Images\honk_3.png" />
+    <None Remove="Assets\Images\lantern_E.png" />
     <None Remove="Assets\Images\player_1_attack.png" />
     <None Remove="Assets\Images\player_1_attack_2.png" />
     <None Remove="Assets\Images\player_1_hit.png" />

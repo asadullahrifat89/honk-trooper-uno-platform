@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace HonkTrooper
 {
-    public partial class Hedge : Construct
+    public partial class Lantern : Construct
     {
         #region Fields
 
@@ -15,14 +15,14 @@ namespace HonkTrooper
 
         #region Ctor
 
-        public Hedge(
+        public Lantern(
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction,
             double downScaling)
         {
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.HEDGE);
+            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.LANTERN);
 
-            ConstructType = ConstructType.HEDGE;
+            ConstructType = ConstructType.LANTERN;
 
             var width = size.Width * downScaling;
             var height = size.Height * downScaling;
@@ -34,7 +34,7 @@ namespace HonkTrooper
 
             _content_image = new Image()
             {
-                Source = new BitmapImage(uriSource: Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.HEDGE).Uri)
+                Source = new BitmapImage(uriSource: Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.LANTERN).Uri)
             };
 
             SetChild(_content_image);
