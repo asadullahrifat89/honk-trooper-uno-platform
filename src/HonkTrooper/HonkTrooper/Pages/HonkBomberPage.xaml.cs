@@ -1001,7 +1001,7 @@ namespace HonkTrooper
                 hedge.IsAnimating = true;
 
                 hedge.SetPosition(
-                  left: (_scene_game.Width / 2 - hedge.Width * 2.5) * _scene_game.DownScaling,
+                  left: (_scene_game.Width / 2 - hedge.Width * 2.3) * _scene_game.DownScaling,
                   top: hedge.Height * -1,
                   z: 2);
 
