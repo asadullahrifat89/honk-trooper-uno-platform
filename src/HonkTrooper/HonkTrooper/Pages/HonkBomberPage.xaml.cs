@@ -91,7 +91,7 @@ namespace HonkTrooper
 
         #region Game
 
-        private void PauseGame()
+        private bool PauseGame()
         {
             _audio_stub.Play(SoundType.GAME_PAUSE);
 
@@ -115,6 +115,8 @@ namespace HonkTrooper
             _game_controller.SetDefaultThumbstickPosition();
 
             GenerateTitleScreenInScene("Game Paused");
+
+            return true;
         }
 
         private void ResumeGame()
@@ -136,8 +138,7 @@ namespace HonkTrooper
             _scene_main_menu.Pause();
 
             _game_controller.ActivateGyrometerReading();
-
-            _game_controller.AttackButton.Focus(FocusState.Programmatic);
+            _game_controller.FocusAttackButton();
         }
 
         private void NewGame()
@@ -197,7 +198,7 @@ namespace HonkTrooper
 
             ToggleHudVisibility(Visibility.Visible);
 
-            _game_controller.AttackButton.Focus(FocusState.Programmatic);
+            _game_controller.FocusAttackButton();
 
             _game_controller.SetDefaultThumbstickPosition();
             _game_controller.ActivateGyrometerReading();
@@ -2711,14 +2712,13 @@ namespace HonkTrooper
         private void SetController()
         {
             _game_controller.SetScene(_scene_game);
-            _game_controller.PauseButton.Click += PauseButton_Click;
+            _game_controller.SetPauseAction(PauseGame);
             _game_controller.SetGyrometer();
         }
 
         private void UnsetController()
         {
             _game_controller.SetScene(null);
-            _game_controller.PauseButton.Click -= PauseButton_Click;
             _game_controller.UnsetGyrometer();
         }
 
@@ -2965,8 +2965,6 @@ namespace HonkTrooper
 
         private void DisplayInformation_OrientationChanged(DisplayInformation sender, object args)
         {
-            //
-
             if (_scene_game.SceneState == SceneState.GAME_RUNNING) // if screen orientation is changed while game is running, pause the game
             {
                 if (_scene_game.IsAnimating)
