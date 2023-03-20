@@ -13,6 +13,8 @@ namespace HonkTrooper
         public const double DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS = 4;
         public const double DEFAULT_CONTROLLER_DIRECTION_KEYS_MARGIN = 6;
         public const double DEFAULT_GUI_FONT_SIZE = 30;
+        public const double DEFAULT_ISOMETRIC_DISPLACEMENT = 0.5;
+
 
         public static (ConstructType ConstructType, double Height, double Width)[] CONSTRUCT_SIZES = new (ConstructType, double, double)[]
         {

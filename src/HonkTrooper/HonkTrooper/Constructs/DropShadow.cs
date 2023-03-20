@@ -42,7 +42,7 @@ namespace HonkTrooper
             Opacity = 0.3;
 
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;
-            IsometricDisplacement = 0.5;
+            IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
         }
 
         #endregion
