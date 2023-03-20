@@ -1,7 +1,9 @@
 ﻿using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Windows.Media.Core;
 
 #if !__ANDROID__ && !__IOS__
 using Uno.UI.Runtime.WebAssembly;
@@ -14,12 +16,20 @@ namespace HonkTrooper
 
     public partial class Audio : AudioBase
     {
+        private readonly MediaPlayerElement _player;
+
         public Audio(
             Uri uri,
             double volume = 1.0,
             bool loop = false,
             Action playback = null)
         {
+            _player = new MediaPlayerElement() { AreTransportControlsEnabled = false, };
+
+            Windows.Media.Playback.MediaPlayer mediaPlayer = new();
+
+            _player.SetMediaPlayer(mediaPlayer);
+
             Initialize(
                 uri: uri,
                 volume: volume,
@@ -35,53 +45,83 @@ namespace HonkTrooper
             bool loop = false,
             Action trackEnded = null)
         {
-            SetSource(uri);
-            SetVolume(volume);
-            SetLoop(loop);
-
-            if (trackEnded is not null)
+            try
             {
-                TrackEnded = trackEnded;
+                SetSource(uri);
+                SetVolume(volume);
+                SetLoop(loop);
+
+                if (trackEnded is not null)
+                {
+                    TrackEnded = trackEnded;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Write(ex.Message.ToString());
             }
         }
 
         public void SetSource(Uri uri)
         {
-
-
-
+            if (_player.MediaPlayer is not null)
+            {
+                Uri newUri = new(uri.OriginalString.Replace("ms-appx:///HonkTrooper/Assets/Sounds/", "ms-appx:///Assets/Sounds/"));
+                _player.MediaPlayer.Source = MediaSource.CreateFromUri(newUri);
+            }
         }
 
         public void SetLoop(bool loop)
         {
-
+            if (_player.MediaPlayer is not null)
+            {
+                _player.MediaPlayer.IsLoopingEnabled = loop;
+            }
         }
 
         public new void Play()
         {
-            base.Play();
-
+            if (_player.MediaPlayer is not null)
+            {
+                _player.MediaPlayer.Play();
+                base.Play();
+            }
         }
 
         public new void Stop()
         {
-            base.Stop();
-
+            if (_player.MediaPlayer is not null)
+            {
+                _player.MediaPlayer.Stop();
+                base.Stop();
+            }
         }
 
         public new void Pause()
         {
-            base.Pause();
+            if (_player.MediaPlayer is not null)
+            {
+                _player.MediaPlayer.Pause();
+                base.Pause();
+            }
         }
 
         public new void Resume()
         {
-            base.Resume();
+            if (_player.MediaPlayer is not null)
+            {
+                _player.MediaPlayer.Play();
+                base.Resume();
+            }
         }
 
         public new void SetVolume(double volume)
         {
-            base.SetVolume(volume);
+            if (_player.MediaPlayer is not null)
+            {
+                _player.MediaPlayer.Volume = volume * 100;
+                base.SetVolume(volume);
+            }
         }
 
         #endregion
@@ -129,8 +169,7 @@ namespace HonkTrooper
 
             _baseUrl = $"{indexUrl}{appPackageId}";
 
-            var audio = "element.style.display = \"none\"; " +
-                "element.controls = false;";
+            var audio = "element.style.display = \"none\"; element.controls = false; element.hidden= \"hidden\"";
 
             this.ExecuteJavascript(audio);
 
@@ -188,8 +227,7 @@ namespace HonkTrooper
         public new void SetVolume(double volume)
         {
             base.SetVolume(volume);
-            var audio = $"element.volume = {volume}; ";
-            this.ExecuteJavascript(audio);
+            this.ExecuteJavascript($"element.volume = {volume};");
         }
 
         #endregion
