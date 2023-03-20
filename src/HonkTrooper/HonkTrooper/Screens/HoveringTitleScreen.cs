@@ -30,7 +30,7 @@
             {
                 _hoverDelay--;
 
-                if (_hoverDelay > 0)
+                if (_hoverDelay >= 0)
                 {
                     SetTop(GetTop() + _hoverSpeed);
                 }
