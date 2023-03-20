@@ -34,6 +34,7 @@ namespace HonkTrooper
             new (ConstructType.HONK, 90, 90),
             new (ConstructType.CLOUD, 220, 220),
             new (ConstructType.TREE, 180, 180),
+            new (ConstructType.HEDGE, 150, 150),
             new (ConstructType.ROAD_MARK, 40, 15),
             new (ConstructType.ROAD_SLAB, 600, 600),
 
@@ -49,6 +50,7 @@ namespace HonkTrooper
         public static (ConstructType ConstructType, Uri Uri)[] CONSTRUCT_TEMPLATES = new (ConstructType, Uri)[]
         {
             new (ConstructType.TREE, new Uri("ms-appx:///HonkTrooper/Assets/Images/tree_E.png")),
+            new (ConstructType.HEDGE, new Uri("ms-appx:///HonkTrooper/Assets/Images/hedge_E.png")),
 
             new (ConstructType.VEHICLE_SMALL, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_small_1.png")),
             new (ConstructType.VEHICLE_SMALL, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_small_2.png")),
@@ -220,6 +222,7 @@ namespace HonkTrooper
         ROAD_MARK,
         HONK,
         TREE,
+        HEDGE,
         CLOUD,
 
         BOMB_BLAST,
