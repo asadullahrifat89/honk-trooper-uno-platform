@@ -1088,13 +1088,11 @@ namespace HonkTrooper
 
                 var hitBox = source.GetCloseHitBox();
 
-                honk.SetPosition(
-                    left: hitBox.Left - source.Width / 2,
-                    top: hitBox.Top - (25 * _scene_game.DownScaling),
-                    z: 5);
-
+                honk.Reposition(source: source, downScaling: _scene_game.DownScaling);
                 honk.SetRotation(_random.Next(-30, 30));
                 honk.SetZ(source.GetZ() + 1);
+
+                source.SetPopping();
 
                 return true;
             }
@@ -1105,18 +1103,17 @@ namespace HonkTrooper
         private bool AnimateHonk(Construct honk)
         {
             honk.Pop();
-            var speed = (_scene_game.Speed + honk.SpeedOffset);
-            MoveConstructBottomRight(construct: honk, speed: speed);
+            honk.Fade(0.06);
+
+            //var speed = (_scene_game.Speed + honk.SpeedOffset);
+            //MoveConstructBottomRight(construct: honk, speed: speed);
+
             return true;
         }
 
         private bool RecycleHonk(Construct honk)
         {
-            Honk honk1 = honk as Honk;
-
-            honk1.Fade();
-
-            if (honk1.IsFadingComplete)
+            if (honk.IsFadingComplete)
             {
                 honk.IsAnimating = false;
 

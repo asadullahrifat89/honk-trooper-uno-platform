@@ -51,7 +51,7 @@ namespace HonkTrooper
             SetChild(_content_image);
 
             IsometricDisplacement = 0.6;
-            
+
             _audioStub = new AudioStub((SoundType.CAR_HONK, 0.5, false));
         }
 
@@ -64,6 +64,16 @@ namespace HonkTrooper
             _audioStub.Play(SoundType.CAR_HONK);
 
             Opacity = 1;
+        }
+
+        public void Reposition(Construct source, double downScaling)
+        {
+            var hitBox = source.GetCloseHitBox();
+
+            SetPosition(
+                left: hitBox.Left - source.Width / 3,
+                top: hitBox.Top - (25 * downScaling),
+                z: 5);
         }
 
         #endregion
