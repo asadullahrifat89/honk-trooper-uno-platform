@@ -892,8 +892,7 @@ namespace HonkTrooper
 
                 tree.SetPosition(
                     left: -500,
-                    top: -500,
-                    z: 2);
+                    top: -500);
 
                 _scene_game.AddToScene(tree);
 
@@ -983,8 +982,7 @@ namespace HonkTrooper
 
                 hedge.SetPosition(
                     left: -500,
-                    top: -500,
-                    z: 2);
+                    top: -500);
 
                 _scene_game.AddToScene(hedge);
 
@@ -1052,6 +1050,96 @@ namespace HonkTrooper
                 hedge.IsAnimating = false;
 
                 hedge.SetPosition(
+                    left: -500,
+                    top: -500);
+            }
+
+            return true;
+        }
+
+        #endregion
+
+        #region Lantern
+
+        private bool SpawnLanternsInScene()
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                Lantern Lantern = new(
+                    animateAction: AnimateLantern,
+                    recycleAction: RecycleLantern,
+                    downScaling: _scene_game.DownScaling);
+
+                Lantern.SetPosition(
+                    left: -500,
+                    top: -500);
+
+                _scene_game.AddToScene(Lantern);
+
+                SpawnDropShadowInScene(source: Lantern);
+            }
+
+            return true;
+        }
+
+        private bool GenerateLanternInSceneTop()
+        {
+            if (_scene_game.Children.OfType<Lantern>().FirstOrDefault(x => x.IsAnimating == false) is Lantern Lantern)
+            {
+                Lantern.IsAnimating = true;
+
+                Lantern.SetPosition(
+                  left: (_scene_game.Width / 2 - Lantern.Width * 2.3) * _scene_game.DownScaling,
+                  top: Lantern.Height * -1,
+                  z: 2);
+
+                //SyncDropShadow(Lantern);
+
+                LoggerExtensions.Log("Lantern generated.");
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool GenerateLanternInSceneBottom()
+        {
+            if (_scene_game.Children.OfType<Lantern>().FirstOrDefault(x => x.IsAnimating == false) is Lantern Lantern)
+            {
+                Lantern.IsAnimating = true;
+
+                Lantern.SetPosition(
+                  left: -1 * Lantern.Width * _scene_game.DownScaling,
+                  top: (_scene_game.Height / 2 + 50) * _scene_game.DownScaling,
+                  z: 4);
+
+                //SyncDropShadow(Lantern);
+
+                LoggerExtensions.Log("Lantern generated.");
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimateLantern(Construct Lantern)
+        {
+            var speed = (_scene_game.Speed + Lantern.SpeedOffset);
+            MoveConstructBottomRight(construct: Lantern, speed: speed);
+            return true;
+        }
+
+        private bool RecycleLantern(Construct Lantern)
+        {
+            var hitBox = Lantern.GetHitBox();
+
+            if (hitBox.Top > _scene_game.Height || hitBox.Left > _scene_game.Width)
+            {
+                Lantern.IsAnimating = false;
+
+                Lantern.SetPosition(
                     left: -500,
                     top: -500);
             }
@@ -2785,6 +2873,12 @@ namespace HonkTrooper
                     generationAction: GenerateHedgeInSceneTop,
                     startUpAction: SpawnHedgesInScene),
 
+                // then add the top Lanterns
+                //new Generator(
+                //    generationDelay: 40,
+                //    generationAction: GenerateLanternInSceneTop,
+                //    startUpAction: SpawnLanternsInScene),
+
                 // then add the vehicles which will appear forward in z wrt the top trees
                 new Generator(
                     generationDelay: 100,
@@ -2796,6 +2890,12 @@ namespace HonkTrooper
                     generationDelay: 12,
                     generationAction: GenerateHedgeInSceneBottom,
                     startUpAction: SpawnHedgesInScene),
+
+                // then add the bottom Lanterns which will appear forward in z wrt to the vehicles
+                //new Generator(
+                //    generationDelay: 40,
+                //    generationAction: GenerateLanternInSceneBottom,
+                //    startUpAction: SpawnLanternsInScene),
 
                 // then add the bottom trees which will appear forward in z wrt to the vehicles
                 new Generator(
