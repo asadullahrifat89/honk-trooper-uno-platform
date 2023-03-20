@@ -89,7 +89,7 @@ namespace HonkTrooper
                     break;
             }
 
-            IsometricDisplacement = 0.5;
+            IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
 
             if (WillHonk)
                 SetHonkDelay();

@@ -48,7 +48,7 @@ namespace HonkTrooper
 
             SetChild(_content_image);
 
-            IsometricDisplacement = 0.5;
+            IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE + 200;
             Opacity = 0.6;
         }
