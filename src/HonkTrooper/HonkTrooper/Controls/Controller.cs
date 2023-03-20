@@ -100,19 +100,25 @@ namespace HonkTrooper
         {
             var sizeXY = 3.5;
 
-            Thumbstick = new Canvas()
+            Grid grid = new Grid()
             {
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * sizeXY,
                 Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * sizeXY,
                 HorizontalAlignment = HorizontalAlignment.Right,
                 VerticalAlignment = VerticalAlignment.Bottom,
                 Margin = new Thickness(5),
+            };
+
+            Thumbstick = new Canvas()
+            {
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * sizeXY,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * sizeXY,             
                 Background = new SolidColorBrush(Colors.Transparent),
                 RenderTransformOrigin = new Point(1, 1),
                 //RenderTransform = new ScaleTransform() { CenterX = 0.5, CenterY = 0.5, ScaleX = 0.70, ScaleY = 0.70 }
             };
 
-            var safeZone = new Construct()
+            var neutralZone = new Construct()
             {
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.55,
                 Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.55,
@@ -124,6 +130,9 @@ namespace HonkTrooper
                 VerticalAlignment = VerticalAlignment.Bottom,
                 Opacity = 0.3,
             };
+
+            grid.Children.Add(neutralZone);
+            grid.Children.Add(Thumbstick);
 
             ThumbstickUpLeft = new()
             {
@@ -270,8 +279,8 @@ namespace HonkTrooper
                 BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
             };
 
-            safeZone.SetPosition(left: Thumbstick.Width / 2 - safeZone.Width / 2, top: Thumbstick.Height / 2 - safeZone.Height / 2);
-            Thumbstick.Children.Add(safeZone);
+            neutralZone.SetPosition(left: Thumbstick.Width / 2 - neutralZone.Width / 2, top: Thumbstick.Height / 2 - neutralZone.Height / 2);
+            Thumbstick.Children.Add(neutralZone);
 
             ThumbstickUpLeft.SetPosition(left: 0, top: 0);
             Thumbstick.Children.Add(ThumbstickUpLeft);
@@ -333,7 +342,7 @@ namespace HonkTrooper
                 SetDefaultThumbstickPosition();
             };
 
-            this.Children.Add(Thumbstick);
+            this.Children.Add(grid);
         }
 
         private void SetThumbstickThumbPosition(PointerPoint point)
@@ -791,7 +800,7 @@ namespace HonkTrooper
 
         private void Gyrometer_ReadingChanged(Gyrometer sender, GyrometerReadingChangedEventArgs args)
         {
-            if (IsGyrometerReadingsActive && !IsThumbstickGripActive)
+            if (IsGyrometerReadingsActive && !IsThumbstickGripActive) // only take readings when thunmbstick is not active with touch
             {
                 AngularVelocityX = args.Reading.AngularVelocityX;
                 AngularVelocityY = args.Reading.AngularVelocityY;
@@ -802,7 +811,7 @@ namespace HonkTrooper
                 LoggerExtensions.Log($"AngularVelocityZ: {AngularVelocityZ}");
 
 #if __ANDROID__ || __IOS__
-                MoveThumbstickThumbWithGyrometer(AngularVelocityX / 1.8, AngularVelocityY * -1 / 1.8); // less sensitive on mobile
+                MoveThumbstickThumbWithGyrometer(AngularVelocityX / 1.6, AngularVelocityY * -1 / 1.6); // less sensitive on mobile
 #else
                 //MoveThumbstickThumbWithGyrometer(AngularVelocityX / 1.1, AngularVelocityY * -1 / 1.1); // more sensitive on web
 #endif
