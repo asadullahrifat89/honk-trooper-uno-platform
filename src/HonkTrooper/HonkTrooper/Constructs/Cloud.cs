@@ -59,7 +59,7 @@ namespace HonkTrooper
 
         public void Reset()
         {
-            SpeedOffset = _random.Next(-4, 2);
+            SpeedOffset = _random.Next(-2, 3);
 
             var uri = ConstructExtensions.GetRandomContentUri(_cloud_uris);
             _content_image.Source = new BitmapImage(uri);
