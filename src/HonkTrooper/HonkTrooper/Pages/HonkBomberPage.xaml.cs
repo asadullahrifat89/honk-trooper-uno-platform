@@ -1154,7 +1154,7 @@ namespace HonkTrooper
 
         private bool SpawnCloudsInScene()
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 5; i++)
             {
                 Cloud cloud = new(
                     animateAction: AnimateCloud,
@@ -2794,7 +2794,7 @@ namespace HonkTrooper
                     generationDelay: 12,
                     generationAction: GenerateHedgeInSceneBottom,
                     startUpAction: SpawnHedgesInScene),
-                             
+
                 // then add the bottom trees which will appear forward in z wrt to the vehicles
                 new Generator(
                     generationDelay: 30,
@@ -2825,9 +2825,10 @@ namespace HonkTrooper
 
                 // add the clouds which are above the player z
                 new Generator(
-                    generationDelay: 100,
+                    generationDelay: 400,
                     generationAction: GenerateCloudInScene,
-                    startUpAction: SpawnCloudsInScene),
+                    startUpAction: SpawnCloudsInScene,
+                    randomizeGenerationDelay: true),
 
                 new Generator(
                     generationDelay: 100,
