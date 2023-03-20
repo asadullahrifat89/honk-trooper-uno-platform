@@ -1104,10 +1104,6 @@ namespace HonkTrooper
         {
             honk.Pop();
             honk.Fade(0.06);
-
-            //var speed = (_scene_game.Speed + honk.SpeedOffset);
-            //MoveConstructBottomRight(construct: honk, speed: speed);
-
             return true;
         }
 
