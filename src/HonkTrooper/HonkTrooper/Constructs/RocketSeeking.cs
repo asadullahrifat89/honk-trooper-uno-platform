@@ -3,7 +3,7 @@ using Windows.Foundation;
 
 namespace HonkTrooper
 {
-    public partial class BombSeeking : Construct
+    public partial class RocketSeeking : Construct
     {
         #region Fields
 
@@ -26,7 +26,7 @@ namespace HonkTrooper
             if (bossHitbox.Y < playerMiddleY - _grace)
             {
                 var distance = Math.Abs(bossHitbox.Y - playerMiddleY);
-                double speed = GetFlightSpeed(distance);
+                double speed = CalculateSpeed(distance);
 
                 SetTop(top - speed);
 
@@ -37,7 +37,7 @@ namespace HonkTrooper
             if (bossHitbox.X < playerMiddleX - _grace)
             {
                 var distance = Math.Abs(bossHitbox.X - playerMiddleX);
-                double speed = GetFlightSpeed(distance);
+                double speed = CalculateSpeed(distance);
 
                 SetLeft(left - speed);
 
@@ -48,7 +48,7 @@ namespace HonkTrooper
             if (bossHitbox.Y > playerMiddleY + _grace)
             {
                 var distance = Math.Abs(bossHitbox.Y - playerMiddleY);
-                double speed = GetFlightSpeed(distance);
+                double speed = CalculateSpeed(distance);
 
                 SetTop(top + speed);
 
@@ -59,7 +59,7 @@ namespace HonkTrooper
             if (bossHitbox.X > playerMiddleX + _grace)
             {
                 var distance = Math.Abs(bossHitbox.X - playerMiddleX);
-                double speed = GetFlightSpeed(distance);
+                double speed = CalculateSpeed(distance);
 
                 SetLeft(left + speed);
 
@@ -69,11 +69,12 @@ namespace HonkTrooper
             return hasMoved;
         }
 
-        private double GetFlightSpeed(double distance)
+        private double CalculateSpeed(double distance)
         {
-            var flightSpeed = distance / _lag;
+            var speed = distance / _lag;
 
-            return flightSpeed;
+            return speed < 4 ? 4 : speed;
         }
     }
 }
+
