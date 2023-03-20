@@ -16,7 +16,7 @@ namespace HonkTrooper
 
     public partial class Audio : AudioBase
     {
-        private readonly MediaPlayerElement _player;
+        //private readonly MediaPlayerElement _player;
 
         public Audio(
             Uri uri,
@@ -24,11 +24,11 @@ namespace HonkTrooper
             bool loop = false,
             Action playback = null)
         {
-            _player = new MediaPlayerElement() { AreTransportControlsEnabled = false, };
+            //_player = new MediaPlayerElement() { AreTransportControlsEnabled = false, };
 
-            Windows.Media.Playback.MediaPlayer mediaPlayer = new();
+            //Windows.Media.Playback.MediaPlayer mediaPlayer = new();
 
-            _player.SetMediaPlayer(mediaPlayer);
+            //_player.SetMediaPlayer(mediaPlayer);
 
             Initialize(
                 uri: uri,
@@ -64,64 +64,64 @@ namespace HonkTrooper
 
         public void SetSource(Uri uri)
         {
-            if (_player.MediaPlayer is not null)
-            {
-                Uri newUri = new(uri.OriginalString.Replace("ms-appx:///HonkTrooper/Assets/Sounds/", "ms-appx:///Assets/Sounds/"));
-                _player.MediaPlayer.Source = MediaSource.CreateFromUri(newUri);
-            }
+            //if (_player.MediaPlayer is not null)
+            //{
+            //    Uri newUri = new(uri.OriginalString.Replace("ms-appx:///HonkTrooper/Assets/Sounds/", "ms-appx:///Assets/Sounds/"));
+            //    _player.MediaPlayer.Source = MediaSource.CreateFromUri(newUri);
+            //}
         }
 
         public void SetLoop(bool loop)
         {
-            if (_player.MediaPlayer is not null)
-            {
-                _player.MediaPlayer.IsLoopingEnabled = loop;
-            }
+            //if (_player.MediaPlayer is not null)
+            //{
+            //    _player.MediaPlayer.IsLoopingEnabled = loop;
+            //}
         }
 
         public new void Play()
         {
-            if (_player.MediaPlayer is not null)
-            {
-                _player.MediaPlayer.Play();
-                base.Play();
-            }
+            //if (_player.MediaPlayer is not null)
+            //{
+            //    _player.MediaPlayer.Play();
+            //    base.Play();
+            //}
         }
 
         public new void Stop()
         {
-            if (_player.MediaPlayer is not null)
-            {
-                _player.MediaPlayer.Stop();
-                base.Stop();
-            }
+            //if (_player.MediaPlayer is not null)
+            //{
+            //    _player.MediaPlayer.Stop();
+            //    base.Stop();
+            //}
         }
 
         public new void Pause()
         {
-            if (_player.MediaPlayer is not null)
-            {
-                _player.MediaPlayer.Pause();
-                base.Pause();
-            }
+            //if (_player.MediaPlayer is not null)
+            //{
+            //    _player.MediaPlayer.Pause();
+            //    base.Pause();
+            //}
         }
 
         public new void Resume()
         {
-            if (_player.MediaPlayer is not null)
-            {
-                _player.MediaPlayer.Play();
-                base.Resume();
-            }
+            //if (_player.MediaPlayer is not null)
+            //{
+            //    _player.MediaPlayer.Play();
+            //    base.Resume();
+            //}
         }
 
         public new void SetVolume(double volume)
         {
-            if (_player.MediaPlayer is not null)
-            {
-                _player.MediaPlayer.Volume = volume * 100;
-                base.SetVolume(volume);
-            }
+            //if (_player.MediaPlayer is not null)
+            //{
+            //    _player.MediaPlayer.Volume = volume * 100;
+            //    base.SetVolume(volume);
+            //}
         }
 
         #endregion
