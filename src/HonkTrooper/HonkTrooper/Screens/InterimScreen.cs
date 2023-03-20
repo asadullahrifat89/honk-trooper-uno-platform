@@ -7,14 +7,9 @@ using System.Linq;
 
 namespace HonkTrooper
 {
-    public partial class InterimScreen : Construct
+    public partial class InterimScreen : HoveringTitleScreen
     {
         #region Fields
-
-        private double _hoverDelay;
-        private readonly double _hoverDelayDefault = 15;
-
-        private readonly double _hoverSpeed = 0.3;
 
         private readonly TextBlock _titleScreenText;
 
@@ -55,7 +50,7 @@ namespace HonkTrooper
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center,
                 Margin = new Thickness(0, 0, 0, 5),
-                Foreground = new SolidColorBrush(Colors.White),                
+                Foreground = new SolidColorBrush(Colors.White),
             };
 
             SetChild(_titleScreenText);
@@ -82,54 +77,9 @@ namespace HonkTrooper
             return true;
         }
 
-        public void Reposition()
-        {
-            SetPosition(
-                  left: ((Scene.Width / 4) * 2) - Width / 2,
-                  top: (Scene.Height / 2) - Height / 2,
-                  z: 10);
-        }
-
         public void SetTitle(string title)
         {
             _titleScreenText.Text = title;
-        }
-
-        public void Hover()
-        {
-            if (Scene.IsSlowMotionActivated)
-            {
-                _hoverDelay -= 0.5;
-
-                if (_hoverDelay > 0)
-                {
-                    SetTop(GetTop() + _hoverSpeed / Constants.DEFAULT_SLOW_MOTION_REDUCTION_FACTOR);
-                }
-                else
-                {
-                    SetTop(GetTop() - _hoverSpeed / Constants.DEFAULT_SLOW_MOTION_REDUCTION_FACTOR);
-
-                    if (_hoverDelay <= _hoverDelayDefault * -1)
-                        _hoverDelay = _hoverDelayDefault;
-                }
-            }
-
-            else
-            {
-                _hoverDelay--;
-
-                if (_hoverDelay > 0)
-                {
-                    SetTop(GetTop() + _hoverSpeed);
-                }
-                else
-                {
-                    SetTop(GetTop() - _hoverSpeed);
-
-                    if (_hoverDelay <= _hoverDelayDefault * -1)
-                        _hoverDelay = _hoverDelayDefault;
-                }
-            }
         }
 
         #endregion
