@@ -107,7 +107,7 @@ namespace HonkTrooper
             {
                 _hoverDelay -= 0.5;
 
-                if (_hoverDelay > 0)
+                if (_hoverDelay >= 0)
                 {
                     SetTop(GetTop() + _hoverSpeed / Constants.DEFAULT_SLOW_MOTION_REDUCTION_FACTOR);
                 }
@@ -124,7 +124,7 @@ namespace HonkTrooper
             {
                 _hoverDelay--;
 
-                if (_hoverDelay > 0)
+                if (_hoverDelay >= 0)
                 {
                     SetTop(GetTop() + _hoverSpeed);
                 }
