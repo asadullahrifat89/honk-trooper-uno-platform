@@ -129,7 +129,6 @@ namespace HonkTrooper
 
 #else
 
-
     [HtmlElement("audio")]
     public partial class Audio : AudioBase
     {
@@ -202,32 +201,32 @@ namespace HonkTrooper
 
         public new void Play()
         {
-            base.Play();
             this.ExecuteJavascript("element.currentTime = 0; element.play();");
+            base.Play();
         }
 
         public new void Stop()
         {
-            base.Stop();
             this.ExecuteJavascript("element.pause(); element.currentTime = 0;");
+            base.Stop();
         }
 
         public new void Pause()
         {
-            base.Pause();
             this.ExecuteJavascript("element.pause();");
+            base.Pause();
         }
 
         public new void Resume()
         {
-            base.Resume();
             this.ExecuteJavascript("element.play();");
+            base.Resume();
         }
 
         public new void SetVolume(double volume)
         {
-            base.SetVolume(volume);
             this.ExecuteJavascript($"element.volume = {volume};");
+            base.SetVolume(volume);
         }
 
         #endregion
