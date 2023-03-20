@@ -21,19 +21,15 @@ namespace HonkTrooper
         //private int _move_x_activator;
         //private int _move_y_activator;
 
+        private Func<bool> PauseAction;
+
         #endregion
 
         #region Properties
 
-        #region Public
+        private Button PauseButton { get; set; }
 
-        public Button AttackButton { get; set; }
-
-        public Button PauseButton { get; set; }
-
-        #endregion
-
-        #region Private
+        private Button AttackButton { get; set; }
 
         private Canvas Thumbstick { get; set; }
 
@@ -71,8 +67,6 @@ namespace HonkTrooper
 
         #endregion
 
-        #endregion
-
         #region Ctor
 
         public Controller()
@@ -86,8 +80,6 @@ namespace HonkTrooper
             KeyDown += Controller_KeyDown;
 
             SetThumbstick();
-            //SetKeypad();            
-            //SetGyrometer();
         }
 
         #endregion
@@ -112,7 +104,7 @@ namespace HonkTrooper
             Thumbstick = new Canvas()
             {
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * sizeXY,
-                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * sizeXY,             
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * sizeXY,
                 Background = new SolidColorBrush(Colors.Transparent),
                 RenderTransformOrigin = new Point(1, 1),
                 //RenderTransform = new ScaleTransform() { CenterX = 0.5, CenterY = 0.5, ScaleX = 0.70, ScaleY = 0.70 }
@@ -822,6 +814,11 @@ namespace HonkTrooper
 
         #region Attack
 
+        public void FocusAttackButton()
+        {
+            AttackButton.Focus(FocusState.Programmatic);
+        }
+
         private void SetAttackButton()
         {
             AttackButton = new()
@@ -849,6 +846,11 @@ namespace HonkTrooper
 
         #region Pause
 
+        public void SetPauseAction(Func<bool> pauseAction)
+        {
+            PauseAction = pauseAction;
+        }
+
         private void SetPauseButton()
         {
             PauseButton = new()
@@ -867,6 +869,8 @@ namespace HonkTrooper
                 VerticalAlignment = VerticalAlignment.Top,
                 Margin = new Thickness(20),
             };
+
+            PauseButton.Click += (s, e) => { PauseAction(); };
             this.Children.Add(PauseButton);
         }
 
