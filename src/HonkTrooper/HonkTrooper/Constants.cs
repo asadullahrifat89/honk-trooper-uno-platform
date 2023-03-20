@@ -34,7 +34,7 @@ namespace HonkTrooper
             new (ConstructType.HONK, 90, 90),
             new (ConstructType.CLOUD, 220, 220),
             new (ConstructType.TREE, 180, 180),
-            new (ConstructType.HEDGE, 150, 150),
+            new (ConstructType.HEDGE, 160, 160),
             new (ConstructType.ROAD_MARK, 40, 15),
             new (ConstructType.ROAD_SLAB, 600, 600),
 
