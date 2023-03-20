@@ -62,7 +62,6 @@ namespace HonkTrooper
         public void Reset()
         {
             _audioStub.Play(SoundType.CAR_HONK);
-
             Opacity = 1;
         }
 
