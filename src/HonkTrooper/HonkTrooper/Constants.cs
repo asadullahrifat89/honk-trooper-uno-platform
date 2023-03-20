@@ -19,7 +19,7 @@ namespace HonkTrooper
             new (ConstructType.PLAYER, 165, 165),
             new (ConstructType.PLAYER_ROCKET, 80, 80),
             new (ConstructType.PLAYER_FIRE_CRACKER, 70, 70),
-            new (ConstructType.PLAYER_ROCKET_SEEKING, 80, 80),
+            new (ConstructType.PLAYER_ROCKET_SEEKING, 70, 70),
 
             new (ConstructType.BOSS, 180, 180),
             new (ConstructType.BOSS_ROCKET, 80, 80),
@@ -31,7 +31,7 @@ namespace HonkTrooper
             new (ConstructType.VEHICLE_SMALL, 210, 210),
             new (ConstructType.VEHICLE_LARGE, 240, 240),
 
-            new (ConstructType.CLOUD, 220, 220),
+            new (ConstructType.CLOUD, 260, 260),
 
             new (ConstructType.TREE, 190, 190),
             new (ConstructType.HEDGE, 160, 160),
@@ -50,7 +50,11 @@ namespace HonkTrooper
 
         public static (ConstructType ConstructType, Uri Uri)[] CONSTRUCT_TEMPLATES = new (ConstructType, Uri)[]
         {
-            new (ConstructType.TREE, new Uri("ms-appx:///HonkTrooper/Assets/Images/tree_E.png")),
+            new (ConstructType.TREE, new Uri("ms-appx:///HonkTrooper/Assets/Images/tree_1.png")),
+            new (ConstructType.TREE, new Uri("ms-appx:///HonkTrooper/Assets/Images/tree_2.png")),
+            new (ConstructType.TREE, new Uri("ms-appx:///HonkTrooper/Assets/Images/tree_3.png")),
+            new (ConstructType.TREE, new Uri("ms-appx:///HonkTrooper/Assets/Images/tree_4.png")),
+
             new (ConstructType.HEDGE, new Uri("ms-appx:///HonkTrooper/Assets/Images/hedge_E.png")),
 
             new (ConstructType.VEHICLE_SMALL, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_small_1.png")),

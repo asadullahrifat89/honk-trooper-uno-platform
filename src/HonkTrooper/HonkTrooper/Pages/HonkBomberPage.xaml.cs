@@ -75,7 +75,7 @@ namespace HonkTrooper
             _audio_stub = new AudioStub(
                 (SoundType.GAME_BACKGROUND_MUSIC, 0.5, true),
                 (SoundType.BOSS_BACKGROUND_MUSIC, 0.5, true),
-                (SoundType.AMBIENCE, 0.5, true),
+                (SoundType.AMBIENCE, 0.6, true),
                 (SoundType.GAME_START, 1, false),
                 (SoundType.GAME_PAUSE, 1, false),
                 (SoundType.GAME_OVER, 1, false),
@@ -1154,7 +1154,7 @@ namespace HonkTrooper
 
         private bool SpawnCloudsInScene()
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 5; i++)
             {
                 Cloud cloud = new(
                     animateAction: AnimateCloud,
@@ -1377,7 +1377,7 @@ namespace HonkTrooper
 
                 _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
 
-                _audio_stub.SetVolume(SoundType.AMBIENCE, 0.5);
+                _audio_stub.SetVolume(SoundType.AMBIENCE, 0.6);
 
                 boss.IsAttacking = false;
 
@@ -1756,7 +1756,7 @@ namespace HonkTrooper
 
         private bool SpawnPlayerRocketsInScene()
         {
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 5; i++)
             {
                 PlayerRocket bomb = new(
                     animateAction: AnimatePlayerRocket,
@@ -1893,10 +1893,10 @@ namespace HonkTrooper
 
         private bool RecyclePlayerRocket(Construct playerRocket)
         {
-            //var hitbox = playerRocket.GetHitBox();
+            var hitbox = playerRocket.GetHitBox();
 
             // if bomb is blasted and faed or goes out of scene bounds
-            if (playerRocket.IsFadingComplete /*|| hitbox.Left > _scene_game.Width || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Top > _scene_game.Height*/)
+            if (playerRocket.IsFadingComplete || hitbox.Left > _scene_game.Width || hitbox.Right < 0 /*|| hitbox.Top < 0 || hitbox.Top > _scene_game.Height*/)
             {
                 playerRocket.IsAnimating = false;
 
@@ -2794,7 +2794,7 @@ namespace HonkTrooper
                     generationDelay: 12,
                     generationAction: GenerateHedgeInSceneBottom,
                     startUpAction: SpawnHedgesInScene),
-                             
+
                 // then add the bottom trees which will appear forward in z wrt to the vehicles
                 new Generator(
                     generationDelay: 30,
@@ -2825,9 +2825,10 @@ namespace HonkTrooper
 
                 // add the clouds which are above the player z
                 new Generator(
-                    generationDelay: 100,
+                    generationDelay: 400,
                     generationAction: GenerateCloudInScene,
-                    startUpAction: SpawnCloudsInScene),
+                    startUpAction: SpawnCloudsInScene,
+                    randomizeGenerationDelay: true),
 
                 new Generator(
                     generationDelay: 100,
