@@ -77,14 +77,6 @@ namespace HonkTrooper
             return true;
         }
 
-        public void Reposition()
-        {
-            SetPosition(
-                  left: ((Scene.Width / 4) * 2) - Width / 2,
-                  top: (Scene.Height / 2) - Height / 2,
-                  z: 10);
-        }
-
         public void SetTitle(string title)
         {
             _titleScreenText.Text = title;
