@@ -99,7 +99,7 @@ namespace HonkTrooper
              *   ----------
              */
 
-            var diviWidth = Construct.Width / 4;            
+            var diviWidth = Construct.Width / 4;
 
             var rect = new Rect(
                 x: Construct.GetLeft() - diviWidth,
