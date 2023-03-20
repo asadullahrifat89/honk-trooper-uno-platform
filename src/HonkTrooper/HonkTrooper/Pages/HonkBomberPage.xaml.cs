@@ -1756,7 +1756,7 @@ namespace HonkTrooper
 
         private bool SpawnPlayerRocketsInScene()
         {
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 5; i++)
             {
                 PlayerRocket bomb = new(
                     animateAction: AnimatePlayerRocket,
