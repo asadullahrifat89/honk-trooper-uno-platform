@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace HonkTrooper
 {
-    public partial class PlayerRocketSeeking : BombSeeking
+    public partial class PlayerRocketSeeking : RocketSeeking
     {
         #region Fields
 
