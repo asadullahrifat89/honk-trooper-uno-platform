@@ -2781,7 +2781,7 @@ namespace HonkTrooper
 
                 // then add the top Hedges
                 new Generator(
-                    generationDelay: 10,
+                    generationDelay: 12,
                     generationAction: GenerateHedgeInSceneTop,
                     startUpAction: SpawnHedgesInScene),
 
@@ -2793,7 +2793,7 @@ namespace HonkTrooper
 
                 // then add the bottom Hedges which will appear forward in z wrt to the vehicles
                 new Generator(
-                    generationDelay: 10,
+                    generationDelay: 12,
                     generationAction: GenerateHedgeInSceneBottom,
                     startUpAction: SpawnHedgesInScene),
 
