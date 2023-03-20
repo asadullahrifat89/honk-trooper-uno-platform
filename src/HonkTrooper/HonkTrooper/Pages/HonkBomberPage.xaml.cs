@@ -75,7 +75,7 @@ namespace HonkTrooper
             _audio_stub = new AudioStub(
                 (SoundType.GAME_BACKGROUND_MUSIC, 0.5, true),
                 (SoundType.BOSS_BACKGROUND_MUSIC, 0.5, true),
-                (SoundType.AMBIENCE, 0.5, true),
+                (SoundType.AMBIENCE, 0.6, true),
                 (SoundType.GAME_START, 1, false),
                 (SoundType.GAME_PAUSE, 1, false),
                 (SoundType.GAME_OVER, 1, false),
@@ -1377,7 +1377,7 @@ namespace HonkTrooper
 
                 _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
 
-                _audio_stub.SetVolume(SoundType.AMBIENCE, 0.5);
+                _audio_stub.SetVolume(SoundType.AMBIENCE, 0.6);
 
                 boss.IsAttacking = false;
 
@@ -1893,10 +1893,10 @@ namespace HonkTrooper
 
         private bool RecyclePlayerRocket(Construct playerRocket)
         {
-            //var hitbox = playerRocket.GetHitBox();
+            var hitbox = playerRocket.GetHitBox();
 
             // if bomb is blasted and faed or goes out of scene bounds
-            if (playerRocket.IsFadingComplete /*|| hitbox.Left > _scene_game.Width || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Top > _scene_game.Height*/)
+            if (playerRocket.IsFadingComplete || hitbox.Left > _scene_game.Width || hitbox.Right < 0 /*|| hitbox.Top < 0 || hitbox.Top > _scene_game.Height*/)
             {
                 playerRocket.IsAnimating = false;
 
