@@ -1002,7 +1002,7 @@ namespace HonkTrooper
 
                 tree.SetPosition(
                   left: (_scene_game.Width / 2 - tree.Width) * _scene_game.DownScaling,
-                  top: tree.Height * -1,
+                  top: (tree.Height * 1.1) * -1,
                   z: 2);
 
                 SyncDropShadow(tree);
@@ -1910,7 +1910,7 @@ namespace HonkTrooper
                 else if (bossRocketSeeking is not null)
                 {
                     SetPlayerRocketDirection(source: _player, rocket: playerRocket, rocketTarget: bossRocketSeeking);
-                }               
+                }
 
                 return true;
             }
