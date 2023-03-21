@@ -23,9 +23,9 @@ namespace HonkTrooper
             Func<Construct, bool> recycleAction,
             double downScaling)
         {
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.DROP_SHADOW);
-
             ConstructType = ConstructType.DROP_SHADOW;
+
+            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.DROP_SHADOW);
 
             var width = size.Width * downScaling;
             var height = size.Height * downScaling;
@@ -63,12 +63,12 @@ namespace HonkTrooper
         }
 
         public void SyncWidth()
-        {            
+        {
             if (Width != ParentConstruct.Width * 0.6)
                 Width = ParentConstruct.Width * 0.6;
         }
 
-        public void Move()
+        public void MoveDownRight()
         {
             SetLeft((ParentConstruct.GetLeft() + ParentConstruct.Width / 2) - Width / 2);
 
@@ -80,6 +80,16 @@ namespace HonkTrooper
             {
                 SetTop(ParentConstruct.GetBottom() + ParentConstruct.DropShadowDistance);
             }
+        }
+
+        public void MoveRight()
+        {
+            SetLeft((ParentConstruct.GetLeft() + ParentConstruct.Width / 2) - Width / 2);
+        }
+
+        public void MoveLeft()
+        {
+            SetLeft((ParentConstruct.GetLeft() - ParentConstruct.Width / 2) - Width / 2);
         }
 
         #endregion      
