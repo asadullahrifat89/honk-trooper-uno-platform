@@ -920,7 +920,7 @@ namespace HonkTrooper
                 roadSideGrass.IsAnimating = true;
 
                 roadSideGrass.SetPosition(
-                    left: (_scene_game.Width / 2 - roadSideGrass.Width / 1.5) * _scene_game.DownScaling,
+                    left: (_scene_game.Width / 2 - roadSideGrass.Width) * _scene_game.DownScaling,
                     top: (-roadSideGrass.Height) * _scene_game.DownScaling);
 
                 return true;
@@ -975,7 +975,7 @@ namespace HonkTrooper
 
         private bool SpawnHedgesInScene()
         {
-            for (int i = 0; i < 18; i++)
+            for (int i = 0; i < 15; i++)
             {
                 Hedge hedge = new(
                     animateAction: AnimateHedge,
@@ -2841,12 +2841,12 @@ namespace HonkTrooper
         {
             // first add road Borders
             _scene_game.AddToScene(new Generator(
-                generationDelay: 38,
+                generationDelay: 40,
                 generationAction: GenerateRoadSideGrassInSceneBottom,
                 startUpAction: SpawnRoadSideGrasssInScene));
 
             _scene_game.AddToScene(new Generator(
-               generationDelay: 38,
+               generationDelay: 40,
                generationAction: GenerateRoadSideGrassInSceneTop,
                startUpAction: SpawnRoadSideGrasssInScene));
 
@@ -2864,22 +2864,10 @@ namespace HonkTrooper
                     generationAction: GenerateTreeInSceneTop,
                     startUpAction: SpawnTreesInScene),
 
-                // then add the bottom trees which will appear forward in z wrt to the vehicles
-                new Generator(
-                    generationDelay: 30,
-                    generationAction: GenerateTreeInSceneBottom,
-                    startUpAction: SpawnTreesInScene),
-
                 // then add the top Hedges
                 new Generator(
-                    generationDelay: 10,
+                    generationDelay: 12,
                     generationAction: GenerateHedgeInSceneTop,
-                    startUpAction: SpawnHedgesInScene),
-
-                // then add the bottom Hedges which will appear forward in z wrt to the vehicles
-                new Generator(
-                    generationDelay: 10,
-                    generationAction: GenerateHedgeInSceneBottom,
                     startUpAction: SpawnHedgesInScene),
 
                 // then add the vehicles which will appear forward in z wrt the top trees
@@ -2887,6 +2875,18 @@ namespace HonkTrooper
                     generationDelay: 100,
                     generationAction: GenerateVehicleInScene,
                     startUpAction: SpawnVehiclesInScene),
+
+                // then add the bottom Hedges which will appear forward in z wrt to the vehicles
+                new Generator(
+                    generationDelay: 12,
+                    generationAction: GenerateHedgeInSceneBottom,
+                    startUpAction: SpawnHedgesInScene),
+
+                // then add the bottom trees which will appear forward in z wrt to the vehicles
+                new Generator(
+                    generationDelay: 30,
+                    generationAction: GenerateTreeInSceneBottom,
+                    startUpAction: SpawnTreesInScene),
 
                 // add the honks which will appear forward in z wrt to everything on the road
                 new Generator(
