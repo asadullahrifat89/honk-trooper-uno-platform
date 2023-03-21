@@ -27,8 +27,9 @@ namespace HonkTrooper
             RecycleAction = recycleAction;
 
             Background = App.Current.Resources["RoadForegroundColor"] as SolidColorBrush;
-            BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS, 0);
             BorderBrush = App.Current.Resources["RoadBorderColor"] as SolidColorBrush;
+
+            BorderThickness = new Thickness(leftRight: Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS, topBottom: 0);            
 
             SetSkewY(42);
             SetRotation(-63.5);
