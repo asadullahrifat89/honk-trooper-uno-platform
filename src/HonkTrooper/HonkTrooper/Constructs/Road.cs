@@ -16,12 +16,12 @@ namespace HonkTrooper
         {
             ConstructType = ConstructType.ROAD;
 
-            //var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.ROAD);
+            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.ROAD);
 
-            //var width = size.Width * downScaling;
-            //var height = size.Height * downScaling;
+            var width = size.Width * downScaling;
+            var height = size.Height * downScaling;
 
-            //SetSize(width: width, height: height);
+            SetSize(width: width, height: height);
 
             AnimateAction = animateAction;
             RecycleAction = recycleAction;
