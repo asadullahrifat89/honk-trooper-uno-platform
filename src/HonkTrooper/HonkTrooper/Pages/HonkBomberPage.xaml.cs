@@ -2925,15 +2925,15 @@ namespace HonkTrooper
         {
             // add road
 
-            _scene_game.AddToScene(new Generator(
-               generationDelay: 40,
-               generationAction: GenerateRoadInSceneTop,
-               startUpAction: SpawnRoadsInScene));
+            //_scene_game.AddToScene(new Generator(
+            //   generationDelay: 40,
+            //   generationAction: GenerateRoadInSceneTop,
+            //   startUpAction: SpawnRoadsInScene));
 
-            _scene_game.AddToScene(new Generator(
-                generationDelay: 40,
-                generationAction: GenerateRoadInSceneBottom,
-                startUpAction: SpawnRoadsInScene));
+            //_scene_game.AddToScene(new Generator(
+            //    generationDelay: 40,
+            //    generationAction: GenerateRoadInSceneBottom,
+            //    startUpAction: SpawnRoadsInScene));
 
             // add road Borders
             _scene_game.AddToScene(new Generator(
