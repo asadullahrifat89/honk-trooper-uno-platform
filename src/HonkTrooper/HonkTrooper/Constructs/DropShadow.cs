@@ -68,7 +68,7 @@ namespace HonkTrooper
                 Width = ParentConstruct.Width * 0.6;
         }
 
-        public void MoveDownRight()
+        public void Move()
         {
             SetLeft((ParentConstruct.GetLeft() + ParentConstruct.Width / 2) - Width / 2);
 
@@ -82,16 +82,6 @@ namespace HonkTrooper
             }
         }
 
-        public void MoveRight()
-        {
-            SetLeft((ParentConstruct.GetLeft() + ParentConstruct.Width / 2) - Width / 2);
-        }
-
-        public void MoveLeft()
-        {
-            SetLeft((ParentConstruct.GetLeft() - ParentConstruct.Width / 2) - Width / 2);
-        }
-
-        #endregion      
+        #endregion
     }
 }
