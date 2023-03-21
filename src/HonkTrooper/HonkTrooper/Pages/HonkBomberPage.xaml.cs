@@ -904,7 +904,8 @@ namespace HonkTrooper
 
                 RoadSideGrass.SetPosition(
                     left: -1500,
-                    top: -1500);
+                    top: -1500,
+                    z: 0);
 
                 _scene_game.AddToScene(RoadSideGrass);
             }
@@ -919,9 +920,8 @@ namespace HonkTrooper
                 roadSideGrass.IsAnimating = true;
 
                 roadSideGrass.SetPosition(
-                    left: (_scene_game.Width / 2 - roadSideGrass.Width + 37) * _scene_game.DownScaling,
-                    top: (roadSideGrass.Height * -1 - 37) * _scene_game.DownScaling,
-                    z: roadSideGrass.GetZ() - 1);
+                    left: (_scene_game.Width / 2 - roadSideGrass.Width) * _scene_game.DownScaling,
+                    top: (-roadSideGrass.Height) * _scene_game.DownScaling);
 
                 return true;
             }
@@ -936,9 +936,8 @@ namespace HonkTrooper
                 roadSideGrass.IsAnimating = true;
 
                 roadSideGrass.SetPosition(
-                    left: (-1 * roadSideGrass.Width) * _scene_game.DownScaling,
-                    top: (_scene_game.Height / 2 + 37) * _scene_game.DownScaling,
-                    z: roadSideGrass.GetZ() - 1);
+                    left: (roadSideGrass.Width * -1) * _scene_game.DownScaling,
+                    top: (_scene_game.Height / 2 - 100) * _scene_game.DownScaling);
 
                 return true;
             }
