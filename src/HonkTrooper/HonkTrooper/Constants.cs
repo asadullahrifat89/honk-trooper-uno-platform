@@ -16,7 +16,7 @@ namespace HonkTrooper
         public const double DEFAULT_ISOMETRIC_DISPLACEMENT = 0.5;
 
 
-        public static (ConstructType ConstructType, double Height, double Width)[] CONSTRUCT_SIZES = new (ConstructType, double, double)[]
+        public static (ConstructType ConstructType, double Width, double Height)[] CONSTRUCT_SIZES = new (ConstructType, double, double)[]
         {
             new (ConstructType.PLAYER, 165, 165),
             new (ConstructType.PLAYER_ROCKET, 80, 80),
@@ -39,15 +39,17 @@ namespace HonkTrooper
             new (ConstructType.HEDGE, 160, 160),
 
             new (ConstructType.HONK, 90, 90),
-            new (ConstructType.ROAD_MARK, 40, 15),
 
-            new (ConstructType.DROP_SHADOW, 25, 60),
+            new (ConstructType.ROAD_MARK, 15, 40),
+            new (ConstructType.ROAD_BORDER, 100, 300),
+
+            new (ConstructType.DROP_SHADOW, 60, 25),
 
             new (ConstructType.HEALTH_PICKUP, 100, 100),
             new (ConstructType.POWERUP_PICKUP, 100, 100),
 
-            new (ConstructType.TITLE_SCREEN, 400, DEFAULT_CONTROLLER_KEY_SIZE * 10),
-            new (ConstructType.INTERIM_SCREEN, 400, DEFAULT_CONTROLLER_KEY_SIZE * 10),
+            new (ConstructType.TITLE_SCREEN, DEFAULT_CONTROLLER_KEY_SIZE * 10, 400),
+            new (ConstructType.INTERIM_SCREEN, DEFAULT_CONTROLLER_KEY_SIZE * 10, 400),
         };
 
         public static (ConstructType ConstructType, Uri Uri)[] CONSTRUCT_TEMPLATES = new (ConstructType, Uri)[]
@@ -226,12 +228,17 @@ namespace HonkTrooper
         VEHICLE_LARGE,
 
         ROAD_MARK,
-        HONK,
+        ROAD_BORDER,
+
         TREE,
         HEDGE,
+
+        HONK,
+
         CLOUD,
 
         BOMB_BLAST,
+
         DROP_SHADOW,
 
         BOSS,

@@ -159,7 +159,50 @@ namespace HonkTrooper
             _enemy_fleet_appeared = false;
 
             GeneratePlayerInScene();
+            RepositionLogicalConstructs();
 
+            _scene_game.SceneState = SceneState.GAME_RUNNING;
+
+            if (!_scene_game.IsAnimating)
+                _scene_game.Play();
+
+            _scene_main_menu.Pause();
+
+            ToggleHudVisibility(Visibility.Visible);
+
+            _game_controller.FocusAttackButton();
+
+            _game_controller.SetDefaultThumbstickPosition();
+            _game_controller.ActivateGyrometerReading();
+        }      
+
+        private void GameOver()
+        {
+            // if player is dead game keeps playing in the background but scene state goes to game over
+            if (_player.IsDead)
+            {
+                _audio_stub.Stop(SoundType.AMBIENCE, SoundType.GAME_BACKGROUND_MUSIC/*, SoundType.BOSS_BACKGROUND_MUSIC*/);
+
+                if (_scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating) is Boss boss)
+                {
+                    boss.SetWinStance();
+                    boss.StopSoundLoop();
+                }
+
+                _audio_stub.Play(SoundType.GAME_OVER);
+
+                _scene_main_menu.Play();
+                _scene_game.SceneState = SceneState.GAME_STOPPED;
+
+                ToggleHudVisibility(Visibility.Collapsed);
+                GenerateTitleScreenInScene("Game Over");
+
+                _game_controller.DeactivateGyrometerReading();
+            }
+        }
+
+        private void RepositionLogicalConstructs()
+        {
             foreach (var construct in _scene_game.Children.OfType<Construct>()
                 .Where(x => x.ConstructType is
                 ConstructType.VEHICLE_LARGE or
@@ -188,44 +231,13 @@ namespace HonkTrooper
                     boss1.Health = 0;
                 }
             }
-
-            _scene_game.SceneState = SceneState.GAME_RUNNING;
-
-            if (!_scene_game.IsAnimating)
-                _scene_game.Play();
-
-            _scene_main_menu.Pause();
-
-            ToggleHudVisibility(Visibility.Visible);
-
-            _game_controller.FocusAttackButton();
-
-            _game_controller.SetDefaultThumbstickPosition();
-            _game_controller.ActivateGyrometerReading();
         }
 
-        private void GameOver()
+        private void RepositionHoveringTitleScreens()
         {
-            // if player is dead game keeps playing in the background but scene state goes to game over
-            if (_player.IsDead)
+            foreach (var screen in _scene_main_menu.Children.OfType<HoveringTitleScreen>().Where(x => x.IsAnimating))
             {
-                _audio_stub.Stop(SoundType.AMBIENCE, SoundType.GAME_BACKGROUND_MUSIC/*, SoundType.BOSS_BACKGROUND_MUSIC*/);
-
-                if (_scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating) is Boss boss)
-                {
-                    boss.SetWinStance();
-                    boss.StopSoundLoop();
-                }
-
-                _audio_stub.Play(SoundType.GAME_OVER);
-
-                _scene_main_menu.Play();
-                _scene_game.SceneState = SceneState.GAME_STOPPED;
-
-                ToggleHudVisibility(Visibility.Collapsed);
-                GenerateTitleScreenInScene("Game Over");
-
-                _game_controller.DeactivateGyrometerReading();
+                screen.Reposition();
             }
         }
 
@@ -872,6 +884,87 @@ namespace HonkTrooper
                 roadMark.SetPosition(
                     left: -500,
                     top: -500);
+            }
+
+            return true;
+        }
+
+        #endregion
+
+        #region RoadBorder
+
+        private bool SpawnRoadBordersInScene()
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                RoadBorder roadBorder = new(
+                animateAction: AnimateRoadBorder,
+                recycleAction: RecycleRoadBorder,
+                downScaling: _scene_game.DownScaling);
+
+                roadBorder.SetPosition(
+                    left: -1500,
+                    top: -1500,
+                    z: 0);
+
+                _scene_game.AddToScene(roadBorder);
+            }
+
+            return true;
+        }
+
+        private bool GenerateRoadBorderInSceneBottom()
+        {
+            if (_scene_game.Children.OfType<RoadBorder>().FirstOrDefault(x => x.IsAnimating == false) is RoadBorder roadBorder)
+            {
+                roadBorder.IsAnimating = true;
+
+                roadBorder.SetPosition(
+                              left: (roadBorder.Height * -1) * _scene_game.DownScaling,
+                              top: (_scene_game.Height / 1.5) * _scene_game.DownScaling,
+                              z: 0);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool GenerateRoadBorderInSceneTop()
+        {
+            if (_scene_game.Children.OfType<RoadBorder>().FirstOrDefault(x => x.IsAnimating == false) is RoadBorder roadBorder)
+            {
+                roadBorder.IsAnimating = true;
+
+                roadBorder.SetPosition(
+                 left: (_scene_game.Width / 2 - roadBorder.Width) * _scene_game.DownScaling,
+                 top: roadBorder.Height * -1,
+                 z: 2);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimateRoadBorder(Construct roadBorder)
+        {
+            var speed = (_scene_game.Speed + roadBorder.SpeedOffset);
+            MoveConstructBottomRight(construct: roadBorder, speed: speed);
+            return true;
+        }
+
+        private bool RecycleRoadBorder(Construct roadBorder)
+        {
+            var hitBox = roadBorder.GetHitBox();
+
+            if (hitBox.Top > _scene_game.Height || hitBox.Left - roadBorder.Width > _scene_game.Width)
+            {
+                roadBorder.IsAnimating = false;
+
+                roadBorder.SetPosition(
+                    left: -1500,
+                    top: -1500);
             }
 
             return true;
@@ -2751,17 +2844,16 @@ namespace HonkTrooper
 
         private void AddGeneratorsToScene()
         {
-            //// first add road slabs
-            //_scene_game.AddToScene(new Generator(
-            //    generationDelay: 70,
-            //    generationAction: GenerateRoadSlabInSceneTop,
-            //    startUpAction: SpawnRoadSlabsInScene));
+            // first add road Borders
+            _scene_game.AddToScene(new Generator(
+                generationDelay: 60,
+                generationAction: GenerateRoadBorderInSceneBottom,
+                startUpAction: SpawnRoadBordersInScene));
 
-            //// first add road slabs
-            //_scene_game.AddToScene(new Generator(
-            //    generationDelay: 70,
-            //    generationAction: GenerateRoadSlabInSceneBottom,
-            //    startUpAction: SpawnRoadSlabsInScene));
+            _scene_game.AddToScene(new Generator(
+               generationDelay: 60,
+               generationAction: GenerateRoadBorderInSceneTop,
+               startUpAction: SpawnRoadBordersInScene));
 
             _scene_game.AddToScene(
 
@@ -2966,11 +3058,9 @@ namespace HonkTrooper
                 SyncDropShadow(_player);
             }
 
-            foreach (var screen in _scene_main_menu.Children.OfType<HoveringTitleScreen>().Where(x => x.IsAnimating))
-            {
-                screen.Reposition();
-            }
-        }
+            RepositionHoveringTitleScreens();
+            RepositionLogicalConstructs();
+        }      
 
         private void DisplayInformation_OrientationChanged(DisplayInformation sender, object args)
         {
