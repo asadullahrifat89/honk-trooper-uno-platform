@@ -41,7 +41,7 @@ namespace HonkTrooper
             new (ConstructType.HONK, 90, 90),
 
             new (ConstructType.ROAD_MARK, 15, 40),
-            new (ConstructType.ROAD_SIDE_GRASS, 675, 360),
+            new (ConstructType.ROAD_BORDER, 100, 300),
 
             new (ConstructType.DROP_SHADOW, 60, 25),
 
@@ -60,7 +60,6 @@ namespace HonkTrooper
             new (ConstructType.TREE, new Uri("ms-appx:///HonkTrooper/Assets/Images/tree_4.png")),
 
             new (ConstructType.HEDGE, new Uri("ms-appx:///HonkTrooper/Assets/Images/hedge_E.png")),
-            new (ConstructType.ROAD_SIDE_GRASS, new Uri("ms-appx:///HonkTrooper/Assets/Images/road_side_grass.png")),
 
             new (ConstructType.VEHICLE_SMALL, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_small_1.png")),
             new (ConstructType.VEHICLE_SMALL, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_small_2.png")),
@@ -229,7 +228,7 @@ namespace HonkTrooper
         VEHICLE_LARGE,
 
         ROAD_MARK,
-        ROAD_SIDE_GRASS,
+        ROAD_BORDER,
 
         TREE,
         HEDGE,
