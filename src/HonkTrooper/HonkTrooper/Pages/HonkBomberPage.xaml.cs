@@ -919,8 +919,8 @@ namespace HonkTrooper
                 road.IsAnimating = true;
 
                 road.SetPosition(
-                    left: (-1 * road.Width * 2) * _scene_game.DownScaling,
-                    top: (_scene_game.Height / 4) * _scene_game.DownScaling,
+                    left: (-1.5 * road.Width) * _scene_game.DownScaling,
+                    top: (_scene_game.Height / 2.7) * _scene_game.DownScaling,
                     z: 0);
 
                 return true;
@@ -2908,7 +2908,7 @@ namespace HonkTrooper
         {
             // add road
             _scene_game.AddToScene(new Generator(
-                generationDelay: 60,
+                generationDelay: 45,
                 generationAction: GenerateRoadInSceneBottom,
                 startUpAction: SpawnRoadsInScene));
 
