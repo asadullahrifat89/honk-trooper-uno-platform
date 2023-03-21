@@ -891,6 +891,86 @@ namespace HonkTrooper
 
         #endregion
 
+        #region Road
+
+        private bool SpawnRoadsInScene()
+        {
+            for (int i = 0; i < 15; i++)
+            {
+                Road Road = new(
+                    animateAction: AnimateRoad,
+                    recycleAction: RecycleRoad,
+                    downScaling: _scene_game.DownScaling);
+
+                Road.SetPosition(
+                    left: -500,
+                    top: -500);
+
+                _scene_game.AddToScene(Road);
+            }
+
+            return true;
+        }
+
+        private bool GenerateRoadInSceneTop()
+        {
+            if (_scene_game.Children.OfType<Road>().FirstOrDefault(x => x.IsAnimating == false) is Road road)
+            {
+                road.IsAnimating = true;
+
+                road.SetPosition(
+                    left: (_scene_game.Width / 2 - road.Width * 1.54) * _scene_game.DownScaling,
+                    top: road.Height * -1,
+                    z: 0);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool GenerateRoadInSceneBottom()
+        {
+            if (_scene_game.Children.OfType<Road>().FirstOrDefault(x => x.IsAnimating == false) is Road road)
+            {
+                road.IsAnimating = true;
+
+                road.SetPosition(
+                    left: (-1.65 * road.Width) * _scene_game.DownScaling,
+                    top: (_scene_game.Height / 2.7) * _scene_game.DownScaling,
+                    z: 0);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimateRoad(Construct road)
+        {
+            var speed = (_scene_game.Speed + road.SpeedOffset);
+            MoveConstructBottomRight(construct: road, speed: speed);
+            return true;
+        }
+
+        private bool RecycleRoad(Construct road)
+        {
+            var hitBox = road.GetHitBox();
+
+            if (hitBox.Top > _scene_game.Height || hitBox.Left - road.Width > _scene_game.Width)
+            {
+                road.IsAnimating = false;
+
+                road.SetPosition(
+                    left: -500,
+                    top: -500);
+            }
+
+            return true;
+        }
+
+        #endregion
+
         #region RoadBorder
 
         private bool SpawnRoadBordersInScene()
@@ -1022,7 +1102,7 @@ namespace HonkTrooper
                 tree.IsAnimating = true;
 
                 tree.SetPosition(
-                  left: -1 * tree.Width * _scene_game.DownScaling,
+                  left: (-1 * tree.Width) * _scene_game.DownScaling,
                   top: (_scene_game.Height / 2) * _scene_game.DownScaling,
                   z: 4);
 
@@ -2843,7 +2923,19 @@ namespace HonkTrooper
 
         private void AddGeneratorsToScene()
         {
-            // first add road Borders
+            // add road
+
+            //_scene_game.AddToScene(new Generator(
+            //   generationDelay: 40,
+            //   generationAction: GenerateRoadInSceneTop,
+            //   startUpAction: SpawnRoadsInScene));
+
+            //_scene_game.AddToScene(new Generator(
+            //    generationDelay: 40,
+            //    generationAction: GenerateRoadInSceneBottom,
+            //    startUpAction: SpawnRoadsInScene));
+
+            // add road Borders
             _scene_game.AddToScene(new Generator(
                 generationDelay: 60,
                 generationAction: GenerateRoadBorderInSceneBottom,
