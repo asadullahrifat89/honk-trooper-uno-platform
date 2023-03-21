@@ -62,7 +62,6 @@
     <None Remove="Assets\Images\enemy_1.png" />
     <None Remove="Assets\Images\enemy_2.png" />
     <None Remove="Assets\Images\enemy_bomb.png" />
-    <None Remove="Assets\Images\Grass.png" />
     <None Remove="Assets\Images\health_pickup.png" />
     <None Remove="Assets\Images\hedge_E.png" />
     <None Remove="Assets\Images\honk_1.png" />
@@ -79,6 +78,7 @@
     <None Remove="Assets\Images\player_bomb_seeking_2.png" />
     <None Remove="Assets\Images\power_up_pickup_force_shield.png" />
     <None Remove="Assets\Images\power_up_pickup_seeking_balls.png" />
+    <None Remove="Assets\Images\road_side_grass.png" />
     <None Remove="Assets\Images\tree_1.png" />
     <None Remove="Assets\Images\tree_2.png" />
     <None Remove="Assets\Images\tree_3.png" />
