@@ -909,8 +909,25 @@ namespace HonkTrooper
 
                 roadBorder.SetPosition(
                               left: (roadBorder.Height * -1) * _scene_game.DownScaling,
-                              top: (_scene_game.Height / 2) * _scene_game.DownScaling,
+                              top: (_scene_game.Height / 1.6) * _scene_game.DownScaling,
                               z: 0);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool GenerateRoadBorderInSceneTop()
+        {
+            if (_scene_game.Children.OfType<RoadBorder>().FirstOrDefault(x => x.IsAnimating == false) is RoadBorder roadBorder)
+            {
+                roadBorder.IsAnimating = true;
+
+                roadBorder.SetPosition(
+                 left: (_scene_game.Width / 2 - roadBorder.Width) * _scene_game.DownScaling,
+                 top: roadBorder.Height * -1,
+                 z: 2);
 
                 return true;
             }
@@ -2820,6 +2837,11 @@ namespace HonkTrooper
                 generationDelay: 60,
                 generationAction: GenerateRoadBorderInSceneBottom,
                 startUpAction: SpawnRoadBordersInScene));
+
+            _scene_game.AddToScene(new Generator(
+               generationDelay: 60,
+               generationAction: GenerateRoadBorderInSceneTop,
+               startUpAction: SpawnRoadBordersInScene));
 
             _scene_game.AddToScene(
 
