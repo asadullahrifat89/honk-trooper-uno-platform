@@ -2404,7 +2404,7 @@ namespace HonkTrooper
             _scene_game.AddToScene(dropShadow);
 
             dropShadow.SetParent(construct: source);
-            dropShadow.MoveDownRight();
+            dropShadow.Move();
             dropShadow.SetZ(source.GetZ() - 1);
 
             return true;
@@ -2414,7 +2414,7 @@ namespace HonkTrooper
         {
             DropShadow dropShadow = construct as DropShadow;
             dropShadow.SyncWidth();
-            dropShadow.MoveDownRight();
+            dropShadow.Move();
 
             return true;
         }
