@@ -12,6 +12,7 @@
 
     <!--  Add resources here  -->
     <SolidColorBrush x:Key="RoadBackgroundColor" Color="#9b9391" />
+    <SolidColorBrush x:Key="RoadForegroundColor" Color="#5e6b73" />
 
     <!--<FontFamily x:Key="DefaultFontFamily">ms-appx:///HonkTrooper/Assets/Fonts/CuteyPatchy.ttf#CuteyPatchy</FontFamily>-->
     <FontFamily x:Key="DefaultFontFamily">ms-appx:///HonkTrooper/Assets/Fonts/Gameplay.ttf#Gameplay</FontFamily>

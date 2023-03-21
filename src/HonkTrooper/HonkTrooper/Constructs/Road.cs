@@ -1,33 +1,32 @@
 ﻿using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml;
-using Microsoft.UI;
 using System;
 using System.Linq;
 
 namespace HonkTrooper
 {
-    public partial class RoadMark : Construct
+    public partial class Road : Construct
     {
         #region Ctor
 
-        public RoadMark(
+        public Road(
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction,
             double downScaling)
         {
-            ConstructType = ConstructType.ROAD_MARK;
+            ConstructType = ConstructType.ROAD;
 
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.ROAD_MARK);
+            //var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.ROAD);
 
-            var width = size.Width * downScaling;
-            var height = size.Height * downScaling;
+            //var width = size.Width * downScaling;
+            //var height = size.Height * downScaling;
 
-            SetSize(width: width, height: height);
+            //SetSize(width: width, height: height);
 
             AnimateAction = animateAction;
             RecycleAction = recycleAction;
 
-            Background = new SolidColorBrush(Colors.White);
+            Background = App.Current.Resources["RoadForegroundColor"] as SolidColorBrush;
             CornerRadius = new CornerRadius(5);
 
             SetSkewY(42);
