@@ -174,7 +174,7 @@ namespace HonkTrooper
 
             _game_controller.SetDefaultThumbstickPosition();
             _game_controller.ActivateGyrometerReading();
-        }      
+        }
 
         private void GameOver()
         {
@@ -1888,14 +1888,14 @@ namespace HonkTrooper
                 var playerDistantHitBox = _player.GetDistantHitBox();
 
                 // get closest possible target
-                BossRocketSeeking bossRocketSeeking = _scene_game.Children.OfType<BossRocketSeeking>()?.FirstOrDefault(x => x.IsAnimating && x.GetHitBox().IntersectsWith(playerDistantHitBox));
+                BossRocketSeeking bossRocketSeeking = _scene_game.Children.OfType<BossRocketSeeking>()?.FirstOrDefault(x => x.IsAnimating && !x.IsBlasting && x.GetHitBox().IntersectsWith(playerDistantHitBox));
                 Boss boss = _scene_game.Children.OfType<Boss>()?.FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetHitBox().IntersectsWith(playerDistantHitBox));
-                Enemy enemy = _scene_game.Children.OfType<Enemy>()?.FirstOrDefault(x => x.IsAnimating && x.GetHitBox().IntersectsWith(playerDistantHitBox));
+                Enemy enemy = _scene_game.Children.OfType<Enemy>()?.FirstOrDefault(x => x.IsAnimating && !x.IsFadingComplete && x.GetHitBox().IntersectsWith(playerDistantHitBox));
 
                 // if not found then find random target
-                bossRocketSeeking ??= _scene_game.Children.OfType<BossRocketSeeking>().FirstOrDefault(x => x.IsAnimating);
+                bossRocketSeeking ??= _scene_game.Children.OfType<BossRocketSeeking>().FirstOrDefault(x => x.IsAnimating && !x.IsBlasting);
                 boss ??= _scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking);
-                enemy ??= _scene_game.Children.OfType<Enemy>().FirstOrDefault(x => x.IsAnimating);
+                enemy ??= _scene_game.Children.OfType<Enemy>().FirstOrDefault(x => x.IsAnimating && !x.IsFadingComplete);
 
                 LoggerExtensions.Log("Player Bomb dropped.");
 
@@ -1903,14 +1903,14 @@ namespace HonkTrooper
                 {
                     SetPlayerRocketDirection(source: _player, rocket: playerRocket, rocketTarget: enemy);
                 }
-                else if (bossRocketSeeking is not null)
-                {
-                    SetPlayerRocketDirection(source: _player, rocket: playerRocket, rocketTarget: bossRocketSeeking);
-                }
                 else if (boss is not null)
                 {
                     SetPlayerRocketDirection(source: _player, rocket: playerRocket, rocketTarget: boss);
                 }
+                else if (bossRocketSeeking is not null)
+                {
+                    SetPlayerRocketDirection(source: _player, rocket: playerRocket, rocketTarget: bossRocketSeeking);
+                }               
 
                 return true;
             }
@@ -2302,7 +2302,7 @@ namespace HonkTrooper
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
-                    if (_scene_game.Children.OfType<BossRocketSeeking>().FirstOrDefault(x => x.IsAnimating) is BossRocketSeeking bossRocketSeeking) // target boss bomb seeking
+                    if (_scene_game.Children.OfType<BossRocketSeeking>().FirstOrDefault(x => x.IsAnimating && !x.IsBlasting) is BossRocketSeeking bossRocketSeeking) // target boss bomb seeking
                     {
                         playerRocketSeeking1.Seek(bossRocketSeeking.GetCloseHitBox());
 
@@ -2322,7 +2322,7 @@ namespace HonkTrooper
                             LooseBossHealth(boss);
                         }
                     }
-                    else if (_scene_game.Children.OfType<Enemy>().FirstOrDefault(x => x.IsAnimating) is Enemy enemy) // target enemy
+                    else if (_scene_game.Children.OfType<Enemy>().FirstOrDefault(x => x.IsAnimating && !x.IsFadingComplete) is Enemy enemy) // target enemy
                     {
                         playerRocketSeeking1.Seek(enemy.GetCloseHitBox());
 
@@ -3059,7 +3059,7 @@ namespace HonkTrooper
 
             RepositionHoveringTitleScreens();
             RepositionLogicalConstructs();
-        }      
+        }
 
         private void DisplayInformation_OrientationChanged(DisplayInformation sender, object args)
         {
