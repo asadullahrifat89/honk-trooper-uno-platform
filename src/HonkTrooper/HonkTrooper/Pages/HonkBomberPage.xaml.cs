@@ -895,7 +895,7 @@ namespace HonkTrooper
 
         private bool SpawnRoadsInScene()
         {
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 15; i++)
             {
                 Road Road = new(
                     animateAction: AnimateRoad,
@@ -2908,7 +2908,7 @@ namespace HonkTrooper
         {
             // add road
             _scene_game.AddToScene(new Generator(
-                generationDelay: 45,
+                generationDelay: 40,
                 generationAction: GenerateRoadInSceneBottom,
                 startUpAction: SpawnRoadsInScene));
 
