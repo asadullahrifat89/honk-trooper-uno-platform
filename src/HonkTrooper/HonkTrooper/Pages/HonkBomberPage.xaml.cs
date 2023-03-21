@@ -159,7 +159,50 @@ namespace HonkTrooper
             _enemy_fleet_appeared = false;
 
             GeneratePlayerInScene();
+            RepositionLogicalConstructs();
 
+            _scene_game.SceneState = SceneState.GAME_RUNNING;
+
+            if (!_scene_game.IsAnimating)
+                _scene_game.Play();
+
+            _scene_main_menu.Pause();
+
+            ToggleHudVisibility(Visibility.Visible);
+
+            _game_controller.FocusAttackButton();
+
+            _game_controller.SetDefaultThumbstickPosition();
+            _game_controller.ActivateGyrometerReading();
+        }      
+
+        private void GameOver()
+        {
+            // if player is dead game keeps playing in the background but scene state goes to game over
+            if (_player.IsDead)
+            {
+                _audio_stub.Stop(SoundType.AMBIENCE, SoundType.GAME_BACKGROUND_MUSIC/*, SoundType.BOSS_BACKGROUND_MUSIC*/);
+
+                if (_scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating) is Boss boss)
+                {
+                    boss.SetWinStance();
+                    boss.StopSoundLoop();
+                }
+
+                _audio_stub.Play(SoundType.GAME_OVER);
+
+                _scene_main_menu.Play();
+                _scene_game.SceneState = SceneState.GAME_STOPPED;
+
+                ToggleHudVisibility(Visibility.Collapsed);
+                GenerateTitleScreenInScene("Game Over");
+
+                _game_controller.DeactivateGyrometerReading();
+            }
+        }
+
+        private void RepositionLogicalConstructs()
+        {
             foreach (var construct in _scene_game.Children.OfType<Construct>()
                 .Where(x => x.ConstructType is
                 ConstructType.VEHICLE_LARGE or
@@ -188,44 +231,13 @@ namespace HonkTrooper
                     boss1.Health = 0;
                 }
             }
-
-            _scene_game.SceneState = SceneState.GAME_RUNNING;
-
-            if (!_scene_game.IsAnimating)
-                _scene_game.Play();
-
-            _scene_main_menu.Pause();
-
-            ToggleHudVisibility(Visibility.Visible);
-
-            _game_controller.FocusAttackButton();
-
-            _game_controller.SetDefaultThumbstickPosition();
-            _game_controller.ActivateGyrometerReading();
         }
 
-        private void GameOver()
+        private void RepositionHoveringTitleScreens()
         {
-            // if player is dead game keeps playing in the background but scene state goes to game over
-            if (_player.IsDead)
+            foreach (var screen in _scene_main_menu.Children.OfType<HoveringTitleScreen>().Where(x => x.IsAnimating))
             {
-                _audio_stub.Stop(SoundType.AMBIENCE, SoundType.GAME_BACKGROUND_MUSIC/*, SoundType.BOSS_BACKGROUND_MUSIC*/);
-
-                if (_scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating) is Boss boss)
-                {
-                    boss.SetWinStance();
-                    boss.StopSoundLoop();
-                }
-
-                _audio_stub.Play(SoundType.GAME_OVER);
-
-                _scene_main_menu.Play();
-                _scene_game.SceneState = SceneState.GAME_STOPPED;
-
-                ToggleHudVisibility(Visibility.Collapsed);
-                GenerateTitleScreenInScene("Game Over");
-
-                _game_controller.DeactivateGyrometerReading();
+                screen.Reposition();
             }
         }
 
@@ -909,7 +921,7 @@ namespace HonkTrooper
 
                 roadBorder.SetPosition(
                               left: (roadBorder.Height * -1) * _scene_game.DownScaling,
-                              top: (_scene_game.Height / 1.6) * _scene_game.DownScaling,
+                              top: (_scene_game.Height / 1.5) * _scene_game.DownScaling,
                               z: 0);
 
                 return true;
@@ -946,7 +958,7 @@ namespace HonkTrooper
         {
             var hitBox = roadBorder.GetHitBox();
 
-            if (hitBox.Top > _scene_game.Height || hitBox.Left > _scene_game.Width)
+            if (hitBox.Top > _scene_game.Height || hitBox.Left - roadBorder.Width > _scene_game.Width)
             {
                 roadBorder.IsAnimating = false;
 
@@ -3046,11 +3058,9 @@ namespace HonkTrooper
                 SyncDropShadow(_player);
             }
 
-            foreach (var screen in _scene_main_menu.Children.OfType<HoveringTitleScreen>().Where(x => x.IsAnimating))
-            {
-                screen.Reposition();
-            }
-        }
+            RepositionHoveringTitleScreens();
+            RepositionLogicalConstructs();
+        }      
 
         private void DisplayInformation_OrientationChanged(DisplayInformation sender, object args)
         {
