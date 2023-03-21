@@ -936,9 +936,9 @@ namespace HonkTrooper
                 roadBorder.IsAnimating = true;
 
                 roadBorder.SetPosition(
-                 left: (_scene_game.Width / 2 - roadBorder.Width) * _scene_game.DownScaling,
-                 top: roadBorder.Height * -1,
-                 z: 2);
+                    left: (_scene_game.Width / 2 - roadBorder.Width) * _scene_game.DownScaling,
+                    top: roadBorder.Height * -1,
+                    z: 2);
 
                 return true;
             }
