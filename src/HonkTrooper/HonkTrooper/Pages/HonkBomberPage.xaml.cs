@@ -920,7 +920,7 @@ namespace HonkTrooper
 
                 roadBorder.SetPosition(
                     left: (roadBorder.Height * -1) * _scene_game.DownScaling,
-                    top: (_scene_game.Height / 1.5) * _scene_game.DownScaling,
+                    top: (_scene_game.Height / 1.55) * _scene_game.DownScaling,
                     z: 0);
 
                 return true;
