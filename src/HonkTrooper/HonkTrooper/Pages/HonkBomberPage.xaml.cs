@@ -919,7 +919,7 @@ namespace HonkTrooper
                 road.IsAnimating = true;
 
                 road.SetPosition(
-                    left: (-1.5 * road.Width) * _scene_game.DownScaling,
+                    left: (-1.65 * road.Width) * _scene_game.DownScaling,
                     top: (_scene_game.Height / 2.7) * _scene_game.DownScaling,
                     z: 0);
 
