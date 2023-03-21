@@ -62,6 +62,7 @@
     <None Remove="Assets\Images\enemy_1.png" />
     <None Remove="Assets\Images\enemy_2.png" />
     <None Remove="Assets\Images\enemy_bomb.png" />
+    <None Remove="Assets\Images\Grass.png" />
     <None Remove="Assets\Images\health_pickup.png" />
     <None Remove="Assets\Images\hedge_E.png" />
     <None Remove="Assets\Images\honk_1.png" />

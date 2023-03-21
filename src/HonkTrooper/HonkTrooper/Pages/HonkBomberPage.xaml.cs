@@ -891,79 +891,166 @@ namespace HonkTrooper
 
         #endregion
 
-        #region RoadBorder
+        #region RoadSideGrass
 
-        private bool SpawnRoadBordersInScene()
+        private bool SpawnRoadSideGrasssInScene()
         {
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 7; i++)
             {
-                RoadBorder roadBorder = new(
-                animateAction: AnimateRoadBorder,
-                recycleAction: RecycleRoadBorder,
+                RoadSideGrass RoadSideGrass = new(
+                animateAction: AnimateRoadSideGrass,
+                recycleAction: RecycleRoadSideGrass,
                 downScaling: _scene_game.DownScaling);
 
-                roadBorder.SetPosition(
+                RoadSideGrass.SetPosition(
                     left: -1500,
                     top: -1500);
 
-                _scene_game.AddToScene(roadBorder);
+                _scene_game.AddToScene(RoadSideGrass);
             }
 
             return true;
         }
 
-        private bool GenerateRoadBorderInSceneBottom()
+        private bool GenerateRoadSideGrassInSceneTop()
         {
-            if (_scene_game.Children.OfType<RoadBorder>().FirstOrDefault(x => x.IsAnimating == false) is RoadBorder roadBorder)
+            if (_scene_game.Children.OfType<RoadSideGrass>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideGrass roadSideGrass)
             {
-                roadBorder.IsAnimating = true;
+                roadSideGrass.IsAnimating = true;
 
-                roadBorder.SetPosition(
-                    left: (roadBorder.Height * -1) * _scene_game.DownScaling,
-                    top: (_scene_game.Height / 1.55) * _scene_game.DownScaling,
+                roadSideGrass.SetPosition(
+                    left: (_scene_game.Width / 2 - roadSideGrass.Width + 37) * _scene_game.DownScaling,
+                    top: (roadSideGrass.Height * -1 - 37) * _scene_game.DownScaling,
+                    z: roadSideGrass.GetZ() - 1);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool GenerateRoadSideGrassInSceneBottom()
+        {
+            if (_scene_game.Children.OfType<RoadSideGrass>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideGrass roadSideGrass)
+            {
+                roadSideGrass.IsAnimating = true;
+
+                roadSideGrass.SetPosition(
+                    left: (-1 * roadSideGrass.Width) * _scene_game.DownScaling,
+                    top: (_scene_game.Height / 2 + 37) * _scene_game.DownScaling,
+                    z: roadSideGrass.GetZ() - 1);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimateRoadSideGrass(Construct roadSideGrass)
+        {
+            var speed = (_scene_game.Speed + roadSideGrass.SpeedOffset);
+            MoveConstructBottomRight(construct: roadSideGrass, speed: speed);
+            return true;
+        }
+
+        private bool RecycleRoadSideGrass(Construct roadSideGrass)
+        {
+            var hitBox = roadSideGrass.GetHitBox();
+
+            if (hitBox.Top > _scene_game.Height || hitBox.Left - roadSideGrass.Width > _scene_game.Width)
+            {
+                roadSideGrass.IsAnimating = false;
+
+                roadSideGrass.SetPosition(
+                    left: -1500,
+                    top: -1500,
                     z: 0);
-
-                return true;
             }
 
-            return false;
-        }
-
-        private bool GenerateRoadBorderInSceneTop()
-        {
-            if (_scene_game.Children.OfType<RoadBorder>().FirstOrDefault(x => x.IsAnimating == false) is RoadBorder roadBorder)
-            {
-                roadBorder.IsAnimating = true;
-
-                roadBorder.SetPosition(
-                    left: (_scene_game.Width / 2 - roadBorder.Width) * _scene_game.DownScaling,
-                    top: roadBorder.Height * -1,
-                    z: 2);
-
-                return true;
-            }
-
-            return false;
-        }
-
-        private bool AnimateRoadBorder(Construct roadBorder)
-        {
-            var speed = (_scene_game.Speed + roadBorder.SpeedOffset);
-            MoveConstructBottomRight(construct: roadBorder, speed: speed);
             return true;
         }
 
-        private bool RecycleRoadBorder(Construct roadBorder)
+        #endregion
+
+        #region Hedge
+
+        private bool SpawnHedgesInScene()
         {
-            var hitBox = roadBorder.GetHitBox();
-
-            if (hitBox.Top > _scene_game.Height || hitBox.Left - roadBorder.Width > _scene_game.Width)
+            for (int i = 0; i < 15; i++)
             {
-                roadBorder.IsAnimating = false;
+                Hedge hedge = new(
+                    animateAction: AnimateHedge,
+                    recycleAction: RecycleHedge,
+                    downScaling: _scene_game.DownScaling);
 
-                roadBorder.SetPosition(
-                    left: -1500,
-                    top: -1500);
+                hedge.SetPosition(
+                    left: -500,
+                    top: -500);
+
+                _scene_game.AddToScene(hedge);
+
+                SpawnDropShadowInScene(source: hedge);
+            }
+
+            return true;
+        }
+
+        private bool GenerateHedgeInSceneTop()
+        {
+            if (_scene_game.Children.OfType<Hedge>().FirstOrDefault(x => x.IsAnimating == false) is Hedge hedge)
+            {
+                hedge.IsAnimating = true;
+
+                hedge.SetPosition(
+                  left: (_scene_game.Width / 2 - hedge.Width * 2.3) * _scene_game.DownScaling,
+                  top: hedge.Height * -1,
+                  z: 2);
+
+                LoggerExtensions.Log("Hedge generated.");
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool GenerateHedgeInSceneBottom()
+        {
+            if (_scene_game.Children.OfType<Hedge>().FirstOrDefault(x => x.IsAnimating == false) is Hedge hedge)
+            {
+                hedge.IsAnimating = true;
+
+                hedge.SetPosition(
+                  left: -1 * hedge.Width * _scene_game.DownScaling,
+                  top: (_scene_game.Height / 2 + 50) * _scene_game.DownScaling,
+                  z: 3);
+
+                LoggerExtensions.Log("Hedge generated.");
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimateHedge(Construct hedge)
+        {
+            var speed = (_scene_game.Speed + hedge.SpeedOffset);
+            MoveConstructBottomRight(construct: hedge, speed: speed);
+            return true;
+        }
+
+        private bool RecycleHedge(Construct hedge)
+        {
+            var hitBox = hedge.GetHitBox();
+
+            if (hitBox.Top > _scene_game.Height || hitBox.Left > _scene_game.Width)
+            {
+                hedge.IsAnimating = false;
+
+                hedge.SetPosition(
+                    left: -500,
+                    top: -500);
             }
 
             return true;
@@ -1022,7 +1109,7 @@ namespace HonkTrooper
                 tree.IsAnimating = true;
 
                 tree.SetPosition(
-                  left: -1 * tree.Width * _scene_game.DownScaling,
+                  left: (tree.Width * -1) * _scene_game.DownScaling,
                   top: (_scene_game.Height / 2) * _scene_game.DownScaling,
                   z: 4);
 
@@ -1052,96 +1139,6 @@ namespace HonkTrooper
                 tree.IsAnimating = false;
 
                 tree.SetPosition(
-                    left: -500,
-                    top: -500);
-            }
-
-            return true;
-        }
-
-        #endregion
-
-        #region Hedge
-
-        private bool SpawnHedgesInScene()
-        {
-            for (int i = 0; i < 15; i++)
-            {
-                Hedge hedge = new(
-                    animateAction: AnimateHedge,
-                    recycleAction: RecycleHedge,
-                    downScaling: _scene_game.DownScaling);
-
-                hedge.SetPosition(
-                    left: -500,
-                    top: -500);
-
-                _scene_game.AddToScene(hedge);
-
-                SpawnDropShadowInScene(source: hedge);
-            }
-
-            return true;
-        }
-
-        private bool GenerateHedgeInSceneTop()
-        {
-            if (_scene_game.Children.OfType<Hedge>().FirstOrDefault(x => x.IsAnimating == false) is Hedge hedge)
-            {
-                hedge.IsAnimating = true;
-
-                hedge.SetPosition(
-                  left: (_scene_game.Width / 2 - hedge.Width * 2.3) * _scene_game.DownScaling,
-                  top: hedge.Height * -1,
-                  z: 2);
-
-                //SyncDropShadow(Hedge);
-
-                LoggerExtensions.Log("Hedge generated.");
-
-                return true;
-            }
-
-            return false;
-        }
-
-        private bool GenerateHedgeInSceneBottom()
-        {
-            if (_scene_game.Children.OfType<Hedge>().FirstOrDefault(x => x.IsAnimating == false) is Hedge hedge)
-            {
-                hedge.IsAnimating = true;
-
-                hedge.SetPosition(
-                  left: -1 * hedge.Width * _scene_game.DownScaling,
-                  top: (_scene_game.Height / 2 + 50) * _scene_game.DownScaling,
-                  z: 3);
-
-                //SyncDropShadow(Hedge);
-
-                LoggerExtensions.Log("Hedge generated.");
-
-                return true;
-            }
-
-            return false;
-        }
-
-        private bool AnimateHedge(Construct hedge)
-        {
-            var speed = (_scene_game.Speed + hedge.SpeedOffset);
-            MoveConstructBottomRight(construct: hedge, speed: speed);
-            return true;
-        }
-
-        private bool RecycleHedge(Construct hedge)
-        {
-            var hitBox = hedge.GetHitBox();
-
-            if (hitBox.Top > _scene_game.Height || hitBox.Left > _scene_game.Width)
-            {
-                hedge.IsAnimating = false;
-
-                hedge.SetPosition(
                     left: -500,
                     top: -500);
             }
@@ -2845,14 +2842,14 @@ namespace HonkTrooper
         {
             // first add road Borders
             _scene_game.AddToScene(new Generator(
-                generationDelay: 60,
-                generationAction: GenerateRoadBorderInSceneBottom,
-                startUpAction: SpawnRoadBordersInScene));
+                generationDelay: 40,
+                generationAction: GenerateRoadSideGrassInSceneBottom,
+                startUpAction: SpawnRoadSideGrasssInScene));
 
             _scene_game.AddToScene(new Generator(
-               generationDelay: 60,
-               generationAction: GenerateRoadBorderInSceneTop,
-               startUpAction: SpawnRoadBordersInScene));
+               generationDelay: 40,
+               generationAction: GenerateRoadSideGrassInSceneTop,
+               startUpAction: SpawnRoadSideGrasssInScene));
 
             _scene_game.AddToScene(
 
