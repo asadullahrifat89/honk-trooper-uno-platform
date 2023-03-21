@@ -879,6 +879,70 @@ namespace HonkTrooper
 
         #endregion
 
+        #region RoadBorder
+
+        private bool SpawnRoadBordersInScene()
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                RoadBorder roadBorder = new(
+                animateAction: AnimateRoadBorder,
+                recycleAction: RecycleRoadBorder,
+                downScaling: _scene_game.DownScaling);
+
+                roadBorder.SetPosition(
+                    left: -1500,
+                    top: -1500,
+                    z: 0);
+
+                _scene_game.AddToScene(roadBorder);
+            }
+
+            return true;
+        }
+
+        private bool GenerateRoadBorderInSceneBottom()
+        {
+            if (_scene_game.Children.OfType<RoadBorder>().FirstOrDefault(x => x.IsAnimating == false) is RoadBorder roadBorder)
+            {
+                roadBorder.IsAnimating = true;
+
+                roadBorder.SetPosition(
+                              left: (roadBorder.Height * -1) * _scene_game.DownScaling,
+                              top: (_scene_game.Height / 2) * _scene_game.DownScaling,
+                              z: 0);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimateRoadBorder(Construct roadBorder)
+        {
+            var speed = (_scene_game.Speed + roadBorder.SpeedOffset);
+            MoveConstructBottomRight(construct: roadBorder, speed: speed);
+            return true;
+        }
+
+        private bool RecycleRoadBorder(Construct roadBorder)
+        {
+            var hitBox = roadBorder.GetHitBox();
+
+            if (hitBox.Top > _scene_game.Height || hitBox.Left > _scene_game.Width)
+            {
+                roadBorder.IsAnimating = false;
+
+                roadBorder.SetPosition(
+                    left: -1500,
+                    top: -1500);
+            }
+
+            return true;
+        }
+
+        #endregion
+
         #region Tree
 
         private bool SpawnTreesInScene()
@@ -2751,17 +2815,11 @@ namespace HonkTrooper
 
         private void AddGeneratorsToScene()
         {
-            //// first add road slabs
-            //_scene_game.AddToScene(new Generator(
-            //    generationDelay: 70,
-            //    generationAction: GenerateRoadSlabInSceneTop,
-            //    startUpAction: SpawnRoadSlabsInScene));
-
-            //// first add road slabs
-            //_scene_game.AddToScene(new Generator(
-            //    generationDelay: 70,
-            //    generationAction: GenerateRoadSlabInSceneBottom,
-            //    startUpAction: SpawnRoadSlabsInScene));
+            // first add road Borders
+            _scene_game.AddToScene(new Generator(
+                generationDelay: 60,
+                generationAction: GenerateRoadBorderInSceneBottom,
+                startUpAction: SpawnRoadBordersInScene));
 
             _scene_game.AddToScene(
 
