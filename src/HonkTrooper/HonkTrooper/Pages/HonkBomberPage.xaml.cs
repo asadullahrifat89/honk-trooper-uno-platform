@@ -20,18 +20,18 @@ namespace HonkTrooper
         private readonly Controller _game_controller;
 
         private readonly HealthBar _player_health_bar;
-        private readonly HealthBar _UFO_BOSS_health_bar;
+        private readonly HealthBar _ufo_boss_health_bar;
         private readonly HealthBar _powerUp_health_bar;
 
         private readonly ScoreBar _game_score_bar;
         private readonly StackPanel _health_bars;
 
-        private readonly Threashold _UFO_BOSS_threashold;
+        private readonly Threashold _ufo_boss_threashold;
         private readonly Threashold _enemy_threashold;
 
         //TODO: set defaults _UFO_BOSS_threashold_limit = 50
-        private readonly double _UFO_BOSS_threashold_limit = 50; // first UfoBoss will appear
-        private readonly double _UFO_BOSS_threashold_limit_increase = 15;
+        private readonly double _ufo_boss_threashold_limit = 50; // first UfoBoss will appear
+        private readonly double _ufo_boss_threashold_limit_increase = 15;
 
         //TODO: set defaults _enemy_threashold_limit = 80
         private readonly double _enemy_threashold_limit = 80; // after first enemies will appear
@@ -57,14 +57,14 @@ namespace HonkTrooper
             _scene_game = this.GameScene;
             _scene_main_menu = this.MainMenuScene;
             _player_health_bar = this.PlayerHealthBar;
-            _UFO_BOSS_health_bar = this.UfoBossHealthBar;
+            _ufo_boss_health_bar = this.UfoBossHealthBar;
             _powerUp_health_bar = this.PowerUpHealthBar;
 
             _game_controller = this.GameController;
             _game_score_bar = this.GameScoreBar;
             _health_bars = this.HealthBars;
 
-            _UFO_BOSS_threashold = new Threashold(_UFO_BOSS_threashold_limit);
+            _ufo_boss_threashold = new Threashold(_ufo_boss_threashold_limit);
             _enemy_threashold = new Threashold(_enemy_threashold_limit);
 
             ToggleHudVisibility(Visibility.Collapsed);
@@ -154,10 +154,10 @@ namespace HonkTrooper
             _game_controller.Reset();
 
             _powerUp_health_bar.Reset();
-            _UFO_BOSS_health_bar.Reset();
+            _ufo_boss_health_bar.Reset();
             _game_score_bar.Reset();
 
-            _UFO_BOSS_threashold.Reset(_UFO_BOSS_threashold_limit);
+            _ufo_boss_threashold.Reset(_ufo_boss_threashold_limit);
             _enemy_threashold.Reset(_enemy_threashold_limit);
             _enemy_kill_count = 0;
             _enemy_fleet_appeared = false;
@@ -1417,7 +1417,7 @@ namespace HonkTrooper
             // if scene doesn't contain a UfoBoss then pick a random UfoBoss and add to scene
 
             if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
-                _UFO_BOSS_threashold.ShouldRelease(_game_score_bar.GetScore()) &&
+                _ufo_boss_threashold.ShouldRelease(_game_score_bar.GetScore()) &&
                 !_scene_game.Children.OfType<UfoBoss>().Any(x => x.IsAnimating) &&
                 _scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating == false) is UfoBoss UfoBoss)
             {
@@ -1436,14 +1436,14 @@ namespace HonkTrooper
                 SyncDropShadow(UfoBoss);
 
                 // set UfoBoss health
-                UfoBoss.Health = _UFO_BOSS_threashold.GetReleasePointDifference() * 1.5;
+                UfoBoss.Health = _ufo_boss_threashold.GetReleasePointDifference() * 1.5;
 
-                _UFO_BOSS_threashold.IncreaseThreasholdLimit(increment: _UFO_BOSS_threashold_limit_increase, currentPoint: _game_score_bar.GetScore());
+                _ufo_boss_threashold.IncreaseThreasholdLimit(increment: _ufo_boss_threashold_limit_increase, currentPoint: _game_score_bar.GetScore());
 
-                _UFO_BOSS_health_bar.SetMaxiumHealth(UfoBoss.Health);
-                _UFO_BOSS_health_bar.SetValue(UfoBoss.Health);
-                _UFO_BOSS_health_bar.SetIcon(UfoBoss.GetContentUri());
-                _UFO_BOSS_health_bar.SetBarForegroundColor(color: Colors.Crimson);
+                _ufo_boss_health_bar.SetMaxiumHealth(UfoBoss.Health);
+                _ufo_boss_health_bar.SetValue(UfoBoss.Health);
+                _ufo_boss_health_bar.SetIcon(UfoBoss.GetContentUri());
+                _ufo_boss_health_bar.SetBarForegroundColor(color: Colors.Crimson);
 
                 GenerateInterimScreen("Beware of Boss");
                 _scene_game.ActivateSlowMotion();
@@ -1519,7 +1519,7 @@ namespace HonkTrooper
             UfoBoss.LooseHealth();
             UfoBoss.SetHitStance();
 
-            _UFO_BOSS_health_bar.SetValue(UfoBoss.Health);
+            _ufo_boss_health_bar.SetValue(UfoBoss.Health);
 
             if (UfoBoss.IsDead && UfoBoss.IsAttacking)
             {
@@ -2866,7 +2866,7 @@ namespace HonkTrooper
             _scene_main_menu.Clear();
 
             _powerUp_health_bar.Reset();
-            _UFO_BOSS_health_bar.Reset();
+            _ufo_boss_health_bar.Reset();
             _game_score_bar.Reset();
 
             AddGeneratorsToScene();
