@@ -348,6 +348,60 @@ namespace HonkTrooper
                 rotationSpeed: _rotationSpeed);
         }
 
+        public void Move(
+            double speed,
+            double sceneWidth,
+            double sceneHeight,
+            Controller controller)
+        {
+            var halfHeight = Height / 2;
+            var halfWidth = Width / 2;
+
+            if (controller.IsMoveUp && controller.IsMoveLeft)
+            {
+                if (GetTop() + halfHeight > 0 && GetLeft() + halfWidth > 0)
+                    MoveUpLeft(speed);
+            }
+            else if (controller.IsMoveUp && controller.IsMoveRight)
+            {
+                if (GetLeft() - halfWidth < sceneWidth && GetTop() + halfHeight > 0)
+                    MoveUpRight(speed);
+            }
+            else if (controller.IsMoveUp)
+            {
+                if (GetTop() + halfHeight > 0)
+                    MoveUp(speed);
+            }
+            else if (controller.IsMoveDown && controller.IsMoveRight)
+            {
+                if (GetBottom() - halfHeight < sceneHeight && GetLeft() - halfWidth < sceneWidth)
+                    MoveDownRight(speed);
+            }
+            else if (controller.IsMoveDown && controller.IsMoveLeft)
+            {
+                if (GetLeft() + halfWidth > 0 && GetBottom() - halfHeight < sceneHeight)
+                    MoveDownLeft(speed);
+            }
+            else if (controller.IsMoveDown)
+            {
+                if (GetBottom() - halfHeight < sceneHeight)
+                    MoveDown(speed);
+            }
+            else if (controller.IsMoveRight)
+            {
+                if (GetLeft() - halfWidth < sceneWidth)
+                    MoveRight(speed);
+            }
+            else if (controller.IsMoveLeft)
+            {
+                if (GetLeft() + halfWidth > 0)
+                    MoveLeft(speed);
+            }
+            else
+            {
+                StopMovement();
+            }
+        }
 
         public void StopMovement()
         {

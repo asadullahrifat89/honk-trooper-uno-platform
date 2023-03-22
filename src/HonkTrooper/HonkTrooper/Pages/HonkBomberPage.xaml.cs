@@ -566,9 +566,13 @@ namespace HonkTrooper
             {
                 var scaling = ScreenExtensions.GetScreenSpaceScaling();
 
-                ProcessPlayerBalloonMovement(
+                var speed = (_scene_game.Speed + _player.SpeedOffset);
+
+                _player.Move(
+                    speed: speed,
                     sceneWidth: _scene_game.Width * scaling,
-                    sceneHeight: _scene_game.Height * scaling);
+                    sceneHeight: _scene_game.Height * scaling,
+                    controller: _game_controller);
 
                 ProcessPlayerAttack();
             }
@@ -593,67 +597,6 @@ namespace HonkTrooper
                 }
 
                 _game_controller.IsAttacking = false;
-            }
-        }
-
-        private void ProcessPlayerBalloonMovement(double sceneWidth, double sceneHeight)
-        {
-            var speed = (_scene_game.Speed + _player.SpeedOffset);
-
-            var halfHeight = _player.Height / 2;
-            var halfWidth = _player.Width / 2;
-
-            if (_game_controller.IsMoveUp && _game_controller.IsMoveLeft)
-            {
-                if (_player.GetTop() + halfHeight > 0 && _player.GetLeft() + halfWidth > 0)
-                    _player.MoveUpLeft(speed);
-            }
-            else if (_game_controller.IsMoveUp && _game_controller.IsMoveRight)
-            {
-                if (_player.GetRight() - halfWidth < sceneWidth && _player.GetTop() + halfHeight > 0)
-                    _player.MoveUpRight(speed);
-            }
-            else if (_game_controller.IsMoveUp)
-            {
-                if (_player.GetTop() + halfHeight > 0)
-                    _player.MoveUp(speed);
-            }
-            else if (_game_controller.IsMoveDown && _game_controller.IsMoveRight)
-            {
-                if (_player.GetBottom() - halfHeight < sceneHeight && _player.GetRight() - halfWidth < sceneWidth)
-                    _player.MoveDownRight(speed);
-            }
-            else if (_game_controller.IsMoveDown && _game_controller.IsMoveLeft)
-            {
-                if (_player.GetLeft() + halfWidth > 0 && _player.GetBottom() - halfHeight < sceneHeight)
-                    _player.MoveDownLeft(speed);
-            }
-            else if (_game_controller.IsMoveDown)
-            {
-                if (_player.GetBottom() - halfHeight < sceneHeight)
-                    _player.MoveDown(speed);
-            }
-            else if (_game_controller.IsMoveRight)
-            {
-                if (_player.GetRight() - halfWidth < sceneWidth)
-                    _player.MoveRight(speed);
-            }
-            else if (_game_controller.IsMoveLeft)
-            {
-                if (_player.GetLeft() + halfWidth > 0)
-                    _player.MoveLeft(speed);
-            }
-            else
-            {
-                // if player is already out of bounds then prevent stop movement animation
-
-                if (_player.GetBottom() > 0 && _player.GetRight() > 0 &&
-                    _player.GetTop() < sceneHeight && _player.GetLeft() < sceneWidth &&
-                    _player.GetRight() > 0 && _player.GetTop() < sceneHeight &&
-                    _player.GetLeft() < sceneWidth && _player.GetBottom() > 0)
-                {
-                    _player.StopMovement();
-                }
             }
         }
 
