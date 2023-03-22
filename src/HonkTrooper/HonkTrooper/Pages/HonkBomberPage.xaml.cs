@@ -3,7 +3,6 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Linq;
-using System.Net.Sockets;
 using Windows.Graphics.Display;
 
 namespace HonkTrooper
@@ -158,7 +157,7 @@ namespace HonkTrooper
             _enemy_kill_count = 0;
             _enemy_fleet_appeared = false;
 
-            GeneratePlayerInScene();
+            GeneratePlayerBalloonInScene();
             RepositionLogicalConstructs();
 
             _scene_game.SceneState = SceneState.GAME_RUNNING;
@@ -510,15 +509,15 @@ namespace HonkTrooper
 
         #endregion
 
-        #region Player
+        #region PlayerBalloon
 
-        private bool SpawnPlayerInScene()
+        private bool SpawnPlayerBalloonInScene()
         {
             var playerTemplate = _random.Next(1, 3);
             LoggerExtensions.Log($"Player Template: {playerTemplate}");
 
             _player = new(
-                animateAction: AnimatePlayer,
+                animateAction: AnimatePlayerBalloon,
                 recycleAction: (_player) => { return true; },
                 downScaling: _scene_game.DownScaling);
 
@@ -533,7 +532,7 @@ namespace HonkTrooper
             return true;
         }
 
-        private bool GeneratePlayerInScene()
+        private bool GeneratePlayerBalloonInScene()
         {
             _player.IsAnimating = true;
             _player.Reset();
@@ -555,7 +554,7 @@ namespace HonkTrooper
             _player_health_bar.SetBarForegroundColor(color: Colors.Purple);
         }
 
-        private bool AnimatePlayer(Construct player)
+        private bool AnimatePlayerBalloon(Construct player)
         {
             _player.Pop();
             _player.Hover();
@@ -568,10 +567,9 @@ namespace HonkTrooper
             var halfHeight = _player.Height / 2;
             var halfWidth = _player.Width / 2;
 
-
             if (_scene_game.SceneState == SceneState.GAME_RUNNING)
             {
-                ProcessPlayerMovement(speed, halfHeight, halfWidth);
+                ProcessPlayerBalloonMovement(speed, halfHeight, halfWidth);
                 ProcessPlayerAttack();
             }
 
@@ -598,7 +596,7 @@ namespace HonkTrooper
             }
         }
 
-        private void ProcessPlayerMovement(double speed, double halfHeight, double halfWidth)
+        private void ProcessPlayerBalloonMovement(double speed, double halfHeight, double halfWidth)
         {
             if (_game_controller.IsMoveUp && _game_controller.IsMoveLeft)
             {
@@ -2994,7 +2992,7 @@ namespace HonkTrooper
                 new Generator(
                     generationDelay: 0,
                     generationAction: () => { return true; },
-                    startUpAction: SpawnPlayerInScene),
+                    startUpAction: SpawnPlayerBalloonInScene),
 
                 new Generator(
                     generationDelay: 0,

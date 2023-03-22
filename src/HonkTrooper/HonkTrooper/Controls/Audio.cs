@@ -1,9 +1,5 @@
 ﻿using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using Windows.Media.Core;
 
 #if !__ANDROID__ && !__IOS__
 using Uno.UI.Runtime.WebAssembly;
