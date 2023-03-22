@@ -556,14 +556,9 @@ namespace HonkTrooper
             _player.DepleteWinStance();
             _player.DepleteHitStance();
 
-            var speed = (_scene_game.Speed + player.SpeedOffset);
-
-            var halfHeight = _player.Height / 2;
-            var halfWidth = _player.Width / 2;
-
             if (_scene_game.SceneState == SceneState.GAME_RUNNING)
             {
-                ProcessPlayerBalloonMovement(speed, halfHeight, halfWidth);
+                ProcessPlayerBalloonMovement();
                 ProcessPlayerAttack();
             }
 
@@ -590,8 +585,13 @@ namespace HonkTrooper
             }
         }
 
-        private void ProcessPlayerBalloonMovement(double speed, double halfHeight, double halfWidth)
+        private void ProcessPlayerBalloonMovement()
         {
+            var speed = (_scene_game.Speed + _player.SpeedOffset);
+
+            var halfHeight = _player.Height / 2;
+            var halfWidth = _player.Width / 2;
+
             if (_game_controller.IsMoveUp && _game_controller.IsMoveLeft)
             {
                 if (_player.GetTop() + halfHeight > 0 && _player.GetLeft() + halfWidth > 0)
