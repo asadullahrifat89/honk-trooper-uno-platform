@@ -277,7 +277,11 @@ namespace HonkTrooper
             _audioStub.Stop(SoundType.BOSS_HOVERING);
         }
 
-        public void Move(double speed, double sceneWidth, double sceneHeight, Rect playerPoint)
+        public void Move(
+            double speed,
+            double sceneWidth,
+            double sceneHeight,
+            Rect playerPoint)
         {
             switch (MovementPattern)
             {
@@ -285,16 +289,28 @@ namespace HonkTrooper
                     SeekPlayer(playerPoint);
                     break;
                 case BossMovementPattern.ISOMETRIC_SQUARE:
-                    MoveInIsometricSquares(speed: speed, sceneWidth: sceneWidth, sceneHeight: sceneHeight);
+                    MoveInIsometricSquares(
+                        speed: speed,
+                        sceneWidth: sceneWidth,
+                        sceneHeight: sceneHeight);
                     break;
                 case BossMovementPattern.UPRIGHT_DOWNLEFT:
-                    MoveUpRightDownLeft(speed: speed, sceneWidth: sceneWidth, sceneHeight: sceneHeight);
+                    MoveUpRightDownLeft(
+                        speed: speed,
+                        sceneWidth: sceneWidth,
+                        sceneHeight: sceneHeight);
                     break;
                 case BossMovementPattern.RIGHT_LEFT:
-                    MoveRightLeft(speed: speed, sceneWidth: sceneWidth, sceneHeight: sceneHeight);
+                    MoveRightLeft(
+                        speed: speed,
+                        sceneWidth: sceneWidth,
+                        sceneHeight: sceneHeight);
                     break;
                 case BossMovementPattern.UP_DOWN:
-                    MoveUpDown(speed: speed, sceneWidth: sceneWidth, sceneHeight: sceneHeight);
+                    MoveUpDown(
+                        speed: speed,
+                        sceneWidth: sceneWidth,
+                        sceneHeight: sceneHeight);
                     break;
             }
         }
@@ -434,8 +450,6 @@ namespace HonkTrooper
 
             if (IsAttacking && _movementDirection == MovementDirection.None)
             {
-                //AwaitMoveRight = true;
-
                 _movementDirection = MovementDirection.UpRight;
             }
             else
@@ -449,11 +463,8 @@ namespace HonkTrooper
                 {
                     MoveUpRight(speed);
 
-                    if (GetTop() < 0 || GetLeft() > Scene.Width)
+                    if (GetTop() < 0 || GetLeft() > sceneWidth)
                     {
-                        //AwaitMoveRight = false;
-                        //AwaitMoveLeft = true;
-
                         _movementDirection = MovementDirection.DownLeft;
                     }
                 }
@@ -465,9 +476,6 @@ namespace HonkTrooper
 
                         if (GetLeft() < 0 || GetBottom() > sceneHeight)
                         {
-                            //AwaitMoveLeft = false;
-                            //AwaitMoveRight = true;
-
                             _movementDirection = MovementDirection.UpRight;
                         }
                     }
@@ -502,7 +510,7 @@ namespace HonkTrooper
                 {
                     MoveRight(speed);
 
-                    if (GetRight() > Scene.Width)
+                    if (GetRight() > sceneWidth)
                     {
                         _movementDirection = MovementDirection.Left;
                     }
@@ -560,7 +568,7 @@ namespace HonkTrooper
                     {
                         MoveDown(speed);
 
-                        if (GetBottom() > Scene.Height)
+                        if (GetBottom() > sceneHeight)
                         {
                             _movementDirection = MovementDirection.Up;
                         }

@@ -1,4 +1,6 @@
-﻿namespace HonkTrooper
+﻿using System;
+
+namespace HonkTrooper
 {
     public static class LoggerExtensions
     {
@@ -6,7 +8,7 @@
         {
             #if DEBUG
             
-            //Console.WriteLine(message);
+            Console.WriteLine(message);
             
             #endif
         }

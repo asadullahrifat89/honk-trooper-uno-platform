@@ -7,6 +7,10 @@ namespace HonkTrooper
     {
         #region Properties
 
+        public static double Width { get; set; }
+
+        public static double Height { get; set; }
+
         public static DisplayInformation DisplayInformation => DisplayInformation.GetForCurrentView();
 
         public static ApplicationView ApplicationView => ApplicationView.GetForCurrentView();
@@ -54,21 +58,19 @@ namespace HonkTrooper
         /// </summary>
         /// <param name="windowWidth"></param>
         /// <returns></returns>
-        public static double GetScreenSpaceScaling(double windowWidth)
+        public static double GetScreenSpaceScaling()
         {
-            return windowWidth switch
+            return Width switch
             {
-                <= 300 => 0.40,
+                <= 300 => 0.45,
                 <= 400 => 0.50,
                 <= 500 => 0.55,
                 <= 700 => 0.60,
                 <= 900 => 0.65,
                 <= 950 => 0.70,
-                <= 1000 => 0.85,
-                <= 1400 => 0.90,
-                <= 1900 => 0.95,
-                <= 2000 => 1,
-                <= 2500 => 1.1,
+                <= 1000 => 0.75,
+                <= 1400 => 0.80,
+                <= 1900 => 0.90,
                 _ => 1,
             };
         }
