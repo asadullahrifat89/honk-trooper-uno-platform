@@ -42,7 +42,7 @@ namespace HonkTrooper
 
             new (ConstructType.ROAD, 330, 550),
             new (ConstructType.ROAD_MARK, 15, 40),
-            new (ConstructType.ROAD_BORDER, 100, 300),
+            new (ConstructType.ROAD_SIDE_PATCH, 100, 300),
 
             new (ConstructType.DROP_SHADOW, 60, 25),
 
@@ -230,7 +230,7 @@ namespace HonkTrooper
 
         ROAD,
         ROAD_MARK,
-        ROAD_BORDER,
+        ROAD_SIDE_PATCH,
 
         TREE,
         HEDGE,
