@@ -849,7 +849,7 @@ namespace HonkTrooper
 
                 roadMark.SetPosition(
                   left: roadMark.Width * -1,
-                  top: roadMark.Height / 3,
+                  top: roadMark.Height / 3 * -1,
                   z: 1);
 
                 LoggerExtensions.Log("Road Mark generated.");
@@ -912,7 +912,7 @@ namespace HonkTrooper
                 roadSideStripe.IsAnimating = true;
 
                 roadSideStripe.SetPosition(
-                    left: _scene_game.Width / 5.1,
+                    left: _scene_game.Width / 4.7,
                     top: roadSideStripe.Height * -1,
                     z: 0);
 
@@ -3101,7 +3101,7 @@ namespace HonkTrooper
 
             // resize the main menu
             _scene_main_menu.Width = _windowWidth;
-            _scene_main_menu.Height = _windowHeight;            
+            _scene_main_menu.Height = _windowHeight;
 
             // scale the scenes
             _scene_game.SetScaleTransform(scaling);
