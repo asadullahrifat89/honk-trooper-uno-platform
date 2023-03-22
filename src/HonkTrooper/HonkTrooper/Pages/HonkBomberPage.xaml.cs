@@ -81,7 +81,7 @@ namespace HonkTrooper
                 (SoundType.GAME_OVER, 1, false),
                 (SoundType.ENEMY_ENTRY, 1, false));
 
-            _scene_main_menu.SetRenderTransformOrigin(0.5);
+            //_scene_main_menu.SetRenderTransformOrigin(0.5);
 
             Loaded += HonkBomberPage_Loaded;
             Unloaded += HonkBomberPage_Unloaded;
@@ -268,10 +268,10 @@ namespace HonkTrooper
 
         private bool GenerateDisplayOrientationChangeScreen()
         {
-            if (_scene_main_menu.Children.OfType<DisplayOrientationChangeScreen>().FirstOrDefault(x => x.IsAnimating == false) is DisplayOrientationChangeScreen DisplayOrientationChangeScreen)
+            if (_scene_main_menu.Children.OfType<DisplayOrientationChangeScreen>().FirstOrDefault(x => x.IsAnimating == false) is DisplayOrientationChangeScreen displayOrientationChangeScreen)
             {
-                DisplayOrientationChangeScreen.IsAnimating = true;
-                DisplayOrientationChangeScreen.Reposition();
+                displayOrientationChangeScreen.IsAnimating = true;
+                displayOrientationChangeScreen.Reposition();
 
                 LoggerExtensions.Log("Screen Orientation Change Promt Generated.");
 
@@ -3108,16 +3108,16 @@ namespace HonkTrooper
             //_scene_game.Width = _windowWidth;
             //_scene_game.Height = _windowHeight;
 
-            if (_windowWidth <= RootGrid.MaxWidth && _windowWidth <= RootGrid.MaxHeight)
-            {
-                _scene_main_menu.Width = _windowWidth;
-                _scene_main_menu.Height = _windowHeight;
-            }
+            //if (_windowWidth <= RootGrid.MaxWidth && _windowWidth <= RootGrid.MaxHeight)
+            //{
+            //    _scene_main_menu.Width = _windowWidth;
+            //    _scene_main_menu.Height = _windowHeight;
+            //}
 
             var scaling = ScreenExtensions.GetScreenSpaceScaling(_windowWidth);
 
             _scene_game.SetScaleTransform(scaling);
-            //_scene_main_menu.SetScaleTransform(scaling);
+            _scene_main_menu.SetScaleTransform(scaling);
 
             if (_scene_game.SceneState == SceneState.GAME_RUNNING)
             {
