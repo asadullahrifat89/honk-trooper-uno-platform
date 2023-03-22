@@ -189,10 +189,10 @@ namespace HonkTrooper
             {
                 _audio_stub.Stop(SoundType.AMBIENCE, SoundType.GAME_BACKGROUND_MUSIC/*, SoundType.UFO_BOSS_BACKGROUND_MUSIC*/);
 
-                if (_scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating) is UfoBoss UfoBoss)
+                if (_scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating) is UfoBoss ufoBoss)
                 {
-                    UfoBoss.SetWinStance();
-                    UfoBoss.StopSoundLoop();
+                    ufoBoss.SetWinStance();
+                    ufoBoss.StopSoundLoop();
                 }
 
                 _audio_stub.Play(SoundType.GAME_OVER);
@@ -2999,6 +2999,7 @@ namespace HonkTrooper
             _scene_main_menu.Width = ScreenExtensions.Width;
             _scene_main_menu.Height = ScreenExtensions.Height;
 
+            // resize the game scene
             _scene_game.Width = ScreenExtensions.Width;
             _scene_game.Height = ScreenExtensions.Height;
 
