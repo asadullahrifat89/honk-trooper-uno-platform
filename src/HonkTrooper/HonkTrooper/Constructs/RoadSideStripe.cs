@@ -27,10 +27,7 @@ namespace HonkTrooper
             AnimateAction = animateAction;
             RecycleAction = recycleAction;
 
-            Background = new SolidColorBrush(Colors.Goldenrod);
-            //CornerRadius = new CornerRadius(5);
-            BorderThickness = new Thickness(leftRight: Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS, topBottom: 0);
-            BorderBrush = App.Current.Resources["BorderColor"] as SolidColorBrush;
+            Background = new SolidColorBrush(Colors.White);
 
             SetSkewY(42);
             SetRotation(-63.5);

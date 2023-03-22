@@ -917,7 +917,7 @@ namespace HonkTrooper
                 roadSideStripe.IsAnimating = true;
 
                 roadSideStripe.SetPosition(
-                    left: (_scene_game.Width / 4.2 - roadSideStripe.Height) * 2 * _scene_game.DownScaling,
+                    left: ((_scene_game.Width / 4.2 - roadSideStripe.Height) * 2) * _scene_game.DownScaling,
                     top: (roadSideStripe.Height * 1.1) * -1,
                     z: 0);
 
@@ -944,22 +944,22 @@ namespace HonkTrooper
             return false;
         }
 
-        private bool AnimateRoadSideStripe(Construct RoadSideStripe)
+        private bool AnimateRoadSideStripe(Construct roadSideStripe)
         {
-            var speed = (_scene_game.Speed + RoadSideStripe.SpeedOffset);
-            MoveConstructBottomRight(construct: RoadSideStripe, speed: speed);
+            var speed = (_scene_game.Speed + roadSideStripe.SpeedOffset);
+            MoveConstructBottomRight(construct: roadSideStripe, speed: speed);
             return true;
         }
 
-        private bool RecycleRoadSideStripe(Construct RoadSideStripe)
+        private bool RecycleRoadSideStripe(Construct roadSideStripe)
         {
-            var hitBox = RoadSideStripe.GetHitBox();
+            var hitBox = roadSideStripe.GetHitBox();
 
-            if (hitBox.Top > _scene_game.Height || hitBox.Left - RoadSideStripe.Width > _scene_game.Width)
+            if (hitBox.Top - roadSideStripe.Height > _scene_game.Height || hitBox.Left - roadSideStripe.Height > _scene_game.Width)
             {
-                RoadSideStripe.IsAnimating = false;
+                roadSideStripe.IsAnimating = false;
 
-                RoadSideStripe.SetPosition(
+                roadSideStripe.SetPosition(
                     left: -500,
                     top: -500);
             }
