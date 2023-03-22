@@ -852,8 +852,8 @@ namespace HonkTrooper
                 roadMark.IsAnimating = true;
 
                 roadMark.SetPosition(
-                  left: 0,
-                  top: roadMark.Height / 2,
+                  left: roadMark.Width * -1,
+                  top: roadMark.Height / 3,
                   z: 1);
 
                 LoggerExtensions.Log("Road Mark generated.");
@@ -998,7 +998,7 @@ namespace HonkTrooper
 
                 roadSidePatch.SetPosition(
                     left: (roadSidePatch.Height * -1) * _scene_game.DownScaling,
-                    top: (_scene_game.Height / 3 + roadSidePatch.Height / 2) * _scene_game.DownScaling,
+                    top: (_scene_game.Height / 3.1 + roadSidePatch.Height / 2) * _scene_game.DownScaling,
                     z: 0);
 
                 return true;
