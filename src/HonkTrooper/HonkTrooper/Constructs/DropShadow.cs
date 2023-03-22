@@ -20,20 +20,19 @@ namespace HonkTrooper
 
         public DropShadow(
             Func<Construct, bool> animateAction,
-            Func<Construct, bool> recycleAction,
-            double downScaling)
+            Func<Construct, bool> recycleAction)
         {
             ConstructType = ConstructType.DROP_SHADOW;
 
             var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.DROP_SHADOW);
 
-            var width = size.Width * downScaling;
-            var height = size.Height * downScaling;
+            var width = size.Width;
+            var height = size.Height;
 
             AnimateAction = animateAction;
             RecycleAction = recycleAction;
 
-            Height = 25 * downScaling;
+            Height = 25;
 
             SetSize(width: width, height: height);
 

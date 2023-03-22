@@ -27,8 +27,7 @@ namespace HonkTrooper
 
         public Enemy(
             Func<Construct, bool> animateAction,
-            Func<Construct, bool> recycleAction,
-            double downScaling)
+            Func<Construct, bool> recycleAction)
         {
             ConstructType = ConstructType.ENEMY;
 
@@ -38,8 +37,8 @@ namespace HonkTrooper
 
             var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.ENEMY);
 
-            var width = size.Width * downScaling;
-            var height = size.Height * downScaling;
+            var width = size.Width;
+            var height = size.Height;
 
             AnimateAction = animateAction;
             RecycleAction = recycleAction;
@@ -82,14 +81,14 @@ namespace HonkTrooper
 
             Health = 5 * _random.Next(4);
 
-            WillAttack = Convert.ToBoolean(_random.Next( 2));
-            WillHonk = Convert.ToBoolean(_random.Next( 2));
+            WillAttack = Convert.ToBoolean(_random.Next(2));
+            WillHonk = Convert.ToBoolean(_random.Next(2));
 
             // role dice again
             if (!WillHonk && !WillAttack)
             {
-                WillAttack = Convert.ToBoolean(_random.Next( 2));
-                WillHonk = Convert.ToBoolean(_random.Next( 2));
+                WillAttack = Convert.ToBoolean(_random.Next(2));
+                WillHonk = Convert.ToBoolean(_random.Next(2));
             }
 
             if (WillHonk)

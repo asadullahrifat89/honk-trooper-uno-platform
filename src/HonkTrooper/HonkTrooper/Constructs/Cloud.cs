@@ -20,8 +20,7 @@ namespace HonkTrooper
 
         public Cloud(
             Func<Construct, bool> animateAction,
-            Func<Construct, bool> recycleAction,
-            double downScaling)
+            Func<Construct, bool> recycleAction)
         {
             _random = new Random();
 
@@ -31,8 +30,8 @@ namespace HonkTrooper
 
             ConstructType = ConstructType.CLOUD;
 
-            var width = size.Width * downScaling;
-            var height = size.Height * downScaling;
+            var width = size.Width;
+            var height = size.Height;
 
             AnimateAction = animateAction;
             RecycleAction = recycleAction;

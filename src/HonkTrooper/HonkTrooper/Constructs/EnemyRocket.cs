@@ -28,8 +28,7 @@ namespace HonkTrooper
 
         public EnemyRocket(
            Func<Construct, bool> animateAction,
-           Func<Construct, bool> recycleAction,
-           double downScaling)
+           Func<Construct, bool> recycleAction)
         {
             _random = new Random();
 
@@ -40,8 +39,8 @@ namespace HonkTrooper
 
             ConstructType = ConstructType.ENEMY_ROCKET;
 
-            var width = size.Width * downScaling;
-            var height = size.Height * downScaling;
+            var width = size.Width;
+            var height = size.Height;
 
             AnimateAction = animateAction;
             RecycleAction = recycleAction;
@@ -75,11 +74,11 @@ namespace HonkTrooper
 
         #region Methods
 
-        public void Reposition(Enemy Enemy, double downScaling)
+        public void Reposition(Enemy Enemy)
         {
             SetPosition(
                 left: (Enemy.GetLeft() + Enemy.Width / 2) - Width / 2,
-                top: Enemy.GetBottom() - (50 * downScaling),
+                top: Enemy.GetBottom() - (50),
                 z: 7);
         }
 

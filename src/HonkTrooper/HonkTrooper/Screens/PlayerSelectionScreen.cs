@@ -25,15 +25,14 @@ namespace HonkTrooper
            (Func<Construct, bool> animateAction,
            Func<Construct, bool> recycleAction,
            Func<int, bool> playAction,
-           Func<bool> backAction,
-           double downScaling)
+           Func<bool> backAction)
         {
             ConstructType = ConstructType.TITLE_SCREEN;
 
             var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.TITLE_SCREEN);
 
-            var width = size.Width * downScaling;
-            var height = size.Height * downScaling;
+            var width = size.Width;
+            var height = size.Height;
 
             SetSize(width: width, height: height);
 
