@@ -224,8 +224,8 @@ namespace HonkTrooper
                 construct.IsAnimating = false;
 
                 construct.SetPosition(
-                     left: -500,
-                     top: -500);
+                     left: -3000,
+                     top: -3000);
 
                 if (construct is Boss boss1)
                 {
@@ -256,8 +256,8 @@ namespace HonkTrooper
                 recycleAction: (se) => { return true; });
 
             displayOrientationChangeScreen.SetPosition(
-                left: -500,
-                top: -500);
+                left: -3000,
+                top: -3000);
 
             _scene_main_menu.AddToScene(displayOrientationChangeScreen);
 
@@ -289,7 +289,7 @@ namespace HonkTrooper
         private void RecycleDisplayOrientationChangeScreen(DisplayOrientationChangeScreen displayOrientationChangeScreen)
         {
             displayOrientationChangeScreen.IsAnimating = false;
-            displayOrientationChangeScreen.SetPosition(left: -500, top: -500);
+            displayOrientationChangeScreen.SetPosition(left: -3000, top: -3000);
 
             LoggerExtensions.Log("Screen Orientation Change Promt Recyled.");
         }
@@ -340,8 +340,8 @@ namespace HonkTrooper
                 });
 
             titleScreen.SetPosition(
-                left: -500,
-                top: -500);
+                left: -3000,
+                top: -3000);
 
             _scene_main_menu.AddToScene(titleScreen);
 
@@ -375,7 +375,7 @@ namespace HonkTrooper
         private void RecycleTitleScreen(TitleScreen titleScreen)
         {
             titleScreen.IsAnimating = false;
-            titleScreen.SetPosition(left: -500, top: -500);
+            titleScreen.SetPosition(left: -3000, top: -3000);
         }
 
         #endregion
@@ -409,8 +409,8 @@ namespace HonkTrooper
                 });
 
             playerSelectionScreen.SetPosition(
-                left: -500,
-                top: -500);
+                left: -3000,
+                top: -3000);
 
             _scene_main_menu.AddToScene(playerSelectionScreen);
 
@@ -442,7 +442,7 @@ namespace HonkTrooper
         private void RecyclePlayerSelectionScreen(PlayerSelectionScreen playerSelectionScreen)
         {
             playerSelectionScreen.IsAnimating = false;
-            playerSelectionScreen.SetPosition(left: -500, top: -500);
+            playerSelectionScreen.SetPosition(left: -3000, top: -3000);
 
             LoggerExtensions.Log("Player Selection Screen Recyled.");
         }
@@ -460,8 +460,8 @@ namespace HonkTrooper
                 recycleAction: RecycleInterimScreen);
 
             interimScreen.SetPosition(
-                left: -500,
-                top: -500);
+                left: -3000,
+                top: -3000);
 
             _scene_game.AddToScene(interimScreen);
 
@@ -498,7 +498,7 @@ namespace HonkTrooper
             if (interimScreen is InterimScreen interimScreen1 && interimScreen1.IsDepleted)
             {
                 interimScreen.IsAnimating = false;
-                interimScreen.SetPosition(left: -500, top: -500);
+                interimScreen.SetPosition(left: -3000, top: -3000);
 
                 return true;
             }
@@ -520,8 +520,8 @@ namespace HonkTrooper
                 recycleAction: (_player) => { return true; });
 
             _player.SetPosition(
-                  left: -500,
-                  top: -500);
+                  left: -3000,
+                  top: -3000);
 
             SpawnDropShadow(_player);
 
@@ -687,8 +687,8 @@ namespace HonkTrooper
                 _scene_game.AddToScene(vehicle);
 
                 vehicle.SetPosition(
-                    left: -500,
-                    top: -500);
+                    left: -3000,
+                    top: -3000);
             }
 
             return true;
@@ -768,8 +768,8 @@ namespace HonkTrooper
                 vehicle.IsAnimating = false;
 
                 vehicle.SetPosition(
-                    left: -500,
-                    top: -500);
+                    left: -3000,
+                    top: -3000);
             }
 
             return true;
@@ -832,8 +832,8 @@ namespace HonkTrooper
                     recycleAction: RecycleRoadMark);
 
                 roadMark.SetPosition(
-                    left: -500,
-                    top: -500);
+                    left: -3000,
+                    top: -3000);
 
                 _scene_game.AddToScene(roadMark);
             }
@@ -876,8 +876,8 @@ namespace HonkTrooper
                 roadMark.IsAnimating = false;
 
                 roadMark.SetPosition(
-                    left: -500,
-                    top: -500);
+                    left: -3000,
+                    top: -3000);
             }
 
             return true;
@@ -896,8 +896,8 @@ namespace HonkTrooper
                     recycleAction: RecycleRoadSideStripe);
 
                 roadSideStripe.SetPosition(
-                    left: -500,
-                    top: -500);
+                    left: -3000,
+                    top: -3000);
 
                 _scene_game.AddToScene(roadSideStripe);
             }
@@ -955,8 +955,8 @@ namespace HonkTrooper
                 roadSideStripe.IsAnimating = false;
 
                 roadSideStripe.SetPosition(
-                    left: -500,
-                    top: -500);
+                    left: -3000,
+                    top: -3000);
             }
 
             return true;
@@ -975,8 +975,8 @@ namespace HonkTrooper
                 recycleAction: RecycleRoadSidePatch);
 
                 RoadSidePatch.SetPosition(
-                    left: -1500,
-                    top: -1500);
+                    left: -3000,
+                    top: -3000);
 
                 _scene_game.AddToScene(RoadSidePatch);
             }
@@ -1034,8 +1034,8 @@ namespace HonkTrooper
                 roadSidePatch.IsAnimating = false;
 
                 roadSidePatch.SetPosition(
-                    left: -1500,
-                    top: -1500);
+                    left: -3000,
+                    top: -3000);
             }
 
             return true;
@@ -1054,8 +1054,8 @@ namespace HonkTrooper
                     recycleAction: RecycleTree);
 
                 tree.SetPosition(
-                    left: -500,
-                    top: -500);
+                    left: -3000,
+                    top: -3000);
 
                 _scene_game.AddToScene(tree);
 
@@ -1123,8 +1123,8 @@ namespace HonkTrooper
                 tree.IsAnimating = false;
 
                 tree.SetPosition(
-                    left: -500,
-                    top: -500);
+                    left: -3000,
+                    top: -3000);
             }
 
             return true;
@@ -1143,8 +1143,8 @@ namespace HonkTrooper
                     recycleAction: RecycleHedge);
 
                 hedge.SetPosition(
-                    left: -500,
-                    top: -500);
+                    left: -3000,
+                    top: -3000);
 
                 _scene_game.AddToScene(hedge);
 
@@ -1208,8 +1208,8 @@ namespace HonkTrooper
                 hedge.IsAnimating = false;
 
                 hedge.SetPosition(
-                    left: -500,
-                    top: -500);
+                    left: -3000,
+                    top: -3000);
             }
 
             return true;
@@ -1228,8 +1228,8 @@ namespace HonkTrooper
                     recycleAction: RecycleHonk);
 
                 honk.SetPosition(
-                    left: -500,
-                    top: -500);
+                    left: -3000,
+                    top: -3000);
 
                 _scene_game.AddToScene(honk);
             }
@@ -1274,8 +1274,8 @@ namespace HonkTrooper
                 honk.IsAnimating = false;
 
                 honk.SetPosition(
-                    left: -500,
-                    top: -500);
+                    left: -3000,
+                    top: -3000);
             }
 
             return true;
@@ -1318,8 +1318,8 @@ namespace HonkTrooper
                     recycleAction: RecycleCloud);
 
                 cloud.SetPosition(
-                    left: -500,
-                    top: -500,
+                    left: -3000,
+                    top: -3000,
                     z: 9);
 
                 _scene_game.AddToScene(cloud);
@@ -1387,8 +1387,8 @@ namespace HonkTrooper
                 cloud.IsAnimating = false;
 
                 cloud.SetPosition(
-                    left: -500,
-                    top: -500);
+                    left: -3000,
+                    top: -3000);
 
             }
 
@@ -1408,8 +1408,8 @@ namespace HonkTrooper
                     recycleAction: RecycleBoss);
 
                 boss.SetPosition(
-                    left: -500,
-                    top: -500,
+                    left: -3000,
+                    top: -3000,
                     z: 8);
 
                 _scene_game.AddToScene(boss);
@@ -1511,8 +1511,8 @@ namespace HonkTrooper
                 boss.IsAnimating = false;
 
                 boss.SetPosition(
-                    left: -500,
-                    top: -500);
+                    left: -3000,
+                    top: -3000);
             }
 
             return true;
@@ -1565,8 +1565,8 @@ namespace HonkTrooper
                 _scene_game.AddToScene(enemy);
 
                 enemy.SetPosition(
-                    left: -500,
-                    top: -500,
+                    left: -3000,
+                    top: -3000,
                     z: 8);
 
                 SpawnDropShadow(enemy);
@@ -1671,8 +1671,8 @@ namespace HonkTrooper
                 enemy.IsAnimating = false;
 
                 enemy.SetPosition(
-                    left: -500,
-                    top: -500);
+                    left: -3000,
+                    top: -3000);
 
                 LoggerExtensions.Log("Enemy Recycled");
             }
@@ -1724,8 +1724,8 @@ namespace HonkTrooper
                     recycleAction: RecyclePlayerFireCracker);
 
                 bomb.SetPosition(
-                    left: -500,
-                    top: -500,
+                    left: -3000,
+                    top: -3000,
                     z: 7);
 
                 _scene_game.AddToScene(bomb);
@@ -1823,8 +1823,8 @@ namespace HonkTrooper
                 playerFireCracker.IsGravitating = false;
 
                 playerFireCracker.SetPosition(
-                    left: -500,
-                    top: -500);
+                    left: -3000,
+                    top: -3000);
 
                 return true;
             }
@@ -1915,8 +1915,8 @@ namespace HonkTrooper
                     recycleAction: RecyclePlayerRocket);
 
                 bomb.SetPosition(
-                    left: -500,
-                    top: -500,
+                    left: -3000,
+                    top: -3000,
                     z: 7);
 
                 _scene_game.AddToScene(bomb);
@@ -2051,8 +2051,8 @@ namespace HonkTrooper
                 playerRocket.IsAnimating = false;
 
                 playerRocket.SetPosition(
-                    left: -500,
-                    top: -500);
+                    left: -3000,
+                    top: -3000);
 
                 return true;
             }
@@ -2073,8 +2073,8 @@ namespace HonkTrooper
                     recycleAction: RecycleEnemyRocket);
 
                 bomb.SetPosition(
-                    left: -500,
-                    top: -500,
+                    left: -3000,
+                    top: -3000,
                     z: 8);
 
                 _scene_game.AddToScene(bomb);
@@ -2150,8 +2150,8 @@ namespace HonkTrooper
                 bomb.IsAnimating = false;
 
                 bomb.SetPosition(
-                    left: -500,
-                    top: -500);
+                    left: -3000,
+                    top: -3000);
 
                 return true;
             }
@@ -2172,8 +2172,8 @@ namespace HonkTrooper
                     recycleAction: RecycleBossRocket);
 
                 bomb.SetPosition(
-                    left: -500,
-                    top: -500,
+                    left: -3000,
+                    top: -3000,
                     z: 7);
 
                 _scene_game.AddToScene(bomb);
@@ -2271,8 +2271,8 @@ namespace HonkTrooper
                 bomb.IsAnimating = false;
 
                 bomb.SetPosition(
-                    left: -500,
-                    top: -500);
+                    left: -3000,
+                    top: -3000);
 
                 return true;
             }
@@ -2293,8 +2293,8 @@ namespace HonkTrooper
                     recycleAction: RecyclePlayerRocketSeeking);
 
                 bomb.SetPosition(
-                    left: -500,
-                    top: -500,
+                    left: -3000,
+                    top: -3000,
                     z: 7);
 
                 _scene_game.AddToScene(bomb);
@@ -2403,8 +2403,8 @@ namespace HonkTrooper
                 playerRocketSeeking.IsAnimating = false;
 
                 playerRocketSeeking.SetPosition(
-                    left: -500,
-                    top: -500);
+                    left: -3000,
+                    top: -3000);
 
                 return true;
             }
@@ -2432,8 +2432,8 @@ namespace HonkTrooper
                     recycleAction: RecycleBossRocketSeeking);
 
                 bomb.SetPosition(
-                    left: -500,
-                    top: -500,
+                    left: -3000,
+                    top: -3000,
                     z: 7);
 
                 _scene_game.AddToScene(bomb);
@@ -2523,8 +2523,8 @@ namespace HonkTrooper
                 bomb.IsAnimating = false;
 
                 bomb.SetPosition(
-                    left: -500,
-                    top: -500);
+                    left: -3000,
+                    top: -3000);
 
                 return true;
             }
@@ -2569,8 +2569,8 @@ namespace HonkTrooper
                 dropShadow.IsAnimating = false;
 
                 dropShadow.SetPosition(
-                    left: -500,
-                    top: -500);
+                    left: -3000,
+                    top: -3000);
 
                 return true;
             }
@@ -2604,8 +2604,8 @@ namespace HonkTrooper
                     recycleAction: RecycleHealthPickup);
 
                 HealthPickup.SetPosition(
-                    left: -500,
-                    top: -500,
+                    left: -3000,
+                    top: -3000,
                     z: 6);
 
                 _scene_game.AddToScene(HealthPickup);
@@ -2694,8 +2694,8 @@ namespace HonkTrooper
             if (hitBox.Top > _scene_game.Height || hitBox.Left > _scene_game.Width || healthPickup.IsShrinkingComplete)
             {
                 healthPickup.SetPosition(
-                    left: -500,
-                    top: -500);
+                    left: -3000,
+                    top: -3000);
 
                 healthPickup.IsAnimating = false;
             }
@@ -2716,8 +2716,8 @@ namespace HonkTrooper
                     recycleAction: RecyclePowerUpPickup);
 
                 powerUpPickup.SetPosition(
-                    left: -500,
-                    top: -500,
+                    left: -3000,
+                    top: -3000,
                     z: 6);
 
                 _scene_game.AddToScene(powerUpPickup);
@@ -2818,8 +2818,8 @@ namespace HonkTrooper
                 powerUpPickup.IsAnimating = false;
 
                 powerUpPickup.SetPosition(
-                    left: -500,
-                    top: -500);
+                    left: -3000,
+                    top: -3000);
             }
 
             return true;
@@ -3153,13 +3153,13 @@ namespace HonkTrooper
                     foreach (var hoveringTitleScreen in _scene_main_menu.Children.OfType<HoveringTitleScreen>().Where(x => x.IsAnimating))
                     {
                         hoveringTitleScreen.IsAnimating = false;
-                        hoveringTitleScreen.SetPosition(left: -500, top: -500);
+                        hoveringTitleScreen.SetPosition(left: -3000, top: -3000);
                     }
 
                     foreach (var construct in _scene_game.Children.OfType<Construct>())
                     {
                         construct.IsAnimating = false;
-                        construct.SetPosition(left: -500, top: -500);
+                        construct.SetPosition(left: -3000, top: -3000);
                     }
 
                     GenerateDisplayOrientationChangeScreen();
