@@ -20,18 +20,18 @@ namespace HonkTrooper
         private readonly Controller _game_controller;
 
         private readonly HealthBar _player_health_bar;
-        private readonly HealthBar _boss_health_bar;
+        private readonly HealthBar _UFO_BOSS_health_bar;
         private readonly HealthBar _powerUp_health_bar;
 
         private readonly ScoreBar _game_score_bar;
         private readonly StackPanel _health_bars;
 
-        private readonly Threashold _boss_threashold;
+        private readonly Threashold _UFO_BOSS_threashold;
         private readonly Threashold _enemy_threashold;
 
-        //TODO: set defaults _boss_threashold_limit = 50
-        private readonly double _boss_threashold_limit = 50; // first boss will appear
-        private readonly double _boss_threashold_limit_increase = 15;
+        //TODO: set defaults _UFO_BOSS_threashold_limit = 50
+        private readonly double _UFO_BOSS_threashold_limit = 50; // first UfoBoss will appear
+        private readonly double _UFO_BOSS_threashold_limit_increase = 15;
 
         //TODO: set defaults _enemy_threashold_limit = 80
         private readonly double _enemy_threashold_limit = 80; // after first enemies will appear
@@ -57,14 +57,14 @@ namespace HonkTrooper
             _scene_game = this.GameScene;
             _scene_main_menu = this.MainMenuScene;
             _player_health_bar = this.PlayerHealthBar;
-            _boss_health_bar = this.BossHealthBar;
+            _UFO_BOSS_health_bar = this.UfoBossHealthBar;
             _powerUp_health_bar = this.PowerUpHealthBar;
 
             _game_controller = this.GameController;
             _game_score_bar = this.GameScoreBar;
             _health_bars = this.HealthBars;
 
-            _boss_threashold = new Threashold(_boss_threashold_limit);
+            _UFO_BOSS_threashold = new Threashold(_UFO_BOSS_threashold_limit);
             _enemy_threashold = new Threashold(_enemy_threashold_limit);
 
             ToggleHudVisibility(Visibility.Collapsed);
@@ -73,12 +73,12 @@ namespace HonkTrooper
 
             _audio_stub = new AudioStub(
                 (SoundType.GAME_BACKGROUND_MUSIC, 0.5, true),
-                (SoundType.BOSS_BACKGROUND_MUSIC, 0.5, true),
+                (SoundType.UFO_BOSS_BACKGROUND_MUSIC, 0.5, true),
                 (SoundType.AMBIENCE, 0.6, true),
                 (SoundType.GAME_START, 1, false),
                 (SoundType.GAME_PAUSE, 1, false),
                 (SoundType.GAME_OVER, 1, false),
-                (SoundType.ENEMY_ENTRY, 1, false));
+                (SoundType.UFO_ENEMY_ENTRY, 1, false));
 
             _scene_main_menu.SetRenderTransformOrigin(0.5);
 
@@ -101,9 +101,9 @@ namespace HonkTrooper
 
             _audio_stub.Pause(SoundType.AMBIENCE);
 
-            if (BossExists())
+            if (UfoBossExists())
             {
-                //_audio_stub.Pause(SoundType.BOSS_BACKGROUND_MUSIC);
+                //_audio_stub.Pause(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
             }
             else
             {
@@ -127,9 +127,9 @@ namespace HonkTrooper
         {
             _audio_stub.Resume(SoundType.AMBIENCE);
 
-            if (BossExists())
+            if (UfoBossExists())
             {
-                //_audio_stub.Resume(SoundType.BOSS_BACKGROUND_MUSIC);
+                //_audio_stub.Resume(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
             }
             else
             {
@@ -154,10 +154,10 @@ namespace HonkTrooper
             _game_controller.Reset();
 
             _powerUp_health_bar.Reset();
-            _boss_health_bar.Reset();
+            _UFO_BOSS_health_bar.Reset();
             _game_score_bar.Reset();
 
-            _boss_threashold.Reset(_boss_threashold_limit);
+            _UFO_BOSS_threashold.Reset(_UFO_BOSS_threashold_limit);
             _enemy_threashold.Reset(_enemy_threashold_limit);
             _enemy_kill_count = 0;
             _enemy_fleet_appeared = false;
@@ -185,12 +185,12 @@ namespace HonkTrooper
             // if player is dead game keeps playing in the background but scene state goes to game over
             if (_player.IsDead)
             {
-                _audio_stub.Stop(SoundType.AMBIENCE, SoundType.GAME_BACKGROUND_MUSIC/*, SoundType.BOSS_BACKGROUND_MUSIC*/);
+                _audio_stub.Stop(SoundType.AMBIENCE, SoundType.GAME_BACKGROUND_MUSIC/*, SoundType.UFO_BOSS_BACKGROUND_MUSIC*/);
 
-                if (_scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating) is Boss boss)
+                if (_scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating) is UfoBoss UfoBoss)
                 {
-                    boss.SetWinStance();
-                    boss.StopSoundLoop();
+                    UfoBoss.SetWinStance();
+                    UfoBoss.StopSoundLoop();
                 }
 
                 _audio_stub.Play(SoundType.GAME_OVER);
@@ -215,13 +215,13 @@ namespace HonkTrooper
                 ConstructType.PLAYER_ROCKET or
                 ConstructType.PLAYER_ROCKET_SEEKING or
                 ConstructType.PLAYER_FIRE_CRACKER or
-                ConstructType.BOSS_ROCKET or
-                ConstructType.BOSS_ROCKET_SEEKING or
-                ConstructType.ENEMY or
-                ConstructType.ENEMY_ROCKET or
+                ConstructType.UFO_BOSS_ROCKET or
+                ConstructType.UFO_BOSS_ROCKET_SEEKING or
+                ConstructType.UFO_ENEMY or
+                ConstructType.UFO_ENEMY_ROCKET or
                 ConstructType.POWERUP_PICKUP or
                 ConstructType.HEALTH_PICKUP or
-                ConstructType.BOSS))
+                ConstructType.UFO_BOSS))
             {
                 construct.IsAnimating = false;
 
@@ -229,10 +229,10 @@ namespace HonkTrooper
                      left: -3000,
                      top: -3000);
 
-                if (construct is Boss boss1)
+                if (construct is UfoBoss UfoBoss1)
                 {
-                    boss1.IsAttacking = false;
-                    boss1.Health = 0;
+                    UfoBoss1.IsAttacking = false;
+                    UfoBoss1.Health = 0;
                 }
             }
         }
@@ -574,7 +574,7 @@ namespace HonkTrooper
         {
             if (_game_controller.IsAttacking)
             {
-                if (EnemyExists() || BossExists())
+                if (UfoEnemyExists() || UfoBossExists())
                 {
                     if (_powerUp_health_bar.HasHealth && (PowerUpType)_powerUp_health_bar.Tag == PowerUpType.SEEKING_BALLS)
                         GeneratePlayerRocketSeeking();
@@ -666,8 +666,8 @@ namespace HonkTrooper
 
                 _player_health_bar.SetValue(_player.Health);
 
-                if (_scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss)
-                    boss.SetWinStance();
+                if (_scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is UfoBoss UfoBoss)
+                    UfoBoss.SetWinStance();
 
                 GameOver();
             }
@@ -697,7 +697,7 @@ namespace HonkTrooper
 
         private bool GenerateVehicle()
         {
-            if (!BossExists() && _scene_game.Children.OfType<Vehicle>().FirstOrDefault(x => x.IsAnimating == false) is Vehicle vehicle)
+            if (!UfoBossExists() && _scene_game.Children.OfType<Vehicle>().FirstOrDefault(x => x.IsAnimating == false) is Vehicle vehicle)
             {
                 vehicle.IsAnimating = true;
                 vehicle.Reset();
@@ -1275,9 +1275,9 @@ namespace HonkTrooper
 
         private bool GenerateVehicleHonk(Vehicle source)
         {
-            // if there are no bosses or enemies in the scene the vehicles will honk
+            // if there are no UfoBosses or enemies in the scene the vehicles will honk
 
-            if (_scene_game.SceneState == SceneState.GAME_RUNNING && !BossExists() && !EnemyExists())
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING && !UfoBossExists() && !UfoEnemyExists())
             {
                 return GenerateHonk(source);
             }
@@ -1285,11 +1285,11 @@ namespace HonkTrooper
             return true;
         }
 
-        private bool GenerateEnemyHonk(Enemy source)
+        private bool GenerateUfoEnemyHonk(UfoEnemy source)
         {
-            // if there are no bosses in the scene the vehicles will honk
+            // if there are no UfoBosses in the scene the vehicles will honk
 
-            if (_scene_game.SceneState == SceneState.GAME_RUNNING && !BossExists())
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING && !UfoBossExists())
             {
                 return GenerateHonk(source);
             }
@@ -1389,61 +1389,61 @@ namespace HonkTrooper
 
         #endregion
 
-        #region Boss
+        #region UfoBoss
 
-        private bool SpawnBosses()
+        private bool SpawnUfoBosses()
         {
             for (int i = 0; i < 3; i++)
             {
-                Boss boss = new(
-                    animateAction: AnimateBoss,
-                    recycleAction: RecycleBoss);
+                UfoBoss UfoBoss = new(
+                    animateAction: AnimateUfoBoss,
+                    recycleAction: RecycleUfoBoss);
 
-                boss.SetPosition(
+                UfoBoss.SetPosition(
                     left: -3000,
                     top: -3000,
                     z: 8);
 
-                _scene_game.AddToScene(boss);
+                _scene_game.AddToScene(UfoBoss);
 
-                SpawnDropShadow(source: boss);
+                SpawnDropShadow(source: UfoBoss);
             }
 
             return true;
         }
 
-        private bool GenerateBoss()
+        private bool GenerateUfoBoss()
         {
-            // if scene doesn't contain a boss then pick a random boss and add to scene
+            // if scene doesn't contain a UfoBoss then pick a random UfoBoss and add to scene
 
             if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
-                _boss_threashold.ShouldRelease(_game_score_bar.GetScore()) &&
-                !_scene_game.Children.OfType<Boss>().Any(x => x.IsAnimating) &&
-                _scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating == false) is Boss boss)
+                _UFO_BOSS_threashold.ShouldRelease(_game_score_bar.GetScore()) &&
+                !_scene_game.Children.OfType<UfoBoss>().Any(x => x.IsAnimating) &&
+                _scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating == false) is UfoBoss UfoBoss)
             {
                 _audio_stub.Stop(SoundType.GAME_BACKGROUND_MUSIC);
 
-                //_audio_stub.Play(SoundType.BOSS_BACKGROUND_MUSIC);
+                //_audio_stub.Play(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
 
                 _audio_stub.SetVolume(SoundType.AMBIENCE, 0.2);
 
-                boss.IsAnimating = true;
-                boss.Reset();
-                boss.SetPosition(
+                UfoBoss.IsAnimating = true;
+                UfoBoss.Reset();
+                UfoBoss.SetPosition(
                     left: 0,
-                    top: boss.Height * -1);
+                    top: UfoBoss.Height * -1);
 
-                SyncDropShadow(boss);
+                SyncDropShadow(UfoBoss);
 
-                // set boss health
-                boss.Health = _boss_threashold.GetReleasePointDifference() * 1.5;
+                // set UfoBoss health
+                UfoBoss.Health = _UFO_BOSS_threashold.GetReleasePointDifference() * 1.5;
 
-                _boss_threashold.IncreaseThreasholdLimit(increment: _boss_threashold_limit_increase, currentPoint: _game_score_bar.GetScore());
+                _UFO_BOSS_threashold.IncreaseThreasholdLimit(increment: _UFO_BOSS_threashold_limit_increase, currentPoint: _game_score_bar.GetScore());
 
-                _boss_health_bar.SetMaxiumHealth(boss.Health);
-                _boss_health_bar.SetValue(boss.Health);
-                _boss_health_bar.SetIcon(boss.GetContentUri());
-                _boss_health_bar.SetBarForegroundColor(color: Colors.Crimson);
+                _UFO_BOSS_health_bar.SetMaxiumHealth(UfoBoss.Health);
+                _UFO_BOSS_health_bar.SetValue(UfoBoss.Health);
+                _UFO_BOSS_health_bar.SetIcon(UfoBoss.GetContentUri());
+                _UFO_BOSS_health_bar.SetBarForegroundColor(color: Colors.Crimson);
 
                 GenerateInterimScreen("Beware of Boss");
                 _scene_game.ActivateSlowMotion();
@@ -1454,31 +1454,31 @@ namespace HonkTrooper
             return false;
         }
 
-        private bool AnimateBoss(Construct boss)
+        private bool AnimateUfoBoss(Construct UfoBoss)
         {
-            Boss boss1 = boss as Boss;
+            UfoBoss UfoBoss1 = UfoBoss as UfoBoss;
 
-            if (boss1.IsDead)
+            if (UfoBoss1.IsDead)
             {
-                boss.Shrink();
+                UfoBoss.Shrink();
             }
             else
             {
-                boss.Pop();
+                UfoBoss.Pop();
 
-                boss1.Hover();
-                boss1.DepleteHitStance();
-                boss1.DepleteWinStance();
+                UfoBoss1.Hover();
+                UfoBoss1.DepleteHitStance();
+                UfoBoss1.DepleteWinStance();
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
-                    var speed = (_scene_game.Speed + boss.SpeedOffset);
+                    var speed = (_scene_game.Speed + UfoBoss.SpeedOffset);
 
-                    if (boss1.IsAttacking)
+                    if (UfoBoss1.IsAttacking)
                     {
                         var scaling = ScreenExtensions.GetScreenSpaceScaling();
 
-                        boss1.Move(
+                        UfoBoss1.Move(
                             speed: speed,
                             sceneWidth: ScreenExtensions.Width * (scaling < 1 ? 1.4 : 1),
                             sceneHeight: ScreenExtensions.Height * (scaling < 1 ? 1.2 : 1),
@@ -1486,11 +1486,11 @@ namespace HonkTrooper
                     }
                     else
                     {
-                        MoveConstructBottomRight(construct: boss, speed: speed);
+                        MoveConstructBottomRight(construct: UfoBoss, speed: speed);
 
-                        if (boss.GetLeft() > (_scene_game.Width / 3)) // bring boss to a suitable distance from player and then start attacking
+                        if (UfoBoss.GetLeft() > (_scene_game.Width / 3)) // bring UfoBoss to a suitable distance from player and then start attacking
                         {
-                            boss1.IsAttacking = true;
+                            UfoBoss1.IsAttacking = true;
                         }
                     }
                 }
@@ -1499,13 +1499,13 @@ namespace HonkTrooper
             return true;
         }
 
-        private bool RecycleBoss(Construct boss)
+        private bool RecycleUfoBoss(Construct UfoBoss)
         {
-            if (boss.IsShrinkingComplete)
+            if (UfoBoss.IsShrinkingComplete)
             {
-                boss.IsAnimating = false;
+                UfoBoss.IsAnimating = false;
 
-                boss.SetPosition(
+                UfoBoss.SetPosition(
                     left: -3000,
                     top: -3000);
             }
@@ -1513,23 +1513,23 @@ namespace HonkTrooper
             return true;
         }
 
-        private void LooseBossHealth(Boss boss)
+        private void LooseUfoBossHealth(UfoBoss UfoBoss)
         {
-            boss.SetPopping();
-            boss.LooseHealth();
-            boss.SetHitStance();
+            UfoBoss.SetPopping();
+            UfoBoss.LooseHealth();
+            UfoBoss.SetHitStance();
 
-            _boss_health_bar.SetValue(boss.Health);
+            _UFO_BOSS_health_bar.SetValue(UfoBoss.Health);
 
-            if (boss.IsDead && boss.IsAttacking)
+            if (UfoBoss.IsDead && UfoBoss.IsAttacking)
             {
-                //_audio_stub.Stop(SoundType.BOSS_BACKGROUND_MUSIC);
+                //_audio_stub.Stop(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
 
                 _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
 
                 _audio_stub.SetVolume(SoundType.AMBIENCE, 0.6);
 
-                boss.IsAttacking = false;
+                UfoBoss.IsAttacking = false;
 
                 _player.SetWinStance();
                 _game_score_bar.GainScore(5);
@@ -1540,22 +1540,22 @@ namespace HonkTrooper
             }
         }
 
-        private bool BossExists()
+        private bool UfoBossExists()
         {
-            return _scene_game.Children.OfType<Boss>().Any(x => x.IsAnimating && x.IsAttacking);
+            return _scene_game.Children.OfType<UfoBoss>().Any(x => x.IsAnimating && x.IsAttacking);
         }
 
         #endregion
 
-        #region Enemy
+        #region UfoEnemy
 
-        private bool SpawnEnemys()
+        private bool SpawnUfoEnemys()
         {
             for (int i = 0; i < 10; i++)
             {
-                Enemy enemy = new(
-                    animateAction: AnimateEnemy,
-                    recycleAction: RecycleEnemy);
+                UfoEnemy enemy = new(
+                    animateAction: AnimateUfoEnemy,
+                    recycleAction: RecycleUfoEnemy);
 
                 _scene_game.AddToScene(enemy);
 
@@ -1570,11 +1570,11 @@ namespace HonkTrooper
             return true;
         }
 
-        private bool GenerateEnemy()
+        private bool GenerateUfoEnemy()
         {
-            if (!BossExists() &&
+            if (!UfoBossExists() &&
                 _enemy_threashold.ShouldRelease(_game_score_bar.GetScore()) &&
-                _scene_game.Children.OfType<Enemy>().FirstOrDefault(x => x.IsAnimating == false) is Enemy enemy)
+                _scene_game.Children.OfType<UfoEnemy>().FirstOrDefault(x => x.IsAnimating == false) is UfoEnemy enemy)
             {
                 enemy.IsAnimating = true;
                 enemy.Reset();
@@ -1609,7 +1609,7 @@ namespace HonkTrooper
 
                 if (!_enemy_fleet_appeared)
                 {
-                    _audio_stub.Play(SoundType.ENEMY_ENTRY);
+                    _audio_stub.Play(SoundType.UFO_ENEMY_ENTRY);
 
                     GenerateInterimScreen("Beware of Aliens");
                     _scene_game.ActivateSlowMotion();
@@ -1622,9 +1622,9 @@ namespace HonkTrooper
             return false;
         }
 
-        private bool AnimateEnemy(Construct enemy)
+        private bool AnimateUfoEnemy(Construct enemy)
         {
-            Enemy enemy1 = enemy as Enemy;
+            UfoEnemy enemy1 = enemy as UfoEnemy;
 
             if (enemy1.IsDead)
             {
@@ -1642,17 +1642,17 @@ namespace HonkTrooper
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
                     if (enemy1.Honk())
-                        GenerateEnemyHonk(enemy1);
+                        GenerateUfoEnemyHonk(enemy1);
 
                     if (enemy1.Attack())
-                        GenerateEnemyRocket(enemy1);
+                        GenerateUfoEnemyRocket(enemy1);
                 }
             }
 
             return true;
         }
 
-        private bool RecycleEnemy(Construct enemy)
+        private bool RecycleUfoEnemy(Construct enemy)
         {
             var hitbox = enemy.GetHitBox();
 
@@ -1667,13 +1667,13 @@ namespace HonkTrooper
                     left: -3000,
                     top: -3000);
 
-                LoggerExtensions.Log("Enemy Recycled");
+                LoggerExtensions.Log("UfoEnemy Recycled");
             }
 
             return true;
         }
 
-        private void LooseEnemyHealth(Enemy enemy)
+        private void LooseUfoEnemyHealth(UfoEnemy enemy)
         {
             enemy.SetPopping();
             enemy.LooseHealth();
@@ -1695,13 +1695,13 @@ namespace HonkTrooper
                     _scene_game.ActivateSlowMotion();
                 }
 
-                LoggerExtensions.Log("Enemy dead");
+                LoggerExtensions.Log("UfoEnemy dead");
             }
         }
 
-        private bool EnemyExists()
+        private bool UfoEnemyExists()
         {
-            return _scene_game.Children.OfType<Enemy>().Any(x => x.IsAnimating);
+            return _scene_game.Children.OfType<UfoEnemy>().Any(x => x.IsAnimating);
         }
 
         #endregion
@@ -1831,25 +1831,25 @@ namespace HonkTrooper
 
         private void SetPlayerRocketDirection(Construct source, Rocket rocket, Construct rocketTarget)
         {
-            // rocket target is on the bottom right side of the boss
+            // rocket target is on the bottom right side of the UfoBoss
             if (rocketTarget.GetTop() > source.GetTop() && rocketTarget.GetLeft() > source.GetLeft())
             {
                 rocket.AwaitMoveDownRight = true;
                 rocket.SetRotation(33);
             }
-            // rocket target is on the bottom left side of the boss
+            // rocket target is on the bottom left side of the UfoBoss
             else if (rocketTarget.GetTop() > source.GetTop() && rocketTarget.GetLeft() < source.GetLeft())
             {
                 rocket.AwaitMoveDownLeft = true;
                 rocket.SetRotation(-213);
             }
-            // if rocket target is on the top left side of the boss
+            // if rocket target is on the top left side of the UfoBoss
             else if (rocketTarget.GetTop() < source.GetTop() && rocketTarget.GetLeft() < source.GetLeft())
             {
                 rocket.AwaitMoveUpLeft = true;
                 rocket.SetRotation(213);
             }
-            // if rocket target is on the top right side of the boss
+            // if rocket target is on the top right side of the UfoBoss
             else if (rocketTarget.GetTop() < source.GetTop() && rocketTarget.GetLeft() > source.GetLeft())
             {
                 rocket.AwaitMoveUpRight = true;
@@ -1862,27 +1862,27 @@ namespace HonkTrooper
             }
         }
 
-        private void SetBossRocketDirection(Construct source, Rocket rocket, Construct rocketTarget)
+        private void SetUfoBossRocketDirection(Construct source, Rocket rocket, Construct rocketTarget)
         {
-            // rocket target is on the bottom right side of the boss
+            // rocket target is on the bottom right side of the UfoBoss
             if (rocketTarget.GetTop() > source.GetTop() && rocketTarget.GetLeft() > source.GetLeft())
             {
                 rocket.AwaitMoveDownRight = true;
                 rocket.SetRotation(33);
             }
-            // rocket target is on the bottom left side of the boss
+            // rocket target is on the bottom left side of the UfoBoss
             else if (rocketTarget.GetTop() > source.GetTop() && rocketTarget.GetLeft() < source.GetLeft())
             {
                 rocket.AwaitMoveDownLeft = true;
                 rocket.SetRotation(-213);
             }
-            // if rocket target is on the top left side of the boss
+            // if rocket target is on the top left side of the UfoBoss
             else if (rocketTarget.GetTop() < source.GetTop() && rocketTarget.GetLeft() < source.GetLeft())
             {
                 rocket.AwaitMoveUpLeft = true;
                 rocket.SetRotation(213);
             }
-            // if rocket target is on the top right side of the boss
+            // if rocket target is on the top right side of the UfoBoss
             else if (rocketTarget.GetTop() < source.GetTop() && rocketTarget.GetLeft() > source.GetLeft())
             {
                 rocket.AwaitMoveUpRight = true;
@@ -1939,14 +1939,14 @@ namespace HonkTrooper
                 var playerDistantHitBox = _player.GetDistantHitBox();
 
                 // get closest possible target
-                BossRocketSeeking bossRocketSeeking = _scene_game.Children.OfType<BossRocketSeeking>()?.FirstOrDefault(x => x.IsAnimating && !x.IsBlasting && x.GetHitBox().IntersectsWith(playerDistantHitBox));
-                Boss boss = _scene_game.Children.OfType<Boss>()?.FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetHitBox().IntersectsWith(playerDistantHitBox));
-                Enemy enemy = _scene_game.Children.OfType<Enemy>()?.FirstOrDefault(x => x.IsAnimating && !x.IsFadingComplete && x.GetHitBox().IntersectsWith(playerDistantHitBox));
+                UfoBossRocketSeeking UfoBossRocketSeeking = _scene_game.Children.OfType<UfoBossRocketSeeking>()?.FirstOrDefault(x => x.IsAnimating && !x.IsBlasting && x.GetHitBox().IntersectsWith(playerDistantHitBox));
+                UfoBoss UfoBoss = _scene_game.Children.OfType<UfoBoss>()?.FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetHitBox().IntersectsWith(playerDistantHitBox));
+                UfoEnemy enemy = _scene_game.Children.OfType<UfoEnemy>()?.FirstOrDefault(x => x.IsAnimating && !x.IsFadingComplete && x.GetHitBox().IntersectsWith(playerDistantHitBox));
 
                 // if not found then find random target
-                bossRocketSeeking ??= _scene_game.Children.OfType<BossRocketSeeking>().FirstOrDefault(x => x.IsAnimating && !x.IsBlasting);
-                boss ??= _scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking);
-                enemy ??= _scene_game.Children.OfType<Enemy>().FirstOrDefault(x => x.IsAnimating && !x.IsFadingComplete);
+                UfoBossRocketSeeking ??= _scene_game.Children.OfType<UfoBossRocketSeeking>().FirstOrDefault(x => x.IsAnimating && !x.IsBlasting);
+                UfoBoss ??= _scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking);
+                enemy ??= _scene_game.Children.OfType<UfoEnemy>().FirstOrDefault(x => x.IsAnimating && !x.IsFadingComplete);
 
                 LoggerExtensions.Log("Player Bomb dropped.");
 
@@ -1954,13 +1954,13 @@ namespace HonkTrooper
                 {
                     SetPlayerRocketDirection(source: _player, rocket: playerRocket, rocketTarget: enemy);
                 }
-                else if (boss is not null)
+                else if (UfoBoss is not null)
                 {
-                    SetPlayerRocketDirection(source: _player, rocket: playerRocket, rocketTarget: boss);
+                    SetPlayerRocketDirection(source: _player, rocket: playerRocket, rocketTarget: UfoBoss);
                 }
-                else if (bossRocketSeeking is not null)
+                else if (UfoBossRocketSeeking is not null)
                 {
-                    SetPlayerRocketDirection(source: _player, rocket: playerRocket, rocketTarget: bossRocketSeeking);
+                    SetPlayerRocketDirection(source: _player, rocket: playerRocket, rocketTarget: UfoBossRocketSeeking);
                 }
 
                 return true;
@@ -2005,25 +2005,25 @@ namespace HonkTrooper
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
-                    // if player bomb touches boss, it blasts, boss looses health
-                    if (_scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetCloseHitBox().IntersectsWith(hitBox)) is Boss boss)
+                    // if player bomb touches UfoBoss, it blasts, UfoBoss looses health
+                    if (_scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetCloseHitBox().IntersectsWith(hitBox)) is UfoBoss UfoBoss)
                     {
                         PlayerRocket.SetBlast();
-                        LooseBossHealth(boss);
+                        LooseUfoBossHealth(UfoBoss);
                     }
 
-                    // if player bomb touches boss's seeking bomb, it blasts
-                    if (_scene_game.Children.OfType<BossRocketSeeking>().FirstOrDefault(x => x.IsAnimating && !x.IsBlasting && x.GetCloseHitBox().IntersectsWith(hitBox)) is BossRocketSeeking bossRocketSeeking)
+                    // if player bomb touches UfoBoss's seeking bomb, it blasts
+                    if (_scene_game.Children.OfType<UfoBossRocketSeeking>().FirstOrDefault(x => x.IsAnimating && !x.IsBlasting && x.GetCloseHitBox().IntersectsWith(hitBox)) is UfoBossRocketSeeking UfoBossRocketSeeking)
                     {
                         PlayerRocket.SetBlast();
-                        bossRocketSeeking.SetBlast();
+                        UfoBossRocketSeeking.SetBlast();
                     }
 
                     // if player bomb touches enemy, it blasts, enemy looses health
-                    if (_scene_game.Children.OfType<Enemy>().FirstOrDefault(x => x.IsAnimating && !x.IsDead && x.GetCloseHitBox().IntersectsWith(hitBox)) is Enemy enemy)
+                    if (_scene_game.Children.OfType<UfoEnemy>().FirstOrDefault(x => x.IsAnimating && !x.IsDead && x.GetCloseHitBox().IntersectsWith(hitBox)) is UfoEnemy enemy)
                     {
                         PlayerRocket.SetBlast();
-                        LooseEnemyHealth(enemy);
+                        LooseUfoEnemyHealth(enemy);
                     }
 
                     if (PlayerRocket.AutoBlast())
@@ -2055,15 +2055,15 @@ namespace HonkTrooper
 
         #endregion
 
-        #region EnemyRocket
+        #region UfoEnemyRocket
 
-        private bool SpawnEnemyRockets()
+        private bool SpawnUfoEnemyRockets()
         {
             for (int i = 0; i < 10; i++)
             {
-                EnemyRocket bomb = new(
-                    animateAction: AnimateEnemyRocket,
-                    recycleAction: RecycleEnemyRocket);
+                UfoEnemyRocket bomb = new(
+                    animateAction: AnimateUfoEnemyRocket,
+                    recycleAction: RecycleUfoEnemyRocket);
 
                 bomb.SetPosition(
                     left: -3000,
@@ -2078,21 +2078,20 @@ namespace HonkTrooper
             return true;
         }
 
-        private bool GenerateEnemyRocket(Enemy source)
+        private bool GenerateUfoEnemyRocket(UfoEnemy source)
         {
             if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
-                _scene_game.Children.OfType<EnemyRocket>().FirstOrDefault(x => x.IsAnimating == false) is EnemyRocket enemyRocket)
+                _scene_game.Children.OfType<UfoEnemyRocket>().FirstOrDefault(x => x.IsAnimating == false) is UfoEnemyRocket enemyRocket)
             {
                 enemyRocket.Reset();
                 enemyRocket.IsAnimating = true;
                 enemyRocket.SetPopping();
 
-                enemyRocket.Reposition(
-                    Enemy: source);
+                enemyRocket.Reposition(ufoEnemy: source);
 
                 SyncDropShadow(enemyRocket);
 
-                LoggerExtensions.Log("Enemy Bomb dropped.");
+                LoggerExtensions.Log("UfoEnemy Bomb dropped.");
 
                 return true;
             }
@@ -2100,9 +2099,9 @@ namespace HonkTrooper
             return false;
         }
 
-        private bool AnimateEnemyRocket(Construct bomb)
+        private bool AnimateUfoEnemyRocket(Construct bomb)
         {
-            EnemyRocket enemyRocket = bomb as EnemyRocket;
+            UfoEnemyRocket enemyRocket = bomb as UfoEnemyRocket;
 
             var speed = _scene_game.Speed + bomb.SpeedOffset;
 
@@ -2133,7 +2132,7 @@ namespace HonkTrooper
             return true;
         }
 
-        private bool RecycleEnemyRocket(Construct bomb)
+        private bool RecycleUfoEnemyRocket(Construct bomb)
         {
             var hitbox = bomb.GetHitBox();
 
@@ -2154,15 +2153,15 @@ namespace HonkTrooper
 
         #endregion
 
-        #region BossRocket
+        #region UfoBossRocket
 
-        private bool SpawnBossRockets()
+        private bool SpawnUfoBossRockets()
         {
             for (int i = 0; i < 5; i++)
             {
-                BossRocket bomb = new(
-                    animateAction: AnimateBossRocket,
-                    recycleAction: RecycleBossRocket);
+                UfoBossRocket bomb = new(
+                    animateAction: AnimateUfoBossRocket,
+                    recycleAction: RecycleUfoBossRocket);
 
                 bomb.SetPosition(
                     left: -3000,
@@ -2177,28 +2176,28 @@ namespace HonkTrooper
             return true;
         }
 
-        private bool GenerateBossRocket()
+        private bool GenerateUfoBossRocket()
         {
             if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
-                _scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss &&
-                _scene_game.Children.OfType<BossRocket>().FirstOrDefault(x => x.IsAnimating == false) is BossRocket bossRocket)
+                _scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is UfoBoss UfoBoss &&
+                _scene_game.Children.OfType<UfoBossRocket>().FirstOrDefault(x => x.IsAnimating == false) is UfoBossRocket UfoBossRocket)
             {
-                bossRocket.Reset();
-                bossRocket.IsAnimating = true;
-                bossRocket.SetPopping();
+                UfoBossRocket.Reset();
+                UfoBossRocket.IsAnimating = true;
+                UfoBossRocket.SetPopping();
 
-                bossRocket.Reposition(
-                    boss: boss);
+                UfoBossRocket.Reposition(
+                    UfoBoss: UfoBoss);
 
-                SyncDropShadow(bossRocket);
+                SyncDropShadow(UfoBossRocket);
 
                 #region Target Based Movement
 
-                SetBossRocketDirection(source: boss, rocket: bossRocket, rocketTarget: _player);
+                SetUfoBossRocketDirection(source: UfoBoss, rocket: UfoBossRocket, rocketTarget: _player);
 
                 #endregion
 
-                LoggerExtensions.Log("Boss Bomb dropped.");
+                LoggerExtensions.Log("UfoBoss Bomb dropped.");
 
                 return true;
             }
@@ -2206,30 +2205,30 @@ namespace HonkTrooper
             return false;
         }
 
-        private bool AnimateBossRocket(Construct bomb)
+        private bool AnimateUfoBossRocket(Construct bomb)
         {
-            BossRocket BossRocket = bomb as BossRocket;
+            UfoBossRocket UfoBossRocket = bomb as UfoBossRocket;
 
             var speed = (_scene_game.Speed + bomb.SpeedOffset);
 
-            if (BossRocket.AwaitMoveDownLeft)
+            if (UfoBossRocket.AwaitMoveDownLeft)
             {
-                BossRocket.MoveDownLeft(speed);
+                UfoBossRocket.MoveDownLeft(speed);
             }
-            else if (BossRocket.AwaitMoveUpRight)
+            else if (UfoBossRocket.AwaitMoveUpRight)
             {
-                BossRocket.MoveUpRight(speed);
+                UfoBossRocket.MoveUpRight(speed);
             }
-            else if (BossRocket.AwaitMoveUpLeft)
+            else if (UfoBossRocket.AwaitMoveUpLeft)
             {
-                BossRocket.MoveUpLeft(speed);
+                UfoBossRocket.MoveUpLeft(speed);
             }
-            else if (BossRocket.AwaitMoveDownRight)
+            else if (UfoBossRocket.AwaitMoveDownRight)
             {
-                BossRocket.MoveDownRight(speed);
+                UfoBossRocket.MoveDownRight(speed);
             }
 
-            if (BossRocket.IsBlasting)
+            if (UfoBossRocket.IsBlasting)
             {
                 bomb.Expand();
                 bomb.Fade(0.02);
@@ -2240,21 +2239,21 @@ namespace HonkTrooper
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
-                    if (BossRocket.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
+                    if (UfoBossRocket.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
                     {
-                        BossRocket.SetBlast();
+                        UfoBossRocket.SetBlast();
                         LoosePlayerHealth();
                     }
 
-                    if (BossRocket.AutoBlast())
-                        BossRocket.SetBlast();
+                    if (UfoBossRocket.AutoBlast())
+                        UfoBossRocket.SetBlast();
                 }
             }
 
             return true;
         }
 
-        private bool RecycleBossRocket(Construct bomb)
+        private bool RecycleUfoBossRocket(Construct bomb)
         {
             //var hitbox = bomb.GetHitBox();
 
@@ -2347,34 +2346,34 @@ namespace HonkTrooper
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
-                    if (_scene_game.Children.OfType<BossRocketSeeking>().FirstOrDefault(x => x.IsAnimating && !x.IsBlasting) is BossRocketSeeking bossRocketSeeking) // target boss bomb seeking
+                    if (_scene_game.Children.OfType<UfoBossRocketSeeking>().FirstOrDefault(x => x.IsAnimating && !x.IsBlasting) is UfoBossRocketSeeking UfoBossRocketSeeking) // target UfoBoss bomb seeking
                     {
-                        playerRocketSeeking1.Seek(bossRocketSeeking.GetCloseHitBox());
+                        playerRocketSeeking1.Seek(UfoBossRocketSeeking.GetCloseHitBox());
 
-                        if (playerRocketSeeking1.GetCloseHitBox().IntersectsWith(bossRocketSeeking.GetCloseHitBox()))
+                        if (playerRocketSeeking1.GetCloseHitBox().IntersectsWith(UfoBossRocketSeeking.GetCloseHitBox()))
                         {
                             playerRocketSeeking1.SetBlast();
-                            bossRocketSeeking.SetBlast();
+                            UfoBossRocketSeeking.SetBlast();
                         }
                     }
-                    else if (_scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss) // target boss
+                    else if (_scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is UfoBoss UfoBoss) // target UfoBoss
                     {
-                        playerRocketSeeking1.Seek(boss.GetCloseHitBox());
+                        playerRocketSeeking1.Seek(UfoBoss.GetCloseHitBox());
 
-                        if (playerRocketSeeking1.GetCloseHitBox().IntersectsWith(boss.GetCloseHitBox()))
+                        if (playerRocketSeeking1.GetCloseHitBox().IntersectsWith(UfoBoss.GetCloseHitBox()))
                         {
                             playerRocketSeeking1.SetBlast();
-                            LooseBossHealth(boss);
+                            LooseUfoBossHealth(UfoBoss);
                         }
                     }
-                    else if (_scene_game.Children.OfType<Enemy>().FirstOrDefault(x => x.IsAnimating && !x.IsFadingComplete) is Enemy enemy) // target enemy
+                    else if (_scene_game.Children.OfType<UfoEnemy>().FirstOrDefault(x => x.IsAnimating && !x.IsFadingComplete) is UfoEnemy enemy) // target enemy
                     {
                         playerRocketSeeking1.Seek(enemy.GetCloseHitBox());
 
                         if (playerRocketSeeking1.GetCloseHitBox().IntersectsWith(enemy.GetCloseHitBox()))
                         {
                             playerRocketSeeking1.SetBlast();
-                            LooseEnemyHealth(enemy);
+                            LooseUfoEnemyHealth(enemy);
                         }
                     }
 
@@ -2414,15 +2413,15 @@ namespace HonkTrooper
 
         #endregion
 
-        #region BossRocketSeeking
+        #region UfoBossRocketSeeking
 
-        private bool SpawnBossRocketSeekings()
+        private bool SpawnUfoBossRocketSeekings()
         {
             for (int i = 0; i < 2; i++)
             {
-                BossRocketSeeking bomb = new(
-                    animateAction: AnimateBossRocketSeeking,
-                    recycleAction: RecycleBossRocketSeeking);
+                UfoBossRocketSeeking bomb = new(
+                    animateAction: AnimateUfoBossRocketSeeking,
+                    recycleAction: RecycleUfoBossRocketSeeking);
 
                 bomb.SetPosition(
                     left: -3000,
@@ -2437,24 +2436,24 @@ namespace HonkTrooper
             return true;
         }
 
-        private bool GenerateBossRocketSeeking()
+        private bool GenerateUfoBossRocketSeeking()
         {
             // generate a seeking bomb if one is not in scene
             if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
-                _scene_game.Children.OfType<Boss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is Boss boss &&
-                !_scene_game.Children.OfType<BossRocketSeeking>().Any(x => x.IsAnimating) &&
-                _scene_game.Children.OfType<BossRocketSeeking>().FirstOrDefault(x => x.IsAnimating == false) is BossRocketSeeking bossRocketSeeking)
+                _scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is UfoBoss UfoBoss &&
+                !_scene_game.Children.OfType<UfoBossRocketSeeking>().Any(x => x.IsAnimating) &&
+                _scene_game.Children.OfType<UfoBossRocketSeeking>().FirstOrDefault(x => x.IsAnimating == false) is UfoBossRocketSeeking UfoBossRocketSeeking)
             {
-                bossRocketSeeking.Reset();
-                bossRocketSeeking.IsAnimating = true;
-                bossRocketSeeking.SetPopping();
+                UfoBossRocketSeeking.Reset();
+                UfoBossRocketSeeking.IsAnimating = true;
+                UfoBossRocketSeeking.SetPopping();
 
-                bossRocketSeeking.Reposition(
-                    boss: boss);
+                UfoBossRocketSeeking.Reposition(
+                    UfoBoss: UfoBoss);
 
-                SyncDropShadow(bossRocketSeeking);
+                SyncDropShadow(UfoBossRocketSeeking);
 
-                LoggerExtensions.Log("Boss Seeking Bomb dropped.");
+                LoggerExtensions.Log("UfoBoss Seeking Bomb dropped.");
 
                 return true;
             }
@@ -2462,43 +2461,43 @@ namespace HonkTrooper
             return false;
         }
 
-        private bool AnimateBossRocketSeeking(Construct bossRocketSeeking)
+        private bool AnimateUfoBossRocketSeeking(Construct UfoBossRocketSeeking)
         {
-            BossRocketSeeking bossRocketSeeking1 = bossRocketSeeking as BossRocketSeeking;
+            UfoBossRocketSeeking UfoBossRocketSeeking1 = UfoBossRocketSeeking as UfoBossRocketSeeking;
 
-            var speed = (_scene_game.Speed + bossRocketSeeking.SpeedOffset);
+            var speed = (_scene_game.Speed + UfoBossRocketSeeking.SpeedOffset);
 
-            if (bossRocketSeeking1.IsBlasting)
+            if (UfoBossRocketSeeking1.IsBlasting)
             {
-                MoveConstructBottomRight(construct: bossRocketSeeking1, speed: speed);
+                MoveConstructBottomRight(construct: UfoBossRocketSeeking1, speed: speed);
 
-                bossRocketSeeking.Expand();
-                bossRocketSeeking.Fade(0.02);
+                UfoBossRocketSeeking.Expand();
+                UfoBossRocketSeeking.Fade(0.02);
             }
             else
             {
-                bossRocketSeeking.Pop();
+                UfoBossRocketSeeking.Pop();
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
-                    if (_scene_game.Children.OfType<Boss>().Any(x => x.IsAnimating && x.IsAttacking))
+                    if (_scene_game.Children.OfType<UfoBoss>().Any(x => x.IsAnimating && x.IsAttacking))
                     {
-                        bossRocketSeeking1.Seek(_player.GetCloseHitBox());
+                        UfoBossRocketSeeking1.Seek(_player.GetCloseHitBox());
 
-                        if (bossRocketSeeking1.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
+                        if (UfoBossRocketSeeking1.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
                         {
-                            bossRocketSeeking1.SetBlast();
+                            UfoBossRocketSeeking1.SetBlast();
                             LoosePlayerHealth();
                         }
                         else
                         {
-                            if (bossRocketSeeking1.RunOutOfTimeToBlast())
-                                bossRocketSeeking1.SetBlast();
+                            if (UfoBossRocketSeeking1.RunOutOfTimeToBlast())
+                                UfoBossRocketSeeking1.SetBlast();
                         }
                     }
                     else
                     {
-                        bossRocketSeeking1.SetBlast();
+                        UfoBossRocketSeeking1.SetBlast();
                     }
                 }
             }
@@ -2506,7 +2505,7 @@ namespace HonkTrooper
             return true;
         }
 
-        private bool RecycleBossRocketSeeking(Construct bomb)
+        private bool RecycleUfoBossRocketSeeking(Construct bomb)
         {
             var hitbox = bomb.GetHitBox();
 
@@ -2723,7 +2722,7 @@ namespace HonkTrooper
         {
             if (_scene_game.SceneState == SceneState.GAME_RUNNING)
             {
-                if ((BossExists() || EnemyExists()) && !_powerUp_health_bar.HasHealth) // if a boss or enemy exists and currently player has no other power up
+                if ((UfoBossExists() || UfoEnemyExists()) && !_powerUp_health_bar.HasHealth) // if a UfoBoss or enemy exists and currently player has no other power up
                 {
                     if (_scene_game.Children.OfType<PowerUpPickup>().FirstOrDefault(x => x.IsAnimating == false) is PowerUpPickup powerUpPickup)
                     {
@@ -2867,7 +2866,7 @@ namespace HonkTrooper
             _scene_main_menu.Clear();
 
             _powerUp_health_bar.Reset();
-            _boss_health_bar.Reset();
+            _UFO_BOSS_health_bar.Reset();
             _game_score_bar.Reset();
 
             AddGeneratorsToScene();
@@ -2975,19 +2974,19 @@ namespace HonkTrooper
 
                 new Generator(
                     generationDelay: 100,
-                    generationAction: GenerateBoss,
-                    startUpAction: SpawnBosses),
+                    generationAction: GenerateUfoBoss,
+                    startUpAction: SpawnUfoBosses),
 
                 new Generator(
                     generationDelay: 50,
-                    generationAction: GenerateBossRocket,
-                    startUpAction: SpawnBossRockets,
+                    generationAction: GenerateUfoBossRocket,
+                    startUpAction: SpawnUfoBossRockets,
                     randomizeGenerationDelay: true),
 
                 new Generator(
                     generationDelay: 200,
-                    generationAction: GenerateBossRocketSeeking,
-                    startUpAction: SpawnBossRocketSeekings,
+                    generationAction: GenerateUfoBossRocketSeeking,
+                    startUpAction: SpawnUfoBossRocketSeekings,
                     randomizeGenerationDelay: true),
 
                 new Generator(
@@ -3014,14 +3013,14 @@ namespace HonkTrooper
 
                 new Generator(
                     generationDelay: 180,
-                    generationAction: GenerateEnemy,
-                    startUpAction: SpawnEnemys,
+                    generationAction: GenerateUfoEnemy,
+                    startUpAction: SpawnUfoEnemys,
                     randomizeGenerationDelay: true),
 
                  new Generator(
                     generationDelay: 0,
                     generationAction: () => { return true; },
-                    startUpAction: SpawnEnemyRockets)
+                    startUpAction: SpawnUfoEnemyRockets)
                 );
 
             _scene_main_menu.AddToScene(

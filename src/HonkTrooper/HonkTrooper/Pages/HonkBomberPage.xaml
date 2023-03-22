@@ -52,7 +52,7 @@
             VerticalAlignment="Top"
             Orientation="Horizontal">
             <HealthBar
-                x:Name="BossHealthBar"
+                x:Name="UfoBossHealthBar"
                 Margin="0,5"
                 VerticalAlignment="Top" />
             <StackPanel VerticalAlignment="Top" Orientation="Vertical">

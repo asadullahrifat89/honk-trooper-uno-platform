@@ -23,12 +23,12 @@ namespace HonkTrooper
             new (ConstructType.PLAYER_FIRE_CRACKER, 70, 70),
             new (ConstructType.PLAYER_ROCKET_SEEKING, 70, 70),
 
-            new (ConstructType.BOSS, 180, 180),
-            new (ConstructType.BOSS_ROCKET, 80, 80),
-            new (ConstructType.BOSS_ROCKET_SEEKING, 80, 80),
+            new (ConstructType.UFO_BOSS, 180, 180),
+            new (ConstructType.UFO_BOSS_ROCKET, 80, 80),
+            new (ConstructType.UFO_BOSS_ROCKET_SEEKING, 80, 80),
 
-            new (ConstructType.ENEMY, 160, 160),
-            new (ConstructType.ENEMY_ROCKET, 60, 60),
+            new (ConstructType.UFO_ENEMY, 160, 160),
+            new (ConstructType.UFO_ENEMY_ROCKET, 60, 60),
 
             new (ConstructType.VEHICLE_SMALL, 210, 210),
             new (ConstructType.VEHICLE_LARGE, 240, 240),
@@ -124,20 +124,20 @@ namespace HonkTrooper
             new (ConstructType.CLOUD, new Uri("ms-appx:///HonkTrooper/Assets/Images/cloud_2.png")),
             new (ConstructType.CLOUD, new Uri("ms-appx:///HonkTrooper/Assets/Images/cloud_3.png")),
 
-            new (ConstructType.BOSS, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_3_idle.png")),
-            new (ConstructType.BOSS_HIT, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_3_hit.png")),
-            new (ConstructType.BOSS_WIN, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_3_win.png")),
+            new (ConstructType.UFO_BOSS, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_3_idle.png")),
+            new (ConstructType.UFO_BOSS_HIT, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_3_hit.png")),
+            new (ConstructType.UFO_BOSS_WIN, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_3_win.png")),
 
-            new (ConstructType.BOSS_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_1.png")),
-            new (ConstructType.BOSS_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_2.png")),
-            new (ConstructType.BOSS_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_3.png")),
+            new (ConstructType.UFO_BOSS_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_1.png")),
+            new (ConstructType.UFO_BOSS_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_2.png")),
+            new (ConstructType.UFO_BOSS_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_3.png")),
 
-            new (ConstructType.BOSS_ROCKET_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_seeking.png")),
+            new (ConstructType.UFO_BOSS_ROCKET_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_seeking.png")),
 
-            new (ConstructType.ENEMY, new Uri("ms-appx:///HonkTrooper/Assets/Images/enemy_1.png")),
-            new (ConstructType.ENEMY, new Uri("ms-appx:///HonkTrooper/Assets/Images/enemy_2.png")),
+            new (ConstructType.UFO_ENEMY, new Uri("ms-appx:///HonkTrooper/Assets/Images/enemy_1.png")),
+            new (ConstructType.UFO_ENEMY, new Uri("ms-appx:///HonkTrooper/Assets/Images/enemy_2.png")),
 
-            new (ConstructType.ENEMY_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/enemy_bomb.png")),
+            new (ConstructType.UFO_ENEMY_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/enemy_bomb.png")),
 
             new (ConstructType.HEALTH_PICKUP, new Uri("ms-appx:///HonkTrooper/Assets/Images/health_pickup.png")),
             new (ConstructType.POWERUP_PICKUP_SEEKING_BALLS, new Uri("ms-appx:///HonkTrooper/Assets/Images/power_up_pickup_seeking_balls.png")),
@@ -173,31 +173,31 @@ namespace HonkTrooper
             new (SoundType.AMBIENCE, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/ambience_2.mp3")),
             new (SoundType.AMBIENCE, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/ambience_3.mp3")),
 
-            new (SoundType.BOSS_HOVERING, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/boss_hovering_1.mp3")),
-            new (SoundType.BOSS_HOVERING, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/boss_hovering_2.mp3")),
-            new (SoundType.BOSS_HOVERING, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/boss_hovering_3.mp3")),
+            new (SoundType.UFO_BOSS_HOVERING, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/boss_hovering_1.mp3")),
+            new (SoundType.UFO_BOSS_HOVERING, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/boss_hovering_2.mp3")),
+            new (SoundType.UFO_BOSS_HOVERING, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/boss_hovering_3.mp3")),
 
-            new (SoundType.BOSS_ENTRY, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/boss_entry_1.mp3")),
-            new (SoundType.BOSS_ENTRY, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/boss_entry_2.mp3")),
+            new (SoundType.UFO_BOSS_ENTRY, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/boss_entry_1.mp3")),
+            new (SoundType.UFO_BOSS_ENTRY, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/boss_entry_2.mp3")),
 
-            new (SoundType.BOSS_DEAD, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/boss_dead_1.mp3")),
-            new (SoundType.BOSS_DEAD, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/boss_dead_2.mp3")),
+            new (SoundType.UFO_BOSS_DEAD, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/boss_dead_1.mp3")),
+            new (SoundType.UFO_BOSS_DEAD, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/boss_dead_2.mp3")),
 
             new (SoundType.POWERUP_PICKUP, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/power_up_pickup_1.mp3")),
             new (SoundType.HEALTH_PICKUP, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/health_pickup_1.mp3")),
 
             new (SoundType.PLAYER_HEALTH_LOSS, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/player_health_loss_1.mp3")),
 
-            new (SoundType.ENEMY_ENTRY, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/enemy_entry_1.mp3")),
-            new (SoundType.ENEMY_ENTRY, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/enemy_entry_2.mp3")),
+            new (SoundType.UFO_ENEMY_ENTRY, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/enemy_entry_1.mp3")),
+            new (SoundType.UFO_ENEMY_ENTRY, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/enemy_entry_2.mp3")),
 
             new (SoundType.GAME_BACKGROUND_MUSIC, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/game_background_music_1.mp3")),
             new (SoundType.GAME_BACKGROUND_MUSIC, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/game_background_music_2.mp3")),
             new (SoundType.GAME_BACKGROUND_MUSIC, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/game_background_music_3.mp3")),
 
-            new (SoundType.BOSS_BACKGROUND_MUSIC, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/boss_background_music_1.mp3")),
-            new (SoundType.BOSS_BACKGROUND_MUSIC, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/boss_background_music_2.mp3")),
-            new (SoundType.BOSS_BACKGROUND_MUSIC, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/boss_background_music_3.mp3")),
+            new (SoundType.UFO_BOSS_BACKGROUND_MUSIC, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/boss_background_music_1.mp3")),
+            new (SoundType.UFO_BOSS_BACKGROUND_MUSIC, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/boss_background_music_2.mp3")),
+            new (SoundType.UFO_BOSS_BACKGROUND_MUSIC, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/boss_background_music_3.mp3")),
 
             new (SoundType.GAME_START, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/game_start.mp3")),
             new (SoundType.GAME_PAUSE, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/game_pause.mp3")),
@@ -243,16 +243,16 @@ namespace HonkTrooper
 
         DROP_SHADOW,
 
-        BOSS,
-        BOSS_IDLE,
-        BOSS_HIT,
-        BOSS_WIN,
+        UFO_BOSS,
+        boss_IDLE,
+        UFO_BOSS_HIT,
+        UFO_BOSS_WIN,
 
-        BOSS_ROCKET,
-        BOSS_ROCKET_SEEKING,
+        UFO_BOSS_ROCKET,
+        UFO_BOSS_ROCKET_SEEKING,
 
-        ENEMY,
-        ENEMY_ROCKET,
+        UFO_ENEMY,
+        UFO_ENEMY_ROCKET,
 
         HEALTH_PICKUP,
         POWERUP_PICKUP,
@@ -282,19 +282,19 @@ namespace HonkTrooper
 
         AMBIENCE,
 
-        BOSS_ENTRY,
-        BOSS_HOVERING,
-        BOSS_DEAD,
+        UFO_BOSS_ENTRY,
+        UFO_BOSS_HOVERING,
+        UFO_BOSS_DEAD,
 
         POWERUP_PICKUP,
         HEALTH_PICKUP,
 
         PLAYER_HEALTH_LOSS,
 
-        ENEMY_ENTRY,
+        UFO_ENEMY_ENTRY,
 
         GAME_BACKGROUND_MUSIC,
-        BOSS_BACKGROUND_MUSIC,
+        UFO_BOSS_BACKGROUND_MUSIC,
 
         ORB_LAUNCH,
 
