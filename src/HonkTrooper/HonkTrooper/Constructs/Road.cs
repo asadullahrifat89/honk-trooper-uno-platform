@@ -27,7 +27,7 @@ namespace HonkTrooper
             RecycleAction = recycleAction;
 
             Background = App.Current.Resources["RoadForegroundColor"] as SolidColorBrush;
-            BorderBrush = App.Current.Resources["RoadBorderColor"] as SolidColorBrush;
+            BorderBrush = App.Current.Resources["BorderColor"] as SolidColorBrush;
 
             BorderThickness = new Thickness(leftRight: Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS, topBottom: 0);            
 
