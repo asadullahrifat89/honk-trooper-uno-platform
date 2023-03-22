@@ -54,7 +54,7 @@ namespace HonkTrooper
         /// </summary>
         /// <param name="windowWidth"></param>
         /// <returns></returns>
-        public static double GetDownScaling(double windowWidth)
+        public static double GetScreenSpaceScaling(double windowWidth)
         {
             return windowWidth switch
             {

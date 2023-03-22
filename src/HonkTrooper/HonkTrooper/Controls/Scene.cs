@@ -62,6 +62,12 @@ namespace HonkTrooper
 
         #region Methods
 
+        public void SetScaleTransform(double scaleXY)
+        {
+            _compositeTransform.ScaleX = scaleXY;
+            _compositeTransform.ScaleY = scaleXY;
+        }
+
         /// <summary>
         /// Adds constructs to the scene.
         /// </summary>
@@ -203,32 +209,18 @@ namespace HonkTrooper
             }
         }
 
-
         #endregion
 
         #region Events
 
         private void Scene_Unloaded(object sender, RoutedEventArgs e)
         {
-            SizeChanged -= Scene_SizeChanged;
-            Pause();
+            Stop();
         }
 
         private void Scene_Loaded(object sender, RoutedEventArgs e)
         {
-            SizeChanged += Scene_SizeChanged;
-        }
 
-        private void Scene_SizeChanged(object sender, SizeChangedEventArgs args)
-        {
-            //_sceneWidth = args.NewSize.Width;
-            //_sceneHeight = args.NewSize.Height;
-
-            //LoggerExtensions.Log($"{_sceneWidth}x{_sceneHeight}");
-
-            //DownScaling = ScreenExtensions.GetDownScaling(_sceneWidth);
-
-            //LoggerExtensions.Log($"Down Scaling {DownScaling}");
         }
 
         #endregion

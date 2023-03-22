@@ -699,7 +699,7 @@ namespace HonkTrooper
                 vehicle.Reset();
 
                 var topOrLeft = _random.Next(2); // generate top and left corner lane wise vehicles
-                var lane = _scene_game.Height < 1000 ? 0 : _random.Next(2); // generate number of lanes based of screen height
+                var lane = _random.Next(2); // generate number of lanes based of screen height
 
                 switch (topOrLeft)
                 {
@@ -3098,17 +3098,19 @@ namespace HonkTrooper
             var _windowWidth = args.NewSize.Width;
             var _windowHeight = args.NewSize.Height;
 
-            if (_windowWidth <= RootGrid.MaxWidth && _windowHeight <= RootGrid.MaxHeight)
-            {
-                _scene_game.Width = _windowWidth;
-                _scene_game.Height = _windowHeight;
+            //_scene_game.Width = _windowWidth;
+            //_scene_game.Height = _windowHeight;
 
+            if (_windowWidth <= RootGrid.MaxWidth && _windowWidth <= RootGrid.MaxHeight)
+            {
                 _scene_main_menu.Width = _windowWidth;
                 _scene_main_menu.Height = _windowHeight;
-
-                _game_controller.Width = _windowWidth;
-                _game_controller.Height = _windowHeight;
             }
+
+            var scaling = ScreenExtensions.GetScreenSpaceScaling(_windowWidth);
+
+            _scene_game.SetScaleTransform(scaling);
+            _scene_main_menu.SetScaleTransform(scaling);
 
             if (_scene_game.SceneState == SceneState.GAME_RUNNING)
             {

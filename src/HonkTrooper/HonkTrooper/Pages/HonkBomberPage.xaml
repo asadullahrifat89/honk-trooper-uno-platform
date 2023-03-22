@@ -17,13 +17,27 @@
 
         <Border
             x:Name="RoadBackground"
+            Width="1920"
+            Height="960"
             Background="{ThemeResource RoadBackgroundColor}"
             BorderBrush="#111111"
             BorderThickness="3" />
 
-        <Scene x:Name="GameScene" Background="Transparent" />
+        <Scene
+            x:Name="GameScene"
+            Width="1920"
+            Height="960"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            Background="Transparent" />
 
-        <Scene x:Name="MainMenuScene" Background="Transparent" />
+        <Scene
+            x:Name="MainMenuScene"
+            Width="1920"
+            Height="960"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            Background="Transparent" />
 
         <Controller
             x:Name="GameController"
