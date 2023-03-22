@@ -61,12 +61,10 @@ namespace HonkTrooper
         #endregion
 
         #region Methods
-
         public void SetRenderTransformOrigin(double xy)
         {
             RenderTransformOrigin = new Point(xy, xy);
         }
-
         public void SetScaleTransform(double scaleXY)
         {
             _compositeTransform.ScaleX = scaleXY;
