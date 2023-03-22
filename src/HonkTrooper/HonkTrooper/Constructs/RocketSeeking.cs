@@ -12,7 +12,7 @@ namespace HonkTrooper
 
         #endregion
 
-        public bool Seek(Rect bossHitbox)
+        public bool Seek(Rect hitbox)
         {
             bool hasMoved = false;
 
@@ -23,9 +23,9 @@ namespace HonkTrooper
             double playerMiddleY = top + Height / 2;
 
             // move up
-            if (bossHitbox.Y < playerMiddleY - _grace)
+            if (hitbox.Y < playerMiddleY - _grace)
             {
-                var distance = Math.Abs(bossHitbox.Y - playerMiddleY);
+                var distance = Math.Abs(hitbox.Y - playerMiddleY);
                 double speed = CalculateSpeed(distance);
 
                 SetTop(top - speed);
@@ -34,9 +34,9 @@ namespace HonkTrooper
             }
 
             // move left
-            if (bossHitbox.X < playerMiddleX - _grace)
+            if (hitbox.X < playerMiddleX - _grace)
             {
-                var distance = Math.Abs(bossHitbox.X - playerMiddleX);
+                var distance = Math.Abs(hitbox.X - playerMiddleX);
                 double speed = CalculateSpeed(distance);
 
                 SetLeft(left - speed);
@@ -45,9 +45,9 @@ namespace HonkTrooper
             }
 
             // move down
-            if (bossHitbox.Y > playerMiddleY + _grace)
+            if (hitbox.Y > playerMiddleY + _grace)
             {
-                var distance = Math.Abs(bossHitbox.Y - playerMiddleY);
+                var distance = Math.Abs(hitbox.Y - playerMiddleY);
                 double speed = CalculateSpeed(distance);
 
                 SetTop(top + speed);
@@ -56,9 +56,9 @@ namespace HonkTrooper
             }
 
             // move right
-            if (bossHitbox.X > playerMiddleX + _grace)
+            if (hitbox.X > playerMiddleX + _grace)
             {
-                var distance = Math.Abs(bossHitbox.X - playerMiddleX);
+                var distance = Math.Abs(hitbox.X - playerMiddleX);
                 double speed = CalculateSpeed(distance);
 
                 SetLeft(left + speed);

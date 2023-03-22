@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace HonkTrooper
 {
-    public partial class Enemy : Construct
+    public partial class UfoEnemy : Construct
     {
         #region Fields
 
@@ -25,17 +25,17 @@ namespace HonkTrooper
 
         #region Ctor
 
-        public Enemy(
+        public UfoEnemy(
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction)
         {
-            ConstructType = ConstructType.ENEMY;
+            ConstructType = ConstructType.UFO_ENEMY;
 
             _random = new Random();
 
-            _enemy_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.ENEMY).Select(x => x.Uri).ToArray();
+            _enemy_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.UFO_ENEMY).Select(x => x.Uri).ToArray();
 
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.ENEMY);
+            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.UFO_ENEMY);
 
             var width = size.Width;
             var height = size.Height;
