@@ -913,7 +913,7 @@ namespace HonkTrooper
 
                 roadSideStripe.SetPosition(
                     left: _scene_game.Width / 4.7,
-                    top: roadSideStripe.Height * -1,
+                    top: roadSideStripe.Height * -1.1,
                     z: 0);
 
                 return true;
@@ -930,7 +930,7 @@ namespace HonkTrooper
 
                 roadSideStripe.SetPosition(
                     left: -1 * roadSideStripe.Height,
-                    top: _scene_game.Height / 7.3,
+                    top: _scene_game.Height / 6.7,
                     z: 0);
 
                 return true;
