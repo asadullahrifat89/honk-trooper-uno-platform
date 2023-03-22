@@ -21,13 +21,18 @@ namespace HonkTrooper
 
         private readonly HealthBar _player_health_bar;
         private readonly HealthBar _ufo_boss_health_bar;
+        private readonly HealthBar _vehicle_boss_health_bar;
         private readonly HealthBar _powerUp_health_bar;
 
         private readonly ScoreBar _game_score_bar;
         private readonly StackPanel _health_bars;
 
         private readonly Threashold _ufo_boss_threashold;
+        private readonly Threashold _vehicle_boss_threashold;
         private readonly Threashold _enemy_threashold;
+
+        private readonly double _vehicle_boss_threashold_limit = 25; // first vehicle Boss will appear
+        private readonly double _vehicle_boss_threashold_limit_increase = 15;
 
         //TODO: set defaults _UFO_BOSS_threashold_limit = 50
         private readonly double _ufo_boss_threashold_limit = 50; // first UfoBoss will appear
@@ -58,6 +63,7 @@ namespace HonkTrooper
             _scene_main_menu = this.MainMenuScene;
             _player_health_bar = this.PlayerHealthBar;
             _ufo_boss_health_bar = this.UfoBossHealthBar;
+            _vehicle_boss_health_bar = this.VehicleBossHealthBar;
             _powerUp_health_bar = this.PowerUpHealthBar;
 
             _game_controller = this.GameController;
@@ -65,6 +71,7 @@ namespace HonkTrooper
             _health_bars = this.HealthBars;
 
             _ufo_boss_threashold = new Threashold(_ufo_boss_threashold_limit);
+            _vehicle_boss_threashold = new Threashold(_vehicle_boss_threashold_limit);
             _enemy_threashold = new Threashold(_enemy_threashold_limit);
 
             ToggleHudVisibility(Visibility.Collapsed);
@@ -154,11 +161,15 @@ namespace HonkTrooper
 
             _game_controller.Reset();
 
-            _powerUp_health_bar.Reset();
-            _ufo_boss_health_bar.Reset();
             _game_score_bar.Reset();
+            _powerUp_health_bar.Reset();
+
+            _ufo_boss_health_bar.Reset();
+            _vehicle_boss_health_bar.Reset();
 
             _ufo_boss_threashold.Reset(_ufo_boss_threashold_limit);
+            _vehicle_boss_threashold.Reset(_vehicle_boss_threashold_limit);
+
             _enemy_threashold.Reset(_enemy_threashold_limit);
             _enemy_kill_count = 0;
             _enemy_fleet_appeared = false;
@@ -645,7 +656,7 @@ namespace HonkTrooper
 
         private bool GenerateVehicle()
         {
-            if (!UfoBossExists() && _scene_game.Children.OfType<Vehicle>().FirstOrDefault(x => x.IsAnimating == false) is Vehicle vehicle)
+            if (!UfoBossExists() && !VehicleBossExists() && _scene_game.Children.OfType<Vehicle>().FirstOrDefault(x => x.IsAnimating == false) is Vehicle vehicle)
             {
                 vehicle.IsAnimating = true;
                 vehicle.Reset();
@@ -727,24 +738,8 @@ namespace HonkTrooper
         {
             var vehicle_distantHitBox = vehicle.GetDistantHitBox();
 
-            // fix vehicle z order
-            //if (_scene_game.Children.OfType<Vehicle>().FirstOrDefault(x => x.GetDistantHitBox() is Rect x_DistantHitBox &&
-            //    x_DistantHitBox.IntersectsWith(vehicle_distantHitBox) &&
-            //    vehicle_distantHitBox.Bottom > x_DistantHitBox.Bottom &&
-            //    vehicle.GetZ() <= x.GetZ()) is Vehicle belowVehicle)
-            //{
-            //    vehicle.SetZ(belowVehicle.GetZ() + 1);
-            //}
-
-            //if (_scene_game.Children.OfType<Vehicle>().FirstOrDefault(x => x.GetDistantHitBox() is Rect x_DistantHitBox &&
-            //    x_DistantHitBox.IntersectsWith(vehicle_distantHitBox) &&
-            //    vehicle_distantHitBox.Bottom < x_DistantHitBox.Bottom &&
-            //    vehicle.GetZ() >= x.GetZ()) is Vehicle overVehicle)
-            //{
-            //    vehicle.SetZ(overVehicle.GetZ() - 1);
-            //}
-
-            if (_scene_game.Children.OfType<Vehicle>().FirstOrDefault(x => x.IsAnimating && x.GetHorizontalHitBox().IntersectsWith(vehicle.GetHorizontalHitBox())) is Construct collidingVehicle)
+            if (_scene_game.Children.OfType<Vehicle>()                
+                .FirstOrDefault(x => x.IsAnimating && x.GetHorizontalHitBox().IntersectsWith(vehicle.GetHorizontalHitBox())) is Construct collidingVehicle)
             {
                 var hitBox = vehicle.GetHitBox();
 
@@ -767,7 +762,183 @@ namespace HonkTrooper
             }
         }
 
-        #endregion        
+        #endregion
+
+        #region VehicleBoss
+
+        private bool SpawnVehicleBosses()
+        {
+            VehicleBoss vehicleBoss = new(
+                animateAction: AnimateVehicleBoss,
+                recycleAction: RecycleVehicleBoss);
+
+            vehicleBoss.SetPosition(
+                left: -3000,
+                top: -3000,
+                z: 3);
+
+            _scene_game.AddToScene(vehicleBoss);
+
+            return true;
+        }
+
+        private bool GenerateVehicleBoss()
+        {
+            // if scene doesn't contain a VehicleBoss then pick a random VehicleBoss and add to scene
+
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
+                _vehicle_boss_threashold.ShouldRelease(_game_score_bar.GetScore()) &&
+                !_scene_game.Children.OfType<VehicleBoss>().Any(x => x.IsAnimating) &&
+                _scene_game.Children.OfType<VehicleBoss>().FirstOrDefault(x => x.IsAnimating == false) is VehicleBoss vehicleBoss)
+            {
+                _audio_stub.Stop(SoundType.GAME_BACKGROUND_MUSIC);
+
+                _audio_stub.Play(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
+
+                _audio_stub.SetVolume(SoundType.AMBIENCE, 0.4);
+
+                vehicleBoss.IsAnimating = true;
+                vehicleBoss.Reset();
+
+                var topOrLeft = _random.Next(2); // generate top and left corner lane wise vehicles
+                var lane = _random.Next(2); // generate number of lanes based of screen height
+
+                switch (topOrLeft)
+                {
+                    case 0:
+                        {
+                            var xLaneWidth = Constants.DEFAULT_SCENE_WIDTH / 4;
+
+                            vehicleBoss.SetPosition(
+                                left: lane == 0 ? 0 : (xLaneWidth - vehicleBoss.Width / 2),
+                                top: vehicleBoss.Height * -1);
+                        }
+                        break;
+                    case 1:
+                        {
+                            var yLaneHeight = Constants.DEFAULT_SCENE_HEIGHT / 6;
+
+                            vehicleBoss.SetPosition(
+                                left: vehicleBoss.Width * -1,
+                                top: lane == 0 ? 0 : (yLaneHeight));
+                        }
+                        break;
+                    default:
+                        break;
+                }
+
+                vehicleBoss.SetZ(3);
+
+                // set VehicleBoss health
+                vehicleBoss.Health = _vehicle_boss_threashold.GetReleasePointDifference() * 1.5;
+
+                _vehicle_boss_threashold.IncreaseThreasholdLimit(increment: _vehicle_boss_threashold_limit_increase, currentPoint: _game_score_bar.GetScore());
+
+                _vehicle_boss_health_bar.SetMaxiumHealth(vehicleBoss.Health);
+                _vehicle_boss_health_bar.SetValue(vehicleBoss.Health);
+                _vehicle_boss_health_bar.SetIcon(vehicleBoss.GetContentUri());
+                _vehicle_boss_health_bar.SetBarForegroundColor(color: Colors.Crimson);
+
+                GenerateInterimScreen("Crazy Honker Arrived");
+                _scene_game.ActivateSlowMotion();
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimateVehicleBoss(Construct vehicleBoss)
+        {
+            VehicleBoss vehicleBoss1 = vehicleBoss as VehicleBoss;
+
+            var speed = (_scene_game.Speed + vehicleBoss.SpeedOffset);
+
+            if (vehicleBoss1.IsDead)
+            {
+                MoveConstructBottomRight(vehicleBoss, speed);
+            }
+            else
+            {
+                vehicleBoss.Pop();
+
+                if (_scene_game.SceneState == SceneState.GAME_RUNNING)
+                {
+                    if (vehicleBoss1.IsAttacking)
+                    {
+                        var scaling = ScreenExtensions.GetScreenSpaceScaling();
+
+                        vehicleBoss1.Move(
+                            speed: speed,
+                            sceneWidth: Constants.DEFAULT_SCENE_WIDTH * scaling,
+                            sceneHeight: Constants.DEFAULT_SCENE_HEIGHT * scaling);
+
+                        if (vehicleBoss1.Honk())
+                            GenerateVehicleBossHonk(vehicleBoss1);
+                    }
+                    else
+                    {
+                        MoveConstructBottomRight(construct: vehicleBoss, speed: speed);
+
+                        if (vehicleBoss.GetLeft() > (Constants.DEFAULT_SCENE_WIDTH / 3)) // bring VehicleBoss to a suitable distance from player and then start attacking
+                        {
+                            vehicleBoss1.IsAttacking = true;
+                        }
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        private bool RecycleVehicleBoss(Construct vehicleBoss)
+        {
+            var hitBox = vehicleBoss.GetHitBox();
+
+            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left > Constants.DEFAULT_SCENE_WIDTH)
+            {
+                vehicleBoss.IsAnimating = false;
+
+                vehicleBoss.SetPosition(
+                    left: -3000,
+                    top: -3000);
+            }
+
+            return true;
+        }
+
+        private void LooseVehicleBossHealth(VehicleBoss vehicleBoss)
+        {
+            vehicleBoss.SetPopping();
+            vehicleBoss.LooseHealth();
+
+            _vehicle_boss_health_bar.SetValue(vehicleBoss.Health);
+
+            if (vehicleBoss.IsDead && vehicleBoss.IsAttacking)
+            {
+                _audio_stub.Stop(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
+
+                _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
+
+                _audio_stub.SetVolume(SoundType.AMBIENCE, 0.6);
+
+                vehicleBoss.IsAttacking = false;
+
+                _player.SetWinStance();
+                _game_score_bar.GainScore(5);
+
+                GenerateInterimScreen("Crazy Honker Busted");
+
+                _scene_game.ActivateSlowMotion();
+            }
+        }
+
+        private bool VehicleBossExists()
+        {
+            return _scene_game.Children.OfType<VehicleBoss>().Any(x => x.IsAnimating && x.IsAttacking);
+        }
+
+        #endregion
 
         #region RoadMark
 
@@ -1221,6 +1392,18 @@ namespace HonkTrooper
             return true;
         }
 
+        private bool GenerateVehicleBossHonk(VehicleBoss source)
+        {
+            // if there are no UfoBosses or enemies in the scene the vehicles will honk
+
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING && !UfoBossExists())
+            {
+                return GenerateHonk(source);
+            }
+
+            return true;
+        }
+
         private bool GenerateVehicleHonk(Vehicle source)
         {
             // if there are no UfoBosses or enemies in the scene the vehicles will honk
@@ -1341,21 +1524,18 @@ namespace HonkTrooper
 
         private bool SpawnUfoBosses()
         {
-            for (int i = 0; i < 3; i++)
-            {
-                UfoBoss UfoBoss = new(
-                    animateAction: AnimateUfoBoss,
-                    recycleAction: RecycleUfoBoss);
+            UfoBoss UfoBoss = new(
+                animateAction: AnimateUfoBoss,
+                recycleAction: RecycleUfoBoss);
 
-                UfoBoss.SetPosition(
-                    left: -3000,
-                    top: -3000,
-                    z: 8);
+            UfoBoss.SetPosition(
+                left: -3000,
+                top: -3000,
+                z: 8);
 
-                _scene_game.AddToScene(UfoBoss);
+            _scene_game.AddToScene(UfoBoss);
 
-                SpawnDropShadow(source: UfoBoss);
-            }
+            SpawnDropShadow(source: UfoBoss);
 
             return true;
         }
@@ -1681,7 +1861,7 @@ namespace HonkTrooper
         {
             if (_scene_game.SceneState == SceneState.GAME_RUNNING && !_scene_game.IsSlowMotionActivated)
             {
-                if (_scene_game.Children.OfType<Vehicle>().Any(x => x.IsAnimating) &&
+                if ((VehicleBossExists() || _scene_game.Children.OfType<Vehicle>().Any(x => x.IsAnimating)) &&
                     _scene_game.Children.OfType<PlayerFireCracker>().FirstOrDefault(x => x.IsAnimating == false) is PlayerFireCracker playerFireCracker)
                 {
                     _player.SetAttackStance();
@@ -1723,15 +1903,6 @@ namespace HonkTrooper
                 playerFireCracker.Fade(0.02);
 
                 MoveConstructBottomRight(construct: playerFireCracker, speed: speed);
-
-                // while in blast check if it intersects with any vehicle, if it does then the vehicle stops honking and slows down
-                if (_scene_game.Children.OfType<Vehicle>()
-                    .Where(x => x.IsAnimating && x.WillHonk)
-                    .FirstOrDefault(x => x.GetCloseHitBox().IntersectsWith(playerFireCracker.GetCloseHitBox())) is Vehicle vehicle)
-                {
-                    vehicle.SetBlast();
-                    _game_score_bar.GainScore(5);
-                }
             }
             else
             {
@@ -1745,11 +1916,29 @@ namespace HonkTrooper
                     DropShadow dropShadow = _scene_game.Children.OfType<DropShadow>().First(x => x.Id == playerFireCracker.Id);
 
                     var drpShdwHitBox = dropShadow.GetCloseHitBox();
-                    var bmbHitBox = playerFireCracker.GetCloseHitBox();
+                    var fireCrackerHitBox = playerFireCracker.GetCloseHitBox();
 
                     // start blast animation when the bomb touches it's shadow
-                    if (drpShdwHitBox.IntersectsWith(drpShdwHitBox) && playerFireCracker.GetBottom() > dropShadow.GetBottom())
+                    if (drpShdwHitBox.IntersectsWith(fireCrackerHitBox) && playerFireCracker.GetBottom() > dropShadow.GetBottom())
+                    {
+                        // while in blast check if it intersects with any vehicle, if it does then the vehicle stops honking and slows down
+                        if (_scene_game.Children.OfType<Vehicle>()
+                            .Where(x => x.IsAnimating && x.WillHonk)
+                            .FirstOrDefault(x => x.GetCloseHitBox().IntersectsWith(fireCrackerHitBox)) is Vehicle vehicle)
+                        {
+                            vehicle.SetBlast();
+                            _game_score_bar.GainScore(5);
+                        }
+
+                        // if a vechile boss is in place then boss looses health
+                        if (_scene_game.Children.OfType<VehicleBoss>()
+                            .FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is VehicleBoss vehicleBoss && vehicleBoss.GetCloseHitBox().IntersectsWith(fireCrackerHitBox))
+                        {
+                            LooseVehicleBossHealth(vehicleBoss);
+                        }
+
                         playerFireCracker1.SetBlast();
+                    }
                 }
             }
 
@@ -2924,6 +3113,11 @@ namespace HonkTrooper
                     generationDelay: 100,
                     generationAction: GenerateUfoBoss,
                     startUpAction: SpawnUfoBosses),
+
+                new Generator(
+                    generationDelay: 100,
+                    generationAction: GenerateVehicleBoss,
+                    startUpAction: SpawnVehicleBosses),
 
                 new Generator(
                     generationDelay: 50,
