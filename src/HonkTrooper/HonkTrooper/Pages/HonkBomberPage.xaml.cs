@@ -46,7 +46,6 @@ namespace HonkTrooper
 
         private int _selected_player_template;
 
-
         #endregion
 
         #region Ctor
@@ -82,6 +81,9 @@ namespace HonkTrooper
                 (SoundType.ENEMY_ENTRY, 1, false));
 
             _scene_main_menu.SetRenderTransformOrigin(0.5);
+
+            ScreenExtensions.Width = RootGrid.Width;
+            ScreenExtensions.Height = RootGrid.Height;
 
             Loaded += HonkBomberPage_Loaded;
             Unloaded += HonkBomberPage_Unloaded;
@@ -271,8 +273,6 @@ namespace HonkTrooper
                 displayOrientationChangeScreen.IsAnimating = true;
                 displayOrientationChangeScreen.Reposition();
 
-                LoggerExtensions.Log("Screen Orientation Change Promt Generated.");
-
                 return true;
             }
 
@@ -424,8 +424,6 @@ namespace HonkTrooper
                 playerSelectionScreen.IsAnimating = true;
                 playerSelectionScreen.Reposition();
 
-                LoggerExtensions.Log("Player Selection Screen Generated.");
-
                 return true;
             }
 
@@ -476,8 +474,6 @@ namespace HonkTrooper
                 interimScreen.SetTitle(title);
                 interimScreen.Reposition();
                 interimScreen.Reset();
-
-                LoggerExtensions.Log("Game title generated.");
 
                 return true;
             }
@@ -730,7 +726,6 @@ namespace HonkTrooper
 
                 vehicle.SetZ(3);
 
-                LoggerExtensions.Log("Vehicle generated.");
                 return true;
             }
 
@@ -851,8 +846,6 @@ namespace HonkTrooper
                   left: roadMark.Width * -1,
                   top: roadMark.Height / 3 * -1,
                   z: 1);
-
-                LoggerExtensions.Log("Road Mark generated.");
 
                 return true;
             }
@@ -1099,8 +1092,6 @@ namespace HonkTrooper
 
                 SyncDropShadow(tree);
 
-                LoggerExtensions.Log("Tree generated.");
-
                 return true;
             }
 
@@ -1165,8 +1156,6 @@ namespace HonkTrooper
                   top: hedge.Height * -1.1,
                   z: 2);
 
-                LoggerExtensions.Log("Hedge generated.");
-
                 return true;
             }
 
@@ -1183,8 +1172,6 @@ namespace HonkTrooper
                   left: -1 * hedge.Width,
                   top: (_scene_game.Height / 3 + hedge.Height / 3),
                   z: 3);
-
-                LoggerExtensions.Log("Hedge generated.");
 
                 return true;
             }
@@ -1611,8 +1598,6 @@ namespace HonkTrooper
                 }
 
                 SyncDropShadow(enemy);
-
-                LoggerExtensions.Log("Enemy generated.");
 
                 if (!_enemy_fleet_appeared)
                 {
@@ -3094,14 +3079,14 @@ namespace HonkTrooper
 
         private void HonkBomberPage_SizeChanged(object sender, SizeChangedEventArgs args)
         {
-            var _windowWidth = args.NewSize.Width;
-            var _windowHeight = args.NewSize.Height;
+            ScreenExtensions.Width = args.NewSize.Width;
+            ScreenExtensions.Height = args.NewSize.Height;
 
-            var scaling = ScreenExtensions.GetScreenSpaceScaling(_windowWidth);
+            var scaling = ScreenExtensions.GetScreenSpaceScaling();
 
             // resize the main menu
-            _scene_main_menu.Width = _windowWidth;
-            _scene_main_menu.Height = _windowHeight;
+            _scene_main_menu.Width = ScreenExtensions.Width;
+            _scene_main_menu.Height = ScreenExtensions.Height;
 
             // scale the scenes
             _scene_game.SetScaleTransform(scaling);
@@ -3115,6 +3100,8 @@ namespace HonkTrooper
 
             RepositionHoveringTitleScreens();
             RepositionLogicalConstructs();
+
+            LoggerExtensions.Log($"{ScreenExtensions.Width} x {ScreenExtensions.Height}");
         }
 
         private void DisplayInformation_OrientationChanged(DisplayInformation sender, object args)
