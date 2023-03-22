@@ -1128,15 +1128,15 @@ namespace HonkTrooper
 
         #endregion
 
-        #region Hedge
+        #region RoadSideHedge
 
-        private bool SpawnHedges()
+        private bool SpawnRoadSideHedges()
         {
             for (int i = 0; i < 15; i++)
             {
-                Hedge hedge = new(
-                    animateAction: AnimateHedge,
-                    recycleAction: RecycleHedge);
+                RoadSideHedge hedge = new(
+                    animateAction: AnimateRoadSideHedge,
+                    recycleAction: RecycleRoadSideHedge);
 
                 hedge.SetPosition(
                     left: -3000,
@@ -1150,9 +1150,9 @@ namespace HonkTrooper
             return true;
         }
 
-        private bool GenerateHedgeTop()
+        private bool GenerateRoadSideHedgeTop()
         {
-            if (_scene_game.Children.OfType<Hedge>().FirstOrDefault(x => x.IsAnimating == false) is Hedge hedge)
+            if (_scene_game.Children.OfType<RoadSideHedge>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideHedge hedge)
             {
                 hedge.IsAnimating = true;
 
@@ -1167,9 +1167,9 @@ namespace HonkTrooper
             return false;
         }
 
-        private bool GenerateHedgeBottom()
+        private bool GenerateRoadSideHedgeBottom()
         {
-            if (_scene_game.Children.OfType<Hedge>().FirstOrDefault(x => x.IsAnimating == false) is Hedge hedge)
+            if (_scene_game.Children.OfType<RoadSideHedge>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideHedge hedge)
             {
                 hedge.IsAnimating = true;
 
@@ -1184,14 +1184,14 @@ namespace HonkTrooper
             return false;
         }
 
-        private bool AnimateHedge(Construct hedge)
+        private bool AnimateRoadSideHedge(Construct hedge)
         {
             var speed = (_scene_game.Speed + hedge.SpeedOffset);
             MoveConstructBottomRight(construct: hedge, speed: speed);
             return true;
         }
 
-        private bool RecycleHedge(Construct hedge)
+        private bool RecycleRoadSideHedge(Construct hedge)
         {
             var hitBox = hedge.GetHitBox();
 
@@ -2925,17 +2925,17 @@ namespace HonkTrooper
                     generationAction: GenerateTreeBottom,
                     startUpAction: SpawnTrees),
 
-                // then add the top Hedges
+                // then add the top RoadSideHedges
                 new Generator(
                     generationDelay: 12,
-                    generationAction: GenerateHedgeTop,
-                    startUpAction: SpawnHedges),
+                    generationAction: GenerateRoadSideHedgeTop,
+                    startUpAction: SpawnRoadSideHedges),
 
-                // then add the bottom Hedges which will appear forward in z wrt to the vehicles
+                // then add the bottom RoadSideHedges which will appear forward in z wrt to the vehicles
                 new Generator(
                     generationDelay: 12,
-                    generationAction: GenerateHedgeBottom,
-                    startUpAction: SpawnHedges),
+                    generationAction: GenerateRoadSideHedgeBottom,
+                    startUpAction: SpawnRoadSideHedges),
 
                 // then add the vehicles which will appear forward in z wrt the top trees
                 new Generator(

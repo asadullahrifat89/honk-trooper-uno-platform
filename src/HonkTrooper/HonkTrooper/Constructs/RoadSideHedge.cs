@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace HonkTrooper
 {
-    public partial class Hedge : Construct
+    public partial class RoadSideHedge : Construct
     {
         #region Fields
 
@@ -15,13 +15,13 @@ namespace HonkTrooper
 
         #region Ctor
 
-        public Hedge(
+        public RoadSideHedge(
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction)
         {
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.HEDGE);
+            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.ROAD_SIDE_HEDGE);
 
-            ConstructType = ConstructType.HEDGE;
+            ConstructType = ConstructType.ROAD_SIDE_HEDGE;
 
             var width = size.Width;
             var height = size.Height;
@@ -33,7 +33,7 @@ namespace HonkTrooper
 
             _content_image = new Image()
             {
-                Source = new BitmapImage(uriSource: Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.HEDGE).Uri)
+                Source = new BitmapImage(uriSource: Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.ROAD_SIDE_HEDGE).Uri)
             };
 
             SetChild(_content_image);
