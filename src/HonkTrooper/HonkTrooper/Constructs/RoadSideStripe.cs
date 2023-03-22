@@ -12,15 +12,14 @@ namespace HonkTrooper
 
         public RoadSideStripe(
             Func<Construct, bool> animateAction,
-            Func<Construct, bool> recycleAction,
-            double downScaling)
+            Func<Construct, bool> recycleAction)
         {
             ConstructType = ConstructType.ROAD_SIDE_STRIPE;
 
             var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.ROAD_SIDE_STRIPE);
 
-            var width = size.Width * downScaling;
-            var height = size.Height * downScaling;
+            var width = size.Width;
+            var height = size.Height;
 
             SetSize(width: width, height: height);
 

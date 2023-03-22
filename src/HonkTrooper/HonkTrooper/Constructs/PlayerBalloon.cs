@@ -49,8 +49,7 @@ namespace HonkTrooper
 
         public PlayerBalloon(
             Func<Construct, bool> animateAction,
-            Func<Construct, bool> recycleAction,
-            double downScaling)
+            Func<Construct, bool> recycleAction)
         {
             _hoverDelay = _hoverDelayDefault;
             _random = new Random();
@@ -59,8 +58,8 @@ namespace HonkTrooper
 
             var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.PLAYER_BALLOON);
 
-            var width = size.Width * downScaling;
-            var height = size.Height * downScaling;
+            var width = size.Width;
+            var height = size.Height;
 
             AnimateAction = animateAction;
             RecycleAction = recycleAction;
@@ -111,7 +110,7 @@ namespace HonkTrooper
         {
             SetPosition(
                 left: ((Scene.Width / 4) * 2) - Width / 2,
-                top: (Scene.Height / 2 - Height / 2) - 150 * Scene.DownScaling,
+                top: (Scene.Height / 2 - Height / 2) - 150,
                 z: 6);
         }
 

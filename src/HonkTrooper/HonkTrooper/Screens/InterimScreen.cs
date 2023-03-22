@@ -22,15 +22,14 @@ namespace HonkTrooper
 
         public InterimScreen(
             Func<Construct, bool> animateAction,
-            Func<Construct, bool> recycleAction,
-            double downScaling)
+            Func<Construct, bool> recycleAction)
         {
             ConstructType = ConstructType.INTERIM_SCREEN;
 
             var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.INTERIM_SCREEN);
 
-            var width = size.Width * downScaling;
-            var height = size.Height * downScaling;
+            var width = size.Width;
+            var height = size.Height;
 
             SetSize(width: width, height: height);
 

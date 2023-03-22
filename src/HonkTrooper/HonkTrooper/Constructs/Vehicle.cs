@@ -22,8 +22,7 @@ namespace HonkTrooper
 
         public Vehicle(
             Func<Construct, bool> animateAction,
-            Func<Construct, bool> recycleAction,
-            double downScaling)
+            Func<Construct, bool> recycleAction)
         {
             _random = new Random();
 
@@ -42,13 +41,13 @@ namespace HonkTrooper
                 case 0:
                     {
                         size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.VEHICLE_SMALL);
-                                                
+
                         uri = ConstructExtensions.GetRandomContentUri(_vehicle_small_uris);
 
                         ConstructType = ConstructType.VEHICLE_SMALL;
 
-                        var width = size.Width * downScaling;
-                        var height = size.Height * downScaling;
+                        var width = size.Width;
+                        var height = size.Height;
 
                         SetSize(width: width, height: height);
 
@@ -70,8 +69,8 @@ namespace HonkTrooper
 
                         ConstructType = ConstructType.VEHICLE_LARGE;
 
-                        var width = size.Width * downScaling;
-                        var height = size.Height * downScaling;
+                        var width = size.Width;
+                        var height = size.Height;
 
                         SetSize(width: width, height: height);
 

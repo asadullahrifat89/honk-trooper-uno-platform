@@ -24,8 +24,7 @@ namespace HonkTrooper
 
         public BossRocketSeeking(
             Func<Construct, bool> animateAction,
-            Func<Construct, bool> recycleAction,
-            double downScaling)
+            Func<Construct, bool> recycleAction)
         {
             _random = new Random();
 
@@ -36,8 +35,8 @@ namespace HonkTrooper
 
             ConstructType = ConstructType.BOSS_ROCKET_SEEKING;
 
-            var width = size.Width * downScaling;
-            var height = size.Height * downScaling;
+            var width = size.Width;
+            var height = size.Height;
 
             AnimateAction = animateAction;
             RecycleAction = recycleAction;
@@ -72,11 +71,11 @@ namespace HonkTrooper
 
         #region Methods
 
-        public void Reposition(Boss boss, double downScaling)
+        public void Reposition(Boss boss)
         {
             SetPosition(
                 left: (boss.GetLeft() + boss.Width / 2) - Width / 2,
-                top: boss.GetBottom() - (40 * downScaling),
+                top: boss.GetBottom() - (40),
                 z: 7);
         }
 

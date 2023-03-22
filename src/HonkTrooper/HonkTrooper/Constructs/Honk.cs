@@ -22,8 +22,7 @@ namespace HonkTrooper
 
         public Honk(
             Func<Construct, bool> animateAction,
-            Func<Construct, bool> recycleAction,
-            double downScaling)
+            Func<Construct, bool> recycleAction)
         {
             _random = new Random();
 
@@ -33,8 +32,8 @@ namespace HonkTrooper
 
             ConstructType = ConstructType.HONK;
 
-            var width = size.Width * downScaling;
-            var height = size.Height * downScaling;
+            var width = size.Width;
+            var height = size.Height;
 
             AnimateAction = animateAction;
             RecycleAction = recycleAction;
@@ -63,13 +62,13 @@ namespace HonkTrooper
             Opacity = 1;
         }
 
-        public void Reposition(Construct source, double downScaling)
+        public void Reposition(Construct source)
         {
             var hitBox = source.GetCloseHitBox();
 
             SetPosition(
                 left: hitBox.Left - source.Width / 3,
-                top: hitBox.Top - (25 * downScaling),
+                top: hitBox.Top - (25),
                 z: 5);
         }
 
