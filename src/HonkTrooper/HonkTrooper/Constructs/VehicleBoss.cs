@@ -52,8 +52,7 @@ namespace HonkTrooper
 
             SetChild(_content_image);
 
-            IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
-            SpeedOffset = -1;
+            IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;            
         }
 
         #endregion
@@ -78,6 +77,8 @@ namespace HonkTrooper
             Health = 100;
             IsAttacking = false;
 
+            SpeedOffset = _random.Next(-2, 4);
+
             _movementDirection = MovementDirection.None;
 
             var uri = ConstructExtensions.GetRandomContentUri(_vehicle_boss_uris);
@@ -85,7 +86,6 @@ namespace HonkTrooper
 
             RandomizeMovementPattern();
             SetScaleTransform(1);
-
             SetHonkDelay();
         }
 
@@ -117,6 +117,8 @@ namespace HonkTrooper
 
         private void RandomizeMovementPattern()
         {
+            SpeedOffset = _random.Next(-2, 4);
+
             _changeMovementPatternDelay = _random.Next(40, 60);
             MovementPattern = (VehicleBossMovementPattern)_random.Next(Enum.GetNames(typeof(VehicleBossMovementPattern)).Length);
             _movementDirection = MovementDirection.None;
