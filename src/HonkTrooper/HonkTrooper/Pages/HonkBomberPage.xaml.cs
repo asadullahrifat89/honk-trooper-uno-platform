@@ -917,8 +917,8 @@ namespace HonkTrooper
                 roadSideStripe.IsAnimating = true;
 
                 roadSideStripe.SetPosition(
-                    left: _scene_game.Width / 5 * _scene_game.DownScaling,
-                    top: roadSideStripe.Height * -1,
+                    left: _scene_game.Width / 6.1 * _scene_game.DownScaling,
+                    top: roadSideStripe.Height * -1 * _scene_game.DownScaling,
                     z: 0);
 
                 return true;
@@ -934,8 +934,8 @@ namespace HonkTrooper
                 roadSideStripe.IsAnimating = true;
 
                 roadSideStripe.SetPosition(
-                    left: roadSideStripe.Height * -1 * _scene_game.DownScaling,
-                    top: (_scene_game.Height / 4) * _scene_game.DownScaling,
+                    left: -1 * roadSideStripe.Height * _scene_game.DownScaling,
+                    top: _scene_game.Height / 5.9 * _scene_game.DownScaling,
                     z: 0);
 
                 return true;
@@ -3132,17 +3132,17 @@ namespace HonkTrooper
             var _windowWidth = args.NewSize.Width;
             var _windowHeight = args.NewSize.Height;
 
-            _scene_game.Width = _windowWidth;
-            _scene_game.Height = _windowHeight;
+            if (_windowWidth <= RootGrid.MaxWidth && _windowHeight <= RootGrid.MaxHeight)
+            {
+                _scene_game.Width = _windowWidth;
+                _scene_game.Height = _windowHeight;
 
-            _scene_main_menu.Width = _windowWidth;
-            _scene_main_menu.Height = _windowHeight;
+                _scene_main_menu.Width = _windowWidth;
+                _scene_main_menu.Height = _windowHeight;
 
-            _game_controller.Width = _windowWidth;
-            _game_controller.Height = _windowHeight;
-
-            RootGrid.Width = _windowWidth;
-            RootGrid.Height = _windowHeight;
+                _game_controller.Width = _windowWidth;
+                _game_controller.Height = _windowHeight;
+            }
 
             if (_scene_game.SceneState == SceneState.GAME_RUNNING)
             {
