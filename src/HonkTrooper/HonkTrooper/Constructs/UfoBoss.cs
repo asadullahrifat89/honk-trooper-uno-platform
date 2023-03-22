@@ -96,14 +96,6 @@ namespace HonkTrooper
 
         public UfoBossMovementPattern MovementPattern { get; set; }
 
-        //private bool AwaitMoveRight { get; set; }
-
-        //private bool AwaitMoveLeft { get; set; }
-
-        //private bool AwaitMoveUp { get; set; }
-
-        //private bool AwaitMoveDown { get; set; }
-
         #endregion
 
         #region Methods
@@ -119,12 +111,6 @@ namespace HonkTrooper
             IsAttacking = false;
 
             _movementDirection = MovementDirection.None;
-
-            //AwaitMoveLeft = false;
-            //AwaitMoveRight = false;
-
-            //AwaitMoveUp = false;
-            //AwaitMoveDown = false;
 
             var uri = ConstructExtensions.GetRandomContentUri(_UFO_BOSS_uris);
             _content_image.Source = new BitmapImage(uriSource: uri);
