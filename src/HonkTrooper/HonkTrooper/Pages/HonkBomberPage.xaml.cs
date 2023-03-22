@@ -3060,12 +3060,6 @@ namespace HonkTrooper
 
         private async void HonkBomberPage_Loaded(object sender, RoutedEventArgs e)
         {
-            _scene_game.Width = 1920;
-            _scene_game.Height = 1080;
-
-            _scene_main_menu.Width = 1920;
-            _scene_main_menu.Height = 1080;
-
             SizeChanged += HonkBomberPage_SizeChanged;
 
             ScreenExtensions.DisplayInformation.OrientationChanged += DisplayInformation_OrientationChanged;
