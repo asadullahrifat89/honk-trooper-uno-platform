@@ -910,7 +910,7 @@ namespace HonkTrooper
                 roadSideStripe.IsAnimating = true;
 
                 roadSideStripe.SetPosition(
-                    left: _scene_game.Width / 4.7,
+                    left: _scene_game.Width / 4.9,
                     top: roadSideStripe.Height * -1.1,
                     z: 0);
 
