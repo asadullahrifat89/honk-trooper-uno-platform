@@ -893,7 +893,7 @@ namespace HonkTrooper
 
         private bool SpawnRoadSideStripes()
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 5; i++)
             {
                 RoadSideStripe roadSideStripe = new(
                     animateAction: AnimateRoadSideStripe,
@@ -917,8 +917,8 @@ namespace HonkTrooper
                 roadSideStripe.IsAnimating = true;
 
                 roadSideStripe.SetPosition(
-                    left: (_scene_game.Width / 3 - roadSideStripe.Width),
-                    top: roadSideStripe.Height * -1,
+                    left: (_scene_game.Width / 4.2 - roadSideStripe.Height) * 2 * _scene_game.DownScaling,
+                    top: (roadSideStripe.Height * 1.1) * -1,
                     z: 0);
 
                 return true;
@@ -2924,12 +2924,12 @@ namespace HonkTrooper
             // add road
 
             _scene_game.AddToScene(new Generator(
-               generationDelay: 40,
+               generationDelay: 35,
                generationAction: GenerateRoadSideStripeTop,
                startUpAction: SpawnRoadSideStripes));
 
             _scene_game.AddToScene(new Generator(
-                generationDelay: 40,
+                generationDelay: 35,
                 generationAction: GenerateRoadSideStripeBottom,
                 startUpAction: SpawnRoadSideStripes));
 

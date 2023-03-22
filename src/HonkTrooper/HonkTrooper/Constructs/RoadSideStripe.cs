@@ -28,7 +28,7 @@ namespace HonkTrooper
             RecycleAction = recycleAction;
 
             Background = new SolidColorBrush(Colors.Goldenrod);
-            CornerRadius = new CornerRadius(5);
+            //CornerRadius = new CornerRadius(5);
             BorderThickness = new Thickness(leftRight: Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS, topBottom: 0);
             BorderBrush = App.Current.Resources["BorderColor"] as SolidColorBrush;
 
