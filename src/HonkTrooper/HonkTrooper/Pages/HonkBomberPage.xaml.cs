@@ -461,19 +461,21 @@ namespace HonkTrooper
                 left: -3000,
                 top: -3000);
 
-            _scene_game.AddToScene(interimScreen);
+            _scene_main_menu.AddToScene(interimScreen);
 
             return true;
         }
 
         private bool GenerateInterimScreen(string title)
         {
-            if (_scene_game.Children.OfType<InterimScreen>().FirstOrDefault(x => x.IsAnimating == false) is InterimScreen interimScreen)
+            if (_scene_main_menu.Children.OfType<InterimScreen>().FirstOrDefault(x => x.IsAnimating == false) is InterimScreen interimScreen)
             {
                 interimScreen.IsAnimating = true;
                 interimScreen.SetTitle(title);
                 interimScreen.Reposition();
                 interimScreen.Reset();
+
+                _scene_main_menu.Play();
 
                 return true;
             }
@@ -495,6 +497,8 @@ namespace HonkTrooper
             {
                 interimScreen.IsAnimating = false;
                 interimScreen.SetPosition(left: -3000, top: -3000);
+
+                _scene_main_menu.Pause();
 
                 return true;
             }
@@ -3007,11 +3011,6 @@ namespace HonkTrooper
                     randomizeGenerationDelay: true),
 
                 new Generator(
-                    generationDelay: 0,
-                    generationAction: () => { return true; },
-                    startUpAction: SpawnInterimScreen),
-
-                new Generator(
                     generationDelay: 180,
                     generationAction: GenerateUfoEnemy,
                     startUpAction: SpawnUfoEnemys,
@@ -3024,6 +3023,11 @@ namespace HonkTrooper
                 );
 
             _scene_main_menu.AddToScene(
+
+                new Generator(
+                    generationDelay: 0,
+                    generationAction: () => { return true; },
+                    startUpAction: SpawnInterimScreen),
 
                 new Generator(
                     generationDelay: 0,
