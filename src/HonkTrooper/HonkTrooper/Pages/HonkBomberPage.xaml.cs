@@ -817,7 +817,7 @@ namespace HonkTrooper
                 vehicleBoss.Reset();
                 vehicleBoss.SetPosition(
                     left: 0,
-                    top: vehicleBoss.Height * -1);                
+                    top: vehicleBoss.Height * -1);
 
                 // set VehicleBoss health
                 vehicleBoss.Health = _vehicle_boss_threashold.GetReleasePointDifference() * 1.5;
@@ -1849,7 +1849,7 @@ namespace HonkTrooper
         {
             if (_scene_game.SceneState == SceneState.GAME_RUNNING && !_scene_game.IsSlowMotionActivated)
             {
-                if (_scene_game.Children.OfType<Vehicle>().Any(x => x.IsAnimating) &&
+                if ((VehicleBossExists() || _scene_game.Children.OfType<Vehicle>().Any(x => x.IsAnimating)) &&
                     _scene_game.Children.OfType<PlayerFireCracker>().FirstOrDefault(x => x.IsAnimating == false) is PlayerFireCracker playerFireCracker)
                 {
                     _player.SetAttackStance();
@@ -1926,7 +1926,7 @@ namespace HonkTrooper
                         }
 
                         playerFireCracker1.SetBlast();
-                    }                        
+                    }
                 }
             }
 
