@@ -80,11 +80,10 @@ namespace HonkTrooper
                 (SoundType.GAME_OVER, 1, false),
                 (SoundType.UFO_ENEMY_ENTRY, 1, false));
 
-            _scene_main_menu.SetRenderTransformOrigin(0.5);
-
             ScreenExtensions.Width = Constants.DEFAULT_SCENE_WIDTH;
             ScreenExtensions.Height = Constants.DEFAULT_SCENE_HEIGHT;
 
+            _scene_main_menu.SetRenderTransformOrigin(0.5);
             SetScreenScaling();
 
             Loaded += HonkBomberPage_Loaded;
@@ -2995,13 +2994,16 @@ namespace HonkTrooper
         {
             var scaling = ScreenExtensions.GetScreenSpaceScaling();
 
-            // resize the main menu
-            _scene_main_menu.Width = ScreenExtensions.Width;
-            _scene_main_menu.Height = ScreenExtensions.Height;
+            Console.WriteLine($"ScreenSpaceScaling: {scaling}");
 
             // resize the game scene
             _scene_game.Width = ScreenExtensions.Width;
             _scene_game.Height = ScreenExtensions.Height;
+
+            // resize the main menu
+            _scene_main_menu.Width = ScreenExtensions.Width;
+            _scene_main_menu.Height = ScreenExtensions.Height;
+
 
             // scale the scenes
             _scene_game.SetScaleTransform(scaling);
@@ -3052,8 +3054,8 @@ namespace HonkTrooper
 
         private void HonkBomberPage_SizeChanged(object sender, SizeChangedEventArgs args)
         {
-            ScreenExtensions.Width = args.NewSize.Width;
-            ScreenExtensions.Height = args.NewSize.Height;
+            ScreenExtensions.Width = args.NewSize.Width <= Constants.DEFAULT_SCENE_WIDTH ? args.NewSize.Width : Constants.DEFAULT_SCENE_WIDTH;
+            ScreenExtensions.Height = args.NewSize.Height <= Constants.DEFAULT_SCENE_HEIGHT ? args.NewSize.Height : Constants.DEFAULT_SCENE_HEIGHT;
 
             SetScreenScaling();
 
