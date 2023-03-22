@@ -8,7 +8,10 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
 
-    <Grid x:Name="RootGrid">
+    <Grid
+        x:Name="RootGrid"
+        MaxWidth="1920"
+        MaxHeight="960">
 
         <Border
             x:Name="RoadBackground"
