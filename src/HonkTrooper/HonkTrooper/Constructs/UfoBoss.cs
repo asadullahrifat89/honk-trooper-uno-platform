@@ -6,14 +6,14 @@ using Windows.Foundation;
 
 namespace HonkTrooper
 {
-    public partial class Boss : DirectionalMovingConstruct
+    public partial class UfoBoss : DirectionalMovingConstruct
     {
         #region Fields
 
         private readonly Random _random;
-        private readonly Uri[] _boss_uris;
-        private readonly Uri[] _boss_hit_uris;
-        private readonly Uri[] _boss_win_uris;
+        private readonly Uri[] _UFO_BOSS_uris;
+        private readonly Uri[] _UFO_BOSS_hit_uris;
+        private readonly Uri[] _UFO_BOSS_win_uris;
 
         private double _hoverDelay;
         private readonly double _hoverDelayDefault = 15;
@@ -40,7 +40,7 @@ namespace HonkTrooper
 
         #region Ctor
 
-        public Boss(
+        public UfoBoss(
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction)
         {
@@ -48,13 +48,13 @@ namespace HonkTrooper
 
             _random = new Random();
 
-            _boss_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BOSS).Select(x => x.Uri).ToArray();
-            _boss_hit_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BOSS_HIT).Select(x => x.Uri).ToArray();
-            _boss_win_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BOSS_WIN).Select(x => x.Uri).ToArray();
+            _UFO_BOSS_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.UFO_BOSS).Select(x => x.Uri).ToArray();
+            _UFO_BOSS_hit_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.UFO_BOSS_HIT).Select(x => x.Uri).ToArray();
+            _UFO_BOSS_win_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.UFO_BOSS_WIN).Select(x => x.Uri).ToArray();
 
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.BOSS);
+            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.UFO_BOSS);
 
-            ConstructType = ConstructType.BOSS;
+            ConstructType = ConstructType.UFO_BOSS;
 
             var width = size.Width;
             var height = size.Height;
@@ -64,7 +64,7 @@ namespace HonkTrooper
 
             SetSize(width: width, height: height);
 
-            var uri = ConstructExtensions.GetRandomContentUri(_boss_uris);
+            var uri = ConstructExtensions.GetRandomContentUri(_UFO_BOSS_uris);
 
             _content_image = new Image()
             {
@@ -78,9 +78,9 @@ namespace HonkTrooper
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE;
 
             _audioStub = new AudioStub(
-                (SoundType.BOSS_HOVERING, 0.8, true),
-                (SoundType.BOSS_ENTRY, 0.8, false),
-                (SoundType.BOSS_DEAD, 1, false)
+                (SoundType.UFO_BOSS_HOVERING, 0.8, true),
+                (SoundType.UFO_BOSS_ENTRY, 0.8, false),
+                (SoundType.UFO_BOSS_DEAD, 1, false)
                 );
         }
 
@@ -94,7 +94,7 @@ namespace HonkTrooper
 
         public bool IsDead => Health <= 0;
 
-        public BossMovementPattern MovementPattern { get; set; }
+        public UfoBossMovementPattern MovementPattern { get; set; }
 
         //private bool AwaitMoveRight { get; set; }
 
@@ -110,7 +110,7 @@ namespace HonkTrooper
 
         public void Reset()
         {
-            _audioStub.Play(SoundType.BOSS_ENTRY);
+            _audioStub.Play(SoundType.UFO_BOSS_ENTRY);
 
             PlaySoundLoop();
 
@@ -126,7 +126,7 @@ namespace HonkTrooper
             //AwaitMoveUp = false;
             //AwaitMoveDown = false;
 
-            var uri = ConstructExtensions.GetRandomContentUri(_boss_uris);
+            var uri = ConstructExtensions.GetRandomContentUri(_UFO_BOSS_uris);
             _content_image.Source = new BitmapImage(uriSource: uri);
 
             RandomizeMovementPattern();
@@ -172,7 +172,7 @@ namespace HonkTrooper
 
         public void SetHitStance()
         {
-            var uri = ConstructExtensions.GetRandomContentUri(_boss_hit_uris);
+            var uri = ConstructExtensions.GetRandomContentUri(_UFO_BOSS_hit_uris);
             _content_image.Source = new BitmapImage(uriSource: uri);
             _hitStanceDelay = _hitStanceDelayDefault;
         }
@@ -192,7 +192,7 @@ namespace HonkTrooper
 
         public void SetWinStance()
         {
-            var uri = ConstructExtensions.GetRandomContentUri(_boss_win_uris);
+            var uri = ConstructExtensions.GetRandomContentUri(_UFO_BOSS_win_uris);
             _content_image.Source = new BitmapImage(uriSource: uri);
             _winStanceDelay = _winStanceDelayDefault;
         }
@@ -263,18 +263,18 @@ namespace HonkTrooper
             if (IsDead)
             {
                 StopSoundLoop();
-                _audioStub.Play(SoundType.BOSS_DEAD);
+                _audioStub.Play(SoundType.UFO_BOSS_DEAD);
             }
         }
 
         public void PlaySoundLoop()
         {
-            _audioStub.Play(SoundType.BOSS_HOVERING);
+            _audioStub.Play(SoundType.UFO_BOSS_HOVERING);
         }
 
         public void StopSoundLoop()
         {
-            _audioStub.Stop(SoundType.BOSS_HOVERING);
+            _audioStub.Stop(SoundType.UFO_BOSS_HOVERING);
         }
 
         public void Move(
@@ -285,28 +285,28 @@ namespace HonkTrooper
         {
             switch (MovementPattern)
             {
-                case BossMovementPattern.PLAYER_SEEKING:
+                case UfoBossMovementPattern.PLAYER_SEEKING:
                     SeekPlayer(playerPoint);
                     break;
-                case BossMovementPattern.ISOMETRIC_SQUARE:
+                case UfoBossMovementPattern.ISOMETRIC_SQUARE:
                     MoveInIsometricSquares(
                         speed: speed,
                         sceneWidth: sceneWidth,
                         sceneHeight: sceneHeight);
                     break;
-                case BossMovementPattern.UPRIGHT_DOWNLEFT:
+                case UfoBossMovementPattern.UPRIGHT_DOWNLEFT:
                     MoveUpRightDownLeft(
                         speed: speed,
                         sceneWidth: sceneWidth,
                         sceneHeight: sceneHeight);
                     break;
-                case BossMovementPattern.RIGHT_LEFT:
+                case UfoBossMovementPattern.RIGHT_LEFT:
                     MoveRightLeft(
                         speed: speed,
                         sceneWidth: sceneWidth,
                         sceneHeight: sceneHeight);
                     break;
-                case BossMovementPattern.UP_DOWN:
+                case UfoBossMovementPattern.UP_DOWN:
                     MoveUpDown(
                         speed: speed,
                         sceneWidth: sceneWidth,
@@ -582,13 +582,13 @@ namespace HonkTrooper
         private void RandomizeMovementPattern()
         {
             _changeMovementPatternDelay = _random.Next(40, 60);
-            MovementPattern = (BossMovementPattern)_random.Next(Enum.GetNames(typeof(BossMovementPattern)).Length);
+            MovementPattern = (UfoBossMovementPattern)_random.Next(Enum.GetNames(typeof(UfoBossMovementPattern)).Length);
             _movementDirection = MovementDirection.None;
         }
 
         private void SetIdleStance()
         {
-            var uri = ConstructExtensions.GetRandomContentUri(_boss_uris);
+            var uri = ConstructExtensions.GetRandomContentUri(_UFO_BOSS_uris);
             _content_image.Source = new BitmapImage(uriSource: uri);
         }
 
@@ -605,7 +605,7 @@ namespace HonkTrooper
         #endregion
     }
 
-    public enum BossMovementPattern
+    public enum UfoBossMovementPattern
     {
         PLAYER_SEEKING,
         ISOMETRIC_SQUARE,

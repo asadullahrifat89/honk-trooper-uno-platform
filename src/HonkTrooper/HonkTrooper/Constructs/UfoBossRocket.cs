@@ -5,7 +5,7 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace HonkTrooper
 {
-    public partial class BossRocket : Rocket
+    public partial class UfoBossRocket : Rocket
     {
         #region Fields
 
@@ -26,18 +26,18 @@ namespace HonkTrooper
 
         #region Ctor
 
-        public BossRocket(
+        public UfoBossRocket(
            Func<Construct, bool> animateAction,
            Func<Construct, bool> recycleAction)
         {
             _random = new Random();
 
-            _bomb_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BOSS_ROCKET).Select(x => x.Uri).ToArray();
+            _bomb_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.UFO_BOSS_ROCKET).Select(x => x.Uri).ToArray();
             _bomb_blast_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BOMB_BLAST).Select(x => x.Uri).ToArray();
 
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.BOSS_ROCKET);
+            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.UFO_BOSS_ROCKET);
 
-            ConstructType = ConstructType.BOSS_ROCKET;
+            ConstructType = ConstructType.UFO_BOSS_ROCKET;
 
             var width = size.Width;
             var height = size.Height;
@@ -67,11 +67,11 @@ namespace HonkTrooper
 
         #region Methods
 
-        public void Reposition(Boss boss)
+        public void Reposition(UfoBoss UfoBoss)
         {
             SetPosition(
-                left: (boss.GetLeft() + boss.Width / 2) - Width / 2,
-                top: boss.GetBottom() - (75),
+                left: (UfoBoss.GetLeft() + UfoBoss.Width / 2) - Width / 2,
+                top: UfoBoss.GetBottom() - (75),
                 z: 7);
         }
 
