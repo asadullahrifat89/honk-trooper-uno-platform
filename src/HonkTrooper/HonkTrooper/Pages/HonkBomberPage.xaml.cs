@@ -720,11 +720,11 @@ namespace HonkTrooper
                         break;
                     case 1:
                         {
-                            var yLaneWidth = (_scene_game.Height / 2) / 2;
+                            var yLaneHeight = _scene_game.Height / 6;
 
                             vehicle.SetPosition(
                                 left: vehicle.Width * -1,
-                                top: lane == 0 ? 0 : (yLaneWidth + vehicle.Height / 2) * _scene_game.DownScaling);
+                                top: lane == 0 ? 0 : (yLaneHeight) * _scene_game.DownScaling);
                         }
                         break;
                     default:
@@ -935,7 +935,7 @@ namespace HonkTrooper
 
                 roadSideStripe.SetPosition(
                     left: -1 * roadSideStripe.Height * _scene_game.DownScaling,
-                    top: _scene_game.Height / 7.5 * _scene_game.DownScaling,
+                    top: _scene_game.Height / 7.3 * _scene_game.DownScaling,
                     z: 0);
 
                 return true;
