@@ -85,8 +85,6 @@ namespace HonkTrooper
 
             Loaded += HonkBomberPage_Loaded;
             Unloaded += HonkBomberPage_Unloaded;
-
-
         }
 
         #endregion
@@ -3060,8 +3058,6 @@ namespace HonkTrooper
 
         private async void HonkBomberPage_Loaded(object sender, RoutedEventArgs e)
         {
-            SizeChanged += HonkBomberPage_SizeChanged;
-
             ScreenExtensions.DisplayInformation.OrientationChanged += DisplayInformation_OrientationChanged;
             ScreenExtensions.RequiredDisplayOrientation = DisplayOrientations.Landscape;
 
@@ -3072,10 +3068,12 @@ namespace HonkTrooper
             SetController();
             SetScene();
 
-            ScreenExtensions.EnterFullScreen(true);
+            SizeChanged += HonkBomberPage_SizeChanged;
 
             if (ScreenExtensions.GetDisplayOrienation() == ScreenExtensions.RequiredDisplayOrientation)
             {
+                ScreenExtensions.EnterFullScreen(true);
+
                 await Task.Delay(1500);
 
                 GenerateTitleScreen("Honk Trooper");
@@ -3099,14 +3097,13 @@ namespace HonkTrooper
             var _windowWidth = args.NewSize.Width;
             var _windowHeight = args.NewSize.Height;
 
-            //if (_windowWidth <= RootGrid.MaxWidth && _windowWidth <= RootGrid.MaxHeight)
-            //{
-            _scene_main_menu.Width = _windowWidth;
-            _scene_main_menu.Height = _windowHeight;
-            //}
-
             var scaling = ScreenExtensions.GetScreenSpaceScaling(_windowWidth);
 
+            // resize the main menu
+            _scene_main_menu.Width = _windowWidth;
+            _scene_main_menu.Height = _windowHeight;            
+
+            // scale the scenes
             _scene_game.SetScaleTransform(scaling);
             _scene_main_menu.SetScaleTransform(scaling);
 
