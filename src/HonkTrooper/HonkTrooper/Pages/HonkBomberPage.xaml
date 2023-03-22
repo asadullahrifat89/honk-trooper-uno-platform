@@ -10,6 +10,8 @@
 
     <Grid
         x:Name="RootGrid"
+        Width="1920"
+        Height="960"
         MaxWidth="1920"
         MaxHeight="960">
 
