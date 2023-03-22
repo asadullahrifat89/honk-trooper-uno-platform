@@ -34,6 +34,7 @@ namespace HonkTrooper
 
             new (ConstructType.VEHICLE_SMALL, 210, 210),
             new (ConstructType.VEHICLE_LARGE, 240, 240),
+            new (ConstructType.VEHICLE_BOSS, 260, 260),
 
             new (ConstructType.CLOUD, 260, 260),
 
@@ -229,6 +230,7 @@ namespace HonkTrooper
 
         VEHICLE_SMALL,
         VEHICLE_LARGE,
+        VEHICLE_BOSS,
 
         ROAD_SIDE_STRIPE,
         ROAD_MARK,
@@ -246,7 +248,7 @@ namespace HonkTrooper
         DROP_SHADOW,
 
         UFO_BOSS,
-        boss_IDLE,
+        UFO_BOSS_IDLE,
         UFO_BOSS_HIT,
         UFO_BOSS_WIN,
 
