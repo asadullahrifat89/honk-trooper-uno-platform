@@ -10,8 +10,6 @@
 
     <Grid
         x:Name="RootGrid"
-        Width="1900"
-        Height="940"
         MaxWidth="1900"
         MaxHeight="940">
 
@@ -21,17 +19,9 @@
             BorderBrush="#111111"
             BorderThickness="3" />
 
-        <Scene
-            x:Name="GameScene"
-            Width="1900"
-            Height="940"
-            Background="Transparent" />
+        <Scene x:Name="GameScene" Background="Transparent" />
 
-        <Scene
-            x:Name="MainMenuScene"
-            Width="1900"
-            Height="940"
-            Background="Transparent" />
+        <Scene x:Name="MainMenuScene" Background="Transparent" />
 
         <Controller
             x:Name="GameController"
