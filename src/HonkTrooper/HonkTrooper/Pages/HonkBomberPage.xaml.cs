@@ -931,12 +931,12 @@ namespace HonkTrooper
         {
             if (_scene_game.Children.OfType<RoadSideStripe>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideStripe roadSideStripe)
             {
-                //roadSideStripe.IsAnimating = true;
+                roadSideStripe.IsAnimating = true;
 
-                //roadSideStripe.SetPosition(
-                //    left: ((_scene_game.Width / 3 - roadSideStripe.Height) * 2) * _scene_game.DownScaling,
-                //    top: (_scene_game.Height / 3 - roadSideStripe.Width * 3) * _scene_game.DownScaling,
-                //    z: 0);
+                roadSideStripe.SetPosition(
+                    left: roadSideStripe.Height * -1 * _scene_game.DownScaling,
+                    top: (_scene_game.Height / 4) * _scene_game.DownScaling,
+                    z: 0);
 
                 return true;
             }
