@@ -69,7 +69,7 @@ namespace HonkTrooper
 
             #region Image
 
-            var playerUris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER).Select(x => x.Uri).ToArray();
+            var playerUris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BALLOON).Select(x => x.Uri).ToArray();
 
             var uri = ConstructExtensions.GetRandomContentUri(playerUris);
 

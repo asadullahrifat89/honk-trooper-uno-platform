@@ -116,7 +116,7 @@ namespace HonkTrooper
 
             #region Player Select Buttons
 
-            var playerUris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER).Select(x => x.Uri).ToArray();
+            var playerUris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BALLOON).Select(x => x.Uri).ToArray();
 
             StackPanel playerTemplates = new()
             {

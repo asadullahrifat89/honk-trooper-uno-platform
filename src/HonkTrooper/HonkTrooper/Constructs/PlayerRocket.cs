@@ -68,7 +68,7 @@ namespace HonkTrooper
 
         #region Methods
 
-        public void Reposition(Player Player, double downScaling)
+        public void Reposition(PlayerBalloon Player, double downScaling)
         {
             SetPosition(
                 left: (Player.GetLeft() + Player.Width / 2) - Width / 2,
