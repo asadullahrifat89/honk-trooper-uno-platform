@@ -570,8 +570,8 @@ namespace HonkTrooper
 
                 _player.Move(
                     speed: speed,
-                    sceneWidth: _scene_game.Width * scaling,
-                    sceneHeight: _scene_game.Height * scaling,
+                    sceneWidth: Constants.DEFAULT_SCENE_WIDTH * scaling,
+                    sceneHeight: Constants.DEFAULT_SCENE_HEIGHT * scaling,
                     controller: _game_controller);
 
                 ProcessPlayerAttack();
@@ -658,7 +658,7 @@ namespace HonkTrooper
                 {
                     case 0:
                         {
-                            var xLaneWidth = _scene_game.Width / 4;
+                            var xLaneWidth = Constants.DEFAULT_SCENE_WIDTH / 4;
 
                             vehicle.SetPosition(
                                 left: lane == 0 ? 0 : (xLaneWidth - vehicle.Width / 2),
@@ -667,7 +667,7 @@ namespace HonkTrooper
                         break;
                     case 1:
                         {
-                            var yLaneHeight = _scene_game.Height / 6;
+                            var yLaneHeight = Constants.DEFAULT_SCENE_HEIGHT / 6;
 
                             vehicle.SetPosition(
                                 left: vehicle.Width * -1,
@@ -712,7 +712,7 @@ namespace HonkTrooper
         {
             var hitBox = vehicle.GetHitBox();
 
-            if (hitBox.Top > _scene_game.Height || hitBox.Left > _scene_game.Width)
+            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left > Constants.DEFAULT_SCENE_WIDTH)
             {
                 vehicle.IsAnimating = false;
 
@@ -818,7 +818,7 @@ namespace HonkTrooper
         {
             var hitBox = roadMark.GetHitBox();
 
-            if (hitBox.Top > _scene_game.Height || hitBox.Left > _scene_game.Width)
+            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left > Constants.DEFAULT_SCENE_WIDTH)
             {
                 roadMark.IsAnimating = false;
 
@@ -859,7 +859,7 @@ namespace HonkTrooper
                 roadSideStripe.IsAnimating = true;
 
                 roadSideStripe.SetPosition(
-                    left: _scene_game.Width / 4.9,
+                    left: Constants.DEFAULT_SCENE_WIDTH / 4.9,
                     top: roadSideStripe.Height * -1.1,
                     z: 0);
 
@@ -877,7 +877,7 @@ namespace HonkTrooper
 
                 roadSideStripe.SetPosition(
                     left: -1 * roadSideStripe.Height,
-                    top: _scene_game.Height / 6.7,
+                    top: Constants.DEFAULT_SCENE_HEIGHT / 6.7,
                     z: 0);
 
                 return true;
@@ -897,7 +897,7 @@ namespace HonkTrooper
         {
             var hitBox = roadSideStripe.GetHitBox();
 
-            if (hitBox.Top - roadSideStripe.Height > _scene_game.Height || hitBox.Left - roadSideStripe.Height > _scene_game.Width)
+            if (hitBox.Top - roadSideStripe.Height > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSideStripe.Height > Constants.DEFAULT_SCENE_WIDTH)
             {
                 roadSideStripe.IsAnimating = false;
 
@@ -939,7 +939,7 @@ namespace HonkTrooper
 
                 roadSidePatch.SetPosition(
                     left: (roadSidePatch.Height * -1),
-                    top: (_scene_game.Height / 3.1 + roadSidePatch.Height / 2),
+                    top: (Constants.DEFAULT_SCENE_HEIGHT / 3.1 + roadSidePatch.Height / 2),
                     z: 0);
 
                 return true;
@@ -955,7 +955,7 @@ namespace HonkTrooper
                 roadSidePatch.IsAnimating = true;
 
                 roadSidePatch.SetPosition(
-                    left: (_scene_game.Width / 2 - roadSidePatch.Width),
+                    left: (Constants.DEFAULT_SCENE_WIDTH / 2 - roadSidePatch.Width),
                     top: roadSidePatch.Height * -1,
                     z: 2);
 
@@ -976,7 +976,7 @@ namespace HonkTrooper
         {
             var hitBox = roadSidePatch.GetHitBox();
 
-            if (hitBox.Top > _scene_game.Height || hitBox.Left - roadSidePatch.Width > _scene_game.Width)
+            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSidePatch.Width > Constants.DEFAULT_SCENE_WIDTH)
             {
                 roadSidePatch.IsAnimating = false;
 
@@ -1019,7 +1019,7 @@ namespace HonkTrooper
                 tree.IsAnimating = true;
 
                 tree.SetPosition(
-                  left: (_scene_game.Width / 2 - tree.Width),
+                  left: (Constants.DEFAULT_SCENE_WIDTH / 2 - tree.Width),
                   top: (tree.Height * 1.1) * -1,
                   z: 2);
 
@@ -1041,7 +1041,7 @@ namespace HonkTrooper
 
                 tree.SetPosition(
                   left: (-1 * tree.Width),
-                  top: (_scene_game.Height / 3),
+                  top: (Constants.DEFAULT_SCENE_HEIGHT / 3),
                   z: 4);
 
                 SyncDropShadow(tree);
@@ -1063,7 +1063,7 @@ namespace HonkTrooper
         {
             var hitBox = tree.GetHitBox();
 
-            if (hitBox.Top > _scene_game.Height || hitBox.Left > _scene_game.Width)
+            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left > Constants.DEFAULT_SCENE_WIDTH)
             {
                 tree.IsAnimating = false;
 
@@ -1106,7 +1106,7 @@ namespace HonkTrooper
                 hedge.IsAnimating = true;
 
                 hedge.SetPosition(
-                  left: (_scene_game.Width / 2 - hedge.Width * 2.3),
+                  left: (Constants.DEFAULT_SCENE_WIDTH / 2 - hedge.Width * 2.3),
                   top: hedge.Height * -1.1,
                   z: 2);
 
@@ -1124,7 +1124,7 @@ namespace HonkTrooper
 
                 hedge.SetPosition(
                   left: -1 * hedge.Width,
-                  top: (_scene_game.Height / 3 + hedge.Height / 3),
+                  top: (Constants.DEFAULT_SCENE_HEIGHT / 3 + hedge.Height / 3),
                   z: 3);
 
                 return true;
@@ -1144,7 +1144,7 @@ namespace HonkTrooper
         {
             var hitBox = hedge.GetHitBox();
 
-            if (hitBox.Top > _scene_game.Height || hitBox.Left > _scene_game.Width)
+            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left > Constants.DEFAULT_SCENE_WIDTH)
             {
                 hedge.IsAnimating = false;
 
@@ -1286,7 +1286,7 @@ namespace HonkTrooper
                 {
                     case 0:
                         {
-                            var xLaneWidth = _scene_game.Width / 4;
+                            var xLaneWidth = Constants.DEFAULT_SCENE_WIDTH / 4;
                             cloud.SetPosition(
                                 left: _random.Next(Convert.ToInt32(xLaneWidth - cloud.Width)),
                                 top: cloud.Height * -1);
@@ -1294,7 +1294,7 @@ namespace HonkTrooper
                         break;
                     case 1:
                         {
-                            var yLaneWidth = (_scene_game.Height / 2) / 2;
+                            var yLaneWidth = (Constants.DEFAULT_SCENE_HEIGHT / 2) / 2;
                             cloud.SetPosition(
                                 left: cloud.Width * -1,
                                 top: _random.Next(Convert.ToInt32(yLaneWidth)));
@@ -1323,7 +1323,7 @@ namespace HonkTrooper
         {
             var hitBox = cloud.GetHitBox();
 
-            if (hitBox.Top > _scene_game.Height || hitBox.Left > _scene_game.Width)
+            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left > Constants.DEFAULT_SCENE_WIDTH)
             {
                 cloud.IsAnimating = false;
 
@@ -1429,15 +1429,15 @@ namespace HonkTrooper
 
                         UfoBoss1.Move(
                             speed: speed,
-                            sceneWidth: _scene_game.Width * scaling,
-                            sceneHeight: _scene_game.Height * scaling,
+                            sceneWidth: Constants.DEFAULT_SCENE_WIDTH * scaling,
+                            sceneHeight: Constants.DEFAULT_SCENE_HEIGHT * scaling,
                             playerPoint: _player.GetCloseHitBox());
                     }
                     else
                     {
                         MoveConstructBottomRight(construct: UfoBoss, speed: speed);
 
-                        if (UfoBoss.GetLeft() > (_scene_game.Width / 3)) // bring UfoBoss to a suitable distance from player and then start attacking
+                        if (UfoBoss.GetLeft() > (Constants.DEFAULT_SCENE_WIDTH / 3)) // bring UfoBoss to a suitable distance from player and then start attacking
                         {
                             UfoBoss1.IsAttacking = true;
                         }
@@ -1534,7 +1534,7 @@ namespace HonkTrooper
                 {
                     case 0:
                         {
-                            var xLaneWidth = _scene_game.Width / 2;
+                            var xLaneWidth = Constants.DEFAULT_SCENE_WIDTH / 2;
 
                             enemy.SetPosition(
                                 left: _random.Next((int)(xLaneWidth - enemy.Width)),
@@ -1543,7 +1543,7 @@ namespace HonkTrooper
                         break;
                     case 1:
                         {
-                            var yLaneWidth = _scene_game.Height / 2;
+                            var yLaneWidth = Constants.DEFAULT_SCENE_HEIGHT / 2;
 
                             enemy.SetPosition(
                                 left: enemy.Width * -1,
@@ -1607,7 +1607,7 @@ namespace HonkTrooper
 
             // enemy is dead or goes out of bounds
             if (enemy.IsShrinkingComplete ||
-                hitbox.Left > _scene_game.Width || hitbox.Top > _scene_game.Height ||
+                hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT ||
                 hitbox.Right < 0 || hitbox.Bottom < 0)
             {
                 enemy.IsAnimating = false;
@@ -1988,7 +1988,7 @@ namespace HonkTrooper
             var hitbox = playerRocket.GetHitBox();
 
             // if bomb is blasted and faed or goes out of scene bounds
-            if (playerRocket.IsFadingComplete || hitbox.Left > _scene_game.Width || hitbox.Right < 0 /*|| hitbox.Top < 0 || hitbox.Top > _scene_game.Height*/)
+            if (playerRocket.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 /*|| hitbox.Top < 0 || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT*/)
             {
                 playerRocket.IsAnimating = false;
 
@@ -2086,7 +2086,7 @@ namespace HonkTrooper
             var hitbox = bomb.GetHitBox();
 
             // if bomb is blasted and faed or goes out of scene bounds
-            if (bomb.IsFadingComplete || hitbox.Left > _scene_game.Width || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Bottom > _scene_game.Height)
+            if (bomb.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Bottom > Constants.DEFAULT_SCENE_HEIGHT)
             {
                 bomb.IsAnimating = false;
 
@@ -2207,7 +2207,7 @@ namespace HonkTrooper
             //var hitbox = bomb.GetHitBox();
 
             // if bomb is blasted and faed or goes out of scene bounds
-            if (bomb.IsFadingComplete /*|| hitbox.Left > _scene_game.Width || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Top > _scene_game.Height*/)
+            if (bomb.IsFadingComplete /*|| hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT*/)
             {
                 bomb.IsAnimating = false;
 
@@ -2339,7 +2339,7 @@ namespace HonkTrooper
             var hitbox = playerRocketSeeking.GetHitBox();
 
             // if bomb is blasted and faed or goes out of scene bounds
-            if (playerRocketSeeking.IsFadingComplete || hitbox.Left > _scene_game.Width || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Bottom > _scene_game.Height)
+            if (playerRocketSeeking.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Bottom > Constants.DEFAULT_SCENE_HEIGHT)
             {
                 playerRocketSeeking.IsAnimating = false;
 
@@ -2459,7 +2459,7 @@ namespace HonkTrooper
             var hitbox = bomb.GetHitBox();
 
             // if bomb is blasted and faed or goes out of scene bounds
-            if (bomb.IsFadingComplete || hitbox.Left > _scene_game.Width || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Bottom > _scene_game.Height)
+            if (bomb.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Bottom > Constants.DEFAULT_SCENE_HEIGHT)
             {
                 bomb.IsAnimating = false;
 
@@ -2571,7 +2571,7 @@ namespace HonkTrooper
                 {
                     case 0:
                         {
-                            var xLaneWidth = _scene_game.Width / 4;
+                            var xLaneWidth = Constants.DEFAULT_SCENE_WIDTH / 4;
                             healthPickup.SetPosition(
                                 left: _random.Next(Convert.ToInt32(xLaneWidth - healthPickup.Width)),
                                 top: healthPickup.Height * -1);
@@ -2579,7 +2579,7 @@ namespace HonkTrooper
                         break;
                     case 1:
                         {
-                            var yLaneWidth = (_scene_game.Height / 2) / 2;
+                            var yLaneWidth = (Constants.DEFAULT_SCENE_HEIGHT / 2) / 2;
                             healthPickup.SetPosition(
                                 left: healthPickup.Width * -1,
                                 top: _random.Next(Convert.ToInt32(yLaneWidth)));
@@ -2632,7 +2632,7 @@ namespace HonkTrooper
         {
             var hitBox = healthPickup.GetHitBox();
 
-            if (hitBox.Top > _scene_game.Height || hitBox.Left > _scene_game.Width || healthPickup.IsShrinkingComplete)
+            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left > Constants.DEFAULT_SCENE_WIDTH || healthPickup.IsShrinkingComplete)
             {
                 healthPickup.SetPosition(
                     left: -3000,
@@ -2686,7 +2686,7 @@ namespace HonkTrooper
                         {
                             case 0:
                                 {
-                                    var xLaneWidth = _scene_game.Width / 4;
+                                    var xLaneWidth = Constants.DEFAULT_SCENE_WIDTH / 4;
                                     powerUpPickup.SetPosition(
                                         left: _random.Next(Convert.ToInt32(xLaneWidth - powerUpPickup.Width)),
                                         top: powerUpPickup.Height * -1);
@@ -2694,7 +2694,7 @@ namespace HonkTrooper
                                 break;
                             case 1:
                                 {
-                                    var yLaneWidth = (_scene_game.Height / 2) / 2;
+                                    var yLaneWidth = (Constants.DEFAULT_SCENE_HEIGHT / 2) / 2;
                                     powerUpPickup.SetPosition(
                                         left: powerUpPickup.Width * -1,
                                         top: _random.Next(Convert.ToInt32(yLaneWidth)));
@@ -2754,7 +2754,7 @@ namespace HonkTrooper
         {
             var hitBox = powerUpPickup.GetHitBox();
 
-            if (hitBox.Top > _scene_game.Height || hitBox.Left > _scene_game.Width || powerUpPickup.IsShrinkingComplete)
+            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left > Constants.DEFAULT_SCENE_WIDTH || powerUpPickup.IsShrinkingComplete)
             {
                 powerUpPickup.IsAnimating = false;
 
@@ -2998,6 +2998,9 @@ namespace HonkTrooper
             // resize the main menu
             _scene_main_menu.Width = ScreenExtensions.Width;
             _scene_main_menu.Height = ScreenExtensions.Height;
+
+            _scene_game.Width = ScreenExtensions.Width;
+            _scene_game.Height = ScreenExtensions.Height;
 
             // scale the scenes
             _scene_game.SetScaleTransform(scaling);

@@ -14,6 +14,8 @@ namespace HonkTrooper
         public const double DEFAULT_CONTROLLER_DIRECTION_KEYS_MARGIN = 6;
         public const double DEFAULT_GUI_FONT_SIZE = 30;
         public const double DEFAULT_ISOMETRIC_DISPLACEMENT = 0.5;
+        public const double DEFAULT_SCENE_WIDTH = 1900;
+        public const double DEFAULT_SCENE_HEIGHT = 940;
 
 
         public static (ConstructType ConstructType, double Width, double Height)[] CONSTRUCT_SIZES = new (ConstructType, double, double)[]
@@ -39,7 +41,7 @@ namespace HonkTrooper
             new (ConstructType.ROAD_SIDE_HEDGE, 160, 160),
 
             new (ConstructType.HONK, 90, 90),
-                        
+
             new (ConstructType.ROAD_MARK, 15, 40),
             new (ConstructType.ROAD_SIDE_PATCH, 100, 300),
             new (ConstructType.ROAD_SIDE_STRIPE, 15, 300),
