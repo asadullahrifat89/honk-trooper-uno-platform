@@ -38,7 +38,7 @@ namespace HonkTrooper
 
         public Scene()
         {
-            RenderTransformOrigin = new Point(0.5, 0.5);
+            RenderTransformOrigin = new Point(0, 0);
             RenderTransform = _compositeTransform;
             CanDrag = false;
 
@@ -61,6 +61,11 @@ namespace HonkTrooper
         #endregion
 
         #region Methods
+
+        public void SetRenderTransformOrigin(double xy)
+        {
+            RenderTransformOrigin = new Point(xy, xy);
+        }
 
         public void SetScaleTransform(double scaleXY)
         {

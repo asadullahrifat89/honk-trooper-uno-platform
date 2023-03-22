@@ -17,8 +17,6 @@
 
         <Border
             x:Name="RoadBackground"
-            Width="1920"
-            Height="960"
             Background="{ThemeResource RoadBackgroundColor}"
             BorderBrush="#111111"
             BorderThickness="3" />

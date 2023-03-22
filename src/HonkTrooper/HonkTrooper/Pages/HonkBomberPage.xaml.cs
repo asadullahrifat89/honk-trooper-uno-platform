@@ -3,6 +3,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Windows.Graphics.Display;
 
 namespace HonkTrooper
@@ -80,8 +81,12 @@ namespace HonkTrooper
                 (SoundType.GAME_OVER, 1, false),
                 (SoundType.ENEMY_ENTRY, 1, false));
 
+            _scene_main_menu.SetRenderTransformOrigin(0.5);
+
             Loaded += HonkBomberPage_Loaded;
             Unloaded += HonkBomberPage_Unloaded;
+
+
         }
 
         #endregion
@@ -3053,7 +3058,7 @@ namespace HonkTrooper
 
         #region Events
 
-        private void HonkBomberPage_Loaded(object sender, RoutedEventArgs e)
+        private async void HonkBomberPage_Loaded(object sender, RoutedEventArgs e)
         {
             _scene_game.Width = 1920;
             _scene_game.Height = 1080;
@@ -3077,6 +3082,8 @@ namespace HonkTrooper
 
             if (ScreenExtensions.GetDisplayOrienation() == ScreenExtensions.RequiredDisplayOrientation)
             {
+                await Task.Delay(1500);
+
                 GenerateTitleScreen("Honk Trooper");
                 _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
             }
@@ -3110,7 +3117,7 @@ namespace HonkTrooper
             var scaling = ScreenExtensions.GetScreenSpaceScaling(_windowWidth);
 
             _scene_game.SetScaleTransform(scaling);
-            _scene_main_menu.SetScaleTransform(scaling);
+            //_scene_main_menu.SetScaleTransform(scaling);
 
             if (_scene_game.SceneState == SceneState.GAME_RUNNING)
             {
