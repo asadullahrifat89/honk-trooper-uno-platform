@@ -53,7 +53,7 @@ namespace HonkTrooper
             SetChild(_content_image);
 
             IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
-            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET + 2;
+            SpeedOffset = -1;
         }
 
         #endregion

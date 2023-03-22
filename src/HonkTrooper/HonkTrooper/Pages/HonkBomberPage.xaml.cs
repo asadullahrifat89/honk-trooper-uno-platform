@@ -784,17 +784,16 @@ namespace HonkTrooper
 
         private bool SpawnVehicleBosses()
         {
-
-            VehicleBoss VehicleBoss = new(
+            VehicleBoss vehicleBoss = new(
                 animateAction: AnimateVehicleBoss,
                 recycleAction: RecycleVehicleBoss);
 
-            VehicleBoss.SetPosition(
+            vehicleBoss.SetPosition(
                 left: -3000,
                 top: -3000,
-                z: 8);
+                z: 3);
 
-            _scene_game.AddToScene(VehicleBoss);
+            _scene_game.AddToScene(vehicleBoss);
 
             return true;
         }
@@ -810,7 +809,7 @@ namespace HonkTrooper
             {
                 _audio_stub.Stop(SoundType.GAME_BACKGROUND_MUSIC);
 
-                //_audio_stub.Play(SoundType.Vehicle_BOSS_BACKGROUND_MUSIC);
+                _audio_stub.Play(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
 
                 _audio_stub.SetVolume(SoundType.AMBIENCE, 0.8);
 
@@ -830,7 +829,7 @@ namespace HonkTrooper
                 _vehicle_boss_health_bar.SetIcon(vehicleBoss.GetContentUri());
                 _vehicle_boss_health_bar.SetBarForegroundColor(color: Colors.Crimson);
 
-                GenerateInterimScreen("Beware of Boss");
+                GenerateInterimScreen("Crack The Crazy Honker");
                 _scene_game.ActivateSlowMotion();
 
                 return true;
@@ -882,13 +881,13 @@ namespace HonkTrooper
             return true;
         }
 
-        private bool RecycleVehicleBoss(Construct VehicleBoss)
+        private bool RecycleVehicleBoss(Construct vehicleBoss)
         {
-            if (VehicleBoss.IsShrinkingComplete)
+            if (vehicleBoss.IsShrinkingComplete)
             {
-                VehicleBoss.IsAnimating = false;
+                vehicleBoss.IsAnimating = false;
 
-                VehicleBoss.SetPosition(
+                vehicleBoss.SetPosition(
                     left: -3000,
                     top: -3000);
             }
@@ -905,7 +904,7 @@ namespace HonkTrooper
 
             if (vehicleBoss.IsDead && vehicleBoss.IsAttacking)
             {
-                //_audio_stub.Stop(SoundType.Vehicle_BOSS_BACKGROUND_MUSIC);
+                _audio_stub.Stop(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
 
                 _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
 
@@ -916,7 +915,7 @@ namespace HonkTrooper
                 _player.SetWinStance();
                 _game_score_bar.GainScore(5);
 
-                GenerateInterimScreen("Boss Busted");
+                GenerateInterimScreen("Crazy Honker Busted");
 
                 _scene_game.ActivateSlowMotion();
             }
