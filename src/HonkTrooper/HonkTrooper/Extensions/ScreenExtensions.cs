@@ -53,11 +53,6 @@ namespace HonkTrooper
             return DisplayInformation?.CurrentOrientation;
         }
 
-        /// <summary>
-        /// Gets the down scaling factor according to window size.
-        /// </summary>
-        /// <param name="windowWidth"></param>
-        /// <returns></returns>
         public static double GetScreenSpaceScaling()
         {
             return Width switch
@@ -65,14 +60,14 @@ namespace HonkTrooper
                 <= 300 => 0.40,
                 <= 400 => 0.45,
                 <= 500 => 0.50,
-                
+
                 <= 700 => 0.55,
                 <= 900 => 0.60,
                 <= 950 => 0.65,
 
                 <= 1000 => 0.85,
-                <= 1400 => 0.95,
-                <= 1900 => 1,
+                <= 1400 => 0.90,
+                <= 1900 => 0.95,
                 _ => 1,
             };
         }
