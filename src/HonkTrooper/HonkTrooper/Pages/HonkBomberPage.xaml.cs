@@ -558,7 +558,12 @@ namespace HonkTrooper
 
             if (_scene_game.SceneState == SceneState.GAME_RUNNING)
             {
-                ProcessPlayerBalloonMovement();
+                var scaling = ScreenExtensions.GetScreenSpaceScaling();
+
+                ProcessPlayerBalloonMovement(
+                    sceneWidth: ScreenExtensions.Width * (scaling < 1 ? 1.4 : 1),
+                    sceneHeight: ScreenExtensions.Height * (scaling < 1 ? 1.2 : 1));
+
                 ProcessPlayerAttack();
             }
 
@@ -585,7 +590,7 @@ namespace HonkTrooper
             }
         }
 
-        private void ProcessPlayerBalloonMovement()
+        private void ProcessPlayerBalloonMovement(double sceneWidth, double sceneHeight)
         {
             var speed = (_scene_game.Speed + _player.SpeedOffset);
 
@@ -599,7 +604,7 @@ namespace HonkTrooper
             }
             else if (_game_controller.IsMoveUp && _game_controller.IsMoveRight)
             {
-                if (_player.GetRight() - halfWidth < _scene_game.Width && _player.GetTop() + halfHeight > 0)
+                if (_player.GetRight() - halfWidth < sceneWidth && _player.GetTop() + halfHeight > 0)
                     _player.MoveUpRight(speed);
             }
             else if (_game_controller.IsMoveUp)
@@ -609,22 +614,22 @@ namespace HonkTrooper
             }
             else if (_game_controller.IsMoveDown && _game_controller.IsMoveRight)
             {
-                if (_player.GetBottom() - halfHeight < _scene_game.Height && _player.GetRight() - halfWidth < _scene_game.Width)
+                if (_player.GetBottom() - halfHeight < sceneHeight && _player.GetRight() - halfWidth < sceneWidth)
                     _player.MoveDownRight(speed);
             }
             else if (_game_controller.IsMoveDown && _game_controller.IsMoveLeft)
             {
-                if (_player.GetLeft() + halfWidth > 0 && _player.GetBottom() - halfHeight < _scene_game.Height)
+                if (_player.GetLeft() + halfWidth > 0 && _player.GetBottom() - halfHeight < sceneHeight)
                     _player.MoveDownLeft(speed);
             }
             else if (_game_controller.IsMoveDown)
             {
-                if (_player.GetBottom() - halfHeight < _scene_game.Height)
+                if (_player.GetBottom() - halfHeight < sceneHeight)
                     _player.MoveDown(speed);
             }
             else if (_game_controller.IsMoveRight)
             {
-                if (_player.GetRight() - halfWidth < _scene_game.Width)
+                if (_player.GetRight() - halfWidth < sceneWidth)
                     _player.MoveRight(speed);
             }
             else if (_game_controller.IsMoveLeft)
@@ -637,9 +642,9 @@ namespace HonkTrooper
                 // if player is already out of bounds then prevent stop movement animation
 
                 if (_player.GetBottom() > 0 && _player.GetRight() > 0 &&
-                    _player.GetTop() < _scene_game.Height && _player.GetLeft() < _scene_game.Width &&
-                    _player.GetRight() > 0 && _player.GetTop() < _scene_game.Height &&
-                    _player.GetLeft() < _scene_game.Width && _player.GetBottom() > 0)
+                    _player.GetTop() < sceneHeight && _player.GetLeft() < sceneWidth &&
+                    _player.GetRight() > 0 && _player.GetTop() < sceneHeight &&
+                    _player.GetLeft() < sceneWidth && _player.GetBottom() > 0)
                 {
                     _player.StopMovement();
                 }
@@ -1460,6 +1465,7 @@ namespace HonkTrooper
             else
             {
                 boss.Pop();
+
                 boss1.Hover();
                 boss1.DepleteHitStance();
                 boss1.DepleteWinStance();
@@ -1470,10 +1476,12 @@ namespace HonkTrooper
 
                     if (boss1.IsAttacking)
                     {
+                        var scaling = ScreenExtensions.GetScreenSpaceScaling();
+
                         boss1.Move(
                             speed: speed,
-                            sceneWidth: _scene_game.Width,
-                            sceneHeight: _scene_game.Height,
+                            sceneWidth: ScreenExtensions.Width * (scaling < 1 ? 1.4 : 1),
+                            sceneHeight: ScreenExtensions.Height * (scaling < 1 ? 1.2 : 1),
                             playerPoint: _player.GetCloseHitBox());
                     }
                     else
