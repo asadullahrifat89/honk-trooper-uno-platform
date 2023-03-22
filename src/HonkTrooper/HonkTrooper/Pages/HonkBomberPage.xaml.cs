@@ -3099,11 +3099,11 @@ namespace HonkTrooper
             var _windowWidth = args.NewSize.Width;
             var _windowHeight = args.NewSize.Height;
 
-            if (_windowWidth <= RootGrid.MaxWidth && _windowWidth <= RootGrid.MaxHeight)
-            {
-                _scene_main_menu.Width = _windowWidth;
-                _scene_main_menu.Height = _windowHeight;
-            }
+            //if (_windowWidth <= RootGrid.MaxWidth && _windowWidth <= RootGrid.MaxHeight)
+            //{
+            _scene_main_menu.Width = _windowWidth;
+            _scene_main_menu.Height = _windowHeight;
+            //}
 
             var scaling = ScreenExtensions.GetScreenSpaceScaling(_windowWidth);
 
