@@ -8,7 +8,12 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
     mc:Ignorable="d">
 
-    <Grid x:Name="RootGrid">
+    <Grid
+        x:Name="RootGrid"
+        Width="1920"
+        Height="960"
+        MaxWidth="1920"
+        MaxHeight="960">
 
         <Border
             x:Name="RoadBackground"
@@ -16,9 +21,17 @@
             BorderBrush="#111111"
             BorderThickness="3" />
 
-        <Scene x:Name="GameScene" Background="Transparent" />
+        <Scene
+            x:Name="GameScene"
+            Width="1920"
+            Height="960"
+            Background="Transparent" />
 
-        <Scene x:Name="MainMenuScene" Background="Transparent" />
+        <Scene
+            x:Name="MainMenuScene"
+            Width="1920"
+            Height="960"
+            Background="Transparent" />
 
         <Controller
             x:Name="GameController"

@@ -8,11 +8,11 @@ namespace HonkTrooper
     public partial class HealthPickup : Construct
     {
         #region Fields
-        
+
         private readonly Random _random;
         private readonly Image _content_image;
 
-        
+
         private readonly AudioStub _audioStub;
 
         #endregion
@@ -21,8 +21,7 @@ namespace HonkTrooper
 
         public HealthPickup(
             Func<Construct, bool> animateAction,
-            Func<Construct, bool> recycleAction,
-            double downScaling)
+            Func<Construct, bool> recycleAction)
         {
             _random = new Random();
 
@@ -30,8 +29,8 @@ namespace HonkTrooper
 
             ConstructType = ConstructType.HEALTH_PICKUP;
 
-            var width = size.Width * downScaling;
-            var height = size.Height * downScaling;
+            var width = size.Width;
+            var height = size.Height;
 
             AnimateAction = animateAction;
             RecycleAction = recycleAction;
@@ -49,7 +48,7 @@ namespace HonkTrooper
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE;
             IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
 
-            _audioStub = new AudioStub((SoundType.HEALTH_PICKUP, 1, false));            
+            _audioStub = new AudioStub((SoundType.HEALTH_PICKUP, 1, false));
         }
 
         #endregion
@@ -67,7 +66,7 @@ namespace HonkTrooper
         }
 
         public void PickedUp()
-        {            
+        {
             _audioStub.Play(SoundType.HEALTH_PICKUP);
 
             IsPickedUp = true;

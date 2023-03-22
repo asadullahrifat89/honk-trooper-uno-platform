@@ -42,8 +42,7 @@ namespace HonkTrooper
 
         public Boss(
             Func<Construct, bool> animateAction,
-            Func<Construct, bool> recycleAction,
-            double downScaling)
+            Func<Construct, bool> recycleAction)
         {
             _hoverDelay = _hoverDelayDefault;
 
@@ -57,8 +56,8 @@ namespace HonkTrooper
 
             ConstructType = ConstructType.BOSS;
 
-            var width = size.Width * downScaling;
-            var height = size.Height * downScaling;
+            var width = size.Width;
+            var height = size.Height;
 
             AnimateAction = animateAction;
             RecycleAction = recycleAction;

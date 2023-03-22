@@ -6,17 +6,17 @@ using System.Linq;
 
 namespace HonkTrooper
 {
-    public partial class RoadMark : Construct
+    public partial class RoadSidePatch : Construct
     {
         #region Ctor
 
-        public RoadMark(
+        public RoadSidePatch(
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction)
         {
-            ConstructType = ConstructType.ROAD_MARK;
+            ConstructType = ConstructType.ROAD_SIDE_PATCH;
 
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.ROAD_MARK);
+            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.ROAD_SIDE_PATCH);
 
             var width = size.Width;
             var height = size.Height;

@@ -24,15 +24,14 @@ namespace HonkTrooper
         public TitleScreen
             (Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction,
-            Func<bool> playAction,
-            double downScaling)
+            Func<bool> playAction)
         {
             ConstructType = ConstructType.TITLE_SCREEN;
 
             var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.TITLE_SCREEN);
 
-            var width = size.Width * downScaling;
-            var height = size.Height * downScaling;
+            var width = size.Width;
+            var height = size.Height;
 
             SetSize(width: width, height: height);
 
@@ -69,7 +68,7 @@ namespace HonkTrooper
 
             #region Image
 
-            var playerUris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER).Select(x => x.Uri).ToArray();
+            var playerUris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BALLOON).Select(x => x.Uri).ToArray();
 
             var uri = ConstructExtensions.GetRandomContentUri(playerUris);
 

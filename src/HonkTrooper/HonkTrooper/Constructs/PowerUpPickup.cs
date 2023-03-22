@@ -19,8 +19,7 @@ namespace HonkTrooper
 
         public PowerUpPickup(
             Func<Construct, bool> animateAction,
-            Func<Construct, bool> recycleAction,
-            double downScaling)
+            Func<Construct, bool> recycleAction)
         {
             var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP);
 
@@ -28,15 +27,15 @@ namespace HonkTrooper
 
             _random = new Random();
 
-            var width = size.Width * downScaling;
-            var height = size.Height * downScaling;
+            var width = size.Width;
+            var height = size.Height;
 
             AnimateAction = animateAction;
             RecycleAction = recycleAction;
 
             SetSize(width: width, height: height);
 
-            PowerUpType = (PowerUpType)_random.Next( Enum.GetNames(typeof(PowerUpType)).Length);
+            PowerUpType = (PowerUpType)_random.Next(Enum.GetNames(typeof(PowerUpType)).Length);
 
             switch (PowerUpType)
             {
@@ -77,7 +76,7 @@ namespace HonkTrooper
         {
             IsPickedUp = false;
 
-            PowerUpType = (PowerUpType)_random.Next( Enum.GetNames(typeof(PowerUpType)).Length);
+            PowerUpType = (PowerUpType)_random.Next(Enum.GetNames(typeof(PowerUpType)).Length);
 
             switch (PowerUpType)
             {

@@ -18,7 +18,7 @@ namespace HonkTrooper
 
         public static (ConstructType ConstructType, double Width, double Height)[] CONSTRUCT_SIZES = new (ConstructType, double, double)[]
         {
-            new (ConstructType.PLAYER, 165, 165),
+            new (ConstructType.PLAYER_BALLOON, 165, 165),
             new (ConstructType.PLAYER_ROCKET, 80, 80),
             new (ConstructType.PLAYER_FIRE_CRACKER, 70, 70),
             new (ConstructType.PLAYER_ROCKET_SEEKING, 70, 70),
@@ -39,10 +39,10 @@ namespace HonkTrooper
             new (ConstructType.HEDGE, 160, 160),
 
             new (ConstructType.HONK, 90, 90),
-
-            new (ConstructType.ROAD, 330, 550),
+                        
             new (ConstructType.ROAD_MARK, 15, 40),
-            new (ConstructType.ROAD_BORDER, 100, 300),
+            new (ConstructType.ROAD_SIDE_PATCH, 100, 300),
+            new (ConstructType.ROAD_SIDE_STRIPE, 15, 300),
 
             new (ConstructType.DROP_SHADOW, 60, 25),
 
@@ -94,17 +94,17 @@ namespace HonkTrooper
             //new (ConstructType.PLAYER_WIN, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_1_win_2.png")),
             //new (ConstructType.PLAYER_HIT, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_1_hit_2.png")),
 
-            new (ConstructType.PLAYER, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_1_idle.png")),
-            new (ConstructType.PLAYER_IDLE, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_1_idle.png")),
-            new (ConstructType.PLAYER_ATTACK, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_1_attack.png")),
-            new (ConstructType.PLAYER_WIN, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_1_win.png")),
-            new (ConstructType.PLAYER_HIT, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_1_hit.png")),
+            new (ConstructType.PLAYER_BALLOON, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_balloon_1_idle.png")),
+            new (ConstructType.PLAYER_BALLOON_IDLE, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_balloon_1_idle.png")),
+            new (ConstructType.PLAYER_BALLOON_ATTACK, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_balloon_1_attack.png")),
+            new (ConstructType.PLAYER_BALLOON_WIN, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_balloon_1_win.png")),
+            new (ConstructType.PLAYER_BALLOON_HIT, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_balloon_1_hit.png")),
 
-            new (ConstructType.PLAYER, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_2_idle.png")),
-            new (ConstructType.PLAYER_IDLE, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_2_idle.png")),
-            new (ConstructType.PLAYER_ATTACK, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_2_attack.png")),
-            new (ConstructType.PLAYER_WIN, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_2_win.png")),
-            new (ConstructType.PLAYER_HIT, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_2_hit.png")),
+            new (ConstructType.PLAYER_BALLOON, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_balloon_2_idle.png")),
+            new (ConstructType.PLAYER_BALLOON_IDLE, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_balloon_2_idle.png")),
+            new (ConstructType.PLAYER_BALLOON_ATTACK, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_balloon_2_attack.png")),
+            new (ConstructType.PLAYER_BALLOON_WIN, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_balloon_2_win.png")),
+            new (ConstructType.PLAYER_BALLOON_HIT, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_balloon_2_hit.png")),
 
             new (ConstructType.PLAYER_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_1.png")),
             new (ConstructType.PLAYER_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_2.png")),
@@ -215,11 +215,11 @@ namespace HonkTrooper
     {
         NONE,
 
-        PLAYER,
-        PLAYER_IDLE,
-        PLAYER_ATTACK,
-        PLAYER_WIN,
-        PLAYER_HIT,
+        PLAYER_BALLOON,
+        PLAYER_BALLOON_IDLE,
+        PLAYER_BALLOON_ATTACK,
+        PLAYER_BALLOON_WIN,
+        PLAYER_BALLOON_HIT,
 
         PLAYER_ROCKET,
         PLAYER_ROCKET_SEEKING,
@@ -228,9 +228,9 @@ namespace HonkTrooper
         VEHICLE_SMALL,
         VEHICLE_LARGE,
 
-        ROAD,
+        ROAD_SIDE_STRIPE,
         ROAD_MARK,
-        ROAD_BORDER,
+        ROAD_SIDE_PATCH,
 
         TREE,
         HEDGE,

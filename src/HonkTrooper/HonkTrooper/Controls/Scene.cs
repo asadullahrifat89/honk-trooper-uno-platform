@@ -1,10 +1,11 @@
 ﻿using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using Windows.Foundation;
 
 namespace HonkTrooper
 {
@@ -12,9 +13,14 @@ namespace HonkTrooper
     {
         #region Fields
 
-        private double _sceneWidth, _sceneHeight;
-
-        //private Stopwatch _stopwatch;
+        private readonly CompositeTransform _compositeTransform = new()
+        {
+            CenterX = 0.5,
+            CenterY = 0.5,
+            Rotation = 0,
+            ScaleX = 1,
+            ScaleY = 1,
+        };
 
         private PeriodicTimer _gameViewTimer;
         private readonly TimeSpan _frameTime = TimeSpan.FromMilliseconds(Constants.DEFAULT_FRAME_TIME);
@@ -32,6 +38,10 @@ namespace HonkTrooper
 
         public Scene()
         {
+            RenderTransformOrigin = new Point(0, 0);
+            RenderTransform = _compositeTransform;
+            CanDrag = false;
+
             Loaded += Scene_Loaded;
             Unloaded += Scene_Unloaded;
         }
@@ -42,8 +52,6 @@ namespace HonkTrooper
 
         public bool IsAnimating { get; set; }
 
-        public double DownScaling { get; set; }
-
         public double Speed { get; set; }
 
         public bool IsSlowMotionActivated => _slowMotionDelay > 0;
@@ -53,6 +61,16 @@ namespace HonkTrooper
         #endregion
 
         #region Methods
+
+        public void SetRenderTransformOrigin(double xy)
+        {
+            RenderTransformOrigin = new Point(xy, xy);
+        }
+        public void SetScaleTransform(double scaleXY)
+        {
+            _compositeTransform.ScaleX = scaleXY;
+            _compositeTransform.ScaleY = scaleXY;
+        }
 
         /// <summary>
         /// Adds constructs to the scene.
@@ -170,7 +188,7 @@ namespace HonkTrooper
 
             DepleteSlowMotion();
 
-            LoggerExtensions.Log($"Animating Objects: {Children.OfType<Construct>().Count(x => x.IsAnimating)} ~ Total Objects: {Children.OfType<Construct>().Count()}");            
+            LoggerExtensions.Log($"Animating Objects: {Children.OfType<Construct>().Count(x => x.IsAnimating)} ~ Total Objects: {Children.OfType<Construct>().Count()}");
         }
 
         public void ActivateSlowMotion()
@@ -195,43 +213,18 @@ namespace HonkTrooper
             }
         }
 
-
         #endregion
 
         #region Events
 
         private void Scene_Unloaded(object sender, RoutedEventArgs e)
         {
-            SizeChanged -= Scene_SizeChanged;
-            Pause();
+            Stop();
         }
 
         private void Scene_Loaded(object sender, RoutedEventArgs e)
         {
-            SizeChanged += Scene_SizeChanged;
-        }
 
-        private void Scene_SizeChanged(object sender, SizeChangedEventArgs args)
-        {
-            _sceneWidth = args.NewSize.Width;
-            _sceneHeight = args.NewSize.Height;
-
-            LoggerExtensions.Log($"{_sceneWidth}x{_sceneHeight}");
-
-            DownScaling = ScreenExtensions.GetDownScaling(_sceneWidth);
-
-            LoggerExtensions.Log($"Down Scaling {DownScaling}");
-
-            foreach (var construct in Children.OfType<Construct>())
-            {
-                if (Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == construct.ConstructType) is (ConstructType ConstructType, double Height, double Width) size)
-                {
-                    construct.SetSize(
-                        width: size.Width * DownScaling,
-                        height: size.Height * DownScaling);
-
-                }
-            }
         }
 
         #endregion
