@@ -129,8 +129,8 @@ namespace HonkTrooper
         {
             switch (MovementPattern)
             {
-                case VehicleBossMovementPattern.UPRIGHT_DOWNLEFT:
-                    MoveUpRightDownLeft(
+                case VehicleBossMovementPattern.ISOMETRIC_SQUARE:
+                    MoveInIsometricSquares(
                         speed: speed,
                         sceneWidth: sceneWidth,
                         sceneHeight: sceneHeight);
@@ -146,7 +146,7 @@ namespace HonkTrooper
             }
         }
 
-        private bool MoveUpRightDownLeft(double speed, double sceneWidth, double sceneHeight)
+        private bool MoveInIsometricSquares(double speed, double sceneWidth, double sceneHeight)
         {
             _changeMovementPatternDelay -= 0.1;
 
@@ -171,20 +171,44 @@ namespace HonkTrooper
                 {
                     MoveUpRight(speed);
 
-                    if (GetTop() < 0 || GetLeft() > sceneWidth)
+                    if (GetTop() < 0)
                     {
-                        _movementDirection = MovementDirection.DownLeft;
+                        _movementDirection = MovementDirection.DownRight;
                     }
                 }
                 else
                 {
-                    if (_movementDirection == MovementDirection.DownLeft)
+                    if (_movementDirection == MovementDirection.DownRight)
                     {
-                        MoveDownLeft(speed);
+                        MoveDownRight(speed);
 
-                        if (GetLeft() < 0 || GetBottom() > sceneHeight)
+                        if (GetRight() > sceneWidth || GetBottom() > sceneHeight)
                         {
-                            _movementDirection = MovementDirection.UpRight;
+                            _movementDirection = MovementDirection.DownLeft;
+                        }
+                    }
+                    else
+                    {
+                        if (_movementDirection == MovementDirection.DownLeft)
+                        {
+                            MoveDownLeft(speed);
+
+                            if (GetLeft() < 0 || GetBottom() > sceneHeight)
+                            {
+                                _movementDirection = MovementDirection.UpLeft;
+                            }
+                        }
+                        else
+                        {
+                            if (_movementDirection == MovementDirection.UpLeft)
+                            {
+                                MoveUpLeft(speed);
+
+                                if (GetTop() < 0 || GetLeft() < 0)
+                                {
+                                    _movementDirection = MovementDirection.UpRight;
+                                }
+                            }
                         }
                     }
                 }
@@ -245,7 +269,7 @@ namespace HonkTrooper
 
     public enum VehicleBossMovementPattern
     {
-        UPRIGHT_DOWNLEFT,
+        ISOMETRIC_SQUARE,
         UPLEFT_DOWNRIGHT,
     }
 }
