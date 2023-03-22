@@ -829,7 +829,7 @@ namespace HonkTrooper
                 _vehicle_boss_health_bar.SetIcon(vehicleBoss.GetContentUri());
                 _vehicle_boss_health_bar.SetBarForegroundColor(color: Colors.Crimson);
 
-                GenerateInterimScreen("Crack The Crazy Honker");
+                GenerateInterimScreen("Crazy Honker Arrived");
                 _scene_game.ActivateSlowMotion();
 
                 return true;
