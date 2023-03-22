@@ -567,8 +567,8 @@ namespace HonkTrooper
                 var scaling = ScreenExtensions.GetScreenSpaceScaling();
 
                 ProcessPlayerBalloonMovement(
-                    sceneWidth: ScreenExtensions.Width * (scaling < 1 ? 1.4 : 1),
-                    sceneHeight: ScreenExtensions.Height * (scaling < 1 ? 1.2 : 1));
+                    sceneWidth: _scene_game.Width * scaling,
+                    sceneHeight: _scene_game.Height * scaling);
 
                 ProcessPlayerAttack();
             }
@@ -1486,8 +1486,8 @@ namespace HonkTrooper
 
                         UfoBoss1.Move(
                             speed: speed,
-                            sceneWidth: ScreenExtensions.Width * (scaling < 1 ? 1.4 : 1),
-                            sceneHeight: ScreenExtensions.Height * (scaling < 1 ? 1.2 : 1),
+                            sceneWidth: _scene_game.Width * scaling,
+                            sceneHeight: _scene_game.Height * scaling,
                             playerPoint: _player.GetCloseHitBox());
                     }
                     else
