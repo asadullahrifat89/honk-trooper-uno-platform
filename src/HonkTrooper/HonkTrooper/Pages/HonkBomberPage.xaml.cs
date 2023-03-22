@@ -12,7 +12,7 @@ namespace HonkTrooper
     {
         #region Fields
 
-        private Player _player;
+        private PlayerBalloon _player;
         private readonly Random _random;
 
         private readonly Scene _scene_game;
