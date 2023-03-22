@@ -11,9 +11,9 @@ namespace HonkTrooper
         #region Fields
 
         private readonly Random _random;
-        private readonly Uri[] _UFO_BOSS_uris;
-        private readonly Uri[] _UFO_BOSS_hit_uris;
-        private readonly Uri[] _UFO_BOSS_win_uris;
+        private readonly Uri[] _ufo_boss_uris;
+        private readonly Uri[] _ufo_boss_hit_uris;
+        private readonly Uri[] _ufo_boss_win_uris;
 
         private double _hoverDelay;
         private readonly double _hoverDelayDefault = 15;
@@ -48,9 +48,9 @@ namespace HonkTrooper
 
             _random = new Random();
 
-            _UFO_BOSS_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.UFO_BOSS).Select(x => x.Uri).ToArray();
-            _UFO_BOSS_hit_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.UFO_BOSS_HIT).Select(x => x.Uri).ToArray();
-            _UFO_BOSS_win_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.UFO_BOSS_WIN).Select(x => x.Uri).ToArray();
+            _ufo_boss_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.UFO_BOSS).Select(x => x.Uri).ToArray();
+            _ufo_boss_hit_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.UFO_BOSS_HIT).Select(x => x.Uri).ToArray();
+            _ufo_boss_win_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.UFO_BOSS_WIN).Select(x => x.Uri).ToArray();
 
             var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.UFO_BOSS);
 
@@ -64,7 +64,7 @@ namespace HonkTrooper
 
             SetSize(width: width, height: height);
 
-            var uri = ConstructExtensions.GetRandomContentUri(_UFO_BOSS_uris);
+            var uri = ConstructExtensions.GetRandomContentUri(_ufo_boss_uris);
 
             _content_image = new Image()
             {
@@ -112,7 +112,7 @@ namespace HonkTrooper
 
             _movementDirection = MovementDirection.None;
 
-            var uri = ConstructExtensions.GetRandomContentUri(_UFO_BOSS_uris);
+            var uri = ConstructExtensions.GetRandomContentUri(_ufo_boss_uris);
             _content_image.Source = new BitmapImage(uriSource: uri);
 
             RandomizeMovementPattern();
@@ -158,7 +158,7 @@ namespace HonkTrooper
 
         public void SetHitStance()
         {
-            var uri = ConstructExtensions.GetRandomContentUri(_UFO_BOSS_hit_uris);
+            var uri = ConstructExtensions.GetRandomContentUri(_ufo_boss_hit_uris);
             _content_image.Source = new BitmapImage(uriSource: uri);
             _hitStanceDelay = _hitStanceDelayDefault;
         }
@@ -178,7 +178,7 @@ namespace HonkTrooper
 
         public void SetWinStance()
         {
-            var uri = ConstructExtensions.GetRandomContentUri(_UFO_BOSS_win_uris);
+            var uri = ConstructExtensions.GetRandomContentUri(_ufo_boss_win_uris);
             _content_image.Source = new BitmapImage(uriSource: uri);
             _winStanceDelay = _winStanceDelayDefault;
         }
@@ -195,52 +195,6 @@ namespace HonkTrooper
                 }
             }
         }
-
-
-        //public void MoveUp(double speed)
-        //{
-        //    SetTop(GetTop() - speed);
-        //}
-
-        //public void MoveDown(double speed)
-        //{
-        //    SetTop(GetTop() + speed);
-        //}
-
-        //public void MoveLeft(double speed)
-        //{
-        //    SetLeft(GetLeft() - speed);
-        //}
-
-        //public void MoveRight(double speed)
-        //{
-        //    SetLeft(GetLeft() + speed);
-        //}
-
-        //public void MoveUpRight(double speed)
-        //{
-        //    SetLeft(GetLeft() + speed);
-        //    SetTop(GetTop() - speed);
-        //}
-
-        //public void MoveUpLeft(double speed)
-        //{
-        //    SetLeft(GetLeft() - speed);
-        //    SetTop(GetTop() - speed * IsometricDisplacement);
-        //}
-
-        //public void MoveDownRight(double speed)
-        //{
-        //    SetLeft(GetLeft() + speed);
-        //    SetTop(GetTop() + speed * IsometricDisplacement);
-        //}
-
-        //public void MoveDownLeft(double speed)
-        //{
-        //    SetLeft(GetLeft() - speed);
-        //    SetTop(GetTop() + speed);
-        //}
-
 
         public void LooseHealth()
         {
@@ -282,6 +236,12 @@ namespace HonkTrooper
                     break;
                 case UfoBossMovementPattern.UPRIGHT_DOWNLEFT:
                     MoveUpRightDownLeft(
+                        speed: speed,
+                        sceneWidth: sceneWidth,
+                        sceneHeight: sceneHeight);
+                    break;
+                case UfoBossMovementPattern.UPLEFT_DOWNRIGHT:
+                    MoveUpLeftDownRight(
                         speed: speed,
                         sceneWidth: sceneWidth,
                         sceneHeight: sceneHeight);
@@ -471,6 +431,53 @@ namespace HonkTrooper
             return false;
         }
 
+        private bool MoveUpLeftDownRight(double speed, double sceneWidth, double sceneHeight)
+        {
+            _changeMovementPatternDelay -= 0.1;
+
+            if (_changeMovementPatternDelay < 0)
+            {
+                RandomizeMovementPattern();
+                return true;
+            }
+
+            if (IsAttacking && _movementDirection == MovementDirection.None)
+            {
+                _movementDirection = MovementDirection.UpLeft;
+            }
+            else
+            {
+                IsAttacking = true;
+            }
+
+            if (IsAttacking)
+            {
+                if (_movementDirection == MovementDirection.UpLeft)
+                {
+                    MoveUpLeft(speed);
+
+                    if (GetTop() < 0 || GetLeft() < 0)
+                    {
+                        _movementDirection = MovementDirection.DownRight;
+                    }
+                }
+                else
+                {
+                    if (_movementDirection == MovementDirection.DownRight)
+                    {
+                        MoveDownRight(speed);
+
+                        if (GetRight() > sceneWidth || GetBottom() > sceneHeight)
+                        {
+                            _movementDirection = MovementDirection.UpLeft;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
         private bool MoveRightLeft(double speed, double sceneWidth, double sceneHeight)
         {
             _changeMovementPatternDelay -= 0.1;
@@ -565,16 +572,9 @@ namespace HonkTrooper
             return false;
         }
 
-        private void RandomizeMovementPattern()
-        {
-            _changeMovementPatternDelay = _random.Next(40, 60);
-            MovementPattern = (UfoBossMovementPattern)_random.Next(Enum.GetNames(typeof(UfoBossMovementPattern)).Length);
-            _movementDirection = MovementDirection.None;
-        }
-
         private void SetIdleStance()
         {
-            var uri = ConstructExtensions.GetRandomContentUri(_UFO_BOSS_uris);
+            var uri = ConstructExtensions.GetRandomContentUri(_ufo_boss_uris);
             _content_image.Source = new BitmapImage(uriSource: uri);
         }
 
@@ -588,6 +588,13 @@ namespace HonkTrooper
             //    : flightSpeed;
         }
 
+        private void RandomizeMovementPattern()
+        {
+            _changeMovementPatternDelay = _random.Next(40, 60);
+            MovementPattern = (UfoBossMovementPattern)_random.Next(Enum.GetNames(typeof(UfoBossMovementPattern)).Length);
+            _movementDirection = MovementDirection.None;
+        }
+
         #endregion
     }
 
@@ -596,6 +603,7 @@ namespace HonkTrooper
         PLAYER_SEEKING,
         ISOMETRIC_SQUARE,
         UPRIGHT_DOWNLEFT,
+        UPLEFT_DOWNRIGHT,
         RIGHT_LEFT,
         UP_DOWN,
     }
