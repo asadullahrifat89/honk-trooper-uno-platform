@@ -738,24 +738,8 @@ namespace HonkTrooper
         {
             var vehicle_distantHitBox = vehicle.GetDistantHitBox();
 
-            // fix vehicle z order
-            //if (_scene_game.Children.OfType<Vehicle>().FirstOrDefault(x => x.GetDistantHitBox() is Rect x_DistantHitBox &&
-            //    x_DistantHitBox.IntersectsWith(vehicle_distantHitBox) &&
-            //    vehicle_distantHitBox.Bottom > x_DistantHitBox.Bottom &&
-            //    vehicle.GetZ() <= x.GetZ()) is Vehicle belowVehicle)
-            //{
-            //    vehicle.SetZ(belowVehicle.GetZ() + 1);
-            //}
-
-            //if (_scene_game.Children.OfType<Vehicle>().FirstOrDefault(x => x.GetDistantHitBox() is Rect x_DistantHitBox &&
-            //    x_DistantHitBox.IntersectsWith(vehicle_distantHitBox) &&
-            //    vehicle_distantHitBox.Bottom < x_DistantHitBox.Bottom &&
-            //    vehicle.GetZ() >= x.GetZ()) is Vehicle overVehicle)
-            //{
-            //    vehicle.SetZ(overVehicle.GetZ() - 1);
-            //}
-
-            if (_scene_game.Children.OfType<Vehicle>().FirstOrDefault(x => x.IsAnimating && x.GetHorizontalHitBox().IntersectsWith(vehicle.GetHorizontalHitBox())) is Construct collidingVehicle)
+            if (_scene_game.Children.OfType<Vehicle>()                
+                .FirstOrDefault(x => x.IsAnimating && x.GetHorizontalHitBox().IntersectsWith(vehicle.GetHorizontalHitBox())) is Construct collidingVehicle)
             {
                 var hitBox = vehicle.GetHitBox();
 
@@ -811,13 +795,39 @@ namespace HonkTrooper
 
                 _audio_stub.Play(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
 
-                _audio_stub.SetVolume(SoundType.AMBIENCE, 0.8);
+                _audio_stub.SetVolume(SoundType.AMBIENCE, 0.4);
 
                 vehicleBoss.IsAnimating = true;
                 vehicleBoss.Reset();
-                vehicleBoss.SetPosition(
-                    left: 0,
-                    top: vehicleBoss.Height * -1);
+
+                var topOrLeft = _random.Next(2); // generate top and left corner lane wise vehicles
+                var lane = _random.Next(2); // generate number of lanes based of screen height
+
+                switch (topOrLeft)
+                {
+                    case 0:
+                        {
+                            var xLaneWidth = Constants.DEFAULT_SCENE_WIDTH / 4;
+
+                            vehicleBoss.SetPosition(
+                                left: lane == 0 ? 0 : (xLaneWidth - vehicleBoss.Width / 2),
+                                top: vehicleBoss.Height * -1);
+                        }
+                        break;
+                    case 1:
+                        {
+                            var yLaneHeight = Constants.DEFAULT_SCENE_HEIGHT / 6;
+
+                            vehicleBoss.SetPosition(
+                                left: vehicleBoss.Width * -1,
+                                top: lane == 0 ? 0 : (yLaneHeight));
+                        }
+                        break;
+                    default:
+                        break;
+                }
+
+                vehicleBoss.SetZ(3);
 
                 // set VehicleBoss health
                 vehicleBoss.Health = _vehicle_boss_threashold.GetReleasePointDifference() * 1.5;
@@ -840,11 +850,13 @@ namespace HonkTrooper
 
         private bool AnimateVehicleBoss(Construct vehicleBoss)
         {
-            VehicleBoss VehicleBoss1 = vehicleBoss as VehicleBoss;
+            VehicleBoss vehicleBoss1 = vehicleBoss as VehicleBoss;
 
-            if (VehicleBoss1.IsDead)
+            var speed = (_scene_game.Speed + vehicleBoss.SpeedOffset);
+
+            if (vehicleBoss1.IsDead)
             {
-                vehicleBoss.Shrink();
+                MoveConstructBottomRight(vehicleBoss, speed);
             }
             else
             {
@@ -852,19 +864,17 @@ namespace HonkTrooper
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
-                    var speed = (_scene_game.Speed + vehicleBoss.SpeedOffset);
-
-                    if (VehicleBoss1.IsAttacking)
+                    if (vehicleBoss1.IsAttacking)
                     {
                         var scaling = ScreenExtensions.GetScreenSpaceScaling();
 
-                        VehicleBoss1.Move(
+                        vehicleBoss1.Move(
                             speed: speed,
                             sceneWidth: Constants.DEFAULT_SCENE_WIDTH * scaling,
                             sceneHeight: Constants.DEFAULT_SCENE_HEIGHT * scaling);
 
-                        if (VehicleBoss1.Honk())
-                            GenerateVehicleBossHonk(VehicleBoss1);
+                        if (vehicleBoss1.Honk())
+                            GenerateVehicleBossHonk(vehicleBoss1);
                     }
                     else
                     {
@@ -872,7 +882,7 @@ namespace HonkTrooper
 
                         if (vehicleBoss.GetLeft() > (Constants.DEFAULT_SCENE_WIDTH / 3)) // bring VehicleBoss to a suitable distance from player and then start attacking
                         {
-                            VehicleBoss1.IsAttacking = true;
+                            vehicleBoss1.IsAttacking = true;
                         }
                     }
                 }
@@ -883,7 +893,9 @@ namespace HonkTrooper
 
         private bool RecycleVehicleBoss(Construct vehicleBoss)
         {
-            if (vehicleBoss.IsShrinkingComplete)
+            var hitBox = vehicleBoss.GetHitBox();
+
+            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left > Constants.DEFAULT_SCENE_WIDTH)
             {
                 vehicleBoss.IsAnimating = false;
 
