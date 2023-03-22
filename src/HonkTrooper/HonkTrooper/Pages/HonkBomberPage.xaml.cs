@@ -85,6 +85,8 @@ namespace HonkTrooper
             ScreenExtensions.Width = RootGrid.Width;
             ScreenExtensions.Height = RootGrid.Height;
 
+            SetScreenScaling();
+
             Loaded += HonkBomberPage_Loaded;
             Unloaded += HonkBomberPage_Unloaded;
         }
@@ -3046,6 +3048,19 @@ namespace HonkTrooper
                 );
         }
 
+        private void SetScreenScaling()
+        {
+            var scaling = ScreenExtensions.GetScreenSpaceScaling();
+
+            // resize the main menu
+            _scene_main_menu.Width = ScreenExtensions.Width;
+            _scene_main_menu.Height = ScreenExtensions.Height;
+
+            // scale the scenes
+            _scene_game.SetScaleTransform(scaling);
+            _scene_main_menu.SetScaleTransform(scaling);
+        }
+
         #endregion
 
         #endregion
@@ -3093,15 +3108,7 @@ namespace HonkTrooper
             ScreenExtensions.Width = args.NewSize.Width;
             ScreenExtensions.Height = args.NewSize.Height;
 
-            var scaling = ScreenExtensions.GetScreenSpaceScaling();
-
-            // resize the main menu
-            _scene_main_menu.Width = ScreenExtensions.Width;
-            _scene_main_menu.Height = ScreenExtensions.Height;
-
-            // scale the scenes
-            _scene_game.SetScaleTransform(scaling);
-            _scene_main_menu.SetScaleTransform(scaling);
+            SetScreenScaling();
 
             if (_scene_game.SceneState == SceneState.GAME_RUNNING)
             {
