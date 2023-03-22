@@ -25,16 +25,12 @@
             x:Name="GameScene"
             Width="1920"
             Height="960"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch"
             Background="Transparent" />
 
         <Scene
             x:Name="MainMenuScene"
             Width="1920"
             Height="960"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch"
             Background="Transparent" />
 
         <Controller
