@@ -82,8 +82,8 @@ namespace HonkTrooper
 
             _scene_main_menu.SetRenderTransformOrigin(0.5);
 
-            ScreenExtensions.Width = RootGrid.Width;
-            ScreenExtensions.Height = RootGrid.Height;
+            ScreenExtensions.Width = Constants.DEFAULT_SCENE_WIDTH;
+            ScreenExtensions.Height = Constants.DEFAULT_SCENE_HEIGHT;
 
             SetScreenScaling();
 
