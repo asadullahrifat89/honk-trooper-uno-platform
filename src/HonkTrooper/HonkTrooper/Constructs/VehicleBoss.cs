@@ -51,8 +51,8 @@ namespace HonkTrooper
             };
 
             SetChild(_content_image);
-
-            IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;            
+           
+            IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
         }
 
         #endregion
@@ -75,9 +75,8 @@ namespace HonkTrooper
         {
             Opacity = 1;
             Health = 100;
+            SpeedOffset = -2;
             IsAttacking = false;
-
-            SpeedOffset = _random.Next(-2, 4);
 
             _movementDirection = MovementDirection.None;
 
@@ -117,7 +116,7 @@ namespace HonkTrooper
 
         private void RandomizeMovementPattern()
         {
-            SpeedOffset = _random.Next(-2, 4);
+            SpeedOffset = _random.Next(-1, 4);
 
             _changeMovementPatternDelay = _random.Next(40, 60);
             MovementPattern = (VehicleBossMovementPattern)_random.Next(Enum.GetNames(typeof(VehicleBossMovementPattern)).Length);
@@ -129,94 +128,28 @@ namespace HonkTrooper
            double sceneWidth,
            double sceneHeight)
         {
-            switch (MovementPattern)
-            {
-                case VehicleBossMovementPattern.ISOMETRIC_SQUARE:
-                    MoveInIsometricSquares(
-                        speed: speed,
-                        sceneWidth: sceneWidth,
-                        sceneHeight: sceneHeight);
-                    break;
-                case VehicleBossMovementPattern.UPLEFT_DOWNRIGHT:
-                    MoveUpLeftDownRight(
-                        speed: speed,
-                        sceneWidth: sceneWidth,
-                        sceneHeight: sceneHeight);
-                    break;
-                default:
-                    break;
-            }
-        }
+            //switch (MovementPattern)
+            //{
+            //    case VehicleBossMovementPattern.ISOMETRIC_SQUARE:
+            //        MoveInIsometricSquares(
+            //            speed: speed,
+            //            sceneWidth: sceneWidth,
+            //            sceneHeight: sceneHeight);
+            //        break;
+            //    case VehicleBossMovementPattern.UPLEFT_DOWNRIGHT:
+            //        MoveUpLeftDownRight(
+            //            speed: speed,
+            //            sceneWidth: sceneWidth,
+            //            sceneHeight: sceneHeight);
+            //        break;
+            //    default:
+            //        break;
+            //}
 
-        private bool MoveInIsometricSquares(double speed, double sceneWidth, double sceneHeight)
-        {
-            _changeMovementPatternDelay -= 0.1;
-
-            if (_changeMovementPatternDelay < 0)
-            {
-                RandomizeMovementPattern();
-                return true;
-            }
-
-            if (IsAttacking && _movementDirection == MovementDirection.None)
-            {
-                _movementDirection = MovementDirection.UpRight;
-            }
-            else
-            {
-                IsAttacking = true;
-            }
-
-            if (IsAttacking)
-            {
-                if (_movementDirection == MovementDirection.UpRight)
-                {
-                    MoveUpRight(speed);
-
-                    if (GetTop() < 0)
-                    {
-                        _movementDirection = MovementDirection.DownRight;
-                    }
-                }
-                else
-                {
-                    if (_movementDirection == MovementDirection.DownRight)
-                    {
-                        MoveDownRight(speed);
-
-                        if (GetRight() > sceneWidth || GetBottom() > sceneHeight)
-                        {
-                            _movementDirection = MovementDirection.DownLeft;
-                        }
-                    }
-                    else
-                    {
-                        if (_movementDirection == MovementDirection.DownLeft)
-                        {
-                            MoveDownLeft(speed);
-
-                            if (GetLeft() < 0 || GetBottom() > sceneHeight)
-                            {
-                                _movementDirection = MovementDirection.UpLeft;
-                            }
-                        }
-                        else
-                        {
-                            if (_movementDirection == MovementDirection.UpLeft)
-                            {
-                                MoveUpLeft(speed);
-
-                                if (GetTop() < 0 || GetLeft() < 0)
-                                {
-                                    _movementDirection = MovementDirection.UpRight;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            return false;
+            MoveUpLeftDownRight(
+                       speed: speed,
+                       sceneWidth: sceneWidth,
+                       sceneHeight: sceneHeight);
         }
 
         private bool MoveUpLeftDownRight(double speed, double sceneWidth, double sceneHeight)
