@@ -998,7 +998,7 @@ namespace HonkTrooper
 
                 roadSidePatch.SetPosition(
                     left: (roadSidePatch.Height * -1) * _scene_game.DownScaling,
-                    top: (_scene_game.Height / 1.55) * _scene_game.DownScaling,
+                    top: (_scene_game.Height / 3 + roadSidePatch.Height / 2) * _scene_game.DownScaling,
                     z: 0);
 
                 return true;
@@ -1101,7 +1101,7 @@ namespace HonkTrooper
 
                 tree.SetPosition(
                   left: (-1 * tree.Width) * _scene_game.DownScaling,
-                  top: (_scene_game.Height / 2) * _scene_game.DownScaling,
+                  top: (_scene_game.Height / 3) * _scene_game.DownScaling,
                   z: 4);
 
                 SyncDropShadow(tree);
@@ -1170,10 +1170,8 @@ namespace HonkTrooper
 
                 hedge.SetPosition(
                   left: (_scene_game.Width / 2 - hedge.Width * 2.3) * _scene_game.DownScaling,
-                  top: hedge.Height * -1,
+                  top: hedge.Height * -1.1,
                   z: 2);
-
-                //SyncDropShadow(Hedge);
 
                 LoggerExtensions.Log("Hedge generated.");
 
@@ -1191,10 +1189,8 @@ namespace HonkTrooper
 
                 hedge.SetPosition(
                   left: -1 * hedge.Width * _scene_game.DownScaling,
-                  top: (_scene_game.Height / 2 + 50) * _scene_game.DownScaling,
+                  top: (_scene_game.Height / 3 + hedge.Height / 3) * _scene_game.DownScaling,
                   z: 3);
-
-                //SyncDropShadow(Hedge);
 
                 LoggerExtensions.Log("Hedge generated.");
 
