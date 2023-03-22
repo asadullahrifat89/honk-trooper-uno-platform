@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace HonkTrooper
+﻿namespace HonkTrooper
 {
     public static class LoggerExtensions
     {

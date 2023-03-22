@@ -1,8 +1,6 @@
 ﻿using Microsoft.UI.Input;
 using Microsoft.UI.Xaml.Controls;
-using System;
 using Windows.Foundation;
-using Windows.Graphics.Display;
 
 namespace HonkTrooper
 {
