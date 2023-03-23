@@ -1504,6 +1504,9 @@ namespace HonkTrooper
 
         private bool AnimateCloud(Construct cloud)
         {
+            Cloud cloud1 = cloud as Cloud;
+            cloud1.Hover();
+
             var speed = (_scene_game.Speed + cloud.SpeedOffset);
             MoveConstructBottomRight(construct: cloud, speed: speed);
             return true;
