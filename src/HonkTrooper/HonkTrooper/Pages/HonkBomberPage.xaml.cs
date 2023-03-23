@@ -230,6 +230,8 @@ namespace HonkTrooper
                 .Where(x => x.ConstructType is
                 ConstructType.VEHICLE_LARGE or
                 ConstructType.VEHICLE_SMALL or
+                ConstructType.VEHICLE_BOSS or
+                ConstructType.UFO_BOSS or
                 ConstructType.HONK or
                 ConstructType.PLAYER_ROCKET or
                 ConstructType.PLAYER_ROCKET_SEEKING or
@@ -238,9 +240,9 @@ namespace HonkTrooper
                 ConstructType.UFO_BOSS_ROCKET_SEEKING or
                 ConstructType.UFO_ENEMY or
                 ConstructType.UFO_ENEMY_ROCKET or
+                ConstructType.VEHICLE_BOSS_ROCKET or
                 ConstructType.POWERUP_PICKUP or
-                ConstructType.HEALTH_PICKUP or
-                ConstructType.UFO_BOSS))
+                ConstructType.HEALTH_PICKUP))
             {
                 construct.IsAnimating = false;
 
@@ -248,10 +250,16 @@ namespace HonkTrooper
                      left: -3000,
                      top: -3000);
 
-                if (construct is UfoBoss UfoBoss1)
+                if (construct is UfoBoss ufoBoss)
                 {
-                    UfoBoss1.IsAttacking = false;
-                    UfoBoss1.Health = 0;
+                    ufoBoss.IsAttacking = false;
+                    ufoBoss.Health = 0;
+                }
+
+                if (construct is VehicleBoss vehicleboss)
+                {
+                    vehicleboss.IsAttacking = false;
+                    vehicleboss.Health = 0;
                 }
             }
         }
