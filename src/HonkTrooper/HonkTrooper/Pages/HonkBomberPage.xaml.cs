@@ -1030,12 +1030,22 @@ namespace HonkTrooper
                   top: (Constants.DEFAULT_SCENE_HEIGHT / 3),
                   z: 4);
 
-                SyncDropShadow(tree);
-
-                return true;
+                SyncDropShadow(tree);                
             }
 
-            return false;
+            if (_scene_game.Children.OfType<RoadSideTree>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideTree tree2)
+            {
+                tree2.IsAnimating = true;
+
+                tree2.SetPosition(
+                  left: (-1.65 * tree2.Width),
+                  top: (Constants.DEFAULT_SCENE_HEIGHT / 2.5),
+                  z: 4);
+
+                SyncDropShadow(tree2);
+            }
+
+            return true;
         }
 
         private bool AnimateRoadSideTree(Construct tree)
