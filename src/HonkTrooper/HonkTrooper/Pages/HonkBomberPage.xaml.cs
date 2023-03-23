@@ -1337,39 +1337,37 @@ namespace HonkTrooper
 
         private bool GenerateUfoBoss()
         {
-            // if scene doesn't contain a UfoBoss then pick a random UfoBoss and add to scene
+            // if scene doesn't contain a UfoBoss then pick a UfoBoss and add to scene
 
             if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
-                _ufo_boss_threashold.ShouldRelease(_game_score_bar.GetScore()) &&
-                !_scene_game.Children.OfType<UfoBoss>().Any(x => x.IsAnimating) &&
-                _scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating == false) is UfoBoss UfoBoss)
+                _ufo_boss_threashold.ShouldRelease(_game_score_bar.GetScore()) && !UfoBossExists() &&
+                _scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating == false) is UfoBoss ufoBoss)
             {
                 _audio_stub.Stop(SoundType.GAME_BACKGROUND_MUSIC);
-
                 //_audio_stub.Play(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
-
                 _audio_stub.SetVolume(SoundType.AMBIENCE, 0.2);
 
-                UfoBoss.IsAnimating = true;
-                UfoBoss.Reset();
-                UfoBoss.SetPosition(
+                ufoBoss.IsAnimating = true;
+                ufoBoss.Reset();
+                ufoBoss.SetPosition(
                     left: 0,
-                    top: UfoBoss.Height * -1);
+                    top: ufoBoss.Height * -1);
 
-                SyncDropShadow(UfoBoss);
+                SyncDropShadow(ufoBoss);
 
                 // set UfoBoss health
-                UfoBoss.Health = _ufo_boss_threashold.GetReleasePointDifference() * 1.5;
+                ufoBoss.Health = _ufo_boss_threashold.GetReleasePointDifference() * 1.5;
 
                 _ufo_boss_threashold.IncreaseThreasholdLimit(increment: _ufo_boss_threashold_limit_increase, currentPoint: _game_score_bar.GetScore());
 
-                _ufo_boss_health_bar.SetMaxiumHealth(UfoBoss.Health);
-                _ufo_boss_health_bar.SetValue(UfoBoss.Health);
-                _ufo_boss_health_bar.SetIcon(UfoBoss.GetContentUri());
+                _ufo_boss_health_bar.SetMaxiumHealth(ufoBoss.Health);
+                _ufo_boss_health_bar.SetValue(ufoBoss.Health);
+                _ufo_boss_health_bar.SetIcon(ufoBoss.GetContentUri());
                 _ufo_boss_health_bar.SetBarForegroundColor(color: Colors.Crimson);
 
-                GenerateInterimScreen("Beware of Boss");
                 _scene_game.ActivateSlowMotion();
+
+                GenerateInterimScreen("Beware of Psycho Rocket");
 
                 return true;
             }
@@ -1377,31 +1375,30 @@ namespace HonkTrooper
             return false;
         }
 
-        private bool AnimateUfoBoss(Construct UfoBoss)
+        private bool AnimateUfoBoss(Construct ufoBoss)
         {
-            UfoBoss UfoBoss1 = UfoBoss as UfoBoss;
+            UfoBoss ufoBoss1 = ufoBoss as UfoBoss;
 
-            if (UfoBoss1.IsDead)
+            if (ufoBoss1.IsDead)
             {
-                UfoBoss.Shrink();
+                ufoBoss.Shrink();
             }
             else
             {
-                UfoBoss.Pop();
+                ufoBoss.Pop();
 
-                UfoBoss1.Hover();
-                UfoBoss1.DepleteHitStance();
-                UfoBoss1.DepleteWinStance();
+                ufoBoss1.Hover();
+                ufoBoss1.DepleteHitStance();
+                ufoBoss1.DepleteWinStance();
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
-                    var speed = (_scene_game.Speed + UfoBoss.SpeedOffset);
+                    var speed = (_scene_game.Speed + ufoBoss.SpeedOffset);
+                    var scaling = ScreenExtensions.GetScreenSpaceScaling();
 
-                    if (UfoBoss1.IsAttacking)
+                    if (ufoBoss1.IsAttacking)
                     {
-                        var scaling = ScreenExtensions.GetScreenSpaceScaling();
-
-                        UfoBoss1.Move(
+                        ufoBoss1.Move(
                             speed: speed,
                             sceneWidth: Constants.DEFAULT_SCENE_WIDTH * scaling,
                             sceneHeight: Constants.DEFAULT_SCENE_HEIGHT * scaling,
@@ -1409,11 +1406,11 @@ namespace HonkTrooper
                     }
                     else
                     {
-                        MoveConstructBottomRight(construct: UfoBoss, speed: speed);
+                        MoveConstructBottomRight(construct: ufoBoss, speed: speed);
 
-                        if (UfoBoss.GetLeft() > (Constants.DEFAULT_SCENE_WIDTH / 3)) // bring UfoBoss to a suitable distance from player and then start attacking
+                        if (ufoBoss.GetLeft() > (Constants.DEFAULT_SCENE_WIDTH * scaling / 3)) // bring UfoBoss to a suitable distance from player and then start attacking
                         {
-                            UfoBoss1.IsAttacking = true;
+                            ufoBoss1.IsAttacking = true;
                         }
                     }
                 }
@@ -1422,13 +1419,13 @@ namespace HonkTrooper
             return true;
         }
 
-        private bool RecycleUfoBoss(Construct UfoBoss)
+        private bool RecycleUfoBoss(Construct ufoBoss)
         {
-            if (UfoBoss.IsShrinkingComplete)
+            if (ufoBoss.IsShrinkingComplete)
             {
-                UfoBoss.IsAnimating = false;
+                ufoBoss.IsAnimating = false;
 
-                UfoBoss.SetPosition(
+                ufoBoss.SetPosition(
                     left: -3000,
                     top: -3000);
             }
@@ -1436,28 +1433,26 @@ namespace HonkTrooper
             return true;
         }
 
-        private void LooseUfoBossHealth(UfoBoss UfoBoss)
+        private void LooseUfoBossHealth(UfoBoss ufoBoss)
         {
-            UfoBoss.SetPopping();
-            UfoBoss.LooseHealth();
-            UfoBoss.SetHitStance();
+            ufoBoss.SetPopping();
+            ufoBoss.LooseHealth();
+            ufoBoss.SetHitStance();
 
-            _ufo_boss_health_bar.SetValue(UfoBoss.Health);
+            _ufo_boss_health_bar.SetValue(ufoBoss.Health);
 
-            if (UfoBoss.IsDead && UfoBoss.IsAttacking)
+            if (ufoBoss.IsDead && ufoBoss.IsAttacking)
             {
                 //_audio_stub.Stop(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
-
                 _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
-
                 _audio_stub.SetVolume(SoundType.AMBIENCE, 0.6);
 
-                UfoBoss.IsAttacking = false;
+                ufoBoss.IsAttacking = false;
 
                 _player.SetWinStance();
                 _game_score_bar.GainScore(5);
 
-                GenerateInterimScreen("Boss Busted");
+                GenerateInterimScreen("Psycho Rocket Busted");
 
                 _scene_game.ActivateSlowMotion();
             }
@@ -1497,9 +1492,7 @@ namespace HonkTrooper
                 _scene_game.Children.OfType<VehicleBoss>().FirstOrDefault(x => x.IsAnimating == false) is VehicleBoss vehicleBoss)
             {
                 _audio_stub.Stop(SoundType.GAME_BACKGROUND_MUSIC);
-
                 _audio_stub.Play(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
-
                 _audio_stub.SetVolume(SoundType.AMBIENCE, 0.4);
 
                 vehicleBoss.IsAnimating = true;
@@ -1542,10 +1535,10 @@ namespace HonkTrooper
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
+                    var scaling = ScreenExtensions.GetScreenSpaceScaling();
+
                     if (vehicleBoss1.IsAttacking)
                     {
-                        var scaling = ScreenExtensions.GetScreenSpaceScaling();
-
                         vehicleBoss1.Move(
                             speed: speed,
                             sceneWidth: Constants.DEFAULT_SCENE_WIDTH * scaling,
@@ -1556,11 +1549,11 @@ namespace HonkTrooper
                     }
                     else
                     {
-                        if (!_scene_game.Children.OfType<Vehicle>().Any(x => x.IsAnimating)) // only bring the boss in view when all other vechiles are gone
+                        if (_scene_game.Children.OfType<Vehicle>().Where(x => x.IsAnimating).All(x => x.GetLeft() > Constants.DEFAULT_SCENE_WIDTH * scaling / 2) || _scene_game.Children.OfType<Vehicle>().All(x => !x.IsAnimating)) // only bring the boss in view when all other vechiles are gone
                         {
                             MoveConstructBottomRight(construct: vehicleBoss, speed: speed);
 
-                            if (vehicleBoss.GetLeft() > (Constants.DEFAULT_SCENE_WIDTH / 3)) // bring VehicleBoss to a suitable distance from player and then start attacking
+                            if (vehicleBoss.GetLeft() > (Constants.DEFAULT_SCENE_WIDTH * scaling / 3)) // bring VehicleBoss to a suitable distance from player and then start attacking
                             {
                                 vehicleBoss1.IsAttacking = true;
                             }
