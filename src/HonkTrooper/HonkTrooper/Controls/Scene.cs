@@ -114,13 +114,16 @@ namespace HonkTrooper
         /// </summary>
         public async void Play()
         {
-            IsAnimating = true;
+            if (!IsAnimating)
+            {
+                IsAnimating = true;
 
-            //_stopwatch = Stopwatch.StartNew();
-            _gameViewTimer = new PeriodicTimer(_frameTime);
+                //_stopwatch = Stopwatch.StartNew();
+                _gameViewTimer = new PeriodicTimer(_frameTime);
 
-            while (await _gameViewTimer.WaitForNextTickAsync())
-                Animate();
+                while (await _gameViewTimer.WaitForNextTickAsync())
+                    Animate();
+            }
         }
 
         /// <summary>
@@ -128,9 +131,12 @@ namespace HonkTrooper
         /// </summary>
         public void Pause()
         {
-            IsAnimating = false;
-            //_stopwatch?.Stop();
-            _gameViewTimer?.Dispose();
+            if (IsAnimating)
+            {
+                IsAnimating = false;
+                //_stopwatch?.Stop();
+                _gameViewTimer?.Dispose(); 
+            }
         }
 
         public void SetState(SceneState sceneState)

@@ -91,6 +91,8 @@ namespace HonkTrooper
 
         public bool IsDead => Health <= 0;
 
+        public PlayerBalloonStance PlayerBalloonStance { get; set; } = PlayerBalloonStance.Idle;
+
         #endregion
 
         #region Methods
@@ -127,6 +129,7 @@ namespace HonkTrooper
 
         public void SetAttackStance()
         {
+            PlayerBalloonStance = PlayerBalloonStance.Attack;
             var uri = ConstructExtensions.GetRandomContentUri(_player_attack_uris);
             _content_image.Source = new BitmapImage(uriSource: uri);
             _attackStanceDelay = _attackStanceDelayDefault;
@@ -134,6 +137,7 @@ namespace HonkTrooper
 
         public void SetWinStance()
         {
+            PlayerBalloonStance = PlayerBalloonStance.Win;
             var uri = ConstructExtensions.GetRandomContentUri(_player_win_uris);
             _content_image.Source = new BitmapImage(uriSource: uri);
             _winStanceDelay = _winStanceDelayDefault;
@@ -141,10 +145,22 @@ namespace HonkTrooper
 
         public void SetHitStance()
         {
-            var uri = ConstructExtensions.GetRandomContentUri(_player_hit_uris);
-            _content_image.Source = new BitmapImage(uriSource: uri);
-            _hitStanceDelay = _hitStanceDelayDefault;
+            if (PlayerBalloonStance != PlayerBalloonStance.Win)
+            {
+                PlayerBalloonStance = PlayerBalloonStance.Hit;
+                var uri = ConstructExtensions.GetRandomContentUri(_player_hit_uris);
+                _content_image.Source = new BitmapImage(uriSource: uri);
+                _hitStanceDelay = _hitStanceDelayDefault;
+            }
         }
+
+        private void SetIdleStance()
+        {
+            PlayerBalloonStance = PlayerBalloonStance.Idle;
+            var uri = ConstructExtensions.GetRandomContentUri(_player_uris);
+            _content_image.Source = new BitmapImage(uriSource: uri);
+        }
+
 
         public void DepleteHitStance()
         {
@@ -468,12 +484,6 @@ namespace HonkTrooper
             Health += 15;
         }
 
-        private void SetIdleStance()
-        {
-            var uri = ConstructExtensions.GetRandomContentUri(_player_uris);
-            _content_image.Source = new BitmapImage(uriSource: uri);
-        }
-
         #endregion        
     }
 
@@ -491,5 +501,13 @@ namespace HonkTrooper
 
         Right,
         Left,
+    }
+
+    public enum PlayerBalloonStance
+    {
+        Idle,
+        Attack,
+        Hit,
+        Win,
     }
 }

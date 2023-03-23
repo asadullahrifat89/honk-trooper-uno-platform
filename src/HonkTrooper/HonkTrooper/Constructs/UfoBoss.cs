@@ -96,6 +96,8 @@ namespace HonkTrooper
 
         public UfoBossMovementPattern MovementPattern { get; set; }
 
+        public UfoBossStance UfoBossStance { get; set; } = UfoBossStance.Idle;
+
         #endregion
 
         #region Methods
@@ -109,6 +111,7 @@ namespace HonkTrooper
             Opacity = 1;
             Health = 100;
             IsAttacking = false;
+            UfoBossStance = UfoBossStance.Idle;
 
             _movementDirection = MovementDirection.None;
 
@@ -158,29 +161,28 @@ namespace HonkTrooper
 
         public void SetHitStance()
         {
-            var uri = ConstructExtensions.GetRandomContentUri(_ufo_boss_hit_uris);
-            _content_image.Source = new BitmapImage(uriSource: uri);
-            _hitStanceDelay = _hitStanceDelayDefault;
-        }
-
-        public void DepleteHitStance()
-        {
-            if (_hitStanceDelay > 0)
+            if (UfoBossStance != UfoBossStance.Win)
             {
-                _hitStanceDelay -= 0.1;
-
-                if (_hitStanceDelay <= 0)
-                {
-                    SetIdleStance();
-                }
+                UfoBossStance = UfoBossStance.Hit;
+                var uri = ConstructExtensions.GetRandomContentUri(_ufo_boss_hit_uris);
+                _content_image.Source = new BitmapImage(uriSource: uri);
+                _hitStanceDelay = _hitStanceDelayDefault;
             }
         }
 
         public void SetWinStance()
         {
+            UfoBossStance = UfoBossStance.Win;
             var uri = ConstructExtensions.GetRandomContentUri(_ufo_boss_win_uris);
             _content_image.Source = new BitmapImage(uriSource: uri);
             _winStanceDelay = _winStanceDelayDefault;
+        }
+
+        private void SetIdleStance()
+        {
+            UfoBossStance = UfoBossStance.Idle;
+            var uri = ConstructExtensions.GetRandomContentUri(_ufo_boss_uris);
+            _content_image.Source = new BitmapImage(uriSource: uri);
         }
 
         public void DepleteWinStance()
@@ -190,6 +192,19 @@ namespace HonkTrooper
                 _winStanceDelay -= 0.1;
 
                 if (_winStanceDelay <= 0)
+                {
+                    SetIdleStance();
+                }
+            }
+        }
+
+        public void DepleteHitStance()
+        {
+            if (_hitStanceDelay > 0)
+            {
+                _hitStanceDelay -= 0.1;
+
+                if (_hitStanceDelay <= 0)
                 {
                     SetIdleStance();
                 }
@@ -572,12 +587,6 @@ namespace HonkTrooper
             return false;
         }
 
-        private void SetIdleStance()
-        {
-            var uri = ConstructExtensions.GetRandomContentUri(_ufo_boss_uris);
-            _content_image.Source = new BitmapImage(uriSource: uri);
-        }
-
         private double GetFlightSpeed(double distance)
         {
             var flightSpeed = distance / _lag;
@@ -592,7 +601,7 @@ namespace HonkTrooper
         {
             MovementPattern = (UfoBossMovementPattern)_random.Next(Enum.GetNames(typeof(UfoBossMovementPattern)).Length);
 
-            _changeMovementPatternDelay = _random.Next(40, 60);            
+            _changeMovementPatternDelay = _random.Next(40, 60);
             _movementDirection = MovementDirection.None;
         }
 
@@ -607,5 +616,12 @@ namespace HonkTrooper
         UPLEFT_DOWNRIGHT,
         RIGHT_LEFT,
         UP_DOWN,
+    }
+
+    public enum UfoBossStance
+    {
+        Idle,
+        Hit,
+        Win,
     }
 }

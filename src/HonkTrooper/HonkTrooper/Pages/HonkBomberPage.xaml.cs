@@ -24,6 +24,7 @@ namespace HonkTrooper
         private readonly HealthBar _ufo_boss_health_bar;
         private readonly HealthBar _vehicle_boss_health_bar;
         private readonly HealthBar _powerUp_health_bar;
+        private readonly HealthBar _sound_pollution_health_bar;
 
         private readonly ScoreBar _game_score_bar;
         private readonly StackPanel _health_bars;
@@ -31,6 +32,8 @@ namespace HonkTrooper
         private readonly Threashold _ufo_boss_threashold;
         private readonly Threashold _vehicle_boss_threashold;
         private readonly Threashold _enemy_threashold;
+
+        private readonly double _sound_pollution_max_limit = 6; // max 3 vehicles or ufos honking to trigger sound pollution limit
 
         private readonly double _vehicle_boss_threashold_limit = 25; // first vehicle Boss will appear
         private readonly double _vehicle_boss_threashold_limit_increase = 15;
@@ -66,6 +69,7 @@ namespace HonkTrooper
             _ufo_boss_health_bar = this.UfoBossHealthBar;
             _vehicle_boss_health_bar = this.VehicleBossHealthBar;
             _powerUp_health_bar = this.PowerUpHealthBar;
+            _sound_pollution_health_bar = this.SoundPollutionBar;
 
             _game_controller = this.GameController;
             _game_score_bar = this.GameScoreBar;
@@ -168,6 +172,11 @@ namespace HonkTrooper
             _ufo_boss_health_bar.Reset();
             _vehicle_boss_health_bar.Reset();
 
+            _sound_pollution_health_bar.Reset();
+            _sound_pollution_health_bar.SetMaxiumHealth(_sound_pollution_max_limit);
+            _sound_pollution_health_bar.SetIcon(Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.HONK).Uri);
+            _sound_pollution_health_bar.SetBarForegroundColor(color: Colors.Purple);
+
             _ufo_boss_threashold.Reset(_ufo_boss_threashold_limit);
             _vehicle_boss_threashold.Reset(_vehicle_boss_threashold_limit);
 
@@ -179,18 +188,15 @@ namespace HonkTrooper
             RepositionLogicalConstructs();
 
             _scene_game.SceneState = SceneState.GAME_RUNNING;
-
-            if (!_scene_game.IsAnimating)
-                _scene_game.Play();
+            _scene_game.Play();
 
             _scene_main_menu.Pause();
 
-            ToggleHudVisibility(Visibility.Visible);
-
             _game_controller.FocusAttackButton();
-
             _game_controller.SetDefaultThumbstickPosition();
             _game_controller.ActivateGyrometerReading();
+
+            ToggleHudVisibility(Visibility.Visible);
         }
 
         private void GameOver()
@@ -575,8 +581,15 @@ namespace HonkTrooper
 
             if (_scene_game.SceneState == SceneState.GAME_RUNNING)
             {
-                var scaling = ScreenExtensions.GetScreenSpaceScaling();
+                var count = _scene_game.Children.OfType<Vehicle>().Count(x => x.IsAnimating && x.WillHonk) + _scene_game.Children.OfType<UfoEnemy>().Count(x => x.IsAnimating && x.WillHonk);
+                _sound_pollution_health_bar.SetValue(count * 2);
 
+                if (_sound_pollution_health_bar.GetValue() >= _sound_pollution_health_bar.GetMaxiumHealth()) // loose score slowly if sound pollution has reached the limit
+                {
+                    _game_score_bar.LooseScore(0.01);
+                }
+
+                var scaling = ScreenExtensions.GetScreenSpaceScaling();
                 var speed = (_scene_game.Speed + _player.SpeedOffset);
 
                 _player.Move(
@@ -3329,11 +3342,8 @@ namespace HonkTrooper
                         _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
                         GenerateTitleScreen("Honk Trooper");
 
-                        if (!_scene_game.IsAnimating)
-                            _scene_game.Play();
-
-                        if (!_scene_main_menu.IsAnimating)
-                            _scene_main_menu.Play();
+                        _scene_game.Play();
+                        _scene_main_menu.Play();
                     }
                 }
                 else // ask to change orientation
