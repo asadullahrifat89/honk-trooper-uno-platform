@@ -41,9 +41,7 @@ namespace HonkTrooper
                 Source = new BitmapImage(uriSource: uri)
             };
 
-            SetChild(_content_image);
-
-            SetSkewY(6);
+            SetChild(_content_image);            
 
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;
             IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;

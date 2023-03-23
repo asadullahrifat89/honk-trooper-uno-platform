@@ -1068,7 +1068,7 @@ namespace HonkTrooper
 
         private bool SpawnRoadSideHedges()
         {
-            for (int i = 0; i < 15; i++)
+            for (int i = 0; i < 12; i++)
             {
                 RoadSideHedge hedge = new(
                     animateAction: AnimateRoadSideHedge,
@@ -1175,7 +1175,7 @@ namespace HonkTrooper
 
                 billboard.SetPosition(
                   left: (Constants.DEFAULT_SCENE_WIDTH / 1.8 - billboard.Width),
-                  top: (billboard.Height * 1.2) * -1,
+                  top: (billboard.Height * 1.1) * -1,
                   z: 1);
 
                 //SyncDropShadow(tree);
