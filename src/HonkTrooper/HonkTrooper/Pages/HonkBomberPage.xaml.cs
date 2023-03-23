@@ -2324,7 +2324,7 @@ namespace HonkTrooper
         {
             VehicleBossRocket vehicleBossRocket = bomb as VehicleBossRocket;
 
-            var speed = (_scene_game.Speed + bomb.SpeedOffset) / 1.5;
+            var speed = (_scene_game.Speed + bomb.SpeedOffset);
 
             if (vehicleBossRocket.AwaitMoveUpRight)
             {
