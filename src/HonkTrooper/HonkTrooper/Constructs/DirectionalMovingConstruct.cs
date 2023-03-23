@@ -22,7 +22,6 @@
             SetLeft(GetLeft() + speed * 2);
         }
 
-
         public void MoveUpRight(double speed)
         {
             SetLeft(GetLeft() + speed * 2);

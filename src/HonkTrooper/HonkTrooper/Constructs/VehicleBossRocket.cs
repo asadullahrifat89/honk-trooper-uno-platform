@@ -5,7 +5,7 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace HonkTrooper
 {
-    public partial class UfoEnemyRocket : Rocket
+    public partial class VehicleBossRocket : Rocket
     {
         #region Fields
 
@@ -16,9 +16,8 @@ namespace HonkTrooper
 
         private readonly Image _content_image;
 
-
         private double _autoBlastDelay;
-        private readonly double _autoBlastDelayDefault = 12;
+        private readonly double _autoBlastDelayDefault = 9;
 
         private readonly AudioStub _audioStub;
 
@@ -26,18 +25,18 @@ namespace HonkTrooper
 
         #region Ctor
 
-        public UfoEnemyRocket(
+        public VehicleBossRocket(
            Func<Construct, bool> animateAction,
            Func<Construct, bool> recycleAction)
         {
+            ConstructType = ConstructType.VEHICLE_BOSS_ROCKET;
+
             _random = new Random();
 
-            _bomb_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.UFO_ENEMY_ROCKET).Select(x => x.Uri).ToArray();
+            _bomb_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.VEHICLE_BOSS_ROCKET).Select(x => x.Uri).ToArray();
             _bomb_blast_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BOMB_BLAST).Select(x => x.Uri).ToArray();
 
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.UFO_ENEMY_ROCKET);
-
-            ConstructType = ConstructType.UFO_ENEMY_ROCKET;
+            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.VEHICLE_BOSS_ROCKET);
 
             var width = size.Width;
             var height = size.Height;
@@ -57,28 +56,26 @@ namespace HonkTrooper
             SetChild(_content_image);
 
             IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
-            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET + 2;
-            DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE + 10;
+            SpeedOffset = -1;
 
-            _audioStub = new AudioStub((SoundType.ORB_LAUNCH, 0.5, false), (SoundType.ROCKET_BLAST, 1, false));
-
+            _audioStub = new AudioStub((SoundType.ROCKET_LAUNCH, 0.3, false), (SoundType.ROCKET_BLAST, 1, false));
         }
 
         #endregion
 
         #region Methods
 
-        public void Reposition(UfoEnemy ufoEnemy)
+        public void Reposition(VehicleBoss vehicleBoss)
         {
             SetPosition(
-                left: (ufoEnemy.GetLeft() + ufoEnemy.Width / 2) - Width / 2,
-                top: ufoEnemy.GetBottom() - (50),
+                left: (vehicleBoss.GetLeft() + vehicleBoss.Width / 2) - Width / 2,
+                top: vehicleBoss.GetTop(),
                 z: 7);
         }
 
         public void Reset()
         {
-            _audioStub.Play(SoundType.ORB_LAUNCH);
+            _audioStub.Play(SoundType.ROCKET_LAUNCH);
 
             Opacity = 1;
             SetScaleTransform(1);
@@ -87,6 +84,12 @@ namespace HonkTrooper
 
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_uris);
             _content_image.Source = new BitmapImage(uri);
+
+            AwaitMoveDownLeft = false;
+            AwaitMoveUpRight = false;
+
+            AwaitMoveUpLeft = false;
+            AwaitMoveDownRight = false;
 
             _autoBlastDelay = _autoBlastDelayDefault;
         }

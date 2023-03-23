@@ -3,6 +3,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Linq;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 using Windows.Graphics.Display;
 
@@ -197,7 +198,7 @@ namespace HonkTrooper
             // if player is dead game keeps playing in the background but scene state goes to game over
             if (_player.IsDead)
             {
-                _audio_stub.Stop(SoundType.AMBIENCE, SoundType.GAME_BACKGROUND_MUSIC/*, SoundType.UFO_BOSS_BACKGROUND_MUSIC*/);
+                _audio_stub.Stop(SoundType.AMBIENCE, SoundType.GAME_BACKGROUND_MUSIC, SoundType.UFO_BOSS_BACKGROUND_MUSIC);
 
                 if (_scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating) is UfoBoss ufoBoss)
                 {
@@ -1203,7 +1204,7 @@ namespace HonkTrooper
         {
             // if there are no UfoBosses or enemies in the scene the vehicles will honk
 
-            if (_scene_game.SceneState == SceneState.GAME_RUNNING && !UfoBossExists() && !UfoEnemyExists())
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING && !UfoBossExists() && !UfoEnemyExists() && !VehicleBossExists())
             {
                 return GenerateHonk(source);
             }
@@ -1549,7 +1550,7 @@ namespace HonkTrooper
                     }
                     else
                     {
-                        if (_scene_game.Children.OfType<Vehicle>().Where(x => x.IsAnimating).All(x => x.GetLeft() > Constants.DEFAULT_SCENE_WIDTH * scaling / 2) || _scene_game.Children.OfType<Vehicle>().All(x => !x.IsAnimating)) // only bring the boss in view when all other vechiles are gone
+                        if (_scene_game.Children.OfType<Vehicle>().All(x => !x.IsAnimating) || _scene_game.Children.OfType<Vehicle>().Where(x => x.IsAnimating).All(x => x.GetLeft() > Constants.DEFAULT_SCENE_WIDTH * scaling / 2)) // only bring the boss in view when all other vechiles are gone
                         {
                             MoveConstructBottomRight(construct: vehicleBoss, speed: speed);
 
@@ -1569,7 +1570,9 @@ namespace HonkTrooper
         {
             var hitBox = vehicleBoss.GetHitBox();
 
-            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left > Constants.DEFAULT_SCENE_WIDTH)
+            VehicleBoss vehicleBoss1 = vehicleBoss as VehicleBoss;
+
+            if (vehicleBoss1.IsDead && hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left > Constants.DEFAULT_SCENE_WIDTH)
             {
                 vehicleBoss.IsAnimating = false;
 
@@ -1903,76 +1906,6 @@ namespace HonkTrooper
 
         #endregion
 
-        #region Rocket
-
-        private void SetPlayerRocketDirection(Construct source, Rocket rocket, Construct rocketTarget)
-        {
-            // rocket target is on the bottom right side of the UfoBoss
-            if (rocketTarget.GetTop() > source.GetTop() && rocketTarget.GetLeft() > source.GetLeft())
-            {
-                rocket.AwaitMoveDownRight = true;
-                rocket.SetRotation(33);
-            }
-            // rocket target is on the bottom left side of the UfoBoss
-            else if (rocketTarget.GetTop() > source.GetTop() && rocketTarget.GetLeft() < source.GetLeft())
-            {
-                rocket.AwaitMoveDownLeft = true;
-                rocket.SetRotation(-213);
-            }
-            // if rocket target is on the top left side of the UfoBoss
-            else if (rocketTarget.GetTop() < source.GetTop() && rocketTarget.GetLeft() < source.GetLeft())
-            {
-                rocket.AwaitMoveUpLeft = true;
-                rocket.SetRotation(213);
-            }
-            // if rocket target is on the top right side of the UfoBoss
-            else if (rocketTarget.GetTop() < source.GetTop() && rocketTarget.GetLeft() > source.GetLeft())
-            {
-                rocket.AwaitMoveUpRight = true;
-                rocket.SetRotation(-33);
-            }
-            else
-            {
-                rocket.AwaitMoveUpLeft = true;
-                rocket.SetRotation(213);
-            }
-        }
-
-        private void SetUfoBossRocketDirection(Construct source, Rocket rocket, Construct rocketTarget)
-        {
-            // rocket target is on the bottom right side of the UfoBoss
-            if (rocketTarget.GetTop() > source.GetTop() && rocketTarget.GetLeft() > source.GetLeft())
-            {
-                rocket.AwaitMoveDownRight = true;
-                rocket.SetRotation(33);
-            }
-            // rocket target is on the bottom left side of the UfoBoss
-            else if (rocketTarget.GetTop() > source.GetTop() && rocketTarget.GetLeft() < source.GetLeft())
-            {
-                rocket.AwaitMoveDownLeft = true;
-                rocket.SetRotation(-213);
-            }
-            // if rocket target is on the top left side of the UfoBoss
-            else if (rocketTarget.GetTop() < source.GetTop() && rocketTarget.GetLeft() < source.GetLeft())
-            {
-                rocket.AwaitMoveUpLeft = true;
-                rocket.SetRotation(213);
-            }
-            // if rocket target is on the top right side of the UfoBoss
-            else if (rocketTarget.GetTop() < source.GetTop() && rocketTarget.GetLeft() > source.GetLeft())
-            {
-                rocket.AwaitMoveUpRight = true;
-                rocket.SetRotation(-33);
-            }
-            else
-            {
-                rocket.AwaitMoveDownRight = true;
-                rocket.SetRotation(33);
-            }
-        }
-
-        #endregion
-
         #region PlayerRocket
 
         private bool SpawnPlayerRockets()
@@ -2047,30 +1980,30 @@ namespace HonkTrooper
 
         private bool AnimatePlayerRocket(Construct bomb)
         {
-            PlayerRocket PlayerRocket = bomb as PlayerRocket;
+            PlayerRocket playerRocket = bomb as PlayerRocket;
 
-            var hitBox = PlayerRocket.GetCloseHitBox();
+            var hitBox = playerRocket.GetCloseHitBox();
 
             var speed = (_scene_game.Speed + bomb.SpeedOffset);
 
-            if (PlayerRocket.AwaitMoveDownLeft)
+            if (playerRocket.AwaitMoveDownLeft)
             {
-                PlayerRocket.MoveDownLeft(speed);
+                playerRocket.MoveDownLeft(speed);
             }
-            else if (PlayerRocket.AwaitMoveUpRight)
+            else if (playerRocket.AwaitMoveUpRight)
             {
-                PlayerRocket.MoveUpRight(speed);
+                playerRocket.MoveUpRight(speed);
             }
-            else if (PlayerRocket.AwaitMoveUpLeft)
+            else if (playerRocket.AwaitMoveUpLeft)
             {
-                PlayerRocket.MoveUpLeft(speed);
+                playerRocket.MoveUpLeft(speed);
             }
-            else if (PlayerRocket.AwaitMoveDownRight)
+            else if (playerRocket.AwaitMoveDownRight)
             {
-                PlayerRocket.MoveDownRight(speed);
+                playerRocket.MoveDownRight(speed);
             }
 
-            if (PlayerRocket.IsBlasting)
+            if (playerRocket.IsBlasting)
             {
                 bomb.Expand();
                 bomb.Fade(0.02);
@@ -2078,32 +2011,33 @@ namespace HonkTrooper
             else
             {
                 bomb.Pop();
+                playerRocket.Hover();
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
                     // if player bomb touches UfoBoss, it blasts, UfoBoss looses health
                     if (_scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetCloseHitBox().IntersectsWith(hitBox)) is UfoBoss UfoBoss)
                     {
-                        PlayerRocket.SetBlast();
+                        playerRocket.SetBlast();
                         LooseUfoBossHealth(UfoBoss);
                     }
 
                     // if player bomb touches UfoBoss's seeking bomb, it blasts
                     if (_scene_game.Children.OfType<UfoBossRocketSeeking>().FirstOrDefault(x => x.IsAnimating && !x.IsBlasting && x.GetCloseHitBox().IntersectsWith(hitBox)) is UfoBossRocketSeeking UfoBossRocketSeeking)
                     {
-                        PlayerRocket.SetBlast();
+                        playerRocket.SetBlast();
                         UfoBossRocketSeeking.SetBlast();
                     }
 
                     // if player bomb touches enemy, it blasts, enemy looses health
                     if (_scene_game.Children.OfType<UfoEnemy>().FirstOrDefault(x => x.IsAnimating && !x.IsDead && x.GetCloseHitBox().IntersectsWith(hitBox)) is UfoEnemy enemy)
                     {
-                        PlayerRocket.SetBlast();
+                        playerRocket.SetBlast();
                         LooseUfoEnemyHealth(enemy);
                     }
 
-                    if (PlayerRocket.AutoBlast())
-                        PlayerRocket.SetBlast();
+                    if (playerRocket.AutoBlast())
+                        playerRocket.SetBlast();
                 }
             }
 
@@ -2191,6 +2125,7 @@ namespace HonkTrooper
             else
             {
                 bomb.Pop();
+                enemyRocket.Hover();
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
@@ -2235,18 +2170,18 @@ namespace HonkTrooper
         {
             for (int i = 0; i < 5; i++)
             {
-                UfoBossRocket bomb = new(
+                UfoBossRocket ufoBossRocket = new(
                     animateAction: AnimateUfoBossRocket,
                     recycleAction: RecycleUfoBossRocket);
 
-                bomb.SetPosition(
+                ufoBossRocket.SetPosition(
                     left: -3000,
                     top: -3000,
                     z: 7);
 
-                _scene_game.AddToScene(bomb);
+                _scene_game.AddToScene(ufoBossRocket);
 
-                SpawnDropShadow(source: bomb);
+                SpawnDropShadow(source: ufoBossRocket);
             }
 
             return true;
@@ -2255,23 +2190,18 @@ namespace HonkTrooper
         private bool GenerateUfoBossRocket()
         {
             if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
-                _scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is UfoBoss UfoBoss &&
-                _scene_game.Children.OfType<UfoBossRocket>().FirstOrDefault(x => x.IsAnimating == false) is UfoBossRocket UfoBossRocket)
+                _scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is UfoBoss ufoBoss &&
+                _scene_game.Children.OfType<UfoBossRocket>().FirstOrDefault(x => x.IsAnimating == false) is UfoBossRocket ufoBossRocket)
             {
-                UfoBossRocket.Reset();
-                UfoBossRocket.IsAnimating = true;
-                UfoBossRocket.SetPopping();
+                ufoBossRocket.Reset();
+                ufoBossRocket.IsAnimating = true;
+                ufoBossRocket.SetPopping();
 
-                UfoBossRocket.Reposition(
-                    UfoBoss: UfoBoss);
+                ufoBossRocket.Reposition(
+                    UfoBoss: ufoBoss);
 
-                SyncDropShadow(UfoBossRocket);
-
-                #region Target Based Movement
-
-                SetUfoBossRocketDirection(source: UfoBoss, rocket: UfoBossRocket, rocketTarget: _player);
-
-                #endregion
+                SyncDropShadow(ufoBossRocket);
+                SetUfoBossRocketDirection(source: ufoBoss, rocket: ufoBossRocket, rocketTarget: _player);
 
                 LoggerExtensions.Log("UfoBoss Bomb dropped.");
 
@@ -2283,28 +2213,28 @@ namespace HonkTrooper
 
         private bool AnimateUfoBossRocket(Construct bomb)
         {
-            UfoBossRocket UfoBossRocket = bomb as UfoBossRocket;
+            UfoBossRocket ufoBossRocket = bomb as UfoBossRocket;
 
             var speed = (_scene_game.Speed + bomb.SpeedOffset);
 
-            if (UfoBossRocket.AwaitMoveDownLeft)
+            if (ufoBossRocket.AwaitMoveDownLeft)
             {
-                UfoBossRocket.MoveDownLeft(speed);
+                ufoBossRocket.MoveDownLeft(speed);
             }
-            else if (UfoBossRocket.AwaitMoveUpRight)
+            else if (ufoBossRocket.AwaitMoveUpRight)
             {
-                UfoBossRocket.MoveUpRight(speed);
+                ufoBossRocket.MoveUpRight(speed);
             }
-            else if (UfoBossRocket.AwaitMoveUpLeft)
+            else if (ufoBossRocket.AwaitMoveUpLeft)
             {
-                UfoBossRocket.MoveUpLeft(speed);
+                ufoBossRocket.MoveUpLeft(speed);
             }
-            else if (UfoBossRocket.AwaitMoveDownRight)
+            else if (ufoBossRocket.AwaitMoveDownRight)
             {
-                UfoBossRocket.MoveDownRight(speed);
+                ufoBossRocket.MoveDownRight(speed);
             }
 
-            if (UfoBossRocket.IsBlasting)
+            if (ufoBossRocket.IsBlasting)
             {
                 bomb.Expand();
                 bomb.Fade(0.02);
@@ -2312,17 +2242,18 @@ namespace HonkTrooper
             else
             {
                 bomb.Pop();
+                ufoBossRocket.Hover();
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
-                    if (UfoBossRocket.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
+                    if (ufoBossRocket.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
                     {
-                        UfoBossRocket.SetBlast();
+                        ufoBossRocket.SetBlast();
                         LoosePlayerHealth();
                     }
 
-                    if (UfoBossRocket.AutoBlast())
-                        UfoBossRocket.SetBlast();
+                    if (ufoBossRocket.AutoBlast())
+                        ufoBossRocket.SetBlast();
                 }
             }
 
@@ -2330,6 +2261,106 @@ namespace HonkTrooper
         }
 
         private bool RecycleUfoBossRocket(Construct bomb)
+        {
+            //var hitbox = bomb.GetHitBox();
+
+            // if bomb is blasted and faed or goes out of scene bounds
+            if (bomb.IsFadingComplete /*|| hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT*/)
+            {
+                bomb.IsAnimating = false;
+
+                bomb.SetPosition(
+                    left: -3000,
+                    top: -3000);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        #endregion
+
+        #region VehicleBossRocket
+
+        private bool SpawnVehicleBossRockets()
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                VehicleBossRocket vehicleBossRocket = new(
+                    animateAction: AnimateVehicleBossRocket,
+                    recycleAction: RecycleVehicleBossRocket);
+
+                vehicleBossRocket.SetPosition(
+                    left: -3000,
+                    top: -3000,
+                    z: 7);
+
+                _scene_game.AddToScene(vehicleBossRocket);
+            }
+
+            return true;
+        }
+
+        private bool GenerateVehicleBossRocket()
+        {
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
+                _scene_game.Children.OfType<VehicleBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is VehicleBoss vehicleBoss &&
+                _scene_game.Children.OfType<VehicleBossRocket>().FirstOrDefault(x => x.IsAnimating == false) is VehicleBossRocket vehicleBossRocket)
+            {
+                vehicleBossRocket.Reset();
+                vehicleBossRocket.IsAnimating = true;
+                vehicleBossRocket.SetPopping();
+
+                vehicleBossRocket.Reposition(vehicleBoss: vehicleBoss);
+                vehicleBossRocket.AwaitMoveUpRight = true;
+
+                LoggerExtensions.Log("VehicleBoss Bomb dropped.");
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimateVehicleBossRocket(Construct bomb)
+        {
+            VehicleBossRocket vehicleBossRocket = bomb as VehicleBossRocket;
+
+            var speed = (_scene_game.Speed + bomb.SpeedOffset);
+
+            if (vehicleBossRocket.AwaitMoveUpRight)
+            {
+                vehicleBossRocket.MoveUpRight(speed);
+            }
+
+            if (vehicleBossRocket.IsBlasting)
+            {
+                bomb.Expand();
+                bomb.Fade(0.02);
+            }
+            else
+            {
+                bomb.Pop();
+                vehicleBossRocket.DillyDally();
+
+                if (_scene_game.SceneState == SceneState.GAME_RUNNING)
+                {
+                    if (vehicleBossRocket.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
+                    {
+                        vehicleBossRocket.SetBlast();
+                        LoosePlayerHealth();
+                    }
+
+                    if (vehicleBossRocket.AutoBlast())
+                        vehicleBossRocket.SetBlast();
+                }
+            }
+
+            return true;
+        }
+
+        private bool RecycleVehicleBossRocket(Construct bomb)
         {
             //var hitbox = bomb.GetHitBox();
 
@@ -2598,6 +2629,76 @@ namespace HonkTrooper
             }
 
             return false;
+        }
+
+        #endregion
+
+        #region Rocket
+
+        private void SetPlayerRocketDirection(Construct source, Rocket rocket, Construct rocketTarget)
+        {
+            // rocket target is on the bottom right side of the UfoBoss
+            if (rocketTarget.GetTop() > source.GetTop() && rocketTarget.GetLeft() > source.GetLeft())
+            {
+                rocket.AwaitMoveDownRight = true;
+                rocket.SetRotation(33);
+            }
+            // rocket target is on the bottom left side of the UfoBoss
+            else if (rocketTarget.GetTop() > source.GetTop() && rocketTarget.GetLeft() < source.GetLeft())
+            {
+                rocket.AwaitMoveDownLeft = true;
+                rocket.SetRotation(-213);
+            }
+            // if rocket target is on the top left side of the UfoBoss
+            else if (rocketTarget.GetTop() < source.GetTop() && rocketTarget.GetLeft() < source.GetLeft())
+            {
+                rocket.AwaitMoveUpLeft = true;
+                rocket.SetRotation(213);
+            }
+            // if rocket target is on the top right side of the UfoBoss
+            else if (rocketTarget.GetTop() < source.GetTop() && rocketTarget.GetLeft() > source.GetLeft())
+            {
+                rocket.AwaitMoveUpRight = true;
+                rocket.SetRotation(-33);
+            }
+            else
+            {
+                rocket.AwaitMoveUpLeft = true;
+                rocket.SetRotation(213);
+            }
+        }
+
+        private void SetUfoBossRocketDirection(Construct source, Rocket rocket, Construct rocketTarget)
+        {
+            // rocket target is on the bottom right side of the UfoBoss
+            if (rocketTarget.GetTop() > source.GetTop() && rocketTarget.GetLeft() > source.GetLeft())
+            {
+                rocket.AwaitMoveDownRight = true;
+                rocket.SetRotation(33);
+            }
+            // rocket target is on the bottom left side of the UfoBoss
+            else if (rocketTarget.GetTop() > source.GetTop() && rocketTarget.GetLeft() < source.GetLeft())
+            {
+                rocket.AwaitMoveDownLeft = true;
+                rocket.SetRotation(-213);
+            }
+            // if rocket target is on the top left side of the UfoBoss
+            else if (rocketTarget.GetTop() < source.GetTop() && rocketTarget.GetLeft() < source.GetLeft())
+            {
+                rocket.AwaitMoveUpLeft = true;
+                rocket.SetRotation(213);
+            }
+            // if rocket target is on the top right side of the UfoBoss
+            else if (rocketTarget.GetTop() < source.GetTop() && rocketTarget.GetLeft() > source.GetLeft())
+            {
+                rocket.AwaitMoveUpRight = true;
+                rocket.SetRotation(-33);
+            }
+            else
+            {
+                rocket.AwaitMoveDownRight = true;
+                rocket.SetRotation(33);
+            }
         }
 
         #endregion
@@ -3057,6 +3158,12 @@ namespace HonkTrooper
                     generationDelay: 10,
                     generationAction: GenerateVehicleBoss,
                     startUpAction: SpawnVehicleBosses),
+
+                new Generator(
+                    generationDelay: 50,
+                    generationAction: GenerateVehicleBossRocket,
+                    startUpAction: SpawnVehicleBossRockets,
+                    randomizeGenerationDelay: true),
 
                 new Generator(
                     generationDelay: 10,

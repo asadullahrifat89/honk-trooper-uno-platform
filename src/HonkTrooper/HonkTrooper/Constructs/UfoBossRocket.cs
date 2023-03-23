@@ -16,7 +16,6 @@ namespace HonkTrooper
 
         private readonly Image _content_image;
 
-
         private double _autoBlastDelay;
         private readonly double _autoBlastDelayDefault = 9;
 
@@ -30,14 +29,14 @@ namespace HonkTrooper
            Func<Construct, bool> animateAction,
            Func<Construct, bool> recycleAction)
         {
+            ConstructType = ConstructType.UFO_BOSS_ROCKET;
+
             _random = new Random();
 
             _bomb_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.UFO_BOSS_ROCKET).Select(x => x.Uri).ToArray();
             _bomb_blast_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BOMB_BLAST).Select(x => x.Uri).ToArray();
 
             var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.UFO_BOSS_ROCKET);
-
-            ConstructType = ConstructType.UFO_BOSS_ROCKET;
 
             var width = size.Width;
             var height = size.Height;
@@ -63,7 +62,7 @@ namespace HonkTrooper
             _audioStub = new AudioStub((SoundType.ROCKET_LAUNCH, 0.3, false), (SoundType.ROCKET_BLAST, 1, false));
         }
 
-        #endregion      
+        #endregion
 
         #region Methods
 
