@@ -5,7 +5,7 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace HonkTrooper
 {
-    public partial class UfoEnemyRocket : Construct
+    public partial class UfoEnemyRocket : Rocket
     {
         #region Fields
 
@@ -63,12 +63,6 @@ namespace HonkTrooper
             _audioStub = new AudioStub((SoundType.ORB_LAUNCH, 0.5, false), (SoundType.ROCKET_BLAST, 1, false));
 
         }
-
-        #endregion
-
-        #region Properties
-
-        public bool IsBlasting { get; set; }
 
         #endregion
 
