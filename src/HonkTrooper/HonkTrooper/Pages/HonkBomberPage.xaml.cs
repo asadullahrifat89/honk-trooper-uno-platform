@@ -584,6 +584,11 @@ namespace HonkTrooper
                 var count = _scene_game.Children.OfType<Vehicle>().Count(x => x.IsAnimating && x.WillHonk) + _scene_game.Children.OfType<UfoEnemy>().Count(x => x.IsAnimating && x.WillHonk);
                 _sound_pollution_health_bar.SetValue(count * 2);
 
+                if (_sound_pollution_health_bar.GetValue() >= _sound_pollution_health_bar.GetMaxiumHealth()) // loose score slowly if sound pollution has reached the limit
+                {
+                    _game_score_bar.LooseScore(0.01);
+                }
+
                 var scaling = ScreenExtensions.GetScreenSpaceScaling();
                 var speed = (_scene_game.Speed + _player.SpeedOffset);
 

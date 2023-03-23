@@ -10,7 +10,7 @@ namespace HonkTrooper
     {
         #region Properties
 
-        private int Score { get; set; } = 0;
+        private double Score { get; set; } = 0;
 
         private TextBlock TextBlock { get; set; } = new TextBlock() { FontSize = 30, FontWeight = FontWeights.Bold, Foreground = new SolidColorBrush(Colors.White) };
 
@@ -37,7 +37,16 @@ namespace HonkTrooper
             TextBlock.Text = Score.ToString("0000");
         }
 
-        public int GetScore()
+        public void LooseScore(double score)
+        {
+            if (Score > 1)
+            {
+                Score -= score;
+                TextBlock.Text = Score.ToString("0000");
+            }
+        }
+
+        public double GetScore()
         {
             return Score;
         }
