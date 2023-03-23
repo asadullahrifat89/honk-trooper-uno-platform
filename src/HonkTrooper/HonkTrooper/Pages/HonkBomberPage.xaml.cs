@@ -1260,7 +1260,7 @@ namespace HonkTrooper
                 roadSideBillboard.IsAnimating = true;
 
                 roadSideBillboard.SetPosition(
-                  left: (Constants.DEFAULT_SCENE_WIDTH / 2.5 - roadSideBillboard.Width) + 20,
+                  left: (Constants.DEFAULT_SCENE_WIDTH / 2.5 - roadSideBillboard.Width) + 48,
                   top: ((roadSideBillboard.Height * 1.5) * -1) - 10,
                   z: 2);
 
@@ -3268,7 +3268,7 @@ namespace HonkTrooper
             _scene_game.AddToScene(
 
                 new Generator(
-                   generationDelay: 120,
+                   generationDelay: 180,
                    generationAction: GenerateRoadSideBillboardTop,
                    startUpAction: SpawnRoadSideBillboards),
 
