@@ -2339,6 +2339,7 @@ namespace HonkTrooper
             else
             {
                 bomb.Pop();
+                vehicleBossRocket.DillyDally();
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {

@@ -21,6 +21,10 @@ namespace HonkTrooper
 
         private readonly AudioStub _audioStub;
 
+        private double _hoverDelay;
+        private readonly double _hoverDelayDefault = 15;
+        private readonly double _hoverSpeed = 0.5;
+
         #endregion
 
         #region Ctor
@@ -112,6 +116,43 @@ namespace HonkTrooper
                 return true;
 
             return false;
+        }
+
+        public void DillyDally()
+        {
+            if (Scene.IsSlowMotionActivated)
+            {
+                _hoverDelay -= 0.5;
+
+                if (_hoverDelay >= 0)
+                {
+                    SetLeft(GetLeft() + _hoverSpeed / Constants.DEFAULT_SLOW_MOTION_REDUCTION_FACTOR);
+                }
+                else
+                {
+                    SetLeft(GetLeft() - _hoverSpeed / Constants.DEFAULT_SLOW_MOTION_REDUCTION_FACTOR);
+
+                    if (_hoverDelay <= _hoverDelayDefault * -1)
+                        _hoverDelay = _hoverDelayDefault;
+                }
+            }
+
+            else
+            {
+                _hoverDelay--;
+
+                if (_hoverDelay >= 0)
+                {
+                    SetLeft(GetLeft() + _hoverSpeed);
+                }
+                else
+                {
+                    SetLeft(GetLeft() - _hoverSpeed);
+
+                    if (_hoverDelay <= _hoverDelayDefault * -1)
+                        _hoverDelay = _hoverDelayDefault;
+                }
+            }
         }
 
         #endregion
