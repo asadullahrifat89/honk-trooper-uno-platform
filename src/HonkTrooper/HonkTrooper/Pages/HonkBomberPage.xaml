@@ -35,6 +35,12 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Top" />
 
+        <HealthBar
+            x:Name="SoundPollutionBar"
+            Margin="0,15"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Bottom" />
+
         <StackPanel
             x:Name="HealthBars"
             Margin="5"
