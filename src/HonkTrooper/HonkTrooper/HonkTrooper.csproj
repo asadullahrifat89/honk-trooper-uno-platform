@@ -52,6 +52,8 @@
     <None Remove="Assets\Fonts\CuteyPatchy.ttf" />
     <None Remove="Assets\Fonts\Gameplay.ttf" />
     <None Remove="Assets\Images\billboard_1.png" />
+    <None Remove="Assets\Images\hedge_1.png" />
+    <None Remove="Assets\Images\hedge_2.png" />
     <None Remove="Assets\Images\UFO_BOSS_3_hit.png" />
     <None Remove="Assets\Images\UFO_BOSS_3_idle.png" />
     <None Remove="Assets\Images\UFO_BOSS_3_win.png" />
@@ -64,7 +66,6 @@
     <None Remove="Assets\Images\enemy_2.png" />
     <None Remove="Assets\Images\enemy_bomb.png" />
     <None Remove="Assets\Images\health_pickup.png" />
-    <None Remove="Assets\Images\hedge_E.png" />
     <None Remove="Assets\Images\honk_1.png" />
     <None Remove="Assets\Images\honk_2.png" />
     <None Remove="Assets\Images\honk_3.png" />
