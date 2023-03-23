@@ -660,34 +660,7 @@ namespace HonkTrooper
             {
                 vehicle.IsAnimating = true;
                 vehicle.Reset();
-
-                var topOrLeft = _random.Next(2); // generate top and left corner lane wise vehicles
-                var lane = _random.Next(2); // generate number of lanes based of screen height
-
-                switch (topOrLeft)
-                {
-                    case 0:
-                        {
-                            var xLaneWidth = Constants.DEFAULT_SCENE_WIDTH / 4;
-
-                            vehicle.SetPosition(
-                                left: lane == 0 ? 0 : (xLaneWidth - vehicle.Width / 2),
-                                top: vehicle.Height * -1);
-                        }
-                        break;
-                    case 1:
-                        {
-                            var yLaneHeight = Constants.DEFAULT_SCENE_HEIGHT / 6;
-
-                            vehicle.SetPosition(
-                                left: vehicle.Width * -1,
-                                top: lane == 0 ? 0 : (yLaneHeight));
-                        }
-                        break;
-                    default:
-                        break;
-                }
-
+                vehicle.Reposition();
                 vehicle.SetZ(3);
 
                 return true;
@@ -799,34 +772,7 @@ namespace HonkTrooper
 
                 vehicleBoss.IsAnimating = true;
                 vehicleBoss.Reset();
-
-                var topOrLeft = _random.Next(2); // generate top and left corner lane wise vehicles
-                var lane = _random.Next(2); // generate number of lanes based of screen height
-
-                switch (topOrLeft)
-                {
-                    case 0:
-                        {
-                            var xLaneWidth = Constants.DEFAULT_SCENE_WIDTH / 4;
-
-                            vehicleBoss.SetPosition(
-                                left: lane == 0 ? 0 : (xLaneWidth - vehicleBoss.Width / 2),
-                                top: vehicleBoss.Height * -1);
-                        }
-                        break;
-                    case 1:
-                        {
-                            var yLaneHeight = Constants.DEFAULT_SCENE_HEIGHT / 6;
-
-                            vehicleBoss.SetPosition(
-                                left: vehicleBoss.Width * -1,
-                                top: lane == 0 ? 0 : (yLaneHeight));
-                        }
-                        break;
-                    default:
-                        break;
-                }
-
+                vehicleBoss.Reposition();
                 vehicleBoss.SetZ(3);
 
                 // set VehicleBoss health
