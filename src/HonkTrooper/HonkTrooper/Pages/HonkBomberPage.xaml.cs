@@ -1006,17 +1006,25 @@ namespace HonkTrooper
 
                 tree.SetPosition(
                   left: (Constants.DEFAULT_SCENE_WIDTH / 2 - tree.Width),
-                  top: (tree.Height * 1.1) * -1,
-                  z: 2);
+                  top: (tree.Height * -1.1),
+                  z: 3);
 
                 SyncDropShadow(tree);
-
-                LoggerExtensions.Log("RoadSideTree generated.");
-
-                return true;
             }
 
-            return false;
+            if (_scene_game.Children.OfType<RoadSideTree>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideTree tree2)
+            {
+                tree2.IsAnimating = true;
+
+                tree2.SetPosition(
+                  left: (Constants.DEFAULT_SCENE_WIDTH / 2 - tree2.Width) + 160,
+                  top: (tree2.Height * -1.1) - 55,
+                  z: 2);
+
+                SyncDropShadow(tree2);
+            }
+
+            return true;
         }
 
         private bool GenerateRoadSideTreeBottom()
@@ -1030,7 +1038,7 @@ namespace HonkTrooper
                   top: (Constants.DEFAULT_SCENE_HEIGHT / 3),
                   z: 4);
 
-                SyncDropShadow(tree);                
+                SyncDropShadow(tree);
             }
 
             if (_scene_game.Children.OfType<RoadSideTree>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideTree tree2)
@@ -1038,7 +1046,7 @@ namespace HonkTrooper
                 tree2.IsAnimating = true;
 
                 tree2.SetPosition(
-                  left: (-1.65 * tree2.Width),
+                  left: (-1.73 * tree2.Width),
                   top: (Constants.DEFAULT_SCENE_HEIGHT / 2.5),
                   z: 4);
 
@@ -1272,7 +1280,7 @@ namespace HonkTrooper
                 roadSideBillboard.SetPosition(
                   left: (Constants.DEFAULT_SCENE_WIDTH / 2.5 - roadSideBillboard.Width) + 48,
                   top: ((roadSideBillboard.Height * 1.5) * -1) - 10,
-                  z: 2);
+                  z: 4);
 
                 SyncDropShadow(roadSideBillboard);
 
@@ -3292,7 +3300,7 @@ namespace HonkTrooper
                    generationAction: GenerateRoadSideLampBottom,
                    startUpAction: SpawnRoadSideLamps),
 
-                // add road side patches
+                  // add road side patches
                   new Generator(
                    generationDelay: 30,
                    generationAction: GenerateRoadSidePatchTop,
@@ -3301,7 +3309,7 @@ namespace HonkTrooper
                 new Generator(
                     generationDelay: 30,
                     generationAction: GenerateRoadSidePatchBottom,
-                    startUpAction: SpawnRoadSidePatchs),              
+                    startUpAction: SpawnRoadSidePatchs),
 
                 // then add the top trees
                 new Generator(
