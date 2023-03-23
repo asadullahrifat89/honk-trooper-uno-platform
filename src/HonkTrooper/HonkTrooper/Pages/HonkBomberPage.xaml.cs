@@ -1553,7 +1553,7 @@ namespace HonkTrooper
                         {
                             MoveConstructBottomRight(construct: vehicleBoss, speed: speed);
 
-                            if (vehicleBoss.GetLeft() > (Constants.DEFAULT_SCENE_WIDTH * scaling / 3)) // bring VehicleBoss to a suitable distance from player and then start attacking
+                            if (vehicleBoss.GetLeft() > ((Constants.DEFAULT_SCENE_WIDTH * scaling) / 4 * 3)) // bring VehicleBoss to a suitable distance from player and then start attacking
                             {
                                 vehicleBoss1.IsAttacking = true;
                             }
