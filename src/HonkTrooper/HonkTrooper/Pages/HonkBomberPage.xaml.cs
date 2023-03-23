@@ -185,7 +185,7 @@ namespace HonkTrooper
             _enemy_fleet_appeared = false;
 
             GeneratePlayerBalloon();
-            RepositionLogicalConstructs();
+            RecycleLogicalConstructs();
 
             _scene_game.SceneState = SceneState.GAME_RUNNING;
             _scene_game.Play();
@@ -224,7 +224,7 @@ namespace HonkTrooper
             }
         }
 
-        private void RepositionLogicalConstructs()
+        private void RecycleLogicalConstructs()
         {
             foreach (var construct in _scene_game.Children.OfType<Construct>()
                 .Where(x => x.ConstructType is
@@ -3327,8 +3327,6 @@ namespace HonkTrooper
             }
 
             RepositionHoveringTitleScreens();
-            RepositionLogicalConstructs();
-
             LoggerExtensions.Log($"{ScreenExtensions.Width} x {ScreenExtensions.Height}");
         }
 
