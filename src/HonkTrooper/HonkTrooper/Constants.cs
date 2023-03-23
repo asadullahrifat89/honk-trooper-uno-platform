@@ -95,12 +95,6 @@ namespace HonkTrooper
             new (ConstructType.HONK, new Uri("ms-appx:///HonkTrooper/Assets/Images/honk_2.png")),
             new (ConstructType.HONK, new Uri("ms-appx:///HonkTrooper/Assets/Images/honk_3.png")),
 
-            //new (ConstructType.PLAYER, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_1_idle_2.png")),
-            //new (ConstructType.PLAYER_IDLE, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_1_idle_2.png")),
-            //new (ConstructType.PLAYER_ATTACK, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_1_attack_2.png")),
-            //new (ConstructType.PLAYER_WIN, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_1_win_2.png")),
-            //new (ConstructType.PLAYER_HIT, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_1_hit_2.png")),
-
             new (ConstructType.PLAYER_BALLOON, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_balloon_1_idle.png")),
             new (ConstructType.PLAYER_BALLOON_IDLE, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_balloon_1_idle.png")),
             new (ConstructType.PLAYER_BALLOON_ATTACK, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_balloon_1_attack.png")),
