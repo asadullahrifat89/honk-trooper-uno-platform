@@ -901,17 +901,17 @@ namespace HonkTrooper
 
         private bool SpawnRoadSidePatchs()
         {
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 6; i++)
             {
-                RoadSidePatch RoadSidePatch = new(
+                RoadSidePatch radSidePatch = new(
                 animateAction: AnimateRoadSidePatch,
                 recycleAction: RecycleRoadSidePatch);
 
-                RoadSidePatch.SetPosition(
+                radSidePatch.SetPosition(
                     left: -3000,
                     top: -3000);
 
-                _scene_game.AddToScene(RoadSidePatch);
+                _scene_game.AddToScene(radSidePatch);
             }
 
             return true;
@@ -924,7 +924,7 @@ namespace HonkTrooper
                 roadSidePatch.IsAnimating = true;
 
                 roadSidePatch.SetPosition(
-                    left: (Constants.DEFAULT_SCENE_WIDTH / 2.3 - roadSidePatch.Width - 5),
+                    left: (Constants.DEFAULT_SCENE_WIDTH / 2.2 - roadSidePatch.Width - 5),
                     top: roadSidePatch.Height * -1,
                     z: 0);
 
@@ -942,7 +942,7 @@ namespace HonkTrooper
 
                 roadSidePatch.SetPosition(
                     left: (roadSidePatch.Height * -1),
-                    top: (Constants.DEFAULT_SCENE_HEIGHT / 4.3 + roadSidePatch.Height / 2),
+                    top: (Constants.DEFAULT_SCENE_HEIGHT / 5 + roadSidePatch.Height / 2),
                     z: 0);
 
                 return true;
@@ -3267,7 +3267,7 @@ namespace HonkTrooper
 
             _scene_game.AddToScene(
 
-                  new Generator(
+                new Generator(
                    generationDelay: 120,
                    generationAction: GenerateRoadSideBillboardTop,
                    startUpAction: SpawnRoadSideBillboards),
@@ -3283,15 +3283,15 @@ namespace HonkTrooper
                    startUpAction: SpawnRoadSideLamps),
 
                 // add road side patches
-                new Generator(
-                    generationDelay: 60,
-                    generationAction: GenerateRoadSidePatchBottom,
-                    startUpAction: SpawnRoadSidePatchs),
-
-                new Generator(
-                   generationDelay: 60,
+                  new Generator(
+                   generationDelay: 30,
                    generationAction: GenerateRoadSidePatchTop,
                    startUpAction: SpawnRoadSidePatchs),
+
+                new Generator(
+                    generationDelay: 30,
+                    generationAction: GenerateRoadSidePatchBottom,
+                    startUpAction: SpawnRoadSidePatchs),              
 
                 // then add the top trees
                 new Generator(
