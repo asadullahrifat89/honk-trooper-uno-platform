@@ -924,7 +924,7 @@ namespace HonkTrooper
                 roadSidePatch.IsAnimating = true;
 
                 roadSidePatch.SetPosition(
-                    left: (Constants.DEFAULT_SCENE_WIDTH / 2.2 - roadSidePatch.Width - 5),
+                    left: (Constants.DEFAULT_SCENE_WIDTH / 2.25 - roadSidePatch.Width - 5),
                     top: roadSidePatch.Height * -1,
                     z: 0);
 
@@ -1173,7 +1173,7 @@ namespace HonkTrooper
                 roadSideLamp.IsAnimating = true;
 
                 roadSideLamp.SetPosition(
-                  left: (Constants.DEFAULT_SCENE_WIDTH / 2.40 - roadSideLamp.Width) + 5,
+                  left: (Constants.DEFAULT_SCENE_WIDTH / 2.40 - roadSideLamp.Width) + 10,
                   top: ((roadSideLamp.Height * 1.5) * -1) + 5,
                   z: 3);
 
@@ -1260,7 +1260,7 @@ namespace HonkTrooper
                 roadSideBillboard.IsAnimating = true;
 
                 roadSideBillboard.SetPosition(
-                  left: (Constants.DEFAULT_SCENE_WIDTH / 2.2 - roadSideBillboard.Width) - 5,
+                  left: (Constants.DEFAULT_SCENE_WIDTH / 2.3 - roadSideBillboard.Width) - 10,
                   top: ((roadSideBillboard.Height * 1.5) * -1) - 10,
                   z: 2);
 
