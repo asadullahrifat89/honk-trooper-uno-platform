@@ -3,6 +3,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Linq;
+using System.Net.Sockets;
 using System.Threading.Tasks;
 using Windows.Graphics.Display;
 
@@ -2309,7 +2310,7 @@ namespace HonkTrooper
                 vehicleBossRocket.SetPopping();
 
                 vehicleBossRocket.Reposition(vehicleBoss: vehicleBoss);
-                SetVehicleBossRocketDirection(source: vehicleBoss, rocket: vehicleBossRocket, rocketTarget: _player);
+                vehicleBossRocket.AwaitMoveUpRight = true;
 
                 LoggerExtensions.Log("VehicleBoss Bomb dropped.");
 
@@ -2323,28 +2324,11 @@ namespace HonkTrooper
         {
             VehicleBossRocket vehicleBossRocket = bomb as VehicleBossRocket;
 
-            var speed = (_scene_game.Speed + bomb.SpeedOffset);
+            var speed = (_scene_game.Speed + bomb.SpeedOffset) / 1.5;
 
-            //if (vehicleBossRocket.AwaitMoveDownLeft)
-            //{
-            //    vehicleBossRocket.MoveDownLeft(speed);
-            //}
-            //else if (vehicleBossRocket.AwaitMoveUpRight)
-            //{
-            //    vehicleBossRocket.MoveUpRight(speed);
-            //}
-            //else if (vehicleBossRocket.AwaitMoveUpLeft)
-            //{
-            //    vehicleBossRocket.MoveUpLeft(speed);
-            //}
-            //else if (vehicleBossRocket.AwaitMoveDownRight)
-            //{
-            //    vehicleBossRocket.MoveDownRight(speed);
-            //}
-
-            if (vehicleBossRocket.AwaitMoveUp)
+            if (vehicleBossRocket.AwaitMoveUpRight)
             {
-                vehicleBossRocket.MoveUp(speed);
+                vehicleBossRocket.MoveUpRight(speed);
             }
 
             if (vehicleBossRocket.IsBlasting)
@@ -2711,41 +2695,6 @@ namespace HonkTrooper
                 rocket.AwaitMoveDownRight = true;
                 rocket.SetRotation(33);
             }
-        }
-
-        private void SetVehicleBossRocketDirection(Construct source, Rocket rocket, Construct rocketTarget)
-        {
-            rocket.AwaitMoveUp = true;
-
-            //// rocket target is on the bottom right side of the VehicleBoss
-            //if (rocketTarget.GetTop() > source.GetTop() && rocketTarget.GetLeft() > source.GetLeft())
-            //{
-            //    rocket.AwaitMoveDownRight = true;
-            //    rocket.SetRotation(33);
-            //}
-            //// rocket target is on the bottom left side of the VehicleBoss
-            //else if (rocketTarget.GetTop() > source.GetTop() && rocketTarget.GetLeft() < source.GetLeft())
-            //{
-            //    rocket.AwaitMoveDownLeft = true;
-            //    rocket.SetRotation(-213);
-            //}
-            //// if rocket target is on the top left side of the VehicleBoss
-            //else if (rocketTarget.GetTop() < source.GetTop() && rocketTarget.GetLeft() < source.GetLeft())
-            //{
-            //    rocket.AwaitMoveUpLeft = true;
-            //    rocket.SetRotation(213);
-            //}
-            //// if rocket target is on the top right side of the VehicleBoss
-            //else if (rocketTarget.GetTop() < source.GetTop() && rocketTarget.GetLeft() > source.GetLeft())
-            //{
-            //    rocket.AwaitMoveUpRight = true;
-            //    rocket.SetRotation(-33);
-            //}
-            //else
-            //{
-            //    rocket.AwaitMoveDownRight = true;
-            //    rocket.SetRotation(33);
-            //}
         }
 
         #endregion
