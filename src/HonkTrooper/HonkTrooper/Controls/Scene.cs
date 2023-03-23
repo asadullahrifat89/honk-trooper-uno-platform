@@ -42,7 +42,6 @@ namespace HonkTrooper
             RenderTransform = _compositeTransform;
             CanDrag = false;
 
-            Loaded += Scene_Loaded;
             Unloaded += Scene_Unloaded;
         }
 
@@ -72,10 +71,6 @@ namespace HonkTrooper
             _compositeTransform.ScaleY = scaleXY;
         }
 
-        /// <summary>
-        /// Adds constructs to the scene.
-        /// </summary>
-        /// <param name="constructs"></param>
         public void AddToScene(params Construct[] constructs)
         {
             if (constructs is not null)
@@ -88,10 +83,6 @@ namespace HonkTrooper
             }
         }
 
-        /// <summary>
-        /// Adds generators to the scene.
-        /// </summary>
-        /// <param name="generators"></param>
         public void AddToScene(params Generator[] generators)
         {
             if (generators is not null)
@@ -109,33 +100,29 @@ namespace HonkTrooper
             _destroyables.Add(construct);
         }
 
-        /// <summary>
-        /// Starts the timer for the scene and starts the scene loop.
-        /// </summary>
         public async void Play()
         {
             if (!IsAnimating)
             {
-                IsAnimating = true;
-
                 //_stopwatch = Stopwatch.StartNew();
+
+                IsAnimating = true;                
                 _gameViewTimer = new PeriodicTimer(_frameTime);
 
                 while (await _gameViewTimer.WaitForNextTickAsync())
-                    Animate();
+                {
+                    Run();
+                }                    
             }
         }
 
-        /// <summary>
-        /// Pauses the timer for the scene.
-        /// </summary>
         public void Pause()
         {
             if (IsAnimating)
             {
-                IsAnimating = false;
                 //_stopwatch?.Stop();
-                _gameViewTimer?.Dispose(); 
+                IsAnimating = false;                
+                _gameViewTimer?.Dispose();
             }
         }
 
@@ -144,13 +131,10 @@ namespace HonkTrooper
             SceneState = sceneState;
         }
 
-        /// <summary>
-        /// Stops the timer of the scene and clears all constructs from scene.
-        /// </summary>
         public void Stop()
         {
-            IsAnimating = false;
             //_stopwatch?.Stop();
+            IsAnimating = false;            
             _gameViewTimer?.Dispose();
 
             Clear();
@@ -166,10 +150,7 @@ namespace HonkTrooper
             _gameViewTimer?.Dispose();
         }
 
-        /// <summary>
-        /// Executes actions of the constructs.
-        /// </summary>
-        private void Animate()
+        private void Run()
         {
             // generate new constructs in scene from generators
             foreach (Generator generator in _generators)
@@ -226,11 +207,6 @@ namespace HonkTrooper
         private void Scene_Unloaded(object sender, RoutedEventArgs e)
         {
             Stop();
-        }
-
-        private void Scene_Loaded(object sender, RoutedEventArgs e)
-        {
-
         }
 
         #endregion

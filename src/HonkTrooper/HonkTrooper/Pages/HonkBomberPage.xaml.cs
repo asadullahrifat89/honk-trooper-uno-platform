@@ -185,7 +185,7 @@ namespace HonkTrooper
             _enemy_fleet_appeared = false;
 
             GeneratePlayerBalloon();
-            RepositionLogicalConstructs();
+            RecycleLogicalConstructs();
 
             _scene_game.SceneState = SceneState.GAME_RUNNING;
             _scene_game.Play();
@@ -224,7 +224,7 @@ namespace HonkTrooper
             }
         }
 
-        private void RepositionLogicalConstructs()
+        private void RecycleLogicalConstructs()
         {
             foreach (var construct in _scene_game.Children.OfType<Construct>()
                 .Where(x => x.ConstructType is
@@ -683,7 +683,6 @@ namespace HonkTrooper
                 vehicle.IsAnimating = true;
                 vehicle.Reset();
                 vehicle.Reposition();
-                vehicle.SetZ(3);
 
                 return true;
             }
@@ -918,6 +917,23 @@ namespace HonkTrooper
             return true;
         }
 
+        private bool GenerateRoadSidePatchTop()
+        {
+            if (_scene_game.Children.OfType<RoadSidePatch>().FirstOrDefault(x => x.IsAnimating == false) is RoadSidePatch roadSidePatch)
+            {
+                roadSidePatch.IsAnimating = true;
+
+                roadSidePatch.SetPosition(
+                    left: (Constants.DEFAULT_SCENE_WIDTH / 2 - roadSidePatch.Width),
+                    top: roadSidePatch.Height * -1,
+                    z: 0);
+
+                return true;
+            }
+
+            return false;
+        }
+
         private bool GenerateRoadSidePatchBottom()
         {
             if (_scene_game.Children.OfType<RoadSidePatch>().FirstOrDefault(x => x.IsAnimating == false) is RoadSidePatch roadSidePatch)
@@ -928,23 +944,6 @@ namespace HonkTrooper
                     left: (roadSidePatch.Height * -1),
                     top: (Constants.DEFAULT_SCENE_HEIGHT / 3.1 + roadSidePatch.Height / 2),
                     z: 0);
-
-                return true;
-            }
-
-            return false;
-        }
-
-        private bool GenerateRoadSidePatchTop()
-        {
-            if (_scene_game.Children.OfType<RoadSidePatch>().FirstOrDefault(x => x.IsAnimating == false) is RoadSidePatch roadSidePatch)
-            {
-                roadSidePatch.IsAnimating = true;
-
-                roadSidePatch.SetPosition(
-                    left: (Constants.DEFAULT_SCENE_WIDTH / 2 - roadSidePatch.Width),
-                    top: roadSidePatch.Height * -1,
-                    z: 2);
 
                 return true;
             }
@@ -977,15 +976,15 @@ namespace HonkTrooper
 
         #endregion
 
-        #region Tree
+        #region RoadSideTree
 
-        private bool SpawnTrees()
+        private bool SpawnRoadSideTrees()
         {
             for (int i = 0; i < 10; i++)
             {
-                Tree tree = new(
-                    animateAction: AnimateTree,
-                    recycleAction: RecycleTree);
+                RoadSideTree tree = new(
+                    animateAction: AnimateRoadSideTree,
+                    recycleAction: RecycleRoadSideTree);
 
                 tree.SetPosition(
                     left: -3000,
@@ -999,9 +998,9 @@ namespace HonkTrooper
             return true;
         }
 
-        private bool GenerateTreeTop()
+        private bool GenerateRoadSideTreeTop()
         {
-            if (_scene_game.Children.OfType<Tree>().FirstOrDefault(x => x.IsAnimating == false) is Tree tree)
+            if (_scene_game.Children.OfType<RoadSideTree>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideTree tree)
             {
                 tree.IsAnimating = true;
 
@@ -1012,7 +1011,7 @@ namespace HonkTrooper
 
                 SyncDropShadow(tree);
 
-                LoggerExtensions.Log("Tree generated.");
+                LoggerExtensions.Log("RoadSideTree generated.");
 
                 return true;
             }
@@ -1020,9 +1019,9 @@ namespace HonkTrooper
             return false;
         }
 
-        private bool GenerateTreeBottom()
+        private bool GenerateRoadSideTreeBottom()
         {
-            if (_scene_game.Children.OfType<Tree>().FirstOrDefault(x => x.IsAnimating == false) is Tree tree)
+            if (_scene_game.Children.OfType<RoadSideTree>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideTree tree)
             {
                 tree.IsAnimating = true;
 
@@ -1039,14 +1038,14 @@ namespace HonkTrooper
             return false;
         }
 
-        private bool AnimateTree(Construct tree)
+        private bool AnimateRoadSideTree(Construct tree)
         {
             var speed = (_scene_game.Speed + tree.SpeedOffset);
             MoveConstructBottomRight(construct: tree, speed: speed);
             return true;
         }
 
-        private bool RecycleTree(Construct tree)
+        private bool RecycleRoadSideTree(Construct tree)
         {
             var hitBox = tree.GetHitBox();
 
@@ -1068,7 +1067,7 @@ namespace HonkTrooper
 
         private bool SpawnRoadSideHedges()
         {
-            for (int i = 0; i < 15; i++)
+            for (int i = 0; i < 14; i++)
             {
                 RoadSideHedge hedge = new(
                     animateAction: AnimateRoadSideHedge,
@@ -1136,6 +1135,93 @@ namespace HonkTrooper
                 hedge.IsAnimating = false;
 
                 hedge.SetPosition(
+                    left: -3000,
+                    top: -3000);
+            }
+
+            return true;
+        }
+
+        #endregion
+
+        #region RoadSideLamp
+
+        private bool SpawnRoadSideLamps()
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                RoadSideLamp roadSideLamp = new(
+                    animateAction: AnimateRoadSideLamp,
+                    recycleAction: RecycleRoadSideLamp);
+
+                roadSideLamp.SetPosition(
+                    left: -3000,
+                    top: -3000);
+
+                _scene_game.AddToScene(roadSideLamp);
+
+                SpawnDropShadow(source: roadSideLamp);
+            }
+
+            return true;
+        }
+
+        private bool GenerateRoadSideLampTop()
+        {
+            if (_scene_game.Children.OfType<RoadSideLamp>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideLamp roadSideLamp)
+            {
+                roadSideLamp.IsAnimating = true;
+
+                roadSideLamp.SetPosition(
+                  left: (Constants.DEFAULT_SCENE_WIDTH / 2.40 - roadSideLamp.Width) + 5,
+                  top: ((roadSideLamp.Height * 1.5) * -1) + 5,
+                  z: 3);
+
+                SyncDropShadow(roadSideLamp);
+
+                LoggerExtensions.Log("RoadSideLamp generated.");
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool GenerateRoadSideLampBottom()
+        {
+            if (_scene_game.Children.OfType<RoadSideLamp>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideLamp tree)
+            {
+                tree.IsAnimating = true;
+
+                tree.SetPosition(
+                  left: (-1.9 * tree.Width),
+                  top: (Constants.DEFAULT_SCENE_HEIGHT / 3),
+                  z: 4);
+
+                SyncDropShadow(tree);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimateRoadSideLamp(Construct roadSideLamp)
+        {
+            var speed = (_scene_game.Speed + roadSideLamp.SpeedOffset);
+            MoveConstructBottomRight(construct: roadSideLamp, speed: speed);
+            return true;
+        }
+
+        private bool RecycleRoadSideLamp(Construct roadSideLamp)
+        {
+            var hitBox = roadSideLamp.GetHitBox();
+
+            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left > Constants.DEFAULT_SCENE_WIDTH)
+            {
+                roadSideLamp.IsAnimating = false;
+
+                roadSideLamp.SetPosition(
                     left: -3000,
                     top: -3000);
             }
@@ -3094,6 +3180,16 @@ namespace HonkTrooper
 
             _scene_game.AddToScene(
 
+                new Generator(
+                   generationDelay: 90,
+                   generationAction: GenerateRoadSideLampTop,
+                   startUpAction: SpawnRoadSideLamps),
+
+                new Generator(
+                   generationDelay: 90,
+                   generationAction: GenerateRoadSideLampBottom,
+                   startUpAction: SpawnRoadSideLamps),
+
                 // add road side patches
                 new Generator(
                     generationDelay: 60,
@@ -3105,23 +3201,17 @@ namespace HonkTrooper
                    generationAction: GenerateRoadSidePatchTop,
                    startUpAction: SpawnRoadSidePatchs),
 
-                // then add road marks
-                new Generator(
-                    generationDelay: 30,
-                    generationAction: GenerateRoadMark,
-                    startUpAction: SpawnRoadMarks),
-
                 // then add the top trees
                 new Generator(
                     generationDelay: 30,
-                    generationAction: GenerateTreeTop,
-                    startUpAction: SpawnTrees),
+                    generationAction: GenerateRoadSideTreeTop,
+                    startUpAction: SpawnRoadSideTrees),
 
                 // then add the bottom trees which will appear forward in z wrt to the vehicles
                 new Generator(
                     generationDelay: 30,
-                    generationAction: GenerateTreeBottom,
-                    startUpAction: SpawnTrees),
+                    generationAction: GenerateRoadSideTreeBottom,
+                    startUpAction: SpawnRoadSideTrees),
 
                 // then add the top RoadSideHedges
                 new Generator(
@@ -3134,6 +3224,12 @@ namespace HonkTrooper
                     generationDelay: 12,
                     generationAction: GenerateRoadSideHedgeBottom,
                     startUpAction: SpawnRoadSideHedges),
+
+                // then add road marks
+                new Generator(
+                    generationDelay: 30,
+                    generationAction: GenerateRoadMark,
+                    startUpAction: SpawnRoadMarks),
 
                 // then add the vehicles which will appear forward in z wrt the top trees
                 new Generator(
@@ -3204,6 +3300,17 @@ namespace HonkTrooper
                     startUpAction: SpawnPlayerRocketSeekings),
 
                 new Generator(
+                    generationDelay: 180,
+                    generationAction: GenerateUfoEnemy,
+                    startUpAction: SpawnUfoEnemys,
+                    randomizeGenerationDelay: true),
+
+                 new Generator(
+                    generationDelay: 0,
+                    generationAction: () => { return true; },
+                    startUpAction: SpawnUfoEnemyRockets),
+
+                 new Generator(
                     generationDelay: 600,
                     generationAction: GenerateHealthPickups,
                     startUpAction: SpawnHealthPickups,
@@ -3213,18 +3320,7 @@ namespace HonkTrooper
                     generationDelay: 600,
                     generationAction: GeneratePowerUpPickups,
                     startUpAction: SpawnPowerUpPickups,
-                    randomizeGenerationDelay: true),
-
-                new Generator(
-                    generationDelay: 180,
-                    generationAction: GenerateUfoEnemy,
-                    startUpAction: SpawnUfoEnemys,
-                    randomizeGenerationDelay: true),
-
-                 new Generator(
-                    generationDelay: 0,
-                    generationAction: () => { return true; },
-                    startUpAction: SpawnUfoEnemyRockets)
+                    randomizeGenerationDelay: true)
                 );
 
             _scene_main_menu.AddToScene(
@@ -3327,8 +3423,6 @@ namespace HonkTrooper
             }
 
             RepositionHoveringTitleScreens();
-            RepositionLogicalConstructs();
-
             LoggerExtensions.Log($"{ScreenExtensions.Width} x {ScreenExtensions.Height}");
         }
 

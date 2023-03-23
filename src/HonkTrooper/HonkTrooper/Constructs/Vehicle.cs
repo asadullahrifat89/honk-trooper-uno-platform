@@ -133,7 +133,8 @@ namespace HonkTrooper
 
                         SetPosition(
                             left: lane == 0 ? 0 : (xLaneWidth - Width / 2),
-                            top: Height * -1);
+                            top: Height * -1,
+                            z: 3);
                     }
                     break;
                 case 1:
@@ -142,7 +143,8 @@ namespace HonkTrooper
 
                         SetPosition(
                             left: Width * -1,
-                            top: lane == 0 ? 0 : (yLaneHeight));
+                            top: lane == 0 ? 0 : (yLaneHeight),
+                            z: 3);
                     }
                     break;
                 default:

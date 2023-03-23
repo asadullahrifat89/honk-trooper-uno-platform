@@ -40,14 +40,16 @@ namespace HonkTrooper
 
             new (ConstructType.CLOUD, 260, 260),
 
-            new (ConstructType.TREE, 190, 190),
-            new (ConstructType.ROAD_SIDE_HEDGE, 160, 160),
-
             new (ConstructType.HONK, 90, 90),
 
             new (ConstructType.ROAD_MARK, 15, 40),
+
+            new (ConstructType.ROAD_SIDE_TREE, 190, 190),
+            new (ConstructType.ROAD_SIDE_HEDGE, 160, 160),
+
             new (ConstructType.ROAD_SIDE_PATCH, 100, 300),
-            new (ConstructType.ROAD_SIDE_STRIPE, 15, 300),
+            new (ConstructType.ROAD_SIDE_STRIPE, 15, 300),            
+            new (ConstructType.ROAD_SIDE_LAMP, 150, 150),
 
             new (ConstructType.DROP_SHADOW, 60, 25),
 
@@ -60,12 +62,14 @@ namespace HonkTrooper
 
         public static (ConstructType ConstructType, Uri Uri)[] CONSTRUCT_TEMPLATES = new (ConstructType, Uri)[]
         {
-            new (ConstructType.TREE, new Uri("ms-appx:///HonkTrooper/Assets/Images/tree_1.png")),
-            new (ConstructType.TREE, new Uri("ms-appx:///HonkTrooper/Assets/Images/tree_2.png")),
-            new (ConstructType.TREE, new Uri("ms-appx:///HonkTrooper/Assets/Images/tree_3.png")),
-            new (ConstructType.TREE, new Uri("ms-appx:///HonkTrooper/Assets/Images/tree_4.png")),
+            new (ConstructType.ROAD_SIDE_TREE, new Uri("ms-appx:///HonkTrooper/Assets/Images/tree_1.png")),
+            new (ConstructType.ROAD_SIDE_TREE, new Uri("ms-appx:///HonkTrooper/Assets/Images/tree_2.png")),
+            new (ConstructType.ROAD_SIDE_TREE, new Uri("ms-appx:///HonkTrooper/Assets/Images/tree_3.png")),
+            new (ConstructType.ROAD_SIDE_TREE, new Uri("ms-appx:///HonkTrooper/Assets/Images/tree_4.png")),
 
-            new (ConstructType.ROAD_SIDE_HEDGE, new Uri("ms-appx:///HonkTrooper/Assets/Images/hedge_E.png")),
+            new (ConstructType.ROAD_SIDE_LAMP, new Uri("ms-appx:///HonkTrooper/Assets/Images/street_lamp_1.png")),
+
+            new (ConstructType.ROAD_SIDE_HEDGE, new Uri("ms-appx:///HonkTrooper/Assets/Images/hedge_1.png")),            
 
             new (ConstructType.VEHICLE_SMALL, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_small_1.png")),
             new (ConstructType.VEHICLE_SMALL, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_small_2.png")),
@@ -240,8 +244,9 @@ namespace HonkTrooper
         ROAD_MARK,
         ROAD_SIDE_PATCH,
 
-        TREE,
+        ROAD_SIDE_TREE,
         ROAD_SIDE_HEDGE,
+        ROAD_SIDE_LAMP,
 
         HONK,
 
