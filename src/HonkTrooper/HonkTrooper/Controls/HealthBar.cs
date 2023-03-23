@@ -80,6 +80,11 @@ namespace HonkTrooper
             _bar.Maximum = value;
         }
 
+        public double GetMaxiumHealth()
+        {
+            return _bar.Maximum;
+        }
+
         public void SetValue(double value)
         {
             _bar.Value = value;
