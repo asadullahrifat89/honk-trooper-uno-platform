@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace HonkTrooper
 {
-    public partial class RoadSideBillboard : Construct
+    public partial class RoadSideLamp : Construct
     {
         #region Fields
 
@@ -16,15 +16,15 @@ namespace HonkTrooper
 
         #region Ctor
 
-        public RoadSideBillboard(
+        public RoadSideLamp(
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction)
         {
-            ConstructType = ConstructType.ROAD_SIDE_BILLBOARD;
+            ConstructType = ConstructType.ROAD_SIDE_LAMP;
 
-            _tree_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.ROAD_SIDE_BILLBOARD).Select(x => x.Uri).ToArray();
+            _tree_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.ROAD_SIDE_LAMP).Select(x => x.Uri).ToArray();
 
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.ROAD_SIDE_BILLBOARD);
+            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.ROAD_SIDE_LAMP);
 
             var width = size.Width;
             var height = size.Height;
