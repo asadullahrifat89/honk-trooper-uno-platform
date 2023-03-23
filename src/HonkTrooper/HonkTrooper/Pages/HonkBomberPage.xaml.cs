@@ -1067,7 +1067,7 @@ namespace HonkTrooper
 
         private bool SpawnRoadSideHedges()
         {
-            for (int i = 0; i < 12; i++)
+            for (int i = 0; i < 14; i++)
             {
                 RoadSideHedge hedge = new(
                     animateAction: AnimateRoadSideHedge,
@@ -1173,8 +1173,8 @@ namespace HonkTrooper
                 roadSideLamp.IsAnimating = true;
 
                 roadSideLamp.SetPosition(
-                  left: (Constants.DEFAULT_SCENE_WIDTH / 2.40 - roadSideLamp.Width),
-                  top: (roadSideLamp.Height * 1.5) * -1,
+                  left: (Constants.DEFAULT_SCENE_WIDTH / 2.40 - roadSideLamp.Width) + 5,
+                  top: ((roadSideLamp.Height * 1.5) * -1) + 5,
                   z: 3);
 
                 SyncDropShadow(roadSideLamp);
@@ -1187,24 +1187,24 @@ namespace HonkTrooper
             return false;
         }
 
-        //private bool GenerateRoadSideLampBottom()
-        //{
-        //    if (_scene_game.Children.OfType<RoadSideLamp>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideLamp tree)
-        //    {
-        //        tree.IsAnimating = true;
+        private bool GenerateRoadSideLampBottom()
+        {
+            if (_scene_game.Children.OfType<RoadSideLamp>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideLamp tree)
+            {
+                tree.IsAnimating = true;
 
-        //        tree.SetPosition(
-        //          left: (-1 * tree.Width),
-        //          top: (Constants.DEFAULT_SCENE_HEIGHT / 3),
-        //          z: 4);
+                tree.SetPosition(
+                  left: (-1.9 * tree.Width),
+                  top: (Constants.DEFAULT_SCENE_HEIGHT / 3),
+                  z: 4);
 
-        //        SyncDropShadow(tree);
+                SyncDropShadow(tree);
 
-        //        return true;
-        //    }
+                return true;
+            }
 
-        //    return false;
-        //}
+            return false;
+        }
 
         private bool AnimateRoadSideLamp(Construct roadSideLamp)
         {
@@ -3180,9 +3180,14 @@ namespace HonkTrooper
 
             _scene_game.AddToScene(
 
-                  new Generator(
-                   generationDelay: 30 * 3,
+                new Generator(
+                   generationDelay: 90,
                    generationAction: GenerateRoadSideLampTop,
+                   startUpAction: SpawnRoadSideLamps),
+
+                new Generator(
+                   generationDelay: 90,
+                   generationAction: GenerateRoadSideLampBottom,
                    startUpAction: SpawnRoadSideLamps),
 
                 // add road side patches
