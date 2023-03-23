@@ -51,6 +51,7 @@
     <None Remove="Assets\Fonts\CuteDolphin.ttf" />
     <None Remove="Assets\Fonts\CuteyPatchy.ttf" />
     <None Remove="Assets\Fonts\Gameplay.ttf" />
+    <None Remove="Assets\Images\billboard_1.png" />
     <None Remove="Assets\Images\UFO_BOSS_3_hit.png" />
     <None Remove="Assets\Images\UFO_BOSS_3_idle.png" />
     <None Remove="Assets\Images\UFO_BOSS_3_win.png" />
