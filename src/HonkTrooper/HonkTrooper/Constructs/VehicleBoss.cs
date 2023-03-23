@@ -51,7 +51,7 @@ namespace HonkTrooper
             };
 
             SetChild(_content_image);
-           
+
             IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
         }
 
@@ -88,6 +88,36 @@ namespace HonkTrooper
             SetHonkDelay();
         }
 
+        public void Reposition()
+        {
+            var topOrLeft = _random.Next(2); // generate top and left corner lane wise vehicles
+            var lane = _random.Next(2); // generate number of lanes based of screen height
+
+            switch (topOrLeft)
+            {
+                case 0:
+                    {
+                        var xLaneWidth = Constants.DEFAULT_SCENE_WIDTH / 4;
+
+                        SetPosition(
+                            left: lane == 0 ? 0 : (xLaneWidth - Width / 2),
+                            top: Height * -1);
+                    }
+                    break;
+                case 1:
+                    {
+                        var yLaneHeight = Constants.DEFAULT_SCENE_HEIGHT / 6;
+
+                        SetPosition(
+                            left: Width * -1,
+                            top: lane == 0 ? 0 : (yLaneHeight));
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
         public bool Honk()
         {
             if (Scene.IsSlowMotionActivated)
@@ -117,9 +147,9 @@ namespace HonkTrooper
         private void RandomizeMovementPattern()
         {
             SpeedOffset = _random.Next(-1, 4);
-
-            _changeMovementPatternDelay = _random.Next(40, 60);
             MovementPattern = (VehicleBossMovementPattern)_random.Next(Enum.GetNames(typeof(VehicleBossMovementPattern)).Length);
+
+            _changeMovementPatternDelay = _random.Next(40, 60);            
             _movementDirection = MovementDirection.None;
         }
 
@@ -147,9 +177,9 @@ namespace HonkTrooper
             //}
 
             MoveUpLeftDownRight(
-                       speed: speed,
-                       sceneWidth: sceneWidth,
-                       sceneHeight: sceneHeight);
+                speed: speed,
+                sceneWidth: sceneWidth,
+                sceneHeight: sceneHeight);
         }
 
         private bool MoveUpLeftDownRight(double speed, double sceneWidth, double sceneHeight)
@@ -177,8 +207,10 @@ namespace HonkTrooper
                 {
                     MoveUpLeft(speed);
 
-                    if (GetTop() < 0 || GetLeft() < 0)
+                    if (GetBottom() < 0 || GetRight() < 0)
                     {
+                        Reposition();
+
                         _movementDirection = MovementDirection.DownRight;
                     }
                 }
@@ -188,7 +220,7 @@ namespace HonkTrooper
                     {
                         MoveDownRight(speed);
 
-                        if (GetRight() > sceneWidth || GetBottom() > sceneHeight)
+                        if (GetLeft() > sceneWidth || GetTop() > sceneHeight)
                         {
                             _movementDirection = MovementDirection.UpLeft;
                         }
