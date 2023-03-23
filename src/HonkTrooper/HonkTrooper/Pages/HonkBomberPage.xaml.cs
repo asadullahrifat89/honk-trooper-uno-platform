@@ -1173,8 +1173,8 @@ namespace HonkTrooper
                 roadSideLamp.IsAnimating = true;
 
                 roadSideLamp.SetPosition(
-                  left: (Constants.DEFAULT_SCENE_WIDTH / 2.8 - roadSideLamp.Width),
-                  top: (roadSideLamp.Height * 1.3) * -1,
+                  left: (Constants.DEFAULT_SCENE_WIDTH / 2.40 - roadSideLamp.Width),
+                  top: (roadSideLamp.Height * 1.5) * -1,
                   z: 3);
 
                 SyncDropShadow(roadSideLamp);
