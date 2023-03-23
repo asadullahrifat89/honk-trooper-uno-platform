@@ -1,6 +1,6 @@
 # Honk-Trooper
 
-An  isometric bomber shooter game where your goal is to bomb as many honking cars as possible.
+An isometric arcade bomber shooter game built with Uno Platform & WebAssembly.
 
 Play here: https://asadullahrifat89.github.io/honk-trooper-uno-platform/
 
@@ -26,8 +26,7 @@ This is used to intercept user input from the keyboard and touch-screen. It expo
 
 ## Screenshots
 
-![localhost_5000_(iPad Mini)](https://user-images.githubusercontent.com/25480176/224575848-22fc9fca-7938-4d14-b7df-9d68dc97e234.png)
-![localhost_5000_(iPad Mini)2](https://user-images.githubusercontent.com/25480176/224575851-56d698a7-33aa-4512-9697-654376852cb1.png)
-![localhost_5000_(iPad Mini)3](https://user-images.githubusercontent.com/25480176/224575855-1054284e-712b-452d-9a46-9ec8205fc73d.png)
-![localhost_5000_(iPad Mini)4](https://user-images.githubusercontent.com/25480176/224575858-5c968d73-dd2d-4d88-acca-95bdc02f8ca5.png)
-![localhost_5000_(iPad Mini)5](https://user-images.githubusercontent.com/25480176/224575866-22f5d5fa-b5ba-47ce-9b7a-c433e8bc802d.png)
+![1](https://user-images.githubusercontent.com/25480176/227133683-c3324fa9-3576-4b7e-a310-61852cea83f4.png)
+![2](https://user-images.githubusercontent.com/25480176/227133696-260e2104-655b-4cc1-a275-d1a4a504e2f6.png)
+![3](https://user-images.githubusercontent.com/25480176/227133713-345aa366-9506-488b-8a55-5fae91a218d3.png)
+![4](https://user-images.githubusercontent.com/25480176/227133719-b68d4353-1cb0-434f-99be-0498349c11ee.png)
