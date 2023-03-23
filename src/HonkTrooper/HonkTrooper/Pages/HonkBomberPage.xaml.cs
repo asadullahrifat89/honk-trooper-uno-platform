@@ -3179,7 +3179,7 @@ namespace HonkTrooper
                     randomizeGenerationDelay: true),
 
                 new Generator(
-                    generationDelay: 10,
+                    generationDelay: 40,
                     generationAction: GenerateUfoBossRocket,
                     startUpAction: SpawnUfoBossRockets,
                     randomizeGenerationDelay: true),
