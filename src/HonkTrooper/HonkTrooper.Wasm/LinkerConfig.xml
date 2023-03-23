@@ -1,6 +1,7 @@
 ﻿<linker>
   <assembly fullname="HonkTrooper.Wasm" />
   <assembly fullname="Microsoft.Extensions.Options" />
+  <assembly fullname="WebAssembly.Bindings" />
 
 	<!-- 
   Uncomment this section when using JSON.NET
@@ -8,4 +9,7 @@
 	  <type fullname="System.Linq.Expressions*" />
   </assembly>
    -->
+  <assembly fullname="System.Core">
+    <type fullname="System.Linq.Expressions*" />
+  </assembly>
 </linker>
