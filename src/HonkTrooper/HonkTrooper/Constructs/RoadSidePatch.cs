@@ -26,7 +26,9 @@ namespace HonkTrooper
             AnimateAction = animateAction;
             RecycleAction = recycleAction;
 
-            Background = new SolidColorBrush(Colors.White);
+            Background = App.Current.Resources["RoadSidePatchColor"] as SolidColorBrush;
+            BorderBrush = App.Current.Resources["RoadSidePatchBorderColor"] as SolidColorBrush;
+            BorderThickness = new Thickness(30);
             CornerRadius = new CornerRadius(5);
 
             SetSkewY(42);
