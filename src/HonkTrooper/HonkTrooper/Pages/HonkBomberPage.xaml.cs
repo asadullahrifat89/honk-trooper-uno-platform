@@ -1231,6 +1231,93 @@ namespace HonkTrooper
 
         #endregion
 
+        #region RoadSideBillboard
+
+        private bool SpawnRoadSideBillboards()
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                RoadSideBillboard roadSideBillboard = new(
+                    animateAction: AnimateRoadSideBillboard,
+                    recycleAction: RecycleRoadSideBillboard);
+
+                roadSideBillboard.SetPosition(
+                    left: -3000,
+                    top: -3000);
+
+                _scene_game.AddToScene(roadSideBillboard);
+
+                SpawnDropShadow(source: roadSideBillboard);
+            }
+
+            return true;
+        }
+
+        private bool GenerateRoadSideBillboardTop()
+        {
+            if (_scene_game.Children.OfType<RoadSideBillboard>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideBillboard roadSideBillboard)
+            {
+                roadSideBillboard.IsAnimating = true;
+
+                roadSideBillboard.SetPosition(
+                  left: (Constants.DEFAULT_SCENE_WIDTH / 2.1 - roadSideBillboard.Width) - 10,
+                  top: ((roadSideBillboard.Height * 1.5) * -1) - 10,
+                  z: 2);
+
+                SyncDropShadow(roadSideBillboard);
+
+                LoggerExtensions.Log("RoadSideBillboard generated.");
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool GenerateRoadSideBillboardBottom()
+        {
+            if (_scene_game.Children.OfType<RoadSideBillboard>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideBillboard tree)
+            {
+                tree.IsAnimating = true;
+
+                tree.SetPosition(
+                  left: (-1.9 * tree.Width),
+                  top: (Constants.DEFAULT_SCENE_HEIGHT / 3),
+                  z: 4);
+
+                SyncDropShadow(tree);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimateRoadSideBillboard(Construct roadSideBillboard)
+        {
+            var speed = (_scene_game.Speed + roadSideBillboard.SpeedOffset);
+            MoveConstructBottomRight(construct: roadSideBillboard, speed: speed);
+            return true;
+        }
+
+        private bool RecycleRoadSideBillboard(Construct roadSideBillboard)
+        {
+            var hitBox = roadSideBillboard.GetHitBox();
+
+            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left > Constants.DEFAULT_SCENE_WIDTH)
+            {
+                roadSideBillboard.IsAnimating = false;
+
+                roadSideBillboard.SetPosition(
+                    left: -3000,
+                    top: -3000);
+            }
+
+            return true;
+        }
+
+        #endregion
+
         #region Honk
 
         private bool SpawnHonks()
@@ -3179,6 +3266,11 @@ namespace HonkTrooper
                 startUpAction: SpawnRoadSideStripes));
 
             _scene_game.AddToScene(
+
+                  new Generator(
+                   generationDelay: 120,
+                   generationAction: GenerateRoadSideBillboardTop,
+                   startUpAction: SpawnRoadSideBillboards),
 
                 new Generator(
                    generationDelay: 90,
