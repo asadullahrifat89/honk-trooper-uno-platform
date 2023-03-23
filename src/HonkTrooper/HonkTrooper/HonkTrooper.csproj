@@ -96,6 +96,7 @@
     <None Remove="Assets\Images\vehicle_7.png" />
     <None Remove="Assets\Images\vehicle_8.png" />
     <None Remove="Assets\Images\vehicle_9.png" />
+    <None Remove="Assets\Images\vehicle_boss_rocket_1.png" />
     <None Remove="Assets\Sounds\ambience_1.mp3" />
     <None Remove="Assets\Sounds\ambience_2.mp3" />
     <None Remove="Assets\Sounds\ambience_3.mp3" />
