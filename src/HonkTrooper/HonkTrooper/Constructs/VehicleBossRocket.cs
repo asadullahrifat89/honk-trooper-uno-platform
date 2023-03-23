@@ -5,7 +5,7 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace HonkTrooper
 {
-    public partial class UfoBossRocket : Rocket
+    public partial class VehicleBossRocket : Rocket
     {
         #region Fields
 
@@ -25,18 +25,18 @@ namespace HonkTrooper
 
         #region Ctor
 
-        public UfoBossRocket(
+        public VehicleBossRocket(
            Func<Construct, bool> animateAction,
            Func<Construct, bool> recycleAction)
         {
-            ConstructType = ConstructType.UFO_BOSS_ROCKET;
+            ConstructType = ConstructType.VEHICLE_BOSS_ROCKET;
 
             _random = new Random();
 
-            _bomb_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.UFO_BOSS_ROCKET).Select(x => x.Uri).ToArray();
+            _bomb_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.VEHICLE_BOSS_ROCKET).Select(x => x.Uri).ToArray();
             _bomb_blast_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BOMB_BLAST).Select(x => x.Uri).ToArray();
 
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.UFO_BOSS_ROCKET);
+            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.VEHICLE_BOSS_ROCKET);            
 
             var width = size.Width;
             var height = size.Height;
@@ -57,7 +57,7 @@ namespace HonkTrooper
 
             IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET - 2;
-            DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE + 10;
+            //DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE + 10;
 
             _audioStub = new AudioStub((SoundType.ROCKET_LAUNCH, 0.3, false), (SoundType.ROCKET_BLAST, 1, false));
         }
@@ -66,11 +66,11 @@ namespace HonkTrooper
 
         #region Methods
 
-        public void Reposition(UfoBoss UfoBoss)
+        public void Reposition(VehicleBoss vehicleBoss)
         {
             SetPosition(
-                left: (UfoBoss.GetLeft() + UfoBoss.Width / 2) - Width / 2,
-                top: UfoBoss.GetBottom() - (75),
+                left: (vehicleBoss.GetLeft() + vehicleBoss.Width / 2) - Width / 2,
+                top: vehicleBoss.GetTop(),
                 z: 7);
         }
 
