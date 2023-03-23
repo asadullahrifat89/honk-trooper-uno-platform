@@ -683,7 +683,6 @@ namespace HonkTrooper
                 vehicle.IsAnimating = true;
                 vehicle.Reset();
                 vehicle.Reposition();
-                vehicle.SetZ(3);
 
                 return true;
             }
@@ -1145,42 +1144,42 @@ namespace HonkTrooper
 
         #endregion
 
-        #region RoadSideBillboard
+        #region RoadSideLamp
 
-        private bool SpawnRoadSideBillboards()
+        private bool SpawnRoadSideLamps()
         {
             for (int i = 0; i < 3; i++)
             {
-                RoadSideBillboard billboard = new(
-                    animateAction: AnimateRoadSideBillboard,
-                    recycleAction: RecycleRoadSideBillboard);
+                RoadSideLamp roadSideLamp = new(
+                    animateAction: AnimateRoadSideLamp,
+                    recycleAction: RecycleRoadSideLamp);
 
-                billboard.SetPosition(
+                roadSideLamp.SetPosition(
                     left: -3000,
                     top: -3000);
 
-                _scene_game.AddToScene(billboard);
+                _scene_game.AddToScene(roadSideLamp);
 
-                //SpawnDropShadow(source: tree);
+                SpawnDropShadow(source: roadSideLamp);
             }
 
             return true;
         }
 
-        private bool GenerateRoadSideBillboardTop()
+        private bool GenerateRoadSideLampTop()
         {
-            if (_scene_game.Children.OfType<RoadSideBillboard>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideBillboard billboard)
+            if (_scene_game.Children.OfType<RoadSideLamp>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideLamp roadSideLamp)
             {
-                billboard.IsAnimating = true;
+                roadSideLamp.IsAnimating = true;
 
-                billboard.SetPosition(
-                  left: (Constants.DEFAULT_SCENE_WIDTH / 1.8 - billboard.Width),
-                  top: (billboard.Height * 1.1) * -1,
-                  z: 1);
+                roadSideLamp.SetPosition(
+                  left: (Constants.DEFAULT_SCENE_WIDTH / 2.8 - roadSideLamp.Width),
+                  top: (roadSideLamp.Height * 1.3) * -1,
+                  z: 3);
 
-                //SyncDropShadow(tree);
+                SyncDropShadow(roadSideLamp);
 
-                LoggerExtensions.Log("RoadSideBillboard generated.");
+                LoggerExtensions.Log("RoadSideLamp generated.");
 
                 return true;
             }
@@ -1188,9 +1187,9 @@ namespace HonkTrooper
             return false;
         }
 
-        //private bool GenerateRoadSideBillboardBottom()
+        //private bool GenerateRoadSideLampBottom()
         //{
-        //    if (_scene_game.Children.OfType<RoadSideBillboard>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideBillboard tree)
+        //    if (_scene_game.Children.OfType<RoadSideLamp>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideLamp tree)
         //    {
         //        tree.IsAnimating = true;
 
@@ -1207,22 +1206,22 @@ namespace HonkTrooper
         //    return false;
         //}
 
-        private bool AnimateRoadSideBillboard(Construct billboard)
+        private bool AnimateRoadSideLamp(Construct roadSideLamp)
         {
-            var speed = (_scene_game.Speed + billboard.SpeedOffset);
-            MoveConstructBottomRight(construct: billboard, speed: speed);
+            var speed = (_scene_game.Speed + roadSideLamp.SpeedOffset);
+            MoveConstructBottomRight(construct: roadSideLamp, speed: speed);
             return true;
         }
 
-        private bool RecycleRoadSideBillboard(Construct billboard)
+        private bool RecycleRoadSideLamp(Construct roadSideLamp)
         {
-            var hitBox = billboard.GetHitBox();
+            var hitBox = roadSideLamp.GetHitBox();
 
             if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left > Constants.DEFAULT_SCENE_WIDTH)
             {
-                billboard.IsAnimating = false;
+                roadSideLamp.IsAnimating = false;
 
-                billboard.SetPosition(
+                roadSideLamp.SetPosition(
                     left: -3000,
                     top: -3000);
             }
@@ -3183,8 +3182,8 @@ namespace HonkTrooper
 
                   new Generator(
                    generationDelay: 30 * 3,
-                   generationAction: GenerateRoadSideBillboardTop,
-                   startUpAction: SpawnRoadSideBillboards),
+                   generationAction: GenerateRoadSideLampTop,
+                   startUpAction: SpawnRoadSideLamps),
 
                 // add road side patches
                 new Generator(
