@@ -1260,7 +1260,7 @@ namespace HonkTrooper
                 roadSideBillboard.IsAnimating = true;
 
                 roadSideBillboard.SetPosition(
-                  left: (Constants.DEFAULT_SCENE_WIDTH / 2.3 - roadSideBillboard.Width) - 10,
+                  left: (Constants.DEFAULT_SCENE_WIDTH / 2.5 - roadSideBillboard.Width) + 20,
                   top: ((roadSideBillboard.Height * 1.5) * -1) - 10,
                   z: 2);
 
