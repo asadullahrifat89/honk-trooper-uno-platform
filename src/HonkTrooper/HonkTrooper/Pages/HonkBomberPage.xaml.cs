@@ -584,13 +584,7 @@ namespace HonkTrooper
                 var count = _scene_game.Children.OfType<Vehicle>().Count(x => x.IsAnimating && x.WillHonk) + _scene_game.Children.OfType<UfoEnemy>().Count(x => x.IsAnimating && x.WillHonk);
                 _sound_pollution_health_bar.SetValue(count * 2);
 
-                var maxOpacity = 0.6;
-                var pollutionOpacity = (_sound_pollution_health_bar.GetValue() / _sound_pollution_max_limit * 100) * 0.01; ;
-
-                this.SoundPollutionOverlay.Opacity = pollutionOpacity <= maxOpacity ? pollutionOpacity : maxOpacity;
-
                 var scaling = ScreenExtensions.GetScreenSpaceScaling();
-
                 var speed = (_scene_game.Speed + _player.SpeedOffset);
 
                 _player.Move(
