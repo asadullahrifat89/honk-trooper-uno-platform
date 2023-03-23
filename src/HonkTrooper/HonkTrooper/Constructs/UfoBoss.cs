@@ -590,8 +590,9 @@ namespace HonkTrooper
 
         private void RandomizeMovementPattern()
         {
-            _changeMovementPatternDelay = _random.Next(40, 60);
             MovementPattern = (UfoBossMovementPattern)_random.Next(Enum.GetNames(typeof(UfoBossMovementPattern)).Length);
+
+            _changeMovementPatternDelay = _random.Next(40, 60);            
             _movementDirection = MovementDirection.None;
         }
 
