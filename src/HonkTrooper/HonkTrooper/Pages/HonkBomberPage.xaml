@@ -26,9 +26,21 @@
             BorderBrush="#111111"
             BorderThickness="3">
             <Border.Background>
-                <LinearGradientBrush Opacity="0.35" StartPoint="1,0" EndPoint="0.5,1">
-                    <GradientStop Offset="0.00" Color="Goldenrod" />
-                    <GradientStop Offset="0.35" Color="Transparent" />
+                <LinearGradientBrush Opacity="1" StartPoint="1,0" EndPoint="0.5,1">
+                    <GradientStop Offset="0.00" Color="#2f3a5a" />
+                    <GradientStop Offset="0.20" Color="Transparent" />
+                </LinearGradientBrush>
+            </Border.Background>
+        </Border>
+
+        <Border
+            x:Name="SunRayOverlay2"
+            BorderBrush="#111111"
+            BorderThickness="3">
+            <Border.Background>
+                <LinearGradientBrush Opacity="1" StartPoint="0.5,1" EndPoint="1,0">
+                    <GradientStop Offset="0.00" Color="#2f3a5a" />
+                    <GradientStop Offset="0.20" Color="Transparent" />
                 </LinearGradientBrush>
             </Border.Background>
         </Border>-->
