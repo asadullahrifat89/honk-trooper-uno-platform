@@ -19,11 +19,14 @@
     <!-- XAML Resource trimming https://aka.platform.uno/xaml-trimming -->
     <!--<UnoXamlResourcesTrimming>true</UnoXamlResourcesTrimming>-->
     <!-- Improve performance with AOT builds https://aka.platform.uno/wasm-aot -->
-    <!--<WasmShellMonoRuntimeExecutionMode>InterpreterAndAOT</WasmShellMonoRuntimeExecutionMode>-->
+    <WasmShellMonoRuntimeExecutionMode>InterpreterAndAOT</WasmShellMonoRuntimeExecutionMode>
     <!-- Temporarily uncomment to generate an AOT profile https://aka.platform.uno/wasm-aot-profile -->
     <!--<WasmShellGenerateAOTProfile>true</WasmShellGenerateAOTProfile>-->
     <WasmPWAManifestFile>manifest.webmanifest</WasmPWAManifestFile>
   </PropertyGroup>
+  <ItemGroup>
+    <WasmShellEnableAotProfile Include="aot.profile" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\SplashScreen.png" />
 
