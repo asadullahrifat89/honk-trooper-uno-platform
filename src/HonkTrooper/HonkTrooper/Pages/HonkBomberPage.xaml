@@ -21,6 +21,13 @@
 
         <Scene x:Name="GameScene" Background="Transparent" />
 
+        <Border
+            x:Name="SoundPollutionOverlay"
+            Background="Crimson"
+            BorderBrush="#111111"
+            BorderThickness="3"
+            Opacity="0" />
+
         <Scene x:Name="MainMenuScene" Background="Transparent" />
 
         <Controller
