@@ -24,6 +24,7 @@ namespace HonkTrooper
         private readonly HealthBar _ufo_boss_health_bar;
         private readonly HealthBar _vehicle_boss_health_bar;
         private readonly HealthBar _powerUp_health_bar;
+        private readonly HealthBar _sound_pollution_health_bar;
 
         private readonly ScoreBar _game_score_bar;
         private readonly StackPanel _health_bars;
@@ -66,6 +67,7 @@ namespace HonkTrooper
             _ufo_boss_health_bar = this.UfoBossHealthBar;
             _vehicle_boss_health_bar = this.VehicleBossHealthBar;
             _powerUp_health_bar = this.PowerUpHealthBar;
+            _sound_pollution_health_bar = this.SoundPollutionBar;
 
             _game_controller = this.GameController;
             _game_score_bar = this.GameScoreBar;
@@ -168,12 +170,19 @@ namespace HonkTrooper
             _ufo_boss_health_bar.Reset();
             _vehicle_boss_health_bar.Reset();
 
+            _sound_pollution_health_bar.Reset();
+            _sound_pollution_health_bar.SetMaxiumHealth(10);
+            _sound_pollution_health_bar.SetIcon(Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.HONK).Uri);
+            _sound_pollution_health_bar.SetBarForegroundColor(color: Colors.Purple);
+
             _ufo_boss_threashold.Reset(_ufo_boss_threashold_limit);
             _vehicle_boss_threashold.Reset(_vehicle_boss_threashold_limit);
 
             _enemy_threashold.Reset(_enemy_threashold_limit);
             _enemy_kill_count = 0;
             _enemy_fleet_appeared = false;
+
+
 
             GeneratePlayerBalloon();
             RepositionLogicalConstructs();
@@ -575,6 +584,10 @@ namespace HonkTrooper
 
             if (_scene_game.SceneState == SceneState.GAME_RUNNING)
             {
+                var count = _scene_game.Children.OfType<Vehicle>().Count(x => x.IsAnimating && x.WillHonk) + _scene_game.Children.OfType<UfoEnemy>().Count(x => x.IsAnimating && x.WillHonk);
+
+                _sound_pollution_health_bar.SetValue(count * 2);
+
                 var scaling = ScreenExtensions.GetScreenSpaceScaling();
 
                 var speed = (_scene_game.Speed + _player.SpeedOffset);
