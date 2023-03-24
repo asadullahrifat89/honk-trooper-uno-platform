@@ -981,17 +981,17 @@ namespace HonkTrooper
         {
             for (int i = 0; i < 6; i++)
             {
-                RoadSideTree tree = new(
+                RoadSideTree roadSideTree = new(
                     animateAction: AnimateRoadSideTree,
                     recycleAction: RecycleRoadSideTree);
 
-                tree.SetPosition(
+                roadSideTree.SetPosition(
                     left: -3000,
                     top: -3000);
 
-                _scene_game.AddToScene(tree);
+                _scene_game.AddToScene(roadSideTree);
 
-                SpawnDropShadow(source: tree);
+                SpawnDropShadow(source: roadSideTree);
             }
 
             return true;
@@ -1055,22 +1055,22 @@ namespace HonkTrooper
             return true;
         }
 
-        private bool AnimateRoadSideTree(Construct tree)
+        private bool AnimateRoadSideTree(Construct roadSideTree)
         {
-            var speed = (_scene_game.Speed + tree.SpeedOffset);
-            MoveConstructBottomRight(construct: tree, speed: speed);
+            var speed = (_scene_game.Speed + roadSideTree.SpeedOffset);
+            MoveConstructBottomRight(construct: roadSideTree, speed: speed);
             return true;
         }
 
-        private bool RecycleRoadSideTree(Construct tree)
+        private bool RecycleRoadSideTree(Construct roadSideTree)
         {
-            var hitBox = tree.GetHitBox();
+            var hitBox = roadSideTree.GetHitBox();
 
-            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - tree.Width > Constants.DEFAULT_SCENE_WIDTH)
+            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSideTree.Width > Constants.DEFAULT_SCENE_WIDTH)
             {
-                tree.IsAnimating = false;
+                roadSideTree.IsAnimating = false;
 
-                tree.SetPosition(
+                roadSideTree.SetPosition(
                     left: -3000,
                     top: -3000);
             }
@@ -3208,8 +3208,6 @@ namespace HonkTrooper
 
         private void MoveConstructBottomRight(Construct construct, double speed)
         {
-            //speed *= _scene_game.DownScaling;
-
             if (_scene_game.IsSlowMotionActivated)
                 speed /= Constants.DEFAULT_SLOW_MOTION_REDUCTION_FACTOR;
 
