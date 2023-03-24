@@ -30,6 +30,7 @@ namespace HonkTrooper
 
             SetSkewY(42);
             SetRotation(-63.5);
+            CornerRadius = 5;
 
             IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;
