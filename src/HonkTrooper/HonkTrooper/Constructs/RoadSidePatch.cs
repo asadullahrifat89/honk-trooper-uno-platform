@@ -1,6 +1,5 @@
 ﻿using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml;
-using Microsoft.UI;
 using System;
 using System.Linq;
 
@@ -29,7 +28,7 @@ namespace HonkTrooper
             Background = App.Current.Resources["RoadSidePatchColor"] as SolidColorBrush;
             BorderBrush = App.Current.Resources["RoadSidePatchBorderColor"] as SolidColorBrush;
             BorderThickness = new Thickness(10);
-            CornerRadius = new CornerRadius(5);
+            CornerRadius = new CornerRadius(2);
 
             SetSkewY(42);
             SetRotation(-63.5);

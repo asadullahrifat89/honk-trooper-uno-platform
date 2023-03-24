@@ -42,13 +42,13 @@ namespace HonkTrooper
 
             new (ConstructType.HONK, 90, 90),
 
-            new (ConstructType.ROAD_MARK, 15, 180),
-            new (ConstructType.ROAD_SIDE_STRIPE, 15, 180),
+            new (ConstructType.ROAD_MARK, 15, 100),
+            new (ConstructType.ROAD_SIDE_PATCH_SLOPE, 15, 260),
 
             new (ConstructType.ROAD_SIDE_TREE, 190, 190),
             new (ConstructType.ROAD_SIDE_HEDGE, 160, 160),
 
-            new (ConstructType.ROAD_SIDE_PATCH, 270, 260),            
+            new (ConstructType.ROAD_SIDE_PATCH, 270, 260),
             new (ConstructType.ROAD_SIDE_LAMP, 150, 150),
             new (ConstructType.ROAD_SIDE_BILLBOARD, 340, 340),
 
@@ -204,7 +204,6 @@ namespace HonkTrooper
             new (SoundType.GAME_BACKGROUND_MUSIC, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/game_background_music_2.mp3")),
             new (SoundType.GAME_BACKGROUND_MUSIC, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/game_background_music_3.mp3")),
             new (SoundType.GAME_BACKGROUND_MUSIC, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/game_background_music_4.mp3")),
-            new (SoundType.GAME_BACKGROUND_MUSIC, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/game_background_music_5.mp3")),
 
             new (SoundType.UFO_BOSS_BACKGROUND_MUSIC, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/boss_background_music_1.mp3")),
             new (SoundType.UFO_BOSS_BACKGROUND_MUSIC, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/boss_background_music_2.mp3")),
@@ -244,7 +243,7 @@ namespace HonkTrooper
 
         VEHICLE_BOSS_ROCKET,
 
-        ROAD_SIDE_STRIPE,
+        ROAD_SIDE_PATCH_SLOPE,
         ROAD_MARK,
         ROAD_SIDE_PATCH,
 

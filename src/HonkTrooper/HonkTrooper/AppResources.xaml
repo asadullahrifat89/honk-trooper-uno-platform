@@ -15,6 +15,7 @@
     <SolidColorBrush x:Key="RoadForegroundColor" Color="#9b9391" />
     <SolidColorBrush x:Key="RoadSidePatchColor" Color="#958077" />
     <SolidColorBrush x:Key="RoadSidePatchBorderColor" Color="#f6f1eb" />
+    <SolidColorBrush x:Key="RoadSidePatchSlopeColor" Color="#c3bfba" />
 
     <SolidColorBrush x:Key="BorderColor" Color="#2f3a5a" />
 
