@@ -195,7 +195,7 @@ namespace HonkTrooper
 
             _game_controller.FocusAttackButton();
             _game_controller.SetDefaultThumbstickPosition();
-            _game_controller.ActivateGyrometerReading();            
+            _game_controller.ActivateGyrometerReading();
         }
 
         private void GameOver()
@@ -1084,7 +1084,7 @@ namespace HonkTrooper
 
         private bool SpawnRoadSideHedges()
         {
-            for (int i = 0; i < 14; i++)
+            for (int i = 0; i < 15; i++)
             {
                 RoadSideHedge hedge = new(
                     animateAction: AnimateRoadSideHedge,
@@ -1109,8 +1109,8 @@ namespace HonkTrooper
                 hedge.IsAnimating = true;
 
                 hedge.SetPosition(
-                  left: (Constants.DEFAULT_SCENE_WIDTH / 2 - hedge.Width * 2.3),
-                  top: hedge.Height * -1.1,
+                  left: (Constants.DEFAULT_SCENE_WIDTH / 3.8),
+                  top: hedge.Height * -1,
                   z: 2);
 
                 return true;
@@ -1127,7 +1127,7 @@ namespace HonkTrooper
 
                 hedge.SetPosition(
                   left: -1 * hedge.Width,
-                  top: (Constants.DEFAULT_SCENE_HEIGHT / 3 + hedge.Height / 3),
+                  top: (Constants.DEFAULT_SCENE_HEIGHT / 3.1),
                   z: 3);
 
                 return true;
@@ -3279,7 +3279,7 @@ namespace HonkTrooper
             new Generator(
                 generationDelay: 30,
                 generationAction: GenerateRoadMark,
-                startUpAction: SpawnRoadMarks),          
+                startUpAction: SpawnRoadMarks),
 
             new Generator(
                 generationDelay: 180,
@@ -3461,7 +3461,7 @@ namespace HonkTrooper
         {
             var scaling = ScreenExtensions.GetScreenSpaceScaling();
 
-            Console.WriteLine($"ScreenSpaceScaling: {scaling}");
+            LoggerExtensions.Log($"ScreenSpaceScaling: {scaling}");
 
             // resize the game scene
             _scene_game.Width = ScreenExtensions.Width;
