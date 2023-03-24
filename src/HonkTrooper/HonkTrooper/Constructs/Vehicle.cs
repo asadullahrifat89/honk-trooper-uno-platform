@@ -132,7 +132,7 @@ namespace HonkTrooper
                         var xLaneWidth = Constants.DEFAULT_SCENE_WIDTH / 4;
 
                         SetPosition(
-                            left: lane == 0 ? 0 : (xLaneWidth - Width / 2),
+                            left: lane == 0 ? 0 - Width / 3 : (xLaneWidth - Width),
                             top: Height * -1,
                             z: 3);
                     }
@@ -143,7 +143,7 @@ namespace HonkTrooper
 
                         SetPosition(
                             left: Width * -1,
-                            top: lane == 0 ? 0 - Height / 3 : yLaneHeight - Height / 3,
+                            top: lane == 0 ? 0 - Height / 2.5 : yLaneHeight - Height / 3,
                             z: 3);
                     }
                     break;
