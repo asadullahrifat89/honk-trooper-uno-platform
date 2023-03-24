@@ -783,9 +783,9 @@ namespace HonkTrooper
                 roadMark.IsAnimating = true;
 
                 roadMark.SetPosition(
-                  left: roadMark.Width * -1,
-                  top: roadMark.Height / 3 * -1,
-                  z: 1);
+                  left: roadMark.Height * -1,
+                  top: roadMark.Height * -1,
+                  z: 0);
 
                 return true;
             }
@@ -804,7 +804,7 @@ namespace HonkTrooper
         {
             var hitBox = roadMark.GetHitBox();
 
-            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left > Constants.DEFAULT_SCENE_WIDTH)
+            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadMark.Height > Constants.DEFAULT_SCENE_WIDTH)
             {
                 roadMark.IsAnimating = false;
 
@@ -845,7 +845,7 @@ namespace HonkTrooper
                 roadSideStripe.IsAnimating = true;
 
                 roadSideStripe.SetPosition(
-                    left: Constants.DEFAULT_SCENE_WIDTH / 4.9,
+                    left: Constants.DEFAULT_SCENE_WIDTH / 5.7,
                     top: roadSideStripe.Height * -1.1,
                     z: 0);
 
@@ -863,7 +863,7 @@ namespace HonkTrooper
 
                 roadSideStripe.SetPosition(
                     left: -1 * roadSideStripe.Height,
-                    top: Constants.DEFAULT_SCENE_HEIGHT / 6.7,
+                    top: Constants.DEFAULT_SCENE_HEIGHT / 6.8,
                     z: 0);
 
                 return true;
