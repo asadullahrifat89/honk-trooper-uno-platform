@@ -77,6 +77,7 @@ namespace HonkTrooper
             Health = 100;
             SpeedOffset = -2;
             IsAttacking = false;
+            WillHonk = true;
 
             _movementDirection = MovementDirection.None;
 

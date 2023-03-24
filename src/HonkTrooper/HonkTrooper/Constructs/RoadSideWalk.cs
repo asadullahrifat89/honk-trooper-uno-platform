@@ -5,17 +5,17 @@ using System.Linq;
 
 namespace HonkTrooper
 {
-    public partial class RoadSidePatch : Construct
+    public partial class RoadSideWalk : Construct
     {
         #region Ctor
 
-        public RoadSidePatch(
+        public RoadSideWalk(
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction)
         {
-            ConstructType = ConstructType.ROAD_SIDE_PATCH;
+            ConstructType = ConstructType.ROAD_SIDE_WALK;
 
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.ROAD_SIDE_PATCH);
+            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.ROAD_SIDE_WALK);
 
             var width = size.Width;
             var height = size.Height;
@@ -25,8 +25,8 @@ namespace HonkTrooper
             AnimateAction = animateAction;
             RecycleAction = recycleAction;
 
-            Background = App.Current.Resources["RoadSidePatchColor"] as SolidColorBrush;
-            BorderBrush = App.Current.Resources["RoadSidePatchBorderColor"] as SolidColorBrush;
+            Background = App.Current.Resources["RoadSideWalkColor"] as SolidColorBrush;
+            BorderBrush = App.Current.Resources["RoadSideWalkBorderColor"] as SolidColorBrush;
             BorderThickness = new Thickness(10);
             CornerRadius = new CornerRadius(2);
 
