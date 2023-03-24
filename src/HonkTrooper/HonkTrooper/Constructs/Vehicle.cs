@@ -100,7 +100,7 @@ namespace HonkTrooper
 
         public bool WillHonk { get; set; }
 
-        public bool IsMarkedForBombing { get; set; }
+        //public bool IsMarkedForBombing { get; set; }
 
         #endregion
 
@@ -108,7 +108,7 @@ namespace HonkTrooper
 
         public void Reset()
         {
-            IsMarkedForBombing = false;
+            //IsMarkedForBombing = false;
 
             SetScaleTransform(1);
 
@@ -122,7 +122,7 @@ namespace HonkTrooper
 
         public bool Honk()
         {
-            if (!IsMarkedForBombing && WillHonk)
+            if (/*!IsMarkedForBombing &&*/ WillHonk)
             {
                 if (Scene.IsSlowMotionActivated)
                     _honkDelay -= 0.5;
@@ -146,7 +146,7 @@ namespace HonkTrooper
 
         public void SetBlast()
         {
-            IsMarkedForBombing = true;
+            //IsMarkedForBombing = true;
             WillHonk = false;
             SetPopping();
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET + 1;
