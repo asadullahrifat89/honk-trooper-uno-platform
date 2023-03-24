@@ -1,22 +1,20 @@
 ﻿using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml;
 using System;
 using System.Linq;
-using Microsoft.UI;
 
 namespace HonkTrooper
 {
-    public partial class RoadSideStripe : Construct
+    public partial class RoadSidePatchSlope : Construct
     {
         #region Ctor
 
-        public RoadSideStripe(
+        public RoadSidePatchSlope(
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction)
         {
-            ConstructType = ConstructType.ROAD_SIDE_STRIPE;
+            ConstructType = ConstructType.ROAD_SIDE_PATCH_SLOPE;
 
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.ROAD_SIDE_STRIPE);
+            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.ROAD_SIDE_PATCH_SLOPE);
 
             var width = size.Width;
             var height = size.Height;
@@ -26,11 +24,11 @@ namespace HonkTrooper
             AnimateAction = animateAction;
             RecycleAction = recycleAction;
 
-            Background = new SolidColorBrush(Colors.White);
+            Background = App.Current.Resources["RoadSidePatchSlopeColor"] as SolidColorBrush;
 
-            SetSkewY(42);
+            SetSkewY(-29);
             SetRotation(-63.5);
-            CornerRadius = 5;
+            CornerRadius = 2;
 
             IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;
