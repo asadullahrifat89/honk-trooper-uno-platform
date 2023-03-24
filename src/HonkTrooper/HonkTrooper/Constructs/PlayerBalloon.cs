@@ -110,6 +110,8 @@ namespace HonkTrooper
 
         public void Reposition()
         {
+            var scaling = ScreenExtensions.GetScreenSpaceScaling();
+
             SetPosition(
                 left: ((Scene.Width / 4) * 2) - Width / 2,
                 top: (Scene.Height / 2 - Height / 2) - 150,
@@ -203,41 +205,20 @@ namespace HonkTrooper
 
         public void Hover()
         {
-            if (Scene.IsSlowMotionActivated)
+            _hoverDelay--;
+
+            if (_hoverDelay >= 0)
             {
-                _hoverDelay -= 0.5;
-
-                if (_hoverDelay >= 0)
-                {
-                    SetTop(GetTop() + _hoverSpeed / Constants.DEFAULT_SLOW_MOTION_REDUCTION_FACTOR);
-                }
-                else
-                {
-                    SetTop(GetTop() - _hoverSpeed / Constants.DEFAULT_SLOW_MOTION_REDUCTION_FACTOR);
-
-                    if (_hoverDelay <= _hoverDelayDefault * -1)
-                        _hoverDelay = _hoverDelayDefault;
-                }
+                SetTop(GetTop() + _hoverSpeed);
             }
-
             else
             {
-                _hoverDelay--;
+                SetTop(GetTop() - _hoverSpeed);
 
-                if (_hoverDelay >= 0)
-                {
-                    SetTop(GetTop() + _hoverSpeed);
-                }
-                else
-                {
-                    SetTop(GetTop() - _hoverSpeed);
-
-                    if (_hoverDelay <= _hoverDelayDefault * -1)
-                        _hoverDelay = _hoverDelayDefault;
-                }
+                if (_hoverDelay <= _hoverDelayDefault * -1)
+                    _hoverDelay = _hoverDelayDefault;
             }
         }
-
 
 
         public void MoveUp(double speed)
@@ -426,9 +407,6 @@ namespace HonkTrooper
                 _movementStopDelay--;
 
                 double movementSpeedLoss = _movementStopSpeedLoss;
-
-                if (Scene.IsSlowMotionActivated)
-                    movementSpeedLoss = _movementStopSpeedLoss / Constants.DEFAULT_SLOW_MOTION_REDUCTION_FACTOR;
 
                 if (_lastSpeed > 0)
                 {

@@ -335,7 +335,7 @@ namespace HonkTrooper
                 {
                     if (_scene_game.SceneState == SceneState.GAME_STOPPED)
                     {
-                        if (ScreenExtensions.RequiredDisplayOrientation == ScreenExtensions.GetDisplayOrienation())
+                        if (ScreenExtensions.RequiredScreenOrientation == ScreenExtensions.GetScreenOrienation())
                         {
                             RecycleTitleScreen(titleScreen);
                             GeneratePlayerSelectionScreen();
@@ -343,21 +343,21 @@ namespace HonkTrooper
                         }
                         else
                         {
-                            ScreenExtensions.SetDisplayOrientation(ScreenExtensions.RequiredDisplayOrientation);
+                            ScreenExtensions.SetScreenOrientation(ScreenExtensions.RequiredScreenOrientation);
                         }
                     }
                     else
                     {
                         if (!_scene_game.IsAnimating)
                         {
-                            if (ScreenExtensions.RequiredDisplayOrientation == ScreenExtensions.GetDisplayOrienation())
+                            if (ScreenExtensions.RequiredScreenOrientation == ScreenExtensions.GetScreenOrienation())
                             {
                                 ResumeGame();
                                 RecycleTitleScreen(titleScreen);
                             }
                             else
                             {
-                                ScreenExtensions.SetDisplayOrientation(ScreenExtensions.RequiredDisplayOrientation);
+                                ScreenExtensions.SetScreenOrientation(ScreenExtensions.RequiredScreenOrientation);
                             }
                         }
                     }
@@ -549,7 +549,7 @@ namespace HonkTrooper
                   left: -3000,
                   top: -3000);
 
-            SpawnDropShadow(_player);
+            SpawnDropShadow(source: _player);
 
             _scene_game.AddToScene(_player);
 
@@ -659,7 +659,7 @@ namespace HonkTrooper
 
         private bool SpawnVehicles()
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 8; i++)
             {
                 Vehicle vehicle = new(
                     animateAction: AnimateVehicle,
@@ -759,7 +759,7 @@ namespace HonkTrooper
 
         private bool SpawnRoadMarks()
         {
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 10; i++)
             {
                 RoadMark roadMark = new(
                     animateAction: AnimateRoadMark,
@@ -981,17 +981,17 @@ namespace HonkTrooper
         {
             for (int i = 0; i < 6; i++)
             {
-                RoadSideTree tree = new(
+                RoadSideTree roadSideTree = new(
                     animateAction: AnimateRoadSideTree,
                     recycleAction: RecycleRoadSideTree);
 
-                tree.SetPosition(
+                roadSideTree.SetPosition(
                     left: -3000,
                     top: -3000);
 
-                _scene_game.AddToScene(tree);
+                _scene_game.AddToScene(roadSideTree);
 
-                SpawnDropShadow(source: tree);
+                SpawnDropShadow(source: roadSideTree);
             }
 
             return true;
@@ -1055,22 +1055,22 @@ namespace HonkTrooper
             return true;
         }
 
-        private bool AnimateRoadSideTree(Construct tree)
+        private bool AnimateRoadSideTree(Construct roadSideTree)
         {
-            var speed = (_scene_game.Speed + tree.SpeedOffset);
-            MoveConstructBottomRight(construct: tree, speed: speed);
+            var speed = (_scene_game.Speed + roadSideTree.SpeedOffset);
+            MoveConstructBottomRight(construct: roadSideTree, speed: speed);
             return true;
         }
 
-        private bool RecycleRoadSideTree(Construct tree)
+        private bool RecycleRoadSideTree(Construct roadSideTree)
         {
-            var hitBox = tree.GetHitBox();
+            var hitBox = roadSideTree.GetHitBox();
 
-            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - tree.Width > Constants.DEFAULT_SCENE_WIDTH)
+            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSideTree.Width > Constants.DEFAULT_SCENE_WIDTH)
             {
-                tree.IsAnimating = false;
+                roadSideTree.IsAnimating = false;
 
-                tree.SetPosition(
+                roadSideTree.SetPosition(
                     left: -3000,
                     top: -3000);
             }
@@ -1084,7 +1084,7 @@ namespace HonkTrooper
 
         private bool SpawnRoadSideHedges()
         {
-            for (int i = 0; i < 15; i++)
+            for (int i = 0; i < 11; i++)
             {
                 RoadSideHedge hedge = new(
                     animateAction: AnimateRoadSideHedge,
@@ -1095,8 +1095,6 @@ namespace HonkTrooper
                     top: -3000);
 
                 _scene_game.AddToScene(hedge);
-
-                SpawnDropShadow(source: hedge);
             }
 
             return true;
@@ -1453,8 +1451,6 @@ namespace HonkTrooper
                     z: 9);
 
                 _scene_game.AddToScene(cloud);
-
-                //SpawnDropShadow(source: cloud);
             }
 
             return true;
@@ -1492,8 +1488,6 @@ namespace HonkTrooper
                     default:
                         break;
                 }
-
-                //SyncDropShadow(cloud);
 
                 return true;
             }
@@ -1534,18 +1528,18 @@ namespace HonkTrooper
 
         private bool SpawnUfoBosses()
         {
-            UfoBoss UfoBoss = new(
+            UfoBoss ufoBoss = new(
                 animateAction: AnimateUfoBoss,
                 recycleAction: RecycleUfoBoss);
 
-            UfoBoss.SetPosition(
+            ufoBoss.SetPosition(
                 left: -3000,
                 top: -3000,
                 z: 8);
 
-            _scene_game.AddToScene(UfoBoss);
+            _scene_game.AddToScene(ufoBoss);
 
-            SpawnDropShadow(source: UfoBoss);
+            SpawnDropShadow(source: ufoBoss);
 
             return true;
         }
@@ -1835,20 +1829,20 @@ namespace HonkTrooper
 
         private bool SpawnUfoEnemys()
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 7; i++)
             {
-                UfoEnemy enemy = new(
+                UfoEnemy ufoEnemy = new(
                     animateAction: AnimateUfoEnemy,
                     recycleAction: RecycleUfoEnemy);
 
-                _scene_game.AddToScene(enemy);
+                _scene_game.AddToScene(ufoEnemy);
 
-                enemy.SetPosition(
+                ufoEnemy.SetPosition(
                     left: -3000,
                     top: -3000,
                     z: 8);
 
-                SpawnDropShadow(enemy);
+                SpawnDropShadow(source: ufoEnemy);
             }
 
             return true;
@@ -1906,9 +1900,9 @@ namespace HonkTrooper
             return false;
         }
 
-        private bool AnimateUfoEnemy(Construct enemy)
+        private bool AnimateUfoEnemy(Construct ufoEnemy)
         {
-            UfoEnemy enemy1 = enemy as UfoEnemy;
+            UfoEnemy enemy1 = ufoEnemy as UfoEnemy;
 
             if (enemy1.IsDead)
             {
@@ -1919,9 +1913,9 @@ namespace HonkTrooper
                 enemy1.Hover();
                 enemy1.Pop();
 
-                var speed = _scene_game.Speed + enemy.SpeedOffset;
+                var speed = _scene_game.Speed + ufoEnemy.SpeedOffset;
 
-                MoveConstructBottomRight(construct: enemy, speed: speed);
+                MoveConstructBottomRight(construct: ufoEnemy, speed: speed);
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
@@ -1936,18 +1930,18 @@ namespace HonkTrooper
             return true;
         }
 
-        private bool RecycleUfoEnemy(Construct enemy)
+        private bool RecycleUfoEnemy(Construct ufoEnemy)
         {
-            var hitbox = enemy.GetHitBox();
+            var hitbox = ufoEnemy.GetHitBox();
 
             // enemy is dead or goes out of bounds
-            if (enemy.IsShrinkingComplete ||
+            if (ufoEnemy.IsShrinkingComplete ||
                 hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT ||
                 hitbox.Right < 0 || hitbox.Bottom < 0)
             {
-                enemy.IsAnimating = false;
+                ufoEnemy.IsAnimating = false;
 
-                enemy.SetPosition(
+                ufoEnemy.SetPosition(
                     left: -3000,
                     top: -3000);
 
@@ -1957,12 +1951,12 @@ namespace HonkTrooper
             return true;
         }
 
-        private void LooseUfoEnemyHealth(UfoEnemy enemy)
+        private void LooseUfoEnemyHealth(UfoEnemy ufoEnemy)
         {
-            enemy.SetPopping();
-            enemy.LooseHealth();
+            ufoEnemy.SetPopping();
+            ufoEnemy.LooseHealth();
 
-            if (enemy.IsDead)
+            if (ufoEnemy.IsDead)
             {
                 _game_score_bar.GainScore(3);
 
@@ -1996,18 +1990,18 @@ namespace HonkTrooper
         {
             for (int i = 0; i < 3; i++)
             {
-                PlayerFireCracker bomb = new(
+                PlayerFireCracker playerFireCracker = new(
                     animateAction: AnimatePlayerFireCracker,
                     recycleAction: RecyclePlayerFireCracker);
 
-                bomb.SetPosition(
+                playerFireCracker.SetPosition(
                     left: -3000,
                     top: -3000,
                     z: 7);
 
-                _scene_game.AddToScene(bomb);
+                _scene_game.AddToScene(playerFireCracker);
 
-                SpawnDropShadow(source: bomb);
+                SpawnDropShadow(source: playerFireCracker);
             }
 
             return true;
@@ -2124,20 +2118,20 @@ namespace HonkTrooper
 
         private bool SpawnPlayerRockets()
         {
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 4; i++)
             {
-                PlayerRocket bomb = new(
+                PlayerRocket playerRocket = new(
                     animateAction: AnimatePlayerRocket,
                     recycleAction: RecyclePlayerRocket);
 
-                bomb.SetPosition(
+                playerRocket.SetPosition(
                     left: -3000,
                     top: -3000,
                     z: 7);
 
-                _scene_game.AddToScene(bomb);
+                _scene_game.AddToScene(playerRocket);
 
-                SpawnDropShadow(source: bomb);
+                SpawnDropShadow(source: playerRocket);
             }
 
             return true;
@@ -2192,66 +2186,66 @@ namespace HonkTrooper
             return false;
         }
 
-        private bool AnimatePlayerRocket(Construct bomb)
+        private bool AnimatePlayerRocket(Construct playerRocket)
         {
-            PlayerRocket playerRocket = bomb as PlayerRocket;
+            PlayerRocket playerRocket1 = playerRocket as PlayerRocket;
 
             var hitBox = playerRocket.GetCloseHitBox();
 
-            var speed = (_scene_game.Speed + bomb.SpeedOffset);
+            var speed = (_scene_game.Speed + playerRocket.SpeedOffset);
 
-            if (playerRocket.AwaitMoveDownLeft)
+            if (playerRocket1.AwaitMoveDownLeft)
             {
-                playerRocket.MoveDownLeft(speed);
+                playerRocket1.MoveDownLeft(speed);
             }
-            else if (playerRocket.AwaitMoveUpRight)
+            else if (playerRocket1.AwaitMoveUpRight)
             {
-                playerRocket.MoveUpRight(speed);
+                playerRocket1.MoveUpRight(speed);
             }
-            else if (playerRocket.AwaitMoveUpLeft)
+            else if (playerRocket1.AwaitMoveUpLeft)
             {
-                playerRocket.MoveUpLeft(speed);
+                playerRocket1.MoveUpLeft(speed);
             }
-            else if (playerRocket.AwaitMoveDownRight)
+            else if (playerRocket1.AwaitMoveDownRight)
             {
-                playerRocket.MoveDownRight(speed);
+                playerRocket1.MoveDownRight(speed);
             }
 
-            if (playerRocket.IsBlasting)
+            if (playerRocket1.IsBlasting)
             {
-                bomb.Expand();
-                bomb.Fade(0.02);
+                playerRocket.Expand();
+                playerRocket.Fade(0.02);
             }
             else
             {
-                bomb.Pop();
-                playerRocket.Hover();
+                playerRocket.Pop();
+                playerRocket1.Hover();
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
                     // if player bomb touches UfoBoss, it blasts, UfoBoss looses health
-                    if (_scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetCloseHitBox().IntersectsWith(hitBox)) is UfoBoss UfoBoss)
+                    if (_scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetCloseHitBox().IntersectsWith(hitBox)) is UfoBoss ufoBoss)
                     {
-                        playerRocket.SetBlast();
-                        LooseUfoBossHealth(UfoBoss);
+                        playerRocket1.SetBlast();
+                        LooseUfoBossHealth(ufoBoss);
                     }
 
                     // if player bomb touches UfoBoss's seeking bomb, it blasts
-                    if (_scene_game.Children.OfType<UfoBossRocketSeeking>().FirstOrDefault(x => x.IsAnimating && !x.IsBlasting && x.GetCloseHitBox().IntersectsWith(hitBox)) is UfoBossRocketSeeking UfoBossRocketSeeking)
+                    if (_scene_game.Children.OfType<UfoBossRocketSeeking>().FirstOrDefault(x => x.IsAnimating && !x.IsBlasting && x.GetCloseHitBox().IntersectsWith(hitBox)) is UfoBossRocketSeeking ufoBossRocketSeeking)
                     {
-                        playerRocket.SetBlast();
-                        UfoBossRocketSeeking.SetBlast();
+                        playerRocket1.SetBlast();
+                        ufoBossRocketSeeking.SetBlast();
                     }
 
                     // if player bomb touches enemy, it blasts, enemy looses health
-                    if (_scene_game.Children.OfType<UfoEnemy>().FirstOrDefault(x => x.IsAnimating && !x.IsDead && x.GetCloseHitBox().IntersectsWith(hitBox)) is UfoEnemy enemy)
+                    if (_scene_game.Children.OfType<UfoEnemy>().FirstOrDefault(x => x.IsAnimating && !x.IsDead && x.GetCloseHitBox().IntersectsWith(hitBox)) is UfoEnemy ufoEnemy)
                     {
-                        playerRocket.SetBlast();
-                        LooseUfoEnemyHealth(enemy);
+                        playerRocket1.SetBlast();
+                        LooseUfoEnemyHealth(ufoEnemy);
                     }
 
-                    if (playerRocket.AutoBlast())
-                        playerRocket.SetBlast();
+                    if (playerRocket1.AutoBlast())
+                        playerRocket1.SetBlast();
                 }
             }
 
@@ -2283,26 +2277,26 @@ namespace HonkTrooper
 
         private bool SpawnUfoEnemyRockets()
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 8; i++)
             {
-                UfoEnemyRocket bomb = new(
+                UfoEnemyRocket ufoEnemyRocket = new(
                     animateAction: AnimateUfoEnemyRocket,
                     recycleAction: RecycleUfoEnemyRocket);
 
-                bomb.SetPosition(
+                ufoEnemyRocket.SetPosition(
                     left: -3000,
                     top: -3000,
                     z: 8);
 
-                _scene_game.AddToScene(bomb);
+                _scene_game.AddToScene(ufoEnemyRocket);
 
-                SpawnDropShadow(source: bomb);
+                SpawnDropShadow(source: ufoEnemyRocket);
             }
 
             return true;
         }
 
-        private bool GenerateUfoEnemyRocket(UfoEnemy source)
+        private bool GenerateUfoEnemyRocket(UfoEnemy ufoEnemy)
         {
             if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
                 _scene_game.Children.OfType<UfoEnemyRocket>().FirstOrDefault(x => x.IsAnimating == false) is UfoEnemyRocket enemyRocket)
@@ -2311,7 +2305,7 @@ namespace HonkTrooper
                 enemyRocket.IsAnimating = true;
                 enemyRocket.SetPopping();
 
-                enemyRocket.Reposition(ufoEnemy: source);
+                enemyRocket.Reposition(ufoEnemy: ufoEnemy);
 
                 SyncDropShadow(enemyRocket);
 
@@ -2323,22 +2317,22 @@ namespace HonkTrooper
             return false;
         }
 
-        private bool AnimateUfoEnemyRocket(Construct bomb)
+        private bool AnimateUfoEnemyRocket(Construct ufoEnemyRocket)
         {
-            UfoEnemyRocket enemyRocket = bomb as UfoEnemyRocket;
+            UfoEnemyRocket enemyRocket = ufoEnemyRocket as UfoEnemyRocket;
 
-            var speed = _scene_game.Speed + bomb.SpeedOffset;
+            var speed = _scene_game.Speed + ufoEnemyRocket.SpeedOffset;
 
             MoveConstructBottomRight(construct: enemyRocket, speed: speed);
 
             if (enemyRocket.IsBlasting)
             {
-                bomb.Expand();
-                bomb.Fade(0.02);
+                ufoEnemyRocket.Expand();
+                ufoEnemyRocket.Fade(0.02);
             }
             else
             {
-                bomb.Pop();
+                ufoEnemyRocket.Pop();
                 enemyRocket.Hover();
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
@@ -2357,16 +2351,16 @@ namespace HonkTrooper
             return true;
         }
 
-        private bool RecycleUfoEnemyRocket(Construct bomb)
+        private bool RecycleUfoEnemyRocket(Construct ufoEnemyRocket)
         {
-            var hitbox = bomb.GetHitBox();
+            var hitbox = ufoEnemyRocket.GetHitBox();
 
             // if bomb is blasted and faed or goes out of scene bounds
-            if (bomb.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Bottom > Constants.DEFAULT_SCENE_HEIGHT)
+            if (ufoEnemyRocket.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Bottom > Constants.DEFAULT_SCENE_HEIGHT)
             {
-                bomb.IsAnimating = false;
+                ufoEnemyRocket.IsAnimating = false;
 
-                bomb.SetPosition(
+                ufoEnemyRocket.SetPosition(
                     left: -3000,
                     top: -3000);
 
@@ -2382,7 +2376,7 @@ namespace HonkTrooper
 
         private bool SpawnUfoBossRockets()
         {
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 4; i++)
             {
                 UfoBossRocket ufoBossRocket = new(
                     animateAction: AnimateUfoBossRocket,
@@ -2425,65 +2419,65 @@ namespace HonkTrooper
             return false;
         }
 
-        private bool AnimateUfoBossRocket(Construct bomb)
+        private bool AnimateUfoBossRocket(Construct ufoBossRocket)
         {
-            UfoBossRocket ufoBossRocket = bomb as UfoBossRocket;
+            UfoBossRocket ufoBossRocket1 = ufoBossRocket as UfoBossRocket;
 
-            var speed = (_scene_game.Speed + bomb.SpeedOffset);
+            var speed = (_scene_game.Speed + ufoBossRocket.SpeedOffset);
 
-            if (ufoBossRocket.AwaitMoveDownLeft)
+            if (ufoBossRocket1.AwaitMoveDownLeft)
             {
-                ufoBossRocket.MoveDownLeft(speed);
+                ufoBossRocket1.MoveDownLeft(speed);
             }
-            else if (ufoBossRocket.AwaitMoveUpRight)
+            else if (ufoBossRocket1.AwaitMoveUpRight)
             {
-                ufoBossRocket.MoveUpRight(speed);
+                ufoBossRocket1.MoveUpRight(speed);
             }
-            else if (ufoBossRocket.AwaitMoveUpLeft)
+            else if (ufoBossRocket1.AwaitMoveUpLeft)
             {
-                ufoBossRocket.MoveUpLeft(speed);
+                ufoBossRocket1.MoveUpLeft(speed);
             }
-            else if (ufoBossRocket.AwaitMoveDownRight)
+            else if (ufoBossRocket1.AwaitMoveDownRight)
             {
-                ufoBossRocket.MoveDownRight(speed);
+                ufoBossRocket1.MoveDownRight(speed);
             }
 
-            if (ufoBossRocket.IsBlasting)
+            if (ufoBossRocket1.IsBlasting)
             {
-                bomb.Expand();
-                bomb.Fade(0.02);
+                ufoBossRocket.Expand();
+                ufoBossRocket.Fade(0.02);
             }
             else
             {
-                bomb.Pop();
-                ufoBossRocket.Hover();
+                ufoBossRocket.Pop();
+                ufoBossRocket1.Hover();
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
                     if (ufoBossRocket.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
                     {
-                        ufoBossRocket.SetBlast();
+                        ufoBossRocket1.SetBlast();
                         LoosePlayerHealth();
                     }
 
-                    if (ufoBossRocket.AutoBlast())
-                        ufoBossRocket.SetBlast();
+                    if (ufoBossRocket1.AutoBlast())
+                        ufoBossRocket1.SetBlast();
                 }
             }
 
             return true;
         }
 
-        private bool RecycleUfoBossRocket(Construct bomb)
+        private bool RecycleUfoBossRocket(Construct ufoBossRocket)
         {
             //var hitbox = bomb.GetHitBox();
 
             // if bomb is blasted and faed or goes out of scene bounds
-            if (bomb.IsFadingComplete /*|| hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT*/)
+            if (ufoBossRocket.IsFadingComplete /*|| hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT*/)
             {
-                bomb.IsAnimating = false;
+                ufoBossRocket.IsAnimating = false;
 
-                bomb.SetPosition(
+                ufoBossRocket.SetPosition(
                     left: -3000,
                     top: -3000);
 
@@ -2537,53 +2531,53 @@ namespace HonkTrooper
             return false;
         }
 
-        private bool AnimateVehicleBossRocket(Construct bomb)
+        private bool AnimateVehicleBossRocket(Construct vehicleBossRocket)
         {
-            VehicleBossRocket vehicleBossRocket = bomb as VehicleBossRocket;
+            VehicleBossRocket vehicleBossRocket1 = vehicleBossRocket as VehicleBossRocket;
 
-            var speed = (_scene_game.Speed + bomb.SpeedOffset);
+            var speed = (_scene_game.Speed + vehicleBossRocket.SpeedOffset);
 
-            if (vehicleBossRocket.AwaitMoveUpRight)
+            if (vehicleBossRocket1.AwaitMoveUpRight)
             {
-                vehicleBossRocket.MoveUpRight(speed);
+                vehicleBossRocket1.MoveUpRight(speed);
             }
 
-            if (vehicleBossRocket.IsBlasting)
+            if (vehicleBossRocket1.IsBlasting)
             {
-                bomb.Expand();
-                bomb.Fade(0.02);
+                vehicleBossRocket.Expand();
+                vehicleBossRocket.Fade(0.02);
             }
             else
             {
-                bomb.Pop();
-                vehicleBossRocket.DillyDally();
+                vehicleBossRocket.Pop();
+                vehicleBossRocket1.DillyDally();
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
                     if (vehicleBossRocket.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
                     {
-                        vehicleBossRocket.SetBlast();
+                        vehicleBossRocket1.SetBlast();
                         LoosePlayerHealth();
                     }
 
-                    if (vehicleBossRocket.AutoBlast())
-                        vehicleBossRocket.SetBlast();
+                    if (vehicleBossRocket1.AutoBlast())
+                        vehicleBossRocket1.SetBlast();
                 }
             }
 
             return true;
         }
 
-        private bool RecycleVehicleBossRocket(Construct bomb)
+        private bool RecycleVehicleBossRocket(Construct vehicleBossRocket)
         {
             //var hitbox = bomb.GetHitBox();
 
             // if bomb is blasted and faed or goes out of scene bounds
-            if (bomb.IsFadingComplete /*|| hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT*/)
+            if (vehicleBossRocket.IsFadingComplete /*|| hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT*/)
             {
-                bomb.IsAnimating = false;
+                vehicleBossRocket.IsAnimating = false;
 
-                bomb.SetPosition(
+                vehicleBossRocket.SetPosition(
                     left: -3000,
                     top: -3000);
 
@@ -2601,18 +2595,18 @@ namespace HonkTrooper
         {
             for (int i = 0; i < 3; i++)
             {
-                PlayerRocketSeeking bomb = new(
+                PlayerRocketSeeking playerRocketSeeking = new(
                     animateAction: AnimatePlayerRocketSeeking,
                     recycleAction: RecyclePlayerRocketSeeking);
 
-                bomb.SetPosition(
+                playerRocketSeeking.SetPosition(
                     left: -3000,
                     top: -3000,
                     z: 7);
 
-                _scene_game.AddToScene(bomb);
+                _scene_game.AddToScene(playerRocketSeeking);
 
-                SpawnDropShadow(source: bomb);
+                SpawnDropShadow(source: playerRocketSeeking);
             }
 
             return true;
@@ -2740,18 +2734,18 @@ namespace HonkTrooper
         {
             for (int i = 0; i < 2; i++)
             {
-                UfoBossRocketSeeking bomb = new(
+                UfoBossRocketSeeking ufoBossRocketSeeking = new(
                     animateAction: AnimateUfoBossRocketSeeking,
                     recycleAction: RecycleUfoBossRocketSeeking);
 
-                bomb.SetPosition(
+                ufoBossRocketSeeking.SetPosition(
                     left: -3000,
                     top: -3000,
                     z: 7);
 
-                _scene_game.AddToScene(bomb);
+                _scene_game.AddToScene(ufoBossRocketSeeking);
 
-                SpawnDropShadow(source: bomb);
+                SpawnDropShadow(source: ufoBossRocketSeeking);
             }
 
             return true;
@@ -2761,18 +2755,18 @@ namespace HonkTrooper
         {
             // generate a seeking bomb if one is not in scene
             if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
-                _scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is UfoBoss UfoBoss &&
+                _scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is UfoBoss ufoBoss &&
                 !_scene_game.Children.OfType<UfoBossRocketSeeking>().Any(x => x.IsAnimating) &&
-                _scene_game.Children.OfType<UfoBossRocketSeeking>().FirstOrDefault(x => x.IsAnimating == false) is UfoBossRocketSeeking UfoBossRocketSeeking)
+                _scene_game.Children.OfType<UfoBossRocketSeeking>().FirstOrDefault(x => x.IsAnimating == false) is UfoBossRocketSeeking ufoBossRocketSeeking)
             {
-                UfoBossRocketSeeking.Reset();
-                UfoBossRocketSeeking.IsAnimating = true;
-                UfoBossRocketSeeking.SetPopping();
+                ufoBossRocketSeeking.Reset();
+                ufoBossRocketSeeking.IsAnimating = true;
+                ufoBossRocketSeeking.SetPopping();
 
-                UfoBossRocketSeeking.Reposition(
-                    UfoBoss: UfoBoss);
+                ufoBossRocketSeeking.Reposition(
+                    UfoBoss: ufoBoss);
 
-                SyncDropShadow(UfoBossRocketSeeking);
+                SyncDropShadow(ufoBossRocketSeeking);
 
                 LoggerExtensions.Log("UfoBoss Seeking Bomb dropped.");
 
@@ -2782,22 +2776,22 @@ namespace HonkTrooper
             return false;
         }
 
-        private bool AnimateUfoBossRocketSeeking(Construct UfoBossRocketSeeking)
+        private bool AnimateUfoBossRocketSeeking(Construct ufoBossRocketSeeking)
         {
-            UfoBossRocketSeeking UfoBossRocketSeeking1 = UfoBossRocketSeeking as UfoBossRocketSeeking;
+            UfoBossRocketSeeking UfoBossRocketSeeking1 = ufoBossRocketSeeking as UfoBossRocketSeeking;
 
-            var speed = (_scene_game.Speed + UfoBossRocketSeeking.SpeedOffset);
+            var speed = (_scene_game.Speed + ufoBossRocketSeeking.SpeedOffset);
 
             if (UfoBossRocketSeeking1.IsBlasting)
             {
                 MoveConstructBottomRight(construct: UfoBossRocketSeeking1, speed: speed);
 
-                UfoBossRocketSeeking.Expand();
-                UfoBossRocketSeeking.Fade(0.02);
+                ufoBossRocketSeeking.Expand();
+                ufoBossRocketSeeking.Fade(0.02);
             }
             else
             {
-                UfoBossRocketSeeking.Pop();
+                ufoBossRocketSeeking.Pop();
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
@@ -2826,16 +2820,16 @@ namespace HonkTrooper
             return true;
         }
 
-        private bool RecycleUfoBossRocketSeeking(Construct bomb)
+        private bool RecycleUfoBossRocketSeeking(Construct ufoBossRocketSeeking)
         {
-            var hitbox = bomb.GetHitBox();
+            var hitbox = ufoBossRocketSeeking.GetHitBox();
 
             // if bomb is blasted and faed or goes out of scene bounds
-            if (bomb.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Bottom > Constants.DEFAULT_SCENE_HEIGHT)
+            if (ufoBossRocketSeeking.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Bottom > Constants.DEFAULT_SCENE_HEIGHT)
             {
-                bomb.IsAnimating = false;
+                ufoBossRocketSeeking.IsAnimating = false;
 
-                bomb.SetPosition(
+                ufoBossRocketSeeking.SetPosition(
                     left: -3000,
                     top: -3000);
 
@@ -2982,16 +2976,16 @@ namespace HonkTrooper
         {
             for (int i = 0; i < 3; i++)
             {
-                HealthPickup HealthPickup = new(
+                HealthPickup healthPickup = new(
                     animateAction: AnimateHealthPickup,
                     recycleAction: RecycleHealthPickup);
 
-                HealthPickup.SetPosition(
+                healthPickup.SetPosition(
                     left: -3000,
                     top: -3000,
                     z: 6);
 
-                _scene_game.AddToScene(HealthPickup);
+                _scene_game.AddToScene(healthPickup);
             }
 
             return true;
@@ -3214,11 +3208,6 @@ namespace HonkTrooper
 
         private void MoveConstructBottomRight(Construct construct, double speed)
         {
-            //speed *= _scene_game.DownScaling;
-
-            if (_scene_game.IsSlowMotionActivated)
-                speed /= Constants.DEFAULT_SLOW_MOTION_REDUCTION_FACTOR;
-
             construct.SetLeft(construct.GetLeft() + speed);
             construct.SetTop(construct.GetTop() + speed * construct.IsometricDisplacement);
         }
@@ -3262,12 +3251,9 @@ namespace HonkTrooper
 
             AddGeneratorsToScene();
 
-            _scene_game.Speed = 5;
-
-            if (ScreenExtensions.GetDisplayOrienation() == ScreenExtensions.RequiredDisplayOrientation)
+            if (ScreenExtensions.GetScreenOrienation() == ScreenExtensions.RequiredScreenOrientation)
                 _scene_game.Play();
 
-            _scene_main_menu.Speed = 5;
             _scene_main_menu.Play();
         }
 
@@ -3298,24 +3284,24 @@ namespace HonkTrooper
 
             // add road side walks
             new Generator(
-                generationDelay: 29,
+                generationDelay: 27,
                 generationAction: GenerateRoadSideWalkTop,
                 startUpAction: SpawnRoadSideWalks),
 
             new Generator(
-                generationDelay: 29,
+                generationDelay: 27,
                 generationAction: GenerateRoadSideWalkBottom,
                 startUpAction: SpawnRoadSideWalks),
 
-            new Generator(
-                generationDelay: 29,
-                generationAction: GenerateRoadSideWalkSlopeTop,
-                startUpAction: SpawnRoadSideWalkSlopes),
+            //new Generator(
+            //    generationDelay: 29,
+            //    generationAction: GenerateRoadSideWalkSlopeTop,
+            //    startUpAction: SpawnRoadSideWalkSlopes),
 
-            new Generator(
-                generationDelay: 29,
-                generationAction: GenerateRoadSideWalkSlopeBottom,
-                startUpAction: SpawnRoadSideWalkSlopes),
+            //new Generator(
+            //    generationDelay: 29,
+            //    generationAction: GenerateRoadSideWalkSlopeBottom,
+            //    startUpAction: SpawnRoadSideWalkSlopes),
 
             // then add the top trees
             new Generator(
@@ -3331,13 +3317,13 @@ namespace HonkTrooper
 
             // then add the top RoadSideHedges
             new Generator(
-                generationDelay: 12,
+                generationDelay: 16,
                 generationAction: GenerateRoadSideHedgeTop,
                 startUpAction: SpawnRoadSideHedges),
 
             // then add the bottom RoadSideHedges which will appear forward in z wrt to the vehicles
             new Generator(
-                generationDelay: 12,
+                generationDelay: 16,
                 generationAction: GenerateRoadSideHedgeBottom,
                 startUpAction: SpawnRoadSideHedges),
 
@@ -3421,7 +3407,7 @@ namespace HonkTrooper
                 startUpAction: SpawnUfoEnemyRockets),
 
                 new Generator(
-                generationDelay: 600,
+                generationDelay: 500,
                 generationAction: GenerateHealthPickups,
                 startUpAction: SpawnHealthPickups,
                 randomizeGenerationDelay: true),
@@ -3486,18 +3472,18 @@ namespace HonkTrooper
         private async void HonkBomberPage_Loaded(object sender, RoutedEventArgs e)
         {
             ScreenExtensions.DisplayInformation.OrientationChanged += DisplayInformation_OrientationChanged;
-            ScreenExtensions.RequiredDisplayOrientation = DisplayOrientations.Landscape;
+            ScreenExtensions.RequiredScreenOrientation = DisplayOrientations.Landscape;
 
             // set display orientation to required orientation
-            if (ScreenExtensions.GetDisplayOrienation() != ScreenExtensions.RequiredDisplayOrientation)
-                ScreenExtensions.SetDisplayOrientation(ScreenExtensions.RequiredDisplayOrientation);
+            if (ScreenExtensions.GetScreenOrienation() != ScreenExtensions.RequiredScreenOrientation)
+                ScreenExtensions.SetScreenOrientation(ScreenExtensions.RequiredScreenOrientation);
 
             SetController();
             SetScene();
 
             SizeChanged += HonkBomberPage_SizeChanged;
 
-            if (ScreenExtensions.GetDisplayOrienation() == ScreenExtensions.RequiredDisplayOrientation)
+            if (ScreenExtensions.GetScreenOrienation() == ScreenExtensions.RequiredScreenOrientation)
             {
                 ScreenExtensions.EnterFullScreen(true);
 
@@ -3545,7 +3531,9 @@ namespace HonkTrooper
             }
             else
             {
-                if (ScreenExtensions.GetDisplayOrienation() == ScreenExtensions.RequiredDisplayOrientation)
+                ScreenExtensions.EnterFullScreen(true);
+
+                if (ScreenExtensions.GetScreenOrienation() == ScreenExtensions.RequiredScreenOrientation)
                 {
                     if (_scene_main_menu.Children.OfType<DisplayOrientationChangeScreen>().FirstOrDefault(x => x.IsAnimating) is DisplayOrientationChangeScreen DisplayOrientationChangeScreen)
                     {
@@ -3579,9 +3567,7 @@ namespace HonkTrooper
                     }
 
                     GenerateDisplayOrientationChangeScreen();
-                }
-
-                ScreenExtensions.EnterFullScreen(true);
+                }                
             }
 
             LoggerExtensions.Log($"{sender.CurrentOrientation}");

@@ -65,16 +65,13 @@ namespace HonkTrooper
         {
             if (WillHonk)
             {
-                if (Scene.IsSlowMotionActivated)
-                    _honkDelay -= 0.5;
-                else
-                    _honkDelay--;
+                _honkDelay--;
 
                 if (_honkDelay < 0)
                 {
                     SetHonkDelay();
                     return true;
-                }                
+                }
             }
 
             return false;

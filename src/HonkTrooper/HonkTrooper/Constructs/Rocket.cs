@@ -40,75 +40,35 @@
 
         public void Hover()
         {
-            if (Scene.IsSlowMotionActivated)
+            _hoverDelay--;
+
+            if (_hoverDelay >= 0)
             {
-                _hoverDelay -= 0.5;
-
-                if (_hoverDelay >= 0)
-                {
-                    SetTop(GetTop() + _hoverSpeed / Constants.DEFAULT_SLOW_MOTION_REDUCTION_FACTOR);
-                }
-                else
-                {
-                    SetTop(GetTop() - _hoverSpeed / Constants.DEFAULT_SLOW_MOTION_REDUCTION_FACTOR);
-
-                    if (_hoverDelay <= _hoverDelayDefault * -1)
-                        _hoverDelay = _hoverDelayDefault;
-                }
+                SetTop(GetTop() + _hoverSpeed);
             }
-
             else
             {
-                _hoverDelay--;
+                SetTop(GetTop() - _hoverSpeed);
 
-                if (_hoverDelay >= 0)
-                {
-                    SetTop(GetTop() + _hoverSpeed);
-                }
-                else
-                {
-                    SetTop(GetTop() - _hoverSpeed);
-
-                    if (_hoverDelay <= _hoverDelayDefault * -1)
-                        _hoverDelay = _hoverDelayDefault;
-                }
+                if (_hoverDelay <= _hoverDelayDefault * -1)
+                    _hoverDelay = _hoverDelayDefault;
             }
         }
 
         public void DillyDally()
         {
-            if (Scene.IsSlowMotionActivated)
+            _dillyDallyDelay--;
+
+            if (_dillyDallyDelay >= 0)
             {
-                _dillyDallyDelay -= 0.5;
-
-                if (_dillyDallyDelay >= 0)
-                {
-                    SetLeft(GetLeft() + _dillyDallySpeed / Constants.DEFAULT_SLOW_MOTION_REDUCTION_FACTOR);
-                }
-                else
-                {
-                    SetLeft(GetLeft() - _dillyDallySpeed / Constants.DEFAULT_SLOW_MOTION_REDUCTION_FACTOR);
-
-                    if (_dillyDallyDelay <= _dillyDallyDelayDefault * -1)
-                        _dillyDallyDelay = _dillyDallyDelayDefault;
-                }
+                SetLeft(GetLeft() + _dillyDallySpeed);
             }
-
             else
             {
-                _dillyDallyDelay--;
+                SetLeft(GetLeft() - _dillyDallySpeed);
 
-                if (_dillyDallyDelay >= 0)
-                {
-                    SetLeft(GetLeft() + _dillyDallySpeed);
-                }
-                else
-                {
-                    SetLeft(GetLeft() - _dillyDallySpeed);
-
-                    if (_dillyDallyDelay <= _dillyDallyDelayDefault * -1)
-                        _dillyDallyDelay = _dillyDallyDelayDefault;
-                }
+                if (_dillyDallyDelay <= _dillyDallyDelayDefault * -1)
+                    _dillyDallyDelay = _dillyDallyDelayDefault;
             }
         }
 
