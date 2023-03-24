@@ -1,4 +1,5 @@
-﻿using Microsoft.UI.Xaml.Media;
+﻿using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Media;
 using System;
 using System.Linq;
 
@@ -25,8 +26,10 @@ namespace HonkTrooper
             RecycleAction = recycleAction;
 
             Background = App.Current.Resources["RoadSidePatchSlopeColor"] as SolidColorBrush;
+            BorderBrush = App.Current.Resources["RoadSidePatchBorderColor"] as SolidColorBrush;
+            BorderThickness = new Thickness(5);
 
-            SetSkewY(-29);
+            SetSkewY(-28);
             SetRotation(-63.5);
             CornerRadius = 2;
 
