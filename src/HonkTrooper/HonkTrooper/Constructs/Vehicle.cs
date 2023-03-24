@@ -14,8 +14,6 @@ namespace HonkTrooper
         private readonly Uri[] _vehicle_small_uris;
         private readonly Uri[] _vehicle_large_uris;
 
-        private double _honkDelay;
-
         #endregion
 
         #region Ctor
@@ -94,22 +92,12 @@ namespace HonkTrooper
                 SetHonkDelay();
         }
 
-        #endregion
-
-        #region Properties
-
-        public bool WillHonk { get; set; }
-
-        public bool IsMarkedForBombing { get; set; }
-
-        #endregion
+        #endregion     
 
         #region Methods
 
         public void Reset()
         {
-            IsMarkedForBombing = false;
-
             SetScaleTransform(1);
 
             SpeedOffset = _random.Next(-2, 4);
@@ -120,33 +108,8 @@ namespace HonkTrooper
                 SetHonkDelay();
         }
 
-        public bool Honk()
-        {
-            if (!IsMarkedForBombing && WillHonk)
-            {
-                if (Scene.IsSlowMotionActivated)
-                    _honkDelay -= 0.5;
-                else
-                    _honkDelay--;
-
-                if (_honkDelay < 0)
-                {
-                    SetHonkDelay();
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        public void SetHonkDelay()
-        {
-            _honkDelay = _random.Next(30, 80);
-        }
-
         public void SetBlast()
         {
-            IsMarkedForBombing = true;
             WillHonk = false;
             SetPopping();
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET + 1;

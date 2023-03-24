@@ -1,22 +1,21 @@
-﻿using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml;
-using Microsoft.UI;
+﻿using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Media;
 using System;
 using System.Linq;
 
 namespace HonkTrooper
 {
-    public partial class RoadSidePatch : Construct
+    public partial class RoadSideWalkSlope : Construct
     {
         #region Ctor
 
-        public RoadSidePatch(
+        public RoadSideWalkSlope(
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction)
         {
-            ConstructType = ConstructType.ROAD_SIDE_PATCH;
+            ConstructType = ConstructType.ROAD_SIDE_WALK_SLOPE;
 
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.ROAD_SIDE_PATCH);
+            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.ROAD_SIDE_WALK_SLOPE);
 
             var width = size.Width;
             var height = size.Height;
@@ -26,13 +25,13 @@ namespace HonkTrooper
             AnimateAction = animateAction;
             RecycleAction = recycleAction;
 
-            Background = App.Current.Resources["RoadSidePatchColor"] as SolidColorBrush;
-            BorderBrush = App.Current.Resources["RoadSidePatchBorderColor"] as SolidColorBrush;
+            Background = App.Current.Resources["RoadSideWalkSlopeColor"] as SolidColorBrush;
+            BorderBrush = App.Current.Resources["RoadSideWalkBorderColor"] as SolidColorBrush;
             BorderThickness = new Thickness(5);
-            CornerRadius = new CornerRadius(5);
 
-            SetSkewY(42);
+            SetSkewY(-28);
             SetRotation(-63.5);
+            CornerRadius = 2;
 
             IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;

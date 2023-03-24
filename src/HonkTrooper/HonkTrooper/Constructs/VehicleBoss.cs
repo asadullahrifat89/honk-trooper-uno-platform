@@ -11,7 +11,7 @@ namespace HonkTrooper
 
         private readonly Random _random;
         private readonly Uri[] _vehicle_boss_uris;
-        private double _honkDelay;
+       
 
         private readonly Image _content_image;
 
@@ -77,6 +77,7 @@ namespace HonkTrooper
             Health = 100;
             SpeedOffset = -2;
             IsAttacking = false;
+            WillHonk = true;
 
             _movementDirection = MovementDirection.None;
 
@@ -86,28 +87,7 @@ namespace HonkTrooper
             RandomizeMovementPattern();
             SetScaleTransform(1);
             SetHonkDelay();
-        }
-
-        public bool Honk()
-        {
-            if (Scene.IsSlowMotionActivated)
-                _honkDelay -= 0.5;
-            else
-                _honkDelay--;
-
-            if (_honkDelay < 0)
-            {
-                SetHonkDelay();
-                return true;
-            }
-
-            return false;
-        }
-
-        public void SetHonkDelay()
-        {
-            _honkDelay = _random.Next(30, 80);
-        }
+        }     
 
         public void LooseHealth()
         {

@@ -4,12 +4,29 @@ namespace HonkTrooper
 {
     public partial class VehicleBase : DirectionalMovingConstruct
     {
+        #region Fields
+
         private readonly Random _random;
+        private double _honkDelay;
+
+        #endregion
+
+        #region Ctor
 
         public VehicleBase()
         {
             _random = new Random();
         }
+
+        #endregion
+
+        #region Properties
+
+        public bool WillHonk { get; set; }
+
+        #endregion
+
+        #region Methods
 
         public void Reposition()
         {
@@ -24,7 +41,7 @@ namespace HonkTrooper
                         var xLaneWidth = Constants.DEFAULT_SCENE_WIDTH / 4;
 
                         SetPosition(
-                            left: lane == 0 ? 0 - Width / 3 : (xLaneWidth - Width / 1.5),
+                            left: lane == 0 ? 0 - Width / 2 : (xLaneWidth - Width / 1.5),
                             top: (Height * -1) + randomY,
                             z: 3);
                     }
@@ -43,5 +60,31 @@ namespace HonkTrooper
                     break;
             }
         }
+
+        public bool Honk()
+        {
+            if (WillHonk)
+            {
+                if (Scene.IsSlowMotionActivated)
+                    _honkDelay -= 0.5;
+                else
+                    _honkDelay--;
+
+                if (_honkDelay < 0)
+                {
+                    SetHonkDelay();
+                    return true;
+                }                
+            }
+
+            return false;
+        }
+
+        public void SetHonkDelay()
+        {
+            _honkDelay = _random.Next(30, 80);
+        }
+
+        #endregion
     }
 }

@@ -26,7 +26,7 @@ namespace HonkTrooper
             AnimateAction = animateAction;
             RecycleAction = recycleAction;
 
-            Background = new SolidColorBrush(Colors.Goldenrod);
+            Background = new SolidColorBrush(Colors.White);
             CornerRadius = new CornerRadius(5);
 
             SetSkewY(42);
