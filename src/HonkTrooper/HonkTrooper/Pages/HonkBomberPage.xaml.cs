@@ -862,7 +862,7 @@ namespace HonkTrooper
 
                 roadSideStripe.SetPosition(
                     left: (roadSideStripe.Height * -1),
-                    top: (Constants.DEFAULT_SCENE_HEIGHT / 8.4),
+                    top: (Constants.DEFAULT_SCENE_HEIGHT / 8.3),
                     z: 0);
 
                 return true;
@@ -3273,7 +3273,7 @@ namespace HonkTrooper
 
         private void AddGeneratorsToScene()
         {
-            // add road
+            // add road side stripes
 
             _scene_game.AddToScene(new Generator(
                generationDelay: 35,
@@ -3286,6 +3286,12 @@ namespace HonkTrooper
                 startUpAction: SpawnRoadSideStripes));
 
             _scene_game.AddToScene(
+
+                // add road marks
+                new Generator(
+                    generationDelay: 30,
+                    generationAction: GenerateRoadMark,
+                    startUpAction: SpawnRoadMarks),
 
                 new Generator(
                    generationDelay: 180,
@@ -3304,12 +3310,12 @@ namespace HonkTrooper
 
                   // add road side patches
                   new Generator(
-                   generationDelay: 30,
+                   generationDelay: 29,
                    generationAction: GenerateRoadSidePatchTop,
                    startUpAction: SpawnRoadSidePatchs),
 
                 new Generator(
-                    generationDelay: 30,
+                    generationDelay: 29,
                     generationAction: GenerateRoadSidePatchBottom,
                     startUpAction: SpawnRoadSidePatchs),
 
@@ -3337,11 +3343,7 @@ namespace HonkTrooper
                     generationAction: GenerateRoadSideHedgeBottom,
                     startUpAction: SpawnRoadSideHedges),
 
-                // then add road marks
-                new Generator(
-                    generationDelay: 30,
-                    generationAction: GenerateRoadMark,
-                    startUpAction: SpawnRoadMarks),
+              
 
                 // then add the vehicles which will appear forward in z wrt the top trees
                 new Generator(
