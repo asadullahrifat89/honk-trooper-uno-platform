@@ -549,7 +549,7 @@ namespace HonkTrooper
                   left: -3000,
                   top: -3000);
 
-            SpawnDropShadow(_player);
+            SpawnDropShadow(source: _player);
 
             _scene_game.AddToScene(_player);
 
@@ -1084,7 +1084,7 @@ namespace HonkTrooper
 
         private bool SpawnRoadSideHedges()
         {
-            for (int i = 0; i < 12; i++)
+            for (int i = 0; i < 11; i++)
             {
                 RoadSideHedge hedge = new(
                     animateAction: AnimateRoadSideHedge,
@@ -1094,9 +1094,7 @@ namespace HonkTrooper
                     left: -3000,
                     top: -3000);
 
-                _scene_game.AddToScene(hedge);
-
-                SpawnDropShadow(source: hedge);
+                _scene_game.AddToScene(hedge);                
             }
 
             return true;
@@ -1844,7 +1842,7 @@ namespace HonkTrooper
                     top: -3000,
                     z: 8);
 
-                SpawnDropShadow(ufoEnemy);
+                SpawnDropShadow(source: ufoEnemy);
             }
 
             return true;
