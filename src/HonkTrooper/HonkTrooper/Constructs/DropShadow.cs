@@ -40,6 +40,9 @@ namespace HonkTrooper
             CornerRadius = new CornerRadius(100);
             Opacity = 0.3;
 
+            //SetSkewY(42);
+            //SetRotation(100);
+
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;
             IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
         }
