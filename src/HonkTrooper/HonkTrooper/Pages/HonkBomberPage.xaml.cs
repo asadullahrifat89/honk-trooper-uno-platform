@@ -659,7 +659,7 @@ namespace HonkTrooper
 
         private bool SpawnVehicles()
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 8; i++)
             {
                 Vehicle vehicle = new(
                     animateAction: AnimateVehicle,
@@ -759,7 +759,7 @@ namespace HonkTrooper
 
         private bool SpawnRoadMarks()
         {
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 10; i++)
             {
                 RoadMark roadMark = new(
                     animateAction: AnimateRoadMark,
@@ -1084,7 +1084,7 @@ namespace HonkTrooper
 
         private bool SpawnRoadSideHedges()
         {
-            for (int i = 0; i < 15; i++)
+            for (int i = 0; i < 10; i++)
             {
                 RoadSideHedge hedge = new(
                     animateAction: AnimateRoadSideHedge,
@@ -1835,7 +1835,7 @@ namespace HonkTrooper
 
         private bool SpawnUfoEnemys()
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 7; i++)
             {
                 UfoEnemy enemy = new(
                     animateAction: AnimateUfoEnemy,
@@ -2124,7 +2124,7 @@ namespace HonkTrooper
 
         private bool SpawnPlayerRockets()
         {
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 4; i++)
             {
                 PlayerRocket bomb = new(
                     animateAction: AnimatePlayerRocket,
@@ -2283,7 +2283,7 @@ namespace HonkTrooper
 
         private bool SpawnUfoEnemyRockets()
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 8; i++)
             {
                 UfoEnemyRocket bomb = new(
                     animateAction: AnimateUfoEnemyRocket,
@@ -2382,7 +2382,7 @@ namespace HonkTrooper
 
         private bool SpawnUfoBossRockets()
         {
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 4; i++)
             {
                 UfoBossRocket ufoBossRocket = new(
                     animateAction: AnimateUfoBossRocket,
@@ -3307,15 +3307,15 @@ namespace HonkTrooper
                 generationAction: GenerateRoadSideWalkBottom,
                 startUpAction: SpawnRoadSideWalks),
 
-            new Generator(
-                generationDelay: 29,
-                generationAction: GenerateRoadSideWalkSlopeTop,
-                startUpAction: SpawnRoadSideWalkSlopes),
+            //new Generator(
+            //    generationDelay: 29,
+            //    generationAction: GenerateRoadSideWalkSlopeTop,
+            //    startUpAction: SpawnRoadSideWalkSlopes),
 
-            new Generator(
-                generationDelay: 29,
-                generationAction: GenerateRoadSideWalkSlopeBottom,
-                startUpAction: SpawnRoadSideWalkSlopes),
+            //new Generator(
+            //    generationDelay: 29,
+            //    generationAction: GenerateRoadSideWalkSlopeBottom,
+            //    startUpAction: SpawnRoadSideWalkSlopes),
 
             // then add the top trees
             new Generator(
@@ -3331,13 +3331,13 @@ namespace HonkTrooper
 
             // then add the top RoadSideHedges
             new Generator(
-                generationDelay: 12,
+                generationDelay: 16,
                 generationAction: GenerateRoadSideHedgeTop,
                 startUpAction: SpawnRoadSideHedges),
 
             // then add the bottom RoadSideHedges which will appear forward in z wrt to the vehicles
             new Generator(
-                generationDelay: 12,
+                generationDelay: 16,
                 generationAction: GenerateRoadSideHedgeBottom,
                 startUpAction: SpawnRoadSideHedges),
 
@@ -3421,7 +3421,7 @@ namespace HonkTrooper
                 startUpAction: SpawnUfoEnemyRockets),
 
                 new Generator(
-                generationDelay: 600,
+                generationDelay: 500,
                 generationAction: GenerateHealthPickups,
                 startUpAction: SpawnHealthPickups,
                 randomizeGenerationDelay: true),
