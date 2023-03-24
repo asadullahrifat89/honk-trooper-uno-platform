@@ -901,7 +901,7 @@ namespace HonkTrooper
 
         private bool SpawnRoadSidePatchs()
         {
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 7; i++)
             {
                 RoadSidePatch radSidePatch = new(
                 animateAction: AnimateRoadSidePatch,
@@ -980,7 +980,7 @@ namespace HonkTrooper
 
         private bool SpawnRoadSideTrees()
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 6; i++)
             {
                 RoadSideTree tree = new(
                     animateAction: AnimateRoadSideTree,
@@ -1000,6 +1000,18 @@ namespace HonkTrooper
 
         private bool GenerateRoadSideTreeTop()
         {
+            //if (_scene_game.Children.OfType<RoadSideTree>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideTree tree2)
+            //{
+            //    tree2.IsAnimating = true;
+
+            //    tree2.SetPosition(
+            //      left: (Constants.DEFAULT_SCENE_WIDTH / 2 - tree2.Width) + 160,
+            //      top: (tree2.Height * -1.1) - 55,
+            //      z: 2);
+
+            //    SyncDropShadow(tree2);
+            //}
+
             if (_scene_game.Children.OfType<RoadSideTree>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideTree tree)
             {
                 tree.IsAnimating = true;
@@ -1010,18 +1022,6 @@ namespace HonkTrooper
                   z: 3);
 
                 SyncDropShadow(tree);
-            }
-
-            if (_scene_game.Children.OfType<RoadSideTree>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideTree tree2)
-            {
-                tree2.IsAnimating = true;
-
-                tree2.SetPosition(
-                  left: (Constants.DEFAULT_SCENE_WIDTH / 2 - tree2.Width) + 160,
-                  top: (tree2.Height * -1.1) - 55,
-                  z: 2);
-
-                SyncDropShadow(tree2);
             }
 
             return true;
@@ -1041,17 +1041,17 @@ namespace HonkTrooper
                 SyncDropShadow(tree);
             }
 
-            if (_scene_game.Children.OfType<RoadSideTree>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideTree tree2)
-            {
-                tree2.IsAnimating = true;
+            //if (_scene_game.Children.OfType<RoadSideTree>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideTree tree2)
+            //{
+            //    tree2.IsAnimating = true;
 
-                tree2.SetPosition(
-                  left: (-1.73 * tree2.Width),
-                  top: (Constants.DEFAULT_SCENE_HEIGHT / 2.5),
-                  z: 4);
+            //    tree2.SetPosition(
+            //      left: (-1.73 * tree2.Width),
+            //      top: (Constants.DEFAULT_SCENE_HEIGHT / 2.5),
+            //      z: 4);
 
-                SyncDropShadow(tree2);
-            }
+            //    SyncDropShadow(tree2);
+            //}
 
             return true;
         }
@@ -1067,7 +1067,7 @@ namespace HonkTrooper
         {
             var hitBox = tree.GetHitBox();
 
-            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left > Constants.DEFAULT_SCENE_WIDTH)
+            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - tree.Width > Constants.DEFAULT_SCENE_WIDTH)
             {
                 tree.IsAnimating = false;
 
@@ -1148,7 +1148,7 @@ namespace HonkTrooper
         {
             var hitBox = hedge.GetHitBox();
 
-            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left > Constants.DEFAULT_SCENE_WIDTH)
+            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - hedge.Width > Constants.DEFAULT_SCENE_WIDTH)
             {
                 hedge.IsAnimating = false;
 
@@ -1235,7 +1235,7 @@ namespace HonkTrooper
         {
             var hitBox = roadSideLamp.GetHitBox();
 
-            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left > Constants.DEFAULT_SCENE_WIDTH)
+            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSideLamp.Width > Constants.DEFAULT_SCENE_WIDTH)
             {
                 roadSideLamp.IsAnimating = false;
 
@@ -1322,7 +1322,7 @@ namespace HonkTrooper
         {
             var hitBox = roadSideBillboard.GetHitBox();
 
-            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left > Constants.DEFAULT_SCENE_WIDTH)
+            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSideBillboard.Width > Constants.DEFAULT_SCENE_WIDTH)
             {
                 roadSideBillboard.IsAnimating = false;
 
