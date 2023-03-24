@@ -3,7 +3,6 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Linq;
-using System.Net.Sockets;
 using System.Threading.Tasks;
 using Windows.Graphics.Display;
 
@@ -845,7 +844,7 @@ namespace HonkTrooper
                 roadSideStripe.IsAnimating = true;
 
                 roadSideStripe.SetPosition(
-                    left: Constants.DEFAULT_SCENE_WIDTH / 5.7,
+                    left: Constants.DEFAULT_SCENE_WIDTH / 6,
                     top: roadSideStripe.Height * -1.1,
                     z: 0);
 
@@ -924,7 +923,7 @@ namespace HonkTrooper
                 roadSidePatch.IsAnimating = true;
 
                 roadSidePatch.SetPosition(
-                    left: (Constants.DEFAULT_SCENE_WIDTH / 2.25 - roadSidePatch.Width - 5),
+                    left: (Constants.DEFAULT_SCENE_WIDTH / 2.15 - roadSidePatch.Width),
                     top: roadSidePatch.Height * -1,
                     z: 0);
 
@@ -941,7 +940,7 @@ namespace HonkTrooper
                 roadSidePatch.IsAnimating = true;
 
                 roadSidePatch.SetPosition(
-                    left: (roadSidePatch.Height * -1),
+                    left: (roadSidePatch.Height * -1.5),
                     top: (Constants.DEFAULT_SCENE_HEIGHT / 5 + roadSidePatch.Height / 2),
                     z: 0);
 
