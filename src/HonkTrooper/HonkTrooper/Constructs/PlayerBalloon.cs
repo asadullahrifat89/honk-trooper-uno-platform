@@ -110,6 +110,8 @@ namespace HonkTrooper
 
         public void Reposition()
         {
+            var scaling = ScreenExtensions.GetScreenSpaceScaling();
+
             SetPosition(
                 left: ((Scene.Width / 4) * 2) - Width / 2,
                 top: (Scene.Height / 2 - Height / 2) - 150,
@@ -404,7 +406,7 @@ namespace HonkTrooper
             {
                 _movementStopDelay--;
 
-                double movementSpeedLoss = _movementStopSpeedLoss;               
+                double movementSpeedLoss = _movementStopSpeedLoss;
 
                 if (_lastSpeed > 0)
                 {
