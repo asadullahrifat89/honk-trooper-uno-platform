@@ -24,7 +24,7 @@ namespace HonkTrooper
                         var xLaneWidth = Constants.DEFAULT_SCENE_WIDTH / 4;
 
                         SetPosition(
-                            left: lane == 0 ? 0 - Width / 3 : (xLaneWidth - Width / 1.5),
+                            left: lane == 0 ? 0 - Width / 2 : (xLaneWidth - Width / 1.5),
                             top: (Height * -1) + randomY,
                             z: 3);
                     }
