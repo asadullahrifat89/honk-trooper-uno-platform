@@ -3281,17 +3281,7 @@ namespace HonkTrooper
             new Generator(
                 generationDelay: 30,
                 generationAction: GenerateRoadMark,
-                startUpAction: SpawnRoadMarks),
-
-            new Generator(
-                generationDelay: 30,
-                generationAction: GenerateRoadSidePatchSlopeTop,
-                startUpAction: SpawnRoadSidePatchSlopes),
-
-            new Generator(
-                generationDelay: 30,
-                generationAction: GenerateRoadSidePatchSlopeBottom,
-                startUpAction: SpawnRoadSidePatchSlopes),
+                startUpAction: SpawnRoadMarks),          
 
             new Generator(
                 generationDelay: 180,
@@ -3318,6 +3308,16 @@ namespace HonkTrooper
                 generationDelay: 29,
                 generationAction: GenerateRoadSidePatchBottom,
                 startUpAction: SpawnRoadSidePatchs),
+
+            new Generator(
+                generationDelay: 29,
+                generationAction: GenerateRoadSidePatchSlopeTop,
+                startUpAction: SpawnRoadSidePatchSlopes),
+
+            new Generator(
+                generationDelay: 29,
+                generationAction: GenerateRoadSidePatchSlopeBottom,
+                startUpAction: SpawnRoadSidePatchSlopes),
 
             // then add the top trees
             new Generator(
