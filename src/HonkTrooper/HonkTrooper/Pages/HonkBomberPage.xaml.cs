@@ -940,8 +940,8 @@ namespace HonkTrooper
                 roadSidePatch.IsAnimating = true;
 
                 roadSidePatch.SetPosition(
-                    left: (roadSidePatch.Height * -1.5),
-                    top: (Constants.DEFAULT_SCENE_HEIGHT / 5 + roadSidePatch.Height / 2),
+                    left: (roadSidePatch.Height * -1.5) - 30,
+                    top: (Constants.DEFAULT_SCENE_HEIGHT / 5 + roadSidePatch.Height / 2) - 50,
                     z: 0);
 
                 return true;
