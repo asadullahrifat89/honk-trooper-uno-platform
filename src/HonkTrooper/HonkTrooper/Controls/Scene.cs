@@ -41,6 +41,7 @@ namespace HonkTrooper
             RenderTransformOrigin = new Point(0, 0);
             RenderTransform = _compositeTransform;
             CanDrag = false;
+            Speed = 6;
 
             Unloaded += Scene_Unloaded;
         }

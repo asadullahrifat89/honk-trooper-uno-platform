@@ -15,7 +15,7 @@ namespace HonkTrooper
 
         public static ApplicationView ApplicationView => ApplicationView.GetForCurrentView();
 
-        public static DisplayOrientations RequiredDisplayOrientation { get; set; }
+        public static DisplayOrientations RequiredScreenOrientation { get; set; }
 
         #endregion
 
@@ -38,7 +38,7 @@ namespace HonkTrooper
             //#endif
         }
 
-        public static void SetDisplayOrientation(DisplayOrientations displayOrientation)
+        public static void SetScreenOrientation(DisplayOrientations displayOrientation)
         {
             var currentOrientation = DisplayInformation?.CurrentOrientation;
 
@@ -48,7 +48,7 @@ namespace HonkTrooper
                 DisplayInformation.AutoRotationPreferences = displayOrientation;
         }
 
-        public static DisplayOrientations? GetDisplayOrienation()
+        public static DisplayOrientations? GetScreenOrienation()
         {
             return DisplayInformation?.CurrentOrientation;
         }
