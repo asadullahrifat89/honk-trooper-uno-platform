@@ -4,7 +4,7 @@ namespace HonkTrooper
 {
     static class Constants
     {
-        public const double DEFAULT_FRAME_TIME = 22;
+        public const double DEFAULT_FRAME_TIME = 23;
         public const double DEFAULT_SPEED_OFFSET = 3;
         public const double DEFAULT_DROP_SHADOW_DISTANCE = 65;
         public const double DEFAULT_SLOW_MOTION_REDUCTION_FACTOR = 3;

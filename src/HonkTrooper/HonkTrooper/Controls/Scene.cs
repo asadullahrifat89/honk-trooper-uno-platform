@@ -106,13 +106,13 @@ namespace HonkTrooper
             {
                 //_stopwatch = Stopwatch.StartNew();
 
-                IsAnimating = true;                
+                IsAnimating = true;
                 _gameViewTimer = new PeriodicTimer(_frameTime);
 
                 while (await _gameViewTimer.WaitForNextTickAsync())
                 {
                     Run();
-                }                    
+                }
             }
         }
 
@@ -121,7 +121,7 @@ namespace HonkTrooper
             if (IsAnimating)
             {
                 //_stopwatch?.Stop();
-                IsAnimating = false;                
+                IsAnimating = false;
                 _gameViewTimer?.Dispose();
             }
         }
@@ -134,7 +134,7 @@ namespace HonkTrooper
         public void Stop()
         {
             //_stopwatch?.Stop();
-            IsAnimating = false;            
+            IsAnimating = false;
             _gameViewTimer?.Dispose();
 
             Clear();
@@ -175,7 +175,7 @@ namespace HonkTrooper
 
             DepleteSlowMotion();
 
-            LoggerExtensions.Log($"Animating Objects: {Children.OfType<Construct>().Count(x => x.IsAnimating)} ~ Total Objects: {Children.OfType<Construct>().Count()}");
+            LoggerExtensions.Log($"Scene: {Name} ~ Animating Objects: {Children.OfType<Construct>().Count(x => x.IsAnimating)} ~ Total Objects: {Children.OfType<Construct>().Count()}");
         }
 
         public void ActivateSlowMotion()
