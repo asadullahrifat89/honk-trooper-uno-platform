@@ -4,7 +4,7 @@ namespace HonkTrooper
 {
     static class Constants
     {
-        public const double DEFAULT_FRAME_TIME = 19;
+        public const double DEFAULT_FRAME_TIME = 20;
         public const double DEFAULT_SPEED_OFFSET = 3;
         public const double DEFAULT_DROP_SHADOW_DISTANCE = 65;
         public const double DEFAULT_SLOW_MOTION_REDUCTION_FACTOR = 3;
@@ -42,13 +42,13 @@ namespace HonkTrooper
 
             new (ConstructType.HONK, 90, 90),
 
-            new (ConstructType.ROAD_MARK, 15, 320),
+            new (ConstructType.ROAD_MARK, 15, 220),
+            new (ConstructType.ROAD_SIDE_STRIPE, 15, 250),
 
             new (ConstructType.ROAD_SIDE_TREE, 190, 190),
             new (ConstructType.ROAD_SIDE_HEDGE, 160, 160),
 
-            new (ConstructType.ROAD_SIDE_PATCH, 270, 260),
-            new (ConstructType.ROAD_SIDE_STRIPE, 15, 200),
+            new (ConstructType.ROAD_SIDE_PATCH, 270, 260),            
             new (ConstructType.ROAD_SIDE_LAMP, 150, 150),
             new (ConstructType.ROAD_SIDE_BILLBOARD, 340, 340),
 
