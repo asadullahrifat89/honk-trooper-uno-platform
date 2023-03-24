@@ -3284,12 +3284,12 @@ namespace HonkTrooper
 
             // add road side walks
             new Generator(
-                generationDelay: 29,
+                generationDelay: 27,
                 generationAction: GenerateRoadSideWalkTop,
                 startUpAction: SpawnRoadSideWalks),
 
             new Generator(
-                generationDelay: 29,
+                generationDelay: 27,
                 generationAction: GenerateRoadSideWalkBottom,
                 startUpAction: SpawnRoadSideWalks),
 
