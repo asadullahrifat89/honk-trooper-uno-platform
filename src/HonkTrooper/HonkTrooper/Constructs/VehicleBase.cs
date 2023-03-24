@@ -5,7 +5,7 @@ namespace HonkTrooper
     public partial class VehicleBase : DirectionalMovingConstruct
     {
         #region Fields
-        
+
         private readonly Random _random;
         private double _honkDelay;
 
@@ -16,7 +16,7 @@ namespace HonkTrooper
         public VehicleBase()
         {
             _random = new Random();
-        } 
+        }
 
         #endregion
 
@@ -63,15 +63,18 @@ namespace HonkTrooper
 
         public bool Honk()
         {
-            if (Scene.IsSlowMotionActivated)
-                _honkDelay -= 0.5;
-            else
-                _honkDelay--;
-
-            if (_honkDelay < 0)
+            if (WillHonk)
             {
-                SetHonkDelay();
-                return true;
+                if (Scene.IsSlowMotionActivated)
+                    _honkDelay -= 0.5;
+                else
+                    _honkDelay--;
+
+                if (_honkDelay < 0)
+                {
+                    SetHonkDelay();
+                    return true;
+                }                
             }
 
             return false;

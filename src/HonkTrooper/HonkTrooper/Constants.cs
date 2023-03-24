@@ -43,12 +43,12 @@ namespace HonkTrooper
             new (ConstructType.HONK, 90, 90),
 
             new (ConstructType.ROAD_MARK, 15, 100),
-            new (ConstructType.ROAD_SIDE_PATCH_SLOPE, 15, 260),
+            new (ConstructType.ROAD_SIDE_WALK_SLOPE, 15, 260),
 
             new (ConstructType.ROAD_SIDE_TREE, 190, 190),
             new (ConstructType.ROAD_SIDE_HEDGE, 160, 160),
 
-            new (ConstructType.ROAD_SIDE_PATCH, 270, 260),
+            new (ConstructType.ROAD_SIDE_WALK, 270, 260),
             new (ConstructType.ROAD_SIDE_LAMP, 150, 150),
             new (ConstructType.ROAD_SIDE_BILLBOARD, 340, 340),
 
@@ -243,9 +243,9 @@ namespace HonkTrooper
 
         VEHICLE_BOSS_ROCKET,
 
-        ROAD_SIDE_PATCH_SLOPE,
+        ROAD_SIDE_WALK_SLOPE,
         ROAD_MARK,
-        ROAD_SIDE_PATCH,
+        ROAD_SIDE_WALK,
 
         ROAD_SIDE_TREE,
         ROAD_SIDE_HEDGE,

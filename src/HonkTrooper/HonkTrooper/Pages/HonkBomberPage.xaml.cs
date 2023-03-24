@@ -191,11 +191,11 @@ namespace HonkTrooper
 
             _scene_main_menu.Pause();
 
+            ToggleHudVisibility(Visibility.Visible);
+
             _game_controller.FocusAttackButton();
             _game_controller.SetDefaultThumbstickPosition();
-            _game_controller.ActivateGyrometerReading();
-
-            ToggleHudVisibility(Visibility.Visible);
+            _game_controller.ActivateGyrometerReading();            
         }
 
         private void GameOver()
@@ -817,15 +817,15 @@ namespace HonkTrooper
 
         #endregion
 
-        #region RoadSidePatchSlope
+        #region RoadSideWalkSlope
 
-        private bool SpawnRoadSidePatchSlopes()
+        private bool SpawnRoadSideWalkSlopes()
         {
             for (int i = 0; i < 10; i++)
             {
-                RoadSidePatchSlope roadSideStripe = new(
-                    animateAction: AnimateRoadSidePatchSlope,
-                    recycleAction: RecycleRoadSidePatchSlope);
+                RoadSideWalkSlope roadSideStripe = new(
+                    animateAction: AnimateRoadSideWalkSlope,
+                    recycleAction: RecycleRoadSideWalkSlope);
 
                 roadSideStripe.SetPosition(
                     left: -3000,
@@ -837,9 +837,9 @@ namespace HonkTrooper
             return true;
         }
 
-        private bool GenerateRoadSidePatchSlopeTop()
+        private bool GenerateRoadSideWalkSlopeTop()
         {
-            if (_scene_game.Children.OfType<RoadSidePatchSlope>().FirstOrDefault(x => x.IsAnimating == false) is RoadSidePatchSlope roadSideStripe)
+            if (_scene_game.Children.OfType<RoadSideWalkSlope>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideWalkSlope roadSideStripe)
             {
                 roadSideStripe.IsAnimating = true;
 
@@ -854,9 +854,9 @@ namespace HonkTrooper
             return false;
         }
 
-        private bool GenerateRoadSidePatchSlopeBottom()
+        private bool GenerateRoadSideWalkSlopeBottom()
         {
-            if (_scene_game.Children.OfType<RoadSidePatchSlope>().FirstOrDefault(x => x.IsAnimating == false) is RoadSidePatchSlope roadSideStripe)
+            if (_scene_game.Children.OfType<RoadSideWalkSlope>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideWalkSlope roadSideStripe)
             {
                 roadSideStripe.IsAnimating = true;
 
@@ -871,14 +871,14 @@ namespace HonkTrooper
             return false;
         }
 
-        private bool AnimateRoadSidePatchSlope(Construct roadSideStripe)
+        private bool AnimateRoadSideWalkSlope(Construct roadSideStripe)
         {
             var speed = (_scene_game.Speed + roadSideStripe.SpeedOffset);
             MoveConstructBottomRight(construct: roadSideStripe, speed: speed);
             return true;
         }
 
-        private bool RecycleRoadSidePatchSlope(Construct roadSideStripe)
+        private bool RecycleRoadSideWalkSlope(Construct roadSideStripe)
         {
             var hitBox = roadSideStripe.GetHitBox();
 
@@ -896,15 +896,15 @@ namespace HonkTrooper
 
         #endregion
 
-        #region RoadSidePatch
+        #region RoadSideWalk
 
-        private bool SpawnRoadSidePatchs()
+        private bool SpawnRoadSideWalks()
         {
             for (int i = 0; i < 7; i++)
             {
-                RoadSidePatch radSidePatch = new(
-                animateAction: AnimateRoadSidePatch,
-                recycleAction: RecycleRoadSidePatch);
+                RoadSideWalk radSidePatch = new(
+                animateAction: AnimateRoadSideWalk,
+                recycleAction: RecycleRoadSideWalk);
 
                 radSidePatch.SetPosition(
                     left: -3000,
@@ -916,9 +916,9 @@ namespace HonkTrooper
             return true;
         }
 
-        private bool GenerateRoadSidePatchTop()
+        private bool GenerateRoadSideWalkTop()
         {
-            if (_scene_game.Children.OfType<RoadSidePatch>().FirstOrDefault(x => x.IsAnimating == false) is RoadSidePatch roadSidePatch)
+            if (_scene_game.Children.OfType<RoadSideWalk>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideWalk roadSidePatch)
             {
                 roadSidePatch.IsAnimating = true;
 
@@ -933,9 +933,9 @@ namespace HonkTrooper
             return false;
         }
 
-        private bool GenerateRoadSidePatchBottom()
+        private bool GenerateRoadSideWalkBottom()
         {
-            if (_scene_game.Children.OfType<RoadSidePatch>().FirstOrDefault(x => x.IsAnimating == false) is RoadSidePatch roadSidePatch)
+            if (_scene_game.Children.OfType<RoadSideWalk>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideWalk roadSidePatch)
             {
                 roadSidePatch.IsAnimating = true;
 
@@ -950,14 +950,14 @@ namespace HonkTrooper
             return false;
         }
 
-        private bool AnimateRoadSidePatch(Construct roadSidePatch)
+        private bool AnimateRoadSideWalk(Construct roadSidePatch)
         {
             var speed = (_scene_game.Speed + roadSidePatch.SpeedOffset);
             MoveConstructBottomRight(construct: roadSidePatch, speed: speed);
             return true;
         }
 
-        private bool RecycleRoadSidePatch(Construct roadSidePatch)
+        private bool RecycleRoadSideWalk(Construct roadSidePatch)
         {
             var hitBox = roadSidePatch.GetHitBox();
 
@@ -3273,8 +3273,6 @@ namespace HonkTrooper
 
         private void AddGeneratorsToScene()
         {
-            // add road side stripes
-
             _scene_game.AddToScene(
 
             // add road marks
@@ -3298,26 +3296,26 @@ namespace HonkTrooper
                 generationAction: GenerateRoadSideLampBottom,
                 startUpAction: SpawnRoadSideLamps),
 
-            // add road side patches
+            // add road side walks
             new Generator(
                 generationDelay: 29,
-                generationAction: GenerateRoadSidePatchTop,
-                startUpAction: SpawnRoadSidePatchs),
+                generationAction: GenerateRoadSideWalkTop,
+                startUpAction: SpawnRoadSideWalks),
 
             new Generator(
                 generationDelay: 29,
-                generationAction: GenerateRoadSidePatchBottom,
-                startUpAction: SpawnRoadSidePatchs),
+                generationAction: GenerateRoadSideWalkBottom,
+                startUpAction: SpawnRoadSideWalks),
 
             new Generator(
                 generationDelay: 29,
-                generationAction: GenerateRoadSidePatchSlopeTop,
-                startUpAction: SpawnRoadSidePatchSlopes),
+                generationAction: GenerateRoadSideWalkSlopeTop,
+                startUpAction: SpawnRoadSideWalkSlopes),
 
             new Generator(
                 generationDelay: 29,
-                generationAction: GenerateRoadSidePatchSlopeBottom,
-                startUpAction: SpawnRoadSidePatchSlopes),
+                generationAction: GenerateRoadSideWalkSlopeBottom,
+                startUpAction: SpawnRoadSideWalkSlopes),
 
             // then add the top trees
             new Generator(
@@ -3342,8 +3340,6 @@ namespace HonkTrooper
                 generationDelay: 12,
                 generationAction: GenerateRoadSideHedgeBottom,
                 startUpAction: SpawnRoadSideHedges),
-
-
 
             // then add the vehicles which will appear forward in z wrt the top trees
             new Generator(
