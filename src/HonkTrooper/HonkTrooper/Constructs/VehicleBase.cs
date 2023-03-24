@@ -34,7 +34,7 @@ namespace HonkTrooper
 
                         SetPosition(
                             left: Width * -1,
-                            top: lane == 0 ? 0 - Height / 2.5 : yLaneHeight - Height / 3,
+                            top: lane == 0 ? 0 - Height / 2 : yLaneHeight - Height / 3,
                             z: 3);
                     }
                     break;
