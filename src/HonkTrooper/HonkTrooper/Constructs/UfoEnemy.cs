@@ -102,38 +102,18 @@ namespace HonkTrooper
 
         public void Hover()
         {
-            if (Scene.IsSlowMotionActivated)
+            _hoverDelay--;
+
+            if (_hoverDelay >= 0)
             {
-                _hoverDelay -= 0.5;
-
-                if (_hoverDelay >= 0)
-                {
-                    SetTop(GetTop() + _hoverSpeed / Constants.DEFAULT_SLOW_MOTION_REDUCTION_FACTOR);
-                }
-                else
-                {
-                    SetTop(GetTop() - _hoverSpeed / Constants.DEFAULT_SLOW_MOTION_REDUCTION_FACTOR);
-
-                    if (_hoverDelay <= _hoverDelayDefault * -1)
-                        _hoverDelay = _hoverDelayDefault;
-                }
+                SetTop(GetTop() + _hoverSpeed);
             }
-
             else
             {
-                _hoverDelay--;
+                SetTop(GetTop() - _hoverSpeed);
 
-                if (_hoverDelay >= 0)
-                {
-                    SetTop(GetTop() + _hoverSpeed);
-                }
-                else
-                {
-                    SetTop(GetTop() - _hoverSpeed);
-
-                    if (_hoverDelay <= _hoverDelayDefault * -1)
-                        _hoverDelay = _hoverDelayDefault;
-                }
+                if (_hoverDelay <= _hoverDelayDefault * -1)
+                    _hoverDelay = _hoverDelayDefault;
             }
         }
 
@@ -141,10 +121,7 @@ namespace HonkTrooper
         {
             if (!IsDead && WillAttack)
             {
-                if (Scene.IsSlowMotionActivated)
-                    _attackDelay -= 0.5;
-                else
-                    _attackDelay--;
+                _attackDelay--;
 
                 if (_attackDelay < 0)
                 {
@@ -165,10 +142,7 @@ namespace HonkTrooper
         {
             if (!IsDead && WillHonk)
             {
-                if (Scene.IsSlowMotionActivated)
-                    _honkDelay -= 0.5;
-                else
-                    _honkDelay--;
+                _honkDelay--;
 
                 if (_honkDelay < 0)
                 {
