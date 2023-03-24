@@ -3208,9 +3208,6 @@ namespace HonkTrooper
 
         private void MoveConstructBottomRight(Construct construct, double speed)
         {
-            if (_scene_game.IsSlowMotionActivated)
-                speed /= Constants.DEFAULT_SLOW_MOTION_REDUCTION_FACTOR;
-
             construct.SetLeft(construct.GetLeft() + speed);
             construct.SetTop(construct.GetTop() + speed * construct.IsometricDisplacement);
         }
