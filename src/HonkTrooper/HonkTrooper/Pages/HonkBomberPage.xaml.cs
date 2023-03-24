@@ -335,7 +335,7 @@ namespace HonkTrooper
                 {
                     if (_scene_game.SceneState == SceneState.GAME_STOPPED)
                     {
-                        if (ScreenExtensions.RequiredDisplayOrientation == ScreenExtensions.GetDisplayOrienation())
+                        if (ScreenExtensions.RequiredScreenOrientation == ScreenExtensions.GetScreenOrienation())
                         {
                             RecycleTitleScreen(titleScreen);
                             GeneratePlayerSelectionScreen();
@@ -343,21 +343,21 @@ namespace HonkTrooper
                         }
                         else
                         {
-                            ScreenExtensions.SetDisplayOrientation(ScreenExtensions.RequiredDisplayOrientation);
+                            ScreenExtensions.SetScreenOrientation(ScreenExtensions.RequiredScreenOrientation);
                         }
                     }
                     else
                     {
                         if (!_scene_game.IsAnimating)
                         {
-                            if (ScreenExtensions.RequiredDisplayOrientation == ScreenExtensions.GetDisplayOrienation())
+                            if (ScreenExtensions.RequiredScreenOrientation == ScreenExtensions.GetScreenOrienation())
                             {
                                 ResumeGame();
                                 RecycleTitleScreen(titleScreen);
                             }
                             else
                             {
-                                ScreenExtensions.SetDisplayOrientation(ScreenExtensions.RequiredDisplayOrientation);
+                                ScreenExtensions.SetScreenOrientation(ScreenExtensions.RequiredScreenOrientation);
                             }
                         }
                     }
@@ -1094,7 +1094,7 @@ namespace HonkTrooper
                     left: -3000,
                     top: -3000);
 
-                _scene_game.AddToScene(hedge);                
+                _scene_game.AddToScene(hedge);
             }
 
             return true;
@@ -3251,12 +3251,9 @@ namespace HonkTrooper
 
             AddGeneratorsToScene();
 
-            _scene_game.Speed = 5;
-
-            if (ScreenExtensions.GetDisplayOrienation() == ScreenExtensions.RequiredDisplayOrientation)
+            if (ScreenExtensions.GetScreenOrienation() == ScreenExtensions.RequiredScreenOrientation)
                 _scene_game.Play();
 
-            _scene_main_menu.Speed = 5;
             _scene_main_menu.Play();
         }
 
@@ -3475,18 +3472,18 @@ namespace HonkTrooper
         private async void HonkBomberPage_Loaded(object sender, RoutedEventArgs e)
         {
             ScreenExtensions.DisplayInformation.OrientationChanged += DisplayInformation_OrientationChanged;
-            ScreenExtensions.RequiredDisplayOrientation = DisplayOrientations.Landscape;
+            ScreenExtensions.RequiredScreenOrientation = DisplayOrientations.Landscape;
 
             // set display orientation to required orientation
-            if (ScreenExtensions.GetDisplayOrienation() != ScreenExtensions.RequiredDisplayOrientation)
-                ScreenExtensions.SetDisplayOrientation(ScreenExtensions.RequiredDisplayOrientation);
+            if (ScreenExtensions.GetScreenOrienation() != ScreenExtensions.RequiredScreenOrientation)
+                ScreenExtensions.SetScreenOrientation(ScreenExtensions.RequiredScreenOrientation);
 
             SetController();
             SetScene();
 
             SizeChanged += HonkBomberPage_SizeChanged;
 
-            if (ScreenExtensions.GetDisplayOrienation() == ScreenExtensions.RequiredDisplayOrientation)
+            if (ScreenExtensions.GetScreenOrienation() == ScreenExtensions.RequiredScreenOrientation)
             {
                 ScreenExtensions.EnterFullScreen(true);
 
@@ -3534,7 +3531,9 @@ namespace HonkTrooper
             }
             else
             {
-                if (ScreenExtensions.GetDisplayOrienation() == ScreenExtensions.RequiredDisplayOrientation)
+                ScreenExtensions.EnterFullScreen(true);
+
+                if (ScreenExtensions.GetScreenOrienation() == ScreenExtensions.RequiredScreenOrientation)
                 {
                     if (_scene_main_menu.Children.OfType<DisplayOrientationChangeScreen>().FirstOrDefault(x => x.IsAnimating) is DisplayOrientationChangeScreen DisplayOrientationChangeScreen)
                     {
@@ -3568,9 +3567,7 @@ namespace HonkTrooper
                     }
 
                     GenerateDisplayOrientationChangeScreen();
-                }
-
-                ScreenExtensions.EnterFullScreen(true);
+                }                
             }
 
             LoggerExtensions.Log($"{sender.CurrentOrientation}");
