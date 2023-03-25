@@ -1,6 +1,7 @@
 ﻿using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -175,7 +176,7 @@ namespace HonkTrooper
             _sound_pollution_health_bar.Reset();
             _sound_pollution_health_bar.SetMaxiumHealth(_sound_pollution_max_limit);
             _sound_pollution_health_bar.SetIcon(Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.HONK).Uri);
-            _sound_pollution_health_bar.SetBarForegroundColor(color: Colors.Purple);
+            _sound_pollution_health_bar.SetBarColor(color: Colors.Purple);
 
             _ufo_boss_threashold.Reset(_ufo_boss_threashold_limit);
             _vehicle_boss_threashold.Reset(_vehicle_boss_threashold_limit);
@@ -564,6 +565,24 @@ namespace HonkTrooper
             _player.Reposition();
             _player.SetPlayerTemplate(_selected_player_template);
 
+            switch (_selected_player_template)
+            {
+                case 1:
+                    {
+                        _game_controller.SetAttackButtonColor(App.Current.Resources["Player1AccentColor"] as SolidColorBrush);
+                        _game_controller.SetThumbstickThumbColor(App.Current.Resources["Player1AccentColor"] as SolidColorBrush);
+                    }
+                    break;
+                case 2:
+                    {
+                        _game_controller.SetAttackButtonColor(App.Current.Resources["Player2AccentColor"] as SolidColorBrush);
+                        _game_controller.SetThumbstickThumbColor(App.Current.Resources["Player2AccentColor"] as SolidColorBrush);
+                    }
+                    break;
+                default:
+                    break;
+            }
+
             SyncDropShadow(source: _player);
             SetPlayerHealthBar();
 
@@ -576,7 +595,7 @@ namespace HonkTrooper
             _player_health_bar.SetValue(_player.Health);
 
             _player_health_bar.SetIcon(Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.HEALTH_PICKUP).Uri);
-            _player_health_bar.SetBarForegroundColor(color: Colors.Purple);
+            _player_health_bar.SetBarColor(color: Colors.Crimson);
         }
 
         private bool AnimatePlayerBalloon(Construct player)
@@ -700,7 +719,7 @@ namespace HonkTrooper
 
                     SyncDropShadow(source: playerFireCracker);
 
-                    LoggerExtensions.Log("Player Ground Bomb dropped.");
+                    LoggerExtensions.Log("Player firecracker dropped.");
 
                     return true;
                 }
@@ -1223,7 +1242,7 @@ namespace HonkTrooper
                 _vehicle_boss_health_bar.SetMaxiumHealth(vehicleBoss.Health);
                 _vehicle_boss_health_bar.SetValue(vehicleBoss.Health);
                 _vehicle_boss_health_bar.SetIcon(vehicleBoss.GetContentUri());
-                _vehicle_boss_health_bar.SetBarForegroundColor(color: Colors.Crimson);
+                _vehicle_boss_health_bar.SetBarColor(color: Colors.Crimson);
 
                 GenerateInterimScreen("Crazy Honker Arrived");
                 _scene_game.ActivateSlowMotion();
@@ -1985,7 +2004,7 @@ namespace HonkTrooper
                 _ufo_boss_health_bar.SetMaxiumHealth(ufoBoss.Health);
                 _ufo_boss_health_bar.SetValue(ufoBoss.Health);
                 _ufo_boss_health_bar.SetIcon(ufoBoss.GetContentUri());
-                _ufo_boss_health_bar.SetBarForegroundColor(color: Colors.Crimson);
+                _ufo_boss_health_bar.SetBarColor(color: Colors.Crimson);
 
                 _scene_game.ActivateSlowMotion();
 
@@ -2891,7 +2910,6 @@ namespace HonkTrooper
         {
             DropShadow dropShadow = construct as DropShadow;
             dropShadow.Move();
-
             return true;
         }
 
@@ -2899,10 +2917,9 @@ namespace HonkTrooper
         {
             DropShadow dropShadow1 = dropShadow as DropShadow;
 
-            if (!dropShadow1.ParentConstruct.IsAnimating)
+            if (!dropShadow1.IsParentConstructAnimating())
             {
                 dropShadow.IsAnimating = false;
-
                 dropShadow.SetPosition(
                     left: -3000,
                     top: -3000);
@@ -2917,9 +2934,7 @@ namespace HonkTrooper
         {
             if (_scene_game.Children.OfType<DropShadow>().FirstOrDefault(x => x.Id == source.Id) is DropShadow dropShadow)
             {
-                dropShadow.ParentConstructSpeed = source.GetMovementSpeed();
                 dropShadow.IsAnimating = true;
-
                 dropShadow.SetZ(source.GetZ() - 2);
                 dropShadow.Reset();
             }
@@ -3135,7 +3150,7 @@ namespace HonkTrooper
                         _powerUp_health_bar.SetMaxiumHealth(9);
                         _powerUp_health_bar.SetValue(9);
                         _powerUp_health_bar.SetIcon(powerUpPickup1.GetContentUri());
-                        _powerUp_health_bar.SetBarForegroundColor(color: Colors.Green);
+                        _powerUp_health_bar.SetBarColor(color: Colors.Green);
                     }
                 }
             }
