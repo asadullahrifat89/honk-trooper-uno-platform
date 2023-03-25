@@ -10,7 +10,12 @@
 
         private double _dillyDallyDelay;
         private readonly double _dillyDallyDelayDefault = 15;
-        private readonly double _dillyDallySpeed = 0.5;
+        private readonly double _dillyDallySpeed = 0.7;
+
+
+        private double _vibrateDelay;
+        private readonly double _vibrateDelayDefault = 3;
+        private readonly double _vibrateSpeed = 0.5;
 
         #endregion
 
@@ -69,6 +74,23 @@
 
                 if (_dillyDallyDelay <= _dillyDallyDelayDefault * -1)
                     _dillyDallyDelay = _dillyDallyDelayDefault;
+            }
+        }
+
+        public void Vibrate()
+        {
+            _vibrateDelay--;
+
+            if (_vibrateDelay >= 0)
+            {
+                SetTop(GetTop() + _vibrateSpeed);
+            }
+            else
+            {
+                SetTop(GetTop() - _vibrateSpeed);
+
+                if (_vibrateDelay <= _vibrateDelayDefault * -1)
+                    _vibrateDelay = _vibrateDelayDefault;
             }
         }
 
