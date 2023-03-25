@@ -65,8 +65,12 @@ namespace HonkTrooper
         /// <summary>
         /// Determines gravitating effect so that it can reach it's drop shadow.
         /// </summary>
-        public bool IsGravitating { get; set; }
+        public bool IsGravitatingDownwards { get; set; }
 
+        /// <summary>
+        /// Determines flying up effect.
+        /// </summary>
+        public bool IsGravitatingUpwards { get; set; }
 
         /// <summary>
         /// Determines if pop effect should execute for this construct.
