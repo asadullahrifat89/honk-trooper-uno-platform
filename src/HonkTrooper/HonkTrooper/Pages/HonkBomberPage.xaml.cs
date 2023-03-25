@@ -2891,7 +2891,6 @@ namespace HonkTrooper
         {
             DropShadow dropShadow = construct as DropShadow;
             dropShadow.Move();
-
             return true;
         }
 
@@ -2899,10 +2898,9 @@ namespace HonkTrooper
         {
             DropShadow dropShadow1 = dropShadow as DropShadow;
 
-            if (!dropShadow1.ParentConstruct.IsAnimating)
+            if (!dropShadow1.IsParentConstructAnimating())
             {
                 dropShadow.IsAnimating = false;
-
                 dropShadow.SetPosition(
                     left: -3000,
                     top: -3000);
@@ -2917,9 +2915,7 @@ namespace HonkTrooper
         {
             if (_scene_game.Children.OfType<DropShadow>().FirstOrDefault(x => x.Id == source.Id) is DropShadow dropShadow)
             {
-                dropShadow.ParentConstructSpeed = source.GetMovementSpeed();
                 dropShadow.IsAnimating = true;
-
                 dropShadow.SetZ(source.GetZ() - 2);
                 dropShadow.Reset();
             }
