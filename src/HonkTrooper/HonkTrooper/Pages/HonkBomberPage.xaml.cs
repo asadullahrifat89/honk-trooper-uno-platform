@@ -1708,15 +1708,15 @@ namespace HonkTrooper
         {
             for (int i = 0; i < 11; i++)
             {
-                RoadSideHedge hedge = new(
+                RoadSideHedge roadSideHedge = new(
                     animateAction: AnimateRoadSideHedge,
                     recycleAction: RecycleRoadSideHedge);
 
-                hedge.SetPosition(
+                roadSideHedge.SetPosition(
                     left: -3000,
                     top: -3000);
 
-                _scene_game.AddToScene(hedge);
+                _scene_game.AddToScene(roadSideHedge);
             }
 
             return true;
@@ -1724,13 +1724,13 @@ namespace HonkTrooper
 
         private bool GenerateRoadSideHedgeTop()
         {
-            if (_scene_game.Children.OfType<RoadSideHedge>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideHedge hedge)
+            if (_scene_game.Children.OfType<RoadSideHedge>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideHedge roadSideHedge)
             {
-                hedge.IsAnimating = true;
+                roadSideHedge.IsAnimating = true;
 
-                hedge.SetPosition(
-                  left: (Constants.DEFAULT_SCENE_WIDTH / 3.8),
-                  top: hedge.Height * -1,
+                roadSideHedge.SetPosition(
+                  left: (Constants.DEFAULT_SCENE_WIDTH / 3.8) - 5,
+                  top: (roadSideHedge.Height * -1) - 5,
                   z: 2);
 
                 return true;
@@ -1741,12 +1741,12 @@ namespace HonkTrooper
 
         private bool GenerateRoadSideHedgeBottom()
         {
-            if (_scene_game.Children.OfType<RoadSideHedge>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideHedge hedge)
+            if (_scene_game.Children.OfType<RoadSideHedge>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideHedge roadSideHedge)
             {
-                hedge.IsAnimating = true;
+                roadSideHedge.IsAnimating = true;
 
-                hedge.SetPosition(
-                  left: -1 * hedge.Width - 10,
+                roadSideHedge.SetPosition(
+                  left: (-1.1 * roadSideHedge.Width) - 10,
                   top: (Constants.DEFAULT_SCENE_HEIGHT / 3.1) - 10,
                   z: 3);
 
