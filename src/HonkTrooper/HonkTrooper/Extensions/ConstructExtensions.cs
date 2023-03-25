@@ -104,9 +104,9 @@ namespace HonkTrooper
 
             var rect = new Rect(
                 x: Construct.GetLeft() - diviWidth,
-                y: Construct.GetTop() + diviHeight,
+                y: Construct.GetTop(),
                 width: Construct.Width + diviWidth,
-                height: Construct.Height - diviHeight);
+                height: Construct.Height);
 
             //Construct.SetHitBoxBorder(rect);
 
