@@ -740,26 +740,26 @@ namespace HonkTrooper
                     var drpShdwHitBox = dropShadow.GetCloseHitBox();
                     var fireCrackerHitBox = playerFireCracker.GetCloseHitBox();
 
-                    // start blast animation when the bomb touches it's shadow
-                    if (drpShdwHitBox.IntersectsWith(fireCrackerHitBox) && playerFireCracker.GetBottom() > dropShadow.GetBottom())
+                    if (drpShdwHitBox.IntersectsWith(fireCrackerHitBox) && playerFireCracker.GetBottom() > dropShadow.GetBottom())  // start blast animation when the bomb touches it's shadow
                     {
-                        // while in blast check if it intersects with any vehicle, if it does then the vehicle stops honking and slows down
                         if (_scene_game.Children.OfType<VehicleEnemy>()
                             .Where(x => x.IsAnimating && x.WillHonk)
-                            .FirstOrDefault(x => x.GetCloseHitBox().IntersectsWith(fireCrackerHitBox)) is VehicleEnemy vehicle)
+                            .FirstOrDefault(x => x.GetCloseHitBox().IntersectsWith(fireCrackerHitBox)) is VehicleEnemy vehicle) // while in blast check if it intersects with any vehicle, if it does then the vehicle stops honking and slows down
                         {
                             vehicle.SetBlast();
                             _game_score_bar.GainScore(3);
                         }
 
-                        // if a vechile boss is in place then boss looses health
                         if (_scene_game.Children.OfType<VehicleBoss>()
-                            .FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is VehicleBoss vehicleBoss && vehicleBoss.GetCloseHitBox().IntersectsWith(fireCrackerHitBox))
+                            .FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is VehicleBoss vehicleBoss && vehicleBoss.GetCloseHitBox().IntersectsWith(fireCrackerHitBox)) // if a vechile boss is in place then boss looses health
                         {
                             LooseVehicleBossHealth(vehicleBoss);
                         }
 
                         playerFireCracker1.SetBlast();
+
+                        dropShadow.IsAnimating = false;
+                        dropShadow.SetPosition(-3000, -3000);
                     }
                 }
             }
@@ -1370,6 +1370,8 @@ namespace HonkTrooper
 
                 vehicleBossRocket.Reposition(vehicleBoss: vehicleBoss);
                 vehicleBossRocket.AwaitMoveUpRight = true;
+
+                SpawnDropShadow(vehicleBossRocket);
 
                 LoggerExtensions.Log("VehicleBoss Bomb dropped.");
 
