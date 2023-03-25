@@ -227,8 +227,8 @@ namespace HonkTrooper
         {
             foreach (var construct in _scene_game.Children.OfType<Construct>()
                 .Where(x => x.ConstructType is
-                ConstructType.VEHICLE_LARGE or
-                ConstructType.VEHICLE_SMALL or
+                ConstructType.VEHICLE_ENEMY_LARGE or
+                ConstructType.VEHICLE_ENEMY_SMALL or
                 ConstructType.VEHICLE_BOSS or
                 ConstructType.UFO_BOSS or
                 ConstructType.HONK or
@@ -588,7 +588,7 @@ namespace HonkTrooper
 
             if (_scene_game.SceneState == SceneState.GAME_RUNNING)
             {
-                var count = _scene_game.Children.OfType<Vehicle>().Count(x => x.IsAnimating && x.WillHonk) + _scene_game.Children.OfType<UfoEnemy>().Count(x => x.IsAnimating && x.WillHonk);
+                var count = _scene_game.Children.OfType<VehicleEnemy>().Count(x => x.IsAnimating && x.WillHonk) + _scene_game.Children.OfType<UfoEnemy>().Count(x => x.IsAnimating && x.WillHonk);
                 _sound_pollution_health_bar.SetValue(count * 2);
 
                 if (_sound_pollution_health_bar.GetValue() >= _sound_pollution_health_bar.GetMaxiumHealth()) // loose score slowly if sound pollution has reached the limit
@@ -655,19 +655,19 @@ namespace HonkTrooper
 
         #endregion
 
-        #region Vehicle
+        #region VehicleEnemy
 
-        private bool SpawnVehicles()
+        private bool SpawnVehicleEnemys()
         {
             for (int i = 0; i < 8; i++)
             {
-                Vehicle vehicle = new(
-                    animateAction: AnimateVehicle,
-                    recycleAction: RecycleVehicle);
+                VehicleEnemy vehicleEnemy = new(
+                    animateAction: AnimateVehicleEnemy,
+                    recycleAction: RecycleVehicleEnemy);
 
-                _scene_game.AddToScene(vehicle);
+                _scene_game.AddToScene(vehicleEnemy);
 
-                vehicle.SetPosition(
+                vehicleEnemy.SetPosition(
                     left: -3000,
                     top: -3000);
             }
@@ -675,49 +675,49 @@ namespace HonkTrooper
             return true;
         }
 
-        private bool GenerateVehicle()
+        private bool GenerateVehicleEnemy()
         {
-            if (!UfoBossExists() && !VehicleBossExists() && _scene_game.Children.OfType<Vehicle>().FirstOrDefault(x => x.IsAnimating == false) is Vehicle vehicle)
+            if (!UfoBossExists() && !VehicleBossExists() && _scene_game.Children.OfType<VehicleEnemy>().FirstOrDefault(x => x.IsAnimating == false) is VehicleEnemy vehicleEnemy)
             {
-                vehicle.IsAnimating = true;
-                vehicle.Reset();
-                vehicle.Reposition();
+                vehicleEnemy.IsAnimating = true;
+                vehicleEnemy.Reset();
+                vehicleEnemy.Reposition();
 
                 return true;
             }
             return false;
         }
 
-        private bool AnimateVehicle(Construct vehicle)
+        private bool AnimateVehicleEnemy(Construct vehicleEnemy)
         {
-            Vehicle vehicle1 = vehicle as Vehicle;
+            VehicleEnemy vehicleEnemy1 = vehicleEnemy as VehicleEnemy;
 
-            vehicle.Pop();
+            vehicleEnemy.Pop();
 
-            var speed = (_scene_game.Speed + vehicle.SpeedOffset);
+            var speed = (_scene_game.Speed + vehicleEnemy.SpeedOffset);
 
-            MoveConstructBottomRight(construct: vehicle, speed: speed);
+            MoveConstructBottomRight(construct: vehicleEnemy, speed: speed);
 
             if (_scene_game.SceneState == SceneState.GAME_RUNNING)
             {
-                if (vehicle1.Honk())
-                    GenerateVehicleHonk(vehicle1);
+                if (vehicleEnemy1.Honk())
+                    GenerateVehicleEnemyHonk(vehicleEnemy1);
             }
 
-            PreventVehicleOverlapping(vehicle);
+            PreventVehicleEnemyOverlapping(vehicleEnemy);
 
             return true;
         }
 
-        private bool RecycleVehicle(Construct vehicle)
+        private bool RecycleVehicleEnemy(Construct vehicleEnemy)
         {
-            var hitBox = vehicle.GetHitBox();
+            var hitBox = vehicleEnemy.GetHitBox();
 
             if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left > Constants.DEFAULT_SCENE_WIDTH)
             {
-                vehicle.IsAnimating = false;
+                vehicleEnemy.IsAnimating = false;
 
-                vehicle.SetPosition(
+                vehicleEnemy.SetPosition(
                     left: -3000,
                     top: -3000);
             }
@@ -725,29 +725,29 @@ namespace HonkTrooper
             return true;
         }
 
-        private void PreventVehicleOverlapping(Construct vehicle)
+        private void PreventVehicleEnemyOverlapping(Construct vehicleEnemy)
         {
-            var vehicle_distantHitBox = vehicle.GetDistantHitBox();
+            var vehicleEnemy_distantHitBox = vehicleEnemy.GetDistantHitBox();
 
-            if (_scene_game.Children.OfType<Vehicle>()
-                .FirstOrDefault(x => x.IsAnimating && x.GetHorizontalHitBox().IntersectsWith(vehicle.GetHorizontalHitBox())) is Construct collidingVehicle)
+            if (_scene_game.Children.OfType<VehicleEnemy>()
+                .FirstOrDefault(x => x.IsAnimating && x.GetHorizontalHitBox().IntersectsWith(vehicleEnemy.GetHorizontalHitBox())) is Construct collidingVehicleEnemy)
             {
-                var hitBox = vehicle.GetHitBox();
+                var hitBox = vehicleEnemy.GetHitBox();
 
-                if (vehicle.SpeedOffset == collidingVehicle.SpeedOffset)
+                if (vehicleEnemy.SpeedOffset == collidingVehicleEnemy.SpeedOffset)
                 {
-                    if (vehicle.SpeedOffset > -2)
-                        vehicle.SpeedOffset--;
+                    if (vehicleEnemy.SpeedOffset > -2)
+                        vehicleEnemy.SpeedOffset--;
                 }
                 else
                 {
-                    if (vehicle.SpeedOffset > collidingVehicle.SpeedOffset) // vehicle is faster
+                    if (vehicleEnemy.SpeedOffset > collidingVehicleEnemy.SpeedOffset) // vehicleEnemy is faster
                     {
-                        vehicle.SpeedOffset = collidingVehicle.SpeedOffset;
+                        vehicleEnemy.SpeedOffset = collidingVehicleEnemy.SpeedOffset;
                     }
-                    else if (collidingVehicle.SpeedOffset > vehicle.SpeedOffset) // colliding vehicle is faster
+                    else if (collidingVehicleEnemy.SpeedOffset > vehicleEnemy.SpeedOffset) // colliding vehicleEnemy is faster
                     {
-                        collidingVehicle.SpeedOffset = vehicle.SpeedOffset;
+                        collidingVehicleEnemy.SpeedOffset = vehicleEnemy.SpeedOffset;
                     }
                 }
             }
@@ -1409,7 +1409,7 @@ namespace HonkTrooper
             return true;
         }
 
-        private bool GenerateVehicleHonk(Vehicle source)
+        private bool GenerateVehicleEnemyHonk(VehicleEnemy source)
         {
             // if there are no UfoBosses or enemies in the scene the vehicles will honk
 
@@ -1758,7 +1758,7 @@ namespace HonkTrooper
                     }
                     else
                     {
-                        if (_scene_game.Children.OfType<Vehicle>().All(x => !x.IsAnimating) || _scene_game.Children.OfType<Vehicle>().Where(x => x.IsAnimating).All(x => x.GetLeft() > Constants.DEFAULT_SCENE_WIDTH * scaling / 2)) // only bring the boss in view when all other vechiles are gone
+                        if (_scene_game.Children.OfType<VehicleEnemy>().All(x => !x.IsAnimating) || _scene_game.Children.OfType<VehicleEnemy>().Where(x => x.IsAnimating).All(x => x.GetLeft() > Constants.DEFAULT_SCENE_WIDTH * scaling / 2)) // only bring the boss in view when all other vechiles are gone
                         {
                             MoveConstructBottomRight(construct: vehicleBoss, speed: speed);
 
@@ -2011,7 +2011,7 @@ namespace HonkTrooper
         {
             if (_scene_game.SceneState == SceneState.GAME_RUNNING && !_scene_game.IsSlowMotionActivated)
             {
-                if ((VehicleBossExists() || _scene_game.Children.OfType<Vehicle>().Any(x => x.IsAnimating)) &&
+                if ((VehicleBossExists() || _scene_game.Children.OfType<VehicleEnemy>().Any(x => x.IsAnimating)) &&
                     _scene_game.Children.OfType<PlayerFireCracker>().FirstOrDefault(x => x.IsAnimating == false) is PlayerFireCracker playerFireCracker)
                 {
                     _player.SetAttackStance();
@@ -2072,9 +2072,9 @@ namespace HonkTrooper
                     if (drpShdwHitBox.IntersectsWith(fireCrackerHitBox) && playerFireCracker.GetBottom() > dropShadow.GetBottom())
                     {
                         // while in blast check if it intersects with any vehicle, if it does then the vehicle stops honking and slows down
-                        if (_scene_game.Children.OfType<Vehicle>()
+                        if (_scene_game.Children.OfType<VehicleEnemy>()
                             .Where(x => x.IsAnimating && x.WillHonk)
-                            .FirstOrDefault(x => x.GetCloseHitBox().IntersectsWith(fireCrackerHitBox)) is Vehicle vehicle)
+                            .FirstOrDefault(x => x.GetCloseHitBox().IntersectsWith(fireCrackerHitBox)) is VehicleEnemy vehicle)
                         {
                             vehicle.SetBlast();
                             _game_score_bar.GainScore(3);
@@ -3329,9 +3329,9 @@ namespace HonkTrooper
 
             // then add the vehicles which will appear forward in z wrt the top trees
             new Generator(
-                generationDelay: 100,
-                generationAction: GenerateVehicle,
-                startUpAction: SpawnVehicles),
+                generationDelay: 90,
+                generationAction: GenerateVehicleEnemy,
+                startUpAction: SpawnVehicleEnemys),
 
             // add the honks which will appear forward in z wrt to everything on the road
             new Generator(
