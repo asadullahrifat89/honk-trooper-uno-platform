@@ -174,6 +174,7 @@ namespace HonkTrooper
 
             if (IsDead)
             {
+                IsAttacking = false;
                 StopSoundLoop();
                 _audioStub.Play(SoundType.UFO_BOSS_DEAD);
             }
