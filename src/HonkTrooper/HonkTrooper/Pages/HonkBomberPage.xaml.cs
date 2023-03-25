@@ -175,7 +175,7 @@ namespace HonkTrooper
             _sound_pollution_health_bar.Reset();
             _sound_pollution_health_bar.SetMaxiumHealth(_sound_pollution_max_limit);
             _sound_pollution_health_bar.SetIcon(Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.HONK).Uri);
-            _sound_pollution_health_bar.SetBarForegroundColor(color: Colors.Purple);
+            _sound_pollution_health_bar.SetBarColor(color: Colors.Purple);
 
             _ufo_boss_threashold.Reset(_ufo_boss_threashold_limit);
             _vehicle_boss_threashold.Reset(_vehicle_boss_threashold_limit);
@@ -576,7 +576,7 @@ namespace HonkTrooper
             _player_health_bar.SetValue(_player.Health);
 
             _player_health_bar.SetIcon(Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.HEALTH_PICKUP).Uri);
-            _player_health_bar.SetBarForegroundColor(color: Colors.Purple);
+            _player_health_bar.SetBarColor(color: Colors.Crimson);
         }
 
         private bool AnimatePlayerBalloon(Construct player)
@@ -1223,7 +1223,7 @@ namespace HonkTrooper
                 _vehicle_boss_health_bar.SetMaxiumHealth(vehicleBoss.Health);
                 _vehicle_boss_health_bar.SetValue(vehicleBoss.Health);
                 _vehicle_boss_health_bar.SetIcon(vehicleBoss.GetContentUri());
-                _vehicle_boss_health_bar.SetBarForegroundColor(color: Colors.Crimson);
+                _vehicle_boss_health_bar.SetBarColor(color: Colors.Crimson);
 
                 GenerateInterimScreen("Crazy Honker Arrived");
                 _scene_game.ActivateSlowMotion();
@@ -1985,7 +1985,7 @@ namespace HonkTrooper
                 _ufo_boss_health_bar.SetMaxiumHealth(ufoBoss.Health);
                 _ufo_boss_health_bar.SetValue(ufoBoss.Health);
                 _ufo_boss_health_bar.SetIcon(ufoBoss.GetContentUri());
-                _ufo_boss_health_bar.SetBarForegroundColor(color: Colors.Crimson);
+                _ufo_boss_health_bar.SetBarColor(color: Colors.Crimson);
 
                 _scene_game.ActivateSlowMotion();
 
@@ -3131,7 +3131,7 @@ namespace HonkTrooper
                         _powerUp_health_bar.SetMaxiumHealth(9);
                         _powerUp_health_bar.SetValue(9);
                         _powerUp_health_bar.SetIcon(powerUpPickup1.GetContentUri());
-                        _powerUp_health_bar.SetBarForegroundColor(color: Colors.Green);
+                        _powerUp_health_bar.SetBarColor(color: Colors.Green);
                     }
                 }
             }
