@@ -1245,7 +1245,6 @@ namespace HonkTrooper
 
             if (vehicleBoss1.IsDead)
             {
-                //MoveConstructBottomRight(vehicleBoss, speed);
                 vehicleBoss1.MoveDownRight(speed);
             }
             else
@@ -1268,11 +1267,11 @@ namespace HonkTrooper
                     }
                     else
                     {
-                        if (_scene_game.Children.OfType<VehicleEnemy>().All(x => !x.IsAnimating) || _scene_game.Children.OfType<VehicleEnemy>().Where(x => x.IsAnimating).All(x => x.GetLeft() > Constants.DEFAULT_SCENE_WIDTH * scaling / 2)) // only bring the boss in view when all other vechiles are gone
-                        {
-                            //MoveConstructBottomRight(construct: vehicleBoss, speed: speed);
-                            vehicleBoss1.MoveDownRight(speed);
+                        vehicleBoss1.MoveDownRight(speed);
 
+                        if (_scene_game.Children.OfType<VehicleEnemy>().All(x => !x.IsAnimating) ||
+                            _scene_game.Children.OfType<VehicleEnemy>().Where(x => x.IsAnimating).All(x => x.GetLeft() > Constants.DEFAULT_SCENE_WIDTH * scaling / 2)) // only bring the boss in view when all other vechiles are gone
+                        {
                             if (vehicleBoss.GetLeft() > ((Constants.DEFAULT_SCENE_WIDTH * scaling) / 4 * 3)) // bring VehicleBoss to a suitable distance from player and then start attacking
                             {
                                 vehicleBoss1.IsAttacking = true;
@@ -1310,15 +1309,11 @@ namespace HonkTrooper
 
             _vehicle_boss_health_bar.SetValue(vehicleBoss.Health);
 
-            if (vehicleBoss.IsDead && vehicleBoss.IsAttacking)
+            if (vehicleBoss.IsDead)
             {
                 _audio_stub.Stop(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
-
                 _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
-
                 _audio_stub.SetVolume(SoundType.AMBIENCE, 0.6);
-
-                vehicleBoss.IsAttacking = false;
 
                 _player.SetWinStance();
                 _game_score_bar.GainScore(5);
@@ -2084,13 +2079,11 @@ namespace HonkTrooper
 
             _ufo_boss_health_bar.SetValue(ufoBoss.Health);
 
-            if (ufoBoss.IsDead && ufoBoss.IsAttacking)
+            if (ufoBoss.IsDead)
             {
                 //_audio_stub.Stop(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
                 _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
                 _audio_stub.SetVolume(SoundType.AMBIENCE, 0.6);
-
-                ufoBoss.IsAttacking = false;
 
                 _player.SetWinStance();
                 _game_score_bar.GainScore(5);
