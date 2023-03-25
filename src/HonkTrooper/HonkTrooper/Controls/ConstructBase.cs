@@ -28,7 +28,6 @@ namespace HonkTrooper
         public ConstructBase()
         {
             RenderTransformOrigin = new Point(0.5, 0.5);
-
             RenderTransform = _compositeTransform;
             CanDrag = false;
         }
@@ -284,16 +283,13 @@ namespace HonkTrooper
             {
                 if (_compositeTransform.Rotation < 0)
                 {
-                    _compositeTransform.Rotation += rotationSpeed;
-
-                    LoggerExtensions.Log($"Rotation: {_compositeTransform.Rotation}");
+                    _compositeTransform.Rotation += rotationSpeed;                    
                     return;
                 }
 
                 if (_compositeTransform.Rotation > 0)
                 {
                     _compositeTransform.Rotation -= rotationSpeed;
-                    LoggerExtensions.Log($"Rotation: {_compositeTransform.Rotation}");
                 }
             }
         }
