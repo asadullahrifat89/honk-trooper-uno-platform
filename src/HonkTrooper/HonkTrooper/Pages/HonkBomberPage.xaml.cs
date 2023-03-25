@@ -34,10 +34,11 @@ namespace HonkTrooper
 
         private readonly double _sound_pollution_max_limit = 6; // max 3 vehicles or ufos honking to trigger sound pollution limit
 
-        private readonly double _vehicle_boss_threashold_limit = 25; // first vehicle Boss will appear
+        //TODO: set defaults _vehicle_boss_threashold_limit = 25
+        private readonly double _vehicle_boss_threashold_limit = 5; // first vehicle Boss will appear
         private readonly double _vehicle_boss_threashold_limit_increase = 15;
 
-        //TODO: set defaults _UFO_BOSS_threashold_limit = 50
+        //TODO: set defaults _ufo_boss_threashold_limit = 50
         private readonly double _ufo_boss_threashold_limit = 50; // first UfoBoss will appear
         private readonly double _ufo_boss_threashold_limit_increase = 15;
 
@@ -563,7 +564,7 @@ namespace HonkTrooper
             _player.Reposition();
             _player.SetPlayerTemplate(_selected_player_template);
 
-            SyncDropShadow(_player);
+            SyncDropShadow(source: _player);
             SetPlayerHealthBar();
 
             return true;
@@ -820,7 +821,7 @@ namespace HonkTrooper
                 playerRocket.Reposition(
                     Player: _player);
 
-                SyncDropShadow(playerRocket);
+                SyncDropShadow(source: playerRocket);
 
                 var playerDistantHitBox = _player.GetDistantHitBox();
 
@@ -1425,6 +1426,7 @@ namespace HonkTrooper
             if (vehicleBossRocket.IsFadingComplete /*|| hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT*/)
             {
                 vehicleBossRocket.IsAnimating = false;
+                vehicleBossRocket.IsGravitatingUpwards = false;
 
                 vehicleBossRocket.SetPosition(
                     left: -3000,
@@ -1622,18 +1624,6 @@ namespace HonkTrooper
 
         private bool GenerateRoadSideTreeTop()
         {
-            //if (_scene_game.Children.OfType<RoadSideTree>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideTree tree2)
-            //{
-            //    tree2.IsAnimating = true;
-
-            //    tree2.SetPosition(
-            //      left: (Constants.DEFAULT_SCENE_WIDTH / 2 - tree2.Width) + 160,
-            //      top: (tree2.Height * -1.1) - 55,
-            //      z: 2);
-
-            //    SyncDropShadow(tree2);
-            //}
-
             if (_scene_game.Children.OfType<RoadSideTree>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideTree tree)
             {
                 tree.IsAnimating = true;
@@ -1643,7 +1633,7 @@ namespace HonkTrooper
                   top: (tree.Height * -1.1),
                   z: 3);
 
-                SyncDropShadow(tree);
+                SyncDropShadow(source: tree);
             }
 
             return true;
@@ -1662,18 +1652,6 @@ namespace HonkTrooper
 
                 SyncDropShadow(tree);
             }
-
-            //if (_scene_game.Children.OfType<RoadSideTree>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideTree tree2)
-            //{
-            //    tree2.IsAnimating = true;
-
-            //    tree2.SetPosition(
-            //      left: (-1.73 * tree2.Width),
-            //      top: (Constants.DEFAULT_SCENE_HEIGHT / 2.5),
-            //      z: 4);
-
-            //    SyncDropShadow(tree2);
-            //}
 
             return true;
         }
@@ -2913,8 +2891,7 @@ namespace HonkTrooper
 
         private bool AnimateDropShadow(Construct construct)
         {
-            DropShadow dropShadow = construct as DropShadow;
-            dropShadow.SyncWidth();
+            DropShadow dropShadow = construct as DropShadow;            
             dropShadow.Move();
 
             return true;
@@ -2942,7 +2919,7 @@ namespace HonkTrooper
         {
             if (_scene_game.Children.OfType<DropShadow>().FirstOrDefault(x => x.Id == source.Id) is DropShadow dropShadow)
             {
-                dropShadow.ParentConstructSpeed = _scene_game.Speed + source.SpeedOffset;
+                dropShadow.ParentConstructSpeed = source.GetMovementSpeed();
                 dropShadow.IsAnimating = true;
 
                 dropShadow.SetZ(source.GetZ() - 2);
