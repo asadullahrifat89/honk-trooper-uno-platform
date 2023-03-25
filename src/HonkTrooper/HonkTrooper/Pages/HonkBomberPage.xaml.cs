@@ -3322,7 +3322,7 @@ namespace HonkTrooper
 
             // then add the vehicles which will appear forward in z wrt the top trees
             new Generator(
-                generationDelay: 90,
+                generationDelay: 100,
                 generationAction: GenerateVehicleEnemy,
                 startUpAction: SpawnVehicleEnemys),
 
