@@ -3279,13 +3279,13 @@ namespace HonkTrooper
 
             // then add the top RoadSideHedges
             new Generator(
-                generationDelay: 10,
+                generationDelay: 9,
                 generationAction: GenerateRoadSideHedgeTop,
                 startUpAction: SpawnRoadSideHedges),
 
             // then add the bottom RoadSideHedges which will appear forward in z wrt to the vehicles
             new Generator(
-                generationDelay: 10,
+                generationDelay: 9,
                 generationAction: GenerateRoadSideHedgeBottom,
                 startUpAction: SpawnRoadSideHedges),
 
