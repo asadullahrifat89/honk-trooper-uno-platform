@@ -34,10 +34,11 @@ namespace HonkTrooper
 
         private readonly double _sound_pollution_max_limit = 6; // max 3 vehicles or ufos honking to trigger sound pollution limit
 
+        //TODO: set defaults _vehicle_boss_threashold_limit = 25
         private readonly double _vehicle_boss_threashold_limit = 25; // first vehicle Boss will appear
         private readonly double _vehicle_boss_threashold_limit_increase = 15;
 
-        //TODO: set defaults _UFO_BOSS_threashold_limit = 50
+        //TODO: set defaults _ufo_boss_threashold_limit = 50
         private readonly double _ufo_boss_threashold_limit = 50; // first UfoBoss will appear
         private readonly double _ufo_boss_threashold_limit_increase = 15;
 
@@ -563,7 +564,7 @@ namespace HonkTrooper
             _player.Reposition();
             _player.SetPlayerTemplate(_selected_player_template);
 
-            SyncDropShadow(_player);
+            SyncDropShadow(source: _player);
             SetPlayerHealthBar();
 
             return true;
@@ -689,7 +690,7 @@ namespace HonkTrooper
 
                     playerFireCracker.Reset();
                     playerFireCracker.IsAnimating = true;
-                    playerFireCracker.IsGravitating = true;
+                    playerFireCracker.IsGravitatingDownwards = true;
                     playerFireCracker.SetPopping();
 
                     playerFireCracker.SetRotation(_random.Next(-30, 30));
@@ -697,7 +698,7 @@ namespace HonkTrooper
                     playerFireCracker.Reposition(
                         player: _player);
 
-                    SyncDropShadow(playerFireCracker);
+                    SyncDropShadow(source: playerFireCracker);
 
                     LoggerExtensions.Log("Player Ground Bomb dropped.");
 
@@ -722,14 +723,11 @@ namespace HonkTrooper
             {
                 playerFireCracker.Expand();
                 playerFireCracker.Fade(0.02);
-
-                //MoveConstructBottomRight(construct: playerFireCracker, speed: speed);
                 playerFireCracker1.MoveDownRight(speed);
             }
             else
             {
                 playerFireCracker.Pop();
-
                 playerFireCracker.SetLeft(playerFireCracker.GetLeft() + speed);
                 playerFireCracker.SetTop(playerFireCracker.GetTop() + speed * 1.2);
 
@@ -740,26 +738,26 @@ namespace HonkTrooper
                     var drpShdwHitBox = dropShadow.GetCloseHitBox();
                     var fireCrackerHitBox = playerFireCracker.GetCloseHitBox();
 
-                    // start blast animation when the bomb touches it's shadow
-                    if (drpShdwHitBox.IntersectsWith(fireCrackerHitBox) && playerFireCracker.GetBottom() > dropShadow.GetBottom())
+                    if (drpShdwHitBox.IntersectsWith(fireCrackerHitBox) && playerFireCracker.GetBottom() > dropShadow.GetBottom())  // start blast animation when the bomb touches it's shadow
                     {
-                        // while in blast check if it intersects with any vehicle, if it does then the vehicle stops honking and slows down
                         if (_scene_game.Children.OfType<VehicleEnemy>()
                             .Where(x => x.IsAnimating && x.WillHonk)
-                            .FirstOrDefault(x => x.GetCloseHitBox().IntersectsWith(fireCrackerHitBox)) is VehicleEnemy vehicle)
+                            .FirstOrDefault(x => x.GetCloseHitBox().IntersectsWith(fireCrackerHitBox)) is VehicleEnemy vehicle) // while in blast check if it intersects with any vehicle, if it does then the vehicle stops honking and slows down
                         {
                             vehicle.SetBlast();
                             _game_score_bar.GainScore(3);
                         }
 
-                        // if a vechile boss is in place then boss looses health
                         if (_scene_game.Children.OfType<VehicleBoss>()
-                            .FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is VehicleBoss vehicleBoss && vehicleBoss.GetCloseHitBox().IntersectsWith(fireCrackerHitBox))
+                            .FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is VehicleBoss vehicleBoss && vehicleBoss.GetCloseHitBox().IntersectsWith(fireCrackerHitBox)) // if a vechile boss is in place then boss looses health
                         {
                             LooseVehicleBossHealth(vehicleBoss);
                         }
 
                         playerFireCracker1.SetBlast();
+
+                        dropShadow.IsAnimating = false;
+                        dropShadow.SetPosition(-3000, -3000);
                     }
                 }
             }
@@ -772,7 +770,7 @@ namespace HonkTrooper
             if (playerFireCracker.IsFadingComplete)
             {
                 playerFireCracker.IsAnimating = false;
-                playerFireCracker.IsGravitating = false;
+                playerFireCracker.IsGravitatingDownwards = false;
 
                 playerFireCracker.SetPosition(
                     left: -3000,
@@ -823,7 +821,7 @@ namespace HonkTrooper
                 playerRocket.Reposition(
                     Player: _player);
 
-                SyncDropShadow(playerRocket);
+                SyncDropShadow(source: playerRocket);
 
                 var playerDistantHitBox = _player.GetDistantHitBox();
 
@@ -980,11 +978,9 @@ namespace HonkTrooper
                 playerRocketSeeking.Reset();
                 playerRocketSeeking.IsAnimating = true;
                 playerRocketSeeking.SetPopping();
+                playerRocketSeeking.Reposition(player: _player);
 
-                playerRocketSeeking.Reposition(
-                    player: _player);
-
-                SyncDropShadow(playerRocketSeeking);
+                SyncDropShadow(source: playerRocketSeeking);
 
                 if (_powerUp_health_bar.HasHealth && (PowerUpType)_powerUp_health_bar.Tag == PowerUpType.SEEKING_BALLS)
                     DepletePowerUp();
@@ -1232,6 +1228,8 @@ namespace HonkTrooper
                 GenerateInterimScreen("Crazy Honker Arrived");
                 _scene_game.ActivateSlowMotion();
 
+                LoggerExtensions.Log("Vehicle boss generated.");
+
                 return true;
             }
 
@@ -1281,6 +1279,8 @@ namespace HonkTrooper
                     }
                 }
             }
+
+            LoggerExtensions.Log($"Vehicle boss at: x: {vehicleBoss1.GetLeft()} y: {vehicleBoss1.GetTop()}.");
 
             return true;
         }
@@ -1348,6 +1348,8 @@ namespace HonkTrooper
                     z: 7);
 
                 _scene_game.AddToScene(vehicleBossRocket);
+
+                SpawnDropShadow(source: vehicleBossRocket);
             }
 
             return true;
@@ -1361,12 +1363,15 @@ namespace HonkTrooper
             {
                 vehicleBossRocket.Reset();
                 vehicleBossRocket.IsAnimating = true;
+                vehicleBossRocket.IsGravitatingUpwards = true;
                 vehicleBossRocket.SetPopping();
 
                 vehicleBossRocket.Reposition(vehicleBoss: vehicleBoss);
                 vehicleBossRocket.AwaitMoveUpRight = true;
 
-                LoggerExtensions.Log("VehicleBoss Bomb dropped.");
+                SyncDropShadow(source: vehicleBossRocket);
+
+                LoggerExtensions.Log("VehicleBoss rocket dropped.");
 
                 return true;
             }
@@ -1419,6 +1424,7 @@ namespace HonkTrooper
             if (vehicleBossRocket.IsFadingComplete /*|| hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT*/)
             {
                 vehicleBossRocket.IsAnimating = false;
+                vehicleBossRocket.IsGravitatingUpwards = false;
 
                 vehicleBossRocket.SetPosition(
                     left: -3000,
@@ -1616,18 +1622,6 @@ namespace HonkTrooper
 
         private bool GenerateRoadSideTreeTop()
         {
-            //if (_scene_game.Children.OfType<RoadSideTree>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideTree tree2)
-            //{
-            //    tree2.IsAnimating = true;
-
-            //    tree2.SetPosition(
-            //      left: (Constants.DEFAULT_SCENE_WIDTH / 2 - tree2.Width) + 160,
-            //      top: (tree2.Height * -1.1) - 55,
-            //      z: 2);
-
-            //    SyncDropShadow(tree2);
-            //}
-
             if (_scene_game.Children.OfType<RoadSideTree>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideTree tree)
             {
                 tree.IsAnimating = true;
@@ -1637,7 +1631,7 @@ namespace HonkTrooper
                   top: (tree.Height * -1.1),
                   z: 3);
 
-                SyncDropShadow(tree);
+                SyncDropShadow(source: tree);
             }
 
             return true;
@@ -1656,18 +1650,6 @@ namespace HonkTrooper
 
                 SyncDropShadow(tree);
             }
-
-            //if (_scene_game.Children.OfType<RoadSideTree>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideTree tree2)
-            //{
-            //    tree2.IsAnimating = true;
-
-            //    tree2.SetPosition(
-            //      left: (-1.73 * tree2.Width),
-            //      top: (Constants.DEFAULT_SCENE_HEIGHT / 2.5),
-            //      z: 4);
-
-            //    SyncDropShadow(tree2);
-            //}
 
             return true;
         }
@@ -2908,7 +2890,6 @@ namespace HonkTrooper
         private bool AnimateDropShadow(Construct construct)
         {
             DropShadow dropShadow = construct as DropShadow;
-            dropShadow.SyncWidth();
             dropShadow.Move();
 
             return true;
@@ -2936,11 +2917,10 @@ namespace HonkTrooper
         {
             if (_scene_game.Children.OfType<DropShadow>().FirstOrDefault(x => x.Id == source.Id) is DropShadow dropShadow)
             {
-                dropShadow.ParentConstructSpeed = _scene_game.Speed + source.SpeedOffset;
+                dropShadow.ParentConstructSpeed = source.GetMovementSpeed();
                 dropShadow.IsAnimating = true;
 
                 dropShadow.SetZ(source.GetZ() - 2);
-
                 dropShadow.Reset();
             }
         }
