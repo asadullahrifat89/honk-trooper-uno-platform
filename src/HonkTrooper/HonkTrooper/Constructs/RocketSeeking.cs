@@ -3,7 +3,7 @@ using Windows.Foundation;
 
 namespace HonkTrooper
 {
-    public partial class RocketSeeking : Construct
+    public partial class RocketSeeking : MovableConstruct
     {
         #region Fields
 
