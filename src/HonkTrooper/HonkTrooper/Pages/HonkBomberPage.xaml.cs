@@ -50,7 +50,7 @@ namespace HonkTrooper
 
         private bool _enemy_fleet_appeared;
 
-        private AudioStub _audio_stub;
+        private readonly AudioStub _audio_stub;
 
         private int _selected_player_template;
 
@@ -2843,7 +2843,7 @@ namespace HonkTrooper
 
         #region Rocket
 
-        private void SetPlayerRocketDirection(Construct source, MovingConstruct rocket, Construct rocketTarget)
+        private void SetPlayerRocketDirection(Construct source, AnimableConstruct rocket, Construct rocketTarget)
         {
             // rocket target is on the bottom right side of the UfoBoss
             if (rocketTarget.GetTop() > source.GetTop() && rocketTarget.GetLeft() > source.GetLeft())
@@ -2876,7 +2876,7 @@ namespace HonkTrooper
             }
         }
 
-        private void SetUfoBossRocketDirection(Construct source, MovingConstruct rocket, Construct rocketTarget)
+        private void SetUfoBossRocketDirection(Construct source, AnimableConstruct rocket, Construct rocketTarget)
         {
             // rocket target is on the bottom right side of the UfoBoss
             if (rocketTarget.GetTop() > source.GetTop() && rocketTarget.GetLeft() > source.GetLeft())

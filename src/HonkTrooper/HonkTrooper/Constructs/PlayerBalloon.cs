@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace HonkTrooper
 {
-    public partial class PlayerBalloon : MovingConstruct
+    public partial class PlayerBalloon : AnimableConstruct
     {
         #region Fields
 
@@ -15,9 +15,6 @@ namespace HonkTrooper
         private Uri[] _player_win_uris;
         private Uri[] _player_hit_uris;
 
-        private double _hoverDelay;
-        private readonly double _hoverDelayDefault = 15;
-
         private double _movementStopDelay;
         private readonly double _movementStopDelayDefault = 6;
         private readonly double _movementStopSpeedLoss = 0.5;
@@ -26,8 +23,6 @@ namespace HonkTrooper
         private readonly double _rotationThreadhold = 9;
         private readonly double _unrotationSpeed = 1.1;
         private readonly double _rotationSpeed = 0.5;
-        private readonly double _hoverSpeed = 0.5;
-
         private double _attackStanceDelay;
         private readonly double _attackStanceDelayDefault = 1.5;
 
@@ -51,7 +46,6 @@ namespace HonkTrooper
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction)
         {
-            _hoverDelay = _hoverDelayDefault;
             _random = new Random();
 
             ConstructType = ConstructType.PLAYER_BALLOON;

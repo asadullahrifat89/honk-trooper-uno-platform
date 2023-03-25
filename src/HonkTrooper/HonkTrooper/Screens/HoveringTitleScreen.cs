@@ -1,6 +1,6 @@
 ﻿namespace HonkTrooper
 {
-    public partial class HoveringTitleScreen : MovingConstruct
+    public partial class HoveringTitleScreen : AnimableConstruct
     {
         public void Reposition()
         {

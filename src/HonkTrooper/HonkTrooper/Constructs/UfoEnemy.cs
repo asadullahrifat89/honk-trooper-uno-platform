@@ -5,17 +5,12 @@ using System.Linq;
 
 namespace HonkTrooper
 {
-    public partial class UfoEnemy : MovingConstruct
+    public partial class UfoEnemy : AnimableConstruct
     {
         #region Fields
 
         private readonly Random _random;
         private readonly Uri[] _enemy_uris;
-
-        private double _hoverDelay;
-        private readonly double _hoverDelayDefault = 15;
-        private readonly double _hoverSpeed = 0.5;
-
         private double _attackDelay;
         private double _honkDelay;
 
