@@ -63,8 +63,8 @@ namespace HonkTrooper
                 left: (ParentConstruct.GetLeft() + ParentConstruct.Width / 2) - Width / 2,
                 top: ParentConstruct.GetBottom() + (ParentConstruct.DropShadowDistance));
 
-            if (Width != ParentConstruct.Width * 0.6)
-                Width = ParentConstruct.Width * 0.6;
+            Height = 25;
+            Width = ParentConstruct.Width * 0.5;            
         }
 
         public void Move()
@@ -76,14 +76,17 @@ namespace HonkTrooper
                 MoveDownRight(ParentConstructSpeed * IsometricDisplacement);
 
                 if (Width < ParentConstruct.Width)
-                    Width += 0.5;
+                    Width += 1;
             }
             else if (ParentConstruct.IsGravitatingUpwards)
             {
                 MoveDownRight(ParentConstructSpeed);
 
                 if (Width > 0)
+                {
                     Width -= 0.5;
+                    Height -= 0.3;
+                }
             }
             else
             {

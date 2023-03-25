@@ -35,7 +35,7 @@ namespace HonkTrooper
         private readonly double _sound_pollution_max_limit = 6; // max 3 vehicles or ufos honking to trigger sound pollution limit
 
         //TODO: set defaults _vehicle_boss_threashold_limit = 25
-        private readonly double _vehicle_boss_threashold_limit = 5; // first vehicle Boss will appear
+        private readonly double _vehicle_boss_threashold_limit = 25; // first vehicle Boss will appear
         private readonly double _vehicle_boss_threashold_limit_increase = 15;
 
         //TODO: set defaults _ufo_boss_threashold_limit = 50
@@ -978,11 +978,9 @@ namespace HonkTrooper
                 playerRocketSeeking.Reset();
                 playerRocketSeeking.IsAnimating = true;
                 playerRocketSeeking.SetPopping();
+                playerRocketSeeking.Reposition(player: _player);
 
-                playerRocketSeeking.Reposition(
-                    player: _player);
-
-                SyncDropShadow(playerRocketSeeking);
+                SyncDropShadow(source: playerRocketSeeking);
 
                 if (_powerUp_health_bar.HasHealth && (PowerUpType)_powerUp_health_bar.Tag == PowerUpType.SEEKING_BALLS)
                     DepletePowerUp();
@@ -2891,7 +2889,7 @@ namespace HonkTrooper
 
         private bool AnimateDropShadow(Construct construct)
         {
-            DropShadow dropShadow = construct as DropShadow;            
+            DropShadow dropShadow = construct as DropShadow;
             dropShadow.Move();
 
             return true;
