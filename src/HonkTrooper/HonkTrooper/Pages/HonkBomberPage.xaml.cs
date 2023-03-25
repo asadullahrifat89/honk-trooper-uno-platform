@@ -1786,7 +1786,7 @@ namespace HonkTrooper
 
         private bool SpawnRoadSideLamps()
         {
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 4; i++)
             {
                 RoadSideLamp roadSideLamp = new(
                     animateAction: AnimateRoadSideLamp,
