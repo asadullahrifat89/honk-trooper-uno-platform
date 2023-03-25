@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace HonkTrooper
 {
-    public partial class PlayerBalloon : Construct
+    public partial class PlayerBalloon : MovingConstruct
     {
         #region Fields
 
@@ -110,7 +110,7 @@ namespace HonkTrooper
 
         public void Reposition()
         {
-            var scaling = ScreenExtensions.GetScreenSpaceScaling();
+            //var scaling = ScreenExtensions.GetScreenSpaceScaling();
 
             SetPosition(
                 left: ((Scene.Width / 4) * 2) - Width / 2,
@@ -203,29 +203,11 @@ namespace HonkTrooper
             }
         }
 
-        public void Hover()
-        {
-            _hoverDelay--;
-
-            if (_hoverDelay >= 0)
-            {
-                SetTop(GetTop() + _hoverSpeed);
-            }
-            else
-            {
-                SetTop(GetTop() - _hoverSpeed);
-
-                if (_hoverDelay <= _hoverDelayDefault * -1)
-                    _hoverDelay = _hoverDelayDefault;
-            }
-        }
-
-
-        public void MoveUp(double speed)
+        public new void MoveUp(double speed)
         {
             _movementDirection = MovementDirection.Up;
 
-            SetTop(GetTop() - speed * 2);
+            base.MoveUp(speed);
 
             _movementStopDelay = _movementStopDelayDefault;
             _lastSpeed = speed;
@@ -236,11 +218,11 @@ namespace HonkTrooper
                 rotationSpeed: _rotationSpeed);
         }
 
-        public void MoveDown(double speed)
+        public new void MoveDown(double speed)
         {
             _movementDirection = MovementDirection.Down;
 
-            SetTop(GetTop() + speed * 2);
+            base.MoveDown(speed);
 
             _movementStopDelay = _movementStopDelayDefault;
             _lastSpeed = speed;
@@ -251,11 +233,11 @@ namespace HonkTrooper
                 rotationSpeed: _rotationSpeed);
         }
 
-        public void MoveLeft(double speed)
+        public new void MoveLeft(double speed)
         {
             _movementDirection = MovementDirection.Left;
 
-            SetLeft(GetLeft() - speed * 2);
+            base.MoveLeft(speed);
 
             _movementStopDelay = _movementStopDelayDefault;
             _lastSpeed = speed;
@@ -266,11 +248,11 @@ namespace HonkTrooper
                 rotationSpeed: _rotationSpeed);
         }
 
-        public void MoveRight(double speed)
+        public new void MoveRight(double speed)
         {
             _movementDirection = MovementDirection.Right;
 
-            SetLeft(GetLeft() + speed * 2);
+            base.MoveRight(speed);
 
             _movementStopDelay = _movementStopDelayDefault;
             _lastSpeed = speed;
@@ -281,12 +263,11 @@ namespace HonkTrooper
                 rotationSpeed: _rotationSpeed);
         }
 
-        public void MoveUpRight(double speed)
+        public new void MoveUpRight(double speed)
         {
             _movementDirection = MovementDirection.UpRight;
 
-            SetLeft(GetLeft() + speed * 2);
-            SetTop(GetTop() - speed);
+            base.MoveUpRight(speed);
 
             _movementStopDelay = _movementStopDelayDefault;
             _lastSpeed = speed;
@@ -297,12 +278,11 @@ namespace HonkTrooper
                 rotationSpeed: _rotationSpeed);
         }
 
-        public void MoveUpLeft(double speed)
+        public new void MoveUpLeft(double speed)
         {
             _movementDirection = MovementDirection.UpLeft;
 
-            SetLeft(GetLeft() - speed * 2);
-            SetTop(GetTop() - speed);
+            base.MoveUpLeft(speed);
 
             _movementStopDelay = _movementStopDelayDefault;
             _lastSpeed = speed;
@@ -313,12 +293,11 @@ namespace HonkTrooper
                 rotationSpeed: _rotationSpeed);
         }
 
-        public void MoveDownRight(double speed)
+        public new void MoveDownRight(double speed)
         {
             _movementDirection = MovementDirection.DownRight;
 
-            SetLeft(GetLeft() + speed * 2);
-            SetTop(GetTop() + speed);
+            base.MoveDownRight(speed);
 
             _movementStopDelay = _movementStopDelayDefault;
             _lastSpeed = speed;
@@ -329,12 +308,11 @@ namespace HonkTrooper
                 rotationSpeed: _rotationSpeed);
         }
 
-        public void MoveDownLeft(double speed)
+        public new void MoveDownLeft(double speed)
         {
             _movementDirection = MovementDirection.DownLeft;
 
-            SetLeft(GetLeft() - speed * 2);
-            SetTop(GetTop() + speed);
+            base.MoveDownLeft(speed);
 
             _movementStopDelay = _movementStopDelayDefault;
             _lastSpeed = speed;

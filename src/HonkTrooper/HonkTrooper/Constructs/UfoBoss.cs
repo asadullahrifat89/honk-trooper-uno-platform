@@ -6,7 +6,7 @@ using Windows.Foundation;
 
 namespace HonkTrooper
 {
-    public partial class UfoBoss : DirectionalMovingConstruct
+    public partial class UfoBoss : MovingConstruct
     {
         #region Fields
 
@@ -120,23 +120,6 @@ namespace HonkTrooper
 
             RandomizeMovementPattern();
             SetScaleTransform(1);
-        }
-
-        public void Hover()
-        {
-            _hoverDelay--;
-
-            if (_hoverDelay >= 0)
-            {
-                SetTop(GetTop() + _hoverSpeed);
-            }
-            else
-            {
-                SetTop(GetTop() - _hoverSpeed);
-
-                if (_hoverDelay <= _hoverDelayDefault * -1)
-                    _hoverDelay = _hoverDelayDefault;
-            }
         }
 
         public void SetHitStance()

@@ -5,7 +5,7 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace HonkTrooper
 {
-    public partial class UfoEnemyRocket : Rocket
+    public partial class UfoEnemyRocket : MovingConstruct
     {
         #region Fields
 
