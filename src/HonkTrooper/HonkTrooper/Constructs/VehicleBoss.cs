@@ -75,11 +75,9 @@ namespace HonkTrooper
         {
             Opacity = 1;
             Health = 100;
-            SpeedOffset = _random.Next((int)Constants.DEFAULT_SPEED_OFFSET * -2, 0);
+
             IsAttacking = false;
             WillHonk = true;
-
-            _movementDirection = MovementDirection.None;
 
             var uri = ConstructExtensions.GetRandomContentUri(_vehicle_boss_uris);
             _content_image.Source = new BitmapImage(uri);
