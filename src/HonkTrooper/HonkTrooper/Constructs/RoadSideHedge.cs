@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace HonkTrooper
 {
-    public partial class RoadSideHedge : Construct
+    public partial class RoadSideHedge : MovableConstruct
     {
         #region Fields
 

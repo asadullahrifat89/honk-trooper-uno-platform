@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace HonkTrooper
 {
-    public partial class RoadSideWalkSlope : Construct
+    public partial class RoadSideWalkSlope : MovableConstruct
     {
         #region Ctor
 

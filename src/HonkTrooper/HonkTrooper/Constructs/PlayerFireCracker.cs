@@ -5,7 +5,7 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace HonkTrooper
 {
-    public partial class PlayerFireCracker : Construct
+    public partial class PlayerFireCracker : MovableConstruct
     {
         #region Fields
 
