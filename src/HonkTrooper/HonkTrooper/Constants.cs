@@ -53,7 +53,7 @@ namespace HonkTrooper
             new (ConstructType.ROAD_SIDE_WALK_SLOPE, 15, 260),
 
             new (ConstructType.ROAD_SIDE_TREE, 190, 190),
-            new (ConstructType.ROAD_SIDE_HEDGE, 160, 160),
+            new (ConstructType.ROAD_SIDE_HEDGE, 170, 170),
 
             new (ConstructType.ROAD_SIDE_WALK, 270, 260),
             new (ConstructType.ROAD_SIDE_LAMP, 150, 150),
