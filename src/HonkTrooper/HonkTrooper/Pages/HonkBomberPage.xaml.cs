@@ -689,7 +689,7 @@ namespace HonkTrooper
 
                     playerFireCracker.Reset();
                     playerFireCracker.IsAnimating = true;
-                    playerFireCracker.IsGravitating = true;
+                    playerFireCracker.IsGravitatingDownwards = true;
                     playerFireCracker.SetPopping();
 
                     playerFireCracker.SetRotation(_random.Next(-30, 30));
@@ -772,7 +772,7 @@ namespace HonkTrooper
             if (playerFireCracker.IsFadingComplete)
             {
                 playerFireCracker.IsAnimating = false;
-                playerFireCracker.IsGravitating = false;
+                playerFireCracker.IsGravitatingDownwards = false;
 
                 playerFireCracker.SetPosition(
                     left: -3000,
@@ -1232,6 +1232,8 @@ namespace HonkTrooper
                 GenerateInterimScreen("Crazy Honker Arrived");
                 _scene_game.ActivateSlowMotion();
 
+                LoggerExtensions.Log("Vehicle boss generated.");
+
                 return true;
             }
 
@@ -1281,6 +1283,8 @@ namespace HonkTrooper
                     }
                 }
             }
+
+            LoggerExtensions.Log($"Vehicle boss at: x: {vehicleBoss1.GetLeft()} y: {vehicleBoss1.GetTop()}.");
 
             return true;
         }
@@ -1361,6 +1365,7 @@ namespace HonkTrooper
             {
                 vehicleBossRocket.Reset();
                 vehicleBossRocket.IsAnimating = true;
+                vehicleBossRocket.IsGravitatingUpwards = true;
                 vehicleBossRocket.SetPopping();
 
                 vehicleBossRocket.Reposition(vehicleBoss: vehicleBoss);

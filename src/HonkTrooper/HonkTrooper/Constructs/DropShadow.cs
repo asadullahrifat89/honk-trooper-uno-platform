@@ -74,13 +74,17 @@ namespace HonkTrooper
         {
             SetLeft((ParentConstruct.GetLeft() + ParentConstruct.Width / 2) - Width / 2);
 
-            if (ParentConstruct.IsGravitating)
+            if (ParentConstruct.IsGravitatingDownwards)
             {
-                SetTop(GetTop() + ParentConstructSpeed * IsometricDisplacement);
+                MoveDownRight(ParentConstructSpeed * IsometricDisplacement);
+            }
+            else if (ParentConstruct.IsGravitatingUpwards)
+            {
+
             }
             else
             {
-                SetTop(ParentConstruct.GetBottom() + ParentConstruct.DropShadowDistance);
+                SetTop(ParentConstruct.GetBottom() + ParentConstruct.DropShadowDistance); // in normal circumstances, follow the parent
             }
         }
 
