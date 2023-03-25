@@ -4,6 +4,11 @@
     {
         #region Methods
 
+        public double GetMovementSpeed()
+        {
+            return Scene.Speed + SpeedOffset;
+        }
+
         public void MoveUp(double speed)
         {
             if (Scene.IsSlowMotionActivated)
