@@ -1520,7 +1520,7 @@ namespace HonkTrooper
 
         private bool SpawnRoadSideWalks()
         {
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < 8; i++)
             {
                 RoadSideWalk roadSideWalk = new(
                 animateAction: AnimateRoadSideWalk,
@@ -3240,17 +3240,17 @@ namespace HonkTrooper
                 startUpAction: SpawnRoadMarks),
 
             new Generator(
-                generationDelay: 60,
+                generationDelay: 72,
                 generationAction: GenerateRoadSideBillboardTop,
                 startUpAction: SpawnRoadSideBillboards),
 
             new Generator(
-                generationDelay: 30,
+                generationDelay: 36,
                 generationAction: GenerateRoadSideLampTop,
                 startUpAction: SpawnRoadSideLamps),
 
             new Generator(
-                generationDelay: 30,
+                generationDelay: 36,
                 generationAction: GenerateRoadSideLampBottom,
                 startUpAction: SpawnRoadSideLamps),
 
@@ -3267,13 +3267,13 @@ namespace HonkTrooper
 
             // then add the top trees
             new Generator(
-                generationDelay: 15,
+                generationDelay: 18,
                 generationAction: GenerateRoadSideTreeTop,
                 startUpAction: SpawnRoadSideTrees),
 
             // then add the bottom trees which will appear forward in z wrt to the vehicles
             new Generator(
-                generationDelay: 15,
+                generationDelay: 18,
                 generationAction: GenerateRoadSideTreeBottom,
                 startUpAction: SpawnRoadSideTrees),
 
