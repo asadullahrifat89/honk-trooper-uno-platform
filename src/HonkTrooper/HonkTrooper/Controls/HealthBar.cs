@@ -52,8 +52,8 @@ namespace HonkTrooper
 
             Child = _container;
 
-            CornerRadius = new CornerRadius(10);
-            BorderThickness = new Thickness(4);
+            CornerRadius = new CornerRadius(5);
+            //BorderThickness = new Thickness(4);
             Background = new SolidColorBrush(Colors.Goldenrod);
             BorderBrush = new SolidColorBrush(Colors.White);
 
@@ -91,7 +91,7 @@ namespace HonkTrooper
             Visibility = _bar.Value > 0 ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        public void SetBarForegroundColor(Color color)
+        public void SetBarColor(Color color)
         {
             _bar.Foreground = new SolidColorBrush(color);
         }
