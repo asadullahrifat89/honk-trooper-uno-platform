@@ -11,7 +11,7 @@ namespace HonkTrooper
 
         private readonly Random _random;
         private readonly Uri[] _vehicle_boss_uris;
-       
+
 
         private readonly Image _content_image;
 
@@ -75,11 +75,9 @@ namespace HonkTrooper
         {
             Opacity = 1;
             Health = 100;
-            SpeedOffset = -2;
+
             IsAttacking = false;
             WillHonk = true;
-
-            _movementDirection = MovementDirection.None;
 
             var uri = ConstructExtensions.GetRandomContentUri(_vehicle_boss_uris);
             _content_image.Source = new BitmapImage(uri);
@@ -87,16 +85,22 @@ namespace HonkTrooper
             RandomizeMovementPattern();
             SetScaleTransform(1);
             SetHonkDelay();
-        }     
+        }
 
         public void LooseHealth()
         {
             Health -= 5;
+
+            if (IsDead)
+            {
+                SpeedOffset = Constants.DEFAULT_SPEED_OFFSET - 1;
+                IsAttacking = false;
+            }
         }
 
         private void RandomizeMovementPattern()
         {
-            SpeedOffset = _random.Next(-1, 4);
+            SpeedOffset = _random.Next((int)Constants.DEFAULT_SPEED_OFFSET, 4);
             MovementPattern = (VehicleBossMovementPattern)_random.Next(Enum.GetNames(typeof(VehicleBossMovementPattern)).Length);
 
             _changeMovementPatternDelay = _random.Next(40, 60);
@@ -108,24 +112,6 @@ namespace HonkTrooper
            double sceneWidth,
            double sceneHeight)
         {
-            //switch (MovementPattern)
-            //{
-            //    case VehicleBossMovementPattern.ISOMETRIC_SQUARE:
-            //        MoveInIsometricSquares(
-            //            speed: speed,
-            //            sceneWidth: sceneWidth,
-            //            sceneHeight: sceneHeight);
-            //        break;
-            //    case VehicleBossMovementPattern.UPLEFT_DOWNRIGHT:
-            //        MoveUpLeftDownRight(
-            //            speed: speed,
-            //            sceneWidth: sceneWidth,
-            //            sceneHeight: sceneHeight);
-            //        break;
-            //    default:
-            //        break;
-            //}
-
             MoveUpLeftDownRight(
                 speed: speed,
                 sceneWidth: sceneWidth,
@@ -160,7 +146,6 @@ namespace HonkTrooper
                     if (GetBottom() < 0 || GetRight() < 0)
                     {
                         Reposition();
-
                         _movementDirection = MovementDirection.DownRight;
                     }
                 }
