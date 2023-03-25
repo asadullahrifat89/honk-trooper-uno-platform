@@ -1213,7 +1213,8 @@ namespace HonkTrooper
                 _audio_stub.Play(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
                 _audio_stub.SetVolume(SoundType.AMBIENCE, 0.4);
 
-                vehicleBoss.IsAnimating = true;
+                vehicleBoss.IsAnimating = true;                
+
                 vehicleBoss.Reset();
                 vehicleBoss.Reposition();
                 vehicleBoss.SetZ(3);
@@ -1267,12 +1268,12 @@ namespace HonkTrooper
                     }
                     else
                     {
-                        vehicleBoss1.MoveDownRight(speed);
-
-                        if (_scene_game.Children.OfType<VehicleEnemy>().All(x => !x.IsAnimating) ||
-                            _scene_game.Children.OfType<VehicleEnemy>().Where(x => x.IsAnimating).All(x => x.GetLeft() > Constants.DEFAULT_SCENE_WIDTH * scaling / 2)) // only bring the boss in view when all other vechiles are gone
+                        if (_scene_game.Children.OfType<VehicleEnemy>().All(x => !x.IsAnimating)
+                            /*|| _scene_game.Children.OfType<VehicleEnemy>().Where(x => x.IsAnimating).All(x => x.GetLeft() > Constants.DEFAULT_SCENE_WIDTH * scaling / 2)*/) // only bring the boss in view when all other vechiles are gone
                         {
-                            if (vehicleBoss.GetLeft() > ((Constants.DEFAULT_SCENE_WIDTH * scaling) / 4 * 3)) // bring VehicleBoss to a suitable distance from player and then start attacking
+                            vehicleBoss1.MoveDownRight(speed);
+
+                            if (vehicleBoss1.GetLeft() > (Constants.DEFAULT_SCENE_WIDTH * scaling / 3)) // bring UfoBoss to a suitable distance from player and then start attacking
                             {
                                 vehicleBoss1.IsAttacking = true;
                             }
@@ -1986,6 +1987,7 @@ namespace HonkTrooper
                 _audio_stub.SetVolume(SoundType.AMBIENCE, 0.2);
 
                 ufoBoss.IsAnimating = true;
+
                 ufoBoss.Reset();
                 ufoBoss.SetPosition(
                     left: 0,
