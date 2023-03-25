@@ -1729,8 +1729,8 @@ namespace HonkTrooper
                 roadSideHedge.IsAnimating = true;
 
                 roadSideHedge.SetPosition(
-                  left: (Constants.DEFAULT_SCENE_WIDTH / 3.8) - 5,
-                  top: (roadSideHedge.Height * -1) - 5,
+                  left: (Constants.DEFAULT_SCENE_WIDTH / 3.8) - 30,
+                  top: (roadSideHedge.Height * -1) - 30,
                   z: 2);
 
                 return true;
