@@ -88,6 +88,13 @@ namespace HonkTrooper
 
         #region Thumbstick
 
+        public void SetDefaultThumbstickPosition()
+        {
+            ThumbstickThumb?.SetPosition(
+                left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.30,
+                top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.30);
+        }
+
         private void SetThumbstick()
         {
             var sizeXY = 3.5;
@@ -258,7 +265,7 @@ namespace HonkTrooper
                 Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 0.90,
                 CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS * 2),
 
-                Background = new SolidColorBrush(Colors.Goldenrod),
+                Background = new SolidColorBrush(Colors.Crimson),
                 BorderBrush = new SolidColorBrush(Colors.White),
                 BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
             };
@@ -335,14 +342,7 @@ namespace HonkTrooper
                 left: point.Position.X - ThumbstickThumb.Width / 2,
                 top: point.Position.Y - ThumbstickThumb.Height / 2);
         }
-
-        public void SetDefaultThumbstickPosition()
-        {
-            ThumbstickThumb?.SetPosition(
-                left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.30,
-                top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.30);
-        }
-
+        
         private void ActivateThumbstick()
         {
             if (ThumbstickThumb.GetHitBox().IntersectsWith(ThumbstickUpLeft.GetCloseHitBox())) // up left
@@ -596,8 +596,6 @@ namespace HonkTrooper
             Grid.SetRow(right, 1);
             Grid.SetColumn(right, 2);
 
-            //#endregion
-
             #endregion
 
             #region DownLeft
@@ -815,20 +813,20 @@ namespace HonkTrooper
         {
             AttackButton = new()
             {
-                Background = new SolidColorBrush(Colors.Goldenrod),
+                Background = new SolidColorBrush(Colors.Crimson),
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.3,
                 Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.3,
                 CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS * 2),
                 Content = new SymbolIcon()
                 {
-                    Symbol = Symbol.Target,
+                    Symbol = Symbol.Placeholder,
                 },
                 BorderBrush = new SolidColorBrush(Colors.White),
                 BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
                 HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Bottom,
-                Margin = new Thickness(75, 75),
-                Opacity = 0.6
+                Margin = new Thickness(65, 75),
+                //Opacity = 0.6
             };
 
             AttackButton.Click += (s, e) => { ActivateAttack(); };
@@ -848,7 +846,7 @@ namespace HonkTrooper
         {
             PauseButton = new()
             {
-                Background = new SolidColorBrush(Colors.Goldenrod),
+                //Background = new SolidColorBrush(Colors.Goldenrod),
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 0.75,
                 Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 0.75,
                 CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS * 2),
