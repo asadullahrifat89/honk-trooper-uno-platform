@@ -1520,7 +1520,7 @@ namespace HonkTrooper
 
         private bool SpawnRoadSideWalks()
         {
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < 8; i++)
             {
                 RoadSideWalk roadSideWalk = new(
                 animateAction: AnimateRoadSideWalk,
@@ -1708,15 +1708,15 @@ namespace HonkTrooper
         {
             for (int i = 0; i < 11; i++)
             {
-                RoadSideHedge hedge = new(
+                RoadSideHedge roadSideHedge = new(
                     animateAction: AnimateRoadSideHedge,
                     recycleAction: RecycleRoadSideHedge);
 
-                hedge.SetPosition(
+                roadSideHedge.SetPosition(
                     left: -3000,
                     top: -3000);
 
-                _scene_game.AddToScene(hedge);
+                _scene_game.AddToScene(roadSideHedge);
             }
 
             return true;
@@ -1724,13 +1724,13 @@ namespace HonkTrooper
 
         private bool GenerateRoadSideHedgeTop()
         {
-            if (_scene_game.Children.OfType<RoadSideHedge>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideHedge hedge)
+            if (_scene_game.Children.OfType<RoadSideHedge>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideHedge roadSideHedge)
             {
-                hedge.IsAnimating = true;
+                roadSideHedge.IsAnimating = true;
 
-                hedge.SetPosition(
-                  left: (Constants.DEFAULT_SCENE_WIDTH / 3.8),
-                  top: hedge.Height * -1,
+                roadSideHedge.SetPosition(
+                  left: (Constants.DEFAULT_SCENE_WIDTH / 3.8) - 30,
+                  top: (roadSideHedge.Height * -1) - 30,
                   z: 2);
 
                 return true;
@@ -1741,13 +1741,13 @@ namespace HonkTrooper
 
         private bool GenerateRoadSideHedgeBottom()
         {
-            if (_scene_game.Children.OfType<RoadSideHedge>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideHedge hedge)
+            if (_scene_game.Children.OfType<RoadSideHedge>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideHedge roadSideHedge)
             {
-                hedge.IsAnimating = true;
+                roadSideHedge.IsAnimating = true;
 
-                hedge.SetPosition(
-                  left: -1 * hedge.Width,
-                  top: (Constants.DEFAULT_SCENE_HEIGHT / 3.1),
+                roadSideHedge.SetPosition(
+                  left: (-1.1 * roadSideHedge.Width) - 10,
+                  top: (Constants.DEFAULT_SCENE_HEIGHT / 3.1) - 10,
                   z: 3);
 
                 return true;
@@ -1786,7 +1786,7 @@ namespace HonkTrooper
 
         private bool SpawnRoadSideLamps()
         {
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 4; i++)
             {
                 RoadSideLamp roadSideLamp = new(
                     animateAction: AnimateRoadSideLamp,
@@ -3136,7 +3136,7 @@ namespace HonkTrooper
         {
             PowerUpPickup powerUpPickup1 = powerUpPickup as PowerUpPickup;
 
-            var speed = powerUpPickup1.GetMovementSpeed();            
+            var speed = powerUpPickup1.GetMovementSpeed();
 
             if (powerUpPickup1.IsPickedUp)
             {
@@ -3240,17 +3240,17 @@ namespace HonkTrooper
                 startUpAction: SpawnRoadMarks),
 
             new Generator(
-                generationDelay: 60,
+                generationDelay: 72,
                 generationAction: GenerateRoadSideBillboardTop,
                 startUpAction: SpawnRoadSideBillboards),
 
             new Generator(
-                generationDelay: 30,
+                generationDelay: 36,
                 generationAction: GenerateRoadSideLampTop,
                 startUpAction: SpawnRoadSideLamps),
 
             new Generator(
-                generationDelay: 30,
+                generationDelay: 36,
                 generationAction: GenerateRoadSideLampBottom,
                 startUpAction: SpawnRoadSideLamps),
 
@@ -3267,25 +3267,25 @@ namespace HonkTrooper
 
             // then add the top trees
             new Generator(
-                generationDelay: 15,
+                generationDelay: 18,
                 generationAction: GenerateRoadSideTreeTop,
                 startUpAction: SpawnRoadSideTrees),
 
             // then add the bottom trees which will appear forward in z wrt to the vehicles
             new Generator(
-                generationDelay: 15,
+                generationDelay: 18,
                 generationAction: GenerateRoadSideTreeBottom,
                 startUpAction: SpawnRoadSideTrees),
 
             // then add the top RoadSideHedges
             new Generator(
-                generationDelay: 10,
+                generationDelay: 9,
                 generationAction: GenerateRoadSideHedgeTop,
                 startUpAction: SpawnRoadSideHedges),
 
             // then add the bottom RoadSideHedges which will appear forward in z wrt to the vehicles
             new Generator(
-                generationDelay: 10,
+                generationDelay: 9,
                 generationAction: GenerateRoadSideHedgeBottom,
                 startUpAction: SpawnRoadSideHedges),
 

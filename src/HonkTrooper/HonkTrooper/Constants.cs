@@ -7,7 +7,7 @@ namespace HonkTrooper
         public const double DEFAULT_FRAME_TIME = 18;
         
         public const double DEFAULT_SPEED_OFFSET = 2;
-        public const double DEFAULT_SCENE_SPEED = 5;
+        public const double DEFAULT_SCENE_SPEED = 4;
 
         public const double DEFAULT_SLOW_MOTION_REDUCTION_FACTOR = 4;
         public const double DEFAULT_ISOMETRIC_DISPLACEMENT = 0.5;
@@ -53,7 +53,7 @@ namespace HonkTrooper
             new (ConstructType.ROAD_SIDE_WALK_SLOPE, 15, 260),
 
             new (ConstructType.ROAD_SIDE_TREE, 190, 190),
-            new (ConstructType.ROAD_SIDE_HEDGE, 160, 160),
+            new (ConstructType.ROAD_SIDE_HEDGE, 170, 170),
 
             new (ConstructType.ROAD_SIDE_WALK, 270, 260),
             new (ConstructType.ROAD_SIDE_LAMP, 150, 150),
