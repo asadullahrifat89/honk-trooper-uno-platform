@@ -7,7 +7,7 @@ namespace HonkTrooper
 {
     public static class ConstructExtensions
     {
-        private static Random _random = new Random();
+        private static readonly Random _random = new Random();
 
         #region Methods
 

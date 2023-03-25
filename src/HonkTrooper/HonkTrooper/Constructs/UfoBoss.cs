@@ -6,7 +6,7 @@ using Windows.Foundation;
 
 namespace HonkTrooper
 {
-    public partial class UfoBoss : MovingConstruct
+    public partial class UfoBoss : AnimableConstruct
     {
         #region Fields
 
@@ -14,10 +14,6 @@ namespace HonkTrooper
         private readonly Uri[] _ufo_boss_uris;
         private readonly Uri[] _ufo_boss_hit_uris;
         private readonly Uri[] _ufo_boss_win_uris;
-
-        private double _hoverDelay;
-        private readonly double _hoverDelayDefault = 15;
-        private readonly double _hoverSpeed = 0.5;
 
         private readonly double _grace = 7;
         private readonly double _lag = 125;
@@ -44,8 +40,6 @@ namespace HonkTrooper
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction)
         {
-            _hoverDelay = _hoverDelayDefault;
-
             _random = new Random();
 
             _ufo_boss_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.UFO_BOSS).Select(x => x.Uri).ToArray();
