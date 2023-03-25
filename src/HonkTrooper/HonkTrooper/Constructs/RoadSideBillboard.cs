@@ -10,7 +10,7 @@ namespace HonkTrooper
         #region Fields
 
         private readonly Image _content_image;
-        private readonly Uri[] _tree_uris;
+        private readonly Uri[] _billboard_uris;
 
         #endregion
 
@@ -22,7 +22,7 @@ namespace HonkTrooper
         {
             ConstructType = ConstructType.ROAD_SIDE_BILLBOARD;
 
-            _tree_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.ROAD_SIDE_BILLBOARD).Select(x => x.Uri).ToArray();
+            _billboard_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.ROAD_SIDE_BILLBOARD).Select(x => x.Uri).ToArray();
 
             var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.ROAD_SIDE_BILLBOARD);
 
@@ -34,7 +34,7 @@ namespace HonkTrooper
 
             SetSize(width: width, height: height);
 
-            var uri = ConstructExtensions.GetRandomContentUri(_tree_uris);
+            var uri = ConstructExtensions.GetRandomContentUri(_billboard_uris);
 
             _content_image = new Image()
             {
@@ -47,6 +47,12 @@ namespace HonkTrooper
             IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
             DropShadowDistance = -10;
         }
+
+        #endregion
+
+        #region Methods
+
+
 
         #endregion
     }
