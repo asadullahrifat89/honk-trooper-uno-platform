@@ -697,7 +697,7 @@ namespace HonkTrooper
                     playerFireCracker.Reposition(
                         player: _player);
 
-                    SyncDropShadow(playerFireCracker);
+                    SyncDropShadow(source: playerFireCracker);
 
                     LoggerExtensions.Log("Player Ground Bomb dropped.");
 
@@ -722,14 +722,11 @@ namespace HonkTrooper
             {
                 playerFireCracker.Expand();
                 playerFireCracker.Fade(0.02);
-
-                //MoveConstructBottomRight(construct: playerFireCracker, speed: speed);
                 playerFireCracker1.MoveDownRight(speed);
             }
             else
             {
                 playerFireCracker.Pop();
-
                 playerFireCracker.SetLeft(playerFireCracker.GetLeft() + speed);
                 playerFireCracker.SetTop(playerFireCracker.GetTop() + speed * 1.2);
 
@@ -1352,6 +1349,8 @@ namespace HonkTrooper
                     z: 7);
 
                 _scene_game.AddToScene(vehicleBossRocket);
+
+                SpawnDropShadow(source: vehicleBossRocket);
             }
 
             return true;
@@ -1371,9 +1370,9 @@ namespace HonkTrooper
                 vehicleBossRocket.Reposition(vehicleBoss: vehicleBoss);
                 vehicleBossRocket.AwaitMoveUpRight = true;
 
-                SpawnDropShadow(vehicleBossRocket);
+                SyncDropShadow(source: vehicleBossRocket);
 
-                LoggerExtensions.Log("VehicleBoss Bomb dropped.");
+                LoggerExtensions.Log("VehicleBoss rocket dropped.");
 
                 return true;
             }
@@ -2947,7 +2946,6 @@ namespace HonkTrooper
                 dropShadow.IsAnimating = true;
 
                 dropShadow.SetZ(source.GetZ() - 2);
-
                 dropShadow.Reset();
             }
         }
