@@ -3256,67 +3256,57 @@ namespace HonkTrooper
 
             // add road marks
             new Generator(
-                generationDelay: 30,
+                generationDelay: 20,
                 generationAction: GenerateRoadMark,
                 startUpAction: SpawnRoadMarks),
 
             new Generator(
-                generationDelay: 180,
+                generationDelay: 60,
                 generationAction: GenerateRoadSideBillboardTop,
                 startUpAction: SpawnRoadSideBillboards),
 
             new Generator(
-                generationDelay: 90,
+                generationDelay: 30,
                 generationAction: GenerateRoadSideLampTop,
                 startUpAction: SpawnRoadSideLamps),
 
             new Generator(
-                generationDelay: 90,
+                generationDelay: 30,
                 generationAction: GenerateRoadSideLampBottom,
                 startUpAction: SpawnRoadSideLamps),
 
             // add road side walks
             new Generator(
-                generationDelay: 27,
+                generationDelay: 18,
                 generationAction: GenerateRoadSideWalkTop,
                 startUpAction: SpawnRoadSideWalks),
 
             new Generator(
-                generationDelay: 27,
+                generationDelay: 18,
                 generationAction: GenerateRoadSideWalkBottom,
                 startUpAction: SpawnRoadSideWalks),
 
-            //new Generator(
-            //    generationDelay: 29,
-            //    generationAction: GenerateRoadSideWalkSlopeTop,
-            //    startUpAction: SpawnRoadSideWalkSlopes),
-
-            //new Generator(
-            //    generationDelay: 29,
-            //    generationAction: GenerateRoadSideWalkSlopeBottom,
-            //    startUpAction: SpawnRoadSideWalkSlopes),
-
             // then add the top trees
             new Generator(
-                generationDelay: 30,
+                generationDelay: 15,
                 generationAction: GenerateRoadSideTreeTop,
                 startUpAction: SpawnRoadSideTrees),
 
             // then add the bottom trees which will appear forward in z wrt to the vehicles
             new Generator(
-                generationDelay: 30,
+                generationDelay: 15,
                 generationAction: GenerateRoadSideTreeBottom,
                 startUpAction: SpawnRoadSideTrees),
 
             // then add the top RoadSideHedges
             new Generator(
-                generationDelay: 16,
+                generationDelay: 10,
                 generationAction: GenerateRoadSideHedgeTop,
                 startUpAction: SpawnRoadSideHedges),
 
             // then add the bottom RoadSideHedges which will appear forward in z wrt to the vehicles
             new Generator(
-                generationDelay: 16,
+                generationDelay: 10,
                 generationAction: GenerateRoadSideHedgeBottom,
                 startUpAction: SpawnRoadSideHedges),
 
