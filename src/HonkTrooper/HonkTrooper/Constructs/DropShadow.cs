@@ -80,7 +80,7 @@ namespace HonkTrooper
             }
             else if (ParentConstruct.IsGravitatingUpwards)
             {
-
+                MoveUp(0.1);
             }
             else
             {
