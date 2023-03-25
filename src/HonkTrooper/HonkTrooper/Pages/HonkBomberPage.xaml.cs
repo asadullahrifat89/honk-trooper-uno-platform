@@ -1,6 +1,7 @@
 ﻿using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -563,6 +564,24 @@ namespace HonkTrooper
             _player.Reset();
             _player.Reposition();
             _player.SetPlayerTemplate(_selected_player_template);
+
+            switch (_selected_player_template)
+            {
+                case 1:
+                    {
+                        _game_controller.SetAttackButtonColor(App.Current.Resources["Player1AccentColor"] as SolidColorBrush);
+                        _game_controller.SetThumbstickThumbColor(App.Current.Resources["Player1AccentColor"] as SolidColorBrush);
+                    }
+                    break;
+                case 2:
+                    {
+                        _game_controller.SetAttackButtonColor(App.Current.Resources["Player2AccentColor"] as SolidColorBrush);
+                        _game_controller.SetThumbstickThumbColor(App.Current.Resources["Player2AccentColor"] as SolidColorBrush);
+                    }
+                    break;
+                default:
+                    break;
+            }
 
             SyncDropShadow(source: _player);
             SetPlayerHealthBar();

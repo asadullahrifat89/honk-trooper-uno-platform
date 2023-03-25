@@ -6,6 +6,7 @@ using Microsoft.UI.Xaml.Media;
 using System;
 using Windows.Devices.Sensors;
 using Windows.Foundation;
+using Windows.UI;
 
 namespace HonkTrooper
 {
@@ -87,6 +88,11 @@ namespace HonkTrooper
         #region Methods
 
         #region Thumbstick
+
+        public void SetThumbstickThumbColor(SolidColorBrush color)
+        {
+            ThumbstickThumb.Background = color;
+        }
 
         public void SetDefaultThumbstickPosition()
         {
@@ -342,7 +348,7 @@ namespace HonkTrooper
                 left: point.Position.X - ThumbstickThumb.Width / 2,
                 top: point.Position.Y - ThumbstickThumb.Height / 2);
         }
-        
+
         private void ActivateThumbstick()
         {
             if (ThumbstickThumb.GetHitBox().IntersectsWith(ThumbstickUpLeft.GetCloseHitBox())) // up left
@@ -803,6 +809,11 @@ namespace HonkTrooper
         #endregion
 
         #region Attack
+
+        public void SetAttackButtonColor(SolidColorBrush color)
+        {
+            AttackButton.Background = color;
+        }
 
         public void FocusAttackButton()
         {
