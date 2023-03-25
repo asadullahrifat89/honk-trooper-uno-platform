@@ -700,7 +700,7 @@ namespace HonkTrooper
 
                     SyncDropShadow(source: playerFireCracker);
 
-                    LoggerExtensions.Log("Player Ground Bomb dropped.");
+                    LoggerExtensions.Log("Player firecracker dropped.");
 
                     return true;
                 }
