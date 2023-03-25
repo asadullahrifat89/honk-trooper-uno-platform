@@ -1,6 +1,6 @@
 ﻿namespace HonkTrooper
 {
-    public partial class Rocket : DirectionalMovingConstruct
+    public partial class AnimableConstruct : MovableConstruct
     {
         #region Fields
 

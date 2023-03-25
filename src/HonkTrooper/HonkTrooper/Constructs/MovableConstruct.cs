@@ -1,6 +1,6 @@
 ﻿namespace HonkTrooper
 {
-    public partial class DirectionalMovingConstruct : Construct
+    public partial class MovableConstruct : Construct
     {
         public void MoveUp(double speed)
         {

@@ -1,29 +1,7 @@
 ﻿namespace HonkTrooper
 {
-    public partial class HoveringTitleScreen : Construct
+    public partial class HoveringTitleScreen : AnimableConstruct
     {
-        private double _hoverDelay;
-        private readonly double _hoverDelayDefault = 15;
-
-        private readonly double _hoverSpeed = 0.3;
-
-        public void Hover()
-        {
-            _hoverDelay--;
-
-            if (_hoverDelay >= 0)
-            {
-                SetTop(GetTop() + _hoverSpeed);
-            }
-            else
-            {
-                SetTop(GetTop() - _hoverSpeed);
-
-                if (_hoverDelay <= _hoverDelayDefault * -1)
-                    _hoverDelay = _hoverDelayDefault;
-            }
-        }
-
         public void Reposition()
         {
             SetPosition(

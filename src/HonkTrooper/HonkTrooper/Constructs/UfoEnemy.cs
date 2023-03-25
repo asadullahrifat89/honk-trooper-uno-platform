@@ -5,17 +5,12 @@ using System.Linq;
 
 namespace HonkTrooper
 {
-    public partial class UfoEnemy : Construct
+    public partial class UfoEnemy : AnimableConstruct
     {
         #region Fields
 
         private readonly Random _random;
         private readonly Uri[] _enemy_uris;
-
-        private double _hoverDelay;
-        private readonly double _hoverDelayDefault = 15;
-        private readonly double _hoverSpeed = 0.5;
-
         private double _attackDelay;
         private double _honkDelay;
 
@@ -98,23 +93,6 @@ namespace HonkTrooper
             _content_image.Source = new BitmapImage(uri);
 
             SpeedOffset = _random.Next(-3, 2);
-        }
-
-        public void Hover()
-        {
-            _hoverDelay--;
-
-            if (_hoverDelay >= 0)
-            {
-                SetTop(GetTop() + _hoverSpeed);
-            }
-            else
-            {
-                SetTop(GetTop() - _hoverSpeed);
-
-                if (_hoverDelay <= _hoverDelayDefault * -1)
-                    _hoverDelay = _hoverDelayDefault;
-            }
         }
 
         public bool Attack()
