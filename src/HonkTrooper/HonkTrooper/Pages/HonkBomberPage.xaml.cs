@@ -693,6 +693,7 @@ namespace HonkTrooper
             VehicleEnemy vehicleEnemy1 = vehicleEnemy as VehicleEnemy;
 
             vehicleEnemy.Pop();
+            vehicleEnemy1.Vibrate();
 
             var speed = (_scene_game.Speed + vehicleEnemy.SpeedOffset);
 
@@ -1852,38 +1853,13 @@ namespace HonkTrooper
         {
             if (!UfoBossExists() &&
                 _enemy_threashold.ShouldRelease(_game_score_bar.GetScore()) &&
-                _scene_game.Children.OfType<UfoEnemy>().FirstOrDefault(x => x.IsAnimating == false) is UfoEnemy enemy)
+                _scene_game.Children.OfType<UfoEnemy>().FirstOrDefault(x => x.IsAnimating == false) is UfoEnemy ufoEnemy)
             {
-                enemy.IsAnimating = true;
-                enemy.Reset();
+                ufoEnemy.IsAnimating = true;
+                ufoEnemy.Reset();
+                ufoEnemy.Reposition();
 
-                var topOrLeft = _random.Next(2);
-
-                switch (topOrLeft)
-                {
-                    case 0:
-                        {
-                            var xLaneWidth = Constants.DEFAULT_SCENE_WIDTH / 2;
-
-                            enemy.SetPosition(
-                                left: _random.Next((int)(xLaneWidth - enemy.Width)),
-                                top: enemy.Height * -1);
-                        }
-                        break;
-                    case 1:
-                        {
-                            var yLaneWidth = Constants.DEFAULT_SCENE_HEIGHT / 2;
-
-                            enemy.SetPosition(
-                                left: enemy.Width * -1,
-                                top: _random.Next((int)(yLaneWidth - enemy.Height)));
-                        }
-                        break;
-                    default:
-                        break;
-                }
-
-                SyncDropShadow(enemy);
+                SyncDropShadow(ufoEnemy);
 
                 if (!_enemy_fleet_appeared)
                 {
@@ -1902,16 +1878,16 @@ namespace HonkTrooper
 
         private bool AnimateUfoEnemy(Construct ufoEnemy)
         {
-            UfoEnemy enemy1 = ufoEnemy as UfoEnemy;
+            UfoEnemy ufoEnemy1 = ufoEnemy as UfoEnemy;
 
-            if (enemy1.IsDead)
+            if (ufoEnemy1.IsDead)
             {
-                enemy1.Shrink();
+                ufoEnemy1.Shrink();
             }
             else
             {
-                enemy1.Hover();
-                enemy1.Pop();
+                ufoEnemy1.Hover();
+                ufoEnemy1.Pop();
 
                 var speed = _scene_game.Speed + ufoEnemy.SpeedOffset;
 
@@ -1919,11 +1895,11 @@ namespace HonkTrooper
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
-                    if (enemy1.Honk())
-                        GenerateUfoEnemyHonk(enemy1);
+                    if (ufoEnemy1.Honk())
+                        GenerateUfoEnemyHonk(ufoEnemy1);
 
-                    if (enemy1.Attack())
-                        GenerateUfoEnemyRocket(enemy1);
+                    if (ufoEnemy1.Attack())
+                        GenerateUfoEnemyRocket(ufoEnemy1);
                 }
             }
 

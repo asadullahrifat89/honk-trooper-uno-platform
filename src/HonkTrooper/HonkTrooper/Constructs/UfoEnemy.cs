@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace HonkTrooper
 {
-    public partial class UfoEnemy : AnimableConstruct
+    public partial class UfoEnemy : VehicleBase
     {
         #region Fields
 
@@ -114,27 +114,6 @@ namespace HonkTrooper
         public void SetAttackDelay()
         {
             _attackDelay = _random.Next(50, 80);
-        }
-
-        public bool Honk()
-        {
-            if (!IsDead && WillHonk)
-            {
-                _honkDelay--;
-
-                if (_honkDelay < 0)
-                {
-                    SetHonkDelay();
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        public void SetHonkDelay()
-        {
-            _honkDelay = _random.Next(40, 80);
         }
 
         public void LooseHealth()

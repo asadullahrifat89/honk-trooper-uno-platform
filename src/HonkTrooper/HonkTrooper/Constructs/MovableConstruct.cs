@@ -2,6 +2,8 @@
 {
     public partial class MovableConstruct : Construct
     {
+        #region Methods
+
         public void MoveUp(double speed)
         {
             SetTop(GetTop() - speed * 2);
@@ -44,6 +46,8 @@
         {
             SetLeft(GetLeft() - speed * 2);
             SetTop(GetTop() + speed);
-        }
+        } 
+
+        #endregion
     }
 }
