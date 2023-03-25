@@ -16,6 +16,7 @@
         {
             if (Scene.IsSlowMotionActivated)
                 speed /= 2;
+
             SetTop(GetTop() + speed * 2);
         }
 
@@ -23,6 +24,7 @@
         {
             if (Scene.IsSlowMotionActivated)
                 speed /= 2;
+
             SetLeft(GetLeft() - speed * 2);
         }
 
@@ -30,6 +32,7 @@
         {
             if (Scene.IsSlowMotionActivated)
                 speed /= 2;
+
             SetLeft(GetLeft() + speed * 2);
         }
 
@@ -37,6 +40,7 @@
         {
             if (Scene.IsSlowMotionActivated)
                 speed /= 2;
+
             SetLeft(GetLeft() + speed * 2);
             SetTop(GetTop() - speed);
         }
@@ -45,6 +49,7 @@
         {
             if (Scene.IsSlowMotionActivated)
                 speed /= 2;
+
             SetLeft(GetLeft() - speed * 2);
             SetTop(GetTop() - speed);
         }
@@ -53,6 +58,7 @@
         {
             if (Scene.IsSlowMotionActivated)
                 speed /= 2;
+
             SetLeft(GetLeft() + speed * 2);
             SetTop(GetTop() + speed);
         }
@@ -61,6 +67,7 @@
         {
             if (Scene.IsSlowMotionActivated)
                 speed /= 2;
+
             SetLeft(GetLeft() - speed * 2);
             SetTop(GetTop() + speed);
         }

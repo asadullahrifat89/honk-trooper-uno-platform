@@ -1159,29 +1159,30 @@ namespace HonkTrooper
 
         private void PreventVehicleEnemyOverlapping(Construct vehicleEnemy)
         {
-            var vehicleEnemy_distantHitBox = vehicleEnemy.GetDistantHitBox();
+            //var vehicleEnemy_distantHitBox = vehicleEnemy.GetDistantHitBox();
 
             if (_scene_game.Children.OfType<VehicleEnemy>()
-                .FirstOrDefault(x => x.IsAnimating && x.GetHorizontalHitBox().IntersectsWith(vehicleEnemy.GetHorizontalHitBox())) is Construct collidingVehicleEnemy)
+                .FirstOrDefault(x => x.IsAnimating && x.GetHitBox().IntersectsWith(vehicleEnemy.GetHitBox())) is Construct collidingVehicleEnemy)
             {
                 var hitBox = vehicleEnemy.GetHitBox();
 
-                if (vehicleEnemy.SpeedOffset == collidingVehicleEnemy.SpeedOffset)
+                //if (vehicleEnemy.SpeedOffset == collidingVehicleEnemy.SpeedOffset)
+                //{
+                //    if (vehicleEnemy.SpeedOffset > -1)
+                //        vehicleEnemy.SpeedOffset--;
+                //}
+                //else
+                //{
+
+                if (collidingVehicleEnemy.SpeedOffset > vehicleEnemy.SpeedOffset) // colliding vehicleEnemy is faster
                 {
-                    if (vehicleEnemy.SpeedOffset > -2)
-                        vehicleEnemy.SpeedOffset--;
+                    vehicleEnemy.SpeedOffset = collidingVehicleEnemy.SpeedOffset;
                 }
-                else
+                else if (vehicleEnemy.SpeedOffset > collidingVehicleEnemy.SpeedOffset) // vehicleEnemy is faster
                 {
-                    if (vehicleEnemy.SpeedOffset > collidingVehicleEnemy.SpeedOffset) // vehicleEnemy is faster
-                    {
-                        vehicleEnemy.SpeedOffset = collidingVehicleEnemy.SpeedOffset;
-                    }
-                    else if (collidingVehicleEnemy.SpeedOffset > vehicleEnemy.SpeedOffset) // colliding vehicleEnemy is faster
-                    {
-                        collidingVehicleEnemy.SpeedOffset = vehicleEnemy.SpeedOffset;
-                    }
+                    collidingVehicleEnemy.SpeedOffset = vehicleEnemy.SpeedOffset;
                 }
+                //}
             }
         }
 
