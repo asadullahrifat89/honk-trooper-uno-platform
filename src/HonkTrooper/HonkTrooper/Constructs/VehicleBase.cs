@@ -2,7 +2,7 @@
 
 namespace HonkTrooper
 {
-    public partial class VehicleBase : MovableConstruct
+    public partial class VehicleBase : AnimableConstruct
     {
         #region Fields
 
@@ -60,7 +60,7 @@ namespace HonkTrooper
                     break;
             }
         }
-
+      
         public bool Honk()
         {
             if (WillHonk)

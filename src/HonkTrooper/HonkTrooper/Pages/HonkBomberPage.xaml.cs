@@ -227,8 +227,8 @@ namespace HonkTrooper
         {
             foreach (var construct in _scene_game.Children.OfType<Construct>()
                 .Where(x => x.ConstructType is
-                ConstructType.VEHICLE_LARGE or
-                ConstructType.VEHICLE_SMALL or
+                ConstructType.VEHICLE_ENEMY_LARGE or
+                ConstructType.VEHICLE_ENEMY_SMALL or
                 ConstructType.VEHICLE_BOSS or
                 ConstructType.UFO_BOSS or
                 ConstructType.HONK or
@@ -588,7 +588,7 @@ namespace HonkTrooper
 
             if (_scene_game.SceneState == SceneState.GAME_RUNNING)
             {
-                var count = _scene_game.Children.OfType<Vehicle>().Count(x => x.IsAnimating && x.WillHonk) + _scene_game.Children.OfType<UfoEnemy>().Count(x => x.IsAnimating && x.WillHonk);
+                var count = _scene_game.Children.OfType<VehicleEnemy>().Count(x => x.IsAnimating && x.WillHonk) + _scene_game.Children.OfType<UfoEnemy>().Count(x => x.IsAnimating && x.WillHonk);
                 _sound_pollution_health_bar.SetValue(count * 2);
 
                 if (_sound_pollution_health_bar.GetValue() >= _sound_pollution_health_bar.GetMaxiumHealth()) // loose score slowly if sound pollution has reached the limit
@@ -597,7 +597,7 @@ namespace HonkTrooper
                 }
 
                 var scaling = ScreenExtensions.GetScreenSpaceScaling();
-                var speed = (_scene_game.Speed + _player.SpeedOffset);
+                var speed = _player.GetMovementSpeed();
 
                 _player.Move(
                     speed: speed,
@@ -655,1335 +655,6 @@ namespace HonkTrooper
 
         #endregion
 
-        #region Vehicle
-
-        private bool SpawnVehicles()
-        {
-            for (int i = 0; i < 8; i++)
-            {
-                Vehicle vehicle = new(
-                    animateAction: AnimateVehicle,
-                    recycleAction: RecycleVehicle);
-
-                _scene_game.AddToScene(vehicle);
-
-                vehicle.SetPosition(
-                    left: -3000,
-                    top: -3000);
-            }
-
-            return true;
-        }
-
-        private bool GenerateVehicle()
-        {
-            if (!UfoBossExists() && !VehicleBossExists() && _scene_game.Children.OfType<Vehicle>().FirstOrDefault(x => x.IsAnimating == false) is Vehicle vehicle)
-            {
-                vehicle.IsAnimating = true;
-                vehicle.Reset();
-                vehicle.Reposition();
-
-                return true;
-            }
-            return false;
-        }
-
-        private bool AnimateVehicle(Construct vehicle)
-        {
-            Vehicle vehicle1 = vehicle as Vehicle;
-
-            vehicle.Pop();
-
-            var speed = (_scene_game.Speed + vehicle.SpeedOffset);
-
-            MoveConstructBottomRight(construct: vehicle, speed: speed);
-
-            if (_scene_game.SceneState == SceneState.GAME_RUNNING)
-            {
-                if (vehicle1.Honk())
-                    GenerateVehicleHonk(vehicle1);
-            }
-
-            PreventVehicleOverlapping(vehicle);
-
-            return true;
-        }
-
-        private bool RecycleVehicle(Construct vehicle)
-        {
-            var hitBox = vehicle.GetHitBox();
-
-            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left > Constants.DEFAULT_SCENE_WIDTH)
-            {
-                vehicle.IsAnimating = false;
-
-                vehicle.SetPosition(
-                    left: -3000,
-                    top: -3000);
-            }
-
-            return true;
-        }
-
-        private void PreventVehicleOverlapping(Construct vehicle)
-        {
-            var vehicle_distantHitBox = vehicle.GetDistantHitBox();
-
-            if (_scene_game.Children.OfType<Vehicle>()
-                .FirstOrDefault(x => x.IsAnimating && x.GetHorizontalHitBox().IntersectsWith(vehicle.GetHorizontalHitBox())) is Construct collidingVehicle)
-            {
-                var hitBox = vehicle.GetHitBox();
-
-                if (vehicle.SpeedOffset == collidingVehicle.SpeedOffset)
-                {
-                    if (vehicle.SpeedOffset > -2)
-                        vehicle.SpeedOffset--;
-                }
-                else
-                {
-                    if (vehicle.SpeedOffset > collidingVehicle.SpeedOffset) // vehicle is faster
-                    {
-                        vehicle.SpeedOffset = collidingVehicle.SpeedOffset;
-                    }
-                    else if (collidingVehicle.SpeedOffset > vehicle.SpeedOffset) // colliding vehicle is faster
-                    {
-                        collidingVehicle.SpeedOffset = vehicle.SpeedOffset;
-                    }
-                }
-            }
-        }
-
-        #endregion        
-
-        #region RoadMark
-
-        private bool SpawnRoadMarks()
-        {
-            for (int i = 0; i < 10; i++)
-            {
-                RoadMark roadMark = new(
-                    animateAction: AnimateRoadMark,
-                    recycleAction: RecycleRoadMark);
-
-                roadMark.SetPosition(
-                    left: -3000,
-                    top: -3000);
-
-                _scene_game.AddToScene(roadMark);
-            }
-
-            return true;
-        }
-
-        private bool GenerateRoadMark()
-        {
-            if (_scene_game.Children.OfType<RoadMark>().FirstOrDefault(x => x.IsAnimating == false) is RoadMark roadMark)
-            {
-                roadMark.IsAnimating = true;
-
-                roadMark.SetPosition(
-                  left: roadMark.Height * -1,
-                  top: roadMark.Height * -1,
-                  z: 0);
-
-                return true;
-            }
-
-            return false;
-        }
-
-        private bool AnimateRoadMark(Construct roadMark)
-        {
-            var speed = (_scene_game.Speed + roadMark.SpeedOffset);
-            MoveConstructBottomRight(construct: roadMark, speed: speed);
-            return true;
-        }
-
-        private bool RecycleRoadMark(Construct roadMark)
-        {
-            var hitBox = roadMark.GetHitBox();
-
-            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadMark.Height > Constants.DEFAULT_SCENE_WIDTH)
-            {
-                roadMark.IsAnimating = false;
-
-                roadMark.SetPosition(
-                    left: -3000,
-                    top: -3000);
-            }
-
-            return true;
-        }
-
-        #endregion
-
-        #region RoadSideWalkSlope
-
-        private bool SpawnRoadSideWalkSlopes()
-        {
-            for (int i = 0; i < 10; i++)
-            {
-                RoadSideWalkSlope roadSideStripe = new(
-                    animateAction: AnimateRoadSideWalkSlope,
-                    recycleAction: RecycleRoadSideWalkSlope);
-
-                roadSideStripe.SetPosition(
-                    left: -3000,
-                    top: -3000);
-
-                _scene_game.AddToScene(roadSideStripe);
-            }
-
-            return true;
-        }
-
-        private bool GenerateRoadSideWalkSlopeTop()
-        {
-            if (_scene_game.Children.OfType<RoadSideWalkSlope>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideWalkSlope roadSideStripe)
-            {
-                roadSideStripe.IsAnimating = true;
-
-                roadSideStripe.SetPosition(
-                    left: (Constants.DEFAULT_SCENE_WIDTH / 5.4),
-                    top: (roadSideStripe.Height * -1) - 16.5,
-                    z: 0);
-
-                return true;
-            }
-
-            return false;
-        }
-
-        private bool GenerateRoadSideWalkSlopeBottom()
-        {
-            if (_scene_game.Children.OfType<RoadSideWalkSlope>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideWalkSlope roadSideStripe)
-            {
-                roadSideStripe.IsAnimating = true;
-
-                roadSideStripe.SetPosition(
-                    left: (roadSideStripe.Height * -1),
-                    top: (Constants.DEFAULT_SCENE_HEIGHT / 2.1) - 4.5,
-                    z: 0);
-
-                return true;
-            }
-
-            return false;
-        }
-
-        private bool AnimateRoadSideWalkSlope(Construct roadSideStripe)
-        {
-            var speed = (_scene_game.Speed + roadSideStripe.SpeedOffset);
-            MoveConstructBottomRight(construct: roadSideStripe, speed: speed);
-            return true;
-        }
-
-        private bool RecycleRoadSideWalkSlope(Construct roadSideStripe)
-        {
-            var hitBox = roadSideStripe.GetHitBox();
-
-            if (hitBox.Top - roadSideStripe.Height > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSideStripe.Height > Constants.DEFAULT_SCENE_WIDTH)
-            {
-                roadSideStripe.IsAnimating = false;
-
-                roadSideStripe.SetPosition(
-                    left: -3000,
-                    top: -3000);
-            }
-
-            return true;
-        }
-
-        #endregion
-
-        #region RoadSideWalk
-
-        private bool SpawnRoadSideWalks()
-        {
-            for (int i = 0; i < 7; i++)
-            {
-                RoadSideWalk radSidePatch = new(
-                animateAction: AnimateRoadSideWalk,
-                recycleAction: RecycleRoadSideWalk);
-
-                radSidePatch.SetPosition(
-                    left: -3000,
-                    top: -3000);
-
-                _scene_game.AddToScene(radSidePatch);
-            }
-
-            return true;
-        }
-
-        private bool GenerateRoadSideWalkTop()
-        {
-            if (_scene_game.Children.OfType<RoadSideWalk>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideWalk roadSidePatch)
-            {
-                roadSidePatch.IsAnimating = true;
-
-                roadSidePatch.SetPosition(
-                    left: (Constants.DEFAULT_SCENE_WIDTH / 2.25 - roadSidePatch.Width),
-                    top: roadSidePatch.Height * -1,
-                    z: 0);
-
-                return true;
-            }
-
-            return false;
-        }
-
-        private bool GenerateRoadSideWalkBottom()
-        {
-            if (_scene_game.Children.OfType<RoadSideWalk>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideWalk roadSidePatch)
-            {
-                roadSidePatch.IsAnimating = true;
-
-                roadSidePatch.SetPosition(
-                    left: (roadSidePatch.Height * -1.5) - 30,
-                    top: (Constants.DEFAULT_SCENE_HEIGHT / 5 + roadSidePatch.Height / 2) - 50,
-                    z: 0);
-
-                return true;
-            }
-
-            return false;
-        }
-
-        private bool AnimateRoadSideWalk(Construct roadSidePatch)
-        {
-            var speed = (_scene_game.Speed + roadSidePatch.SpeedOffset);
-            MoveConstructBottomRight(construct: roadSidePatch, speed: speed);
-            return true;
-        }
-
-        private bool RecycleRoadSideWalk(Construct roadSidePatch)
-        {
-            var hitBox = roadSidePatch.GetHitBox();
-
-            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSidePatch.Width > Constants.DEFAULT_SCENE_WIDTH)
-            {
-                roadSidePatch.IsAnimating = false;
-
-                roadSidePatch.SetPosition(
-                    left: -3000,
-                    top: -3000);
-            }
-
-            return true;
-        }
-
-        #endregion
-
-        #region RoadSideTree
-
-        private bool SpawnRoadSideTrees()
-        {
-            for (int i = 0; i < 6; i++)
-            {
-                RoadSideTree roadSideTree = new(
-                    animateAction: AnimateRoadSideTree,
-                    recycleAction: RecycleRoadSideTree);
-
-                roadSideTree.SetPosition(
-                    left: -3000,
-                    top: -3000);
-
-                _scene_game.AddToScene(roadSideTree);
-
-                SpawnDropShadow(source: roadSideTree);
-            }
-
-            return true;
-        }
-
-        private bool GenerateRoadSideTreeTop()
-        {
-            //if (_scene_game.Children.OfType<RoadSideTree>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideTree tree2)
-            //{
-            //    tree2.IsAnimating = true;
-
-            //    tree2.SetPosition(
-            //      left: (Constants.DEFAULT_SCENE_WIDTH / 2 - tree2.Width) + 160,
-            //      top: (tree2.Height * -1.1) - 55,
-            //      z: 2);
-
-            //    SyncDropShadow(tree2);
-            //}
-
-            if (_scene_game.Children.OfType<RoadSideTree>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideTree tree)
-            {
-                tree.IsAnimating = true;
-
-                tree.SetPosition(
-                  left: (Constants.DEFAULT_SCENE_WIDTH / 2 - tree.Width),
-                  top: (tree.Height * -1.1),
-                  z: 3);
-
-                SyncDropShadow(tree);
-            }
-
-            return true;
-        }
-
-        private bool GenerateRoadSideTreeBottom()
-        {
-            if (_scene_game.Children.OfType<RoadSideTree>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideTree tree)
-            {
-                tree.IsAnimating = true;
-
-                tree.SetPosition(
-                  left: (-1 * tree.Width),
-                  top: (Constants.DEFAULT_SCENE_HEIGHT / 3),
-                  z: 4);
-
-                SyncDropShadow(tree);
-            }
-
-            //if (_scene_game.Children.OfType<RoadSideTree>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideTree tree2)
-            //{
-            //    tree2.IsAnimating = true;
-
-            //    tree2.SetPosition(
-            //      left: (-1.73 * tree2.Width),
-            //      top: (Constants.DEFAULT_SCENE_HEIGHT / 2.5),
-            //      z: 4);
-
-            //    SyncDropShadow(tree2);
-            //}
-
-            return true;
-        }
-
-        private bool AnimateRoadSideTree(Construct roadSideTree)
-        {
-            var speed = (_scene_game.Speed + roadSideTree.SpeedOffset);
-            MoveConstructBottomRight(construct: roadSideTree, speed: speed);
-            return true;
-        }
-
-        private bool RecycleRoadSideTree(Construct roadSideTree)
-        {
-            var hitBox = roadSideTree.GetHitBox();
-
-            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSideTree.Width > Constants.DEFAULT_SCENE_WIDTH)
-            {
-                roadSideTree.IsAnimating = false;
-
-                roadSideTree.SetPosition(
-                    left: -3000,
-                    top: -3000);
-            }
-
-            return true;
-        }
-
-        #endregion
-
-        #region RoadSideHedge
-
-        private bool SpawnRoadSideHedges()
-        {
-            for (int i = 0; i < 11; i++)
-            {
-                RoadSideHedge hedge = new(
-                    animateAction: AnimateRoadSideHedge,
-                    recycleAction: RecycleRoadSideHedge);
-
-                hedge.SetPosition(
-                    left: -3000,
-                    top: -3000);
-
-                _scene_game.AddToScene(hedge);
-            }
-
-            return true;
-        }
-
-        private bool GenerateRoadSideHedgeTop()
-        {
-            if (_scene_game.Children.OfType<RoadSideHedge>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideHedge hedge)
-            {
-                hedge.IsAnimating = true;
-
-                hedge.SetPosition(
-                  left: (Constants.DEFAULT_SCENE_WIDTH / 3.8),
-                  top: hedge.Height * -1,
-                  z: 2);
-
-                return true;
-            }
-
-            return false;
-        }
-
-        private bool GenerateRoadSideHedgeBottom()
-        {
-            if (_scene_game.Children.OfType<RoadSideHedge>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideHedge hedge)
-            {
-                hedge.IsAnimating = true;
-
-                hedge.SetPosition(
-                  left: -1 * hedge.Width,
-                  top: (Constants.DEFAULT_SCENE_HEIGHT / 3.1),
-                  z: 3);
-
-                return true;
-            }
-
-            return false;
-        }
-
-        private bool AnimateRoadSideHedge(Construct hedge)
-        {
-            var speed = (_scene_game.Speed + hedge.SpeedOffset);
-            MoveConstructBottomRight(construct: hedge, speed: speed);
-            return true;
-        }
-
-        private bool RecycleRoadSideHedge(Construct hedge)
-        {
-            var hitBox = hedge.GetHitBox();
-
-            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - hedge.Width > Constants.DEFAULT_SCENE_WIDTH)
-            {
-                hedge.IsAnimating = false;
-
-                hedge.SetPosition(
-                    left: -3000,
-                    top: -3000);
-            }
-
-            return true;
-        }
-
-        #endregion
-
-        #region RoadSideLamp
-
-        private bool SpawnRoadSideLamps()
-        {
-            for (int i = 0; i < 3; i++)
-            {
-                RoadSideLamp roadSideLamp = new(
-                    animateAction: AnimateRoadSideLamp,
-                    recycleAction: RecycleRoadSideLamp);
-
-                roadSideLamp.SetPosition(
-                    left: -3000,
-                    top: -3000);
-
-                _scene_game.AddToScene(roadSideLamp);
-
-                SpawnDropShadow(source: roadSideLamp);
-            }
-
-            return true;
-        }
-
-        private bool GenerateRoadSideLampTop()
-        {
-            if (_scene_game.Children.OfType<RoadSideLamp>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideLamp roadSideLamp)
-            {
-                roadSideLamp.IsAnimating = true;
-
-                roadSideLamp.SetPosition(
-                  left: (Constants.DEFAULT_SCENE_WIDTH / 2.40 - roadSideLamp.Width) + 10,
-                  top: ((roadSideLamp.Height * 1.5) * -1) + 5,
-                  z: 3);
-
-                SyncDropShadow(roadSideLamp);
-
-                LoggerExtensions.Log("RoadSideLamp generated.");
-
-                return true;
-            }
-
-            return false;
-        }
-
-        private bool GenerateRoadSideLampBottom()
-        {
-            if (_scene_game.Children.OfType<RoadSideLamp>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideLamp tree)
-            {
-                tree.IsAnimating = true;
-
-                tree.SetPosition(
-                  left: (-1.9 * tree.Width),
-                  top: (Constants.DEFAULT_SCENE_HEIGHT / 3),
-                  z: 4);
-
-                SyncDropShadow(tree);
-
-                return true;
-            }
-
-            return false;
-        }
-
-        private bool AnimateRoadSideLamp(Construct roadSideLamp)
-        {
-            var speed = (_scene_game.Speed + roadSideLamp.SpeedOffset);
-            MoveConstructBottomRight(construct: roadSideLamp, speed: speed);
-            return true;
-        }
-
-        private bool RecycleRoadSideLamp(Construct roadSideLamp)
-        {
-            var hitBox = roadSideLamp.GetHitBox();
-
-            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSideLamp.Width > Constants.DEFAULT_SCENE_WIDTH)
-            {
-                roadSideLamp.IsAnimating = false;
-
-                roadSideLamp.SetPosition(
-                    left: -3000,
-                    top: -3000);
-            }
-
-            return true;
-        }
-
-        #endregion
-
-        #region RoadSideBillboard
-
-        private bool SpawnRoadSideBillboards()
-        {
-            for (int i = 0; i < 3; i++)
-            {
-                RoadSideBillboard roadSideBillboard = new(
-                    animateAction: AnimateRoadSideBillboard,
-                    recycleAction: RecycleRoadSideBillboard);
-
-                roadSideBillboard.SetPosition(
-                    left: -3000,
-                    top: -3000);
-
-                _scene_game.AddToScene(roadSideBillboard);
-
-                SpawnDropShadow(source: roadSideBillboard);
-            }
-
-            return true;
-        }
-
-        private bool GenerateRoadSideBillboardTop()
-        {
-            if (_scene_game.Children.OfType<RoadSideBillboard>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideBillboard roadSideBillboard)
-            {
-                roadSideBillboard.IsAnimating = true;
-
-                roadSideBillboard.SetPosition(
-                  left: (Constants.DEFAULT_SCENE_WIDTH / 2.5 - roadSideBillboard.Width) + 48,
-                  top: ((roadSideBillboard.Height * 1.5) * -1) - 10,
-                  z: 4);
-
-                SyncDropShadow(roadSideBillboard);
-
-                LoggerExtensions.Log("RoadSideBillboard generated.");
-
-                return true;
-            }
-
-            return false;
-        }
-
-        private bool GenerateRoadSideBillboardBottom()
-        {
-            if (_scene_game.Children.OfType<RoadSideBillboard>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideBillboard tree)
-            {
-                tree.IsAnimating = true;
-
-                tree.SetPosition(
-                  left: (-1.9 * tree.Width),
-                  top: (Constants.DEFAULT_SCENE_HEIGHT / 3),
-                  z: 4);
-
-                SyncDropShadow(tree);
-
-                return true;
-            }
-
-            return false;
-        }
-
-        private bool AnimateRoadSideBillboard(Construct roadSideBillboard)
-        {
-            var speed = (_scene_game.Speed + roadSideBillboard.SpeedOffset);
-            MoveConstructBottomRight(construct: roadSideBillboard, speed: speed);
-            return true;
-        }
-
-        private bool RecycleRoadSideBillboard(Construct roadSideBillboard)
-        {
-            var hitBox = roadSideBillboard.GetHitBox();
-
-            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSideBillboard.Width > Constants.DEFAULT_SCENE_WIDTH)
-            {
-                roadSideBillboard.IsAnimating = false;
-
-                roadSideBillboard.SetPosition(
-                    left: -3000,
-                    top: -3000);
-            }
-
-            return true;
-        }
-
-        #endregion
-
-        #region Honk
-
-        private bool SpawnHonks()
-        {
-            for (int i = 0; i < 10; i++)
-            {
-                Honk honk = new(
-                    animateAction: AnimateHonk,
-                    recycleAction: RecycleHonk);
-
-                honk.SetPosition(
-                    left: -3000,
-                    top: -3000);
-
-                _scene_game.AddToScene(honk);
-            }
-
-            return true;
-        }
-
-        private bool GenerateHonk(Construct source)
-        {
-            if (_scene_game.Children.OfType<Honk>().FirstOrDefault(x => x.IsAnimating == false) is Honk honk)
-            {
-                honk.IsAnimating = true;
-                honk.SetPopping();
-
-                honk.Reset();
-
-                var hitBox = source.GetCloseHitBox();
-
-                honk.Reposition(source: source);
-                honk.SetRotation(_random.Next(-30, 30));
-                honk.SetZ(source.GetZ() + 1);
-
-                source.SetPopping();
-
-                return true;
-            }
-
-            return false;
-        }
-
-        private bool AnimateHonk(Construct honk)
-        {
-            honk.Pop();
-            honk.Fade(0.06);
-            return true;
-        }
-
-        private bool RecycleHonk(Construct honk)
-        {
-            if (honk.IsFadingComplete)
-            {
-                honk.IsAnimating = false;
-
-                honk.SetPosition(
-                    left: -3000,
-                    top: -3000);
-            }
-
-            return true;
-        }
-
-        private bool GenerateVehicleBossHonk(VehicleBoss source)
-        {
-            // if there are no UfoBosses or enemies in the scene the vehicles will honk
-
-            if (_scene_game.SceneState == SceneState.GAME_RUNNING && !UfoBossExists())
-            {
-                return GenerateHonk(source);
-            }
-
-            return true;
-        }
-
-        private bool GenerateVehicleHonk(Vehicle source)
-        {
-            // if there are no UfoBosses or enemies in the scene the vehicles will honk
-
-            if (_scene_game.SceneState == SceneState.GAME_RUNNING && !UfoBossExists() && !UfoEnemyExists() && !VehicleBossExists())
-            {
-                return GenerateHonk(source);
-            }
-
-            return true;
-        }
-
-        private bool GenerateUfoEnemyHonk(UfoEnemy source)
-        {
-            // if there are no UfoBosses in the scene the vehicles will honk
-
-            if (_scene_game.SceneState == SceneState.GAME_RUNNING && !UfoBossExists())
-            {
-                return GenerateHonk(source);
-            }
-
-            return true;
-        }
-
-        #endregion
-
-        #region Cloud
-
-        private bool SpawnClouds()
-        {
-            for (int i = 0; i < 5; i++)
-            {
-                Cloud cloud = new(
-                    animateAction: AnimateCloud,
-                    recycleAction: RecycleCloud);
-
-                cloud.SetPosition(
-                    left: -3000,
-                    top: -3000,
-                    z: 9);
-
-                _scene_game.AddToScene(cloud);
-            }
-
-            return true;
-        }
-
-        private bool GenerateCloud()
-        {
-            if (_scene_game.Children.OfType<Cloud>().FirstOrDefault(x => x.IsAnimating == false) is Cloud cloud)
-            {
-                cloud.IsAnimating = true;
-                cloud.Reset();
-
-                var topOrLeft = _random.Next(2);
-
-                var lane = _random.Next(2);
-
-                switch (topOrLeft)
-                {
-                    case 0:
-                        {
-                            var xLaneWidth = Constants.DEFAULT_SCENE_WIDTH / 4;
-                            cloud.SetPosition(
-                                left: _random.Next(Convert.ToInt32(xLaneWidth - cloud.Width)),
-                                top: cloud.Height * -1);
-                        }
-                        break;
-                    case 1:
-                        {
-                            var yLaneWidth = (Constants.DEFAULT_SCENE_HEIGHT / 2) / 2;
-                            cloud.SetPosition(
-                                left: cloud.Width * -1,
-                                top: _random.Next(Convert.ToInt32(yLaneWidth)));
-                        }
-                        break;
-                    default:
-                        break;
-                }
-
-                return true;
-            }
-
-            return false;
-        }
-
-        private bool AnimateCloud(Construct cloud)
-        {
-            Cloud cloud1 = cloud as Cloud;
-            cloud1.Hover();
-
-            var speed = (_scene_game.Speed + cloud.SpeedOffset);
-            MoveConstructBottomRight(construct: cloud, speed: speed);
-            return true;
-        }
-
-        private bool RecycleCloud(Construct cloud)
-        {
-            var hitBox = cloud.GetHitBox();
-
-            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left > Constants.DEFAULT_SCENE_WIDTH)
-            {
-                cloud.IsAnimating = false;
-
-                cloud.SetPosition(
-                    left: -3000,
-                    top: -3000);
-
-            }
-
-            return true;
-        }
-
-        #endregion
-
-        #region UfoBoss
-
-        private bool SpawnUfoBosses()
-        {
-            UfoBoss ufoBoss = new(
-                animateAction: AnimateUfoBoss,
-                recycleAction: RecycleUfoBoss);
-
-            ufoBoss.SetPosition(
-                left: -3000,
-                top: -3000,
-                z: 8);
-
-            _scene_game.AddToScene(ufoBoss);
-
-            SpawnDropShadow(source: ufoBoss);
-
-            return true;
-        }
-
-        private bool GenerateUfoBoss()
-        {
-            // if scene doesn't contain a UfoBoss then pick a UfoBoss and add to scene
-
-            if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
-                _ufo_boss_threashold.ShouldRelease(_game_score_bar.GetScore()) && !UfoBossExists() &&
-                _scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating == false) is UfoBoss ufoBoss)
-            {
-                _audio_stub.Stop(SoundType.GAME_BACKGROUND_MUSIC);
-                //_audio_stub.Play(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
-                _audio_stub.SetVolume(SoundType.AMBIENCE, 0.2);
-
-                ufoBoss.IsAnimating = true;
-                ufoBoss.Reset();
-                ufoBoss.SetPosition(
-                    left: 0,
-                    top: ufoBoss.Height * -1);
-
-                SyncDropShadow(ufoBoss);
-
-                // set UfoBoss health
-                ufoBoss.Health = _ufo_boss_threashold.GetReleasePointDifference() * 1.5;
-
-                _ufo_boss_threashold.IncreaseThreasholdLimit(increment: _ufo_boss_threashold_limit_increase, currentPoint: _game_score_bar.GetScore());
-
-                _ufo_boss_health_bar.SetMaxiumHealth(ufoBoss.Health);
-                _ufo_boss_health_bar.SetValue(ufoBoss.Health);
-                _ufo_boss_health_bar.SetIcon(ufoBoss.GetContentUri());
-                _ufo_boss_health_bar.SetBarForegroundColor(color: Colors.Crimson);
-
-                _scene_game.ActivateSlowMotion();
-
-                GenerateInterimScreen("Beware of Psycho Rocket");
-
-                return true;
-            }
-
-            return false;
-        }
-
-        private bool AnimateUfoBoss(Construct ufoBoss)
-        {
-            UfoBoss ufoBoss1 = ufoBoss as UfoBoss;
-
-            if (ufoBoss1.IsDead)
-            {
-                ufoBoss.Shrink();
-            }
-            else
-            {
-                ufoBoss.Pop();
-
-                ufoBoss1.Hover();
-                ufoBoss1.DepleteHitStance();
-                ufoBoss1.DepleteWinStance();
-
-                if (_scene_game.SceneState == SceneState.GAME_RUNNING)
-                {
-                    var speed = (_scene_game.Speed + ufoBoss.SpeedOffset);
-                    var scaling = ScreenExtensions.GetScreenSpaceScaling();
-
-                    if (ufoBoss1.IsAttacking)
-                    {
-                        ufoBoss1.Move(
-                            speed: speed,
-                            sceneWidth: Constants.DEFAULT_SCENE_WIDTH * scaling,
-                            sceneHeight: Constants.DEFAULT_SCENE_HEIGHT * scaling,
-                            playerPoint: _player.GetCloseHitBox());
-                    }
-                    else
-                    {
-                        MoveConstructBottomRight(construct: ufoBoss, speed: speed);
-
-                        if (ufoBoss.GetLeft() > (Constants.DEFAULT_SCENE_WIDTH * scaling / 3)) // bring UfoBoss to a suitable distance from player and then start attacking
-                        {
-                            ufoBoss1.IsAttacking = true;
-                        }
-                    }
-                }
-            }
-
-            return true;
-        }
-
-        private bool RecycleUfoBoss(Construct ufoBoss)
-        {
-            if (ufoBoss.IsShrinkingComplete)
-            {
-                ufoBoss.IsAnimating = false;
-
-                ufoBoss.SetPosition(
-                    left: -3000,
-                    top: -3000);
-            }
-
-            return true;
-        }
-
-        private void LooseUfoBossHealth(UfoBoss ufoBoss)
-        {
-            ufoBoss.SetPopping();
-            ufoBoss.LooseHealth();
-            ufoBoss.SetHitStance();
-
-            _ufo_boss_health_bar.SetValue(ufoBoss.Health);
-
-            if (ufoBoss.IsDead && ufoBoss.IsAttacking)
-            {
-                //_audio_stub.Stop(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
-                _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
-                _audio_stub.SetVolume(SoundType.AMBIENCE, 0.6);
-
-                ufoBoss.IsAttacking = false;
-
-                _player.SetWinStance();
-                _game_score_bar.GainScore(5);
-
-                GenerateInterimScreen("Psycho Rocket Busted");
-
-                _scene_game.ActivateSlowMotion();
-            }
-        }
-
-        private bool UfoBossExists()
-        {
-            return _scene_game.Children.OfType<UfoBoss>().Any(x => x.IsAnimating);
-        }
-
-        #endregion
-
-        #region VehicleBoss
-
-        private bool SpawnVehicleBosses()
-        {
-            VehicleBoss vehicleBoss = new(
-                animateAction: AnimateVehicleBoss,
-                recycleAction: RecycleVehicleBoss);
-
-            vehicleBoss.SetPosition(
-                left: -3000,
-                top: -3000,
-                z: 3);
-
-            _scene_game.AddToScene(vehicleBoss);
-
-            return true;
-        }
-
-        private bool GenerateVehicleBoss()
-        {
-            // if scene doesn't contain a VehicleBoss then pick a random VehicleBoss and add to scene
-
-            if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
-                _vehicle_boss_threashold.ShouldRelease(_game_score_bar.GetScore()) && !VehicleBossExists() &&
-                _scene_game.Children.OfType<VehicleBoss>().FirstOrDefault(x => x.IsAnimating == false) is VehicleBoss vehicleBoss)
-            {
-                _audio_stub.Stop(SoundType.GAME_BACKGROUND_MUSIC);
-                _audio_stub.Play(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
-                _audio_stub.SetVolume(SoundType.AMBIENCE, 0.4);
-
-                vehicleBoss.IsAnimating = true;
-                vehicleBoss.Reset();
-                vehicleBoss.Reposition();
-                vehicleBoss.SetZ(3);
-
-                // set VehicleBoss health
-                vehicleBoss.Health = _vehicle_boss_threashold.GetReleasePointDifference() * 1.5;
-
-                _vehicle_boss_threashold.IncreaseThreasholdLimit(increment: _vehicle_boss_threashold_limit_increase, currentPoint: _game_score_bar.GetScore());
-
-                _vehicle_boss_health_bar.SetMaxiumHealth(vehicleBoss.Health);
-                _vehicle_boss_health_bar.SetValue(vehicleBoss.Health);
-                _vehicle_boss_health_bar.SetIcon(vehicleBoss.GetContentUri());
-                _vehicle_boss_health_bar.SetBarForegroundColor(color: Colors.Crimson);
-
-                GenerateInterimScreen("Crazy Honker Arrived");
-                _scene_game.ActivateSlowMotion();
-
-                return true;
-            }
-
-            return false;
-        }
-
-        private bool AnimateVehicleBoss(Construct vehicleBoss)
-        {
-            VehicleBoss vehicleBoss1 = vehicleBoss as VehicleBoss;
-
-            var speed = (_scene_game.Speed + vehicleBoss.SpeedOffset);
-
-            if (vehicleBoss1.IsDead)
-            {
-                MoveConstructBottomRight(vehicleBoss, speed);
-            }
-            else
-            {
-                vehicleBoss.Pop();
-
-                if (_scene_game.SceneState == SceneState.GAME_RUNNING)
-                {
-                    var scaling = ScreenExtensions.GetScreenSpaceScaling();
-
-                    if (vehicleBoss1.IsAttacking)
-                    {
-                        vehicleBoss1.Move(
-                            speed: speed,
-                            sceneWidth: Constants.DEFAULT_SCENE_WIDTH * scaling,
-                            sceneHeight: Constants.DEFAULT_SCENE_HEIGHT * scaling);
-
-                        if (vehicleBoss1.Honk())
-                            GenerateVehicleBossHonk(vehicleBoss1);
-                    }
-                    else
-                    {
-                        if (_scene_game.Children.OfType<Vehicle>().All(x => !x.IsAnimating) || _scene_game.Children.OfType<Vehicle>().Where(x => x.IsAnimating).All(x => x.GetLeft() > Constants.DEFAULT_SCENE_WIDTH * scaling / 2)) // only bring the boss in view when all other vechiles are gone
-                        {
-                            MoveConstructBottomRight(construct: vehicleBoss, speed: speed);
-
-                            if (vehicleBoss.GetLeft() > ((Constants.DEFAULT_SCENE_WIDTH * scaling) / 4 * 3)) // bring VehicleBoss to a suitable distance from player and then start attacking
-                            {
-                                vehicleBoss1.IsAttacking = true;
-                            }
-                        }
-                    }
-                }
-            }
-
-            return true;
-        }
-
-        private bool RecycleVehicleBoss(Construct vehicleBoss)
-        {
-            var hitBox = vehicleBoss.GetHitBox();
-
-            VehicleBoss vehicleBoss1 = vehicleBoss as VehicleBoss;
-
-            if (vehicleBoss1.IsDead && hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left > Constants.DEFAULT_SCENE_WIDTH)
-            {
-                vehicleBoss.IsAnimating = false;
-
-                vehicleBoss.SetPosition(
-                    left: -3000,
-                    top: -3000);
-            }
-
-            return true;
-        }
-
-        private void LooseVehicleBossHealth(VehicleBoss vehicleBoss)
-        {
-            vehicleBoss.SetPopping();
-            vehicleBoss.LooseHealth();
-
-            _vehicle_boss_health_bar.SetValue(vehicleBoss.Health);
-
-            if (vehicleBoss.IsDead && vehicleBoss.IsAttacking)
-            {
-                _audio_stub.Stop(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
-
-                _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
-
-                _audio_stub.SetVolume(SoundType.AMBIENCE, 0.6);
-
-                vehicleBoss.IsAttacking = false;
-
-                _player.SetWinStance();
-                _game_score_bar.GainScore(5);
-
-                GenerateInterimScreen("Crazy Honker Busted");
-
-                _scene_game.ActivateSlowMotion();
-            }
-        }
-
-        private bool VehicleBossExists()
-        {
-            return _scene_game.Children.OfType<VehicleBoss>().Any(x => x.IsAnimating);
-        }
-
-        #endregion
-
-        #region UfoEnemy
-
-        private bool SpawnUfoEnemys()
-        {
-            for (int i = 0; i < 7; i++)
-            {
-                UfoEnemy ufoEnemy = new(
-                    animateAction: AnimateUfoEnemy,
-                    recycleAction: RecycleUfoEnemy);
-
-                _scene_game.AddToScene(ufoEnemy);
-
-                ufoEnemy.SetPosition(
-                    left: -3000,
-                    top: -3000,
-                    z: 8);
-
-                SpawnDropShadow(source: ufoEnemy);
-            }
-
-            return true;
-        }
-
-        private bool GenerateUfoEnemy()
-        {
-            if (!UfoBossExists() &&
-                _enemy_threashold.ShouldRelease(_game_score_bar.GetScore()) &&
-                _scene_game.Children.OfType<UfoEnemy>().FirstOrDefault(x => x.IsAnimating == false) is UfoEnemy enemy)
-            {
-                enemy.IsAnimating = true;
-                enemy.Reset();
-
-                var topOrLeft = _random.Next(2);
-
-                switch (topOrLeft)
-                {
-                    case 0:
-                        {
-                            var xLaneWidth = Constants.DEFAULT_SCENE_WIDTH / 2;
-
-                            enemy.SetPosition(
-                                left: _random.Next((int)(xLaneWidth - enemy.Width)),
-                                top: enemy.Height * -1);
-                        }
-                        break;
-                    case 1:
-                        {
-                            var yLaneWidth = Constants.DEFAULT_SCENE_HEIGHT / 2;
-
-                            enemy.SetPosition(
-                                left: enemy.Width * -1,
-                                top: _random.Next((int)(yLaneWidth - enemy.Height)));
-                        }
-                        break;
-                    default:
-                        break;
-                }
-
-                SyncDropShadow(enemy);
-
-                if (!_enemy_fleet_appeared)
-                {
-                    _audio_stub.Play(SoundType.UFO_ENEMY_ENTRY);
-
-                    GenerateInterimScreen("Beware of Aliens");
-                    _scene_game.ActivateSlowMotion();
-                    _enemy_fleet_appeared = true;
-                }
-
-                return true;
-            }
-
-            return false;
-        }
-
-        private bool AnimateUfoEnemy(Construct ufoEnemy)
-        {
-            UfoEnemy enemy1 = ufoEnemy as UfoEnemy;
-
-            if (enemy1.IsDead)
-            {
-                enemy1.Shrink();
-            }
-            else
-            {
-                enemy1.Hover();
-                enemy1.Pop();
-
-                var speed = _scene_game.Speed + ufoEnemy.SpeedOffset;
-
-                MoveConstructBottomRight(construct: ufoEnemy, speed: speed);
-
-                if (_scene_game.SceneState == SceneState.GAME_RUNNING)
-                {
-                    if (enemy1.Honk())
-                        GenerateUfoEnemyHonk(enemy1);
-
-                    if (enemy1.Attack())
-                        GenerateUfoEnemyRocket(enemy1);
-                }
-            }
-
-            return true;
-        }
-
-        private bool RecycleUfoEnemy(Construct ufoEnemy)
-        {
-            var hitbox = ufoEnemy.GetHitBox();
-
-            // enemy is dead or goes out of bounds
-            if (ufoEnemy.IsShrinkingComplete ||
-                hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT ||
-                hitbox.Right < 0 || hitbox.Bottom < 0)
-            {
-                ufoEnemy.IsAnimating = false;
-
-                ufoEnemy.SetPosition(
-                    left: -3000,
-                    top: -3000);
-
-                LoggerExtensions.Log("UfoEnemy Recycled");
-            }
-
-            return true;
-        }
-
-        private void LooseUfoEnemyHealth(UfoEnemy ufoEnemy)
-        {
-            ufoEnemy.SetPopping();
-            ufoEnemy.LooseHealth();
-
-            if (ufoEnemy.IsDead)
-            {
-                _game_score_bar.GainScore(3);
-
-                _enemy_kill_count++;
-
-                // after killing 15 enemies increase the threadhold limit
-                if (_enemy_kill_count > _enemy_kill_count_limit)
-                {
-                    _enemy_threashold.IncreaseThreasholdLimit(increment: _enemy_threashold_limit_increase, currentPoint: _game_score_bar.GetScore());
-                    _enemy_kill_count = 0;
-                    _enemy_fleet_appeared = false;
-
-                    GenerateInterimScreen("Alien Fleet Vanquished");
-                    _scene_game.ActivateSlowMotion();
-                }
-
-                LoggerExtensions.Log("UfoEnemy dead");
-            }
-        }
-
-        private bool UfoEnemyExists()
-        {
-            return _scene_game.Children.OfType<UfoEnemy>().Any(x => x.IsAnimating);
-        }
-
-        #endregion
-
         #region PlayerFireCracker
 
         private bool SpawnPlayerFireCrackers()
@@ -2011,7 +682,7 @@ namespace HonkTrooper
         {
             if (_scene_game.SceneState == SceneState.GAME_RUNNING && !_scene_game.IsSlowMotionActivated)
             {
-                if ((VehicleBossExists() || _scene_game.Children.OfType<Vehicle>().Any(x => x.IsAnimating)) &&
+                if ((VehicleBossExists() || _scene_game.Children.OfType<VehicleEnemy>().Any(x => x.IsAnimating)) &&
                     _scene_game.Children.OfType<PlayerFireCracker>().FirstOrDefault(x => x.IsAnimating == false) is PlayerFireCracker playerFireCracker)
                 {
                     _player.SetAttackStance();
@@ -2045,14 +716,15 @@ namespace HonkTrooper
         {
             PlayerFireCracker playerFireCracker1 = playerFireCracker as PlayerFireCracker;
 
-            var speed = (_scene_game.Speed + playerFireCracker.SpeedOffset);
+            var speed = playerFireCracker1.GetMovementSpeed();
 
             if (playerFireCracker1.IsBlasting)
             {
                 playerFireCracker.Expand();
                 playerFireCracker.Fade(0.02);
 
-                MoveConstructBottomRight(construct: playerFireCracker, speed: speed);
+                //MoveConstructBottomRight(construct: playerFireCracker, speed: speed);
+                playerFireCracker1.MoveDownRight(speed);
             }
             else
             {
@@ -2072,9 +744,9 @@ namespace HonkTrooper
                     if (drpShdwHitBox.IntersectsWith(fireCrackerHitBox) && playerFireCracker.GetBottom() > dropShadow.GetBottom())
                     {
                         // while in blast check if it intersects with any vehicle, if it does then the vehicle stops honking and slows down
-                        if (_scene_game.Children.OfType<Vehicle>()
+                        if (_scene_game.Children.OfType<VehicleEnemy>()
                             .Where(x => x.IsAnimating && x.WillHonk)
-                            .FirstOrDefault(x => x.GetCloseHitBox().IntersectsWith(fireCrackerHitBox)) is Vehicle vehicle)
+                            .FirstOrDefault(x => x.GetCloseHitBox().IntersectsWith(fireCrackerHitBox)) is VehicleEnemy vehicle)
                         {
                             vehicle.SetBlast();
                             _game_score_bar.GainScore(3);
@@ -2192,7 +864,7 @@ namespace HonkTrooper
 
             var hitBox = playerRocket.GetCloseHitBox();
 
-            var speed = (_scene_game.Speed + playerRocket.SpeedOffset);
+            var speed = playerRocket1.GetMovementSpeed();
 
             if (playerRocket1.AwaitMoveDownLeft)
             {
@@ -2273,322 +945,6 @@ namespace HonkTrooper
 
         #endregion
 
-        #region UfoEnemyRocket
-
-        private bool SpawnUfoEnemyRockets()
-        {
-            for (int i = 0; i < 8; i++)
-            {
-                UfoEnemyRocket ufoEnemyRocket = new(
-                    animateAction: AnimateUfoEnemyRocket,
-                    recycleAction: RecycleUfoEnemyRocket);
-
-                ufoEnemyRocket.SetPosition(
-                    left: -3000,
-                    top: -3000,
-                    z: 8);
-
-                _scene_game.AddToScene(ufoEnemyRocket);
-
-                SpawnDropShadow(source: ufoEnemyRocket);
-            }
-
-            return true;
-        }
-
-        private bool GenerateUfoEnemyRocket(UfoEnemy ufoEnemy)
-        {
-            if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
-                _scene_game.Children.OfType<UfoEnemyRocket>().FirstOrDefault(x => x.IsAnimating == false) is UfoEnemyRocket enemyRocket)
-            {
-                enemyRocket.Reset();
-                enemyRocket.IsAnimating = true;
-                enemyRocket.SetPopping();
-
-                enemyRocket.Reposition(ufoEnemy: ufoEnemy);
-
-                SyncDropShadow(enemyRocket);
-
-                LoggerExtensions.Log("UfoEnemy Bomb dropped.");
-
-                return true;
-            }
-
-            return false;
-        }
-
-        private bool AnimateUfoEnemyRocket(Construct ufoEnemyRocket)
-        {
-            UfoEnemyRocket enemyRocket = ufoEnemyRocket as UfoEnemyRocket;
-
-            var speed = _scene_game.Speed + ufoEnemyRocket.SpeedOffset;
-
-            MoveConstructBottomRight(construct: enemyRocket, speed: speed);
-
-            if (enemyRocket.IsBlasting)
-            {
-                ufoEnemyRocket.Expand();
-                ufoEnemyRocket.Fade(0.02);
-            }
-            else
-            {
-                ufoEnemyRocket.Pop();
-                enemyRocket.Hover();
-
-                if (_scene_game.SceneState == SceneState.GAME_RUNNING)
-                {
-                    if (enemyRocket.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
-                    {
-                        enemyRocket.SetBlast();
-                        LoosePlayerHealth();
-                    }
-
-                    if (enemyRocket.AutoBlast())
-                        enemyRocket.SetBlast();
-                }
-            }
-
-            return true;
-        }
-
-        private bool RecycleUfoEnemyRocket(Construct ufoEnemyRocket)
-        {
-            var hitbox = ufoEnemyRocket.GetHitBox();
-
-            // if bomb is blasted and faed or goes out of scene bounds
-            if (ufoEnemyRocket.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Bottom > Constants.DEFAULT_SCENE_HEIGHT)
-            {
-                ufoEnemyRocket.IsAnimating = false;
-
-                ufoEnemyRocket.SetPosition(
-                    left: -3000,
-                    top: -3000);
-
-                return true;
-            }
-
-            return false;
-        }
-
-        #endregion
-
-        #region UfoBossRocket
-
-        private bool SpawnUfoBossRockets()
-        {
-            for (int i = 0; i < 4; i++)
-            {
-                UfoBossRocket ufoBossRocket = new(
-                    animateAction: AnimateUfoBossRocket,
-                    recycleAction: RecycleUfoBossRocket);
-
-                ufoBossRocket.SetPosition(
-                    left: -3000,
-                    top: -3000,
-                    z: 7);
-
-                _scene_game.AddToScene(ufoBossRocket);
-
-                SpawnDropShadow(source: ufoBossRocket);
-            }
-
-            return true;
-        }
-
-        private bool GenerateUfoBossRocket()
-        {
-            if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
-                _scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is UfoBoss ufoBoss &&
-                _scene_game.Children.OfType<UfoBossRocket>().FirstOrDefault(x => x.IsAnimating == false) is UfoBossRocket ufoBossRocket)
-            {
-                ufoBossRocket.Reset();
-                ufoBossRocket.IsAnimating = true;
-                ufoBossRocket.SetPopping();
-
-                ufoBossRocket.Reposition(
-                    UfoBoss: ufoBoss);
-
-                SyncDropShadow(ufoBossRocket);
-                SetUfoBossRocketDirection(source: ufoBoss, rocket: ufoBossRocket, rocketTarget: _player);
-
-                LoggerExtensions.Log("UfoBoss Bomb dropped.");
-
-                return true;
-            }
-
-            return false;
-        }
-
-        private bool AnimateUfoBossRocket(Construct ufoBossRocket)
-        {
-            UfoBossRocket ufoBossRocket1 = ufoBossRocket as UfoBossRocket;
-
-            var speed = (_scene_game.Speed + ufoBossRocket.SpeedOffset);
-
-            if (ufoBossRocket1.AwaitMoveDownLeft)
-            {
-                ufoBossRocket1.MoveDownLeft(speed);
-            }
-            else if (ufoBossRocket1.AwaitMoveUpRight)
-            {
-                ufoBossRocket1.MoveUpRight(speed);
-            }
-            else if (ufoBossRocket1.AwaitMoveUpLeft)
-            {
-                ufoBossRocket1.MoveUpLeft(speed);
-            }
-            else if (ufoBossRocket1.AwaitMoveDownRight)
-            {
-                ufoBossRocket1.MoveDownRight(speed);
-            }
-
-            if (ufoBossRocket1.IsBlasting)
-            {
-                ufoBossRocket.Expand();
-                ufoBossRocket.Fade(0.02);
-            }
-            else
-            {
-                ufoBossRocket.Pop();
-                ufoBossRocket1.Hover();
-
-                if (_scene_game.SceneState == SceneState.GAME_RUNNING)
-                {
-                    if (ufoBossRocket.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
-                    {
-                        ufoBossRocket1.SetBlast();
-                        LoosePlayerHealth();
-                    }
-
-                    if (ufoBossRocket1.AutoBlast())
-                        ufoBossRocket1.SetBlast();
-                }
-            }
-
-            return true;
-        }
-
-        private bool RecycleUfoBossRocket(Construct ufoBossRocket)
-        {
-            //var hitbox = bomb.GetHitBox();
-
-            // if bomb is blasted and faed or goes out of scene bounds
-            if (ufoBossRocket.IsFadingComplete /*|| hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT*/)
-            {
-                ufoBossRocket.IsAnimating = false;
-
-                ufoBossRocket.SetPosition(
-                    left: -3000,
-                    top: -3000);
-
-                return true;
-            }
-
-            return false;
-        }
-
-        #endregion
-
-        #region VehicleBossRocket
-
-        private bool SpawnVehicleBossRockets()
-        {
-            for (int i = 0; i < 4; i++)
-            {
-                VehicleBossRocket vehicleBossRocket = new(
-                    animateAction: AnimateVehicleBossRocket,
-                    recycleAction: RecycleVehicleBossRocket);
-
-                vehicleBossRocket.SetPosition(
-                    left: -3000,
-                    top: -3000,
-                    z: 7);
-
-                _scene_game.AddToScene(vehicleBossRocket);
-            }
-
-            return true;
-        }
-
-        private bool GenerateVehicleBossRocket()
-        {
-            if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
-                _scene_game.Children.OfType<VehicleBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is VehicleBoss vehicleBoss &&
-                _scene_game.Children.OfType<VehicleBossRocket>().FirstOrDefault(x => x.IsAnimating == false) is VehicleBossRocket vehicleBossRocket)
-            {
-                vehicleBossRocket.Reset();
-                vehicleBossRocket.IsAnimating = true;
-                vehicleBossRocket.SetPopping();
-
-                vehicleBossRocket.Reposition(vehicleBoss: vehicleBoss);
-                vehicleBossRocket.AwaitMoveUpRight = true;
-
-                LoggerExtensions.Log("VehicleBoss Bomb dropped.");
-
-                return true;
-            }
-
-            return false;
-        }
-
-        private bool AnimateVehicleBossRocket(Construct vehicleBossRocket)
-        {
-            VehicleBossRocket vehicleBossRocket1 = vehicleBossRocket as VehicleBossRocket;
-
-            var speed = (_scene_game.Speed + vehicleBossRocket.SpeedOffset);
-
-            if (vehicleBossRocket1.AwaitMoveUpRight)
-            {
-                vehicleBossRocket1.MoveUpRight(speed);
-            }
-
-            if (vehicleBossRocket1.IsBlasting)
-            {
-                vehicleBossRocket.Expand();
-                vehicleBossRocket.Fade(0.02);
-            }
-            else
-            {
-                vehicleBossRocket.Pop();
-                vehicleBossRocket1.DillyDally();
-
-                if (_scene_game.SceneState == SceneState.GAME_RUNNING)
-                {
-                    if (vehicleBossRocket.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
-                    {
-                        vehicleBossRocket1.SetBlast();
-                        LoosePlayerHealth();
-                    }
-
-                    if (vehicleBossRocket1.AutoBlast())
-                        vehicleBossRocket1.SetBlast();
-                }
-            }
-
-            return true;
-        }
-
-        private bool RecycleVehicleBossRocket(Construct vehicleBossRocket)
-        {
-            //var hitbox = bomb.GetHitBox();
-
-            // if bomb is blasted and faed or goes out of scene bounds
-            if (vehicleBossRocket.IsFadingComplete /*|| hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT*/)
-            {
-                vehicleBossRocket.IsAnimating = false;
-
-                vehicleBossRocket.SetPosition(
-                    left: -3000,
-                    top: -3000);
-
-                return true;
-            }
-
-            return false;
-        }
-
-        #endregion
-
         #region PlayerRocketSeeking
 
         private bool SpawnPlayerRocketSeekings()
@@ -2647,10 +1003,8 @@ namespace HonkTrooper
 
             if (playerRocketSeeking1.IsBlasting)
             {
-                var speed = _scene_game.Speed + playerRocketSeeking.SpeedOffset;
-
-                MoveConstructBottomRight(construct: playerRocketSeeking1, speed: speed);
-
+                var speed = playerRocketSeeking1.GetMovementSpeed();
+                playerRocketSeeking1.MoveDownRight(speed);
                 playerRocketSeeking.Expand();
                 playerRocketSeeking.Fade(0.02);
             }
@@ -2728,6 +1082,1149 @@ namespace HonkTrooper
 
         #endregion
 
+        #region VehicleEnemy
+
+        private bool SpawnVehicleEnemys()
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                VehicleEnemy vehicleEnemy = new(
+                    animateAction: AnimateVehicleEnemy,
+                    recycleAction: RecycleVehicleEnemy);
+
+                _scene_game.AddToScene(vehicleEnemy);
+
+                vehicleEnemy.SetPosition(
+                    left: -3000,
+                    top: -3000);
+            }
+
+            return true;
+        }
+
+        private bool GenerateVehicleEnemy()
+        {
+            if (!UfoBossExists() && !VehicleBossExists() && _scene_game.Children.OfType<VehicleEnemy>().FirstOrDefault(x => x.IsAnimating == false) is VehicleEnemy vehicleEnemy)
+            {
+                vehicleEnemy.IsAnimating = true;
+                vehicleEnemy.Reset();
+                vehicleEnemy.Reposition();
+
+                return true;
+            }
+            return false;
+        }
+
+        private bool AnimateVehicleEnemy(Construct vehicleEnemy)
+        {
+            VehicleEnemy vehicleEnemy1 = vehicleEnemy as VehicleEnemy;
+
+            vehicleEnemy.Pop();
+            vehicleEnemy1.Vibrate();
+
+            var speed = vehicleEnemy1.GetMovementSpeed();
+            vehicleEnemy1.MoveDownRight(speed);
+
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING)
+            {
+                if (vehicleEnemy1.Honk())
+                    GenerateVehicleEnemyHonk(vehicleEnemy1);
+            }
+
+            PreventVehicleEnemyOverlapping(vehicleEnemy);
+
+            return true;
+        }
+
+        private bool RecycleVehicleEnemy(Construct vehicleEnemy)
+        {
+            var hitBox = vehicleEnemy.GetHitBox();
+
+            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left > Constants.DEFAULT_SCENE_WIDTH)
+            {
+                vehicleEnemy.IsAnimating = false;
+
+                vehicleEnemy.SetPosition(
+                    left: -3000,
+                    top: -3000);
+            }
+
+            return true;
+        }
+
+        private void PreventVehicleEnemyOverlapping(Construct vehicleEnemy)
+        {
+            //var vehicleEnemy_distantHitBox = vehicleEnemy.GetDistantHitBox();
+
+            if (_scene_game.Children.OfType<VehicleEnemy>()
+                .FirstOrDefault(x => x.IsAnimating && x.GetHitBox().IntersectsWith(vehicleEnemy.GetHitBox())) is Construct collidingVehicleEnemy)
+            {
+                var hitBox = vehicleEnemy.GetHitBox();
+
+                //if (vehicleEnemy.SpeedOffset == collidingVehicleEnemy.SpeedOffset)
+                //{
+                //    if (vehicleEnemy.SpeedOffset > -1)
+                //        vehicleEnemy.SpeedOffset--;
+                //}
+                //else
+                //{
+
+                if (collidingVehicleEnemy.SpeedOffset > vehicleEnemy.SpeedOffset) // colliding vehicleEnemy is faster
+                {
+                    vehicleEnemy.SpeedOffset = collidingVehicleEnemy.SpeedOffset;
+                }
+                else if (vehicleEnemy.SpeedOffset > collidingVehicleEnemy.SpeedOffset) // vehicleEnemy is faster
+                {
+                    collidingVehicleEnemy.SpeedOffset = vehicleEnemy.SpeedOffset;
+                }
+                //}
+            }
+        }
+
+        #endregion        
+
+        #region VehicleBoss
+
+        private bool SpawnVehicleBosses()
+        {
+            VehicleBoss vehicleBoss = new(
+                animateAction: AnimateVehicleBoss,
+                recycleAction: RecycleVehicleBoss);
+
+            vehicleBoss.SetPosition(
+                left: -3000,
+                top: -3000,
+                z: 3);
+
+            _scene_game.AddToScene(vehicleBoss);
+
+            return true;
+        }
+
+        private bool GenerateVehicleBoss()
+        {
+            // if scene doesn't contain a VehicleBoss then pick a random VehicleBoss and add to scene
+
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
+                _vehicle_boss_threashold.ShouldRelease(_game_score_bar.GetScore()) && !VehicleBossExists() &&
+                _scene_game.Children.OfType<VehicleBoss>().FirstOrDefault(x => x.IsAnimating == false) is VehicleBoss vehicleBoss)
+            {
+                _audio_stub.Stop(SoundType.GAME_BACKGROUND_MUSIC);
+                _audio_stub.Play(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
+                _audio_stub.SetVolume(SoundType.AMBIENCE, 0.4);
+
+                vehicleBoss.IsAnimating = true;
+                vehicleBoss.Reset();
+                vehicleBoss.Reposition();
+                vehicleBoss.SetZ(3);
+
+                // set VehicleBoss health
+                vehicleBoss.Health = _vehicle_boss_threashold.GetReleasePointDifference() * 1.5;
+
+                _vehicle_boss_threashold.IncreaseThreasholdLimit(increment: _vehicle_boss_threashold_limit_increase, currentPoint: _game_score_bar.GetScore());
+
+                _vehicle_boss_health_bar.SetMaxiumHealth(vehicleBoss.Health);
+                _vehicle_boss_health_bar.SetValue(vehicleBoss.Health);
+                _vehicle_boss_health_bar.SetIcon(vehicleBoss.GetContentUri());
+                _vehicle_boss_health_bar.SetBarForegroundColor(color: Colors.Crimson);
+
+                GenerateInterimScreen("Crazy Honker Arrived");
+                _scene_game.ActivateSlowMotion();
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimateVehicleBoss(Construct vehicleBoss)
+        {
+            VehicleBoss vehicleBoss1 = vehicleBoss as VehicleBoss;
+
+            var speed = vehicleBoss1.GetMovementSpeed();
+
+            if (vehicleBoss1.IsDead)
+            {
+                //MoveConstructBottomRight(vehicleBoss, speed);
+                vehicleBoss1.MoveDownRight(speed);
+            }
+            else
+            {
+                vehicleBoss.Pop();
+
+                if (_scene_game.SceneState == SceneState.GAME_RUNNING)
+                {
+                    var scaling = ScreenExtensions.GetScreenSpaceScaling();
+
+                    if (vehicleBoss1.IsAttacking)
+                    {
+                        vehicleBoss1.Move(
+                            speed: speed,
+                            sceneWidth: Constants.DEFAULT_SCENE_WIDTH * scaling,
+                            sceneHeight: Constants.DEFAULT_SCENE_HEIGHT * scaling);
+
+                        if (vehicleBoss1.Honk())
+                            GenerateVehicleBossHonk(vehicleBoss1);
+                    }
+                    else
+                    {
+                        if (_scene_game.Children.OfType<VehicleEnemy>().All(x => !x.IsAnimating) || _scene_game.Children.OfType<VehicleEnemy>().Where(x => x.IsAnimating).All(x => x.GetLeft() > Constants.DEFAULT_SCENE_WIDTH * scaling / 2)) // only bring the boss in view when all other vechiles are gone
+                        {
+                            //MoveConstructBottomRight(construct: vehicleBoss, speed: speed);
+                            vehicleBoss1.MoveDownRight(speed);
+
+                            if (vehicleBoss.GetLeft() > ((Constants.DEFAULT_SCENE_WIDTH * scaling) / 4 * 3)) // bring VehicleBoss to a suitable distance from player and then start attacking
+                            {
+                                vehicleBoss1.IsAttacking = true;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        private bool RecycleVehicleBoss(Construct vehicleBoss)
+        {
+            var hitBox = vehicleBoss.GetHitBox();
+
+            VehicleBoss vehicleBoss1 = vehicleBoss as VehicleBoss;
+
+            if (vehicleBoss1.IsDead && hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left > Constants.DEFAULT_SCENE_WIDTH)
+            {
+                vehicleBoss.IsAnimating = false;
+
+                vehicleBoss.SetPosition(
+                    left: -3000,
+                    top: -3000);
+            }
+
+            return true;
+        }
+
+        private void LooseVehicleBossHealth(VehicleBoss vehicleBoss)
+        {
+            vehicleBoss.SetPopping();
+            vehicleBoss.LooseHealth();
+
+            _vehicle_boss_health_bar.SetValue(vehicleBoss.Health);
+
+            if (vehicleBoss.IsDead && vehicleBoss.IsAttacking)
+            {
+                _audio_stub.Stop(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
+
+                _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
+
+                _audio_stub.SetVolume(SoundType.AMBIENCE, 0.6);
+
+                vehicleBoss.IsAttacking = false;
+
+                _player.SetWinStance();
+                _game_score_bar.GainScore(5);
+
+                GenerateInterimScreen("Crazy Honker Busted");
+
+                _scene_game.ActivateSlowMotion();
+            }
+        }
+
+        private bool VehicleBossExists()
+        {
+            return _scene_game.Children.OfType<VehicleBoss>().Any(x => x.IsAnimating);
+        }
+
+        #endregion
+
+        #region VehicleBossRocket
+
+        private bool SpawnVehicleBossRockets()
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                VehicleBossRocket vehicleBossRocket = new(
+                    animateAction: AnimateVehicleBossRocket,
+                    recycleAction: RecycleVehicleBossRocket);
+
+                vehicleBossRocket.SetPosition(
+                    left: -3000,
+                    top: -3000,
+                    z: 7);
+
+                _scene_game.AddToScene(vehicleBossRocket);
+            }
+
+            return true;
+        }
+
+        private bool GenerateVehicleBossRocket()
+        {
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
+                _scene_game.Children.OfType<VehicleBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is VehicleBoss vehicleBoss &&
+                _scene_game.Children.OfType<VehicleBossRocket>().FirstOrDefault(x => x.IsAnimating == false) is VehicleBossRocket vehicleBossRocket)
+            {
+                vehicleBossRocket.Reset();
+                vehicleBossRocket.IsAnimating = true;
+                vehicleBossRocket.SetPopping();
+
+                vehicleBossRocket.Reposition(vehicleBoss: vehicleBoss);
+                vehicleBossRocket.AwaitMoveUpRight = true;
+
+                LoggerExtensions.Log("VehicleBoss Bomb dropped.");
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimateVehicleBossRocket(Construct vehicleBossRocket)
+        {
+            VehicleBossRocket vehicleBossRocket1 = vehicleBossRocket as VehicleBossRocket;
+
+            var speed = vehicleBossRocket1.GetMovementSpeed();
+
+            if (vehicleBossRocket1.AwaitMoveUpRight)
+            {
+                vehicleBossRocket1.MoveUpRight(speed);
+            }
+
+            if (vehicleBossRocket1.IsBlasting)
+            {
+                vehicleBossRocket.Expand();
+                vehicleBossRocket.Fade(0.02);
+            }
+            else
+            {
+                vehicleBossRocket.Pop();
+                vehicleBossRocket1.DillyDally();
+
+                if (_scene_game.SceneState == SceneState.GAME_RUNNING)
+                {
+                    if (vehicleBossRocket.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
+                    {
+                        vehicleBossRocket1.SetBlast();
+                        LoosePlayerHealth();
+                    }
+
+                    if (vehicleBossRocket1.AutoBlast())
+                        vehicleBossRocket1.SetBlast();
+                }
+            }
+
+            return true;
+        }
+
+        private bool RecycleVehicleBossRocket(Construct vehicleBossRocket)
+        {
+            //var hitbox = bomb.GetHitBox();
+
+            // if bomb is blasted and faed or goes out of scene bounds
+            if (vehicleBossRocket.IsFadingComplete /*|| hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT*/)
+            {
+                vehicleBossRocket.IsAnimating = false;
+
+                vehicleBossRocket.SetPosition(
+                    left: -3000,
+                    top: -3000);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        #endregion
+
+        #region RoadSideWalkSlope
+
+        private bool SpawnRoadSideWalkSlopes()
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                RoadSideWalkSlope roadSideStripe = new(
+                    animateAction: AnimateRoadSideWalkSlope,
+                    recycleAction: RecycleRoadSideWalkSlope);
+
+                roadSideStripe.SetPosition(
+                    left: -3000,
+                    top: -3000);
+
+                _scene_game.AddToScene(roadSideStripe);
+            }
+
+            return true;
+        }
+
+        private bool GenerateRoadSideWalkSlopeTop()
+        {
+            if (_scene_game.Children.OfType<RoadSideWalkSlope>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideWalkSlope roadSideStripe)
+            {
+                roadSideStripe.IsAnimating = true;
+
+                roadSideStripe.SetPosition(
+                    left: (Constants.DEFAULT_SCENE_WIDTH / 5.4),
+                    top: (roadSideStripe.Height * -1) - 16.5,
+                    z: 0);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool GenerateRoadSideWalkSlopeBottom()
+        {
+            if (_scene_game.Children.OfType<RoadSideWalkSlope>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideWalkSlope roadSideWalkSlope)
+            {
+                roadSideWalkSlope.IsAnimating = true;
+
+                roadSideWalkSlope.SetPosition(
+                    left: (roadSideWalkSlope.Height * -1),
+                    top: (Constants.DEFAULT_SCENE_HEIGHT / 2.1) - 4.5,
+                    z: 0);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimateRoadSideWalkSlope(Construct roadSideWalkSlope)
+        {
+            RoadSideWalkSlope roadSideStripe1 = roadSideWalkSlope as RoadSideWalkSlope;
+            var speed = roadSideStripe1.GetMovementSpeed();
+            roadSideStripe1.MoveDownRight(speed);
+            return true;
+        }
+
+        private bool RecycleRoadSideWalkSlope(Construct roadSideWalkSlope)
+        {
+            var hitBox = roadSideWalkSlope.GetHitBox();
+
+            if (hitBox.Top - roadSideWalkSlope.Height > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSideWalkSlope.Height > Constants.DEFAULT_SCENE_WIDTH)
+            {
+                roadSideWalkSlope.IsAnimating = false;
+
+                roadSideWalkSlope.SetPosition(
+                    left: -3000,
+                    top: -3000);
+            }
+
+            return true;
+        }
+
+        #endregion
+
+        #region RoadSideWalk
+
+        private bool SpawnRoadSideWalks()
+        {
+            for (int i = 0; i < 7; i++)
+            {
+                RoadSideWalk roadSideWalk = new(
+                animateAction: AnimateRoadSideWalk,
+                recycleAction: RecycleRoadSideWalk);
+
+                roadSideWalk.SetPosition(
+                    left: -3000,
+                    top: -3000);
+
+                _scene_game.AddToScene(roadSideWalk);
+            }
+
+            return true;
+        }
+
+        private bool GenerateRoadSideWalkTop()
+        {
+            if (_scene_game.Children.OfType<RoadSideWalk>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideWalk roadSideWalk)
+            {
+                roadSideWalk.IsAnimating = true;
+
+                roadSideWalk.SetPosition(
+                    left: (Constants.DEFAULT_SCENE_WIDTH / 2.25 - roadSideWalk.Width),
+                    top: roadSideWalk.Height * -1,
+                    z: 0);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool GenerateRoadSideWalkBottom()
+        {
+            if (_scene_game.Children.OfType<RoadSideWalk>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideWalk roadSideWalk)
+            {
+                roadSideWalk.IsAnimating = true;
+
+                roadSideWalk.SetPosition(
+                    left: (roadSideWalk.Height * -1.5) - 30,
+                    top: (Constants.DEFAULT_SCENE_HEIGHT / 5 + roadSideWalk.Height / 2) - 50,
+                    z: 0);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimateRoadSideWalk(Construct roadSideWalk)
+        {
+            RoadSideWalk roadSideWalk1 = roadSideWalk as RoadSideWalk;
+            var speed = roadSideWalk1.GetMovementSpeed();
+            roadSideWalk1.MoveDownRight(speed);
+            return true;
+        }
+
+        private bool RecycleRoadSideWalk(Construct roadSideWalk)
+        {
+            var hitBox = roadSideWalk.GetHitBox();
+
+            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSideWalk.Width > Constants.DEFAULT_SCENE_WIDTH)
+            {
+                roadSideWalk.IsAnimating = false;
+
+                roadSideWalk.SetPosition(
+                    left: -3000,
+                    top: -3000);
+            }
+
+            return true;
+        }
+
+        #endregion
+
+        #region RoadSideTree
+
+        private bool SpawnRoadSideTrees()
+        {
+            for (int i = 0; i < 6; i++)
+            {
+                RoadSideTree roadSideTree = new(
+                    animateAction: AnimateRoadSideTree,
+                    recycleAction: RecycleRoadSideTree);
+
+                roadSideTree.SetPosition(
+                    left: -3000,
+                    top: -3000);
+
+                _scene_game.AddToScene(roadSideTree);
+
+                SpawnDropShadow(source: roadSideTree);
+            }
+
+            return true;
+        }
+
+        private bool GenerateRoadSideTreeTop()
+        {
+            //if (_scene_game.Children.OfType<RoadSideTree>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideTree tree2)
+            //{
+            //    tree2.IsAnimating = true;
+
+            //    tree2.SetPosition(
+            //      left: (Constants.DEFAULT_SCENE_WIDTH / 2 - tree2.Width) + 160,
+            //      top: (tree2.Height * -1.1) - 55,
+            //      z: 2);
+
+            //    SyncDropShadow(tree2);
+            //}
+
+            if (_scene_game.Children.OfType<RoadSideTree>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideTree tree)
+            {
+                tree.IsAnimating = true;
+
+                tree.SetPosition(
+                  left: (Constants.DEFAULT_SCENE_WIDTH / 2 - tree.Width),
+                  top: (tree.Height * -1.1),
+                  z: 3);
+
+                SyncDropShadow(tree);
+            }
+
+            return true;
+        }
+
+        private bool GenerateRoadSideTreeBottom()
+        {
+            if (_scene_game.Children.OfType<RoadSideTree>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideTree tree)
+            {
+                tree.IsAnimating = true;
+
+                tree.SetPosition(
+                  left: (-1 * tree.Width),
+                  top: (Constants.DEFAULT_SCENE_HEIGHT / 3),
+                  z: 4);
+
+                SyncDropShadow(tree);
+            }
+
+            //if (_scene_game.Children.OfType<RoadSideTree>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideTree tree2)
+            //{
+            //    tree2.IsAnimating = true;
+
+            //    tree2.SetPosition(
+            //      left: (-1.73 * tree2.Width),
+            //      top: (Constants.DEFAULT_SCENE_HEIGHT / 2.5),
+            //      z: 4);
+
+            //    SyncDropShadow(tree2);
+            //}
+
+            return true;
+        }
+
+        private bool AnimateRoadSideTree(Construct roadSideTree)
+        {
+            RoadSideTree roadSideTree1 = roadSideTree as RoadSideTree;
+            var speed = roadSideTree1.GetMovementSpeed();
+            roadSideTree1.MoveDownRight(speed);
+            return true;
+        }
+
+        private bool RecycleRoadSideTree(Construct roadSideTree)
+        {
+            var hitBox = roadSideTree.GetHitBox();
+
+            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSideTree.Width > Constants.DEFAULT_SCENE_WIDTH)
+            {
+                roadSideTree.IsAnimating = false;
+
+                roadSideTree.SetPosition(
+                    left: -3000,
+                    top: -3000);
+            }
+
+            return true;
+        }
+
+        #endregion
+
+        #region RoadSideHedge
+
+        private bool SpawnRoadSideHedges()
+        {
+            for (int i = 0; i < 11; i++)
+            {
+                RoadSideHedge hedge = new(
+                    animateAction: AnimateRoadSideHedge,
+                    recycleAction: RecycleRoadSideHedge);
+
+                hedge.SetPosition(
+                    left: -3000,
+                    top: -3000);
+
+                _scene_game.AddToScene(hedge);
+            }
+
+            return true;
+        }
+
+        private bool GenerateRoadSideHedgeTop()
+        {
+            if (_scene_game.Children.OfType<RoadSideHedge>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideHedge hedge)
+            {
+                hedge.IsAnimating = true;
+
+                hedge.SetPosition(
+                  left: (Constants.DEFAULT_SCENE_WIDTH / 3.8),
+                  top: hedge.Height * -1,
+                  z: 2);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool GenerateRoadSideHedgeBottom()
+        {
+            if (_scene_game.Children.OfType<RoadSideHedge>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideHedge hedge)
+            {
+                hedge.IsAnimating = true;
+
+                hedge.SetPosition(
+                  left: -1 * hedge.Width,
+                  top: (Constants.DEFAULT_SCENE_HEIGHT / 3.1),
+                  z: 3);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimateRoadSideHedge(Construct roadSideHedge)
+        {
+            RoadSideHedge roadSideHedge1 = roadSideHedge as RoadSideHedge;
+            var speed = roadSideHedge1.GetMovementSpeed();
+            roadSideHedge1.MoveDownRight(speed);
+            return true;
+        }
+
+        private bool RecycleRoadSideHedge(Construct roadSideHedge)
+        {
+            var hitBox = roadSideHedge.GetHitBox();
+
+            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSideHedge.Width > Constants.DEFAULT_SCENE_WIDTH)
+            {
+                roadSideHedge.IsAnimating = false;
+
+                roadSideHedge.SetPosition(
+                    left: -3000,
+                    top: -3000);
+            }
+
+            return true;
+        }
+
+        #endregion
+
+        #region RoadSideLamp
+
+        private bool SpawnRoadSideLamps()
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                RoadSideLamp roadSideLamp = new(
+                    animateAction: AnimateRoadSideLamp,
+                    recycleAction: RecycleRoadSideLamp);
+
+                roadSideLamp.SetPosition(
+                    left: -3000,
+                    top: -3000);
+
+                _scene_game.AddToScene(roadSideLamp);
+
+                SpawnDropShadow(source: roadSideLamp);
+            }
+
+            return true;
+        }
+
+        private bool GenerateRoadSideLampTop()
+        {
+            if (_scene_game.Children.OfType<RoadSideLamp>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideLamp roadSideLamp)
+            {
+                roadSideLamp.IsAnimating = true;
+
+                roadSideLamp.SetPosition(
+                  left: (Constants.DEFAULT_SCENE_WIDTH / 2.40 - roadSideLamp.Width) + 10,
+                  top: ((roadSideLamp.Height * 1.5) * -1) + 5,
+                  z: 3);
+
+                SyncDropShadow(roadSideLamp);
+
+                LoggerExtensions.Log("RoadSideLamp generated.");
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool GenerateRoadSideLampBottom()
+        {
+            if (_scene_game.Children.OfType<RoadSideLamp>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideLamp tree)
+            {
+                tree.IsAnimating = true;
+
+                tree.SetPosition(
+                  left: (-1.9 * tree.Width),
+                  top: (Constants.DEFAULT_SCENE_HEIGHT / 3),
+                  z: 4);
+
+                SyncDropShadow(tree);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimateRoadSideLamp(Construct roadSideLamp)
+        {
+            RoadSideLamp roadSideLamp1 = roadSideLamp as RoadSideLamp;
+            var speed = roadSideLamp1.GetMovementSpeed();
+            roadSideLamp1.MoveDownRight(speed);
+            return true;
+        }
+
+        private bool RecycleRoadSideLamp(Construct roadSideLamp)
+        {
+            var hitBox = roadSideLamp.GetHitBox();
+
+            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSideLamp.Width > Constants.DEFAULT_SCENE_WIDTH)
+            {
+                roadSideLamp.IsAnimating = false;
+
+                roadSideLamp.SetPosition(
+                    left: -3000,
+                    top: -3000);
+            }
+
+            return true;
+        }
+
+        #endregion
+
+        #region RoadSideBillboard
+
+        private bool SpawnRoadSideBillboards()
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                RoadSideBillboard roadSideBillboard = new(
+                    animateAction: AnimateRoadSideBillboard,
+                    recycleAction: RecycleRoadSideBillboard);
+
+                roadSideBillboard.SetPosition(
+                    left: -3000,
+                    top: -3000);
+
+                _scene_game.AddToScene(roadSideBillboard);
+
+                SpawnDropShadow(source: roadSideBillboard);
+            }
+
+            return true;
+        }
+
+        private bool GenerateRoadSideBillboardTop()
+        {
+            if (_scene_game.Children.OfType<RoadSideBillboard>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideBillboard roadSideBillboard)
+            {
+                roadSideBillboard.IsAnimating = true;
+
+                roadSideBillboard.SetPosition(
+                  left: (Constants.DEFAULT_SCENE_WIDTH / 2.5 - roadSideBillboard.Width) + 48,
+                  top: ((roadSideBillboard.Height * 1.5) * -1) - 10,
+                  z: 4);
+
+                SyncDropShadow(roadSideBillboard);
+
+                LoggerExtensions.Log("RoadSideBillboard generated.");
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool GenerateRoadSideBillboardBottom()
+        {
+            if (_scene_game.Children.OfType<RoadSideBillboard>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideBillboard tree)
+            {
+                tree.IsAnimating = true;
+
+                tree.SetPosition(
+                  left: (-1.9 * tree.Width),
+                  top: (Constants.DEFAULT_SCENE_HEIGHT / 3),
+                  z: 4);
+
+                SyncDropShadow(tree);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimateRoadSideBillboard(Construct roadSideBillboard)
+        {
+            RoadSideBillboard roadSideBillboard1 = roadSideBillboard as RoadSideBillboard;
+            var speed = roadSideBillboard1.GetMovementSpeed();
+            roadSideBillboard1.MoveDownRight(speed);
+            return true;
+        }
+
+        private bool RecycleRoadSideBillboard(Construct roadSideBillboard)
+        {
+            var hitBox = roadSideBillboard.GetHitBox();
+
+            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSideBillboard.Width > Constants.DEFAULT_SCENE_WIDTH)
+            {
+                roadSideBillboard.IsAnimating = false;
+
+                roadSideBillboard.SetPosition(
+                    left: -3000,
+                    top: -3000);
+            }
+
+            return true;
+        }
+
+        #endregion      
+
+        #region UfoBoss
+
+        private bool SpawnUfoBosses()
+        {
+            UfoBoss ufoBoss = new(
+                animateAction: AnimateUfoBoss,
+                recycleAction: RecycleUfoBoss);
+
+            ufoBoss.SetPosition(
+                left: -3000,
+                top: -3000,
+                z: 8);
+
+            _scene_game.AddToScene(ufoBoss);
+
+            SpawnDropShadow(source: ufoBoss);
+
+            return true;
+        }
+
+        private bool GenerateUfoBoss()
+        {
+            // if scene doesn't contain a UfoBoss then pick a UfoBoss and add to scene
+
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
+                _ufo_boss_threashold.ShouldRelease(_game_score_bar.GetScore()) && !UfoBossExists() &&
+                _scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating == false) is UfoBoss ufoBoss)
+            {
+                _audio_stub.Stop(SoundType.GAME_BACKGROUND_MUSIC);
+                //_audio_stub.Play(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
+                _audio_stub.SetVolume(SoundType.AMBIENCE, 0.2);
+
+                ufoBoss.IsAnimating = true;
+                ufoBoss.Reset();
+                ufoBoss.SetPosition(
+                    left: 0,
+                    top: ufoBoss.Height * -1);
+
+                SyncDropShadow(ufoBoss);
+
+                // set UfoBoss health
+                ufoBoss.Health = _ufo_boss_threashold.GetReleasePointDifference() * 1.5;
+
+                _ufo_boss_threashold.IncreaseThreasholdLimit(increment: _ufo_boss_threashold_limit_increase, currentPoint: _game_score_bar.GetScore());
+
+                _ufo_boss_health_bar.SetMaxiumHealth(ufoBoss.Health);
+                _ufo_boss_health_bar.SetValue(ufoBoss.Health);
+                _ufo_boss_health_bar.SetIcon(ufoBoss.GetContentUri());
+                _ufo_boss_health_bar.SetBarForegroundColor(color: Colors.Crimson);
+
+                _scene_game.ActivateSlowMotion();
+
+                GenerateInterimScreen("Beware of Psycho Rocket");
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimateUfoBoss(Construct ufoBoss)
+        {
+            UfoBoss ufoBoss1 = ufoBoss as UfoBoss;
+
+            if (ufoBoss1.IsDead)
+            {
+                ufoBoss.Shrink();
+            }
+            else
+            {
+                ufoBoss.Pop();
+
+                ufoBoss1.Hover();
+                ufoBoss1.DepleteHitStance();
+                ufoBoss1.DepleteWinStance();
+
+                if (_scene_game.SceneState == SceneState.GAME_RUNNING)
+                {
+                    var speed = ufoBoss1.GetMovementSpeed();
+                    var scaling = ScreenExtensions.GetScreenSpaceScaling();
+
+                    if (ufoBoss1.IsAttacking)
+                    {
+                        ufoBoss1.Move(
+                            speed: speed,
+                            sceneWidth: Constants.DEFAULT_SCENE_WIDTH * scaling,
+                            sceneHeight: Constants.DEFAULT_SCENE_HEIGHT * scaling,
+                            playerPoint: _player.GetCloseHitBox());
+                    }
+                    else
+                    {
+                        ufoBoss1.MoveDownRight(speed);
+
+                        if (ufoBoss.GetLeft() > (Constants.DEFAULT_SCENE_WIDTH * scaling / 3)) // bring UfoBoss to a suitable distance from player and then start attacking
+                        {
+                            ufoBoss1.IsAttacking = true;
+                        }
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        private bool RecycleUfoBoss(Construct ufoBoss)
+        {
+            if (ufoBoss.IsShrinkingComplete)
+            {
+                ufoBoss.IsAnimating = false;
+
+                ufoBoss.SetPosition(
+                    left: -3000,
+                    top: -3000);
+            }
+
+            return true;
+        }
+
+        private void LooseUfoBossHealth(UfoBoss ufoBoss)
+        {
+            ufoBoss.SetPopping();
+            ufoBoss.LooseHealth();
+            ufoBoss.SetHitStance();
+
+            _ufo_boss_health_bar.SetValue(ufoBoss.Health);
+
+            if (ufoBoss.IsDead && ufoBoss.IsAttacking)
+            {
+                //_audio_stub.Stop(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
+                _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
+                _audio_stub.SetVolume(SoundType.AMBIENCE, 0.6);
+
+                ufoBoss.IsAttacking = false;
+
+                _player.SetWinStance();
+                _game_score_bar.GainScore(5);
+
+                GenerateInterimScreen("Psycho Rocket Busted");
+
+                _scene_game.ActivateSlowMotion();
+            }
+        }
+
+        private bool UfoBossExists()
+        {
+            return _scene_game.Children.OfType<UfoBoss>().Any(x => x.IsAnimating);
+        }
+
+        #endregion
+
+        #region UfoBossRocket
+
+        private bool SpawnUfoBossRockets()
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                UfoBossRocket ufoBossRocket = new(
+                    animateAction: AnimateUfoBossRocket,
+                    recycleAction: RecycleUfoBossRocket);
+
+                ufoBossRocket.SetPosition(
+                    left: -3000,
+                    top: -3000,
+                    z: 7);
+
+                _scene_game.AddToScene(ufoBossRocket);
+
+                SpawnDropShadow(source: ufoBossRocket);
+            }
+
+            return true;
+        }
+
+        private bool GenerateUfoBossRocket()
+        {
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
+                _scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is UfoBoss ufoBoss &&
+                _scene_game.Children.OfType<UfoBossRocket>().FirstOrDefault(x => x.IsAnimating == false) is UfoBossRocket ufoBossRocket)
+            {
+                ufoBossRocket.Reset();
+                ufoBossRocket.IsAnimating = true;
+                ufoBossRocket.SetPopping();
+
+                ufoBossRocket.Reposition(
+                    UfoBoss: ufoBoss);
+
+                SyncDropShadow(ufoBossRocket);
+                SetUfoBossRocketDirection(source: ufoBoss, rocket: ufoBossRocket, rocketTarget: _player);
+
+                LoggerExtensions.Log("UfoBoss Bomb dropped.");
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimateUfoBossRocket(Construct ufoBossRocket)
+        {
+            UfoBossRocket ufoBossRocket1 = ufoBossRocket as UfoBossRocket;
+
+            var speed = ufoBossRocket1.GetMovementSpeed();
+
+            if (ufoBossRocket1.AwaitMoveDownLeft)
+            {
+                ufoBossRocket1.MoveDownLeft(speed);
+            }
+            else if (ufoBossRocket1.AwaitMoveUpRight)
+            {
+                ufoBossRocket1.MoveUpRight(speed);
+            }
+            else if (ufoBossRocket1.AwaitMoveUpLeft)
+            {
+                ufoBossRocket1.MoveUpLeft(speed);
+            }
+            else if (ufoBossRocket1.AwaitMoveDownRight)
+            {
+                ufoBossRocket1.MoveDownRight(speed);
+            }
+
+            if (ufoBossRocket1.IsBlasting)
+            {
+                ufoBossRocket.Expand();
+                ufoBossRocket.Fade(0.02);
+            }
+            else
+            {
+                ufoBossRocket.Pop();
+                ufoBossRocket1.Hover();
+
+                if (_scene_game.SceneState == SceneState.GAME_RUNNING)
+                {
+                    if (ufoBossRocket.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
+                    {
+                        ufoBossRocket1.SetBlast();
+                        LoosePlayerHealth();
+                    }
+
+                    if (ufoBossRocket1.AutoBlast())
+                        ufoBossRocket1.SetBlast();
+                }
+            }
+
+            return true;
+        }
+
+        private bool RecycleUfoBossRocket(Construct ufoBossRocket)
+        {
+            //var hitbox = bomb.GetHitBox();
+
+            // if bomb is blasted and faed or goes out of scene bounds
+            if (ufoBossRocket.IsFadingComplete /*|| hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT*/)
+            {
+                ufoBossRocket.IsAnimating = false;
+
+                ufoBossRocket.SetPosition(
+                    left: -3000,
+                    top: -3000);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        #endregion                
+
         #region UfoBossRocketSeeking
 
         private bool SpawnUfoBossRocketSeekings()
@@ -2778,16 +2275,15 @@ namespace HonkTrooper
 
         private bool AnimateUfoBossRocketSeeking(Construct ufoBossRocketSeeking)
         {
-            UfoBossRocketSeeking UfoBossRocketSeeking1 = ufoBossRocketSeeking as UfoBossRocketSeeking;
+            UfoBossRocketSeeking ufoBossRocketSeeking1 = ufoBossRocketSeeking as UfoBossRocketSeeking;
 
-            var speed = (_scene_game.Speed + ufoBossRocketSeeking.SpeedOffset);
+            var speed = ufoBossRocketSeeking1.GetMovementSpeed();
 
-            if (UfoBossRocketSeeking1.IsBlasting)
+            if (ufoBossRocketSeeking1.IsBlasting)
             {
-                MoveConstructBottomRight(construct: UfoBossRocketSeeking1, speed: speed);
-
                 ufoBossRocketSeeking.Expand();
                 ufoBossRocketSeeking.Fade(0.02);
+                ufoBossRocketSeeking1.MoveDownRight(speed);
             }
             else
             {
@@ -2797,22 +2293,22 @@ namespace HonkTrooper
                 {
                     if (_scene_game.Children.OfType<UfoBoss>().Any(x => x.IsAnimating && x.IsAttacking))
                     {
-                        UfoBossRocketSeeking1.Seek(_player.GetCloseHitBox());
+                        ufoBossRocketSeeking1.Seek(_player.GetCloseHitBox());
 
-                        if (UfoBossRocketSeeking1.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
+                        if (ufoBossRocketSeeking1.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
                         {
-                            UfoBossRocketSeeking1.SetBlast();
+                            ufoBossRocketSeeking1.SetBlast();
                             LoosePlayerHealth();
                         }
                         else
                         {
-                            if (UfoBossRocketSeeking1.RunOutOfTimeToBlast())
-                                UfoBossRocketSeeking1.SetBlast();
+                            if (ufoBossRocketSeeking1.RunOutOfTimeToBlast())
+                                ufoBossRocketSeeking1.SetBlast();
                         }
                     }
                     else
                     {
-                        UfoBossRocketSeeking1.SetBlast();
+                        ufoBossRocketSeeking1.SetBlast();
                     }
                 }
             }
@@ -2840,6 +2336,238 @@ namespace HonkTrooper
         }
 
         #endregion
+
+        #region UfoEnemy
+
+        private bool SpawnUfoEnemys()
+        {
+            for (int i = 0; i < 7; i++)
+            {
+                UfoEnemy ufoEnemy = new(
+                    animateAction: AnimateUfoEnemy,
+                    recycleAction: RecycleUfoEnemy);
+
+                _scene_game.AddToScene(ufoEnemy);
+
+                ufoEnemy.SetPosition(
+                    left: -3000,
+                    top: -3000,
+                    z: 8);
+
+                SpawnDropShadow(source: ufoEnemy);
+            }
+
+            return true;
+        }
+
+        private bool GenerateUfoEnemy()
+        {
+            if (!UfoBossExists() &&
+                _enemy_threashold.ShouldRelease(_game_score_bar.GetScore()) &&
+                _scene_game.Children.OfType<UfoEnemy>().FirstOrDefault(x => x.IsAnimating == false) is UfoEnemy ufoEnemy)
+            {
+                ufoEnemy.IsAnimating = true;
+                ufoEnemy.Reset();
+                ufoEnemy.Reposition();
+
+                SyncDropShadow(ufoEnemy);
+
+                if (!_enemy_fleet_appeared)
+                {
+                    _audio_stub.Play(SoundType.UFO_ENEMY_ENTRY);
+
+                    GenerateInterimScreen("Beware of Aliens");
+                    _scene_game.ActivateSlowMotion();
+                    _enemy_fleet_appeared = true;
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimateUfoEnemy(Construct ufoEnemy)
+        {
+            UfoEnemy ufoEnemy1 = ufoEnemy as UfoEnemy;
+
+            if (ufoEnemy1.IsDead)
+            {
+                ufoEnemy1.Shrink();
+            }
+            else
+            {
+                ufoEnemy1.Hover();
+                ufoEnemy1.Pop();
+
+                var speed = ufoEnemy1.GetMovementSpeed();
+
+                ufoEnemy1.MoveDownRight(speed);
+
+                if (_scene_game.SceneState == SceneState.GAME_RUNNING)
+                {
+                    if (ufoEnemy1.Honk())
+                        GenerateUfoEnemyHonk(ufoEnemy1);
+
+                    if (ufoEnemy1.Attack())
+                        GenerateUfoEnemyRocket(ufoEnemy1);
+                }
+            }
+
+            return true;
+        }
+
+        private bool RecycleUfoEnemy(Construct ufoEnemy)
+        {
+            var hitbox = ufoEnemy.GetHitBox();
+
+            // enemy is dead or goes out of bounds
+            if (ufoEnemy.IsShrinkingComplete ||
+                hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT ||
+                hitbox.Right < 0 || hitbox.Bottom < 0)
+            {
+                ufoEnemy.IsAnimating = false;
+
+                ufoEnemy.SetPosition(
+                    left: -3000,
+                    top: -3000);
+
+                LoggerExtensions.Log("UfoEnemy Recycled");
+            }
+
+            return true;
+        }
+
+        private void LooseUfoEnemyHealth(UfoEnemy ufoEnemy)
+        {
+            ufoEnemy.SetPopping();
+            ufoEnemy.LooseHealth();
+
+            if (ufoEnemy.IsDead)
+            {
+                _game_score_bar.GainScore(3);
+
+                _enemy_kill_count++;
+
+                // after killing 15 enemies increase the threadhold limit
+                if (_enemy_kill_count > _enemy_kill_count_limit)
+                {
+                    _enemy_threashold.IncreaseThreasholdLimit(increment: _enemy_threashold_limit_increase, currentPoint: _game_score_bar.GetScore());
+                    _enemy_kill_count = 0;
+                    _enemy_fleet_appeared = false;
+
+                    GenerateInterimScreen("Alien Fleet Vanquished");
+                    _scene_game.ActivateSlowMotion();
+                }
+
+                LoggerExtensions.Log("UfoEnemy dead");
+            }
+        }
+
+        private bool UfoEnemyExists()
+        {
+            return _scene_game.Children.OfType<UfoEnemy>().Any(x => x.IsAnimating);
+        }
+
+        #endregion
+
+        #region UfoEnemyRocket
+
+        private bool SpawnUfoEnemyRockets()
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                UfoEnemyRocket ufoEnemyRocket = new(
+                    animateAction: AnimateUfoEnemyRocket,
+                    recycleAction: RecycleUfoEnemyRocket);
+
+                ufoEnemyRocket.SetPosition(
+                    left: -3000,
+                    top: -3000,
+                    z: 8);
+
+                _scene_game.AddToScene(ufoEnemyRocket);
+
+                SpawnDropShadow(source: ufoEnemyRocket);
+            }
+
+            return true;
+        }
+
+        private bool GenerateUfoEnemyRocket(UfoEnemy ufoEnemy)
+        {
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
+                _scene_game.Children.OfType<UfoEnemyRocket>().FirstOrDefault(x => x.IsAnimating == false) is UfoEnemyRocket enemyRocket)
+            {
+                enemyRocket.Reset();
+                enemyRocket.IsAnimating = true;
+                enemyRocket.SetPopping();
+
+                enemyRocket.Reposition(ufoEnemy: ufoEnemy);
+
+                SyncDropShadow(enemyRocket);
+
+                LoggerExtensions.Log("UfoEnemy Bomb dropped.");
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimateUfoEnemyRocket(Construct ufoEnemyRocket)
+        {
+            UfoEnemyRocket ufoEnemyRocket1 = ufoEnemyRocket as UfoEnemyRocket;
+
+            var speed = ufoEnemyRocket1.GetMovementSpeed();
+            ufoEnemyRocket1.MoveDownRight(speed);
+
+            if (ufoEnemyRocket1.IsBlasting)
+            {
+                ufoEnemyRocket.Expand();
+                ufoEnemyRocket.Fade(0.02);
+            }
+            else
+            {
+                ufoEnemyRocket.Pop();
+                ufoEnemyRocket1.Hover();
+
+                if (_scene_game.SceneState == SceneState.GAME_RUNNING)
+                {
+                    if (ufoEnemyRocket1.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
+                    {
+                        ufoEnemyRocket1.SetBlast();
+                        LoosePlayerHealth();
+                    }
+
+                    if (ufoEnemyRocket1.AutoBlast())
+                        ufoEnemyRocket1.SetBlast();
+                }
+            }
+
+            return true;
+        }
+
+        private bool RecycleUfoEnemyRocket(Construct ufoEnemyRocket)
+        {
+            var hitbox = ufoEnemyRocket.GetHitBox();
+
+            // if bomb is blasted and faed or goes out of scene bounds
+            if (ufoEnemyRocket.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Bottom > Constants.DEFAULT_SCENE_HEIGHT)
+            {
+                ufoEnemyRocket.IsAnimating = false;
+
+                ufoEnemyRocket.SetPosition(
+                    left: -3000,
+                    top: -3000);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        #endregion      
 
         #region Rocket
 
@@ -2910,6 +2638,260 @@ namespace HonkTrooper
         }
 
         #endregion
+
+        #region Honk
+
+        private bool SpawnHonks()
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                Honk honk = new(
+                    animateAction: AnimateHonk,
+                    recycleAction: RecycleHonk);
+
+                honk.SetPosition(
+                    left: -3000,
+                    top: -3000);
+
+                _scene_game.AddToScene(honk);
+            }
+
+            return true;
+        }
+
+        private bool GenerateHonk(Construct source)
+        {
+            if (_scene_game.Children.OfType<Honk>().FirstOrDefault(x => x.IsAnimating == false) is Honk honk)
+            {
+                honk.IsAnimating = true;
+                honk.SetPopping();
+
+                honk.Reset();
+
+                var hitBox = source.GetCloseHitBox();
+
+                honk.Reposition(source: source);
+                honk.SetRotation(_random.Next(-30, 30));
+                honk.SetZ(source.GetZ() + 1);
+
+                source.SetPopping();
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimateHonk(Construct honk)
+        {
+            honk.Pop();
+            honk.Fade(0.06);
+            return true;
+        }
+
+        private bool RecycleHonk(Construct honk)
+        {
+            if (honk.IsFadingComplete)
+            {
+                honk.IsAnimating = false;
+
+                honk.SetPosition(
+                    left: -3000,
+                    top: -3000);
+            }
+
+            return true;
+        }
+
+        private bool GenerateVehicleBossHonk(VehicleBoss source)
+        {
+            // if there are no UfoBosses or enemies in the scene the vehicles will honk
+
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING && !UfoBossExists())
+            {
+                return GenerateHonk(source);
+            }
+
+            return true;
+        }
+
+        private bool GenerateVehicleEnemyHonk(VehicleEnemy source)
+        {
+            // if there are no UfoBosses or enemies in the scene the vehicles will honk
+
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING && !UfoBossExists() && !UfoEnemyExists() && !VehicleBossExists())
+            {
+                return GenerateHonk(source);
+            }
+
+            return true;
+        }
+
+        private bool GenerateUfoEnemyHonk(UfoEnemy source)
+        {
+            // if there are no UfoBosses in the scene the vehicles will honk
+
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING && !UfoBossExists())
+            {
+                return GenerateHonk(source);
+            }
+
+            return true;
+        }
+
+        #endregion
+
+        #region Cloud
+
+        private bool SpawnClouds()
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                Cloud cloud = new(
+                    animateAction: AnimateCloud,
+                    recycleAction: RecycleCloud);
+
+                cloud.SetPosition(
+                    left: -3000,
+                    top: -3000,
+                    z: 9);
+
+                _scene_game.AddToScene(cloud);
+            }
+
+            return true;
+        }
+
+        private bool GenerateCloud()
+        {
+            if (_scene_game.Children.OfType<Cloud>().FirstOrDefault(x => x.IsAnimating == false) is Cloud cloud)
+            {
+                cloud.IsAnimating = true;
+                cloud.Reset();
+
+                var topOrLeft = _random.Next(2);
+
+                var lane = _random.Next(2);
+
+                switch (topOrLeft)
+                {
+                    case 0:
+                        {
+                            var xLaneWidth = Constants.DEFAULT_SCENE_WIDTH / 4;
+                            cloud.SetPosition(
+                                left: _random.Next(Convert.ToInt32(xLaneWidth - cloud.Width)),
+                                top: cloud.Height * -1);
+                        }
+                        break;
+                    case 1:
+                        {
+                            var yLaneWidth = (Constants.DEFAULT_SCENE_HEIGHT / 2) / 2;
+                            cloud.SetPosition(
+                                left: cloud.Width * -1,
+                                top: _random.Next(Convert.ToInt32(yLaneWidth)));
+                        }
+                        break;
+                    default:
+                        break;
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimateCloud(Construct cloud)
+        {
+            Cloud cloud1 = cloud as Cloud;
+            cloud1.Hover();
+
+            var speed = cloud1.GetMovementSpeed();
+            cloud1.MoveDownRight(speed);
+            return true;
+        }
+
+        private bool RecycleCloud(Construct cloud)
+        {
+            var hitBox = cloud.GetHitBox();
+
+            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left > Constants.DEFAULT_SCENE_WIDTH)
+            {
+                cloud.IsAnimating = false;
+
+                cloud.SetPosition(
+                    left: -3000,
+                    top: -3000);
+
+            }
+
+            return true;
+        }
+
+        #endregion
+
+        #region RoadMark
+
+        private bool SpawnRoadMarks()
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                RoadMark roadMark = new(
+                    animateAction: AnimateRoadMark,
+                    recycleAction: RecycleRoadMark);
+
+                roadMark.SetPosition(
+                    left: -3000,
+                    top: -3000);
+
+                _scene_game.AddToScene(roadMark);
+            }
+
+            return true;
+        }
+
+        private bool GenerateRoadMark()
+        {
+            if (_scene_game.Children.OfType<RoadMark>().FirstOrDefault(x => x.IsAnimating == false) is RoadMark roadMark)
+            {
+                roadMark.IsAnimating = true;
+
+                roadMark.SetPosition(
+                  left: roadMark.Height * -1,
+                  top: roadMark.Height * -1,
+                  z: 0);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimateRoadMark(Construct roadMark)
+        {
+            RoadMark roadMark1 = roadMark as RoadMark;
+            var speed = roadMark1.GetMovementSpeed();
+            roadMark1.MoveDownRight(speed);
+            return true;
+        }
+
+        private bool RecycleRoadMark(Construct roadMark)
+        {
+            var hitBox = roadMark.GetHitBox();
+
+            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadMark.Height > Constants.DEFAULT_SCENE_WIDTH)
+            {
+                roadMark.IsAnimating = false;
+
+                roadMark.SetPosition(
+                    left: -3000,
+                    top: -3000);
+            }
+
+            return true;
+        }
+
+        #endregion        
 
         #region DropShadow
 
@@ -3035,9 +3017,9 @@ namespace HonkTrooper
 
         private bool AnimateHealthPickup(Construct healthPickup)
         {
-            var speed = _scene_game.Speed + healthPickup.SpeedOffset;
-
             HealthPickup healthPickup1 = healthPickup as HealthPickup;
+
+            var speed = healthPickup1.GetMovementSpeed();
 
             if (healthPickup1.IsPickedUp)
             {
@@ -3045,7 +3027,7 @@ namespace HonkTrooper
             }
             else
             {
-                MoveConstructBottomRight(construct: healthPickup, speed: speed);
+                healthPickup1.MoveDownRight(speed);
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
@@ -3152,9 +3134,9 @@ namespace HonkTrooper
 
         private bool AnimatePowerUpPickup(Construct powerUpPickup)
         {
-            var speed = _scene_game.Speed + powerUpPickup.SpeedOffset;
-
             PowerUpPickup powerUpPickup1 = powerUpPickup as PowerUpPickup;
+
+            var speed = powerUpPickup1.GetMovementSpeed();            
 
             if (powerUpPickup1.IsPickedUp)
             {
@@ -3162,7 +3144,7 @@ namespace HonkTrooper
             }
             else
             {
-                MoveConstructBottomRight(construct: powerUpPickup, speed: speed);
+                powerUpPickup1.MoveDownRight(speed);
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
@@ -3202,17 +3184,7 @@ namespace HonkTrooper
             return true;
         }
 
-        #endregion
-
-        #region Construct
-
-        private void MoveConstructBottomRight(Construct construct, double speed)
-        {
-            construct.SetLeft(construct.GetLeft() + speed);
-            construct.SetTop(construct.GetTop() + speed * construct.IsometricDisplacement);
-        }
-
-        #endregion
+        #endregion     
 
         #region Controller
 
@@ -3263,75 +3235,65 @@ namespace HonkTrooper
 
             // add road marks
             new Generator(
-                generationDelay: 30,
+                generationDelay: 20,
                 generationAction: GenerateRoadMark,
                 startUpAction: SpawnRoadMarks),
 
             new Generator(
-                generationDelay: 180,
+                generationDelay: 60,
                 generationAction: GenerateRoadSideBillboardTop,
                 startUpAction: SpawnRoadSideBillboards),
 
             new Generator(
-                generationDelay: 90,
+                generationDelay: 30,
                 generationAction: GenerateRoadSideLampTop,
                 startUpAction: SpawnRoadSideLamps),
 
             new Generator(
-                generationDelay: 90,
+                generationDelay: 30,
                 generationAction: GenerateRoadSideLampBottom,
                 startUpAction: SpawnRoadSideLamps),
 
             // add road side walks
             new Generator(
-                generationDelay: 27,
+                generationDelay: 18,
                 generationAction: GenerateRoadSideWalkTop,
                 startUpAction: SpawnRoadSideWalks),
 
             new Generator(
-                generationDelay: 27,
+                generationDelay: 18,
                 generationAction: GenerateRoadSideWalkBottom,
                 startUpAction: SpawnRoadSideWalks),
 
-            //new Generator(
-            //    generationDelay: 29,
-            //    generationAction: GenerateRoadSideWalkSlopeTop,
-            //    startUpAction: SpawnRoadSideWalkSlopes),
-
-            //new Generator(
-            //    generationDelay: 29,
-            //    generationAction: GenerateRoadSideWalkSlopeBottom,
-            //    startUpAction: SpawnRoadSideWalkSlopes),
-
             // then add the top trees
             new Generator(
-                generationDelay: 30,
+                generationDelay: 15,
                 generationAction: GenerateRoadSideTreeTop,
                 startUpAction: SpawnRoadSideTrees),
 
             // then add the bottom trees which will appear forward in z wrt to the vehicles
             new Generator(
-                generationDelay: 30,
+                generationDelay: 15,
                 generationAction: GenerateRoadSideTreeBottom,
                 startUpAction: SpawnRoadSideTrees),
 
             // then add the top RoadSideHedges
             new Generator(
-                generationDelay: 16,
+                generationDelay: 10,
                 generationAction: GenerateRoadSideHedgeTop,
                 startUpAction: SpawnRoadSideHedges),
 
             // then add the bottom RoadSideHedges which will appear forward in z wrt to the vehicles
             new Generator(
-                generationDelay: 16,
+                generationDelay: 10,
                 generationAction: GenerateRoadSideHedgeBottom,
                 startUpAction: SpawnRoadSideHedges),
 
             // then add the vehicles which will appear forward in z wrt the top trees
             new Generator(
                 generationDelay: 100,
-                generationAction: GenerateVehicle,
-                startUpAction: SpawnVehicles),
+                generationAction: GenerateVehicleEnemy,
+                startUpAction: SpawnVehicleEnemys),
 
             // add the honks which will appear forward in z wrt to everything on the road
             new Generator(
@@ -3567,7 +3529,7 @@ namespace HonkTrooper
                     }
 
                     GenerateDisplayOrientationChangeScreen();
-                }                
+                }
             }
 
             LoggerExtensions.Log($"{sender.CurrentOrientation}");

@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace HonkTrooper
 {
-    public partial class PowerUpPickup : Construct
+    public partial class PowerUpPickup : MovableConstruct
     {
         #region Fields
 

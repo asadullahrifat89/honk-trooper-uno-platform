@@ -5,7 +5,7 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace HonkTrooper
 {
-    public partial class PlayerFireCracker : Construct
+    public partial class PlayerFireCracker : MovableConstruct
     {
         #region Fields
 
@@ -53,7 +53,7 @@ namespace HonkTrooper
             SetChild(_content_image);
 
             IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
-            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET / 1.5;
+            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET + 1;
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE - 15;
 
             _audioStub = new AudioStub((SoundType.CRACKER_DROP, 0.3, false), (SoundType.CRACKER_BLAST, 1, false));

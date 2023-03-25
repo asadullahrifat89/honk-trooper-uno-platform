@@ -5,15 +5,22 @@ namespace HonkTrooper
     static class Constants
     {
         public const double DEFAULT_FRAME_TIME = 20;
-        public const double DEFAULT_SPEED_OFFSET = 3;
-        public const double DEFAULT_DROP_SHADOW_DISTANCE = 65;
+        
+        public const double DEFAULT_SPEED_OFFSET = 2;
+        public const double DEFAULT_SCENE_SPEED = 5;
+
         public const double DEFAULT_SLOW_MOTION_REDUCTION_FACTOR = 4;
+        public const double DEFAULT_ISOMETRIC_DISPLACEMENT = 0.5;
+
+        public const double DEFAULT_DROP_SHADOW_DISTANCE = 65;
+        
         public const double DEFAULT_CONTROLLER_KEY_SIZE = 70;
         public const double DEFAULT_CONTROLLER_KEY_CORNER_RADIUS = 30;
         public const double DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS = 4;
         public const double DEFAULT_CONTROLLER_DIRECTION_KEYS_MARGIN = 6;
+
         public const double DEFAULT_GUI_FONT_SIZE = 30;
-        public const double DEFAULT_ISOMETRIC_DISPLACEMENT = 0.5;
+        
         public const double DEFAULT_SCENE_WIDTH = 1900;
         public const double DEFAULT_SCENE_HEIGHT = 940;
 
@@ -32,8 +39,8 @@ namespace HonkTrooper
             new (ConstructType.UFO_ENEMY, 160, 160),
             new (ConstructType.UFO_ENEMY_ROCKET, 60, 60),
 
-            new (ConstructType.VEHICLE_SMALL, 210, 210),
-            new (ConstructType.VEHICLE_LARGE, 240, 240),
+            new (ConstructType.VEHICLE_ENEMY_SMALL, 210, 210),
+            new (ConstructType.VEHICLE_ENEMY_LARGE, 240, 240),
             new (ConstructType.VEHICLE_BOSS, 240, 240),
 
             new (ConstructType.VEHICLE_BOSS_ROCKET, 100, 100),
@@ -75,27 +82,27 @@ namespace HonkTrooper
             //new (ConstructType.ROAD_SIDE_BILLBOARD, new Uri("ms-appx:///HonkTrooper/Assets/Images/billboard_1.png")),
             new (ConstructType.ROAD_SIDE_BILLBOARD, new Uri("ms-appx:///HonkTrooper/Assets/Images/billboard_2.png")),
 
-            new (ConstructType.VEHICLE_SMALL, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_small_1.png")),
-            new (ConstructType.VEHICLE_SMALL, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_small_2.png")),
-            new (ConstructType.VEHICLE_SMALL, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_small_3.png")),
-            new (ConstructType.VEHICLE_SMALL, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_small_4.png")),
-            new (ConstructType.VEHICLE_SMALL, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_small_5.png")),
-            new (ConstructType.VEHICLE_SMALL, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_small_6.png")),
-            new (ConstructType.VEHICLE_SMALL, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_small_7.png")),
-            new (ConstructType.VEHICLE_SMALL, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_small_8.png")),
-            new (ConstructType.VEHICLE_SMALL, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_small_9.png")),
-            new (ConstructType.VEHICLE_SMALL, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_small_10.png")),
-            new (ConstructType.VEHICLE_SMALL, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_small_11.png")),
-            new (ConstructType.VEHICLE_SMALL, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_small_12.png")),
-            new (ConstructType.VEHICLE_SMALL, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_small_13.png")),
-            new (ConstructType.VEHICLE_SMALL, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_small_14.png")),
-            new (ConstructType.VEHICLE_SMALL, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_small_15.png")),
+            new (ConstructType.VEHICLE_ENEMY_SMALL, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_small_1.png")),
+            new (ConstructType.VEHICLE_ENEMY_SMALL, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_small_2.png")),
+            new (ConstructType.VEHICLE_ENEMY_SMALL, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_small_3.png")),
+            new (ConstructType.VEHICLE_ENEMY_SMALL, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_small_4.png")),
+            new (ConstructType.VEHICLE_ENEMY_SMALL, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_small_5.png")),
+            new (ConstructType.VEHICLE_ENEMY_SMALL, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_small_6.png")),
+            new (ConstructType.VEHICLE_ENEMY_SMALL, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_small_7.png")),
+            new (ConstructType.VEHICLE_ENEMY_SMALL, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_small_8.png")),
+            new (ConstructType.VEHICLE_ENEMY_SMALL, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_small_9.png")),
+            new (ConstructType.VEHICLE_ENEMY_SMALL, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_small_10.png")),
+            new (ConstructType.VEHICLE_ENEMY_SMALL, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_small_11.png")),
+            new (ConstructType.VEHICLE_ENEMY_SMALL, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_small_12.png")),
+            new (ConstructType.VEHICLE_ENEMY_SMALL, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_small_13.png")),
+            new (ConstructType.VEHICLE_ENEMY_SMALL, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_small_14.png")),
+            new (ConstructType.VEHICLE_ENEMY_SMALL, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_small_15.png")),
 
-            new (ConstructType.VEHICLE_LARGE, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_large_1.png")),
-            new (ConstructType.VEHICLE_LARGE, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_large_2.png")),
-            new (ConstructType.VEHICLE_LARGE, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_large_3.png")),
-            new (ConstructType.VEHICLE_LARGE, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_large_4.png")),
-            new (ConstructType.VEHICLE_LARGE, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_large_5.png")),
+            new (ConstructType.VEHICLE_ENEMY_LARGE, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_large_1.png")),
+            new (ConstructType.VEHICLE_ENEMY_LARGE, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_large_2.png")),
+            new (ConstructType.VEHICLE_ENEMY_LARGE, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_large_3.png")),
+            new (ConstructType.VEHICLE_ENEMY_LARGE, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_large_4.png")),
+            new (ConstructType.VEHICLE_ENEMY_LARGE, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_large_5.png")),
 
             new (ConstructType.VEHICLE_BOSS_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_boss_rocket_1.png")),
 
@@ -237,8 +244,8 @@ namespace HonkTrooper
         PLAYER_ROCKET_SEEKING,
         PLAYER_FIRE_CRACKER,
 
-        VEHICLE_SMALL,
-        VEHICLE_LARGE,
+        VEHICLE_ENEMY_SMALL,
+        VEHICLE_ENEMY_LARGE,
         VEHICLE_BOSS,
 
         VEHICLE_BOSS_ROCKET,

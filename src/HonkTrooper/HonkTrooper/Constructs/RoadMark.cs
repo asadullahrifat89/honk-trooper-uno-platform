@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace HonkTrooper
 {
-    public partial class RoadMark : Construct
+    public partial class RoadMark : MovableConstruct
     {
         #region Ctor
 

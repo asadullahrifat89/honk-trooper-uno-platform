@@ -5,7 +5,7 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace HonkTrooper
 {
-    public partial class Vehicle : VehicleBase
+    public partial class VehicleEnemy : VehicleBase
     {
         #region Fields
 
@@ -18,14 +18,14 @@ namespace HonkTrooper
 
         #region Ctor
 
-        public Vehicle(
+        public VehicleEnemy(
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction)
         {
             _random = new Random();
 
-            _vehicle_small_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.VEHICLE_SMALL).Select(x => x.Uri).ToArray();
-            _vehicle_large_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.VEHICLE_LARGE).Select(x => x.Uri).ToArray();
+            _vehicle_small_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.VEHICLE_ENEMY_SMALL).Select(x => x.Uri).ToArray();
+            _vehicle_large_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.VEHICLE_ENEMY_LARGE).Select(x => x.Uri).ToArray();
 
             WillHonk = Convert.ToBoolean(_random.Next(2));
 
@@ -38,11 +38,11 @@ namespace HonkTrooper
             {
                 case 0:
                     {
-                        size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.VEHICLE_SMALL);
+                        size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.VEHICLE_ENEMY_SMALL);
 
                         uri = ConstructExtensions.GetRandomContentUri(_vehicle_small_uris);
 
-                        ConstructType = ConstructType.VEHICLE_SMALL;
+                        ConstructType = ConstructType.VEHICLE_ENEMY_SMALL;
 
                         var width = size.Width;
                         var height = size.Height;
@@ -61,11 +61,11 @@ namespace HonkTrooper
                     break;
                 case 1:
                     {
-                        size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.VEHICLE_LARGE);
+                        size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.VEHICLE_ENEMY_LARGE);
 
                         uri = ConstructExtensions.GetRandomContentUri(_vehicle_large_uris);
 
-                        ConstructType = ConstructType.VEHICLE_LARGE;
+                        ConstructType = ConstructType.VEHICLE_ENEMY_LARGE;
 
                         var width = size.Width;
                         var height = size.Height;
@@ -100,7 +100,7 @@ namespace HonkTrooper
         {
             SetScaleTransform(1);
 
-            SpeedOffset = _random.Next(-2, 4);
+            SpeedOffset = _random.Next((int)Constants.DEFAULT_SPEED_OFFSET * -2, (int)Constants.DEFAULT_SPEED_OFFSET - 1);
 
             WillHonk = Convert.ToBoolean(_random.Next(2));
 
@@ -112,7 +112,7 @@ namespace HonkTrooper
         {
             WillHonk = false;
             SetPopping();
-            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET + 1;
+            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET - 1;
         }
 
         #endregion

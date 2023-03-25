@@ -41,7 +41,7 @@ namespace HonkTrooper
             RenderTransformOrigin = new Point(0, 0);
             RenderTransform = _compositeTransform;
             CanDrag = false;
-            Speed = 6;
+            Speed = Constants.DEFAULT_SCENE_SPEED;
 
             Unloaded += Scene_Unloaded;
         }
@@ -183,8 +183,8 @@ namespace HonkTrooper
         {
             if (!IsSlowMotionActivated)
             {
-                _lastSpeed = Speed;
-                Speed /= Constants.DEFAULT_SLOW_MOTION_REDUCTION_FACTOR;
+                //_lastSpeed = Speed;
+                //Speed /= Constants.DEFAULT_SLOW_MOTION_REDUCTION_FACTOR;
 
                 _slowMotionDelay = _slowMotionDelayDefault;
             }
@@ -196,8 +196,8 @@ namespace HonkTrooper
             {
                 _slowMotionDelay--;
 
-                if (_slowMotionDelay <= 0)
-                    Speed = _lastSpeed;
+                //if (_slowMotionDelay <= 0)
+                //    Speed = _lastSpeed;
             }
         }
 

@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace HonkTrooper
 {
-    public partial class DropShadow : Construct
+    public partial class DropShadow : MovableConstruct
     {
         #region Properties
 
