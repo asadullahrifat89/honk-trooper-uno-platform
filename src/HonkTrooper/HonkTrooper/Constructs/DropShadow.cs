@@ -10,9 +10,9 @@ namespace HonkTrooper
     {
         #region Properties
 
-        public Construct ParentConstruct { get; set; }
+        private Construct ParentConstruct { get; set; }
 
-        public double ParentConstructSpeed { get; set; } = 0;
+        private double ParentConstructSpeed { get; set; } = 0;
 
         #endregion
 
@@ -40,9 +40,6 @@ namespace HonkTrooper
             CornerRadius = new CornerRadius(100);
             Opacity = 0.3;
 
-            //SetSkewY(42);
-            //SetRotation(100);
-
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;
             IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
         }
@@ -50,6 +47,11 @@ namespace HonkTrooper
         #endregion
 
         #region Methods
+
+        public bool IsParentConstructAnimating()
+        {
+            return ParentConstruct.IsAnimating;
+        }
 
         public void SetParent(Construct construct)
         {
@@ -63,8 +65,10 @@ namespace HonkTrooper
                 left: (ParentConstruct.GetLeft() + ParentConstruct.Width / 2) - Width / 2,
                 top: ParentConstruct.GetBottom() + (ParentConstruct.DropShadowDistance));
 
+            ParentConstructSpeed = ParentConstruct.GetMovementSpeed();
+
             Height = 25;
-            Width = ParentConstruct.Width * 0.5;            
+            Width = ParentConstruct.Width * 0.5;
         }
 
         public void Move()
