@@ -1746,8 +1746,8 @@ namespace HonkTrooper
                 hedge.IsAnimating = true;
 
                 hedge.SetPosition(
-                  left: -1 * hedge.Width,
-                  top: (Constants.DEFAULT_SCENE_HEIGHT / 3.1),
+                  left: -1 * hedge.Width - 10,
+                  top: (Constants.DEFAULT_SCENE_HEIGHT / 3.1) - 10,
                   z: 3);
 
                 return true;
@@ -3136,7 +3136,7 @@ namespace HonkTrooper
         {
             PowerUpPickup powerUpPickup1 = powerUpPickup as PowerUpPickup;
 
-            var speed = powerUpPickup1.GetMovementSpeed();            
+            var speed = powerUpPickup1.GetMovementSpeed();
 
             if (powerUpPickup1.IsPickedUp)
             {
