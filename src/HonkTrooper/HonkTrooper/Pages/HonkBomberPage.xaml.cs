@@ -2843,7 +2843,7 @@ namespace HonkTrooper
 
         #region Rocket
 
-        private void SetPlayerRocketDirection(Construct source, Rocket rocket, Construct rocketTarget)
+        private void SetPlayerRocketDirection(Construct source, MovingConstruct rocket, Construct rocketTarget)
         {
             // rocket target is on the bottom right side of the UfoBoss
             if (rocketTarget.GetTop() > source.GetTop() && rocketTarget.GetLeft() > source.GetLeft())
@@ -2876,7 +2876,7 @@ namespace HonkTrooper
             }
         }
 
-        private void SetUfoBossRocketDirection(Construct source, Rocket rocket, Construct rocketTarget)
+        private void SetUfoBossRocketDirection(Construct source, MovingConstruct rocket, Construct rocketTarget)
         {
             // rocket target is on the bottom right side of the UfoBoss
             if (rocketTarget.GetTop() > source.GetTop() && rocketTarget.GetLeft() > source.GetLeft())
