@@ -48,7 +48,7 @@ namespace HonkTrooper
         private readonly double _ufo_boss_threashold_limit_increase = 15;
 
         //TODO: set defaults _zombie_boss_threashold_limit = 75
-        private readonly double _zombie_boss_threashold_limit = 10; // first UfoBoss will appear
+        private readonly double _zombie_boss_threashold_limit = 75; // first UfoBoss will appear
         private readonly double _zombie_boss_threashold_limit_increase = 15;
 
         //TODO: set defaults _enemy_threashold_limit = 80
@@ -2557,7 +2557,7 @@ namespace HonkTrooper
                 }
             }
 
-            LoggerExtensions.Log($"Vehicle boss at: x: {vehicleBoss1.GetLeft()} y: {vehicleBoss1.GetTop()}.");
+            //LoggerExtensions.Log($"Vehicle boss at: x: {vehicleBoss1.GetLeft()} y: {vehicleBoss1.GetTop()}.");
 
             return true;
         }
