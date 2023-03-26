@@ -3624,7 +3624,7 @@ namespace HonkTrooper
                 randomizeGenerationDelay: true),
 
             new Generator(
-                generationDelay: 40,
+                generationDelay: 30,
                 generationAction: GenerateZombieBossRocket,
                 startUpAction: SpawnZombieBossRockets),
 
