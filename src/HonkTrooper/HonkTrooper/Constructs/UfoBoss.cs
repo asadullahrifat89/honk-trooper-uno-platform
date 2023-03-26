@@ -44,8 +44,6 @@ namespace HonkTrooper
 
             _random = new Random();
 
-            //TODO: template wise boss
-
             _ufo_boss_idle_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.UFO_BOSS_IDLE).Select(x => x.Uri).ToArray();
             _ufo_boss_hit_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.UFO_BOSS_HIT).Select(x => x.Uri).ToArray();
             _ufo_boss_win_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.UFO_BOSS_WIN).Select(x => x.Uri).ToArray();
@@ -92,7 +90,7 @@ namespace HonkTrooper
 
         public UfoBossMovementPattern MovementPattern { get; set; }
 
-        public UfoBossStance UfoBossStance { get; set; } = UfoBossStance.Idle;
+        public BossStance UfoBossStance { get; set; } = BossStance.Idle;
 
         #endregion
 
@@ -107,7 +105,7 @@ namespace HonkTrooper
             Opacity = 1;
             Health = 100;
             IsAttacking = false;
-            UfoBossStance = UfoBossStance.Idle;
+            UfoBossStance = BossStance.Idle;
 
             _movementDirection = MovementDirection.None;
 
@@ -120,9 +118,9 @@ namespace HonkTrooper
 
         public void SetHitStance()
         {
-            if (UfoBossStance != UfoBossStance.Win)
+            if (UfoBossStance != BossStance.Win)
             {
-                UfoBossStance = UfoBossStance.Hit;
+                UfoBossStance = BossStance.Hit;
                 var uri = ConstructExtensions.GetRandomContentUri(_ufo_boss_hit_uris);
                 _content_image.Source = new BitmapImage(uriSource: uri);
                 _hitStanceDelay = _hitStanceDelayDefault;
@@ -131,7 +129,7 @@ namespace HonkTrooper
 
         public void SetWinStance()
         {
-            UfoBossStance = UfoBossStance.Win;
+            UfoBossStance = BossStance.Win;
             var uri = ConstructExtensions.GetRandomContentUri(_ufo_boss_win_uris);
             _content_image.Source = new BitmapImage(uriSource: uri);
             _winStanceDelay = _winStanceDelayDefault;
@@ -139,7 +137,7 @@ namespace HonkTrooper
 
         private void SetIdleStance()
         {
-            UfoBossStance = UfoBossStance.Idle;
+            UfoBossStance = BossStance.Idle;
             var uri = ConstructExtensions.GetRandomContentUri(_ufo_boss_idle_uris);
             _content_image.Source = new BitmapImage(uriSource: uri);
         }
@@ -180,11 +178,6 @@ namespace HonkTrooper
                 StopSoundLoop();
                 _audioStub.Play(SoundType.UFO_BOSS_DEAD);
             }
-        }
-
-        public void PlaySoundLoop()
-        {
-            _audioStub.Play(SoundType.UFO_BOSS_HOVERING);
         }
 
         public void StopSoundLoop()
@@ -234,6 +227,11 @@ namespace HonkTrooper
                         sceneHeight: sceneHeight);
                     break;
             }
+        }
+
+        private void PlaySoundLoop()
+        {
+            _audioStub.Play(SoundType.UFO_BOSS_HOVERING);
         }
 
         private void SeekPlayer(Rect playerPoint)
@@ -563,12 +561,6 @@ namespace HonkTrooper
         #endregion
     }
 
-    public enum UfoBossType
-    {
-        PsychoRocket,
-        Slingshot,
-    }
-
     public enum UfoBossMovementPattern
     {
         PLAYER_SEEKING,
@@ -579,7 +571,7 @@ namespace HonkTrooper
         UP_DOWN,
     }
 
-    public enum UfoBossStance
+    public enum BossStance
     {
         Idle,
         Hit,
