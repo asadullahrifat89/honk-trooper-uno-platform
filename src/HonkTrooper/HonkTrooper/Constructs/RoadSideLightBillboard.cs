@@ -45,7 +45,7 @@ namespace HonkTrooper
 
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;
             IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
-            DropShadowDistance = -40;
+            DropShadowDistance = -5;
         }
 
         #endregion
