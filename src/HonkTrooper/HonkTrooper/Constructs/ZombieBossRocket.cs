@@ -56,7 +56,6 @@ namespace HonkTrooper
             SetChild(_content_image);
 
             IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
-            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET + 2;
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE + 10;
 
             _audioStub = new AudioStub((SoundType.ORB_LAUNCH, 0.3, false), (SoundType.ROCKET_BLAST, 1, false));
@@ -64,7 +63,32 @@ namespace HonkTrooper
 
         #endregion
 
+        #region Properties
+
+        public double Health { get; set; }
+
+        public bool IsDestroyed => Health <= 0;
+
+        #endregion
+
         #region Methods
+
+        public void Reset()
+        {
+            _audioStub.Play(SoundType.ORB_LAUNCH);
+
+            Opacity = 1;
+            Health = 100;
+            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET + 1.5;
+            SetScaleTransform(1);
+
+            IsBlasting = false;
+
+            var uri = ConstructExtensions.GetRandomContentUri(_bomb_uris);
+            _content_image.Source = new BitmapImage(uri);
+
+            _autoBlastDelay = _autoBlastDelayDefault;
+        }
 
         public void Reposition()
         {
@@ -157,25 +181,20 @@ namespace HonkTrooper
             }
         }
 
-        public void Reset()
+        public void LooseHealth()
         {
-            _audioStub.Play(SoundType.ORB_LAUNCH);
+            Health -= 50;
 
-            Opacity = 1;
-            SetScaleTransform(1);
-
-            IsBlasting = false;
-
-            var uri = ConstructExtensions.GetRandomContentUri(_bomb_uris);
-            _content_image.Source = new BitmapImage(uri);
-
-            _autoBlastDelay = _autoBlastDelayDefault;
+            if (IsDestroyed)
+            {
+                SetBlast();
+            }
         }
 
         public void SetBlast()
         {
             _audioStub.Play(SoundType.ROCKET_BLAST);
-
+            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_blast_uris);
             _content_image.Source = new BitmapImage(uri);
 

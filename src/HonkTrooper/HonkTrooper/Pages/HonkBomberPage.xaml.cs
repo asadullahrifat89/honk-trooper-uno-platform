@@ -946,7 +946,7 @@ namespace HonkTrooper
                 playerRocket.SetPosition(
                     left: -3000,
                     top: -3000,
-                    z: 7);
+                    z: 8);
 
                 _scene_game.AddToScene(playerRocket);
 
@@ -966,7 +966,7 @@ namespace HonkTrooper
                 playerRocket.Reset();
                 playerRocket.IsAnimating = true;
                 playerRocket.SetPopping();
-                playerRocket.Reposition(Player: _player);
+                playerRocket.Reposition(player: _player);
 
                 GenerateDropShadow(source: playerRocket);
 
@@ -1072,7 +1072,7 @@ namespace HonkTrooper
                     if (_scene_game.Children.OfType<ZombieBossRocket>().FirstOrDefault(x => x.IsAnimating && !x.IsBlasting && x.GetCloseHitBox().IntersectsWith(hitBox)) is ZombieBossRocket zombieBossRocket)
                     {
                         playerRocket1.SetBlast();
-                        zombieBossRocket.SetBlast();
+                        zombieBossRocket.LooseHealth();
                     }
 
                     // if player bomb touches enemy, it blasts, enemy looses health
@@ -2048,9 +2048,7 @@ namespace HonkTrooper
                 ufoBossRocketSeeking.Reset();
                 ufoBossRocketSeeking.IsAnimating = true;
                 ufoBossRocketSeeking.SetPopping();
-
-                ufoBossRocketSeeking.Reposition(
-                    UfoBoss: ufoBoss);
+                ufoBossRocketSeeking.Reposition(UfoBoss: ufoBoss);
 
                 GenerateDropShadow(ufoBossRocketSeeking);
 
@@ -2291,7 +2289,6 @@ namespace HonkTrooper
                 enemyRocket.Reset();
                 enemyRocket.IsAnimating = true;
                 enemyRocket.SetPopping();
-
                 enemyRocket.Reposition(ufoEnemy: ufoEnemy);
 
                 GenerateDropShadow(enemyRocket);
@@ -2493,7 +2490,7 @@ namespace HonkTrooper
                 vehicleBoss.IsAnimating = true;
 
                 vehicleBoss.Reset();
-                vehicleBoss.Reposition();                
+                vehicleBoss.Reposition();
 
                 // set VehicleBoss health
                 vehicleBoss.Health = _vehicle_boss_threashold.GetReleasePointDifference() * 1.5;

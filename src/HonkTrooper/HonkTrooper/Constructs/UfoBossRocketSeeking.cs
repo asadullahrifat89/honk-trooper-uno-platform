@@ -75,8 +75,7 @@ namespace HonkTrooper
         {
             SetPosition(
                 left: (UfoBoss.GetLeft() + UfoBoss.Width / 2) - Width / 2,
-                top: UfoBoss.GetBottom() - (40),
-                z: 7);
+                top: UfoBoss.GetBottom() - (40));
         }
 
         public void Reset()
