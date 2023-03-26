@@ -60,6 +60,7 @@ namespace HonkTrooper
 
             new (ConstructType.ROAD_SIDE_WALK, 270, 260),
             new (ConstructType.ROAD_SIDE_LAMP, 150, 150),
+            new (ConstructType.ROAD_SIDE_LIGHT, 150, 150),
             new (ConstructType.ROAD_SIDE_BILLBOARD, 340, 340),
 
             new (ConstructType.DROP_SHADOW, 60, 25),
@@ -80,6 +81,8 @@ namespace HonkTrooper
 
             new (ConstructType.ROAD_SIDE_LAMP, new Uri("ms-appx:///HonkTrooper/Assets/Images/street_lamp_1.png")),
             new (ConstructType.ROAD_SIDE_LAMP, new Uri("ms-appx:///HonkTrooper/Assets/Images/street_lamp_2.png")),
+
+            new (ConstructType.ROAD_SIDE_LIGHT, new Uri("ms-appx:///HonkTrooper/Assets/Images/street_light_1.png")),
 
             new (ConstructType.ROAD_SIDE_HEDGE, new Uri("ms-appx:///HonkTrooper/Assets/Images/hedge_1.png")),
             new (ConstructType.ROAD_SIDE_HEDGE, new Uri("ms-appx:///HonkTrooper/Assets/Images/hedge_2.png")),
@@ -273,6 +276,7 @@ namespace HonkTrooper
         ROAD_SIDE_TREE,
         ROAD_SIDE_HEDGE,
         ROAD_SIDE_LAMP,
+        ROAD_SIDE_LIGHT,
         ROAD_SIDE_BILLBOARD,
 
         HONK,
