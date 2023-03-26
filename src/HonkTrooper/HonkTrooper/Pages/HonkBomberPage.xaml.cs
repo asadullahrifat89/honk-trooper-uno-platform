@@ -1699,24 +1699,24 @@ namespace HonkTrooper
             return false;
         }
 
-        private bool GenerateRoadSideBillboardBottom()
-        {
-            if (_scene_game.Children.OfType<RoadSideBillboard>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideBillboard tree)
-            {
-                tree.IsAnimating = true;
+        //private bool GenerateRoadSideBillboardBottom()
+        //{
+        //    if (_scene_game.Children.OfType<RoadSideBillboard>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideBillboard tree)
+        //    {
+        //        tree.IsAnimating = true;
 
-                tree.SetPosition(
-                  left: (-1.9 * tree.Width),
-                  top: (Constants.DEFAULT_SCENE_HEIGHT / 3),
-                  z: 4);
+        //        tree.SetPosition(
+        //          left: (-1.9 * tree.Width),
+        //          top: (Constants.DEFAULT_SCENE_HEIGHT / 3),
+        //          z: 4);
 
-                GenerateDropShadow(tree);
+        //        GenerateDropShadow(tree);
 
-                return true;
-            }
+        //        return true;
+        //    }
 
-            return false;
-        }
+        //    return false;
+        //}
 
         private bool AnimateRoadSideBillboard(Construct roadSideBillboard)
         {
@@ -2372,7 +2372,8 @@ namespace HonkTrooper
 
                 vehicleEnemy.SetPosition(
                     left: -3000,
-                    top: -3000);
+                    top: -3000,
+                    z: 3);
             }
 
             return true;
@@ -2492,8 +2493,7 @@ namespace HonkTrooper
                 vehicleBoss.IsAnimating = true;
 
                 vehicleBoss.Reset();
-                vehicleBoss.Reposition();
-                vehicleBoss.SetZ(3);
+                vehicleBoss.Reposition();                
 
                 // set VehicleBoss health
                 vehicleBoss.Health = _vehicle_boss_threashold.GetReleasePointDifference() * 1.5;

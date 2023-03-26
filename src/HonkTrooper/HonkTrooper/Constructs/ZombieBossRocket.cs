@@ -68,9 +68,9 @@ namespace HonkTrooper
 
         public void Reposition()
         {
-            var topOrLeft = _random.Next(2); // generate top and left corner lane wise vehicles
-            var lane = _random.Next(3); // generate number of lanes based of screen height
+            var topOrLeft = _random.Next(2); // generate top and left corner lane wise vehicles            
             var randomY = _random.Next(-10, 10);
+            var lane = _random.Next(4); // generate number of lanes based of screen height
 
             switch (topOrLeft)
             {
@@ -84,24 +84,28 @@ namespace HonkTrooper
                                 {
                                     SetPosition(
                                         left: 0 - Width / 2,
-                                        top: (Height * -1) + randomY,
-                                        z: 3);
+                                        top: (Height * -1) + randomY);
                                 }
                                 break;
                             case 1:
                                 {
                                     SetPosition(
                                         left: (xLaneWidth - Width / 1.5),
-                                        top: (Height * -1) + randomY,
-                                        z: 3);
+                                        top: (Height * -1) + randomY);
                                 }
                                 break;
                             case 2:
                                 {
                                     SetPosition(
                                        left: (xLaneWidth * 2 - Width / 1.5),
-                                       top: (Height * -1) + randomY,
-                                       z: 3);
+                                       top: (Height * -1) + randomY);
+                                }
+                                break;
+                            case 3:
+                                {
+                                    SetPosition(
+                                       left: (xLaneWidth * 3 - Width / 1.5),
+                                       top: (Height * -1) + randomY);
                                 }
                                 break;
                             default:
@@ -119,24 +123,28 @@ namespace HonkTrooper
                                 {
                                     SetPosition(
                                         left: Width * -1,
-                                        top: (0 - Height / 2) + randomY,
-                                        z: 3);
+                                        top: (0 - Height / 2) + randomY);
                                 }
                                 break;
                             case 1:
                                 {
                                     SetPosition(
                                         left: Width * -1,
-                                        top: (yLaneHeight - Height / 3) + randomY,
-                                        z: 3);
+                                        top: (yLaneHeight - Height / 3) + randomY);
                                 }
                                 break;
                             case 2:
                                 {
                                     SetPosition(
                                        left: Width * -1,
-                                       top: (yLaneHeight - Height / 3) * 2.5 + randomY,
-                                       z: 3);
+                                       top: (yLaneHeight * 2 - Height / 3) + randomY);
+                                }
+                                break;
+                            case 3:
+                                {
+                                    SetPosition(
+                                       left: Width * -1,
+                                       top: (yLaneHeight * 3 - Height / 3) + randomY);
                                 }
                                 break;
                             default:
