@@ -665,7 +665,7 @@ namespace HonkTrooper
 
         private bool SpawnPlayerBalloon()
         {
-            var playerTemplate = _random.Next(1, 3);           
+            var playerTemplate = _random.Next(1, 3);
 
             _player = new(
                 animateAction: AnimatePlayerBalloon,
@@ -838,11 +838,7 @@ namespace HonkTrooper
                     playerFireCracker.IsAnimating = true;
                     playerFireCracker.IsGravitatingDownwards = true;
                     playerFireCracker.SetPopping();
-
-                    playerFireCracker.SetRotation(_random.Next(-30, 30));
-
-                    playerFireCracker.Reposition(
-                        player: _player);
+                    playerFireCracker.Reposition(player: _player);
 
                     GenerateDropShadow(source: playerFireCracker);
 
@@ -872,6 +868,7 @@ namespace HonkTrooper
             else
             {
                 playerFireCracker.Pop();
+                playerFireCracker.Rotate(rotationSpeed: 1.5);
                 playerFireCracker.SetLeft(playerFireCracker.GetLeft() + speed);
                 playerFireCracker.SetTop(playerFireCracker.GetTop() + speed * 1.2);
 
@@ -1575,7 +1572,7 @@ namespace HonkTrooper
 
                 _scene_game.AddToScene(roadSideLamp);
 
-                SpawnDropShadow(source: roadSideLamp);
+                //SpawnDropShadow(source: roadSideLamp);
             }
 
             return true;
@@ -1592,7 +1589,7 @@ namespace HonkTrooper
                   top: ((roadSideLamp.Height * 1.5) * -1) - 5,
                   z: 3);
 
-                GenerateDropShadow(source: roadSideLamp);
+                //GenerateDropShadow(source: roadSideLamp);
 
                 return true;
             }
@@ -1611,7 +1608,7 @@ namespace HonkTrooper
                   top: (Constants.DEFAULT_SCENE_HEIGHT / 3),
                   z: 4);
 
-                GenerateDropShadow(source: roadSideLamp);
+                //GenerateDropShadow(source: roadSideLamp);
 
                 return true;
             }
@@ -2278,7 +2275,7 @@ namespace HonkTrooper
         private bool RecycleUfoEnemy(Construct ufoEnemy)
         {
             var hitbox = ufoEnemy.GetHitBox();
-                        
+
             if (ufoEnemy.IsShrinkingComplete ||
                 hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT ||
                 hitbox.Right < 0 || hitbox.Bottom < 0) // enemy is dead or goes out of bounds

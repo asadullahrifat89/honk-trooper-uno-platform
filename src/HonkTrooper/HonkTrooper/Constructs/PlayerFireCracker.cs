@@ -83,6 +83,7 @@ namespace HonkTrooper
 
             Opacity = 1;
             SetScaleTransform(1);
+            SetRotation(0);
 
             IsBlasting = false;
 
