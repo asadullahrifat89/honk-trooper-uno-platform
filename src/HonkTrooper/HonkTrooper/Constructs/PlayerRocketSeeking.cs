@@ -71,14 +71,6 @@ namespace HonkTrooper
 
         #region Methods
 
-        public void Reposition(PlayerBalloon player)
-        {
-            SetPosition(
-                left: (player.GetLeft() + player.Width / 2) - Width / 2,
-                top: player.GetBottom() - (40),
-                z: 7);
-        }
-
         public void Reset()
         {
             _audioStub.Play(SoundType.SEEKER_ROCKET_LAUNCH);
@@ -92,6 +84,13 @@ namespace HonkTrooper
             IsBlasting = false;
             TimeLeftUntilBlast = 25;
         }
+
+        public void Reposition(PlayerBalloon player)
+        {
+            SetPosition(
+                left: (player.GetLeft() + player.Width / 2) - Width / 2,
+                top: player.GetBottom() - (40));
+        }     
 
         public bool RunOutOfTimeToBlast()
         {

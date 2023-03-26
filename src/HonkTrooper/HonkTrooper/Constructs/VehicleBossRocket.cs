@@ -70,8 +70,7 @@ namespace HonkTrooper
         {
             SetPosition(
                 left: (vehicleBoss.GetLeft() + vehicleBoss.Width / 2) - Width / 2,
-                top: vehicleBoss.GetTop(),
-                z: 7);
+                top: vehicleBoss.GetTop());
         }
 
         public void Reset()
