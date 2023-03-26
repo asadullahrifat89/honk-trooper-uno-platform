@@ -1749,7 +1749,7 @@ namespace HonkTrooper
 
                 _scene_game.AddToScene(roadSideBillboard);
 
-                SpawnDropShadow(source: roadSideBillboard);
+                //SpawnDropShadow(source: roadSideBillboard);
             }
 
             return true;
@@ -1766,7 +1766,7 @@ namespace HonkTrooper
                   top: ((roadSideBillboard.Height * 1.5) * -1) - 10,
                   z: 4);
 
-                GenerateDropShadow(roadSideBillboard);
+                //GenerateDropShadow(roadSideBillboard);
 
                 return true;
             }
