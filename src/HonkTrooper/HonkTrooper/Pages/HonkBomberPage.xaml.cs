@@ -1430,16 +1430,16 @@ namespace HonkTrooper
 
         private bool GenerateRoadSideTreeTop()
         {
-            if (_scene_game.Children.OfType<RoadSideTree>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideTree tree)
+            if (_scene_game.Children.OfType<RoadSideTree>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideTree roadSideTree)
             {
-                tree.IsAnimating = true;
+                roadSideTree.IsAnimating = true;
 
-                tree.SetPosition(
-                  left: (Constants.DEFAULT_SCENE_WIDTH / 2 - tree.Width) + 10,
-                  top: (tree.Height * -1.1) - 10,
+                roadSideTree.SetPosition(
+                  left: (Constants.DEFAULT_SCENE_WIDTH / 2 - roadSideTree.Width) + 10,
+                  top: (roadSideTree.Height * -1.1) - 10,
                   z: 3);
 
-                GenerateDropShadow(source: tree);
+                GenerateDropShadow(source: roadSideTree);
             }
 
             return true;
@@ -1447,16 +1447,16 @@ namespace HonkTrooper
 
         private bool GenerateRoadSideTreeBottom()
         {
-            if (_scene_game.Children.OfType<RoadSideTree>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideTree tree)
+            if (_scene_game.Children.OfType<RoadSideTree>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideTree roadSideTree)
             {
-                tree.IsAnimating = true;
+                roadSideTree.IsAnimating = true;
 
-                tree.SetPosition(
-                  left: (-1 * tree.Width),
+                roadSideTree.SetPosition(
+                  left: (-1 * roadSideTree.Width),
                   top: (Constants.DEFAULT_SCENE_HEIGHT / 3),
                   z: 4);
 
-                GenerateDropShadow(tree);
+                GenerateDropShadow(roadSideTree);
             }
 
             return true;
@@ -1613,16 +1613,16 @@ namespace HonkTrooper
 
         private bool GenerateRoadSideLampBottom()
         {
-            if (_scene_game.Children.OfType<RoadSideLamp>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideLamp tree)
+            if (_scene_game.Children.OfType<RoadSideLamp>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideLamp radSideLamp)
             {
-                tree.IsAnimating = true;
+                radSideLamp.IsAnimating = true;
 
-                tree.SetPosition(
-                  left: (-1.9 * tree.Width),
+                radSideLamp.SetPosition(
+                  left: (-1.9 * radSideLamp.Width),
                   top: (Constants.DEFAULT_SCENE_HEIGHT / 3),
                   z: 4);
 
-                GenerateDropShadow(tree);
+                GenerateDropShadow(radSideLamp);
 
                 return true;
             }
@@ -1656,31 +1656,31 @@ namespace HonkTrooper
 
         #endregion
 
-        #region RoadSideLight
+        #region RoadSideLightBillboard
 
-        //private bool SpawnRoadSideLights()
+        private bool SpawnRoadSideLightBillboards()
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                RoadSideLightBillboard roadSideLight = new(
+                    animateAction: AnimateRoadSideLightBillboard,
+                    recycleAction: RecycleRoadSideLightBillboard);
+
+                roadSideLight.SetPosition(
+                    left: -3000,
+                    top: -3000);
+
+                _scene_game.AddToScene(roadSideLight);
+
+                SpawnDropShadow(source: roadSideLight);
+            }
+
+            return true;
+        }
+
+        //private bool GenerateRoadSideLightBillboardTop()
         //{
-        //    for (int i = 0; i < 4; i++)
-        //    {
-        //        RoadSideLight roadSideLight = new(
-        //            animateAction: AnimateRoadSideLight,
-        //            recycleAction: RecycleRoadSideLight);
-
-        //        roadSideLight.SetPosition(
-        //            left: -3000,
-        //            top: -3000);
-
-        //        _scene_game.AddToScene(roadSideLight);
-
-        //        SpawnDropShadow(source: roadSideLight);
-        //    }
-
-        //    return true;
-        //}
-
-        //private bool GenerateRoadSideLightTop()
-        //{
-        //    if (_scene_game.Children.OfType<RoadSideLight>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideLight roadSideLight)
+        //    if (_scene_game.Children.OfType<RoadSideLightBillboard>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideLightBillboard roadSideLight)
         //    {
         //        roadSideLight.IsAnimating = true;
 
@@ -1691,7 +1691,7 @@ namespace HonkTrooper
 
         //        GenerateDropShadow(roadSideLight);
 
-        //        LoggerExtensions.Log("RoadSideLight generated.");
+        //        LoggerExtensions.Log("RoadSideLightBillboard generated.");
 
         //        return true;
         //    }
@@ -1699,48 +1699,48 @@ namespace HonkTrooper
         //    return false;
         //}
 
-        //private bool GenerateRoadSideLightBottom()
-        //{
-        //    if (_scene_game.Children.OfType<RoadSideLight>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideLight tree)
-        //    {
-        //        tree.IsAnimating = true;
+        private bool GenerateRoadSideLightBillboardBottom()
+        {
+            if (_scene_game.Children.OfType<RoadSideLightBillboard>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideLightBillboard roadSideLight)
+            {
+                roadSideLight.IsAnimating = true;
 
-        //        tree.SetPosition(
-        //          left: (-1.9 * tree.Width),
-        //          top: (Constants.DEFAULT_SCENE_HEIGHT / 3),
-        //          z: 4);
+                roadSideLight.SetPosition(
+                  left: (-3.5 * roadSideLight.Width),
+                  top: (Constants.DEFAULT_SCENE_HEIGHT / 5.2),
+                  z: 4);
 
-        //        GenerateDropShadow(tree);
+                GenerateDropShadow(roadSideLight);
 
-        //        return true;
-        //    }
+                return true;
+            }
 
-        //    return false;
-        //}
+            return false;
+        }
 
-        //private bool AnimateRoadSideLight(Construct roadSideLight)
-        //{
-        //    RoadSideLight roadSideLight1 = roadSideLight as RoadSideLight;
-        //    var speed = roadSideLight1.GetMovementSpeed();
-        //    roadSideLight1.MoveDownRight(speed);
-        //    return true;
-        //}
+        private bool AnimateRoadSideLightBillboard(Construct roadSideLight)
+        {
+            RoadSideLightBillboard roadSideLight1 = roadSideLight as RoadSideLightBillboard;
+            var speed = roadSideLight1.GetMovementSpeed();
+            roadSideLight1.MoveDownRight(speed);
+            return true;
+        }
 
-        //private bool RecycleRoadSideLight(Construct roadSideLight)
-        //{
-        //    var hitBox = roadSideLight.GetHitBox();
+        private bool RecycleRoadSideLightBillboard(Construct roadSideLight)
+        {
+            var hitBox = roadSideLight.GetHitBox();
 
-        //    if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSideLight.Width > Constants.DEFAULT_SCENE_WIDTH)
-        //    {
-        //        roadSideLight.IsAnimating = false;
+            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSideLight.Width > Constants.DEFAULT_SCENE_WIDTH)
+            {
+                roadSideLight.IsAnimating = false;
 
-        //        roadSideLight.SetPosition(
-        //            left: -3000,
-        //            top: -3000);
-        //    }
+                roadSideLight.SetPosition(
+                    left: -3000,
+                    top: -3000);
+            }
 
-        //    return true;
-        //}
+            return true;
+        }
 
         #endregion
 
@@ -3727,14 +3727,14 @@ namespace HonkTrooper
                 startUpAction: SpawnRoadSideLamps),
 
             //new Generator(
-            //    generationDelay: 18,
-            //    generationAction: GenerateRoadSideLightTop,
-            //    startUpAction: SpawnRoadSideLights),
+            //    generationDelay: 36,
+            //    generationAction: GenerateRoadSideLightBillboardTop,
+            //    startUpAction: SpawnRoadSideLightBillboards),
 
-            //new Generator(
-            //    generationDelay: 18,
-            //    generationAction: GenerateRoadSideLightBottom,
-            //    startUpAction: SpawnRoadSideLights),
+            new Generator(
+                generationDelay: 36,
+                generationAction: GenerateRoadSideLightBillboardBottom,
+                startUpAction: SpawnRoadSideLightBillboards),
 
             // add road side walks
             new Generator(
