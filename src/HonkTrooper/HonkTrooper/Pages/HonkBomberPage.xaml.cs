@@ -111,7 +111,7 @@ namespace HonkTrooper
             ScreenExtensions.Height = Constants.DEFAULT_SCENE_HEIGHT;
 
             _scene_main_menu.SetRenderTransformOrigin(0.5);
-            SetScreenScaling();
+            SetSceneScaling();
 
             Loaded += HonkBomberPage_Loaded;
             Unloaded += HonkBomberPage_Unloaded;
@@ -162,7 +162,7 @@ namespace HonkTrooper
             ScreenExtensions.Width = args.NewSize.Width <= Constants.DEFAULT_SCENE_WIDTH ? args.NewSize.Width : Constants.DEFAULT_SCENE_WIDTH;
             ScreenExtensions.Height = args.NewSize.Height <= Constants.DEFAULT_SCENE_HEIGHT ? args.NewSize.Height : Constants.DEFAULT_SCENE_HEIGHT;
 
-            SetScreenScaling();
+            SetSceneScaling();
 
             if (_scene_game.SceneState == SceneState.GAME_RUNNING)
             {
@@ -3799,7 +3799,7 @@ namespace HonkTrooper
                 );
         }
 
-        private void SetScreenScaling()
+        private void SetSceneScaling()
         {
             var scaling = ScreenExtensions.GetScreenSpaceScaling();
 
@@ -3812,7 +3812,6 @@ namespace HonkTrooper
             // resize the main menu
             _scene_main_menu.Width = ScreenExtensions.Width;
             _scene_main_menu.Height = ScreenExtensions.Height;
-
 
             // scale the scenes
             _scene_game.SetScaleTransform(scaling);
