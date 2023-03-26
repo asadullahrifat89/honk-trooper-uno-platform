@@ -5,7 +5,7 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace HonkTrooper
 {
-    public partial class ZombieBossRocket : VehicleBase
+    public partial class ZombieBossRocket : AnimableConstruct
     {
         #region Fields
 
@@ -65,6 +65,89 @@ namespace HonkTrooper
         #endregion
 
         #region Methods
+
+        public void Reposition()
+        {
+            var topOrLeft = _random.Next(2); // generate top and left corner lane wise vehicles
+            var lane = _random.Next(3); // generate number of lanes based of screen height
+            var randomY = _random.Next(-10, 10);
+
+            switch (topOrLeft)
+            {
+                case 0:
+                    {
+                        var xLaneWidth = Constants.DEFAULT_SCENE_WIDTH / 4;
+
+                        switch (lane)
+                        {
+                            case 0:
+                                {
+                                    SetPosition(
+                                        left: 0 - Width / 2,
+                                        top: (Height * -1) + randomY,
+                                        z: 3);
+                                }
+                                break;
+                            case 1:
+                                {
+                                    SetPosition(
+                                        left: (xLaneWidth - Width / 1.5),
+                                        top: (Height * -1) + randomY,
+                                        z: 3);
+                                }
+                                break;
+                            case 2:
+                                {
+                                    SetPosition(
+                                       left: (xLaneWidth * 2 - Width / 1.5),
+                                       top: (Height * -1) + randomY,
+                                       z: 3);
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    break;
+                case 1:
+                    {
+                        var yLaneHeight = Constants.DEFAULT_SCENE_HEIGHT / 6;
+
+                        switch (lane)
+                        {
+                            case 0:
+                                {
+                                    SetPosition(
+                                        left: Width * -1,
+                                        top: (0 - Height / 2) + randomY,
+                                        z: 3);
+                                }
+                                break;
+                            case 1:
+                                {
+                                    SetPosition(
+                                        left: Width * -1,
+                                        top: (yLaneHeight - Height / 3) + randomY,
+                                        z: 3);
+                                }
+                                break;
+                            case 2:
+                                {
+                                    SetPosition(
+                                       left: Width * -1,
+                                       top: (yLaneHeight - Height / 3) * 2.5 + randomY,
+                                       z: 3);
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
 
         public void Reset()
         {
