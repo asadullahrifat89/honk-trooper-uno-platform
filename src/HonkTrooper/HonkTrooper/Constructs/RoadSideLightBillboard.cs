@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace HonkTrooper
 {
-    public partial class RoadSideLight : MovableConstruct
+    public partial class RoadSideLightBillboard : MovableConstruct
     {
         #region Fields
 
@@ -16,15 +16,15 @@ namespace HonkTrooper
 
         #region Ctor
 
-        public RoadSideLight(
+        public RoadSideLightBillboard(
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction)
         {
-            ConstructType = ConstructType.ROAD_SIDE_LIGHT;
+            ConstructType = ConstructType.ROAD_SIDE_LIGHT_BILLBOARD;
 
-            _tree_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.ROAD_SIDE_LIGHT).Select(x => x.Uri).ToArray();
+            _tree_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.ROAD_SIDE_LIGHT_BILLBOARD).Select(x => x.Uri).ToArray();
 
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.ROAD_SIDE_LIGHT);
+            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.ROAD_SIDE_LIGHT_BILLBOARD);
 
             var width = size.Width;
             var height = size.Height;
