@@ -650,7 +650,7 @@ namespace HonkTrooper
         {
             if (_game_controller.IsAttacking)
             {
-                if (UfoEnemyExists() || UfoBossExists())
+                if (UfoEnemyExists() || UfoBossExists() || ZombieBossExists())
                 {
                     if (_powerUp_health_bar.HasHealth && (PowerUpType)_powerUp_health_bar.Tag == PowerUpType.SEEKING_BALLS)
                         GeneratePlayerRocketSeeking();
@@ -851,37 +851,42 @@ namespace HonkTrooper
                 playerRocket.Reset();
                 playerRocket.IsAnimating = true;
                 playerRocket.SetPopping();
-
-                playerRocket.Reposition(
-                    Player: _player);
+                playerRocket.Reposition(Player: _player);
 
                 GenerateDropShadow(source: playerRocket);
 
                 var playerDistantHitBox = _player.GetDistantHitBox();
 
                 // get closest possible target
-                UfoBossRocketSeeking UfoBossRocketSeeking = _scene_game.Children.OfType<UfoBossRocketSeeking>()?.FirstOrDefault(x => x.IsAnimating && !x.IsBlasting && x.GetHitBox().IntersectsWith(playerDistantHitBox));
-                UfoBoss UfoBoss = _scene_game.Children.OfType<UfoBoss>()?.FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetHitBox().IntersectsWith(playerDistantHitBox));
-                UfoEnemy enemy = _scene_game.Children.OfType<UfoEnemy>()?.FirstOrDefault(x => x.IsAnimating && !x.IsFadingComplete && x.GetHitBox().IntersectsWith(playerDistantHitBox));
+                UfoBossRocketSeeking ufoBossRocketSeeking = _scene_game.Children.OfType<UfoBossRocketSeeking>()?.FirstOrDefault(x => x.IsAnimating && !x.IsBlasting && x.GetHitBox().IntersectsWith(playerDistantHitBox));
+                UfoBoss ufoBoss = _scene_game.Children.OfType<UfoBoss>()?.FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetHitBox().IntersectsWith(playerDistantHitBox));
+                ZombieBoss zombieBoss = _scene_game.Children.OfType<ZombieBoss>()?.FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetHitBox().IntersectsWith(playerDistantHitBox));
+
+                UfoEnemy ufoEnemy = _scene_game.Children.OfType<UfoEnemy>()?.FirstOrDefault(x => x.IsAnimating && !x.IsFadingComplete && x.GetHitBox().IntersectsWith(playerDistantHitBox));
 
                 // if not found then find random target
-                UfoBossRocketSeeking ??= _scene_game.Children.OfType<UfoBossRocketSeeking>().FirstOrDefault(x => x.IsAnimating && !x.IsBlasting);
-                UfoBoss ??= _scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking);
-                enemy ??= _scene_game.Children.OfType<UfoEnemy>().FirstOrDefault(x => x.IsAnimating && !x.IsFadingComplete);
+                ufoBossRocketSeeking ??= _scene_game.Children.OfType<UfoBossRocketSeeking>().FirstOrDefault(x => x.IsAnimating && !x.IsBlasting);
+                ufoBoss ??= _scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking);
+                zombieBoss ??= _scene_game.Children.OfType<ZombieBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking);
+                ufoEnemy ??= _scene_game.Children.OfType<UfoEnemy>().FirstOrDefault(x => x.IsAnimating && !x.IsFadingComplete);
 
                 LoggerExtensions.Log("Player Bomb dropped.");
 
-                if (enemy is not null)
+                if (ufoEnemy is not null)
                 {
-                    SetPlayerRocketDirection(source: _player, rocket: playerRocket, rocketTarget: enemy);
+                    SetPlayerRocketDirection(source: _player, rocket: playerRocket, rocketTarget: ufoEnemy);
                 }
-                else if (UfoBoss is not null)
+                else if (ufoBoss is not null)
                 {
-                    SetPlayerRocketDirection(source: _player, rocket: playerRocket, rocketTarget: UfoBoss);
+                    SetPlayerRocketDirection(source: _player, rocket: playerRocket, rocketTarget: ufoBoss);
                 }
-                else if (UfoBossRocketSeeking is not null)
+                else if (ufoBossRocketSeeking is not null)
                 {
-                    SetPlayerRocketDirection(source: _player, rocket: playerRocket, rocketTarget: UfoBossRocketSeeking);
+                    SetPlayerRocketDirection(source: _player, rocket: playerRocket, rocketTarget: ufoBossRocketSeeking);
+                }
+                else if (zombieBoss is not null)
+                {
+                    SetPlayerRocketDirection(source: _player, rocket: playerRocket, rocketTarget: zombieBoss);
                 }
 
                 return true;
@@ -934,11 +939,25 @@ namespace HonkTrooper
                         LooseUfoBossHealth(ufoBoss);
                     }
 
+                    // if player bomb touches ZombieBoss, it blasts, ZombieBoss looses health
+                    if (_scene_game.Children.OfType<ZombieBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetCloseHitBox().IntersectsWith(hitBox)) is ZombieBoss zombieBoss)
+                    {
+                        playerRocket1.SetBlast();
+                        LooseZombieBossHealth(zombieBoss);
+                    }
+
                     // if player bomb touches UfoBoss's seeking bomb, it blasts
                     if (_scene_game.Children.OfType<UfoBossRocketSeeking>().FirstOrDefault(x => x.IsAnimating && !x.IsBlasting && x.GetCloseHitBox().IntersectsWith(hitBox)) is UfoBossRocketSeeking ufoBossRocketSeeking)
                     {
                         playerRocket1.SetBlast();
                         ufoBossRocketSeeking.SetBlast();
+                    }
+
+                    // if player bomb touches ZombieBoss's seeking bomb, it blasts
+                    if (_scene_game.Children.OfType<ZombieBossRocket>().FirstOrDefault(x => x.IsAnimating && !x.IsBlasting && x.GetCloseHitBox().IntersectsWith(hitBox)) is ZombieBossRocket zombieBossRocket)
+                    {
+                        playerRocket1.SetBlast();
+                        zombieBossRocket.SetBlast();
                     }
 
                     // if player bomb touches enemy, it blasts, enemy looses health
@@ -1791,7 +1810,6 @@ namespace HonkTrooper
                 ufoBossRocket.Reset();
                 ufoBossRocket.IsAnimating = true;
                 ufoBossRocket.SetPopping();
-
                 ufoBossRocket.Reposition(UfoBoss: ufoBoss);
 
                 GenerateDropShadow(ufoBossRocket);
@@ -2727,6 +2745,107 @@ namespace HonkTrooper
 
         #endregion
 
+        #region ZombieBossRocket
+
+        private bool SpawnZombieBossRockets()
+        {
+            for (int i = 0; i < 6; i++)
+            {
+                ZombieBossRocket zombieBossRocket = new(
+                    animateAction: AnimateZombieBossRocket,
+                    recycleAction: RecycleZombieBossRocket);
+
+                zombieBossRocket.SetPosition(
+                    left: -3000,
+                    top: -3000,
+                    z: 7);
+
+                _scene_game.AddToScene(zombieBossRocket);
+
+                SpawnDropShadow(source: zombieBossRocket);
+            }
+
+            return true;
+        }
+
+        private bool GenerateZombieBossRocket()
+        {
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
+                _scene_game.Children.OfType<ZombieBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is ZombieBoss zombieBoss &&
+                _scene_game.Children.OfType<ZombieBossRocket>().FirstOrDefault(x => x.IsAnimating == false) is ZombieBossRocket zombieBossRocket)
+            {
+                zombieBossRocket.Reset();
+                zombieBossRocket.IsAnimating = true;
+                zombieBossRocket.SetPopping();
+                zombieBossRocket.Reposition();
+
+                GenerateDropShadow(zombieBossRocket);
+
+                LoggerExtensions.Log("ZombieBoss Bomb dropped.");
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimateZombieBossRocket(Construct zombieBossRocket)
+        {
+            ZombieBossRocket zombieBossRocket1 = zombieBossRocket as ZombieBossRocket;
+
+            var speed = zombieBossRocket1.GetMovementSpeed();
+
+            zombieBossRocket1.MoveDownRight(speed);
+
+            if (zombieBossRocket1.IsBlasting)
+            {
+                zombieBossRocket.Expand();
+                zombieBossRocket.Fade(0.02);
+            }
+            else
+            {
+                zombieBossRocket.Pop();
+                zombieBossRocket1.Hover();
+
+                if (_scene_game.SceneState == SceneState.GAME_RUNNING)
+                {
+                    if (zombieBossRocket.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
+                    {
+                        zombieBossRocket1.SetBlast();
+                        LoosePlayerHealth();
+                    }
+
+                    if (zombieBossRocket1.AutoBlast())
+                        zombieBossRocket1.SetBlast();
+                }
+            }
+
+            return true;
+        }
+
+        private bool RecycleZombieBossRocket(Construct zombieBossRocket)
+        {
+            var hitbox = zombieBossRocket.GetHitBox();
+
+            var scaling = ScreenExtensions.GetScreenSpaceScaling();
+
+            // if bomb is blasted and faed or goes out of scene bounds
+            if (zombieBossRocket.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH * scaling || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT * scaling)
+            {
+                zombieBossRocket.IsAnimating = false;
+
+                zombieBossRocket.SetPosition(
+                    left: -3000,
+                    top: -3000);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        #endregion                
+
         #region Rocket
 
         private void SetPlayerRocketDirection(Construct source, AnimableConstruct rocket, Construct rocketTarget)
@@ -3502,6 +3621,11 @@ namespace HonkTrooper
                 generationAction: GenerateUfoBossRocket,
                 startUpAction: SpawnUfoBossRockets,
                 randomizeGenerationDelay: true),
+
+            new Generator(
+                generationDelay: 40,
+                generationAction: GenerateZombieBossRocket,
+                startUpAction: SpawnZombieBossRockets),
 
             new Generator(
                 generationDelay: 200,

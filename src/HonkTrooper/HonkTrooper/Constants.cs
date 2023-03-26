@@ -37,7 +37,7 @@ namespace HonkTrooper
             new (ConstructType.UFO_BOSS_ROCKET_SEEKING, 80, 80),
 
             new (ConstructType.ZOMBIE_BOSS, 180, 180),
-            new (ConstructType.ZOMBIE_BOSS_CUBE, 100, 100),
+            new (ConstructType.ZOMBIE_BOSS_ROCKET, 100, 100),
 
             new (ConstructType.UFO_ENEMY, 160, 160),
             new (ConstructType.UFO_ENEMY_ROCKET, 60, 60),
@@ -158,9 +158,9 @@ namespace HonkTrooper
             new (ConstructType.UFO_BOSS_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_2.png")),
             new (ConstructType.UFO_BOSS_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_3.png")),
 
-            new (ConstructType.ZOMBIE_BOSS_CUBE, new Uri("ms-appx:///HonkTrooper/Assets/Images/zombie_boss_cube_1.png")),
-            new (ConstructType.ZOMBIE_BOSS_CUBE, new Uri("ms-appx:///HonkTrooper/Assets/Images/zombie_boss_cube_2.png")),
-            new (ConstructType.ZOMBIE_BOSS_CUBE, new Uri("ms-appx:///HonkTrooper/Assets/Images/zombie_boss_cube_3.png")),
+            new (ConstructType.ZOMBIE_BOSS_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/zombie_boss_cube_1.png")),
+            new (ConstructType.ZOMBIE_BOSS_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/zombie_boss_cube_2.png")),
+            new (ConstructType.ZOMBIE_BOSS_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/zombie_boss_cube_3.png")),
 
             new (ConstructType.UFO_BOSS_ROCKET_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_seeking.png")),
 
@@ -293,7 +293,7 @@ namespace HonkTrooper
         ZOMBIE_BOSS_HIT,
         ZOMBIE_BOSS_WIN,
 
-        ZOMBIE_BOSS_CUBE,
+        ZOMBIE_BOSS_ROCKET,
 
         UFO_BOSS_ROCKET,
         UFO_BOSS_ROCKET_SEEKING,
