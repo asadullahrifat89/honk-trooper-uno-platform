@@ -119,6 +119,119 @@ namespace HonkTrooper
 
         #endregion
 
+        #region Events
+
+        private async void HonkBomberPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            ScreenExtensions.DisplayInformation.OrientationChanged += DisplayInformation_OrientationChanged;
+            ScreenExtensions.RequiredScreenOrientation = DisplayOrientations.Landscape;
+
+            // set display orientation to required orientation
+            if (ScreenExtensions.GetScreenOrienation() != ScreenExtensions.RequiredScreenOrientation)
+                ScreenExtensions.SetScreenOrientation(ScreenExtensions.RequiredScreenOrientation);
+
+            SetController();
+            SetScene();
+
+            SizeChanged += HonkBomberPage_SizeChanged;
+
+            if (ScreenExtensions.GetScreenOrienation() == ScreenExtensions.RequiredScreenOrientation)
+            {
+                ScreenExtensions.EnterFullScreen(true);
+
+                await Task.Delay(1500);
+
+                GenerateTitleScreen("Honk Trooper");
+                _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
+            }
+            else
+            {
+                GenerateDisplayOrientationChangeScreen();
+            }
+        }
+
+        private void HonkBomberPage_Unloaded(object sender, RoutedEventArgs e)
+        {
+            SizeChanged -= HonkBomberPage_SizeChanged;
+            ScreenExtensions.DisplayInformation.OrientationChanged -= DisplayInformation_OrientationChanged;
+            UnsetController();
+        }
+
+        private void HonkBomberPage_SizeChanged(object sender, SizeChangedEventArgs args)
+        {
+            ScreenExtensions.Width = args.NewSize.Width <= Constants.DEFAULT_SCENE_WIDTH ? args.NewSize.Width : Constants.DEFAULT_SCENE_WIDTH;
+            ScreenExtensions.Height = args.NewSize.Height <= Constants.DEFAULT_SCENE_HEIGHT ? args.NewSize.Height : Constants.DEFAULT_SCENE_HEIGHT;
+
+            SetScreenScaling();
+
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING)
+            {
+                _player.Reposition();
+                GenerateDropShadow(_player);
+            }
+
+            RepositionHoveringTitleScreens();
+            LoggerExtensions.Log($"{ScreenExtensions.Width} x {ScreenExtensions.Height}");
+        }
+
+        private void DisplayInformation_OrientationChanged(DisplayInformation sender, object args)
+        {
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING) // if screen orientation is changed while game is running, pause the game
+            {
+                if (_scene_game.IsAnimating)
+                    PauseGame();
+            }
+            else
+            {
+                ScreenExtensions.EnterFullScreen(true);
+
+                if (ScreenExtensions.GetScreenOrienation() == ScreenExtensions.RequiredScreenOrientation)
+                {
+                    if (_scene_main_menu.Children.OfType<DisplayOrientationChangeScreen>().FirstOrDefault(x => x.IsAnimating) is DisplayOrientationChangeScreen DisplayOrientationChangeScreen)
+                    {
+                        RecycleDisplayOrientationChangeScreen(DisplayOrientationChangeScreen);
+
+                        _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
+                        GenerateTitleScreen("Honk Trooper");
+
+                        _scene_game.Play();
+                        _scene_main_menu.Play();
+                    }
+                }
+                else // ask to change orientation
+                {
+                    if (_scene_game.IsAnimating)
+                        _scene_game.Pause();
+
+                    if (!_scene_main_menu.IsAnimating)
+                        _scene_main_menu.Play();
+
+                    foreach (var hoveringTitleScreen in _scene_main_menu.Children.OfType<HoveringTitleScreen>().Where(x => x.IsAnimating))
+                    {
+                        hoveringTitleScreen.IsAnimating = false;
+                        hoveringTitleScreen.SetPosition(left: -3000, top: -3000);
+                    }
+
+                    foreach (var construct in _scene_game.Children.OfType<Construct>())
+                    {
+                        construct.IsAnimating = false;
+                        construct.SetPosition(left: -3000, top: -3000);
+                    }
+
+                    GenerateDisplayOrientationChangeScreen();
+                }
+            }
+
+            LoggerExtensions.Log($"{sender.CurrentOrientation}");
+        }
+
+        private void PauseButton_Click(object sender, RoutedEventArgs e)
+        {
+            PauseGame();
+        }
+
+        #endregion
+
         #region Methods
 
         #region Game
@@ -2260,7 +2373,7 @@ namespace HonkTrooper
 
         private bool GenerateVehicleEnemy()
         {
-            if (!UfoBossExists() && !VehicleBossExists() && _scene_game.Children.OfType<VehicleEnemy>().FirstOrDefault(x => x.IsAnimating == false) is VehicleEnemy vehicleEnemy)
+            if (!UfoBossExists() && !VehicleBossExists() && !ZombieBossExists() && _scene_game.Children.OfType<VehicleEnemy>().FirstOrDefault(x => x.IsAnimating == false) is VehicleEnemy vehicleEnemy)
             {
                 vehicleEnemy.IsAnimating = true;
                 vehicleEnemy.Reset();
@@ -3709,119 +3822,6 @@ namespace HonkTrooper
 
         #endregion
 
-        #endregion
-
-        #region Events
-
-        private async void HonkBomberPage_Loaded(object sender, RoutedEventArgs e)
-        {
-            ScreenExtensions.DisplayInformation.OrientationChanged += DisplayInformation_OrientationChanged;
-            ScreenExtensions.RequiredScreenOrientation = DisplayOrientations.Landscape;
-
-            // set display orientation to required orientation
-            if (ScreenExtensions.GetScreenOrienation() != ScreenExtensions.RequiredScreenOrientation)
-                ScreenExtensions.SetScreenOrientation(ScreenExtensions.RequiredScreenOrientation);
-
-            SetController();
-            SetScene();
-
-            SizeChanged += HonkBomberPage_SizeChanged;
-
-            if (ScreenExtensions.GetScreenOrienation() == ScreenExtensions.RequiredScreenOrientation)
-            {
-                ScreenExtensions.EnterFullScreen(true);
-
-                await Task.Delay(1500);
-
-                GenerateTitleScreen("Honk Trooper");
-                _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
-            }
-            else
-            {
-                GenerateDisplayOrientationChangeScreen();
-            }
-        }
-
-        private void HonkBomberPage_Unloaded(object sender, RoutedEventArgs e)
-        {
-            SizeChanged -= HonkBomberPage_SizeChanged;
-            ScreenExtensions.DisplayInformation.OrientationChanged -= DisplayInformation_OrientationChanged;
-            UnsetController();
-        }
-
-        private void HonkBomberPage_SizeChanged(object sender, SizeChangedEventArgs args)
-        {
-            ScreenExtensions.Width = args.NewSize.Width <= Constants.DEFAULT_SCENE_WIDTH ? args.NewSize.Width : Constants.DEFAULT_SCENE_WIDTH;
-            ScreenExtensions.Height = args.NewSize.Height <= Constants.DEFAULT_SCENE_HEIGHT ? args.NewSize.Height : Constants.DEFAULT_SCENE_HEIGHT;
-
-            SetScreenScaling();
-
-            if (_scene_game.SceneState == SceneState.GAME_RUNNING)
-            {
-                _player.Reposition();
-                GenerateDropShadow(_player);
-            }
-
-            RepositionHoveringTitleScreens();
-            LoggerExtensions.Log($"{ScreenExtensions.Width} x {ScreenExtensions.Height}");
-        }
-
-        private void DisplayInformation_OrientationChanged(DisplayInformation sender, object args)
-        {
-            if (_scene_game.SceneState == SceneState.GAME_RUNNING) // if screen orientation is changed while game is running, pause the game
-            {
-                if (_scene_game.IsAnimating)
-                    PauseGame();
-            }
-            else
-            {
-                ScreenExtensions.EnterFullScreen(true);
-
-                if (ScreenExtensions.GetScreenOrienation() == ScreenExtensions.RequiredScreenOrientation)
-                {
-                    if (_scene_main_menu.Children.OfType<DisplayOrientationChangeScreen>().FirstOrDefault(x => x.IsAnimating) is DisplayOrientationChangeScreen DisplayOrientationChangeScreen)
-                    {
-                        RecycleDisplayOrientationChangeScreen(DisplayOrientationChangeScreen);
-
-                        _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
-                        GenerateTitleScreen("Honk Trooper");
-
-                        _scene_game.Play();
-                        _scene_main_menu.Play();
-                    }
-                }
-                else // ask to change orientation
-                {
-                    if (_scene_game.IsAnimating)
-                        _scene_game.Pause();
-
-                    if (!_scene_main_menu.IsAnimating)
-                        _scene_main_menu.Play();
-
-                    foreach (var hoveringTitleScreen in _scene_main_menu.Children.OfType<HoveringTitleScreen>().Where(x => x.IsAnimating))
-                    {
-                        hoveringTitleScreen.IsAnimating = false;
-                        hoveringTitleScreen.SetPosition(left: -3000, top: -3000);
-                    }
-
-                    foreach (var construct in _scene_game.Children.OfType<Construct>())
-                    {
-                        construct.IsAnimating = false;
-                        construct.SetPosition(left: -3000, top: -3000);
-                    }
-
-                    GenerateDisplayOrientationChangeScreen();
-                }
-            }
-
-            LoggerExtensions.Log($"{sender.CurrentOrientation}");
-        }
-
-        private void PauseButton_Click(object sender, RoutedEventArgs e)
-        {
-            PauseGame();
-        }
-
-        #endregion
+        #endregion        
     }
 }
