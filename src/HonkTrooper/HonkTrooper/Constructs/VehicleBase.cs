@@ -40,20 +40,54 @@ namespace HonkTrooper
                     {
                         var xLaneWidth = Constants.DEFAULT_SCENE_WIDTH / 4;
 
-                        SetPosition(
-                            left: lane == 0 ? 0 - Width / 2 : (xLaneWidth - Width / 1.5),
-                            top: (Height * -1) + randomY,
-                            z: 3);
+                        switch (lane)
+                        {
+                            case 0:
+                                {
+                                    SetPosition(
+                                        left: 0 - Width / 2,
+                                        top: (Height * -1) + randomY,
+                                        z: 3);
+                                }
+                                break;
+                            case 1:
+                                {
+                                    SetPosition(
+                                        left: (xLaneWidth - Width / 1.5),
+                                        top: (Height * -1) + randomY,
+                                        z: 3);
+                                }
+                                break;                          
+                            default:
+                                break;
+                        }
                     }
                     break;
                 case 1:
                     {
                         var yLaneHeight = Constants.DEFAULT_SCENE_HEIGHT / 6;
 
-                        SetPosition(
-                            left: Width * -1,
-                            top: (lane == 0 ? 0 - Height / 2 : yLaneHeight - Height / 3) + randomY,
-                            z: 3);
+                        switch (lane)
+                        {
+                            case 0:
+                                {
+                                    SetPosition(
+                                        left: Width * -1,
+                                        top: (0 - Height / 2) + randomY,
+                                        z: 3);
+                                }
+                                break;
+                            case 1:
+                                {
+                                    SetPosition(
+                                        left: Width * -1,
+                                        top: (yLaneHeight - Height / 3) + randomY,
+                                        z: 3);
+                                }
+                                break;                           
+                            default:
+                                break;
+                        }
                     }
                     break;
                 default:
