@@ -21,8 +21,11 @@ namespace HonkTrooper
         private readonly Controller _game_controller;
 
         private readonly HealthBar _player_health_bar;
+
         private readonly HealthBar _ufo_boss_health_bar;
         private readonly HealthBar _vehicle_boss_health_bar;
+        private readonly HealthBar _zombie_boss_health_bar;
+
         private readonly HealthBar _powerUp_health_bar;
         private readonly HealthBar _sound_pollution_health_bar;
 
@@ -31,6 +34,7 @@ namespace HonkTrooper
 
         private readonly Threashold _ufo_boss_threashold;
         private readonly Threashold _vehicle_boss_threashold;
+        private readonly Threashold _zombie_boss_threashold;
         private readonly Threashold _enemy_threashold;
 
         private readonly double _sound_pollution_max_limit = 6; // max 3 vehicles or ufos honking to trigger sound pollution limit
@@ -43,9 +47,13 @@ namespace HonkTrooper
         private readonly double _ufo_boss_threashold_limit = 50; // first UfoBoss will appear
         private readonly double _ufo_boss_threashold_limit_increase = 15;
 
+        //TODO: set defaults _zombie_boss_threashold_limit = 50
+        private readonly double _zombie_boss_threashold_limit = 75; // first UfoBoss will appear
+        private readonly double _zombie_boss_threashold_limit_increase = 15;
+
         //TODO: set defaults _enemy_threashold_limit = 80
-        private readonly double _enemy_threashold_limit = 80; // after first enemies will appear
-        private readonly double _enemy_threashold_limit_increase = 10;
+        private readonly double _enemy_threashold_limit = 100; // after first enemies will appear
+        private readonly double _enemy_threashold_limit_increase = 15;
 
         private double _enemy_kill_count;
         private readonly double _enemy_kill_count_limit = 20;
@@ -66,13 +74,18 @@ namespace HonkTrooper
 
             _scene_game = this.GameScene;
             _scene_main_menu = this.MainMenuScene;
+
             _player_health_bar = this.PlayerHealthBar;
+
             _ufo_boss_health_bar = this.UfoBossHealthBar;
+            _zombie_boss_health_bar = this.ZombieBossHealthBar;
             _vehicle_boss_health_bar = this.VehicleBossHealthBar;
+
             _powerUp_health_bar = this.PowerUpHealthBar;
             _sound_pollution_health_bar = this.SoundPollutionBar;
 
             _game_controller = this.GameController;
+
             _game_score_bar = this.GameScoreBar;
             _health_bars = this.HealthBars;
 
@@ -172,6 +185,7 @@ namespace HonkTrooper
 
             _ufo_boss_health_bar.Reset();
             _vehicle_boss_health_bar.Reset();
+            _zombie_boss_health_bar.Reset();
 
             _sound_pollution_health_bar.Reset();
             _sound_pollution_health_bar.SetMaxiumHealth(_sound_pollution_max_limit);
@@ -180,6 +194,7 @@ namespace HonkTrooper
 
             _ufo_boss_threashold.Reset(_ufo_boss_threashold_limit);
             _vehicle_boss_threashold.Reset(_vehicle_boss_threashold_limit);
+            _zombie_boss_threashold.Reset(_zombie_boss_threashold_limit);
 
             _enemy_threashold.Reset(_enemy_threashold_limit);
             _enemy_kill_count = 0;
