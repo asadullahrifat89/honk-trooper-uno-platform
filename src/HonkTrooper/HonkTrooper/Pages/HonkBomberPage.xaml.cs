@@ -48,7 +48,7 @@ namespace HonkTrooper
         private readonly double _ufo_boss_threashold_limit_increase = 15;
 
         //TODO: set defaults _zombie_boss_threashold_limit = 75
-        private readonly double _zombie_boss_threashold_limit = 75; // first UfoBoss will appear
+        private readonly double _zombie_boss_threashold_limit = 10; // first UfoBoss will appear
         private readonly double _zombie_boss_threashold_limit_increase = 15;
 
         //TODO: set defaults _enemy_threashold_limit = 80
@@ -90,6 +90,7 @@ namespace HonkTrooper
             _health_bars = this.HealthBars;
 
             _ufo_boss_threashold = new Threashold(_ufo_boss_threashold_limit);
+            _zombie_boss_threashold = new Threashold(_zombie_boss_threashold_limit);
             _vehicle_boss_threashold = new Threashold(_vehicle_boss_threashold_limit);
             _enemy_threashold = new Threashold(_enemy_threashold_limit);
 
