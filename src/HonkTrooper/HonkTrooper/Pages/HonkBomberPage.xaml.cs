@@ -1796,7 +1796,7 @@ namespace HonkTrooper
 
                 _scene_game.ActivateSlowMotion();
 
-                GenerateInterimScreen("Beware of Psycho Rocket");
+                GenerateInterimScreen("Beware of Cyber Psycho");
 
                 return true;
             }
@@ -1879,7 +1879,7 @@ namespace HonkTrooper
                 _player.SetWinStance();
                 _game_score_bar.GainScore(5);
 
-                GenerateInterimScreen("Psycho Rocket Busted");
+                GenerateInterimScreen("Cyber Psycho Will Return");
 
                 _scene_game.ActivateSlowMotion();
             }
@@ -2764,7 +2764,7 @@ namespace HonkTrooper
 
                 _scene_game.ActivateSlowMotion();
 
-                GenerateInterimScreen("Beware of Zombie Cannon");
+                GenerateInterimScreen("Beware of Blocks Zombie");
 
                 return true;
             }
@@ -2846,7 +2846,7 @@ namespace HonkTrooper
                 _player.SetWinStance();
                 _game_score_bar.GainScore(5);
 
-                GenerateInterimScreen("Zombie Cannon Blasted");
+                GenerateInterimScreen("Blocks Zombie Will Return");
 
                 _scene_game.ActivateSlowMotion();
             }
