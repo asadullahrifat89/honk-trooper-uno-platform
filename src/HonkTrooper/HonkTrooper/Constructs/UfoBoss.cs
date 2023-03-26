@@ -11,7 +11,7 @@ namespace HonkTrooper
         #region Fields
 
         private readonly Random _random;
-        private readonly Uri[] _ufo_boss_uris;
+        private readonly Uri[] _ufo_boss_idle_uris;
         private readonly Uri[] _ufo_boss_hit_uris;
         private readonly Uri[] _ufo_boss_win_uris;
 
@@ -40,15 +40,17 @@ namespace HonkTrooper
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction)
         {
+            ConstructType = ConstructType.UFO_BOSS;
+
             _random = new Random();
 
-            _ufo_boss_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.UFO_BOSS).Select(x => x.Uri).ToArray();
+            //TODO: template wise boss
+
+            _ufo_boss_idle_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.UFO_BOSS_IDLE).Select(x => x.Uri).ToArray();
             _ufo_boss_hit_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.UFO_BOSS_HIT).Select(x => x.Uri).ToArray();
             _ufo_boss_win_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.UFO_BOSS_WIN).Select(x => x.Uri).ToArray();
 
             var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.UFO_BOSS);
-
-            ConstructType = ConstructType.UFO_BOSS;
 
             var width = size.Width;
             var height = size.Height;
@@ -58,7 +60,7 @@ namespace HonkTrooper
 
             SetSize(width: width, height: height);
 
-            var uri = ConstructExtensions.GetRandomContentUri(_ufo_boss_uris);
+            var uri = ConstructExtensions.GetRandomContentUri(_ufo_boss_idle_uris);
 
             _content_image = new Image()
             {
@@ -109,7 +111,7 @@ namespace HonkTrooper
 
             _movementDirection = MovementDirection.None;
 
-            var uri = ConstructExtensions.GetRandomContentUri(_ufo_boss_uris);
+            var uri = ConstructExtensions.GetRandomContentUri(_ufo_boss_idle_uris);
             _content_image.Source = new BitmapImage(uriSource: uri);
 
             RandomizeMovementPattern();
@@ -138,7 +140,7 @@ namespace HonkTrooper
         private void SetIdleStance()
         {
             UfoBossStance = UfoBossStance.Idle;
-            var uri = ConstructExtensions.GetRandomContentUri(_ufo_boss_uris);
+            var uri = ConstructExtensions.GetRandomContentUri(_ufo_boss_idle_uris);
             _content_image.Source = new BitmapImage(uriSource: uri);
         }
 
@@ -549,21 +551,22 @@ namespace HonkTrooper
         {
             var flightSpeed = distance / _lag;
             return flightSpeed;
-
-            //return flightSpeed < Constants.DEFAULT_SPEED_OFFSET - 1 
-            //    ? Constants.DEFAULT_SPEED_OFFSET - 1 
-            //    : flightSpeed;
         }
 
         private void RandomizeMovementPattern()
         {
-            MovementPattern = (UfoBossMovementPattern)_random.Next(Enum.GetNames(typeof(UfoBossMovementPattern)).Length);
-
             _changeMovementPatternDelay = _random.Next(40, 60);
             _movementDirection = MovementDirection.None;
+            MovementPattern = (UfoBossMovementPattern)_random.Next(Enum.GetNames(typeof(UfoBossMovementPattern)).Length);
         }
 
         #endregion
+    }
+
+    public enum UfoBossType
+    {
+        PsychoRocket,
+        Slingshot,
     }
 
     public enum UfoBossMovementPattern

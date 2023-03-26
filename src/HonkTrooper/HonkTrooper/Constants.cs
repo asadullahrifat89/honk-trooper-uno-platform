@@ -143,9 +143,9 @@ namespace HonkTrooper
             new (ConstructType.CLOUD, new Uri("ms-appx:///HonkTrooper/Assets/Images/cloud_2.png")),
             new (ConstructType.CLOUD, new Uri("ms-appx:///HonkTrooper/Assets/Images/cloud_3.png")),
 
-            new (ConstructType.UFO_BOSS, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_3_idle.png")),
-            new (ConstructType.UFO_BOSS_HIT, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_3_hit.png")),
-            new (ConstructType.UFO_BOSS_WIN, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_3_win.png")),
+            new (ConstructType.UFO_BOSS_IDLE, new Uri("ms-appx:///HonkTrooper/Assets/Images/ufo_boss_1_idle.png")),
+            new (ConstructType.UFO_BOSS_HIT, new Uri("ms-appx:///HonkTrooper/Assets/Images/ufo_boss_1_hit.png")),
+            new (ConstructType.UFO_BOSS_WIN, new Uri("ms-appx:///HonkTrooper/Assets/Images/ufo_boss_1_win.png")),
 
             new (ConstructType.UFO_BOSS_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_1.png")),
             new (ConstructType.UFO_BOSS_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_2.png")),
