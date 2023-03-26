@@ -13,6 +13,17 @@
         MaxWidth="1900"
         MaxHeight="940">
 
+        <Grid.Resources>
+            <Storyboard x:Name="RoadBackgroundStoryboard">
+                <ColorAnimation
+                    Storyboard.TargetName="RoadBackground"
+                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                    From="#5e6b73"
+                    To="#191919"
+                    Duration="0:0:4" />
+            </Storyboard>
+        </Grid.Resources>
+
         <Border
             x:Name="RoadBackground"
             Background="{ThemeResource RoadBackgroundColor}"
@@ -27,7 +38,7 @@
             BorderThickness="3">
             <Border.Background>
                 <LinearGradientBrush Opacity="1" StartPoint="1,0" EndPoint="0.5,1">
-                    <GradientStop Offset="0.00" Color="#2f3a5a" />
+                    <GradientStop Offset="0.00" Color="#191919" />
                     <GradientStop Offset="0.20" Color="Transparent" />
                 </LinearGradientBrush>
             </Border.Background>
@@ -39,7 +50,7 @@
             BorderThickness="3">
             <Border.Background>
                 <LinearGradientBrush Opacity="1" StartPoint="0.5,1" EndPoint="1,0">
-                    <GradientStop Offset="0.00" Color="#2f3a5a" />
+                    <GradientStop Offset="0.00" Color="#191919" />
                     <GradientStop Offset="0.20" Color="Transparent" />
                 </LinearGradientBrush>
             </Border.Background>
