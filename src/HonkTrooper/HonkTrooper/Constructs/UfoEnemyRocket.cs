@@ -16,7 +16,6 @@ namespace HonkTrooper
 
         private readonly Image _content_image;
 
-
         private double _autoBlastDelay;
         private readonly double _autoBlastDelayDefault = 12;
 
