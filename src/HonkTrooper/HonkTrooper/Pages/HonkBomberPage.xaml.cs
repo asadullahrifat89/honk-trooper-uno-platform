@@ -734,6 +734,7 @@ namespace HonkTrooper
             _player.DepleteAttackStance();
             _player.DepleteWinStance();
             _player.DepleteHitStance();
+            _player.RecoverFromHealthLoss();
 
             if (_scene_game.SceneState == SceneState.GAME_RUNNING)
             {
@@ -1832,6 +1833,12 @@ namespace HonkTrooper
                             sceneWidth: Constants.DEFAULT_SCENE_WIDTH * scaling,
                             sceneHeight: Constants.DEFAULT_SCENE_HEIGHT * scaling,
                             playerPoint: _player.GetCloseHitBox());
+
+
+                        if (ufoBoss1.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
+                        {
+                            LoosePlayerHealth();
+                        }
                     }
                     else
                     {
@@ -2799,6 +2806,11 @@ namespace HonkTrooper
                             speed: speed,
                             sceneWidth: Constants.DEFAULT_SCENE_WIDTH * scaling,
                             sceneHeight: Constants.DEFAULT_SCENE_HEIGHT * scaling);
+
+                        if (zombieBoss1.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
+                        {
+                            LoosePlayerHealth();
+                        }
                     }
                     else
                     {
