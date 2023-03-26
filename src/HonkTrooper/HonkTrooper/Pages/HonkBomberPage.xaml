@@ -79,6 +79,10 @@
                 x:Name="VehicleBossHealthBar"
                 Margin="0,5"
                 VerticalAlignment="Top" />
+            <HealthBar
+                x:Name="ZombieBossHealthBar"
+                Margin="0,5"
+                VerticalAlignment="Top" />
             <StackPanel VerticalAlignment="Top" Orientation="Vertical">
                 <HealthBar x:Name="PlayerHealthBar" Margin="5" />
                 <HealthBar x:Name="PowerUpHealthBar" Margin="5,0,5,5" />

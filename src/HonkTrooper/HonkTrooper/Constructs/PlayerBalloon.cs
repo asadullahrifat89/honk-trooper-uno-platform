@@ -38,6 +38,8 @@ namespace HonkTrooper
 
         private MovementDirection _movementDirection;
 
+        private double _health_loss_recovery_Delay = 10;
+
         #endregion
 
         #region Ctor
@@ -104,8 +106,6 @@ namespace HonkTrooper
 
         public void Reposition()
         {
-            //var scaling = ScreenExtensions.GetScreenSpaceScaling();
-
             SetPosition(
                 left: ((Scene.Width / 4) * 2) - Width / 2,
                 top: (Scene.Height / 2 - Height / 2) - 150,
@@ -425,8 +425,26 @@ namespace HonkTrooper
 
         public void LooseHealth()
         {
-            Health -= 5;
-            _audioStub.Play(SoundType.PLAYER_HEALTH_LOSS);
+            if (_health_loss_recovery_Delay <= 0)
+            {
+                Health -= 5;
+                Opacity = 0.8;
+
+                _audioStub.Play(SoundType.PLAYER_HEALTH_LOSS);
+
+                _health_loss_recovery_Delay = 10;
+            }
+        }
+
+        public void RecoverFromHealthLoss()
+        {
+            if (_health_loss_recovery_Delay > 0)
+            {
+                _health_loss_recovery_Delay -= 0.1;
+            }
+
+            if (_health_loss_recovery_Delay <= 0 && Opacity != 1)
+                Opacity = 1;
         }
 
         public void GainHealth()

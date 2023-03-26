@@ -21,8 +21,11 @@ namespace HonkTrooper
         private readonly Controller _game_controller;
 
         private readonly HealthBar _player_health_bar;
+
         private readonly HealthBar _ufo_boss_health_bar;
         private readonly HealthBar _vehicle_boss_health_bar;
+        private readonly HealthBar _zombie_boss_health_bar;
+
         private readonly HealthBar _powerUp_health_bar;
         private readonly HealthBar _sound_pollution_health_bar;
 
@@ -31,6 +34,7 @@ namespace HonkTrooper
 
         private readonly Threashold _ufo_boss_threashold;
         private readonly Threashold _vehicle_boss_threashold;
+        private readonly Threashold _zombie_boss_threashold;
         private readonly Threashold _enemy_threashold;
 
         private readonly double _sound_pollution_max_limit = 6; // max 3 vehicles or ufos honking to trigger sound pollution limit
@@ -43,18 +47,22 @@ namespace HonkTrooper
         private readonly double _ufo_boss_threashold_limit = 50; // first UfoBoss will appear
         private readonly double _ufo_boss_threashold_limit_increase = 15;
 
+        //TODO: set defaults _zombie_boss_threashold_limit = 75
+        private readonly double _zombie_boss_threashold_limit = 75; // first UfoBoss will appear
+        private readonly double _zombie_boss_threashold_limit_increase = 15;
+
         //TODO: set defaults _enemy_threashold_limit = 80
-        private readonly double _enemy_threashold_limit = 80; // after first enemies will appear
-        private readonly double _enemy_threashold_limit_increase = 10;
+        private readonly double _enemy_threashold_limit = 100; // after first enemies will appear
+        private readonly double _enemy_threashold_limit_increase = 15;
 
         private double _enemy_kill_count;
         private readonly double _enemy_kill_count_limit = 20;
 
         private bool _enemy_fleet_appeared;
 
-        private readonly AudioStub _audio_stub;
-
         private int _selected_player_template;
+
+        private readonly AudioStub _audio_stub;
 
         #endregion
 
@@ -66,17 +74,23 @@ namespace HonkTrooper
 
             _scene_game = this.GameScene;
             _scene_main_menu = this.MainMenuScene;
+
             _player_health_bar = this.PlayerHealthBar;
+
             _ufo_boss_health_bar = this.UfoBossHealthBar;
+            _zombie_boss_health_bar = this.ZombieBossHealthBar;
             _vehicle_boss_health_bar = this.VehicleBossHealthBar;
+
             _powerUp_health_bar = this.PowerUpHealthBar;
             _sound_pollution_health_bar = this.SoundPollutionBar;
 
             _game_controller = this.GameController;
+
             _game_score_bar = this.GameScoreBar;
             _health_bars = this.HealthBars;
 
             _ufo_boss_threashold = new Threashold(_ufo_boss_threashold_limit);
+            _zombie_boss_threashold = new Threashold(_zombie_boss_threashold_limit);
             _vehicle_boss_threashold = new Threashold(_vehicle_boss_threashold_limit);
             _enemy_threashold = new Threashold(_enemy_threashold_limit);
 
@@ -101,6 +115,119 @@ namespace HonkTrooper
 
             Loaded += HonkBomberPage_Loaded;
             Unloaded += HonkBomberPage_Unloaded;
+        }
+
+        #endregion
+
+        #region Events
+
+        private async void HonkBomberPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            ScreenExtensions.DisplayInformation.OrientationChanged += DisplayInformation_OrientationChanged;
+            ScreenExtensions.RequiredScreenOrientation = DisplayOrientations.Landscape;
+
+            // set display orientation to required orientation
+            if (ScreenExtensions.GetScreenOrienation() != ScreenExtensions.RequiredScreenOrientation)
+                ScreenExtensions.SetScreenOrientation(ScreenExtensions.RequiredScreenOrientation);
+
+            SetController();
+            SetScene();
+
+            SizeChanged += HonkBomberPage_SizeChanged;
+
+            if (ScreenExtensions.GetScreenOrienation() == ScreenExtensions.RequiredScreenOrientation)
+            {
+                ScreenExtensions.EnterFullScreen(true);
+
+                await Task.Delay(1500);
+
+                GenerateTitleScreen("Honk Trooper");
+                _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
+            }
+            else
+            {
+                GenerateDisplayOrientationChangeScreen();
+            }
+        }
+
+        private void HonkBomberPage_Unloaded(object sender, RoutedEventArgs e)
+        {
+            SizeChanged -= HonkBomberPage_SizeChanged;
+            ScreenExtensions.DisplayInformation.OrientationChanged -= DisplayInformation_OrientationChanged;
+            UnsetController();
+        }
+
+        private void HonkBomberPage_SizeChanged(object sender, SizeChangedEventArgs args)
+        {
+            ScreenExtensions.Width = args.NewSize.Width <= Constants.DEFAULT_SCENE_WIDTH ? args.NewSize.Width : Constants.DEFAULT_SCENE_WIDTH;
+            ScreenExtensions.Height = args.NewSize.Height <= Constants.DEFAULT_SCENE_HEIGHT ? args.NewSize.Height : Constants.DEFAULT_SCENE_HEIGHT;
+
+            SetScreenScaling();
+
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING)
+            {
+                _player.Reposition();
+                GenerateDropShadow(_player);
+            }
+
+            RepositionHoveringTitleScreens();
+            LoggerExtensions.Log($"{ScreenExtensions.Width} x {ScreenExtensions.Height}");
+        }
+
+        private void DisplayInformation_OrientationChanged(DisplayInformation sender, object args)
+        {
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING) // if screen orientation is changed while game is running, pause the game
+            {
+                if (_scene_game.IsAnimating)
+                    PauseGame();
+            }
+            else
+            {
+                ScreenExtensions.EnterFullScreen(true);
+
+                if (ScreenExtensions.GetScreenOrienation() == ScreenExtensions.RequiredScreenOrientation)
+                {
+                    if (_scene_main_menu.Children.OfType<DisplayOrientationChangeScreen>().FirstOrDefault(x => x.IsAnimating) is DisplayOrientationChangeScreen DisplayOrientationChangeScreen)
+                    {
+                        RecycleDisplayOrientationChangeScreen(DisplayOrientationChangeScreen);
+
+                        _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
+                        GenerateTitleScreen("Honk Trooper");
+
+                        _scene_game.Play();
+                        _scene_main_menu.Play();
+                    }
+                }
+                else // ask to change orientation
+                {
+                    if (_scene_game.IsAnimating)
+                        _scene_game.Pause();
+
+                    if (!_scene_main_menu.IsAnimating)
+                        _scene_main_menu.Play();
+
+                    foreach (var hoveringTitleScreen in _scene_main_menu.Children.OfType<HoveringTitleScreen>().Where(x => x.IsAnimating))
+                    {
+                        hoveringTitleScreen.IsAnimating = false;
+                        hoveringTitleScreen.SetPosition(left: -3000, top: -3000);
+                    }
+
+                    foreach (var construct in _scene_game.Children.OfType<Construct>())
+                    {
+                        construct.IsAnimating = false;
+                        construct.SetPosition(left: -3000, top: -3000);
+                    }
+
+                    GenerateDisplayOrientationChangeScreen();
+                }
+            }
+
+            LoggerExtensions.Log($"{sender.CurrentOrientation}");
+        }
+
+        private void PauseButton_Click(object sender, RoutedEventArgs e)
+        {
+            PauseGame();
         }
 
         #endregion
@@ -172,6 +299,7 @@ namespace HonkTrooper
 
             _ufo_boss_health_bar.Reset();
             _vehicle_boss_health_bar.Reset();
+            _zombie_boss_health_bar.Reset();
 
             _sound_pollution_health_bar.Reset();
             _sound_pollution_health_bar.SetMaxiumHealth(_sound_pollution_max_limit);
@@ -180,6 +308,7 @@ namespace HonkTrooper
 
             _ufo_boss_threashold.Reset(_ufo_boss_threashold_limit);
             _vehicle_boss_threashold.Reset(_vehicle_boss_threashold_limit);
+            _zombie_boss_threashold.Reset(_zombie_boss_threashold_limit);
 
             _enemy_threashold.Reset(_enemy_threashold_limit);
             _enemy_kill_count = 0;
@@ -583,7 +712,7 @@ namespace HonkTrooper
                     break;
             }
 
-            SyncDropShadow(source: _player);
+            GenerateDropShadow(source: _player);
             SetPlayerHealthBar();
 
             return true;
@@ -605,6 +734,7 @@ namespace HonkTrooper
             _player.DepleteAttackStance();
             _player.DepleteWinStance();
             _player.DepleteHitStance();
+            _player.RecoverFromHealthLoss();
 
             if (_scene_game.SceneState == SceneState.GAME_RUNNING)
             {
@@ -635,7 +765,7 @@ namespace HonkTrooper
         {
             if (_game_controller.IsAttacking)
             {
-                if (UfoEnemyExists() || UfoBossExists())
+                if (UfoEnemyExists() || UfoBossExists() || ZombieBossExists())
                 {
                     if (_powerUp_health_bar.HasHealth && (PowerUpType)_powerUp_health_bar.Tag == PowerUpType.SEEKING_BALLS)
                         GeneratePlayerRocketSeeking();
@@ -717,7 +847,7 @@ namespace HonkTrooper
                     playerFireCracker.Reposition(
                         player: _player);
 
-                    SyncDropShadow(source: playerFireCracker);
+                    GenerateDropShadow(source: playerFireCracker);
 
                     LoggerExtensions.Log("Player firecracker dropped.");
 
@@ -816,7 +946,7 @@ namespace HonkTrooper
                 playerRocket.SetPosition(
                     left: -3000,
                     top: -3000,
-                    z: 7);
+                    z: 8);
 
                 _scene_game.AddToScene(playerRocket);
 
@@ -836,37 +966,42 @@ namespace HonkTrooper
                 playerRocket.Reset();
                 playerRocket.IsAnimating = true;
                 playerRocket.SetPopping();
+                playerRocket.Reposition(player: _player);
 
-                playerRocket.Reposition(
-                    Player: _player);
-
-                SyncDropShadow(source: playerRocket);
+                GenerateDropShadow(source: playerRocket);
 
                 var playerDistantHitBox = _player.GetDistantHitBox();
 
                 // get closest possible target
-                UfoBossRocketSeeking UfoBossRocketSeeking = _scene_game.Children.OfType<UfoBossRocketSeeking>()?.FirstOrDefault(x => x.IsAnimating && !x.IsBlasting && x.GetHitBox().IntersectsWith(playerDistantHitBox));
-                UfoBoss UfoBoss = _scene_game.Children.OfType<UfoBoss>()?.FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetHitBox().IntersectsWith(playerDistantHitBox));
-                UfoEnemy enemy = _scene_game.Children.OfType<UfoEnemy>()?.FirstOrDefault(x => x.IsAnimating && !x.IsFadingComplete && x.GetHitBox().IntersectsWith(playerDistantHitBox));
+                UfoBossRocketSeeking ufoBossRocketSeeking = _scene_game.Children.OfType<UfoBossRocketSeeking>()?.FirstOrDefault(x => x.IsAnimating && !x.IsBlasting && x.GetHitBox().IntersectsWith(playerDistantHitBox));
+                UfoBoss ufoBoss = _scene_game.Children.OfType<UfoBoss>()?.FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetHitBox().IntersectsWith(playerDistantHitBox));
+                ZombieBoss zombieBoss = _scene_game.Children.OfType<ZombieBoss>()?.FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetHitBox().IntersectsWith(playerDistantHitBox));
+
+                UfoEnemy ufoEnemy = _scene_game.Children.OfType<UfoEnemy>()?.FirstOrDefault(x => x.IsAnimating && !x.IsFadingComplete && x.GetHitBox().IntersectsWith(playerDistantHitBox));
 
                 // if not found then find random target
-                UfoBossRocketSeeking ??= _scene_game.Children.OfType<UfoBossRocketSeeking>().FirstOrDefault(x => x.IsAnimating && !x.IsBlasting);
-                UfoBoss ??= _scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking);
-                enemy ??= _scene_game.Children.OfType<UfoEnemy>().FirstOrDefault(x => x.IsAnimating && !x.IsFadingComplete);
+                ufoBossRocketSeeking ??= _scene_game.Children.OfType<UfoBossRocketSeeking>().FirstOrDefault(x => x.IsAnimating && !x.IsBlasting);
+                ufoBoss ??= _scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking);
+                zombieBoss ??= _scene_game.Children.OfType<ZombieBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking);
+                ufoEnemy ??= _scene_game.Children.OfType<UfoEnemy>().FirstOrDefault(x => x.IsAnimating && !x.IsFadingComplete);
 
                 LoggerExtensions.Log("Player Bomb dropped.");
 
-                if (enemy is not null)
+                if (ufoEnemy is not null)
                 {
-                    SetPlayerRocketDirection(source: _player, rocket: playerRocket, rocketTarget: enemy);
+                    SetPlayerRocketDirection(source: _player, rocket: playerRocket, rocketTarget: ufoEnemy);
                 }
-                else if (UfoBoss is not null)
+                else if (ufoBoss is not null)
                 {
-                    SetPlayerRocketDirection(source: _player, rocket: playerRocket, rocketTarget: UfoBoss);
+                    SetPlayerRocketDirection(source: _player, rocket: playerRocket, rocketTarget: ufoBoss);
                 }
-                else if (UfoBossRocketSeeking is not null)
+                else if (ufoBossRocketSeeking is not null)
                 {
-                    SetPlayerRocketDirection(source: _player, rocket: playerRocket, rocketTarget: UfoBossRocketSeeking);
+                    SetPlayerRocketDirection(source: _player, rocket: playerRocket, rocketTarget: ufoBossRocketSeeking);
+                }
+                else if (zombieBoss is not null)
+                {
+                    SetPlayerRocketDirection(source: _player, rocket: playerRocket, rocketTarget: zombieBoss);
                 }
 
                 return true;
@@ -919,11 +1054,25 @@ namespace HonkTrooper
                         LooseUfoBossHealth(ufoBoss);
                     }
 
+                    // if player bomb touches ZombieBoss, it blasts, ZombieBoss looses health
+                    if (_scene_game.Children.OfType<ZombieBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetCloseHitBox().IntersectsWith(hitBox)) is ZombieBoss zombieBoss)
+                    {
+                        playerRocket1.SetBlast();
+                        LooseZombieBossHealth(zombieBoss);
+                    }
+
                     // if player bomb touches UfoBoss's seeking bomb, it blasts
                     if (_scene_game.Children.OfType<UfoBossRocketSeeking>().FirstOrDefault(x => x.IsAnimating && !x.IsBlasting && x.GetCloseHitBox().IntersectsWith(hitBox)) is UfoBossRocketSeeking ufoBossRocketSeeking)
                     {
                         playerRocket1.SetBlast();
                         ufoBossRocketSeeking.SetBlast();
+                    }
+
+                    // if player bomb touches ZombieBoss's seeking bomb, it blasts
+                    if (_scene_game.Children.OfType<ZombieBossRocket>().FirstOrDefault(x => x.IsAnimating && !x.IsBlasting && x.GetCloseHitBox().IntersectsWith(hitBox)) is ZombieBossRocket zombieBossRocket)
+                    {
+                        playerRocket1.SetBlast();
+                        zombieBossRocket.LooseHealth();
                     }
 
                     // if player bomb touches enemy, it blasts, enemy looses health
@@ -999,7 +1148,7 @@ namespace HonkTrooper
                 playerRocketSeeking.SetPopping();
                 playerRocketSeeking.Reposition(player: _player);
 
-                SyncDropShadow(source: playerRocketSeeking);
+                GenerateDropShadow(source: playerRocketSeeking);
 
                 if (_powerUp_health_bar.HasHealth && (PowerUpType)_powerUp_health_bar.Tag == PowerUpType.SEEKING_BALLS)
                     DepletePowerUp();
@@ -1093,366 +1242,6 @@ namespace HonkTrooper
             // use up the power up
             if (_powerUp_health_bar.HasHealth)
                 _powerUp_health_bar.SetValue(_powerUp_health_bar.GetValue() - 1);
-        }
-
-        #endregion
-
-        #region VehicleEnemy
-
-        private bool SpawnVehicleEnemys()
-        {
-            for (int i = 0; i < 8; i++)
-            {
-                VehicleEnemy vehicleEnemy = new(
-                    animateAction: AnimateVehicleEnemy,
-                    recycleAction: RecycleVehicleEnemy);
-
-                _scene_game.AddToScene(vehicleEnemy);
-
-                vehicleEnemy.SetPosition(
-                    left: -3000,
-                    top: -3000);
-            }
-
-            return true;
-        }
-
-        private bool GenerateVehicleEnemy()
-        {
-            if (!UfoBossExists() && !VehicleBossExists() && _scene_game.Children.OfType<VehicleEnemy>().FirstOrDefault(x => x.IsAnimating == false) is VehicleEnemy vehicleEnemy)
-            {
-                vehicleEnemy.IsAnimating = true;
-                vehicleEnemy.Reset();
-                vehicleEnemy.Reposition();
-
-                return true;
-            }
-            return false;
-        }
-
-        private bool AnimateVehicleEnemy(Construct vehicleEnemy)
-        {
-            VehicleEnemy vehicleEnemy1 = vehicleEnemy as VehicleEnemy;
-
-            vehicleEnemy.Pop();
-            vehicleEnemy1.Vibrate();
-
-            var speed = vehicleEnemy1.GetMovementSpeed();
-            vehicleEnemy1.MoveDownRight(speed);
-
-            if (_scene_game.SceneState == SceneState.GAME_RUNNING)
-            {
-                if (vehicleEnemy1.Honk())
-                    GenerateVehicleEnemyHonk(vehicleEnemy1);
-            }
-
-            PreventVehicleEnemyOverlapping(vehicleEnemy);
-
-            return true;
-        }
-
-        private bool RecycleVehicleEnemy(Construct vehicleEnemy)
-        {
-            var hitBox = vehicleEnemy.GetHitBox();
-
-            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left > Constants.DEFAULT_SCENE_WIDTH)
-            {
-                vehicleEnemy.IsAnimating = false;
-
-                vehicleEnemy.SetPosition(
-                    left: -3000,
-                    top: -3000);
-            }
-
-            return true;
-        }
-
-        private void PreventVehicleEnemyOverlapping(Construct vehicleEnemy)
-        {
-            //var vehicleEnemy_distantHitBox = vehicleEnemy.GetDistantHitBox();
-
-            if (_scene_game.Children.OfType<VehicleEnemy>()
-                .FirstOrDefault(x => x.IsAnimating && x.GetHitBox().IntersectsWith(vehicleEnemy.GetHitBox())) is Construct collidingVehicleEnemy)
-            {
-                var hitBox = vehicleEnemy.GetHitBox();
-
-                //if (vehicleEnemy.SpeedOffset == collidingVehicleEnemy.SpeedOffset)
-                //{
-                //    if (vehicleEnemy.SpeedOffset > -1)
-                //        vehicleEnemy.SpeedOffset--;
-                //}
-                //else
-                //{
-
-                if (collidingVehicleEnemy.SpeedOffset > vehicleEnemy.SpeedOffset) // colliding vehicleEnemy is faster
-                {
-                    vehicleEnemy.SpeedOffset = collidingVehicleEnemy.SpeedOffset;
-                }
-                else if (vehicleEnemy.SpeedOffset > collidingVehicleEnemy.SpeedOffset) // vehicleEnemy is faster
-                {
-                    collidingVehicleEnemy.SpeedOffset = vehicleEnemy.SpeedOffset;
-                }
-                //}
-            }
-        }
-
-        #endregion        
-
-        #region VehicleBoss
-
-        private bool SpawnVehicleBosses()
-        {
-            VehicleBoss vehicleBoss = new(
-                animateAction: AnimateVehicleBoss,
-                recycleAction: RecycleVehicleBoss);
-
-            vehicleBoss.SetPosition(
-                left: -3000,
-                top: -3000,
-                z: 3);
-
-            _scene_game.AddToScene(vehicleBoss);
-
-            return true;
-        }
-
-        private bool GenerateVehicleBoss()
-        {
-            // if scene doesn't contain a VehicleBoss then pick a random VehicleBoss and add to scene
-
-            if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
-                _vehicle_boss_threashold.ShouldRelease(_game_score_bar.GetScore()) && !VehicleBossExists() &&
-                _scene_game.Children.OfType<VehicleBoss>().FirstOrDefault(x => x.IsAnimating == false) is VehicleBoss vehicleBoss)
-            {
-                _audio_stub.Stop(SoundType.GAME_BACKGROUND_MUSIC);
-                _audio_stub.Play(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
-                _audio_stub.SetVolume(SoundType.AMBIENCE, 0.4);
-
-                vehicleBoss.IsAnimating = true;
-
-                vehicleBoss.Reset();
-                vehicleBoss.Reposition();
-                vehicleBoss.SetZ(3);
-
-                // set VehicleBoss health
-                vehicleBoss.Health = _vehicle_boss_threashold.GetReleasePointDifference() * 1.5;
-
-                _vehicle_boss_threashold.IncreaseThreasholdLimit(increment: _vehicle_boss_threashold_limit_increase, currentPoint: _game_score_bar.GetScore());
-
-                _vehicle_boss_health_bar.SetMaxiumHealth(vehicleBoss.Health);
-                _vehicle_boss_health_bar.SetValue(vehicleBoss.Health);
-                _vehicle_boss_health_bar.SetIcon(vehicleBoss.GetContentUri());
-                _vehicle_boss_health_bar.SetBarColor(color: Colors.Crimson);
-
-                GenerateInterimScreen("Crazy Honker Arrived");
-                _scene_game.ActivateSlowMotion();
-
-                LoggerExtensions.Log("Vehicle boss generated.");
-
-                return true;
-            }
-
-            return false;
-        }
-
-        private bool AnimateVehicleBoss(Construct vehicleBoss)
-        {
-            VehicleBoss vehicleBoss1 = vehicleBoss as VehicleBoss;
-
-            var speed = vehicleBoss1.GetMovementSpeed();
-
-            if (vehicleBoss1.IsDead)
-            {
-                vehicleBoss1.MoveDownRight(speed);
-            }
-            else
-            {
-                vehicleBoss.Pop();
-
-                if (_scene_game.SceneState == SceneState.GAME_RUNNING)
-                {
-                    var scaling = ScreenExtensions.GetScreenSpaceScaling();
-
-                    if (vehicleBoss1.IsAttacking)
-                    {
-                        vehicleBoss1.Move(
-                            speed: speed,
-                            sceneWidth: Constants.DEFAULT_SCENE_WIDTH * scaling,
-                            sceneHeight: Constants.DEFAULT_SCENE_HEIGHT * scaling);
-
-                        if (vehicleBoss1.Honk())
-                            GenerateVehicleBossHonk(vehicleBoss1);
-                    }
-                    else
-                    {
-                        if (_scene_game.Children.OfType<VehicleEnemy>().All(x => !x.IsAnimating)
-                            || _scene_game.Children.OfType<VehicleEnemy>().Where(x => x.IsAnimating).All(x => x.GetLeft() > Constants.DEFAULT_SCENE_WIDTH * scaling / 2)) // only bring the boss in view when all other vechiles are gone
-                        {
-                            vehicleBoss1.MoveDownRight(speed);
-
-                            if (vehicleBoss1.GetLeft() > (Constants.DEFAULT_SCENE_WIDTH * scaling / 3)) // bring boss to a suitable distance from player and then start attacking
-                            {
-                                vehicleBoss1.IsAttacking = true;
-                            }
-                        }
-                    }
-                }
-            }
-
-            LoggerExtensions.Log($"Vehicle boss at: x: {vehicleBoss1.GetLeft()} y: {vehicleBoss1.GetTop()}.");
-
-            return true;
-        }
-
-        private bool RecycleVehicleBoss(Construct vehicleBoss)
-        {
-            var hitBox = vehicleBoss.GetHitBox();
-
-            VehicleBoss vehicleBoss1 = vehicleBoss as VehicleBoss;
-
-            if (vehicleBoss1.IsDead && hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left > Constants.DEFAULT_SCENE_WIDTH)
-            {
-                vehicleBoss.IsAnimating = false;
-
-                vehicleBoss.SetPosition(
-                    left: -3000,
-                    top: -3000);
-            }
-
-            return true;
-        }
-
-        private void LooseVehicleBossHealth(VehicleBoss vehicleBoss)
-        {
-            vehicleBoss.SetPopping();
-            vehicleBoss.LooseHealth();
-
-            _vehicle_boss_health_bar.SetValue(vehicleBoss.Health);
-
-            if (vehicleBoss.IsDead)
-            {
-                _audio_stub.Stop(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
-                _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
-                _audio_stub.SetVolume(SoundType.AMBIENCE, 0.6);
-
-                _player.SetWinStance();
-                _game_score_bar.GainScore(5);
-
-                GenerateInterimScreen("Crazy Honker Busted");
-
-                _scene_game.ActivateSlowMotion();
-            }
-        }
-
-        private bool VehicleBossExists()
-        {
-            return _scene_game.Children.OfType<VehicleBoss>().Any(x => x.IsAnimating);
-        }
-
-        #endregion
-
-        #region VehicleBossRocket
-
-        private bool SpawnVehicleBossRockets()
-        {
-            for (int i = 0; i < 4; i++)
-            {
-                VehicleBossRocket vehicleBossRocket = new(
-                    animateAction: AnimateVehicleBossRocket,
-                    recycleAction: RecycleVehicleBossRocket);
-
-                vehicleBossRocket.SetPosition(
-                    left: -3000,
-                    top: -3000,
-                    z: 7);
-
-                _scene_game.AddToScene(vehicleBossRocket);
-
-                SpawnDropShadow(source: vehicleBossRocket);
-            }
-
-            return true;
-        }
-
-        private bool GenerateVehicleBossRocket()
-        {
-            if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
-                _scene_game.Children.OfType<VehicleBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is VehicleBoss vehicleBoss &&
-                _scene_game.Children.OfType<VehicleBossRocket>().FirstOrDefault(x => x.IsAnimating == false) is VehicleBossRocket vehicleBossRocket)
-            {
-                vehicleBossRocket.Reset();
-                vehicleBossRocket.IsAnimating = true;
-                vehicleBossRocket.IsGravitatingUpwards = true;
-                vehicleBossRocket.SetPopping();
-
-                vehicleBossRocket.Reposition(vehicleBoss: vehicleBoss);
-                vehicleBossRocket.AwaitMoveUpRight = true;
-
-                SyncDropShadow(source: vehicleBossRocket);
-
-                LoggerExtensions.Log("VehicleBoss rocket dropped.");
-
-                return true;
-            }
-
-            return false;
-        }
-
-        private bool AnimateVehicleBossRocket(Construct vehicleBossRocket)
-        {
-            VehicleBossRocket vehicleBossRocket1 = vehicleBossRocket as VehicleBossRocket;
-
-            var speed = vehicleBossRocket1.GetMovementSpeed();
-
-            if (vehicleBossRocket1.AwaitMoveUpRight)
-            {
-                vehicleBossRocket1.MoveUpRight(speed);
-            }
-
-            if (vehicleBossRocket1.IsBlasting)
-            {
-                vehicleBossRocket.Expand();
-                vehicleBossRocket.Fade(0.02);
-            }
-            else
-            {
-                vehicleBossRocket.Pop();
-                vehicleBossRocket1.DillyDally();
-
-                if (_scene_game.SceneState == SceneState.GAME_RUNNING)
-                {
-                    if (vehicleBossRocket.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
-                    {
-                        vehicleBossRocket1.SetBlast();
-                        LoosePlayerHealth();
-                    }
-
-                    if (vehicleBossRocket1.AutoBlast())
-                        vehicleBossRocket1.SetBlast();
-                }
-            }
-
-            return true;
-        }
-
-        private bool RecycleVehicleBossRocket(Construct vehicleBossRocket)
-        {
-            //var hitbox = bomb.GetHitBox();
-
-            // if bomb is blasted and faed or goes out of scene bounds
-            if (vehicleBossRocket.IsFadingComplete /*|| hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT*/)
-            {
-                vehicleBossRocket.IsAnimating = false;
-                vehicleBossRocket.IsGravitatingUpwards = false;
-
-                vehicleBossRocket.SetPosition(
-                    left: -3000,
-                    top: -3000);
-
-                return true;
-            }
-
-            return false;
         }
 
         #endregion
@@ -1650,7 +1439,7 @@ namespace HonkTrooper
                   top: (tree.Height * -1.1),
                   z: 3);
 
-                SyncDropShadow(source: tree);
+                GenerateDropShadow(source: tree);
             }
 
             return true;
@@ -1667,7 +1456,7 @@ namespace HonkTrooper
                   top: (Constants.DEFAULT_SCENE_HEIGHT / 3),
                   z: 4);
 
-                SyncDropShadow(tree);
+                GenerateDropShadow(tree);
             }
 
             return true;
@@ -1812,7 +1601,7 @@ namespace HonkTrooper
                   top: ((roadSideLamp.Height * 1.5) * -1) + 5,
                   z: 3);
 
-                SyncDropShadow(roadSideLamp);
+                GenerateDropShadow(roadSideLamp);
 
                 LoggerExtensions.Log("RoadSideLamp generated.");
 
@@ -1833,7 +1622,7 @@ namespace HonkTrooper
                   top: (Constants.DEFAULT_SCENE_HEIGHT / 3),
                   z: 4);
 
-                SyncDropShadow(tree);
+                GenerateDropShadow(tree);
 
                 return true;
             }
@@ -1900,7 +1689,7 @@ namespace HonkTrooper
                   top: ((roadSideBillboard.Height * 1.5) * -1) - 10,
                   z: 4);
 
-                SyncDropShadow(roadSideBillboard);
+                GenerateDropShadow(roadSideBillboard);
 
                 LoggerExtensions.Log("RoadSideBillboard generated.");
 
@@ -1910,24 +1699,24 @@ namespace HonkTrooper
             return false;
         }
 
-        private bool GenerateRoadSideBillboardBottom()
-        {
-            if (_scene_game.Children.OfType<RoadSideBillboard>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideBillboard tree)
-            {
-                tree.IsAnimating = true;
+        //private bool GenerateRoadSideBillboardBottom()
+        //{
+        //    if (_scene_game.Children.OfType<RoadSideBillboard>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideBillboard tree)
+        //    {
+        //        tree.IsAnimating = true;
 
-                tree.SetPosition(
-                  left: (-1.9 * tree.Width),
-                  top: (Constants.DEFAULT_SCENE_HEIGHT / 3),
-                  z: 4);
+        //        tree.SetPosition(
+        //          left: (-1.9 * tree.Width),
+        //          top: (Constants.DEFAULT_SCENE_HEIGHT / 3),
+        //          z: 4);
 
-                SyncDropShadow(tree);
+        //        GenerateDropShadow(tree);
 
-                return true;
-            }
+        //        return true;
+        //    }
 
-            return false;
-        }
+        //    return false;
+        //}
 
         private bool AnimateRoadSideBillboard(Construct roadSideBillboard)
         {
@@ -1994,7 +1783,7 @@ namespace HonkTrooper
                     left: 0,
                     top: ufoBoss.Height * -1);
 
-                SyncDropShadow(ufoBoss);
+                GenerateDropShadow(ufoBoss);
 
                 // set UfoBoss health
                 ufoBoss.Health = _ufo_boss_threashold.GetReleasePointDifference() * 1.5;
@@ -2008,7 +1797,7 @@ namespace HonkTrooper
 
                 _scene_game.ActivateSlowMotion();
 
-                GenerateInterimScreen("Beware of Psycho Rocket");
+                GenerateInterimScreen("Beware of Cyber Psycho");
 
                 return true;
             }
@@ -2044,6 +1833,12 @@ namespace HonkTrooper
                             sceneWidth: Constants.DEFAULT_SCENE_WIDTH * scaling,
                             sceneHeight: Constants.DEFAULT_SCENE_HEIGHT * scaling,
                             playerPoint: _player.GetCloseHitBox());
+
+
+                        if (ufoBoss1.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
+                        {
+                            LoosePlayerHealth();
+                        }
                     }
                     else
                     {
@@ -2091,7 +1886,7 @@ namespace HonkTrooper
                 _player.SetWinStance();
                 _game_score_bar.GainScore(5);
 
-                GenerateInterimScreen("Psycho Rocket Busted");
+                GenerateInterimScreen("Cyber Psycho Will Return");
 
                 _scene_game.ActivateSlowMotion();
             }
@@ -2136,11 +1931,9 @@ namespace HonkTrooper
                 ufoBossRocket.Reset();
                 ufoBossRocket.IsAnimating = true;
                 ufoBossRocket.SetPopping();
+                ufoBossRocket.Reposition(UfoBoss: ufoBoss);
 
-                ufoBossRocket.Reposition(
-                    UfoBoss: ufoBoss);
-
-                SyncDropShadow(ufoBossRocket);
+                GenerateDropShadow(ufoBossRocket);
                 SetUfoBossRocketDirection(source: ufoBoss, rocket: ufoBossRocket, rocketTarget: _player);
 
                 LoggerExtensions.Log("UfoBoss Bomb dropped.");
@@ -2255,11 +2048,9 @@ namespace HonkTrooper
                 ufoBossRocketSeeking.Reset();
                 ufoBossRocketSeeking.IsAnimating = true;
                 ufoBossRocketSeeking.SetPopping();
+                ufoBossRocketSeeking.Reposition(UfoBoss: ufoBoss);
 
-                ufoBossRocketSeeking.Reposition(
-                    UfoBoss: ufoBoss);
-
-                SyncDropShadow(ufoBossRocketSeeking);
+                GenerateDropShadow(ufoBossRocketSeeking);
 
                 LoggerExtensions.Log("UfoBoss Seeking Bomb dropped.");
 
@@ -2366,7 +2157,7 @@ namespace HonkTrooper
                 ufoEnemy.Reset();
                 ufoEnemy.Reposition();
 
-                SyncDropShadow(ufoEnemy);
+                GenerateDropShadow(ufoEnemy);
 
                 if (!_enemy_fleet_appeared)
                 {
@@ -2498,10 +2289,9 @@ namespace HonkTrooper
                 enemyRocket.Reset();
                 enemyRocket.IsAnimating = true;
                 enemyRocket.SetPopping();
-
                 enemyRocket.Reposition(ufoEnemy: ufoEnemy);
 
-                SyncDropShadow(enemyRocket);
+                GenerateDropShadow(enemyRocket);
 
                 LoggerExtensions.Log("UfoEnemy Bomb dropped.");
 
@@ -2563,7 +2353,621 @@ namespace HonkTrooper
             return false;
         }
 
-        #endregion      
+        #endregion
+
+        #region VehicleEnemy
+
+        private bool SpawnVehicleEnemys()
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                VehicleEnemy vehicleEnemy = new(
+                    animateAction: AnimateVehicleEnemy,
+                    recycleAction: RecycleVehicleEnemy);
+
+                _scene_game.AddToScene(vehicleEnemy);
+
+                vehicleEnemy.SetPosition(
+                    left: -3000,
+                    top: -3000,
+                    z: 3);
+            }
+
+            return true;
+        }
+
+        private bool GenerateVehicleEnemy()
+        {
+            if (!UfoBossExists() && !VehicleBossExists() && !ZombieBossExists() && _scene_game.Children.OfType<VehicleEnemy>().FirstOrDefault(x => x.IsAnimating == false) is VehicleEnemy vehicleEnemy)
+            {
+                vehicleEnemy.IsAnimating = true;
+                vehicleEnemy.Reset();
+                vehicleEnemy.Reposition();
+
+                return true;
+            }
+            return false;
+        }
+
+        private bool AnimateVehicleEnemy(Construct vehicleEnemy)
+        {
+            VehicleEnemy vehicleEnemy1 = vehicleEnemy as VehicleEnemy;
+
+            vehicleEnemy.Pop();
+            vehicleEnemy1.Vibrate();
+
+            var speed = vehicleEnemy1.GetMovementSpeed();
+            vehicleEnemy1.MoveDownRight(speed);
+
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING)
+            {
+                if (vehicleEnemy1.Honk())
+                    GenerateVehicleEnemyHonk(vehicleEnemy1);
+            }
+
+            PreventVehicleEnemyOverlapping(vehicleEnemy);
+
+            return true;
+        }
+
+        private bool RecycleVehicleEnemy(Construct vehicleEnemy)
+        {
+            var hitBox = vehicleEnemy.GetHitBox();
+
+            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left > Constants.DEFAULT_SCENE_WIDTH)
+            {
+                vehicleEnemy.IsAnimating = false;
+
+                vehicleEnemy.SetPosition(
+                    left: -3000,
+                    top: -3000);
+            }
+
+            return true;
+        }
+
+        private void PreventVehicleEnemyOverlapping(Construct vehicleEnemy)
+        {
+            //var vehicleEnemy_distantHitBox = vehicleEnemy.GetDistantHitBox();
+
+            if (_scene_game.Children.OfType<VehicleEnemy>()
+                .FirstOrDefault(x => x.IsAnimating && x.GetHitBox().IntersectsWith(vehicleEnemy.GetHitBox())) is Construct collidingVehicleEnemy)
+            {
+                var hitBox = vehicleEnemy.GetHitBox();
+
+                //if (vehicleEnemy.SpeedOffset == collidingVehicleEnemy.SpeedOffset)
+                //{
+                //    if (vehicleEnemy.SpeedOffset > -1)
+                //        vehicleEnemy.SpeedOffset--;
+                //}
+                //else
+                //{
+
+                if (collidingVehicleEnemy.SpeedOffset > vehicleEnemy.SpeedOffset) // colliding vehicleEnemy is faster
+                {
+                    vehicleEnemy.SpeedOffset = collidingVehicleEnemy.SpeedOffset;
+                }
+                else if (vehicleEnemy.SpeedOffset > collidingVehicleEnemy.SpeedOffset) // vehicleEnemy is faster
+                {
+                    collidingVehicleEnemy.SpeedOffset = vehicleEnemy.SpeedOffset;
+                }
+                //}
+            }
+        }
+
+        #endregion        
+
+        #region VehicleBoss
+
+        private bool SpawnVehicleBosses()
+        {
+            VehicleBoss vehicleBoss = new(
+                animateAction: AnimateVehicleBoss,
+                recycleAction: RecycleVehicleBoss);
+
+            vehicleBoss.SetPosition(
+                left: -3000,
+                top: -3000,
+                z: 3);
+
+            _scene_game.AddToScene(vehicleBoss);
+
+            return true;
+        }
+
+        private bool GenerateVehicleBoss()
+        {
+            // if scene doesn't contain a VehicleBoss then pick a random VehicleBoss and add to scene
+
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
+                _vehicle_boss_threashold.ShouldRelease(_game_score_bar.GetScore()) && !VehicleBossExists() &&
+                _scene_game.Children.OfType<VehicleBoss>().FirstOrDefault(x => x.IsAnimating == false) is VehicleBoss vehicleBoss)
+            {
+                _audio_stub.Stop(SoundType.GAME_BACKGROUND_MUSIC);
+                _audio_stub.Play(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
+                _audio_stub.SetVolume(SoundType.AMBIENCE, 0.4);
+
+                vehicleBoss.IsAnimating = true;
+
+                vehicleBoss.Reset();
+                vehicleBoss.Reposition();
+
+                // set VehicleBoss health
+                vehicleBoss.Health = _vehicle_boss_threashold.GetReleasePointDifference() * 1.5;
+
+                _vehicle_boss_threashold.IncreaseThreasholdLimit(increment: _vehicle_boss_threashold_limit_increase, currentPoint: _game_score_bar.GetScore());
+
+                _vehicle_boss_health_bar.SetMaxiumHealth(vehicleBoss.Health);
+                _vehicle_boss_health_bar.SetValue(vehicleBoss.Health);
+                _vehicle_boss_health_bar.SetIcon(vehicleBoss.GetContentUri());
+                _vehicle_boss_health_bar.SetBarColor(color: Colors.Crimson);
+
+                GenerateInterimScreen("Crazy Honker Arrived");
+                _scene_game.ActivateSlowMotion();
+
+                LoggerExtensions.Log("Vehicle boss generated.");
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimateVehicleBoss(Construct vehicleBoss)
+        {
+            VehicleBoss vehicleBoss1 = vehicleBoss as VehicleBoss;
+
+            var speed = vehicleBoss1.GetMovementSpeed();
+
+            if (vehicleBoss1.IsDead)
+            {
+                vehicleBoss1.MoveDownRight(speed);
+            }
+            else
+            {
+                vehicleBoss.Pop();
+
+                if (_scene_game.SceneState == SceneState.GAME_RUNNING)
+                {
+                    var scaling = ScreenExtensions.GetScreenSpaceScaling();
+
+                    if (vehicleBoss1.IsAttacking)
+                    {
+                        vehicleBoss1.Move(
+                            speed: speed,
+                            sceneWidth: Constants.DEFAULT_SCENE_WIDTH * scaling,
+                            sceneHeight: Constants.DEFAULT_SCENE_HEIGHT * scaling);
+
+                        if (vehicleBoss1.Honk())
+                            GenerateVehicleBossHonk(vehicleBoss1);
+                    }
+                    else
+                    {
+                        if (_scene_game.Children.OfType<VehicleEnemy>().All(x => !x.IsAnimating)
+                            || _scene_game.Children.OfType<VehicleEnemy>().Where(x => x.IsAnimating).All(x => x.GetLeft() > Constants.DEFAULT_SCENE_WIDTH * scaling / 2)) // only bring the boss in view when all other vechiles are gone
+                        {
+                            vehicleBoss1.MoveDownRight(speed);
+
+                            if (vehicleBoss1.GetLeft() > (Constants.DEFAULT_SCENE_WIDTH * scaling / 3)) // bring boss to a suitable distance from player and then start attacking
+                            {
+                                vehicleBoss1.IsAttacking = true;
+                            }
+                        }
+                    }
+                }
+            }
+
+            //LoggerExtensions.Log($"Vehicle boss at: x: {vehicleBoss1.GetLeft()} y: {vehicleBoss1.GetTop()}.");
+
+            return true;
+        }
+
+        private bool RecycleVehicleBoss(Construct vehicleBoss)
+        {
+            var hitBox = vehicleBoss.GetHitBox();
+
+            VehicleBoss vehicleBoss1 = vehicleBoss as VehicleBoss;
+
+            if (vehicleBoss1.IsDead && hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left > Constants.DEFAULT_SCENE_WIDTH)
+            {
+                vehicleBoss.IsAnimating = false;
+
+                vehicleBoss.SetPosition(
+                    left: -3000,
+                    top: -3000);
+            }
+
+            return true;
+        }
+
+        private void LooseVehicleBossHealth(VehicleBoss vehicleBoss)
+        {
+            vehicleBoss.SetPopping();
+            vehicleBoss.LooseHealth();
+
+            _vehicle_boss_health_bar.SetValue(vehicleBoss.Health);
+
+            if (vehicleBoss.IsDead)
+            {
+                _audio_stub.Stop(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
+                _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
+                _audio_stub.SetVolume(SoundType.AMBIENCE, 0.6);
+
+                _player.SetWinStance();
+                _game_score_bar.GainScore(5);
+
+                GenerateInterimScreen("Crazy Honker Busted");
+
+                _scene_game.ActivateSlowMotion();
+            }
+        }
+
+        private bool VehicleBossExists()
+        {
+            return _scene_game.Children.OfType<VehicleBoss>().Any(x => x.IsAnimating);
+        }
+
+        #endregion
+
+        #region VehicleBossRocket
+
+        private bool SpawnVehicleBossRockets()
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                VehicleBossRocket vehicleBossRocket = new(
+                    animateAction: AnimateVehicleBossRocket,
+                    recycleAction: RecycleVehicleBossRocket);
+
+                vehicleBossRocket.SetPosition(
+                    left: -3000,
+                    top: -3000,
+                    z: 7);
+
+                _scene_game.AddToScene(vehicleBossRocket);
+
+                SpawnDropShadow(source: vehicleBossRocket);
+            }
+
+            return true;
+        }
+
+        private bool GenerateVehicleBossRocket()
+        {
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
+                _scene_game.Children.OfType<VehicleBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is VehicleBoss vehicleBoss &&
+                _scene_game.Children.OfType<VehicleBossRocket>().FirstOrDefault(x => x.IsAnimating == false) is VehicleBossRocket vehicleBossRocket)
+            {
+                vehicleBossRocket.Reset();
+                vehicleBossRocket.IsAnimating = true;
+                vehicleBossRocket.IsGravitatingUpwards = true;
+                vehicleBossRocket.SetPopping();
+
+                vehicleBossRocket.Reposition(vehicleBoss: vehicleBoss);
+                vehicleBossRocket.AwaitMoveUpRight = true;
+
+                GenerateDropShadow(source: vehicleBossRocket);
+
+                LoggerExtensions.Log("VehicleBoss rocket dropped.");
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimateVehicleBossRocket(Construct vehicleBossRocket)
+        {
+            VehicleBossRocket vehicleBossRocket1 = vehicleBossRocket as VehicleBossRocket;
+
+            var speed = vehicleBossRocket1.GetMovementSpeed();
+
+            if (vehicleBossRocket1.AwaitMoveUpRight)
+            {
+                vehicleBossRocket1.MoveUpRight(speed);
+            }
+
+            if (vehicleBossRocket1.IsBlasting)
+            {
+                vehicleBossRocket.Expand();
+                vehicleBossRocket.Fade(0.02);
+            }
+            else
+            {
+                vehicleBossRocket.Pop();
+                vehicleBossRocket1.DillyDally();
+
+                if (_scene_game.SceneState == SceneState.GAME_RUNNING)
+                {
+                    if (vehicleBossRocket.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
+                    {
+                        vehicleBossRocket1.SetBlast();
+                        LoosePlayerHealth();
+                    }
+
+                    if (vehicleBossRocket1.AutoBlast())
+                        vehicleBossRocket1.SetBlast();
+                }
+            }
+
+            return true;
+        }
+
+        private bool RecycleVehicleBossRocket(Construct vehicleBossRocket)
+        {
+            //var hitbox = bomb.GetHitBox();
+
+            // if bomb is blasted and faed or goes out of scene bounds
+            if (vehicleBossRocket.IsFadingComplete /*|| hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT*/)
+            {
+                vehicleBossRocket.IsAnimating = false;
+                vehicleBossRocket.IsGravitatingUpwards = false;
+
+                vehicleBossRocket.SetPosition(
+                    left: -3000,
+                    top: -3000);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        #endregion
+
+        #region ZombieBoss
+
+        private bool SpawnZombieBosses()
+        {
+            ZombieBoss zombieBoss = new(
+                animateAction: AnimateZombieBoss,
+                recycleAction: RecycleZombieBoss);
+
+            zombieBoss.SetPosition(
+                left: -3000,
+                top: -3000,
+                z: 8);
+
+            _scene_game.AddToScene(zombieBoss);
+
+            SpawnDropShadow(source: zombieBoss);
+
+            return true;
+        }
+
+        private bool GenerateZombieBoss()
+        {
+            // if scene doesn't contain a ZombieBoss then pick a ZombieBoss and add to scene
+
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
+                _zombie_boss_threashold.ShouldRelease(_game_score_bar.GetScore()) && !ZombieBossExists() &&
+                _scene_game.Children.OfType<ZombieBoss>().FirstOrDefault(x => x.IsAnimating == false) is ZombieBoss zombieBoss)
+            {
+                _audio_stub.Stop(SoundType.GAME_BACKGROUND_MUSIC);
+                //_audio_stub.Play(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
+                _audio_stub.SetVolume(SoundType.AMBIENCE, 0.2);
+
+                zombieBoss.IsAnimating = true;
+
+                zombieBoss.Reset();
+                zombieBoss.SetPosition(
+                    left: 0,
+                    top: zombieBoss.Height * -1);
+
+                GenerateDropShadow(zombieBoss);
+
+                // set ZombieBoss health
+                zombieBoss.Health = _zombie_boss_threashold.GetReleasePointDifference() * 1.5;
+
+                _zombie_boss_threashold.IncreaseThreasholdLimit(increment: _zombie_boss_threashold_limit_increase, currentPoint: _game_score_bar.GetScore());
+
+                _zombie_boss_health_bar.SetMaxiumHealth(zombieBoss.Health);
+                _zombie_boss_health_bar.SetValue(zombieBoss.Health);
+                _zombie_boss_health_bar.SetIcon(zombieBoss.GetContentUri());
+                _zombie_boss_health_bar.SetBarColor(color: Colors.Crimson);
+
+                _scene_game.ActivateSlowMotion();
+
+                GenerateInterimScreen("Beware of Blocks Zombie");
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimateZombieBoss(Construct zombieBoss)
+        {
+            ZombieBoss zombieBoss1 = zombieBoss as ZombieBoss;
+
+            if (zombieBoss1.IsDead)
+            {
+                zombieBoss.Shrink();
+            }
+            else
+            {
+                zombieBoss.Pop();
+
+                zombieBoss1.Hover();
+                zombieBoss1.DepleteHitStance();
+                zombieBoss1.DepleteWinStance();
+
+                if (_scene_game.SceneState == SceneState.GAME_RUNNING)
+                {
+                    var speed = zombieBoss1.GetMovementSpeed();
+                    var scaling = ScreenExtensions.GetScreenSpaceScaling();
+
+                    if (zombieBoss1.IsAttacking)
+                    {
+                        zombieBoss1.Move(
+                            speed: speed,
+                            sceneWidth: Constants.DEFAULT_SCENE_WIDTH * scaling,
+                            sceneHeight: Constants.DEFAULT_SCENE_HEIGHT * scaling);
+
+                        if (zombieBoss1.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
+                        {
+                            LoosePlayerHealth();
+                        }
+                    }
+                    else
+                    {
+                        zombieBoss1.MoveDownRight(speed);
+
+                        if (zombieBoss.GetLeft() > (Constants.DEFAULT_SCENE_WIDTH * scaling / 3)) // bring ZombieBoss to a suitable distance from player and then start attacking
+                        {
+                            zombieBoss1.IsAttacking = true;
+                        }
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        private bool RecycleZombieBoss(Construct zombieBoss)
+        {
+            if (zombieBoss.IsShrinkingComplete)
+            {
+                zombieBoss.IsAnimating = false;
+
+                zombieBoss.SetPosition(
+                    left: -3000,
+                    top: -3000);
+            }
+
+            return true;
+        }
+
+        private void LooseZombieBossHealth(ZombieBoss zombieBoss)
+        {
+            zombieBoss.SetPopping();
+            zombieBoss.LooseHealth();
+            zombieBoss.SetHitStance();
+
+            _zombie_boss_health_bar.SetValue(zombieBoss.Health);
+
+            if (zombieBoss.IsDead)
+            {
+                //_audio_stub.Stop(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
+                _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
+                _audio_stub.SetVolume(SoundType.AMBIENCE, 0.6);
+
+                _player.SetWinStance();
+                _game_score_bar.GainScore(5);
+
+                GenerateInterimScreen("Blocks Zombie Will Return");
+
+                _scene_game.ActivateSlowMotion();
+            }
+        }
+
+        private bool ZombieBossExists()
+        {
+            return _scene_game.Children.OfType<ZombieBoss>().Any(x => x.IsAnimating);
+        }
+
+        #endregion
+
+        #region ZombieBossRocket
+
+        private bool SpawnZombieBossRockets()
+        {
+            for (int i = 0; i < 6; i++)
+            {
+                ZombieBossRocket zombieBossRocket = new(
+                    animateAction: AnimateZombieBossRocket,
+                    recycleAction: RecycleZombieBossRocket);
+
+                zombieBossRocket.SetPosition(
+                    left: -3000,
+                    top: -3000,
+                    z: 7);
+
+                _scene_game.AddToScene(zombieBossRocket);
+
+                SpawnDropShadow(source: zombieBossRocket);
+            }
+
+            return true;
+        }
+
+        private bool GenerateZombieBossRocket()
+        {
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
+                _scene_game.Children.OfType<ZombieBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is ZombieBoss zombieBoss &&
+                _scene_game.Children.OfType<ZombieBossRocket>().FirstOrDefault(x => x.IsAnimating == false) is ZombieBossRocket zombieBossRocket)
+            {
+                zombieBossRocket.Reset();
+                zombieBossRocket.IsAnimating = true;
+                zombieBossRocket.SetPopping();
+                zombieBossRocket.Reposition();
+
+                GenerateDropShadow(zombieBossRocket);
+
+                LoggerExtensions.Log("ZombieBoss Bomb dropped.");
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimateZombieBossRocket(Construct zombieBossRocket)
+        {
+            ZombieBossRocket zombieBossRocket1 = zombieBossRocket as ZombieBossRocket;
+
+            var speed = zombieBossRocket1.GetMovementSpeed();
+
+            zombieBossRocket1.MoveDownRight(speed);
+
+            if (zombieBossRocket1.IsBlasting)
+            {
+                zombieBossRocket.Expand();
+                zombieBossRocket.Fade(0.02);
+            }
+            else
+            {
+                zombieBossRocket.Pop();
+                zombieBossRocket1.Hover();
+
+                if (_scene_game.SceneState == SceneState.GAME_RUNNING)
+                {
+                    if (zombieBossRocket.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
+                    {
+                        zombieBossRocket1.SetBlast();
+                        LoosePlayerHealth();
+                    }
+
+                    if (zombieBossRocket1.AutoBlast())
+                        zombieBossRocket1.SetBlast();
+                }
+            }
+
+            return true;
+        }
+
+        private bool RecycleZombieBossRocket(Construct zombieBossRocket)
+        {
+            var hitbox = zombieBossRocket.GetHitBox();
+
+            var scaling = ScreenExtensions.GetScreenSpaceScaling();
+
+            // if bomb is blasted and faed or goes out of scene bounds
+            if (zombieBossRocket.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH * scaling || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT * scaling)
+            {
+                zombieBossRocket.IsAnimating = false;
+
+                zombieBossRocket.SetPosition(
+                    left: -3000,
+                    top: -3000);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        #endregion                
 
         #region Rocket
 
@@ -2930,7 +3334,7 @@ namespace HonkTrooper
             return false;
         }
 
-        private void SyncDropShadow(Construct source)
+        private void GenerateDropShadow(Construct source)
         {
             if (_scene_game.Children.OfType<DropShadow>().FirstOrDefault(x => x.Id == source.Id) is DropShadow dropShadow)
             {
@@ -2997,7 +3401,7 @@ namespace HonkTrooper
                         break;
                 }
 
-                SyncDropShadow(healthPickup);
+                GenerateDropShadow(healthPickup);
 
                 return true;
             }
@@ -3112,7 +3516,7 @@ namespace HonkTrooper
                                 break;
                         }
 
-                        SyncDropShadow(powerUpPickup);
+                        GenerateDropShadow(powerUpPickup);
 
                         return true;
                     }
@@ -3315,9 +3719,14 @@ namespace HonkTrooper
                 randomizeGenerationDelay: true),
 
             new Generator(
-                generationDelay: 100,
+                generationDelay: 10,
                 generationAction: GenerateUfoBoss,
                 startUpAction: SpawnUfoBosses),
+
+             new Generator(
+                generationDelay: 10,
+                generationAction: GenerateZombieBoss,
+                startUpAction: SpawnZombieBosses),
 
             new Generator(
                 generationDelay: 10,
@@ -3335,6 +3744,11 @@ namespace HonkTrooper
                 generationAction: GenerateUfoBossRocket,
                 startUpAction: SpawnUfoBossRockets,
                 randomizeGenerationDelay: true),
+
+            new Generator(
+                generationDelay: 30,
+                generationAction: GenerateZombieBossRocket,
+                startUpAction: SpawnZombieBossRockets),
 
             new Generator(
                 generationDelay: 200,
@@ -3417,119 +3831,6 @@ namespace HonkTrooper
 
         #endregion
 
-        #endregion
-
-        #region Events
-
-        private async void HonkBomberPage_Loaded(object sender, RoutedEventArgs e)
-        {
-            ScreenExtensions.DisplayInformation.OrientationChanged += DisplayInformation_OrientationChanged;
-            ScreenExtensions.RequiredScreenOrientation = DisplayOrientations.Landscape;
-
-            // set display orientation to required orientation
-            if (ScreenExtensions.GetScreenOrienation() != ScreenExtensions.RequiredScreenOrientation)
-                ScreenExtensions.SetScreenOrientation(ScreenExtensions.RequiredScreenOrientation);
-
-            SetController();
-            SetScene();
-
-            SizeChanged += HonkBomberPage_SizeChanged;
-
-            if (ScreenExtensions.GetScreenOrienation() == ScreenExtensions.RequiredScreenOrientation)
-            {
-                ScreenExtensions.EnterFullScreen(true);
-
-                await Task.Delay(1500);
-
-                GenerateTitleScreen("Honk Trooper");
-                _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
-            }
-            else
-            {
-                GenerateDisplayOrientationChangeScreen();
-            }
-        }
-
-        private void HonkBomberPage_Unloaded(object sender, RoutedEventArgs e)
-        {
-            SizeChanged -= HonkBomberPage_SizeChanged;
-            ScreenExtensions.DisplayInformation.OrientationChanged -= DisplayInformation_OrientationChanged;
-            UnsetController();
-        }
-
-        private void HonkBomberPage_SizeChanged(object sender, SizeChangedEventArgs args)
-        {
-            ScreenExtensions.Width = args.NewSize.Width <= Constants.DEFAULT_SCENE_WIDTH ? args.NewSize.Width : Constants.DEFAULT_SCENE_WIDTH;
-            ScreenExtensions.Height = args.NewSize.Height <= Constants.DEFAULT_SCENE_HEIGHT ? args.NewSize.Height : Constants.DEFAULT_SCENE_HEIGHT;
-
-            SetScreenScaling();
-
-            if (_scene_game.SceneState == SceneState.GAME_RUNNING)
-            {
-                _player.Reposition();
-                SyncDropShadow(_player);
-            }
-
-            RepositionHoveringTitleScreens();
-            LoggerExtensions.Log($"{ScreenExtensions.Width} x {ScreenExtensions.Height}");
-        }
-
-        private void DisplayInformation_OrientationChanged(DisplayInformation sender, object args)
-        {
-            if (_scene_game.SceneState == SceneState.GAME_RUNNING) // if screen orientation is changed while game is running, pause the game
-            {
-                if (_scene_game.IsAnimating)
-                    PauseGame();
-            }
-            else
-            {
-                ScreenExtensions.EnterFullScreen(true);
-
-                if (ScreenExtensions.GetScreenOrienation() == ScreenExtensions.RequiredScreenOrientation)
-                {
-                    if (_scene_main_menu.Children.OfType<DisplayOrientationChangeScreen>().FirstOrDefault(x => x.IsAnimating) is DisplayOrientationChangeScreen DisplayOrientationChangeScreen)
-                    {
-                        RecycleDisplayOrientationChangeScreen(DisplayOrientationChangeScreen);
-
-                        _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
-                        GenerateTitleScreen("Honk Trooper");
-
-                        _scene_game.Play();
-                        _scene_main_menu.Play();
-                    }
-                }
-                else // ask to change orientation
-                {
-                    if (_scene_game.IsAnimating)
-                        _scene_game.Pause();
-
-                    if (!_scene_main_menu.IsAnimating)
-                        _scene_main_menu.Play();
-
-                    foreach (var hoveringTitleScreen in _scene_main_menu.Children.OfType<HoveringTitleScreen>().Where(x => x.IsAnimating))
-                    {
-                        hoveringTitleScreen.IsAnimating = false;
-                        hoveringTitleScreen.SetPosition(left: -3000, top: -3000);
-                    }
-
-                    foreach (var construct in _scene_game.Children.OfType<Construct>())
-                    {
-                        construct.IsAnimating = false;
-                        construct.SetPosition(left: -3000, top: -3000);
-                    }
-
-                    GenerateDisplayOrientationChangeScreen();
-                }
-            }
-
-            LoggerExtensions.Log($"{sender.CurrentOrientation}");
-        }
-
-        private void PauseButton_Click(object sender, RoutedEventArgs e)
-        {
-            PauseGame();
-        }
-
-        #endregion
+        #endregion        
     }
 }

@@ -56,7 +56,6 @@ namespace HonkTrooper
             SetChild(_content_image);
 
             IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
-            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET + 2;
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE + 10;
 
             _audioStub = new AudioStub((SoundType.ROCKET_LAUNCH, 0.3, false), (SoundType.ROCKET_BLAST, 1, false));
@@ -65,20 +64,13 @@ namespace HonkTrooper
         #endregion
 
         #region Methods
-
-        public void Reposition(UfoBoss UfoBoss)
-        {
-            SetPosition(
-                left: (UfoBoss.GetLeft() + UfoBoss.Width / 2) - Width / 2,
-                top: UfoBoss.GetBottom() - (75),
-                z: 7);
-        }
-
+        
         public void Reset()
         {
             _audioStub.Play(SoundType.ROCKET_LAUNCH);
 
             Opacity = 1;
+            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET + 2;
             SetScaleTransform(1);
 
             IsBlasting = false;
@@ -95,10 +87,17 @@ namespace HonkTrooper
             _autoBlastDelay = _autoBlastDelayDefault;
         }
 
+        public void Reposition(UfoBoss UfoBoss)
+        {
+            SetPosition(
+                left: (UfoBoss.GetLeft() + UfoBoss.Width / 2) - Width / 2,
+                top: UfoBoss.GetBottom() - (75));
+        }
+
         public void SetBlast()
         {
             _audioStub.Play(SoundType.ROCKET_BLAST);
-
+            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET - 1;
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_blast_uris);
             _content_image.Source = new BitmapImage(uri);
 
