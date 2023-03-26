@@ -15,6 +15,8 @@ namespace HonkTrooper
         private readonly Uri[] _zombie_boss_hit_uris;
         private readonly Uri[] _zombie_boss_win_uris;
 
+        private double _changeMovementPatternDelay;
+
         private readonly Image _content_image;
 
         private double _hitStanceDelay;
@@ -24,6 +26,8 @@ namespace HonkTrooper
         private readonly double _winStanceDelayDefault = 8;
 
         private readonly AudioStub _audioStub;
+
+        private MovementDirection _movementDirection;
 
         #endregion
 
@@ -96,11 +100,14 @@ namespace HonkTrooper
             Opacity = 1;
             Health = 100;
             IsAttacking = false;
-            ZombieBossStance = BossStance.Idle;            
+            ZombieBossStance = BossStance.Idle;
+
+            _movementDirection = MovementDirection.None;
 
             var uri = ConstructExtensions.GetRandomContentUri(_zombie_boss_idle_uris);
             _content_image.Source = new BitmapImage(uriSource: uri);
-            
+
+            RandomizeMovementPattern();
             SetScaleTransform(1);
         }
 
@@ -176,6 +183,71 @@ namespace HonkTrooper
         public void StopSoundLoop()
         {
             _audioStub.Stop(SoundType.UFO_BOSS_HOVERING);
+        }
+
+        public void Move(
+           double speed,
+           double sceneWidth,
+           double sceneHeight)
+        {
+            MoveUpRightDownLeft(
+                speed: speed,
+                sceneWidth: sceneWidth,
+                sceneHeight: sceneHeight);
+        }
+
+        private bool MoveUpRightDownLeft(double speed, double sceneWidth, double sceneHeight)
+        {
+            _changeMovementPatternDelay -= 0.1;
+
+            if (_changeMovementPatternDelay < 0)
+            {
+                RandomizeMovementPattern();
+                return true;
+            }
+
+            if (IsAttacking && _movementDirection == MovementDirection.None)
+            {
+                _movementDirection = MovementDirection.UpRight;
+            }
+            else
+            {
+                IsAttacking = true;
+            }
+
+            if (IsAttacking)
+            {
+                if (_movementDirection == MovementDirection.UpRight)
+                {
+                    MoveUpRight(speed);
+
+                    if (GetTop() < 0 || GetLeft() > sceneWidth)
+                    {
+                        _movementDirection = MovementDirection.DownLeft;
+                    }
+                }
+                else
+                {
+                    if (_movementDirection == MovementDirection.DownLeft)
+                    {
+                        MoveDownLeft(speed);
+
+                        if (GetLeft() < 0 || GetBottom() > sceneHeight)
+                        {
+                            _movementDirection = MovementDirection.UpRight;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private void RandomizeMovementPattern()
+        {
+            _changeMovementPatternDelay = _random.Next(40, 60);
+            _movementDirection = MovementDirection.None;
+            SpeedOffset = _random.Next((int)Constants.DEFAULT_SPEED_OFFSET);
         }
 
         #endregion
