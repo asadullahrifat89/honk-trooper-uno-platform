@@ -66,6 +66,7 @@ namespace HonkTrooper
         {
             RenderTransformOrigin = new Point(xy, xy);
         }
+
         public void SetScaleTransform(double scaleXY)
         {
             _compositeTransform.ScaleX = scaleXY;
