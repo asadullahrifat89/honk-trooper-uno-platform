@@ -5,7 +5,7 @@ namespace HonkTrooper
     static class Constants
     {
         public const double DEFAULT_FRAME_TIME = 18;
-        
+
         public const double DEFAULT_SPEED_OFFSET = 2;
         public const double DEFAULT_SCENE_SPEED = 4;
 
@@ -13,14 +13,14 @@ namespace HonkTrooper
         public const double DEFAULT_ISOMETRIC_DISPLACEMENT = 0.5;
 
         public const double DEFAULT_DROP_SHADOW_DISTANCE = 65;
-        
+
         public const double DEFAULT_CONTROLLER_KEY_SIZE = 70;
         public const double DEFAULT_CONTROLLER_KEY_CORNER_RADIUS = 30;
         public const double DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS = 4;
         public const double DEFAULT_CONTROLLER_DIRECTION_KEYS_MARGIN = 6;
 
         public const double DEFAULT_GUI_FONT_SIZE = 30;
-        
+
         public const double DEFAULT_SCENE_WIDTH = 1900;
         public const double DEFAULT_SCENE_HEIGHT = 940;
 
@@ -35,6 +35,9 @@ namespace HonkTrooper
             new (ConstructType.UFO_BOSS, 180, 180),
             new (ConstructType.UFO_BOSS_ROCKET, 80, 80),
             new (ConstructType.UFO_BOSS_ROCKET_SEEKING, 80, 80),
+
+            new (ConstructType.ZOMBIE_BOSS, 180, 180),
+            new (ConstructType.ZOMBIE_BOSS_CUBE, 100, 100),
 
             new (ConstructType.UFO_ENEMY, 160, 160),
             new (ConstructType.UFO_ENEMY_ROCKET, 60, 60),
@@ -147,9 +150,17 @@ namespace HonkTrooper
             new (ConstructType.UFO_BOSS_HIT, new Uri("ms-appx:///HonkTrooper/Assets/Images/ufo_boss_1_hit.png")),
             new (ConstructType.UFO_BOSS_WIN, new Uri("ms-appx:///HonkTrooper/Assets/Images/ufo_boss_1_win.png")),
 
+            new (ConstructType.ZOMBIE_BOSS_IDLE, new Uri("ms-appx:///HonkTrooper/Assets/Images/zombie_boss_1_idle.png")),
+            new (ConstructType.ZOMBIE_BOSS_HIT, new Uri("ms-appx:///HonkTrooper/Assets/Images/zombie_boss_1_hit.png")),
+            new (ConstructType.ZOMBIE_BOSS_WIN, new Uri("ms-appx:///HonkTrooper/Assets/Images/zombie_boss_1_win.png")),
+
             new (ConstructType.UFO_BOSS_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_1.png")),
             new (ConstructType.UFO_BOSS_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_2.png")),
             new (ConstructType.UFO_BOSS_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_3.png")),
+
+            new (ConstructType.ZOMBIE_BOSS_CUBE, new Uri("ms-appx:///HonkTrooper/Assets/Images/zombie_boss_cube_1.png")),
+            new (ConstructType.ZOMBIE_BOSS_CUBE, new Uri("ms-appx:///HonkTrooper/Assets/Images/zombie_boss_cube_2.png")),
+            new (ConstructType.ZOMBIE_BOSS_CUBE, new Uri("ms-appx:///HonkTrooper/Assets/Images/zombie_boss_cube_3.png")),
 
             new (ConstructType.UFO_BOSS_ROCKET_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_seeking.png")),
 
@@ -276,6 +287,13 @@ namespace HonkTrooper
         UFO_BOSS_IDLE,
         UFO_BOSS_HIT,
         UFO_BOSS_WIN,
+
+        ZOMBIE_BOSS,
+        ZOMBIE_BOSS_IDLE,
+        ZOMBIE_BOSS_HIT,
+        ZOMBIE_BOSS_WIN,
+
+        ZOMBIE_BOSS_CUBE,
 
         UFO_BOSS_ROCKET,
         UFO_BOSS_ROCKET_SEEKING,
