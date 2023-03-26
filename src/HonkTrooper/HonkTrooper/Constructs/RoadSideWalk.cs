@@ -27,8 +27,7 @@ namespace HonkTrooper
 
             Background = App.Current.Resources["RoadSideWalkColor"] as SolidColorBrush;
             BorderBrush = App.Current.Resources["RoadSideWalkBorderColor"] as SolidColorBrush;
-            BorderThickness = new Thickness(10);
-            CornerRadius = new CornerRadius(2);
+            BorderThickness = new Thickness(leftRight: 30, topBottom: 5);
 
             SetSkewY(42);
             SetRotation(-63.5);
