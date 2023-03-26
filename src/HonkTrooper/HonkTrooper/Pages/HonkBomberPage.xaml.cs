@@ -167,7 +167,7 @@ namespace HonkTrooper
             if (_scene_game.SceneState == SceneState.GAME_RUNNING)
             {
                 _player.Reposition();
-                GenerateDropShadow(_player);
+                GenerateDropShadow(source: _player);
             }
 
             RepositionHoveringTitleScreens();
@@ -1447,7 +1447,7 @@ namespace HonkTrooper
                   top: (Constants.DEFAULT_SCENE_HEIGHT / 3),
                   z: 4);
 
-                GenerateDropShadow(roadSideTree);
+                GenerateDropShadow(source: roadSideTree);
             }
 
             return true;
@@ -1592,7 +1592,7 @@ namespace HonkTrooper
                   top: ((roadSideLamp.Height * 1.5) * -1) - 5,
                   z: 3);
 
-                GenerateDropShadow(roadSideLamp);
+                GenerateDropShadow(source: roadSideLamp);
 
                 return true;
             }
@@ -1602,16 +1602,16 @@ namespace HonkTrooper
 
         private bool GenerateRoadSideLampBottom()
         {
-            if (_scene_game.Children.OfType<RoadSideLamp>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideLamp radSideLamp)
+            if (_scene_game.Children.OfType<RoadSideLamp>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideLamp roadSideLamp)
             {
-                radSideLamp.IsAnimating = true;
+                roadSideLamp.IsAnimating = true;
 
-                radSideLamp.SetPosition(
-                  left: (-1.9 * radSideLamp.Width),
+                roadSideLamp.SetPosition(
+                  left: (-1.9 * roadSideLamp.Width),
                   top: (Constants.DEFAULT_SCENE_HEIGHT / 3),
                   z: 4);
 
-                GenerateDropShadow(radSideLamp);
+                GenerateDropShadow(source: roadSideLamp);
 
                 return true;
             }
@@ -1858,7 +1858,7 @@ namespace HonkTrooper
                     left: 0,
                     top: ufoBoss.Height * -1);
 
-                GenerateDropShadow(ufoBoss);
+                GenerateDropShadow(source: ufoBoss);
 
                 // set UfoBoss health
                 ufoBoss.Health = _ufo_boss_threashold.GetReleasePointDifference() * 1.5;
@@ -2008,7 +2008,7 @@ namespace HonkTrooper
                 ufoBossRocket.SetPopping();
                 ufoBossRocket.Reposition(UfoBoss: ufoBoss);
 
-                GenerateDropShadow(ufoBossRocket);
+                GenerateDropShadow(source: ufoBossRocket);
                 SetUfoBossRocketDirection(source: ufoBoss, rocket: ufoBossRocket, rocketTarget: _player);
 
                 return true;
@@ -2123,7 +2123,7 @@ namespace HonkTrooper
                 ufoBossRocketSeeking.SetPopping();
                 ufoBossRocketSeeking.Reposition(UfoBoss: ufoBoss);
 
-                GenerateDropShadow(ufoBossRocketSeeking);
+                GenerateDropShadow(source: ufoBossRocketSeeking);
 
                 return true;
             }
@@ -2228,7 +2228,7 @@ namespace HonkTrooper
                 ufoEnemy.Reset();
                 ufoEnemy.Reposition();
 
-                GenerateDropShadow(ufoEnemy);
+                GenerateDropShadow(source: ufoEnemy);
 
                 if (!_enemy_fleet_appeared)
                 {
@@ -2349,14 +2349,14 @@ namespace HonkTrooper
         private bool GenerateUfoEnemyRocket(UfoEnemy ufoEnemy)
         {
             if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
-                _scene_game.Children.OfType<UfoEnemyRocket>().FirstOrDefault(x => x.IsAnimating == false) is UfoEnemyRocket enemyRocket)
+                _scene_game.Children.OfType<UfoEnemyRocket>().FirstOrDefault(x => x.IsAnimating == false) is UfoEnemyRocket ufoEnemyRocket)
             {
-                enemyRocket.Reset();
-                enemyRocket.IsAnimating = true;
-                enemyRocket.SetPopping();
-                enemyRocket.Reposition(ufoEnemy: ufoEnemy);
+                ufoEnemyRocket.Reset();
+                ufoEnemyRocket.IsAnimating = true;
+                ufoEnemyRocket.SetPopping();
+                ufoEnemyRocket.Reposition(ufoEnemy: ufoEnemy);
 
-                GenerateDropShadow(enemyRocket);
+                GenerateDropShadow(source: ufoEnemyRocket);
 
                 return true;
             }
@@ -2804,7 +2804,7 @@ namespace HonkTrooper
                     left: 0,
                     top: zombieBoss.Height * -1);
 
-                GenerateDropShadow(zombieBoss);
+                GenerateDropShadow(source: zombieBoss);
 
                 // set ZombieBoss health
                 zombieBoss.Health = _zombie_boss_threashold.GetReleasePointDifference() * 1.5;
@@ -2952,7 +2952,7 @@ namespace HonkTrooper
                 zombieBossRocket.SetPopping();
                 zombieBossRocket.Reposition();
 
-                GenerateDropShadow(zombieBossRocket);
+                GenerateDropShadow(source: zombieBossRocket);
 
                 return true;
             }
@@ -3449,7 +3449,7 @@ namespace HonkTrooper
                         break;
                 }
 
-                GenerateDropShadow(healthPickup);
+                //GenerateDropShadow(healthPickup);
 
                 return true;
             }
@@ -3564,7 +3564,7 @@ namespace HonkTrooper
                                 break;
                         }
 
-                        GenerateDropShadow(powerUpPickup);
+                        //GenerateDropShadow(powerUpPickup);
 
                         return true;
                     }
