@@ -245,7 +245,7 @@ namespace HonkTrooper
         {
             _changeMovementPatternDelay = _random.Next(40, 60);
             _movementDirection = MovementDirection.None;
-            SpeedOffset = _random.Next(-1, (int)Constants.DEFAULT_SPEED_OFFSET);
+            SpeedOffset = _random.Next(-1, (int)Constants.DEFAULT_SPEED_OFFSET + 1);
         }
 
         #endregion
