@@ -46,56 +46,5 @@
   </ItemGroup>
   <ItemGroup>
     <UpToDateCheckInput Include="**\*.xaml" Exclude="bin\**\*.xaml;obj\**\*.xaml" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove="Assets\Fonts\CuteDolphin.ttf" />
-    <None Remove="Assets\Fonts\CuteyPatchy.ttf" />
-    <None Remove="Assets\Fonts\Gameplay.ttf" />
-    <None Remove="Assets\Sounds\ambience_1.mp3" />
-    <None Remove="Assets\Sounds\ambience_2.mp3" />
-    <None Remove="Assets\Sounds\ambience_3.mp3" />
-    <None Remove="Assets\Sounds\boss_background_music_4.mp3" />
-    <None Remove="Assets\Sounds\boss_background_music_5.mp3" />
-    <None Remove="Assets\Sounds\game_background_music_5.mp3" />
-    <None Remove="Assets\Sounds\ufo_boss_background_music_1.mp3" />
-    <None Remove="Assets\Sounds\ufo_boss_background_music_2.mp3" />
-    <None Remove="Assets\Sounds\ufo_boss_dead_1.mp3" />
-    <None Remove="Assets\Sounds\ufo_boss_dead_2.mp3" />
-    <None Remove="Assets\Sounds\ufo_boss_entry_1.mp3" />
-    <None Remove="Assets\Sounds\ufo_boss_entry_2.mp3" />
-    <None Remove="Assets\Sounds\ufo_boss_hovering_1.mp3" />
-    <None Remove="Assets\Sounds\ufo_boss_hovering_2.mp3" />
-    <None Remove="Assets\Sounds\ufo_boss_hovering_3.mp3" />
-    <None Remove="Assets\Sounds\car_honk_1.mp3" />
-    <None Remove="Assets\Sounds\car_honk_2.mp3" />
-    <None Remove="Assets\Sounds\car_honk_3.mp3" />
-    <None Remove="Assets\Sounds\cracker_blast_1.mp3" />
-    <None Remove="Assets\Sounds\cracker_blast_2.mp3" />
-    <None Remove="Assets\Sounds\cracker_blast_3.mp3" />
-    <None Remove="Assets\Sounds\cracker_blast_4.mp3" />
-    <None Remove="Assets\Sounds\cracker_drop_1.mp3" />
-    <None Remove="Assets\Sounds\cracker_drop_2.mp3" />
-    <None Remove="Assets\Sounds\enemy_entry_1.mp3" />
-    <None Remove="Assets\Sounds\game_background_music_1.mp3" />
-    <None Remove="Assets\Sounds\game_background_music_2.mp3" />
-    <None Remove="Assets\Sounds\game_background_music_3.mp3" />
-    <None Remove="Assets\Sounds\game_background_music_4.mp3" />
-    <None Remove="Assets\Sounds\game_over.mp3" />
-    <None Remove="Assets\Sounds\game_pause.mp3" />
-    <None Remove="Assets\Sounds\game_start.mp3" />
-    <None Remove="Assets\Sounds\health_pickup_1.mp3" />
-    <None Remove="Assets\Sounds\level_up.mp3" />
-    <None Remove="Assets\Sounds\option_select.mp3" />
-    <None Remove="Assets\Sounds\orb_launch.mp3" />
-    <None Remove="Assets\Sounds\player_health_loss_1.mp3" />
-    <None Remove="Assets\Sounds\power_up_pickup_1.mp3" />
-    <None Remove="Assets\Sounds\rocket_blast_1.mp3" />
-    <None Remove="Assets\Sounds\rocket_blast_2.mp3" />
-    <None Remove="Assets\Sounds\rocket_blast_3.mp3" />
-    <None Remove="Assets\Sounds\rocket_launch_1.mp3" />
-    <None Remove="Assets\Sounds\rocket_launch_2.mp3" />
-    <None Remove="Assets\Sounds\rocket_launch_3.mp3" />
-    <None Remove="Assets\Sounds\seeker_rocket_launch_1.mp3" />
-    <None Remove="Assets\Sounds\seeker_rocket_launch_2.mp3" />
-  </ItemGroup>
+  </ItemGroup>  
 </Project>

@@ -39,19 +39,19 @@ namespace HonkTrooper
         private readonly double _sound_pollution_max_limit = 6; // max 3 vehicles or ufos honking to trigger sound pollution limit
 
         //TODO: set defaults _vehicle_boss_threashold_limit = 25
-        private readonly double _vehicle_boss_threashold_limit = 25; // first vehicle Boss will appear
+        private readonly double _vehicle_boss_threashold_limit = 25; // first appearance
         private readonly double _vehicle_boss_threashold_limit_increase = 15;
 
         //TODO: set defaults _ufo_boss_threashold_limit = 50
-        private readonly double _ufo_boss_threashold_limit = 50; // first UfoBoss will appear
+        private readonly double _ufo_boss_threashold_limit = 50; // first appearance
         private readonly double _ufo_boss_threashold_limit_increase = 15;
 
-        //TODO: set defaults _zombie_boss_threashold_limit = 75
-        private readonly double _zombie_boss_threashold_limit = 75; // first UfoBoss will appear
+        //TODO: set defaults _zombie_boss_threashold_limit = 85
+        private readonly double _zombie_boss_threashold_limit = 85; // first appearance
         private readonly double _zombie_boss_threashold_limit_increase = 15;
 
         //TODO: set defaults _enemy_threashold_limit = 125
-        private readonly double _enemy_threashold_limit = 125; // after first enemies will appear
+        private readonly double _enemy_threashold_limit = 125; // first appearance
         private readonly double _enemy_threashold_limit_increase = 15;
 
         private double _enemy_kill_count;
