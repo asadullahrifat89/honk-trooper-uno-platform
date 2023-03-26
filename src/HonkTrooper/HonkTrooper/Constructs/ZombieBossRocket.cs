@@ -92,9 +92,9 @@ namespace HonkTrooper
 
         public void Reposition()
         {
-            var topOrLeft = _random.Next(2); // generate top and left corner lane wise vehicles            
+            var topOrLeft = _random.Next(2); // generate top and left corner lane wise vehicles
+            var lane = ScreenExtensions.Height < 450 ? _random.Next(3) : _random.Next(4); // generate number of lanes based on screen height
             var randomY = _random.Next(-10, 10);
-            var lane = _random.Next(4); // generate number of lanes based of screen height
 
             switch (topOrLeft)
             {
