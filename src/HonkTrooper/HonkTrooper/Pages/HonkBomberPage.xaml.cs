@@ -47,7 +47,7 @@ namespace HonkTrooper
         private readonly double _ufo_boss_threashold_limit = 50; // first UfoBoss will appear
         private readonly double _ufo_boss_threashold_limit_increase = 15;
 
-        //TODO: set defaults _zombie_boss_threashold_limit = 50
+        //TODO: set defaults _zombie_boss_threashold_limit = 75
         private readonly double _zombie_boss_threashold_limit = 75; // first UfoBoss will appear
         private readonly double _zombie_boss_threashold_limit_increase = 15;
 
@@ -58,11 +58,11 @@ namespace HonkTrooper
         private double _enemy_kill_count;
         private readonly double _enemy_kill_count_limit = 20;
 
-        private bool _enemy_fleet_appeared;
-
-        private readonly AudioStub _audio_stub;
+        private bool _enemy_fleet_appeared;        
 
         private int _selected_player_template;
+
+        private readonly AudioStub _audio_stub;
 
         #endregion
 
