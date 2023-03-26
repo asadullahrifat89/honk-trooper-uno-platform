@@ -13,7 +13,6 @@ namespace HonkTrooper
     {
         #region Fields
 
-        private PlayerBalloon _player;
         private readonly Random _random;
 
         private readonly Scene _scene_game;
@@ -51,8 +50,8 @@ namespace HonkTrooper
         private readonly double _zombie_boss_threashold_limit = 75; // first UfoBoss will appear
         private readonly double _zombie_boss_threashold_limit_increase = 15;
 
-        //TODO: set defaults _enemy_threashold_limit = 80
-        private readonly double _enemy_threashold_limit = 100; // after first enemies will appear
+        //TODO: set defaults _enemy_threashold_limit = 125
+        private readonly double _enemy_threashold_limit = 125; // after first enemies will appear
         private readonly double _enemy_threashold_limit_increase = 15;
 
         private double _enemy_kill_count;
@@ -60,6 +59,7 @@ namespace HonkTrooper
 
         private bool _enemy_fleet_appeared;
 
+        private PlayerBalloon _player;
         private int _selected_player_template;
 
         private readonly AudioStub _audio_stub;
@@ -111,7 +111,7 @@ namespace HonkTrooper
             ScreenExtensions.Height = Constants.DEFAULT_SCENE_HEIGHT;
 
             _scene_main_menu.SetRenderTransformOrigin(0.5);
-            SetScreenScaling();
+            SetSceneScaling();
 
             Loaded += HonkBomberPage_Loaded;
             Unloaded += HonkBomberPage_Unloaded;
@@ -162,7 +162,7 @@ namespace HonkTrooper
             ScreenExtensions.Width = args.NewSize.Width <= Constants.DEFAULT_SCENE_WIDTH ? args.NewSize.Width : Constants.DEFAULT_SCENE_WIDTH;
             ScreenExtensions.Height = args.NewSize.Height <= Constants.DEFAULT_SCENE_HEIGHT ? args.NewSize.Height : Constants.DEFAULT_SCENE_HEIGHT;
 
-            SetScreenScaling();
+            SetSceneScaling();
 
             if (_scene_game.SceneState == SceneState.GAME_RUNNING)
             {
@@ -2149,7 +2149,7 @@ namespace HonkTrooper
 
         private bool GenerateUfoEnemy()
         {
-            if (!UfoBossExists() &&
+            if (!UfoBossExists() && !ZombieBossExists() && !VehicleBossExists() &&
                 _enemy_threashold.ShouldRelease(_game_score_bar.GetScore()) &&
                 _scene_game.Children.OfType<UfoEnemy>().FirstOrDefault(x => x.IsAnimating == false) is UfoEnemy ufoEnemy)
             {
@@ -2163,7 +2163,7 @@ namespace HonkTrooper
                 {
                     _audio_stub.Play(SoundType.UFO_ENEMY_ENTRY);
 
-                    GenerateInterimScreen("Beware of Aliens");
+                    GenerateInterimScreen("Beware of UFO Fleet");
                     _scene_game.ActivateSlowMotion();
                     _enemy_fleet_appeared = true;
                 }
@@ -2236,14 +2236,13 @@ namespace HonkTrooper
 
                 _enemy_kill_count++;
 
-                // after killing 15 enemies increase the threadhold limit
-                if (_enemy_kill_count > _enemy_kill_count_limit)
+                if (_enemy_kill_count > _enemy_kill_count_limit) // after killing limited enemies increase the threadhold limit
                 {
                     _enemy_threashold.IncreaseThreasholdLimit(increment: _enemy_threashold_limit_increase, currentPoint: _game_score_bar.GetScore());
                     _enemy_kill_count = 0;
                     _enemy_fleet_appeared = false;
 
-                    GenerateInterimScreen("Alien Fleet Vanquished");
+                    GenerateInterimScreen("UFO Fleet Vanquished");
                     _scene_game.ActivateSlowMotion();
                 }
 
@@ -2435,14 +2434,6 @@ namespace HonkTrooper
             {
                 var hitBox = vehicleEnemy.GetHitBox();
 
-                //if (vehicleEnemy.SpeedOffset == collidingVehicleEnemy.SpeedOffset)
-                //{
-                //    if (vehicleEnemy.SpeedOffset > -1)
-                //        vehicleEnemy.SpeedOffset--;
-                //}
-                //else
-                //{
-
                 if (collidingVehicleEnemy.SpeedOffset > vehicleEnemy.SpeedOffset) // colliding vehicleEnemy is faster
                 {
                     vehicleEnemy.SpeedOffset = collidingVehicleEnemy.SpeedOffset;
@@ -2451,7 +2442,6 @@ namespace HonkTrooper
                 {
                     collidingVehicleEnemy.SpeedOffset = vehicleEnemy.SpeedOffset;
                 }
-                //}
             }
         }
 
@@ -3809,7 +3799,7 @@ namespace HonkTrooper
                 );
         }
 
-        private void SetScreenScaling()
+        private void SetSceneScaling()
         {
             var scaling = ScreenExtensions.GetScreenSpaceScaling();
 
@@ -3822,7 +3812,6 @@ namespace HonkTrooper
             // resize the main menu
             _scene_main_menu.Width = ScreenExtensions.Width;
             _scene_main_menu.Height = ScreenExtensions.Height;
-
 
             // scale the scenes
             _scene_game.SetScaleTransform(scaling);

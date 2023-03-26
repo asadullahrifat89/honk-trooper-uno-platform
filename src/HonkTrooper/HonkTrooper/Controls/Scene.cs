@@ -28,7 +28,6 @@ namespace HonkTrooper
         //private readonly List<Construct> _destroyables = new();
         private readonly List<Generator> _generators = new();
 
-        private double _lastSpeed;
         private double _slowMotionDelay;
         private readonly double _slowMotionDelayDefault = 160;
 
@@ -50,13 +49,13 @@ namespace HonkTrooper
 
         #region Properties
 
-        public bool IsAnimating { get; set; }
-
-        public double Speed { get; set; }
+        public bool IsAnimating { get; set; }        
 
         public bool IsSlowMotionActivated => _slowMotionDelay > 0;
 
         public SceneState SceneState { get; set; } = SceneState.GAME_STOPPED;
+
+        public double Speed { get; set; }
 
         #endregion
 
@@ -66,6 +65,7 @@ namespace HonkTrooper
         {
             RenderTransformOrigin = new Point(xy, xy);
         }
+
         public void SetScaleTransform(double scaleXY)
         {
             _compositeTransform.ScaleX = scaleXY;
@@ -183,9 +183,6 @@ namespace HonkTrooper
         {
             if (!IsSlowMotionActivated)
             {
-                //_lastSpeed = Speed;
-                //Speed /= Constants.DEFAULT_SLOW_MOTION_REDUCTION_FACTOR;
-
                 _slowMotionDelay = _slowMotionDelayDefault;
             }
         }
@@ -195,9 +192,6 @@ namespace HonkTrooper
             if (_slowMotionDelay > 0)
             {
                 _slowMotionDelay--;
-
-                //if (_slowMotionDelay <= 0)
-                //    Speed = _lastSpeed;
             }
         }
 
