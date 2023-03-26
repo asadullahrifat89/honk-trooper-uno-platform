@@ -97,7 +97,7 @@ namespace HonkTrooper
         public void SetBlast()
         {
             _audioStub.Play(SoundType.ROCKET_BLAST);
-            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;
+            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET - 1;
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_blast_uris);
             _content_image.Source = new BitmapImage(uri);
             IsBlasting = true;
