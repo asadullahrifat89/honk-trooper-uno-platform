@@ -37,7 +37,7 @@ namespace HonkTrooper
             new (ConstructType.UFO_BOSS_ROCKET_SEEKING, 80, 80),
 
             new (ConstructType.ZOMBIE_BOSS, 180, 180),
-            new (ConstructType.ZOMBIE_BOSS_ROCKET, 100, 100),
+            new (ConstructType.ZOMBIE_BOSS_ROCKET, 190, 190),
 
             new (ConstructType.UFO_ENEMY, 160, 160),
             new (ConstructType.UFO_ENEMY_ROCKET, 60, 60),

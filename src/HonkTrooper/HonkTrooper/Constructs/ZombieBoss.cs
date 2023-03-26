@@ -65,14 +65,12 @@ namespace HonkTrooper
             SetChild(_content_image);
 
             IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
-            SpeedOffset = 0;
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE;
 
             _audioStub = new AudioStub(
                 (SoundType.UFO_BOSS_HOVERING, 0.8, true),
                 (SoundType.UFO_BOSS_ENTRY, 0.8, false),
-                (SoundType.UFO_BOSS_DEAD, 1, false)
-                );
+                (SoundType.UFO_BOSS_DEAD, 1, false));
         }
 
         #endregion
@@ -247,7 +245,7 @@ namespace HonkTrooper
         {
             _changeMovementPatternDelay = _random.Next(40, 60);
             _movementDirection = MovementDirection.None;
-            SpeedOffset = _random.Next((int)Constants.DEFAULT_SPEED_OFFSET);
+            SpeedOffset = _random.Next(-1, (int)Constants.DEFAULT_SPEED_OFFSET);
         }
 
         #endregion
