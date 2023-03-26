@@ -46,16 +46,14 @@ namespace HonkTrooper
                                 {
                                     SetPosition(
                                         left: 0 - Width / 2,
-                                        top: (Height * -1) + randomY,
-                                        z: 3);
+                                        top: (Height * -1) + randomY);
                                 }
                                 break;
                             case 1:
                                 {
                                     SetPosition(
                                         left: (xLaneWidth - Width / 1.5),
-                                        top: (Height * -1) + randomY,
-                                        z: 3);
+                                        top: (Height * -1) + randomY);
                                 }
                                 break;                          
                             default:
@@ -73,16 +71,14 @@ namespace HonkTrooper
                                 {
                                     SetPosition(
                                         left: Width * -1,
-                                        top: (0 - Height / 2) + randomY,
-                                        z: 3);
+                                        top: (0 - Height / 2) + randomY);
                                 }
                                 break;
                             case 1:
                                 {
                                     SetPosition(
                                         left: Width * -1,
-                                        top: (yLaneHeight - Height / 3) + randomY,
-                                        z: 3);
+                                        top: (yLaneHeight - Height / 3) + randomY);
                                 }
                                 break;                           
                             default:
