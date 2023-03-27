@@ -151,7 +151,7 @@ namespace HonkTrooper
 
                 await Task.Delay(1500);
 
-                GenerateGameStartScreen("Honk Trooper");
+                GenerateGameStartScreen("Honk Trooper", "-Stop Honkers, Save The City-");
                 _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
             }
             else
@@ -202,7 +202,7 @@ namespace HonkTrooper
                         RecycleDisplayOrientationChangeScreen(DisplayOrientationChangeScreen);
 
                         _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
-                        GenerateGameStartScreen("Honk Trooper");
+                        GenerateGameStartScreen("Honk Trooper", "-Stop Honkers, Save The City-");
 
                         _scene_game.Play();
                         _scene_main_menu.Play();
@@ -368,7 +368,7 @@ namespace HonkTrooper
                 _scene_game.SceneState = SceneState.GAME_STOPPED;
 
                 ToggleHudVisibility(Visibility.Collapsed);
-                GenerateGameStartScreen("Game Over");
+                GenerateGameStartScreen(title: "Game Over", subTitle: $"Score: {_game_score_bar.GetScore()}");
 
                 _game_controller.DeactivateGyrometerReading();
             }
@@ -529,12 +529,13 @@ namespace HonkTrooper
             return true;
         }
 
-        private bool GenerateGameStartScreen(string title)
+        private bool GenerateGameStartScreen(string title, string subTitle = "")
         {
             if (_scene_main_menu.Children.OfType<GameStartScreen>().FirstOrDefault(x => x.IsAnimating == false) is GameStartScreen gameStartScreen)
             {
                 gameStartScreen.IsAnimating = true;
                 gameStartScreen.SetTitle(title);
+                gameStartScreen.SetSubTitle(subTitle);
                 gameStartScreen.Reset();
                 gameStartScreen.Reposition();
 
@@ -583,7 +584,7 @@ namespace HonkTrooper
                 backAction: () =>
                 {
                     RecyclePlayerSelectionScreen(playerSelectionScreen);
-                    GenerateGameStartScreen("Honk Trooper");
+                    GenerateGameStartScreen("Honk Trooper", "-Stop Honkers, Save The City-");
                     return true;
                 });
 
@@ -886,8 +887,8 @@ namespace HonkTrooper
 
                 _player_health_bar.SetValue(_player.Health);
 
-                if (_scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is UfoBoss UfoBoss)
-                    UfoBoss.SetWinStance();
+                if (_scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is UfoBoss ufoBoss)
+                    ufoBoss.SetWinStance();
 
                 GameOver();
             }
@@ -960,7 +961,7 @@ namespace HonkTrooper
             }
             else
             {
-                playerHonkBomb.Pop();                
+                playerHonkBomb.Pop();
                 playerHonkBomb.SetLeft(playerHonkBomb.GetLeft() + speed);
                 playerHonkBomb.SetTop(playerHonkBomb.GetTop() + speed * 1.2);
 
