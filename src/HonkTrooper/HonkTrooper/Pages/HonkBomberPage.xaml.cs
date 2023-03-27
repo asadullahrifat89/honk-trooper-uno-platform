@@ -62,6 +62,7 @@ namespace HonkTrooper
 
         private PlayerBalloon _player;
         private int _selected_player_template;
+        private int _game_level;
 
         private readonly AudioStub _audio_stub;
 
@@ -296,8 +297,9 @@ namespace HonkTrooper
         private void NewGame()
         {
             LoggerExtensions.Log("New Game Started.");
-
             RoadBackground.Background = App.Current.Resources["RoadBackgroundColor"] as SolidColorBrush;
+
+            _game_level = 0;
 
             _audio_stub.Play(SoundType.AMBIENCE, SoundType.GAME_BACKGROUND_MUSIC);
 
@@ -409,6 +411,12 @@ namespace HonkTrooper
             {
                 screen.Reposition();
             }
+        }
+
+        private void LevelUp()
+        {
+            _game_level++;
+            GenerateInterimScreen($"LEVEL {_game_level} COMPLETE");
         }
 
         #endregion
@@ -896,7 +904,7 @@ namespace HonkTrooper
                             .FirstOrDefault(x => x.GetCloseHitBox().IntersectsWith(fireCrackerHitBox)) is VehicleEnemy vehicle) // while in blast check if it intersects with any vehicle, if it does then the vehicle stops honking and slows down
                         {
                             vehicle.SetBlast();
-                            _game_score_bar.GainScore(3);
+                            _game_score_bar.GainScore(2);
                         }
 
                         if (_scene_game.Children.OfType<VehicleBoss>()
@@ -2042,9 +2050,9 @@ namespace HonkTrooper
                 _audio_stub.SetVolume(SoundType.AMBIENCE, 0.6);
 
                 _player.SetWinStance();
-                _game_score_bar.GainScore(5);
+                _game_score_bar.GainScore(3);
 
-                GenerateInterimScreen("Cyber Psycho Will Return");
+                LevelUp();
 
                 _scene_game.ActivateSlowMotion();
 
@@ -2385,7 +2393,7 @@ namespace HonkTrooper
 
             if (ufoEnemy.IsDead)
             {
-                _game_score_bar.GainScore(3);
+                _game_score_bar.GainScore(2);
 
                 _enemy_kill_count++;
 
@@ -2395,7 +2403,8 @@ namespace HonkTrooper
                     _enemy_kill_count = 0;
                     _enemy_fleet_appeared = false;
 
-                    GenerateInterimScreen("UFO Fleet Vanquished");
+                    LevelUp();
+
                     _scene_game.ActivateSlowMotion();
                 }
             }
@@ -2731,9 +2740,9 @@ namespace HonkTrooper
                 _audio_stub.SetVolume(SoundType.AMBIENCE, 0.6);
 
                 _player.SetWinStance();
-                _game_score_bar.GainScore(5);
+                _game_score_bar.GainScore(3);
 
-                GenerateInterimScreen("Crazy Honker Busted");
+                LevelUp();
 
                 _scene_game.ActivateSlowMotion();
             }
@@ -2990,9 +2999,9 @@ namespace HonkTrooper
                 _audio_stub.SetVolume(SoundType.AMBIENCE, 0.6);
 
                 _player.SetWinStance();
-                _game_score_bar.GainScore(5);
+                _game_score_bar.GainScore(3);
 
-                GenerateInterimScreen("Blocks Zombie Will Return");
+                LevelUp();
 
                 _scene_game.ActivateSlowMotion();
 
