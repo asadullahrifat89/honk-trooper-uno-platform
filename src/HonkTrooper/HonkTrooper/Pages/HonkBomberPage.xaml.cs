@@ -3290,7 +3290,7 @@ namespace HonkTrooper
 
         private bool GenerateCloud()
         {
-            if (_scene_game.Children.OfType<Cloud>().FirstOrDefault(x => x.IsAnimating == false) is Cloud cloud)
+            if (!UfoBossExists() && !ZombieBossExists() && !VehicleBossExists() && _scene_game.Children.OfType<Cloud>().FirstOrDefault(x => x.IsAnimating == false) is Cloud cloud)
             {
                 cloud.IsAnimating = true;
                 cloud.Reset();
