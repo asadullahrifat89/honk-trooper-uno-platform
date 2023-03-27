@@ -190,7 +190,15 @@ namespace HonkTrooper
             playButton.Click += (s, e) =>
             {
                 _audioStub.Play(SoundType.GAME_START);
-                playAction(player2btn.IsChecked == true ? 2 : 1);
+
+                if (player1btn.IsChecked == true)
+                {
+                    playAction(0);
+                }
+                else
+                {
+                    playAction(1);
+                }
             };
 
             Grid.SetRow(playButton, 2);
