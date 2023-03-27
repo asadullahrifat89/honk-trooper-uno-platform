@@ -23,8 +23,8 @@
 
     <SolidColorBrush x:Key="BorderColor" Color="#2f3a5a" />
 
-    <SolidColorBrush x:Key="Player1AccentColor" Color="#5fc4f8" />
-    <SolidColorBrush x:Key="Player2AccentColor" Color="#d75e72" />
+    <SolidColorBrush x:Key="PlayerBlueAccentColor" Color="#5fc4f8" />
+    <SolidColorBrush x:Key="PlayerRedAccentColor" Color="#d75e72" />
 
     <!--<FontFamily x:Key="DefaultFontFamily">ms-appx:///HonkTrooper/Assets/Fonts/CuteyPatchy.ttf#CuteyPatchy</FontFamily>-->
     <FontFamily x:Key="DefaultFontFamily">ms-appx:///HonkTrooper/Assets/Fonts/Gameplay.ttf#Gameplay</FontFamily>

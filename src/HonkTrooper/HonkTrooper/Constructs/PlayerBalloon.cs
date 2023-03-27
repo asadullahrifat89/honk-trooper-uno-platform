@@ -106,18 +106,42 @@ namespace HonkTrooper
 
         public void Reposition()
         {
+            //SetPosition(
+            //    left: (Scene.Width / 2) - Width / 2,
+            //    top: (Scene.Height / 2 - Height / 2) - 150,
+            //    z: 6);
+
+            var scaling = ScreenExtensions.GetScreenSpaceScaling();
+
             SetPosition(
-                left: ((Scene.Width / 4) * 2) - Width / 2,
-                top: (Scene.Height / 2 - Height / 2) - 150,
-                z: 6);
+               left: ((Constants.DEFAULT_SCENE_WIDTH / 2 - Width / 2) * scaling),
+               top: ((Constants.DEFAULT_SCENE_HEIGHT / 2 - Height / 2) * scaling) - 150,
+               z: 6);
         }
 
-        public void SetPlayerTemplate(int playerTemplate)
+        public void SetPlayerTemplate(PlayerBalloonTemplate playerTemplate)
         {
-            _player_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BALLOON && x.Uri.OriginalString.Contains($"{playerTemplate}")).Select(x => x.Uri).ToArray();
-            _player_win_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BALLOON_WIN && x.Uri.OriginalString.Contains($"{playerTemplate}")).Select(x => x.Uri).ToArray();
-            _player_hit_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BALLOON_HIT && x.Uri.OriginalString.Contains($"{playerTemplate}")).Select(x => x.Uri).ToArray();
-            _player_attack_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BALLOON_ATTACK && x.Uri.OriginalString.Contains($"{playerTemplate}")).Select(x => x.Uri).ToArray();
+            switch (playerTemplate)
+            {
+                case PlayerBalloonTemplate.Blue:
+                    {
+                        _player_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BALLOON && x.Uri.OriginalString.Contains("1")).Select(x => x.Uri).ToArray();
+                        _player_win_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BALLOON_WIN && x.Uri.OriginalString.Contains("1")).Select(x => x.Uri).ToArray();
+                        _player_hit_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BALLOON_HIT && x.Uri.OriginalString.Contains("1")).Select(x => x.Uri).ToArray();
+                        _player_attack_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BALLOON_ATTACK && x.Uri.OriginalString.Contains("1")).Select(x => x.Uri).ToArray();
+                    }
+                    break;
+                case PlayerBalloonTemplate.Red:
+                    {
+                        _player_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BALLOON && x.Uri.OriginalString.Contains("2")).Select(x => x.Uri).ToArray();
+                        _player_win_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BALLOON_WIN && x.Uri.OriginalString.Contains("2")).Select(x => x.Uri).ToArray();
+                        _player_hit_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BALLOON_HIT && x.Uri.OriginalString.Contains("2")).Select(x => x.Uri).ToArray();
+                        _player_attack_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BALLOON_ATTACK && x.Uri.OriginalString.Contains("2")).Select(x => x.Uri).ToArray();
+                    }
+                    break;
+                default:
+                    break;
+            }
 
             var uri = ConstructExtensions.GetRandomContentUri(_player_uris);
             _content_image.Source = new BitmapImage(uriSource: uri);
@@ -477,5 +501,11 @@ namespace HonkTrooper
         Attack,
         Hit,
         Win,
+    }
+
+    public enum PlayerBalloonTemplate
+    {
+        Blue,
+        Red,
     }
 }

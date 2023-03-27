@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace HonkTrooper
 {
-    public partial class PlayerSelectionScreen : HoveringTitleScreen
+    public partial class PlayerHonkBombSelectionScreen : HoveringTitleScreen
     {
         #region Fields
 
@@ -21,7 +21,7 @@ namespace HonkTrooper
 
         #region Ctor
 
-        public PlayerSelectionScreen
+        public PlayerHonkBombSelectionScreen
            (Func<Construct, bool> animateAction,
            Func<Construct, bool> recycleAction,
            Func<int, bool> playAction,
@@ -100,7 +100,7 @@ namespace HonkTrooper
 
             _titleScreenText = new TextBlock()
             {
-                Text = "Select Player",
+                Text = "Select Honk Bomb",
                 FontSize = Constants.DEFAULT_GUI_FONT_SIZE - 5,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 Foreground = new SolidColorBrush(Colors.White),
@@ -113,9 +113,9 @@ namespace HonkTrooper
 
             #endregion
 
-            #region Player Select Buttons
+            #region PlayerHonkBomb Select Buttons
 
-            var playerUris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BALLOON).Select(x => x.Uri).ToArray();
+            var playerUris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_HONK_BOMB && x.Uri.OriginalString.Contains("2")).Select(x => x.Uri).ToArray();
 
             StackPanel playerTemplates = new()
             {

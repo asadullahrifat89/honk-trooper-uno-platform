@@ -29,7 +29,7 @@ namespace HonkTrooper
         {
             new (ConstructType.PLAYER_BALLOON, 165, 165),
             new (ConstructType.PLAYER_ROCKET, 80, 80),
-            new (ConstructType.PLAYER_FIRE_CRACKER, 70, 70),
+            new (ConstructType.PLAYER_HONK_BOMB, 70, 70),
             new (ConstructType.PLAYER_ROCKET_SEEKING, 70, 70),
 
             new (ConstructType.UFO_BOSS, 180, 180),
@@ -59,7 +59,7 @@ namespace HonkTrooper
             new (ConstructType.ROAD_SIDE_HEDGE, 170, 170),
 
             new (ConstructType.ROAD_SIDE_WALK, 270, 260),
-            new (ConstructType.ROAD_SIDE_LAMP, 150, 150),            
+            new (ConstructType.ROAD_SIDE_LAMP, 150, 150),
             new (ConstructType.ROAD_SIDE_LIGHT_BILLBOARD, 150, 150),
             new (ConstructType.ROAD_SIDE_BILLBOARD, 340, 340),
 
@@ -135,15 +135,22 @@ namespace HonkTrooper
             new (ConstructType.PLAYER_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_2.png")),
             new (ConstructType.PLAYER_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_3.png")),
 
-            new (ConstructType.PLAYER_FIRE_CRACKER, new Uri("ms-appx:///HonkTrooper/Assets/Images/cracker_1.png")),
-            new (ConstructType.PLAYER_FIRE_CRACKER, new Uri("ms-appx:///HonkTrooper/Assets/Images/cracker_2.png")),
-            new (ConstructType.PLAYER_FIRE_CRACKER, new Uri("ms-appx:///HonkTrooper/Assets/Images/cracker_3.png")),
+            new (ConstructType.PLAYER_HONK_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/cracker_1.png")),
+            new (ConstructType.PLAYER_HONK_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/cracker_2.png")),
+            new (ConstructType.PLAYER_HONK_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/cracker_3.png")),
+
+            new (ConstructType.PLAYER_HONK_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/trash_1.png")),
+            new (ConstructType.PLAYER_HONK_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/trash_2.png")),
+            new (ConstructType.PLAYER_HONK_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/trash_3.png")),
 
             new (ConstructType.PLAYER_ROCKET_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_seeking_1.png")),
             new (ConstructType.PLAYER_ROCKET_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_seeking_2.png")),
 
-            new (ConstructType.BOMB_BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Images/blast_1.png")),
-            new (ConstructType.BOMB_BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Images/blast_2.png")),
+            new (ConstructType.BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Images/blast_1.png")),
+            new (ConstructType.BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Images/blast_2.png")),
+
+            new (ConstructType.BANG, new Uri("ms-appx:///HonkTrooper/Assets/Images/bang_1.png")),
+            new (ConstructType.BANG, new Uri("ms-appx:///HonkTrooper/Assets/Images/bang_2.png")),
 
             new (ConstructType.CLOUD, new Uri("ms-appx:///HonkTrooper/Assets/Images/cloud_1.png")),
             new (ConstructType.CLOUD, new Uri("ms-appx:///HonkTrooper/Assets/Images/cloud_2.png")),
@@ -188,6 +195,11 @@ namespace HonkTrooper
             new (SoundType.CRACKER_BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/cracker_blast_2.mp3")),
             new (SoundType.CRACKER_BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/cracker_blast_3.mp3")),
             new (SoundType.CRACKER_BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/cracker_blast_4.mp3")),
+
+            new (SoundType.TRASH_CAN_HIT, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/trashcan_hit_1.mp3")),
+            new (SoundType.TRASH_CAN_HIT, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/trashcan_hit_2.mp3")),
+            new (SoundType.TRASH_CAN_HIT, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/trashcan_hit_3.mp3")),
+            new (SoundType.TRASH_CAN_HIT, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/trashcan_hit_4.mp3")),
 
             new (SoundType.ROCKET_LAUNCH, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/rocket_launch_1.mp3")),
             new (SoundType.ROCKET_LAUNCH, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/rocket_launch_2.mp3")),
@@ -261,7 +273,7 @@ namespace HonkTrooper
 
         PLAYER_ROCKET,
         PLAYER_ROCKET_SEEKING,
-        PLAYER_FIRE_CRACKER,
+        PLAYER_HONK_BOMB,
 
         VEHICLE_ENEMY_SMALL,
         VEHICLE_ENEMY_LARGE,
@@ -283,7 +295,8 @@ namespace HonkTrooper
 
         CLOUD,
 
-        BOMB_BLAST,
+        BLAST,
+        BANG,
 
         DROP_SHADOW,
 
@@ -323,6 +336,8 @@ namespace HonkTrooper
 
         CRACKER_DROP,
         CRACKER_BLAST,
+
+        TRASH_CAN_HIT,
 
         ROCKET_LAUNCH,
         ROCKET_BLAST,
