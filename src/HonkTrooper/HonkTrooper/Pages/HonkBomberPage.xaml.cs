@@ -119,6 +119,7 @@ namespace HonkTrooper
             ScreenExtensions.Height = Constants.DEFAULT_SCENE_HEIGHT;
 
             _scene_main_menu.SetRenderTransformOrigin(0.5);
+            
             SetSceneScaling();
 
             Loaded += HonkBomberPage_Loaded;
