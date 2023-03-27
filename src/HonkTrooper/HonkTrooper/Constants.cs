@@ -59,7 +59,7 @@ namespace HonkTrooper
             new (ConstructType.ROAD_SIDE_HEDGE, 170, 170),
 
             new (ConstructType.ROAD_SIDE_WALK, 270, 260),
-            new (ConstructType.ROAD_SIDE_LAMP, 150, 150),            
+            new (ConstructType.ROAD_SIDE_LAMP, 150, 150),
             new (ConstructType.ROAD_SIDE_LIGHT_BILLBOARD, 150, 150),
             new (ConstructType.ROAD_SIDE_BILLBOARD, 340, 340),
 
@@ -146,8 +146,11 @@ namespace HonkTrooper
             new (ConstructType.PLAYER_ROCKET_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_seeking_1.png")),
             new (ConstructType.PLAYER_ROCKET_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_seeking_2.png")),
 
-            new (ConstructType.BOMB_BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Images/blast_1.png")),
-            new (ConstructType.BOMB_BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Images/blast_2.png")),
+            new (ConstructType.BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Images/blast_1.png")),
+            new (ConstructType.BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Images/blast_2.png")),
+
+            new (ConstructType.BANG, new Uri("ms-appx:///HonkTrooper/Assets/Images/bang_1.png")),
+            new (ConstructType.BANG, new Uri("ms-appx:///HonkTrooper/Assets/Images/bang_2.png")),
 
             new (ConstructType.CLOUD, new Uri("ms-appx:///HonkTrooper/Assets/Images/cloud_1.png")),
             new (ConstructType.CLOUD, new Uri("ms-appx:///HonkTrooper/Assets/Images/cloud_2.png")),
@@ -292,7 +295,8 @@ namespace HonkTrooper
 
         CLOUD,
 
-        BOMB_BLAST,
+        BLAST,
+        BANG,
 
         DROP_SHADOW,
 
