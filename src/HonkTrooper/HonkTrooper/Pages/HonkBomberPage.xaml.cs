@@ -368,7 +368,7 @@ namespace HonkTrooper
                 _scene_game.SceneState = SceneState.GAME_STOPPED;
 
                 ToggleHudVisibility(Visibility.Collapsed);
-                GenerateGameStartScreen(title: "Game Over", subTitle: $"Score: {_game_score_bar.GetScore()}");
+                GenerateGameStartScreen(title: "Game Over", subTitle: $"-Score: {_game_score_bar.GetScore()} Level: {_game_level}-");
 
                 _game_controller.DeactivateGyrometerReading();
             }
