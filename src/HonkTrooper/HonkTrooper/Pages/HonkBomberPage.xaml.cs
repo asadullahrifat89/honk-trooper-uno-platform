@@ -233,11 +233,6 @@ namespace HonkTrooper
             LoggerExtensions.Log($"CurrentOrientation: {sender.CurrentOrientation}");
         }
 
-        private void PauseButton_Click(object sender, RoutedEventArgs e)
-        {
-            PauseGame();
-        }
-
         #endregion
 
         #region Methods
@@ -753,47 +748,50 @@ namespace HonkTrooper
 
             if (_scene_game.SceneState == SceneState.GAME_RUNNING)
             {
-                var count = _scene_game.Children.OfType<VehicleEnemy>().Count(x => x.IsAnimating && x.WillHonk) + _scene_game.Children.OfType<UfoEnemy>().Count(x => x.IsAnimating && x.WillHonk);
-                _sound_pollution_health_bar.SetValue(count * 2);
-
-                if (_sound_pollution_health_bar.GetValue() >= _sound_pollution_health_bar.GetMaxiumHealth()) // loose score slowly if sound pollution has reached the limit
+                if (_game_controller.IsPausing)
                 {
-                    _game_score_bar.LooseScore(0.01);
-                }
-
-                var scaling = ScreenExtensions.GetScreenSpaceScaling();
-                var speed = _player.GetMovementSpeed();
-
-                _player.Move(
-                    speed: speed,
-                    sceneWidth: Constants.DEFAULT_SCENE_WIDTH * scaling,
-                    sceneHeight: Constants.DEFAULT_SCENE_HEIGHT * scaling,
-                    controller: _game_controller);
-
-                ProcessPlayerAttack();
-            }
-
-            return true;
-        }
-
-        private void ProcessPlayerAttack()
-        {
-            if (_game_controller.IsAttacking)
-            {
-                if (UfoEnemyExists() || UfoBossExists() || ZombieBossExists())
-                {
-                    if (_powerUp_health_bar.HasHealth && (PowerUpType)_powerUp_health_bar.Tag == PowerUpType.SEEKING_BALLS)
-                        GeneratePlayerRocketSeeking();
-                    else
-                        GeneratePlayerRocket();
+                    PauseGame();
+                    _game_controller.IsPausing = false;
                 }
                 else
                 {
-                    GeneratePlayerFireCracker();
-                }
+                    var count = _scene_game.Children.OfType<VehicleEnemy>().Count(x => x.IsAnimating && x.WillHonk) + _scene_game.Children.OfType<UfoEnemy>().Count(x => x.IsAnimating && x.WillHonk);
+                    _sound_pollution_health_bar.SetValue(count * 2);
 
-                _game_controller.IsAttacking = false;
+                    if (_sound_pollution_health_bar.GetValue() >= _sound_pollution_health_bar.GetMaxiumHealth()) // loose score slowly if sound pollution has reached the limit
+                    {
+                        _game_score_bar.LooseScore(0.01);
+                    }
+
+                    var scaling = ScreenExtensions.GetScreenSpaceScaling();
+                    var speed = _player.GetMovementSpeed();
+
+                    _player.Move(
+                        speed: speed,
+                        sceneWidth: Constants.DEFAULT_SCENE_WIDTH * scaling,
+                        sceneHeight: Constants.DEFAULT_SCENE_HEIGHT * scaling,
+                        controller: _game_controller);
+
+                    if (_game_controller.IsAttacking)
+                    {
+                        if (UfoEnemyExists() || UfoBossExists() || ZombieBossExists())
+                        {
+                            if (_powerUp_health_bar.HasHealth && (PowerUpType)_powerUp_health_bar.Tag == PowerUpType.SEEKING_BALLS)
+                                GeneratePlayerRocketSeeking();
+                            else
+                                GeneratePlayerRocket();
+                        }
+                        else
+                        {
+                            GeneratePlayerFireCracker();
+                        }
+
+                        _game_controller.IsAttacking = false;
+                    }
+                }
             }
+
+            return true;
         }
 
         private void LoosePlayerHealth()
@@ -1368,7 +1366,7 @@ namespace HonkTrooper
             if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideWalk>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideWalk roadSideWalk)
             {
                 roadSideWalk.Reset();
-                roadSideWalk.IsAnimating = true;                
+                roadSideWalk.IsAnimating = true;
                 roadSideWalk.SetPosition(
                     left: (Constants.DEFAULT_SCENE_WIDTH / 2.25 - roadSideWalk.Width),
                     top: roadSideWalk.Height * -1,
@@ -3664,7 +3662,6 @@ namespace HonkTrooper
         private void SetController()
         {
             _game_controller.SetScene(_scene_game);
-            _game_controller.SetPauseAction(PauseGame);
             _game_controller.SetGyrometer();
         }
 
