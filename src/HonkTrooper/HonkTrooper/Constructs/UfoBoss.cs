@@ -74,8 +74,7 @@ namespace HonkTrooper
             _audioStub = new AudioStub(
                 (SoundType.UFO_BOSS_HOVERING, 0.8, true),
                 (SoundType.UFO_BOSS_ENTRY, 0.8, false),
-                (SoundType.UFO_BOSS_DEAD, 1, false)
-                );
+                (SoundType.UFO_BOSS_DEAD, 1, false));
         }
 
         #endregion
