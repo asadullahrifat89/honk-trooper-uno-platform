@@ -51,7 +51,7 @@ namespace HonkTrooper
 
             rootGrid.Children.Add(new Border()
             {
-                Background = new SolidColorBrush(Colors.Goldenrod),
+                Background = new SolidColorBrush(Colors.DeepSkyBlue),
                 CornerRadius = new CornerRadius(15),
                 Opacity = 0.6,
                 BorderBrush = new SolidColorBrush(Colors.White),

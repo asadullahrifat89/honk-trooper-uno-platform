@@ -6,12 +6,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Windows.Foundation;
+using Microsoft.UI.Xaml.Media.Animation;
 
 namespace HonkTrooper
 {
     public partial class Scene : Canvas
     {
         #region Fields
+
+        private readonly Storyboard _storyboard;
+        private readonly DoubleAnimation _doubleAnimation;
 
         private readonly CompositeTransform _compositeTransform = new()
         {
@@ -42,8 +46,22 @@ namespace HonkTrooper
             CanDrag = false;
             Speed = Constants.DEFAULT_SCENE_SPEED;
 
+            _doubleAnimation = new DoubleAnimation()
+            {
+                Duration = new Duration(TimeSpan.FromSeconds(10)),
+                From = 0,
+                To = 1,
+            };
+
+            Storyboard.SetTarget(_doubleAnimation, this);
+            Storyboard.SetTargetProperty(_doubleAnimation, "Opacity");
+
+            _storyboard = new Storyboard();
+            _storyboard.Children.Add(_doubleAnimation);
+
+            Loaded += Scene_Loaded;
             Unloaded += Scene_Unloaded;
-        }
+        }      
 
         #endregion
 
@@ -56,6 +74,20 @@ namespace HonkTrooper
         public SceneState SceneState { get; set; } = SceneState.GAME_STOPPED;
 
         public double Speed { get; set; }
+
+        #endregion
+
+        #region Events
+
+        private void Scene_Loaded(object sender, RoutedEventArgs e)
+        {
+            _storyboard.Begin();
+        }
+
+        private void Scene_Unloaded(object sender, RoutedEventArgs e)
+        {
+            Stop();
+        }
 
         #endregion
 
@@ -195,16 +227,7 @@ namespace HonkTrooper
             }
         }
 
-        #endregion
-
-        #region Events
-
-        private void Scene_Unloaded(object sender, RoutedEventArgs e)
-        {
-            Stop();
-        }
-
-        #endregion
+        #endregion        
     }
 
     public enum SceneState

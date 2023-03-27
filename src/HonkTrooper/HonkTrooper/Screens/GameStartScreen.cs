@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace HonkTrooper
 {
-    public partial class TitleScreen : HoveringTitleScreen
+    public partial class GameStartScreen : HoveringTitleScreen
     {
         #region Fields       
 
@@ -21,7 +21,7 @@ namespace HonkTrooper
 
         #region Ctor
 
-        public TitleScreen
+        public GameStartScreen
             (Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction,
             Func<bool> playAction)
@@ -50,7 +50,7 @@ namespace HonkTrooper
 
             rootGrid.Children.Add(new Border()
             {
-                Background = new SolidColorBrush(Colors.Goldenrod),
+                Background = new SolidColorBrush(Colors.DeepSkyBlue),
                 CornerRadius = new CornerRadius(15),
                 Opacity = 0.6,
                 BorderBrush = new SolidColorBrush(Colors.White),
@@ -96,7 +96,7 @@ namespace HonkTrooper
                 FontSize = Constants.DEFAULT_GUI_FONT_SIZE,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 Margin = new Thickness(0, 0, 0, 5),
-                Foreground = new SolidColorBrush(Colors.White),                
+                Foreground = new SolidColorBrush(Colors.White),
             };
 
             Grid.SetRow(_titleScreenText, 1);
@@ -125,10 +125,10 @@ namespace HonkTrooper
             };
 
             playButton.Click += (s, e) =>
-            {
-                _audioStub.Play(SoundType.GAME_START);
-                playAction();
-            };
+                {
+                    _audioStub.Play(SoundType.GAME_START);
+                    playAction();
+                };
 
             Grid.SetRow(playButton, 2);
 
@@ -144,7 +144,7 @@ namespace HonkTrooper
             _audioStub = new AudioStub((SoundType.GAME_START, 1, false));
         }
 
-        #endregion      
+        #endregion
 
         #region Methods
 

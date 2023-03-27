@@ -2,6 +2,7 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Animation;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -64,6 +65,9 @@ namespace HonkTrooper
 
         private readonly AudioStub _audio_stub;
 
+        private readonly Storyboard _dark_Storyboard;
+        private readonly Storyboard _light_Storyboard;
+
         #endregion
 
         #region Ctor
@@ -93,6 +97,9 @@ namespace HonkTrooper
             _zombie_boss_threashold = new Threashold(_zombie_boss_threashold_limit);
             _vehicle_boss_threashold = new Threashold(_vehicle_boss_threashold_limit);
             _enemy_threashold = new Threashold(_enemy_threashold_limit);
+
+            _dark_Storyboard = this.DarkStoryboard;
+            _light_Storyboard = this.LightStoryboard;
 
             ToggleHudVisibility(Visibility.Collapsed);
 
@@ -141,7 +148,7 @@ namespace HonkTrooper
 
                 await Task.Delay(1500);
 
-                GenerateTitleScreen("Honk Trooper");
+                GenerateGameStartScreen("Honk Trooper");
                 _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
             }
             else
@@ -192,7 +199,7 @@ namespace HonkTrooper
                         RecycleDisplayOrientationChangeScreen(DisplayOrientationChangeScreen);
 
                         _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
-                        GenerateTitleScreen("Honk Trooper");
+                        GenerateGameStartScreen("Honk Trooper");
 
                         _scene_game.Play();
                         _scene_main_menu.Play();
@@ -259,7 +266,7 @@ namespace HonkTrooper
             _game_controller.DeactivateGyrometerReading();
             _game_controller.SetDefaultThumbstickPosition();
 
-            GenerateTitleScreen("Game Paused");
+            GenerateGameStartScreen("Game Paused");
 
             return true;
         }
@@ -289,6 +296,8 @@ namespace HonkTrooper
         private void NewGame()
         {
             LoggerExtensions.Log("New Game Started.");
+
+            RoadBackground.Background = App.Current.Resources["RoadBackgroundColor"] as SolidColorBrush;
 
             _audio_stub.Play(SoundType.AMBIENCE, SoundType.GAME_BACKGROUND_MUSIC);
 
@@ -348,7 +357,7 @@ namespace HonkTrooper
                 _scene_game.SceneState = SceneState.GAME_STOPPED;
 
                 ToggleHudVisibility(Visibility.Collapsed);
-                GenerateTitleScreen("Game Over");
+                GenerateGameStartScreen("Game Over");
 
                 _game_controller.DeactivateGyrometerReading();
             }
@@ -451,14 +460,14 @@ namespace HonkTrooper
 
         #endregion
 
-        #region TitleScreen
+        #region GameStartScreen
 
-        private bool SpawnTitleScreen()
+        private bool SpawnGameStartScreen()
         {
-            TitleScreen titleScreen = null;
+            GameStartScreen gameStartScreen = null;
 
-            titleScreen = new(
-                animateAction: AnimateTitleScreen,
+            gameStartScreen = new(
+                animateAction: AnimateGameStartScreen,
                 recycleAction: (se) => { return true; },
                 playAction: () =>
                 {
@@ -466,7 +475,7 @@ namespace HonkTrooper
                     {
                         if (ScreenExtensions.RequiredScreenOrientation == ScreenExtensions.GetScreenOrienation())
                         {
-                            RecycleTitleScreen(titleScreen);
+                            RecycleGameStartScreen(gameStartScreen);
                             GeneratePlayerSelectionScreen();
                             ScreenExtensions.EnterFullScreen(true);
                         }
@@ -482,7 +491,7 @@ namespace HonkTrooper
                             if (ScreenExtensions.RequiredScreenOrientation == ScreenExtensions.GetScreenOrienation())
                             {
                                 ResumeGame();
-                                RecycleTitleScreen(titleScreen);
+                                RecycleGameStartScreen(gameStartScreen);
                             }
                             else
                             {
@@ -494,25 +503,26 @@ namespace HonkTrooper
                     return true;
                 });
 
-            titleScreen.SetPosition(
+            gameStartScreen.SetPosition(
                 left: -3000,
                 top: -3000);
 
-            _scene_main_menu.AddToScene(titleScreen);
+            _scene_main_menu.AddToScene(gameStartScreen);
 
             return true;
         }
 
-        private bool GenerateTitleScreen(string title)
+        private bool GenerateGameStartScreen(string title)
         {
-            if (_scene_main_menu.Children.OfType<TitleScreen>().FirstOrDefault(x => x.IsAnimating == false) is TitleScreen titleScreen)
+            if (_scene_main_menu.Children.OfType<GameStartScreen>().FirstOrDefault(x => x.IsAnimating == false) is GameStartScreen gameStartScreen)
             {
-                titleScreen.SetTitle(title);
-                titleScreen.IsAnimating = true;
-                titleScreen.Reposition();
+                gameStartScreen.IsAnimating = true;
+                gameStartScreen.SetTitle(title);
+                gameStartScreen.Reset();
+                gameStartScreen.Reposition();
 
                 if (_player is not null)
-                    titleScreen.SetContent(_player.GetContentUri());
+                    gameStartScreen.SetContent(_player.GetContentUri());
 
                 return true;
             }
@@ -520,17 +530,17 @@ namespace HonkTrooper
             return false;
         }
 
-        private bool AnimateTitleScreen(Construct titleScreen)
+        private bool AnimateGameStartScreen(Construct gameStartScreen)
         {
-            TitleScreen screen1 = titleScreen as TitleScreen;
+            GameStartScreen screen1 = gameStartScreen as GameStartScreen;
             screen1.Hover();
             return true;
         }
 
-        private void RecycleTitleScreen(TitleScreen titleScreen)
+        private void RecycleGameStartScreen(GameStartScreen gameStartScreen)
         {
-            titleScreen.IsAnimating = false;
-            titleScreen.SetPosition(left: -3000, top: -3000);
+            gameStartScreen.IsAnimating = false;
+            gameStartScreen.SetPosition(left: -3000, top: -3000);
         }
 
         #endregion
@@ -559,7 +569,7 @@ namespace HonkTrooper
                 backAction: () =>
                 {
                     RecyclePlayerSelectionScreen(playerSelectionScreen);
-                    GenerateTitleScreen("Honk Trooper");
+                    GenerateGameStartScreen("Honk Trooper");
                     return true;
                 });
 
@@ -1871,6 +1881,8 @@ namespace HonkTrooper
 
                 GenerateInterimScreen("Beware of Cyber Psycho");
 
+                _dark_Storyboard.Begin();
+
                 return true;
             }
 
@@ -1961,6 +1973,8 @@ namespace HonkTrooper
                 GenerateInterimScreen("Cyber Psycho Will Return");
 
                 _scene_game.ActivateSlowMotion();
+
+                _light_Storyboard.Begin();
             }
         }
 
@@ -2817,6 +2831,8 @@ namespace HonkTrooper
 
                 GenerateInterimScreen("Beware of Blocks Zombie");
 
+                _dark_Storyboard.Begin();
+
                 return true;
             }
 
@@ -2905,6 +2921,8 @@ namespace HonkTrooper
                 GenerateInterimScreen("Blocks Zombie Will Return");
 
                 _scene_game.ActivateSlowMotion();
+
+                _light_Storyboard.Begin();
             }
         }
 
@@ -3850,7 +3868,7 @@ namespace HonkTrooper
             new Generator(
                 generationDelay: 0,
                 generationAction: () => { return true; },
-                startUpAction: SpawnTitleScreen),
+                startUpAction: SpawnGameStartScreen),
 
             new Generator(
                 generationDelay: 0,
