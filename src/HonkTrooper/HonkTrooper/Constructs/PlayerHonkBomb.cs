@@ -86,6 +86,9 @@ namespace HonkTrooper
                 default:
                     break;
             }
+
+            var uri = ConstructExtensions.GetRandomContentUri(_bomb_uris);
+            _content_image.Source = new BitmapImage(uriSource: uri);
         }
 
         public void Reposition(PlayerBalloon player)
