@@ -61,13 +61,13 @@ namespace HonkTrooper
 
             Loaded += Scene_Loaded;
             Unloaded += Scene_Unloaded;
-        }      
+        }
 
         #endregion
 
         #region Properties
 
-        public bool IsAnimating { get; set; }        
+        public bool IsAnimating { get; set; }
 
         public bool IsSlowMotionActivated => _slowMotionDelay > 0;
 
@@ -227,7 +227,7 @@ namespace HonkTrooper
             }
         }
 
-        #endregion        
+        #endregion
     }
 
     public enum SceneState
