@@ -1346,7 +1346,7 @@ namespace HonkTrooper
 
         private bool GenerateRoadSideWalkTop()
         {
-            if (_scene_game.Children.OfType<RoadSideWalk>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideWalk roadSideWalk)
+            if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideWalk>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideWalk roadSideWalk)
             {
                 roadSideWalk.IsAnimating = true;
 
@@ -1363,7 +1363,7 @@ namespace HonkTrooper
 
         private bool GenerateRoadSideWalkBottom()
         {
-            if (_scene_game.Children.OfType<RoadSideWalk>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideWalk roadSideWalk)
+            if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideWalk>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideWalk roadSideWalk)
             {
                 roadSideWalk.IsAnimating = true;
 
@@ -1428,7 +1428,7 @@ namespace HonkTrooper
 
         private bool GenerateRoadSideTreeTop()
         {
-            if (_scene_game.Children.OfType<RoadSideTree>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideTree roadSideTree)
+            if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideTree>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideTree roadSideTree)
             {
                 roadSideTree.IsAnimating = true;
 
@@ -1445,7 +1445,7 @@ namespace HonkTrooper
 
         private bool GenerateRoadSideTreeBottom()
         {
-            if (_scene_game.Children.OfType<RoadSideTree>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideTree roadSideTree)
+            if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideTree>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideTree roadSideTree)
             {
                 roadSideTree.IsAnimating = true;
 
@@ -1508,7 +1508,7 @@ namespace HonkTrooper
 
         private bool GenerateRoadSideHedgeTop()
         {
-            if (_scene_game.Children.OfType<RoadSideHedge>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideHedge roadSideHedge)
+            if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideHedge>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideHedge roadSideHedge)
             {
                 roadSideHedge.IsAnimating = true;
 
@@ -1525,7 +1525,7 @@ namespace HonkTrooper
 
         private bool GenerateRoadSideHedgeBottom()
         {
-            if (_scene_game.Children.OfType<RoadSideHedge>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideHedge roadSideHedge)
+            if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideHedge>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideHedge roadSideHedge)
             {
                 roadSideHedge.IsAnimating = true;
 
@@ -1590,7 +1590,7 @@ namespace HonkTrooper
 
         private bool GenerateRoadSideLampTop()
         {
-            if (_scene_game.Children.OfType<RoadSideLamp>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideLamp roadSideLamp)
+            if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideLamp>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideLamp roadSideLamp)
             {
                 roadSideLamp.IsAnimating = true;
 
@@ -1609,7 +1609,7 @@ namespace HonkTrooper
 
         private bool GenerateRoadSideLampBottom()
         {
-            if (_scene_game.Children.OfType<RoadSideLamp>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideLamp roadSideLamp)
+            if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideLamp>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideLamp roadSideLamp)
             {
                 roadSideLamp.IsAnimating = true;
 
@@ -1697,7 +1697,7 @@ namespace HonkTrooper
 
         private bool GenerateRoadSideLightBillboardBottom()
         {
-            if (_scene_game.Children.OfType<RoadSideLightBillboard>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideLightBillboard roadSideLight)
+            if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideLightBillboard>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideLightBillboard roadSideLight)
             {
                 roadSideLight.IsAnimating = true;
 
@@ -1764,7 +1764,7 @@ namespace HonkTrooper
 
         private bool GenerateRoadSideBillboardTop()
         {
-            if (_scene_game.Children.OfType<RoadSideBillboard>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideBillboard roadSideBillboard)
+            if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideBillboard>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideBillboard roadSideBillboard)
             {
                 roadSideBillboard.IsAnimating = true;
 

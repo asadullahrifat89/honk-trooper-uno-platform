@@ -53,8 +53,8 @@ namespace HonkTrooper
                 Background = new SolidColorBrush(Colors.DeepSkyBlue),
                 CornerRadius = new CornerRadius(15),
                 Opacity = 0.6,
-                BorderBrush = new SolidColorBrush(Colors.White),
-                BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
+                //BorderBrush = new SolidColorBrush(Colors.White),
+                //BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
             });
 
             Grid container = new() { VerticalAlignment = VerticalAlignment.Center };
