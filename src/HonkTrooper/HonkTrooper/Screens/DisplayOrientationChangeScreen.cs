@@ -45,11 +45,11 @@ namespace HonkTrooper
 
             rootGrid.Children.Add(new Border()
             {
-                Background = new SolidColorBrush(Colors.Goldenrod),
+                //Background = new SolidColorBrush(Colors.Goldenrod),
                 CornerRadius = new CornerRadius(15),
                 Opacity = 0.6,
-                BorderBrush = new SolidColorBrush(Colors.White),
-                BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
+                //BorderBrush = new SolidColorBrush(Colors.White),
+                //BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
             });
 
             StackPanel container = new()
@@ -63,9 +63,7 @@ namespace HonkTrooper
 
             #region Content
 
-            // title screen text
-
-            _titleScreenText = new TextBlock()
+            _titleScreenText = new TextBlock() // title screen text
             {
                 Text =
                 "Pls" + Environment.NewLine +
