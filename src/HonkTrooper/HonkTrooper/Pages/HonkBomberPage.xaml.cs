@@ -960,8 +960,7 @@ namespace HonkTrooper
             }
             else
             {
-                playerHonkBomb.Pop();
-                //playerHonkBomb.Rotate(rotationSpeed: 1.5);
+                playerHonkBomb.Pop();                
                 playerHonkBomb.SetLeft(playerHonkBomb.GetLeft() + speed);
                 playerHonkBomb.SetTop(playerHonkBomb.GetTop() + speed * 1.2);
 
