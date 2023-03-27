@@ -14,12 +14,20 @@
         MaxHeight="940">
 
         <Grid.Resources>
-            <Storyboard x:Name="RoadBackgroundStoryboard">
+            <Storyboard x:Name="DarkStoryboard">
                 <ColorAnimation
                     Storyboard.TargetName="RoadBackground"
                     Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
                     From="#5e6b73"
-                    To="#191919"
+                    To="#1f2326"
+                    Duration="0:0:4" />
+            </Storyboard>
+            <Storyboard x:Name="LightStoryboard">
+                <ColorAnimation
+                    Storyboard.TargetName="RoadBackground"
+                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                    From="#1f2326"
+                    To="#5e6b73"
                     Duration="0:0:4" />
             </Storyboard>
         </Grid.Resources>

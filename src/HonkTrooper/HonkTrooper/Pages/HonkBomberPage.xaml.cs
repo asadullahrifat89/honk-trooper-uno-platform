@@ -2,6 +2,7 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Animation;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -64,6 +65,9 @@ namespace HonkTrooper
 
         private readonly AudioStub _audio_stub;
 
+        private readonly Storyboard _dark_Storyboard;
+        private readonly Storyboard _light_Storyboard;
+
         #endregion
 
         #region Ctor
@@ -93,6 +97,9 @@ namespace HonkTrooper
             _zombie_boss_threashold = new Threashold(_zombie_boss_threashold_limit);
             _vehicle_boss_threashold = new Threashold(_vehicle_boss_threashold_limit);
             _enemy_threashold = new Threashold(_enemy_threashold_limit);
+
+            _dark_Storyboard = this.DarkStoryboard;
+            _light_Storyboard = this.LightStoryboard;
 
             ToggleHudVisibility(Visibility.Collapsed);
 
@@ -289,6 +296,8 @@ namespace HonkTrooper
         private void NewGame()
         {
             LoggerExtensions.Log("New Game Started.");
+
+            RoadBackground.Background = App.Current.Resources["RoadBackgroundColor"] as SolidColorBrush;
 
             _audio_stub.Play(SoundType.AMBIENCE, SoundType.GAME_BACKGROUND_MUSIC);
 
@@ -1871,6 +1880,8 @@ namespace HonkTrooper
 
                 GenerateInterimScreen("Beware of Cyber Psycho");
 
+                _dark_Storyboard.Begin();
+
                 return true;
             }
 
@@ -1961,6 +1972,8 @@ namespace HonkTrooper
                 GenerateInterimScreen("Cyber Psycho Will Return");
 
                 _scene_game.ActivateSlowMotion();
+
+                _light_Storyboard.Begin();
             }
         }
 
@@ -2817,6 +2830,8 @@ namespace HonkTrooper
 
                 GenerateInterimScreen("Beware of Blocks Zombie");
 
+                _dark_Storyboard.Begin();
+
                 return true;
             }
 
@@ -2905,6 +2920,8 @@ namespace HonkTrooper
                 GenerateInterimScreen("Blocks Zombie Will Return");
 
                 _scene_game.ActivateSlowMotion();
+
+                _light_Storyboard.Begin();
             }
         }
 
