@@ -100,7 +100,7 @@ namespace HonkTrooper
 
             _titleScreenText = new TextBlock()
             {
-                Text = "Select Honk Bomb",
+                Text = "Select A Weapon",
                 FontSize = Constants.DEFAULT_GUI_FONT_SIZE - 5,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 Foreground = new SolidColorBrush(Colors.White),

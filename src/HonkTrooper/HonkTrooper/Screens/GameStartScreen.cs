@@ -12,7 +12,8 @@ namespace HonkTrooper
     {
         #region Fields       
 
-        private readonly TextBlock _titleScreenText;
+        private readonly TextBlock _title_text;
+        private readonly TextBlock _sub_title_text;
         private readonly Image _content_image;
 
         private readonly AudioStub _audioStub;
@@ -61,6 +62,7 @@ namespace HonkTrooper
             container.RowDefinitions.Add(new RowDefinition());
             container.RowDefinitions.Add(new RowDefinition());
             container.RowDefinitions.Add(new RowDefinition());
+            container.RowDefinitions.Add(new RowDefinition());
 
             #endregion
 
@@ -90,7 +92,7 @@ namespace HonkTrooper
 
             #region Title
 
-            _titleScreenText = new TextBlock()
+            _title_text = new TextBlock()
             {
                 Text = "Honk Trooper",
                 FontSize = Constants.DEFAULT_GUI_FONT_SIZE,
@@ -99,9 +101,26 @@ namespace HonkTrooper
                 Foreground = new SolidColorBrush(Colors.White),
             };
 
-            Grid.SetRow(_titleScreenText, 1);
+            Grid.SetRow(_title_text, 1);
 
-            container.Children.Add(_titleScreenText);
+            container.Children.Add(_title_text);
+
+            #endregion
+
+            #region SubTitle
+
+            _sub_title_text = new TextBlock()
+            {
+                Text = "Honk Trooper",
+                FontSize = Constants.DEFAULT_GUI_FONT_SIZE - 10,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                Margin = new Thickness(0, 0, 0, 5),
+                Foreground = new SolidColorBrush(Colors.White),
+            };
+
+            Grid.SetRow(_sub_title_text, 2);
+
+            container.Children.Add(_sub_title_text);
 
             #endregion
 
@@ -125,12 +144,12 @@ namespace HonkTrooper
             };
 
             playButton.Click += (s, e) =>
-                {
-                    _audioStub.Play(SoundType.GAME_START);
-                    playAction();
-                };
+            {
+                _audioStub.Play(SoundType.GAME_START);
+                playAction();
+            };
 
-            Grid.SetRow(playButton, 2);
+            Grid.SetRow(playButton, 3);
 
             container.Children.Add(playButton);
 
@@ -155,7 +174,15 @@ namespace HonkTrooper
 
         public void SetTitle(string title)
         {
-            _titleScreenText.Text = title;
+            _title_text.Text = title;
+        }
+
+        public void SetSubTitle(string subTitle)
+        {
+            _sub_title_text.Text = subTitle;
+
+            if (string.IsNullOrEmpty(subTitle))
+                _sub_title_text.Visibility = Visibility.Collapsed;
         }
 
         #endregion
