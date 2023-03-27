@@ -29,7 +29,7 @@ namespace HonkTrooper
         {
             new (ConstructType.PLAYER_BALLOON, 165, 165),
             new (ConstructType.PLAYER_ROCKET, 80, 80),
-            new (ConstructType.PLAYER_FIRE_CRACKER, 70, 70),
+            new (ConstructType.PLAYER_HONK_BOMB, 70, 70),
             new (ConstructType.PLAYER_ROCKET_SEEKING, 70, 70),
 
             new (ConstructType.UFO_BOSS, 180, 180),
@@ -135,9 +135,13 @@ namespace HonkTrooper
             new (ConstructType.PLAYER_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_2.png")),
             new (ConstructType.PLAYER_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_3.png")),
 
-            new (ConstructType.PLAYER_FIRE_CRACKER, new Uri("ms-appx:///HonkTrooper/Assets/Images/cracker_1.png")),
-            new (ConstructType.PLAYER_FIRE_CRACKER, new Uri("ms-appx:///HonkTrooper/Assets/Images/cracker_2.png")),
-            new (ConstructType.PLAYER_FIRE_CRACKER, new Uri("ms-appx:///HonkTrooper/Assets/Images/cracker_3.png")),
+            new (ConstructType.PLAYER_HONK_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/cracker_1.png")),
+            new (ConstructType.PLAYER_HONK_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/cracker_2.png")),
+            new (ConstructType.PLAYER_HONK_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/cracker_3.png")),
+
+            new (ConstructType.PLAYER_HONK_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/trash_1.png")),
+            new (ConstructType.PLAYER_HONK_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/trash_2.png")),
+            new (ConstructType.PLAYER_HONK_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/trash_3.png")),
 
             new (ConstructType.PLAYER_ROCKET_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_seeking_1.png")),
             new (ConstructType.PLAYER_ROCKET_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_seeking_2.png")),
@@ -261,7 +265,7 @@ namespace HonkTrooper
 
         PLAYER_ROCKET,
         PLAYER_ROCKET_SEEKING,
-        PLAYER_FIRE_CRACKER,
+        PLAYER_HONK_BOMB,
 
         VEHICLE_ENEMY_SMALL,
         VEHICLE_ENEMY_LARGE,

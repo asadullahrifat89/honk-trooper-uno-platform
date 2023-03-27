@@ -61,7 +61,7 @@ namespace HonkTrooper
         private bool _enemy_fleet_appeared;
 
         private PlayerBalloon _player;
-        private int _selected_player_template;
+        private PlayerBalloonTemplate _selected_player_template;
         private int _game_level;
 
         private readonly AudioStub _audio_stub;
@@ -119,7 +119,7 @@ namespace HonkTrooper
             ScreenExtensions.Height = Constants.DEFAULT_SCENE_HEIGHT;
 
             _scene_main_menu.SetRenderTransformOrigin(0.5);
-            
+
             SetSceneScaling();
 
             Loaded += HonkBomberPage_Loaded;
@@ -321,6 +321,8 @@ namespace HonkTrooper
             _enemy_kill_count = 0;
             _enemy_fleet_appeared = false;
 
+            SetupSetPlayerBalloon();
+
             GeneratePlayerBalloon();
             RecycleLogicalConstructs();
 
@@ -334,6 +336,11 @@ namespace HonkTrooper
             _game_controller.FocusAttackButton();
             _game_controller.SetDefaultThumbstickPosition();
             _game_controller.ActivateGyrometerReading();
+        }
+
+        private void SetupSetPlayerBalloon()
+        {
+            _player.SetPlayerTemplate(_selected_player_template);
         }
 
         private void GameOver()
@@ -372,7 +379,7 @@ namespace HonkTrooper
                 ConstructType.HONK or
                 ConstructType.PLAYER_ROCKET or
                 ConstructType.PLAYER_ROCKET_SEEKING or
-                ConstructType.PLAYER_FIRE_CRACKER or
+                ConstructType.PLAYER_HONK_BOMB or
                 ConstructType.UFO_BOSS_ROCKET or
                 ConstructType.UFO_BOSS_ROCKET_SEEKING or
                 ConstructType.UFO_ENEMY or
@@ -560,7 +567,7 @@ namespace HonkTrooper
                 recycleAction: (se) => { return true; },
                 playAction: (int playerTemplate) =>
                 {
-                    _selected_player_template = playerTemplate;
+                    _selected_player_template = (PlayerBalloonTemplate)playerTemplate;
 
                     if (_scene_game.SceneState == SceneState.GAME_STOPPED)
                     {
@@ -704,20 +711,19 @@ namespace HonkTrooper
             _player.IsAnimating = true;
             _player.Reset();
             _player.Reposition();
-            _player.SetPlayerTemplate(_selected_player_template);
 
             switch (_selected_player_template)
             {
-                case 1:
+                case PlayerBalloonTemplate.Blue:
                     {
-                        _game_controller.SetAttackButtonColor(App.Current.Resources["Player1AccentColor"] as SolidColorBrush);
-                        _game_controller.SetThumbstickThumbColor(App.Current.Resources["Player1AccentColor"] as SolidColorBrush);
+                        _game_controller.SetAttackButtonColor(App.Current.Resources["PlayerBlueAccentColor"] as SolidColorBrush);
+                        _game_controller.SetThumbstickThumbColor(App.Current.Resources["PlayerBlueAccentColor"] as SolidColorBrush);
                     }
                     break;
-                case 2:
+                case PlayerBalloonTemplate.Red:
                     {
-                        _game_controller.SetAttackButtonColor(App.Current.Resources["Player2AccentColor"] as SolidColorBrush);
-                        _game_controller.SetThumbstickThumbColor(App.Current.Resources["Player2AccentColor"] as SolidColorBrush);
+                        _game_controller.SetAttackButtonColor(App.Current.Resources["PlayerRedAccentColor"] as SolidColorBrush);
+                        _game_controller.SetThumbstickThumbColor(App.Current.Resources["PlayerRedAccentColor"] as SolidColorBrush);
                     }
                     break;
                 default:
@@ -785,7 +791,7 @@ namespace HonkTrooper
                         }
                         else
                         {
-                            GeneratePlayerFireCracker();
+                            GeneratePlayerHonkBomb();
                         }
 
                         _game_controller.IsAttacking = false;
@@ -820,45 +826,45 @@ namespace HonkTrooper
 
         #endregion
 
-        #region PlayerFireCracker
+        #region PlayerHonkBomb
 
-        private bool SpawnPlayerFireCrackers()
+        private bool SpawnPlayerHonkBombs()
         {
             for (int i = 0; i < 3; i++)
             {
-                PlayerFireCracker playerFireCracker = new(
-                    animateAction: AnimatePlayerFireCracker,
-                    recycleAction: RecyclePlayerFireCracker);
+                PlayerHonkBomb playerHonkBomb = new(
+                    animateAction: AnimatePlayerHonkBomb,
+                    recycleAction: RecyclePlayerHonkBomb);
 
-                playerFireCracker.SetPosition(
+                playerHonkBomb.SetPosition(
                     left: -3000,
                     top: -3000,
                     z: 7);
 
-                _scene_game.AddToScene(playerFireCracker);
+                _scene_game.AddToScene(playerHonkBomb);
 
-                SpawnDropShadow(source: playerFireCracker);
+                SpawnDropShadow(source: playerHonkBomb);
             }
 
             return true;
         }
 
-        private bool GeneratePlayerFireCracker()
+        private bool GeneratePlayerHonkBomb()
         {
             if (_scene_game.SceneState == SceneState.GAME_RUNNING && !_scene_game.IsSlowMotionActivated)
             {
                 if ((VehicleBossExists() || _scene_game.Children.OfType<VehicleEnemy>().Any(x => x.IsAnimating)) &&
-                    _scene_game.Children.OfType<PlayerFireCracker>().FirstOrDefault(x => x.IsAnimating == false) is PlayerFireCracker playerFireCracker)
+                    _scene_game.Children.OfType<PlayerHonkBomb>().FirstOrDefault(x => x.IsAnimating == false) is PlayerHonkBomb playerHonkBomb)
                 {
                     _player.SetAttackStance();
 
-                    playerFireCracker.Reset();
-                    playerFireCracker.IsAnimating = true;
-                    playerFireCracker.IsGravitatingDownwards = true;
-                    playerFireCracker.SetPopping();
-                    playerFireCracker.Reposition(player: _player);
+                    playerHonkBomb.Reset();
+                    playerHonkBomb.IsAnimating = true;
+                    playerHonkBomb.IsGravitatingDownwards = true;
+                    playerHonkBomb.SetPopping();
+                    playerHonkBomb.Reposition(player: _player);
 
-                    GenerateDropShadow(source: playerFireCracker);
+                    GenerateDropShadow(source: playerHonkBomb);
 
                     return true;
                 }
@@ -871,33 +877,33 @@ namespace HonkTrooper
             return false;
         }
 
-        private bool AnimatePlayerFireCracker(Construct playerFireCracker)
+        private bool AnimatePlayerHonkBomb(Construct playerHonkBomb)
         {
-            PlayerFireCracker playerFireCracker1 = playerFireCracker as PlayerFireCracker;
+            PlayerHonkBomb playerHonkBomb1 = playerHonkBomb as PlayerHonkBomb;
 
-            var speed = playerFireCracker1.GetMovementSpeed();
+            var speed = playerHonkBomb1.GetMovementSpeed();
 
-            if (playerFireCracker1.IsBlasting)
+            if (playerHonkBomb1.IsBlasting)
             {
-                playerFireCracker.Expand();
-                playerFireCracker.Fade(0.02);
-                playerFireCracker1.MoveDownRight(speed);
+                playerHonkBomb.Expand();
+                playerHonkBomb.Fade(0.02);
+                playerHonkBomb1.MoveDownRight(speed);
             }
             else
             {
-                playerFireCracker.Pop();
-                playerFireCracker.Rotate(rotationSpeed: 1.5);
-                playerFireCracker.SetLeft(playerFireCracker.GetLeft() + speed);
-                playerFireCracker.SetTop(playerFireCracker.GetTop() + speed * 1.2);
+                playerHonkBomb.Pop();
+                playerHonkBomb.Rotate(rotationSpeed: 1.5);
+                playerHonkBomb.SetLeft(playerHonkBomb.GetLeft() + speed);
+                playerHonkBomb.SetTop(playerHonkBomb.GetTop() + speed * 1.2);
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
-                    DropShadow dropShadow = _scene_game.Children.OfType<DropShadow>().First(x => x.Id == playerFireCracker.Id);
+                    DropShadow dropShadow = _scene_game.Children.OfType<DropShadow>().First(x => x.Id == playerHonkBomb.Id);
 
                     var drpShdwHitBox = dropShadow.GetCloseHitBox();
-                    var fireCrackerHitBox = playerFireCracker.GetCloseHitBox();
+                    var fireCrackerHitBox = playerHonkBomb.GetCloseHitBox();
 
-                    if (drpShdwHitBox.IntersectsWith(fireCrackerHitBox) && playerFireCracker.GetBottom() > dropShadow.GetBottom())  // start blast animation when the bomb touches it's shadow
+                    if (drpShdwHitBox.IntersectsWith(fireCrackerHitBox) && playerHonkBomb.GetBottom() > dropShadow.GetBottom())  // start blast animation when the bomb touches it's shadow
                     {
                         if (_scene_game.Children.OfType<VehicleEnemy>()
                             .Where(x => x.IsAnimating && x.WillHonk)
@@ -913,7 +919,7 @@ namespace HonkTrooper
                             LooseVehicleBossHealth(vehicleBoss);
                         }
 
-                        playerFireCracker1.SetBlast();
+                        playerHonkBomb1.SetBlast();
 
                         dropShadow.IsAnimating = false;
                         dropShadow.SetPosition(-3000, -3000);
@@ -924,14 +930,14 @@ namespace HonkTrooper
             return true;
         }
 
-        private bool RecyclePlayerFireCracker(Construct playerFireCracker)
+        private bool RecyclePlayerHonkBomb(Construct playerHonkBomb)
         {
-            if (playerFireCracker.IsFadingComplete)
+            if (playerHonkBomb.IsFadingComplete)
             {
-                playerFireCracker.IsAnimating = false;
-                playerFireCracker.IsGravitatingDownwards = false;
+                playerHonkBomb.IsAnimating = false;
+                playerHonkBomb.IsGravitatingDownwards = false;
 
-                playerFireCracker.SetPosition(
+                playerHonkBomb.SetPosition(
                     left: -3000,
                     top: -3000);
 
@@ -3798,7 +3804,7 @@ namespace HonkTrooper
             new Generator(
                 generationDelay: 0,
                 generationAction: () => { return true; },
-                startUpAction: SpawnPlayerFireCrackers),
+                startUpAction: SpawnPlayerHonkBombs),
 
             // add the clouds which are above the player z
             new Generator(

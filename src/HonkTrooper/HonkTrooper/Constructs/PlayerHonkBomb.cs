@@ -5,13 +5,13 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace HonkTrooper
 {
-    public partial class PlayerFireCracker : MovableConstruct
+    public partial class PlayerHonkBomb : MovableConstruct
     {
         #region Fields
 
         private readonly Random _random;
 
-        private readonly Uri[] _bomb_uris;
+        private Uri[] _bomb_uris;
         private readonly Uri[] _bomb_blast_uris;
 
         private readonly Image _content_image;
@@ -22,18 +22,18 @@ namespace HonkTrooper
 
         #region Ctor
 
-        public PlayerFireCracker(
+        public PlayerHonkBomb(
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction)
         {
             _random = new Random();
 
-            _bomb_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_FIRE_CRACKER).Select(x => x.Uri).ToArray();
+            _bomb_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_HONK_BOMB && x.Uri.OriginalString.Contains("cracker")).Select(x => x.Uri).ToArray();
             _bomb_blast_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BOMB_BLAST).Select(x => x.Uri).ToArray();
 
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.PLAYER_FIRE_CRACKER);
+            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.PLAYER_HONK_BOMB);
 
-            ConstructType = ConstructType.PLAYER_FIRE_CRACKER;
+            ConstructType = ConstructType.PLAYER_HONK_BOMB;
 
             var width = size.Width;
             var height = size.Height;
@@ -69,6 +69,25 @@ namespace HonkTrooper
 
         #region Methods
 
+        public void SetHonkBombTemplate(PlayerHonkBombTemplate honkBombTemplate)
+        {
+            switch (honkBombTemplate)
+            {
+                case PlayerHonkBombTemplate.Cracker:
+                    {
+                        _bomb_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_HONK_BOMB && x.Uri.OriginalString.Contains("cracker")).Select(x => x.Uri).ToArray();
+                    }
+                    break;
+                case PlayerHonkBombTemplate.TrashCan:
+                    {
+                        _bomb_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_HONK_BOMB && x.Uri.OriginalString.Contains("trash")).Select(x => x.Uri).ToArray();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
         public void Reposition(PlayerBalloon player)
         {
             SetPosition(
@@ -101,5 +120,11 @@ namespace HonkTrooper
         }
 
         #endregion
+    }
+
+    public enum PlayerHonkBombTemplate
+    {
+        Cracker,
+        TrashCan,
     }
 }
