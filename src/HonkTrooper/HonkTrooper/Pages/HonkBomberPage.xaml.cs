@@ -1047,36 +1047,27 @@ namespace HonkTrooper
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
-                    // if player bomb touches UfoBoss, it blasts, UfoBoss looses health
-                    if (_scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetCloseHitBox().IntersectsWith(hitBox)) is UfoBoss ufoBoss)
-                    {
-                        playerRocket1.SetBlast();
-                        LooseUfoBossHealth(ufoBoss);
-                    }
-
-                    // if player bomb touches ZombieBoss, it blasts, ZombieBoss looses health
-                    if (_scene_game.Children.OfType<ZombieBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetCloseHitBox().IntersectsWith(hitBox)) is ZombieBoss zombieBoss)
-                    {
-                        playerRocket1.SetBlast();
-                        LooseZombieBossHealth(zombieBoss);
-                    }
-
-                    // if player bomb touches UfoBoss's seeking bomb, it blasts
-                    if (_scene_game.Children.OfType<UfoBossRocketSeeking>().FirstOrDefault(x => x.IsAnimating && !x.IsBlasting && x.GetCloseHitBox().IntersectsWith(hitBox)) is UfoBossRocketSeeking ufoBossRocketSeeking)
+                    if (_scene_game.Children.OfType<UfoBossRocketSeeking>().FirstOrDefault(x => x.IsAnimating && !x.IsBlasting && x.GetCloseHitBox().IntersectsWith(hitBox)) is UfoBossRocketSeeking ufoBossRocketSeeking) // if player bomb touches UfoBoss's seeking bomb, it blasts
                     {
                         playerRocket1.SetBlast();
                         ufoBossRocketSeeking.SetBlast();
                     }
-
-                    // if player bomb touches ZombieBoss's seeking bomb, it blasts
-                    if (_scene_game.Children.OfType<ZombieBossRocket>().FirstOrDefault(x => x.IsAnimating && !x.IsBlasting && x.GetCloseHitBox().IntersectsWith(hitBox)) is ZombieBossRocket zombieBossRocket)
+                    else if (_scene_game.Children.OfType<ZombieBossRocket>().FirstOrDefault(x => x.IsAnimating && !x.IsBlasting && x.GetCloseHitBox().IntersectsWith(hitBox)) is ZombieBossRocket zombieBossRocket) // if player bomb touches ZombieBoss's seeking bomb, it blasts
                     {
                         playerRocket1.SetBlast();
                         zombieBossRocket.LooseHealth();
                     }
-
-                    // if player bomb touches enemy, it blasts, enemy looses health
-                    if (_scene_game.Children.OfType<UfoEnemy>().FirstOrDefault(x => x.IsAnimating && !x.IsDead && x.GetCloseHitBox().IntersectsWith(hitBox)) is UfoEnemy ufoEnemy)
+                    else if (_scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetCloseHitBox().IntersectsWith(hitBox)) is UfoBoss ufoBoss) // if player bomb touches UfoBoss, it blasts, UfoBoss looses health
+                    {
+                        playerRocket1.SetBlast();
+                        LooseUfoBossHealth(ufoBoss);
+                    }
+                    else if (_scene_game.Children.OfType<ZombieBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetCloseHitBox().IntersectsWith(hitBox)) is ZombieBoss zombieBoss) // if player bomb touches ZombieBoss, it blasts, ZombieBoss looses health
+                    {
+                        playerRocket1.SetBlast();
+                        LooseZombieBossHealth(zombieBoss);
+                    }
+                    else if (_scene_game.Children.OfType<UfoEnemy>().FirstOrDefault(x => x.IsAnimating && !x.IsDead && x.GetCloseHitBox().IntersectsWith(hitBox)) is UfoEnemy ufoEnemy) // if player bomb touches enemy, it blasts, enemy looses health
                     {
                         playerRocket1.SetBlast();
                         LooseUfoEnemyHealth(ufoEnemy);
@@ -1177,27 +1168,47 @@ namespace HonkTrooper
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
-                    if (_scene_game.Children.OfType<UfoBossRocketSeeking>().FirstOrDefault(x => x.IsAnimating && !x.IsBlasting) is UfoBossRocketSeeking UfoBossRocketSeeking) // target UfoBoss bomb seeking
+                    if (_scene_game.Children.OfType<UfoBossRocketSeeking>().FirstOrDefault(x => x.IsAnimating && !x.IsBlasting) is UfoBossRocketSeeking ufoBossRocketSeeking) // target UfoBossRocketSeeking
                     {
-                        playerRocketSeeking1.Seek(UfoBossRocketSeeking.GetCloseHitBox());
+                        playerRocketSeeking1.Seek(ufoBossRocketSeeking.GetCloseHitBox());
 
-                        if (playerRocketSeeking1.GetCloseHitBox().IntersectsWith(UfoBossRocketSeeking.GetCloseHitBox()))
+                        if (playerRocketSeeking1.GetCloseHitBox().IntersectsWith(ufoBossRocketSeeking.GetCloseHitBox()))
                         {
                             playerRocketSeeking1.SetBlast();
-                            UfoBossRocketSeeking.SetBlast();
+                            ufoBossRocketSeeking.SetBlast();
                         }
                     }
-                    else if (_scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is UfoBoss UfoBoss) // target UfoBoss
+                    else if (_scene_game.Children.OfType<ZombieBossRocket>().FirstOrDefault(x => x.IsAnimating) is ZombieBossRocket zombieBossRocket) // target ZombieBossRocket
                     {
-                        playerRocketSeeking1.Seek(UfoBoss.GetCloseHitBox());
+                        playerRocketSeeking1.Seek(zombieBossRocket.GetCloseHitBox());
 
-                        if (playerRocketSeeking1.GetCloseHitBox().IntersectsWith(UfoBoss.GetCloseHitBox()))
+                        if (playerRocketSeeking1.GetCloseHitBox().IntersectsWith(zombieBossRocket.GetCloseHitBox()))
                         {
                             playerRocketSeeking1.SetBlast();
-                            LooseUfoBossHealth(UfoBoss);
+                            zombieBossRocket.LooseHealth();
                         }
                     }
-                    else if (_scene_game.Children.OfType<UfoEnemy>().FirstOrDefault(x => x.IsAnimating && !x.IsFadingComplete) is UfoEnemy enemy) // target enemy
+                    else if (_scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is UfoBoss ufoBoss) // target UfoBoss
+                    {
+                        playerRocketSeeking1.Seek(ufoBoss.GetCloseHitBox());
+
+                        if (playerRocketSeeking1.GetCloseHitBox().IntersectsWith(ufoBoss.GetCloseHitBox()))
+                        {
+                            playerRocketSeeking1.SetBlast();
+                            LooseUfoBossHealth(ufoBoss);
+                        }
+                    }
+                    else if (_scene_game.Children.OfType<ZombieBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is ZombieBoss ZombieBoss) // target ZombieBoss
+                    {
+                        playerRocketSeeking1.Seek(ZombieBoss.GetCloseHitBox());
+
+                        if (playerRocketSeeking1.GetCloseHitBox().IntersectsWith(ZombieBoss.GetCloseHitBox()))
+                        {
+                            playerRocketSeeking1.SetBlast();
+                            LooseZombieBossHealth(ZombieBoss);
+                        }
+                    }
+                    else if (_scene_game.Children.OfType<UfoEnemy>().FirstOrDefault(x => x.IsAnimating && !x.IsFadingComplete) is UfoEnemy enemy) // target UfoEnemy
                     {
                         playerRocketSeeking1.Seek(enemy.GetCloseHitBox());
 
