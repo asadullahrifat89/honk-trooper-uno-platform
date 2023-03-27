@@ -14,17 +14,17 @@
         MaxHeight="940">
 
         <Grid.Resources>
-            <Storyboard x:Name="DarkStoryboard">
+            <Storyboard x:Name="NightStoryboard">
                 <ColorAnimation
-                    Storyboard.TargetName="RoadBackground"
+                    Storyboard.TargetName="DayBackground"
                     Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
                     From="#5e6b73"
                     To="#1f2326"
                     Duration="0:0:4" />
             </Storyboard>
-            <Storyboard x:Name="LightStoryboard">
+            <Storyboard x:Name="DayStoryboard">
                 <ColorAnimation
-                    Storyboard.TargetName="RoadBackground"
+                    Storyboard.TargetName="DayBackground"
                     Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
                     From="#1f2326"
                     To="#5e6b73"
@@ -33,8 +33,8 @@
         </Grid.Resources>
 
         <Border
-            x:Name="RoadBackground"
-            Background="{ThemeResource RoadBackgroundColor}"
+            x:Name="DayBackground"
+            Background="{ThemeResource DayBackgroundColor}"
             BorderBrush="#111111"
             BorderThickness="3" />
 
