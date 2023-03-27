@@ -9,10 +9,9 @@ namespace HonkTrooper
     {
         #region Fields
 
-        private readonly Random _random;
-
         private Uri[] _bomb_uris;
-        private readonly Uri[] _bomb_blast_uris;        
+        private readonly Uri[] _blast_uris;
+        private readonly Uri[] _bang_uris;
 
         private readonly Image _content_image;
 
@@ -26,10 +25,9 @@ namespace HonkTrooper
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction)
         {
-            _random = new Random();
-
             _bomb_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_HONK_BOMB && x.Uri.OriginalString.Contains("cracker")).Select(x => x.Uri).ToArray();
-            _bomb_blast_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BOMB_BLAST).Select(x => x.Uri).ToArray();
+            _blast_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BLAST).Select(x => x.Uri).ToArray();
+            _bang_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BANG).Select(x => x.Uri).ToArray();
 
             var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.PLAYER_HONK_BOMB);
 
@@ -119,19 +117,26 @@ namespace HonkTrooper
 
         public void SetBlast()
         {
+            Uri uri = null;
+
             switch (HonkBombTemplate)
             {
                 case PlayerHonkBombTemplate.Cracker:
-                    _audioStub.Play(SoundType.CRACKER_BLAST);
+                    {
+                        _audioStub.Play(SoundType.CRACKER_BLAST);
+                        uri = ConstructExtensions.GetRandomContentUri(_blast_uris);
+                    }
                     break;
                 case PlayerHonkBombTemplate.TrashCan:
-                    _audioStub.Play(SoundType.TRASH_CAN_HIT);
+                    {
+                        _audioStub.Play(SoundType.TRASH_CAN_HIT);
+                        uri = ConstructExtensions.GetRandomContentUri(_bang_uris);
+                    }
                     break;
                 default:
                     break;
-            }           
+            }
 
-            var uri = ConstructExtensions.GetRandomContentUri(_bomb_blast_uris);
             _content_image.Source = new BitmapImage(uri);
             IsBlasting = true;
         }

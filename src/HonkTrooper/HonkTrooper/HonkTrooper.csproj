@@ -48,6 +48,8 @@
     <UpToDateCheckInput Include="**\*.xaml" Exclude="bin\**\*.xaml;obj\**\*.xaml" />
   </ItemGroup>
   <ItemGroup>
+    <None Remove="Assets\Images\bang_1.png" />
+    <None Remove="Assets\Images\bang_2.png" />
     <None Remove="Assets\Images\trash_1.png" />
     <None Remove="Assets\Images\trash_2.png" />
     <None Remove="Assets\Images\trash_3.png" />
