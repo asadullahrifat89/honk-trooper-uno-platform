@@ -66,8 +66,8 @@ namespace HonkTrooper
 
         private readonly AudioStub _audio_stub;
 
-        private readonly Storyboard _dark_Storyboard;
-        private readonly Storyboard _light_Storyboard;
+        private readonly Storyboard _night_Storyboard;
+        private readonly Storyboard _day_Storyboard;
 
         #endregion
 
@@ -99,8 +99,8 @@ namespace HonkTrooper
             _vehicle_boss_threashold = new Threashold(_vehicle_boss_threashold_limit);
             _enemy_threashold = new Threashold(_enemy_threashold_limit);
 
-            _dark_Storyboard = this.DarkStoryboard;
-            _light_Storyboard = this.LightStoryboard;
+            _night_Storyboard = this.NightStoryboard;
+            _day_Storyboard = this.DayStoryboard;
 
             ToggleHudVisibility(Visibility.Collapsed);
 
@@ -297,7 +297,7 @@ namespace HonkTrooper
         private void NewGame()
         {
             LoggerExtensions.Log("New Game Started.");
-            RoadBackground.Background = App.Current.Resources["RoadBackgroundColor"] as SolidColorBrush;
+            DayBackground.Background = App.Current.Resources["DayBackgroundColor"] as SolidColorBrush;
 
             _game_level = 0;
 
@@ -1963,7 +1963,7 @@ namespace HonkTrooper
 
                 GenerateInterimScreen("Beware of Cyber Psycho");
 
-                _dark_Storyboard.Begin();
+                _night_Storyboard.Begin();
 
                 return true;
             }
@@ -2056,7 +2056,7 @@ namespace HonkTrooper
 
                 _scene_game.ActivateSlowMotion();
 
-                _light_Storyboard.Begin();
+                _day_Storyboard.Begin();
             }
         }
 
@@ -2914,7 +2914,7 @@ namespace HonkTrooper
 
                 GenerateInterimScreen("Beware of Blocks Zombie");
 
-                _dark_Storyboard.Begin();
+                _night_Storyboard.Begin();
 
                 return true;
             }
@@ -3005,7 +3005,7 @@ namespace HonkTrooper
 
                 _scene_game.ActivateSlowMotion();
 
-                _light_Storyboard.Begin();
+                _day_Storyboard.Begin();
             }
         }
 
