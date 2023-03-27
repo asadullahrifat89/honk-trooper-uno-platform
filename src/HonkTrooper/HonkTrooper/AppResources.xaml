@@ -15,10 +15,10 @@
     <!--<SolidColorBrush x:Key="RoadBackgroundColor" Color="#191919" />-->
 
     <SolidColorBrush x:Key="RoadSideWalkColor" Color="#958077" />
-    <SolidColorBrush x:Key="RoadSideWalkColorDark" Color="#483e39" />
+    <SolidColorBrush x:Key="RoadSideWalkColor2" Color="#483e39" />
 
     <SolidColorBrush x:Key="RoadSideWalkBorderColor" Color="#f6f1eb" />
-    <SolidColorBrush x:Key="RoadSideWalkBorderColorDark" Color="#a9a6a1" />
+    <SolidColorBrush x:Key="RoadSideWalkBorderColor2" Color="#a9a6a1" />
 
     <!--<SolidColorBrush x:Key="RoadSideWalkSlopeColor" Color="#c3bfba" />-->
 
