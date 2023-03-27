@@ -3475,8 +3475,6 @@ namespace HonkTrooper
                         break;
                 }
 
-                //GenerateDropShadow(healthPickup);
-
                 return true;
             }
 
@@ -3589,8 +3587,6 @@ namespace HonkTrooper
                             default:
                                 break;
                         }
-
-                        //GenerateDropShadow(powerUpPickup);
 
                         return true;
                     }
