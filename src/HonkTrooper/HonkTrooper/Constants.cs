@@ -193,6 +193,11 @@ namespace HonkTrooper
             new (SoundType.CRACKER_BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/cracker_blast_3.mp3")),
             new (SoundType.CRACKER_BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/cracker_blast_4.mp3")),
 
+            new (SoundType.TRASH_CAN_HIT, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/trashcan_hit_1.mp3")),
+            new (SoundType.TRASH_CAN_HIT, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/trashcan_hit_2.mp3")),
+            new (SoundType.TRASH_CAN_HIT, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/trashcan_hit_3.mp3")),
+            new (SoundType.TRASH_CAN_HIT, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/trashcan_hit_4.mp3")),
+
             new (SoundType.ROCKET_LAUNCH, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/rocket_launch_1.mp3")),
             new (SoundType.ROCKET_LAUNCH, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/rocket_launch_2.mp3")),
             new (SoundType.ROCKET_LAUNCH, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/rocket_launch_3.mp3")),
@@ -327,6 +332,8 @@ namespace HonkTrooper
 
         CRACKER_DROP,
         CRACKER_BLAST,
+
+        TRASH_CAN_HIT,
 
         ROCKET_LAUNCH,
         ROCKET_BLAST,
