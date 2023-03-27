@@ -264,7 +264,7 @@ namespace HonkTrooper
             _game_controller.DeactivateGyrometerReading();
             _game_controller.SetDefaultThumbstickPosition();
 
-            GenerateGameStartScreen("Game Paused");
+            GenerateGameStartScreen("Game Paused", "-Taking a break-");
 
             return true;
         }
