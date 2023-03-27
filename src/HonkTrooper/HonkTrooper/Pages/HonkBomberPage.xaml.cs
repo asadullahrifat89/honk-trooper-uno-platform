@@ -516,9 +516,10 @@ namespace HonkTrooper
         {
             if (_scene_main_menu.Children.OfType<TitleScreen>().FirstOrDefault(x => x.IsAnimating == false) is TitleScreen titleScreen)
             {
-                titleScreen.SetTitle(title);
                 titleScreen.IsAnimating = true;
-                titleScreen.Reposition();
+                titleScreen.SetTitle(title);                
+                titleScreen.Reset();
+                titleScreen.Reposition();                
 
                 if (_player is not null)
                     titleScreen.SetContent(_player.GetContentUri());
