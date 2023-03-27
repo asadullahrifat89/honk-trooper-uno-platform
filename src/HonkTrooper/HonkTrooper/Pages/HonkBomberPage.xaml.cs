@@ -108,7 +108,7 @@ namespace HonkTrooper
 
             _audio_stub = new AudioStub(
                 (SoundType.GAME_BACKGROUND_MUSIC, 0.5, true),
-                (SoundType.UFO_BOSS_BACKGROUND_MUSIC, 0.5, true),
+                (SoundType.BOSS_BACKGROUND_MUSIC, 0.5, true),
                 (SoundType.AMBIENCE, 0.6, true),
                 (SoundType.GAME_START, 1, false),
                 (SoundType.GAME_PAUSE, 1, false),
@@ -245,9 +245,9 @@ namespace HonkTrooper
 
             _audio_stub.Pause(SoundType.AMBIENCE);
 
-            if (UfoBossExists())
+            if (VehicleBossExists())
             {
-                //_audio_stub.Pause(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
+                _audio_stub.Pause(SoundType.BOSS_BACKGROUND_MUSIC);
             }
             else
             {
@@ -271,9 +271,9 @@ namespace HonkTrooper
         {
             _audio_stub.Resume(SoundType.AMBIENCE);
 
-            if (UfoBossExists())
+            if (VehicleBossExists())
             {
-                //_audio_stub.Resume(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
+                _audio_stub.Resume(SoundType.BOSS_BACKGROUND_MUSIC);
             }
             else
             {
@@ -340,7 +340,7 @@ namespace HonkTrooper
             // if player is dead game keeps playing in the background but scene state goes to game over
             if (_player.IsDead)
             {
-                _audio_stub.Stop(SoundType.AMBIENCE, SoundType.GAME_BACKGROUND_MUSIC, SoundType.UFO_BOSS_BACKGROUND_MUSIC);
+                _audio_stub.Stop(SoundType.AMBIENCE, SoundType.GAME_BACKGROUND_MUSIC, SoundType.BOSS_BACKGROUND_MUSIC);
 
                 if (_scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating) is UfoBoss ufoBoss)
                 {
@@ -2630,7 +2630,7 @@ namespace HonkTrooper
                 _scene_game.Children.OfType<VehicleBoss>().FirstOrDefault(x => x.IsAnimating == false) is VehicleBoss vehicleBoss)
             {
                 _audio_stub.Stop(SoundType.GAME_BACKGROUND_MUSIC);
-                _audio_stub.Play(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
+                _audio_stub.Play(SoundType.BOSS_BACKGROUND_MUSIC);
                 _audio_stub.SetVolume(SoundType.AMBIENCE, 0.4);
 
                 vehicleBoss.IsAnimating = true;
@@ -2733,7 +2733,7 @@ namespace HonkTrooper
 
             if (vehicleBoss.IsDead)
             {
-                _audio_stub.Stop(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
+                _audio_stub.Stop(SoundType.BOSS_BACKGROUND_MUSIC);
                 _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
                 _audio_stub.SetVolume(SoundType.AMBIENCE, 0.6);
 
