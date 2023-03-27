@@ -106,10 +106,17 @@ namespace HonkTrooper
 
         public void Reposition()
         {
+            //SetPosition(
+            //    left: (Scene.Width / 2) - Width / 2,
+            //    top: (Scene.Height / 2 - Height / 2) - 150,
+            //    z: 6);
+
+            var scaling = ScreenExtensions.GetScreenSpaceScaling();
+
             SetPosition(
-                left: ((Scene.Width / 4) * 2) - Width / 2,
-                top: (Scene.Height / 2 - Height / 2) - 150,
-                z: 6);
+               left: ((Constants.DEFAULT_SCENE_WIDTH / 2 - Width / 2) * scaling),
+               top: ((Constants.DEFAULT_SCENE_HEIGHT / 2 - Height / 2) * scaling) - 150,
+               z: 6);
         }
 
         public void SetPlayerTemplate(int playerTemplate)
