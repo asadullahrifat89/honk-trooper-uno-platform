@@ -2515,7 +2515,7 @@ namespace HonkTrooper
 
         private bool GenerateVehicleEnemy()
         {
-            if (!UfoBossExists() && !VehicleBossExists() && !ZombieBossExists() && _scene_game.Children.OfType<VehicleEnemy>().FirstOrDefault(x => x.IsAnimating == false) is VehicleEnemy vehicleEnemy)
+            if (!UfoBossExists() && !VehicleBossExists() && !ZombieBossExists() && !_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<VehicleEnemy>().FirstOrDefault(x => x.IsAnimating == false) is VehicleEnemy vehicleEnemy)
             {
                 vehicleEnemy.IsAnimating = true;
                 vehicleEnemy.Reset();
