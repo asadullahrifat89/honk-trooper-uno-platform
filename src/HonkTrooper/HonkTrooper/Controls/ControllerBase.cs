@@ -26,6 +26,8 @@ namespace HonkTrooper
 
         public bool IsAttacking { get; set; }
 
+        public bool IsPausing { get; set; }
+
         #endregion
 
         #region Events
@@ -59,11 +61,11 @@ namespace HonkTrooper
                 //        ToggleScenePlayOrPause();
                 //    }
                 //    break;
-                //case Windows.System.VirtualKey.Escape:
-                //    {
-                //        LoggerExtensions.Log("Escape");
-                //    }
-                //    break;
+                case Windows.System.VirtualKey.Escape:
+                    {
+                        ActivatePause();
+                    }
+                    break;
                 case Windows.System.VirtualKey.Space:
                     {
                         ActivateAttack();
@@ -126,6 +128,7 @@ namespace HonkTrooper
 
         public void Reset()
         {
+            DeactivatePause();
             DeactivateAttack();
             DeactivateMoveLeft();
             DeactivateMoveRight();
@@ -143,6 +146,13 @@ namespace HonkTrooper
             IsAttacking = true;
 
             LoggerExtensions.Log("Space");
+        }
+
+        public void ActivatePause()
+        {
+            IsPausing = true;
+
+            LoggerExtensions.Log("Escape");
         }
 
         public void ActivateMoveDown()
@@ -180,6 +190,11 @@ namespace HonkTrooper
         public void DeactivateAttack()
         {
             IsAttacking = false;
+        }
+
+        public void DeactivatePause()
+        {
+            IsPausing = false;
         }
 
         public void DeactivateMoveDown()

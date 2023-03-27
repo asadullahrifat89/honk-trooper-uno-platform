@@ -22,8 +22,6 @@ namespace HonkTrooper
         //private int _move_x_activator;
         //private int _move_y_activator;
 
-        private Func<bool> PauseAction;
-
         #endregion
 
         #region Properties
@@ -848,10 +846,10 @@ namespace HonkTrooper
 
         #region Pause
 
-        public void SetPauseAction(Func<bool> pauseAction)
-        {
-            PauseAction = pauseAction;
-        }
+        //public void SetPauseAction(Func<bool> pauseAction)
+        //{
+        //    PauseAction = pauseAction;
+        //}
 
         private void SetPauseButton()
         {
@@ -872,7 +870,7 @@ namespace HonkTrooper
                 Margin = new Thickness(20),
             };
 
-            PauseButton.Click += (s, e) => { PauseAction(); };
+            PauseButton.Click += (s, e) => { ActivatePause(); };
             this.Children.Add(PauseButton);
         }
 
