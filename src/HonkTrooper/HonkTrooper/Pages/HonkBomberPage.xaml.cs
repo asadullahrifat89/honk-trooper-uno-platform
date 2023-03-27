@@ -62,6 +62,7 @@ namespace HonkTrooper
 
         private PlayerBalloon _player;
         private PlayerBalloonTemplate _selected_player_template;
+        private PlayerHonkBombTemplate _selected_player_honk_bomb_template;
         private int _game_level;
 
         private readonly AudioStub _audio_stub;
@@ -340,7 +341,12 @@ namespace HonkTrooper
 
         private void SetupSetPlayerBalloon()
         {
-            _player.SetPlayerTemplate(_selected_player_template);
+            _player.SetPlayerTemplate(_selected_player_template); // change player template
+
+            foreach (var honkBomb in _scene_game.Children.OfType<PlayerHonkBomb>()) // change player honk bomb template
+            {
+                honkBomb.SetHonkBombTemplate(_selected_player_honk_bomb_template);
+            }
         }
 
         private void GameOver()
@@ -569,11 +575,8 @@ namespace HonkTrooper
                 {
                     _selected_player_template = (PlayerBalloonTemplate)playerTemplate;
 
-                    if (_scene_game.SceneState == SceneState.GAME_STOPPED)
-                    {
-                        RecyclePlayerSelectionScreen(playerSelectionScreen);
-                        NewGame();
-                    }
+                    RecyclePlayerSelectionScreen(playerSelectionScreen);
+                    GeneratePlayerHonkBombSelectionScreen();
 
                     return true;
                 },
@@ -618,6 +621,72 @@ namespace HonkTrooper
         {
             playerSelectionScreen.IsAnimating = false;
             playerSelectionScreen.SetPosition(left: -3000, top: -3000);
+        }
+
+        #endregion
+
+        #region PlayerHonkBombSelectionScreen
+
+        private bool SpawnPlayerHonkBombSelectionScreen()
+        {
+            PlayerHonkBombSelectionScreen playerHonkBombSelectionScreen = null;
+
+            playerHonkBombSelectionScreen = new(
+                animateAction: AnimatePlayerHonkBombSelectionScreen,
+                recycleAction: (se) => { return true; },
+                playAction: (int playerTemplate) =>
+                {
+                    _selected_player_honk_bomb_template = (PlayerHonkBombTemplate)playerTemplate;
+
+                    if (_scene_game.SceneState == SceneState.GAME_STOPPED)
+                    {
+                        RecyclePlayerHonkBombSelectionScreen(playerHonkBombSelectionScreen);
+                        NewGame();
+                    }
+
+                    return true;
+                },
+                backAction: () =>
+                {
+                    RecyclePlayerHonkBombSelectionScreen(playerHonkBombSelectionScreen);
+                    GeneratePlayerSelectionScreen();
+                    return true;
+                });
+
+            playerHonkBombSelectionScreen.SetPosition(
+                left: -3000,
+                top: -3000);
+
+            _scene_main_menu.AddToScene(playerHonkBombSelectionScreen);
+
+            return true;
+        }
+
+        private bool GeneratePlayerHonkBombSelectionScreen()
+        {
+            if (_scene_main_menu.Children.OfType<PlayerHonkBombSelectionScreen>().FirstOrDefault(x => x.IsAnimating == false) is PlayerHonkBombSelectionScreen playerHonkBombSelectionScreen)
+            {
+                playerHonkBombSelectionScreen.IsAnimating = true;
+                playerHonkBombSelectionScreen.Reset();
+                playerHonkBombSelectionScreen.Reposition();
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimatePlayerHonkBombSelectionScreen(Construct playerHonkBombSelectionScreen)
+        {
+            PlayerHonkBombSelectionScreen screen1 = playerHonkBombSelectionScreen as PlayerHonkBombSelectionScreen;
+            screen1.Hover();
+            return true;
+        }
+
+        private void RecyclePlayerHonkBombSelectionScreen(PlayerHonkBombSelectionScreen playerHonkBombSelectionScreen)
+        {
+            playerHonkBombSelectionScreen.IsAnimating = false;
+            playerHonkBombSelectionScreen.SetPosition(left: -3000, top: -3000);
         }
 
         #endregion
@@ -3896,6 +3965,11 @@ namespace HonkTrooper
                 generationDelay: 0,
                 generationAction: () => { return true; },
                 startUpAction: SpawnPlayerSelectionScreen),
+
+            new Generator(
+                generationDelay: 0,
+                generationAction: () => { return true; },
+                startUpAction: SpawnPlayerHonkBombSelectionScreen),
 
             new Generator(
                 generationDelay: 0,
