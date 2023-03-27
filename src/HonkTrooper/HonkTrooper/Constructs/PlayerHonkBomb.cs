@@ -12,7 +12,7 @@ namespace HonkTrooper
         private readonly Random _random;
 
         private Uri[] _bomb_uris;
-        private readonly Uri[] _bomb_blast_uris;
+        private readonly Uri[] _bomb_blast_uris;        
 
         private readonly Image _content_image;
 
@@ -56,7 +56,7 @@ namespace HonkTrooper
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET + 1;
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE - 15;
 
-            _audioStub = new AudioStub((SoundType.CRACKER_DROP, 0.3, false), (SoundType.CRACKER_BLAST, 1, false));
+            _audioStub = new AudioStub((SoundType.CRACKER_DROP, 0.3, false), (SoundType.CRACKER_BLAST, 1, false), (SoundType.TRASH_CAN_HIT, 1, false));
         }
 
         #endregion
@@ -65,13 +65,17 @@ namespace HonkTrooper
 
         public bool IsBlasting { get; set; }
 
+        private PlayerHonkBombTemplate HonkBombTemplate { get; set; }
+
         #endregion
 
         #region Methods
 
         public void SetHonkBombTemplate(PlayerHonkBombTemplate honkBombTemplate)
         {
-            switch (honkBombTemplate)
+            HonkBombTemplate = honkBombTemplate;
+
+            switch (HonkBombTemplate)
             {
                 case PlayerHonkBombTemplate.Cracker:
                     {
@@ -115,7 +119,17 @@ namespace HonkTrooper
 
         public void SetBlast()
         {
-            _audioStub.Play(SoundType.CRACKER_BLAST);
+            switch (HonkBombTemplate)
+            {
+                case PlayerHonkBombTemplate.Cracker:
+                    _audioStub.Play(SoundType.CRACKER_BLAST);
+                    break;
+                case PlayerHonkBombTemplate.TrashCan:
+                    _audioStub.Play(SoundType.TRASH_CAN_HIT);
+                    break;
+                default:
+                    break;
+            }           
 
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_blast_uris);
             _content_image.Source = new BitmapImage(uri);
