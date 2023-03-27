@@ -1246,81 +1246,81 @@ namespace HonkTrooper
 
         #region RoadSideWalkSlope
 
-        private bool SpawnRoadSideWalkSlopes()
-        {
-            for (int i = 0; i < 10; i++)
-            {
-                RoadSideWalkSlope roadSideStripe = new(
-                    animateAction: AnimateRoadSideWalkSlope,
-                    recycleAction: RecycleRoadSideWalkSlope);
+        //private bool SpawnRoadSideWalkSlopes()
+        //{
+        //    for (int i = 0; i < 10; i++)
+        //    {
+        //        RoadSideWalkSlope roadSideStripe = new(
+        //            animateAction: AnimateRoadSideWalkSlope,
+        //            recycleAction: RecycleRoadSideWalkSlope);
 
-                roadSideStripe.SetPosition(
-                    left: -3000,
-                    top: -3000);
+        //        roadSideStripe.SetPosition(
+        //            left: -3000,
+        //            top: -3000);
 
-                _scene_game.AddToScene(roadSideStripe);
-            }
+        //        _scene_game.AddToScene(roadSideStripe);
+        //    }
 
-            return true;
-        }
+        //    return true;
+        //}
 
-        private bool GenerateRoadSideWalkSlopeTop()
-        {
-            if (_scene_game.Children.OfType<RoadSideWalkSlope>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideWalkSlope roadSideStripe)
-            {
-                roadSideStripe.IsAnimating = true;
+        //private bool GenerateRoadSideWalkSlopeTop()
+        //{
+        //    if (_scene_game.Children.OfType<RoadSideWalkSlope>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideWalkSlope roadSideStripe)
+        //    {
+        //        roadSideStripe.IsAnimating = true;
 
-                roadSideStripe.SetPosition(
-                    left: (Constants.DEFAULT_SCENE_WIDTH / 5.4),
-                    top: (roadSideStripe.Height * -1) - 16.5,
-                    z: 0);
+        //        roadSideStripe.SetPosition(
+        //            left: (Constants.DEFAULT_SCENE_WIDTH / 5.4),
+        //            top: (roadSideStripe.Height * -1) - 16.5,
+        //            z: 0);
 
-                return true;
-            }
+        //        return true;
+        //    }
 
-            return false;
-        }
+        //    return false;
+        //}
 
-        private bool GenerateRoadSideWalkSlopeBottom()
-        {
-            if (_scene_game.Children.OfType<RoadSideWalkSlope>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideWalkSlope roadSideWalkSlope)
-            {
-                roadSideWalkSlope.IsAnimating = true;
+        //private bool GenerateRoadSideWalkSlopeBottom()
+        //{
+        //    if (_scene_game.Children.OfType<RoadSideWalkSlope>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideWalkSlope roadSideWalkSlope)
+        //    {
+        //        roadSideWalkSlope.IsAnimating = true;
 
-                roadSideWalkSlope.SetPosition(
-                    left: (roadSideWalkSlope.Height * -1),
-                    top: (Constants.DEFAULT_SCENE_HEIGHT / 2.1) - 4.5,
-                    z: 0);
+        //        roadSideWalkSlope.SetPosition(
+        //            left: (roadSideWalkSlope.Height * -1),
+        //            top: (Constants.DEFAULT_SCENE_HEIGHT / 2.1) - 4.5,
+        //            z: 0);
 
-                return true;
-            }
+        //        return true;
+        //    }
 
-            return false;
-        }
+        //    return false;
+        //}
 
-        private bool AnimateRoadSideWalkSlope(Construct roadSideWalkSlope)
-        {
-            RoadSideWalkSlope roadSideStripe1 = roadSideWalkSlope as RoadSideWalkSlope;
-            var speed = roadSideStripe1.GetMovementSpeed();
-            roadSideStripe1.MoveDownRight(speed);
-            return true;
-        }
+        //private bool AnimateRoadSideWalkSlope(Construct roadSideWalkSlope)
+        //{
+        //    RoadSideWalkSlope roadSideStripe1 = roadSideWalkSlope as RoadSideWalkSlope;
+        //    var speed = roadSideStripe1.GetMovementSpeed();
+        //    roadSideStripe1.MoveDownRight(speed);
+        //    return true;
+        //}
 
-        private bool RecycleRoadSideWalkSlope(Construct roadSideWalkSlope)
-        {
-            var hitBox = roadSideWalkSlope.GetHitBox();
+        //private bool RecycleRoadSideWalkSlope(Construct roadSideWalkSlope)
+        //{
+        //    var hitBox = roadSideWalkSlope.GetHitBox();
 
-            if (hitBox.Top - roadSideWalkSlope.Height > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSideWalkSlope.Height > Constants.DEFAULT_SCENE_WIDTH)
-            {
-                roadSideWalkSlope.IsAnimating = false;
+        //    if (hitBox.Top - roadSideWalkSlope.Height > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSideWalkSlope.Height > Constants.DEFAULT_SCENE_WIDTH)
+        //    {
+        //        roadSideWalkSlope.IsAnimating = false;
 
-                roadSideWalkSlope.SetPosition(
-                    left: -3000,
-                    top: -3000);
-            }
+        //        roadSideWalkSlope.SetPosition(
+        //            left: -3000,
+        //            top: -3000);
+        //    }
 
-            return true;
-        }
+        //    return true;
+        //}
 
         #endregion
 
@@ -1825,6 +1825,69 @@ namespace HonkTrooper
         }
 
         #endregion      
+
+        #region RoadMark
+
+        private bool SpawnRoadMarks()
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                RoadMark roadMark = new(
+                    animateAction: AnimateRoadMark,
+                    recycleAction: RecycleRoadMark);
+
+                roadMark.SetPosition(
+                    left: -3000,
+                    top: -3000);
+
+                _scene_game.AddToScene(roadMark);
+            }
+
+            return true;
+        }
+
+        private bool GenerateRoadMark()
+        {
+            if (_scene_game.Children.OfType<RoadMark>().FirstOrDefault(x => x.IsAnimating == false) is RoadMark roadMark)
+            {
+                roadMark.IsAnimating = true;
+
+                roadMark.SetPosition(
+                  left: roadMark.Height * -1,
+                  top: roadMark.Height * -1,
+                  z: 0);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimateRoadMark(Construct roadMark)
+        {
+            RoadMark roadMark1 = roadMark as RoadMark;
+            var speed = roadMark1.GetMovementSpeed();
+            roadMark1.MoveDownRight(speed);
+            return true;
+        }
+
+        private bool RecycleRoadMark(Construct roadMark)
+        {
+            var hitBox = roadMark.GetHitBox();
+
+            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadMark.Height > Constants.DEFAULT_SCENE_WIDTH)
+            {
+                roadMark.IsAnimating = false;
+
+                roadMark.SetPosition(
+                    left: -3000,
+                    top: -3000);
+            }
+
+            return true;
+        }
+
+        #endregion
 
         #region UfoBoss
 
@@ -3292,69 +3355,6 @@ namespace HonkTrooper
         }
 
         #endregion
-
-        #region RoadMark
-
-        private bool SpawnRoadMarks()
-        {
-            for (int i = 0; i < 10; i++)
-            {
-                RoadMark roadMark = new(
-                    animateAction: AnimateRoadMark,
-                    recycleAction: RecycleRoadMark);
-
-                roadMark.SetPosition(
-                    left: -3000,
-                    top: -3000);
-
-                _scene_game.AddToScene(roadMark);
-            }
-
-            return true;
-        }
-
-        private bool GenerateRoadMark()
-        {
-            if (_scene_game.Children.OfType<RoadMark>().FirstOrDefault(x => x.IsAnimating == false) is RoadMark roadMark)
-            {
-                roadMark.IsAnimating = true;
-
-                roadMark.SetPosition(
-                  left: roadMark.Height * -1,
-                  top: roadMark.Height * -1,
-                  z: 0);
-
-                return true;
-            }
-
-            return false;
-        }
-
-        private bool AnimateRoadMark(Construct roadMark)
-        {
-            RoadMark roadMark1 = roadMark as RoadMark;
-            var speed = roadMark1.GetMovementSpeed();
-            roadMark1.MoveDownRight(speed);
-            return true;
-        }
-
-        private bool RecycleRoadMark(Construct roadMark)
-        {
-            var hitBox = roadMark.GetHitBox();
-
-            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadMark.Height > Constants.DEFAULT_SCENE_WIDTH)
-            {
-                roadMark.IsAnimating = false;
-
-                roadMark.SetPosition(
-                    left: -3000,
-                    top: -3000);
-            }
-
-            return true;
-        }
-
-        #endregion        
 
         #region DropShadow
 
