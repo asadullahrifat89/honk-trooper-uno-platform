@@ -591,6 +591,7 @@ namespace HonkTrooper
             if (_scene_main_menu.Children.OfType<PlayerSelectionScreen>().FirstOrDefault(x => x.IsAnimating == false) is PlayerSelectionScreen playerSelectionScreen)
             {
                 playerSelectionScreen.IsAnimating = true;
+                playerSelectionScreen.Reset();
                 playerSelectionScreen.Reposition();
 
                 return true;
@@ -3677,6 +3678,7 @@ namespace HonkTrooper
             _game_controller.Visibility = visibility;
             _game_score_bar.Visibility = visibility;
             _health_bars.Visibility = visibility;
+            _sound_pollution_health_bar.Visibility = visibility;
         }
 
         #endregion
