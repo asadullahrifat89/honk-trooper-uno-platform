@@ -25,8 +25,6 @@ namespace HonkTrooper
             AnimateAction = animateAction;
             RecycleAction = recycleAction;
 
-            Background = App.Current.Resources["RoadSideWalkColor"] as SolidColorBrush;
-            BorderBrush = App.Current.Resources["RoadSideWalkBorderColor"] as SolidColorBrush;
             BorderThickness = new Thickness(leftRight: 30, topBottom: 5);
 
             SetSkewY(36);
@@ -34,6 +32,24 @@ namespace HonkTrooper
 
             IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;
+        }
+
+        #endregion
+
+        #region Methods
+
+        public void Reset()
+        {
+            if (Scene.Children.OfType<Construct>().Any(x => (x.ConstructType is ConstructType.ZOMBIE_BOSS or ConstructType.UFO_BOSS) && x.IsAnimating))
+            {
+                Background = App.Current.Resources["RoadSideWalkColor2"] as SolidColorBrush;
+                BorderBrush = App.Current.Resources["RoadSideWalkBorderColor2"] as SolidColorBrush;
+            }
+            else
+            {
+                Background = App.Current.Resources["RoadSideWalkColor"] as SolidColorBrush;
+                BorderBrush = App.Current.Resources["RoadSideWalkBorderColor"] as SolidColorBrush;
+            }
         }
 
         #endregion

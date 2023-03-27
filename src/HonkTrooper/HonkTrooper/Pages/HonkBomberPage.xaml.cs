@@ -1367,8 +1367,8 @@ namespace HonkTrooper
         {
             if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideWalk>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideWalk roadSideWalk)
             {
-                roadSideWalk.IsAnimating = true;
-
+                roadSideWalk.Reset();
+                roadSideWalk.IsAnimating = true;                
                 roadSideWalk.SetPosition(
                     left: (Constants.DEFAULT_SCENE_WIDTH / 2.25 - roadSideWalk.Width),
                     top: roadSideWalk.Height * -1,
@@ -1384,8 +1384,8 @@ namespace HonkTrooper
         {
             if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideWalk>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideWalk roadSideWalk)
             {
+                roadSideWalk.Reset();
                 roadSideWalk.IsAnimating = true;
-
                 roadSideWalk.SetPosition(
                     left: (roadSideWalk.Height * -1.5) - 30,
                     top: (Constants.DEFAULT_SCENE_HEIGHT / 5 + roadSideWalk.Height / 2) - 50,
