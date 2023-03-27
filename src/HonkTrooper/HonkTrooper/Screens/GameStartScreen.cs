@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace HonkTrooper
 {
-    public partial class TitleScreen : HoveringTitleScreen
+    public partial class GameStartScreen : HoveringTitleScreen
     {
         #region Fields       
 
@@ -21,7 +21,7 @@ namespace HonkTrooper
 
         #region Ctor
 
-        public TitleScreen
+        public GameStartScreen
             (Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction,
             Func<bool> playAction)
@@ -50,7 +50,7 @@ namespace HonkTrooper
 
             rootGrid.Children.Add(new Border()
             {
-                Background = new SolidColorBrush(Colors.Goldenrod),
+                Background = new SolidColorBrush(Colors.DeepSkyBlue),
                 CornerRadius = new CornerRadius(15),
                 Opacity = 0.6,
                 BorderBrush = new SolidColorBrush(Colors.White),
@@ -58,7 +58,7 @@ namespace HonkTrooper
             });
 
             Grid container = new() { VerticalAlignment = VerticalAlignment.Center };
-            container.RowDefinitions.Add(new RowDefinition());
+        container.RowDefinitions.Add(new RowDefinition());
             container.RowDefinitions.Add(new RowDefinition());
             container.RowDefinitions.Add(new RowDefinition());
 
@@ -70,11 +70,11 @@ namespace HonkTrooper
 
             var playerUris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BALLOON).Select(x => x.Uri).ToArray();
 
-            var uri = ConstructExtensions.GetRandomContentUri(playerUris);
+        var uri = ConstructExtensions.GetRandomContentUri(playerUris);
 
-            _content_image = new Image()
-            {
-                Source = new BitmapImage(uriSource: uri),
+        _content_image = new Image()
+        {
+            Source = new BitmapImage(uriSource: uri),
                 HorizontalAlignment = HorizontalAlignment.Center,
                 Stretch = Stretch.Uniform,
                 Margin = new Thickness(0, 10, 0, 5),
@@ -82,7 +82,7 @@ namespace HonkTrooper
                 Width = 110,
             };
 
-            Grid.SetRow(_content_image, 0);
+        Grid.SetRow(_content_image, 0);
 
             container.Children.Add(_content_image);
 
@@ -91,15 +91,15 @@ namespace HonkTrooper
             #region Title
 
             _titleScreenText = new TextBlock()
-            {
-                Text = "Honk Trooper",
+        {
+            Text = "Honk Trooper",
                 FontSize = Constants.DEFAULT_GUI_FONT_SIZE,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 Margin = new Thickness(0, 0, 0, 5),
                 Foreground = new SolidColorBrush(Colors.White),                
             };
 
-            Grid.SetRow(_titleScreenText, 1);
+        Grid.SetRow(_titleScreenText, 1);
 
             container.Children.Add(_titleScreenText);
 
@@ -124,13 +124,13 @@ namespace HonkTrooper
                 Margin = new Thickness(0, 0, 0, 5),
             };
 
-            playButton.Click += (s, e) =>
+        playButton.Click += (s, e) =>
             {
                 _audioStub.Play(SoundType.GAME_START);
                 playAction();
-            };
+    };
 
-            Grid.SetRow(playButton, 2);
+    Grid.SetRow(playButton, 2);
 
             container.Children.Add(playButton);
 
@@ -141,22 +141,22 @@ namespace HonkTrooper
             rootGrid.Children.Add(container);
             SetChild(rootGrid);
 
-            _audioStub = new AudioStub((SoundType.GAME_START, 1, false));
+    _audioStub = new AudioStub((SoundType.GAME_START, 1, false));
         }
 
-        #endregion      
+#endregion
 
-        #region Methods
+#region Methods
 
-        public void SetContent(Uri uri)
-        {
-            _content_image.Source = new BitmapImage(uri);
-        }
+public void SetContent(Uri uri)
+{
+    _content_image.Source = new BitmapImage(uri);
+}
 
-        public void SetTitle(string title)
-        {
-            _titleScreenText.Text = title;
-        }
+public void SetTitle(string title)
+{
+    _titleScreenText.Text = title;
+}
 
         #endregion
     }

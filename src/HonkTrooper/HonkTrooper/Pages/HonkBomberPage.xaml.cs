@@ -460,11 +460,11 @@ namespace HonkTrooper
 
         #endregion
 
-        #region TitleScreen
+        #region GameStartScreen
 
         private bool SpawnTitleScreen()
         {
-            TitleScreen titleScreen = null;
+            GameStartScreen titleScreen = null;
 
             titleScreen = new(
                 animateAction: AnimateTitleScreen,
@@ -514,12 +514,12 @@ namespace HonkTrooper
 
         private bool GenerateTitleScreen(string title)
         {
-            if (_scene_main_menu.Children.OfType<TitleScreen>().FirstOrDefault(x => x.IsAnimating == false) is TitleScreen titleScreen)
+            if (_scene_main_menu.Children.OfType<GameStartScreen>().FirstOrDefault(x => x.IsAnimating == false) is GameStartScreen titleScreen)
             {
                 titleScreen.IsAnimating = true;
-                titleScreen.SetTitle(title);                
+                titleScreen.SetTitle(title);
                 titleScreen.Reset();
-                titleScreen.Reposition();                
+                titleScreen.Reposition();
 
                 if (_player is not null)
                     titleScreen.SetContent(_player.GetContentUri());
@@ -532,12 +532,12 @@ namespace HonkTrooper
 
         private bool AnimateTitleScreen(Construct titleScreen)
         {
-            TitleScreen screen1 = titleScreen as TitleScreen;
+            GameStartScreen screen1 = titleScreen as GameStartScreen;
             screen1.Hover();
             return true;
         }
 
-        private void RecycleTitleScreen(TitleScreen titleScreen)
+        private void RecycleTitleScreen(GameStartScreen titleScreen)
         {
             titleScreen.IsAnimating = false;
             titleScreen.SetPosition(left: -3000, top: -3000);
