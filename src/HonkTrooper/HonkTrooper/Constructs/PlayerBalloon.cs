@@ -94,7 +94,7 @@ namespace HonkTrooper
         #region Methods
 
         public void Reset()
-        {
+        {            
             Health = 100;
 
             _movementDirection = MovementDirection.None;
@@ -451,6 +451,7 @@ namespace HonkTrooper
         {
             if (_health_loss_recovery_Delay <= 0)
             {
+                //TODO: set default  Health -= 5;
                 Health -= 5;
                 Opacity = 0.8;
 
