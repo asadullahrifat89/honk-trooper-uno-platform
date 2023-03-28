@@ -48,7 +48,7 @@ namespace HonkTrooper
         private readonly double _ufo_boss_threashold_limit_increase = 15;
 
         //TODO: set defaults _zombie_boss_threashold_limit = 85
-        private readonly double _zombie_boss_threashold_limit = 5; // first appearance
+        private readonly double _zombie_boss_threashold_limit = 85; // first appearance
         private readonly double _zombie_boss_threashold_limit_increase = 15;
 
         //TODO: set defaults _enemy_threashold_limit = 125
@@ -1922,69 +1922,6 @@ namespace HonkTrooper
 
         #endregion
 
-        #region ManholeCover
-
-        private bool SpawnManholeCovers()
-        {
-            for (int i = 0; i < 3; i++)
-            {
-                ManholeCover manholeCover = new(
-                    animateAction: AnimateManholeCover,
-                    recycleAction: RecycleManholeCover);
-
-                manholeCover.SetPosition(
-                    left: -3000,
-                    top: -3000,
-                    z: 0);
-
-                _scene_game.AddToScene(manholeCover);
-            }
-
-            return true;
-        }
-
-        private bool GenerateManholeCover()
-        {
-            if (_scene_game.Children.OfType<ManholeCover>().FirstOrDefault(x => x.IsAnimating == false) is ManholeCover manholeCover)
-            {
-                manholeCover.IsAnimating = true;
-
-                manholeCover.SetPosition(
-                  left: (manholeCover.Height * -3),
-                  top: (manholeCover.Height * -1.5));
-
-                return true;
-            }
-
-            return false;
-        }
-
-        private bool AnimateManholeCover(Construct manholeCover)
-        {
-            ManholeCover manholeCover1 = manholeCover as ManholeCover;
-            var speed = manholeCover1.GetMovementSpeed();
-            manholeCover1.MoveDownRight(speed);
-            return true;
-        }
-
-        private bool RecycleManholeCover(Construct manholeCover)
-        {
-            var hitBox = manholeCover.GetHitBox();
-
-            if (hitBox.Top - 45 > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - manholeCover.Width > Constants.DEFAULT_SCENE_WIDTH)
-            {
-                manholeCover.IsAnimating = false;
-
-                manholeCover.SetPosition(
-                    left: -3000,
-                    top: -3000);
-            }
-
-            return true;
-        }
-
-        #endregion
-
         #region UfoBoss
 
         private bool SpawnUfoBosses()
@@ -3785,11 +3722,6 @@ namespace HonkTrooper
                 generationDelay: 20,
                 generationAction: GenerateRoadMark,
                 startUpAction: SpawnRoadMarks),
-
-            //new Generator(
-            //    generationDelay: 60,
-            //    generationAction: GenerateManholeCover,
-            //    startUpAction: SpawnManholeCovers),
 
             new Generator(
                 generationDelay: 72,

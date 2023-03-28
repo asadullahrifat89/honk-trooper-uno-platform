@@ -57,7 +57,10 @@ namespace HonkTrooper
 
             SetChild(_content_image);
 
-            IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;           
+            BorderThickness = new Microsoft.UI.Xaml.Thickness(Constants.DEFAULT_BLAST_RING_BORDER_THICKNESS);
+            CornerRadius = new Microsoft.UI.Xaml.CornerRadius(Constants.DEFAULT_BLAST_RING_CORNER_RADIUS);
+
+            IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE + 10;
 
             _audioStub = new AudioStub((SoundType.ORB_LAUNCH, 0.5, false), (SoundType.ROCKET_BLAST, 1, false));
@@ -77,8 +80,6 @@ namespace HonkTrooper
             SetScaleTransform(1);
 
             BorderBrush = new SolidColorBrush(Colors.Transparent);
-            BorderThickness = new Microsoft.UI.Xaml.Thickness(0);
-            CornerRadius = new Microsoft.UI.Xaml.CornerRadius(0);
 
             IsBlasting = false;
 
@@ -103,8 +104,6 @@ namespace HonkTrooper
             SetScaleTransform(Constants.DEFAULT_BLAST_SHRINK_SCALE);
 
             BorderBrush = new SolidColorBrush(Colors.Goldenrod);
-            BorderThickness = new Microsoft.UI.Xaml.Thickness(Constants.DEFAULT_BLAST_RING_BORDER_THICKNESS);
-            CornerRadius = new Microsoft.UI.Xaml.CornerRadius(Constants.DEFAULT_BLAST_RING_CORNER_RADIUS);
 
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_blast_uris);
             _content_image.Source = new BitmapImage(uri);
