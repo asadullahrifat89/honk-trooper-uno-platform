@@ -147,9 +147,8 @@ namespace HonkTrooper
 #if DEBUG
                 _stopwatch = Stopwatch.StartNew();
                 _famesCount = 0;
-#endif
                 _lastElapsed = TimeSpan.FromSeconds(0);
-
+#endif
                 _gameViewTimer = new PeriodicTimer(_frameTime);
 
                 while (await _gameViewTimer.WaitForNextTickAsync())
