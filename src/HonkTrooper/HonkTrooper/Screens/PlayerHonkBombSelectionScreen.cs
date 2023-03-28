@@ -173,9 +173,9 @@ namespace HonkTrooper
             Button playButton = new()
             {
                 Background = new SolidColorBrush(Colors.Goldenrod),
-                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 3,
-                CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS),
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE - 5,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 3.5,
+                CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS - 20),
                 Content = new SymbolIcon()
                 {
                     Symbol = Symbol.Play,
