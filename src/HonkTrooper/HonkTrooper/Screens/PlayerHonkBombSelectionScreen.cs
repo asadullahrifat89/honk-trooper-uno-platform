@@ -29,7 +29,7 @@ namespace HonkTrooper
         {
             ConstructType = ConstructType.TITLE_SCREEN;
 
-            _audioStub = new AudioStub((SoundType.OPTION_SELECT, 1, false), (SoundType.GAME_START, 1, false), (SoundType.PLAYER_HEALTH_LOSS, 1, false));
+            _audioStub = new AudioStub((SoundType.OPTION_SELECT, 1, false), (SoundType.GAME_START, 1, false), (SoundType.PLAYER_HEALTH_LOSS, 1, false), (SoundType.CRACKER_BLAST, 1, false), (SoundType.TRASH_CAN_HIT, 1, false));
 
             var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.TITLE_SCREEN);
 
@@ -139,7 +139,7 @@ namespace HonkTrooper
             };
             player1btn.Checked += (s, e) =>
             {
-                _audioStub.Play(SoundType.OPTION_SELECT);
+                _audioStub.Play(SoundType.CRACKER_BLAST);
 
                 if (player2btn.IsChecked == true)
                     player2btn.IsChecked = false;
@@ -156,7 +156,7 @@ namespace HonkTrooper
             };
             player2btn.Checked += (s, e) =>
             {
-                _audioStub.Play(SoundType.OPTION_SELECT);
+                _audioStub.Play(SoundType.TRASH_CAN_HIT);
 
                 if (player1btn.IsChecked == true)
                     player1btn.IsChecked = false;
