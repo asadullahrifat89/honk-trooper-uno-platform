@@ -1484,7 +1484,7 @@ namespace HonkTrooper
         {
             var hitBox = roadSideWalk.GetHitBox();
 
-            if (hitBox.Top - 20 > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSideWalk.Width > Constants.DEFAULT_SCENE_WIDTH)
+            if (hitBox.Top - 45 > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSideWalk.Width > Constants.DEFAULT_SCENE_WIDTH)
             {
                 roadSideWalk.IsAnimating = false;
 
@@ -1566,7 +1566,7 @@ namespace HonkTrooper
         {
             var hitBox = roadSideTree.GetHitBox();
 
-            if (hitBox.Top - 20 > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSideTree.Width > Constants.DEFAULT_SCENE_WIDTH)
+            if (hitBox.Top - 45 > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSideTree.Width > Constants.DEFAULT_SCENE_WIDTH)
             {
                 roadSideTree.IsAnimating = false;
 
@@ -1646,7 +1646,7 @@ namespace HonkTrooper
         {
             var hitBox = roadSideHedge.GetHitBox();
 
-            if (hitBox.Top - 20 > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSideHedge.Width > Constants.DEFAULT_SCENE_WIDTH)
+            if (hitBox.Top - 45 > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSideHedge.Width > Constants.DEFAULT_SCENE_WIDTH)
             {
                 roadSideHedge.IsAnimating = false;
 
@@ -1732,7 +1732,7 @@ namespace HonkTrooper
         {
             var hitBox = roadSideLamp.GetHitBox();
 
-            if (hitBox.Top - 20 > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSideLamp.Width > Constants.DEFAULT_SCENE_WIDTH)
+            if (hitBox.Top - 45 > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSideLamp.Width > Constants.DEFAULT_SCENE_WIDTH)
             {
                 roadSideLamp.IsAnimating = false;
 
@@ -1820,7 +1820,7 @@ namespace HonkTrooper
         {
             var hitBox = roadSideLight.GetHitBox();
 
-            if (hitBox.Top - 20 > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSideLight.Width > Constants.DEFAULT_SCENE_WIDTH)
+            if (hitBox.Top - 45 > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSideLight.Width > Constants.DEFAULT_SCENE_WIDTH)
             {
                 roadSideLight.IsAnimating = false;
 
@@ -1906,7 +1906,7 @@ namespace HonkTrooper
         {
             var hitBox = roadSideBillboard.GetHitBox();
 
-            if (hitBox.Top - 20 > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSideBillboard.Width > Constants.DEFAULT_SCENE_WIDTH)
+            if (hitBox.Top - 45 > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSideBillboard.Width > Constants.DEFAULT_SCENE_WIDTH)
             {
                 roadSideBillboard.IsAnimating = false;
 
@@ -1969,7 +1969,7 @@ namespace HonkTrooper
         {
             var hitBox = roadMark.GetHitBox();
 
-            if (hitBox.Top - 20 > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadMark.Width > Constants.DEFAULT_SCENE_WIDTH)
+            if (hitBox.Top - 45 > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadMark.Width > Constants.DEFAULT_SCENE_WIDTH)
             {
                 roadMark.IsAnimating = false;
 
