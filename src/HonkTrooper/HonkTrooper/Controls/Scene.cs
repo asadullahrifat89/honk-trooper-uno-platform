@@ -56,6 +56,8 @@ namespace HonkTrooper
 
         public Scene()
         {
+            #region Day Animation
+
             _day_animation = new ColorAnimation()
             {
                 Duration = new Duration(TimeSpan.FromSeconds(4)),
@@ -68,6 +70,10 @@ namespace HonkTrooper
 
             _day_storyboard = new Storyboard();
             _day_storyboard.Children.Add(_day_animation);
+
+            #endregion
+
+            #region Night Animation
 
             _night_animation = new ColorAnimation()
             {
@@ -82,14 +88,9 @@ namespace HonkTrooper
             _night_storyboard = new Storyboard();
             _night_storyboard.Children.Add(_night_animation);
 
-            CanDrag = false;
+            #endregion
 
-            _canvas = new()
-            {
-                RenderTransformOrigin = new Point(0, 0),
-                RenderTransform = _compositeTransform,
-                Background = new SolidColorBrush(Colors.Transparent),
-            };
+            #region Opacity Animation
 
             _doubleAnimation = new DoubleAnimation()
             {
@@ -102,7 +103,18 @@ namespace HonkTrooper
             Storyboard.SetTargetProperty(_doubleAnimation, "Opacity");
 
             _storyboard = new Storyboard();
-            _storyboard.Children.Add(_doubleAnimation);
+            _storyboard.Children.Add(_doubleAnimation); 
+
+            #endregion
+
+            CanDrag = false;
+
+            _canvas = new()
+            {
+                RenderTransformOrigin = new Point(0, 0),
+                RenderTransform = _compositeTransform,
+                Background = new SolidColorBrush(Colors.Transparent),
+            };           
 
             Speed = Constants.DEFAULT_SCENE_SPEED;
 
