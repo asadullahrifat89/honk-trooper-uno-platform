@@ -13,10 +13,10 @@
         MaxWidth="1900"
         MaxHeight="940">
 
-        <Grid.Resources>
+        <!--<Grid.Resources>
             <Storyboard x:Name="NightStoryboard">
                 <ColorAnimation
-                    Storyboard.TargetName="DayBackground"
+                    Storyboard.TargetName="SceneBackground"
                     Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
                     From="#5e6b73"
                     To="#1f2326"
@@ -24,21 +24,21 @@
             </Storyboard>
             <Storyboard x:Name="DayStoryboard">
                 <ColorAnimation
-                    Storyboard.TargetName="DayBackground"
+                    Storyboard.TargetName="SceneBackground"
                     Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
                     From="#1f2326"
                     To="#5e6b73"
                     Duration="0:0:4" />
             </Storyboard>
-        </Grid.Resources>
+        </Grid.Resources>-->
 
-        <Border
-            x:Name="DayBackground"
+        <!--<Border
+            x:Name="SceneBackground"
             Background="{ThemeResource DayBackgroundColor}"
             BorderBrush="#111111"
-            BorderThickness="3" />
+            BorderThickness="3" />-->
 
-        <Scene x:Name="GameScene" Background="Transparent" />
+        <Scene x:Name="GameScene" Background="{ThemeResource DayBackgroundColor}" />
 
         <!--<Border
             x:Name="SunRayOverlay"
