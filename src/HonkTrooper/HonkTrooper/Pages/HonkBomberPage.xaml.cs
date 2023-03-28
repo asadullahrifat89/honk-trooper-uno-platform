@@ -3838,6 +3838,12 @@ namespace HonkTrooper
                                     _powerUp_health_bar.SetValue(20);
                                 }
                                 break;
+                            case PowerUpType.ARMOR:
+                                {
+                                    _powerUp_health_bar.SetMaxiumHealth(10); // if armor powerup then take additional 10 hits
+                                    _powerUp_health_bar.SetValue(10);
+                                }
+                                break;
                             default:
                                 break;
                         }
