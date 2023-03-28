@@ -67,9 +67,6 @@ namespace HonkTrooper
 
         private readonly AudioStub _audio_stub;
 
-        private readonly Storyboard _night_Storyboard;
-        private readonly Storyboard _day_Storyboard;
-
         #endregion
 
         #region Ctor
@@ -99,9 +96,6 @@ namespace HonkTrooper
             _zombie_boss_threashold = new Threashold(_zombie_boss_threashold_limit);
             _vehicle_boss_threashold = new Threashold(_vehicle_boss_threashold_limit);
             _enemy_threashold = new Threashold(_enemy_threashold_limit);
-
-            _night_Storyboard = this.NightStoryboard;
-            _day_Storyboard = this.DayStoryboard;
 
             ToggleHudVisibility(Visibility.Collapsed);
 
@@ -293,8 +287,10 @@ namespace HonkTrooper
 
         private void NewGame()
         {
-            LoggingExtensions.Log("New Game Started.");
-            DayBackground.Background = App.Current.Resources["DayBackgroundColor"] as SolidColorBrush;
+            LoggingExtensions.Log("New game dtarted.");
+
+            if (_scene_game.IsInNightMode)
+                _scene_game.ToggleNightMode(false);
 
             _game_level = 0;
 
@@ -2044,7 +2040,7 @@ namespace HonkTrooper
 
                 GenerateInterimScreen("Beware of Cyber Psycho");
 
-                _night_Storyboard.Begin();
+                _scene_game.ToggleNightMode(true);
 
                 return true;
             }
@@ -2136,8 +2132,7 @@ namespace HonkTrooper
                 LevelUp();
 
                 _scene_game.ActivateSlowMotion();
-
-                _day_Storyboard.Begin();
+                _scene_game.ToggleNightMode(false);
             }
         }
 
@@ -2992,10 +2987,9 @@ namespace HonkTrooper
                 _zombie_boss_health_bar.SetBarColor(color: Colors.Crimson);
 
                 _scene_game.ActivateSlowMotion();
+                _scene_game.ToggleNightMode(true);
 
                 GenerateInterimScreen("Beware of Blocks Zombie");
-
-                _night_Storyboard.Begin();
 
                 return true;
             }
@@ -3085,8 +3079,7 @@ namespace HonkTrooper
                 LevelUp();
 
                 _scene_game.ActivateSlowMotion();
-
-                _day_Storyboard.Begin();
+                _scene_game.ToggleNightMode(false);
             }
         }
 

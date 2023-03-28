@@ -40,7 +40,7 @@ namespace HonkTrooper
 
         public void Reset()
         {
-            if (Scene.Children.OfType<Construct>().Any(x => (x.ConstructType is ConstructType.ZOMBIE_BOSS or ConstructType.UFO_BOSS) && x.IsAnimating))
+            if (Scene.IsInNightMode)
             {
                 Background = App.Current.Resources["RoadSideWalkColor2"] as SolidColorBrush;
                 BorderBrush = App.Current.Resources["RoadSideWalkBorderColor2"] as SolidColorBrush;
