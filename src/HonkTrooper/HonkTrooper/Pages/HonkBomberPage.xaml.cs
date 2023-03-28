@@ -1422,7 +1422,7 @@ namespace HonkTrooper
 
         private bool SpawnRoadSideWalks()
         {
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 16; i++)
             {
                 RoadSideWalk roadSideWalk = new(
                 animateAction: AnimateRoadSideWalk,
@@ -1438,38 +1438,29 @@ namespace HonkTrooper
             return true;
         }
 
-        private bool GenerateRoadSideWalkTop()
+        private bool GenerateRoadSideWalk()
         {
-            if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideWalk>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideWalk roadSideWalk)
+            if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideWalk>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideWalk roadSideWalkTop)
             {
-                roadSideWalk.Reset();
-                roadSideWalk.IsAnimating = true;
-                roadSideWalk.SetPosition(
-                    left: (Constants.DEFAULT_SCENE_WIDTH / 2.25 - roadSideWalk.Width),
-                    top: roadSideWalk.Height * -1,
+                roadSideWalkTop.Reset();
+                roadSideWalkTop.IsAnimating = true;
+                roadSideWalkTop.SetPosition(
+                    left: (Constants.DEFAULT_SCENE_WIDTH / 2.25 - roadSideWalkTop.Width),
+                    top: roadSideWalkTop.Height * -1,
                     z: 0);
-
-                return true;
             }
 
-            return false;
-        }
-
-        private bool GenerateRoadSideWalkBottom()
-        {
-            if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideWalk>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideWalk roadSideWalk)
+            if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideWalk>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideWalk roadSideWalkBottom)
             {
-                roadSideWalk.Reset();
-                roadSideWalk.IsAnimating = true;
-                roadSideWalk.SetPosition(
-                    left: (roadSideWalk.Height * -1.5) - 30,
-                    top: (Constants.DEFAULT_SCENE_HEIGHT / 5 + roadSideWalk.Height / 2) - 50,
+                roadSideWalkBottom.Reset();
+                roadSideWalkBottom.IsAnimating = true;
+                roadSideWalkBottom.SetPosition(
+                    left: (roadSideWalkBottom.Height * -1.5) - 30,
+                    top: (Constants.DEFAULT_SCENE_HEIGHT / 5 + roadSideWalkBottom.Height / 2) - 50,
                     z: 0);
-
-                return true;
             }
 
-            return false;
+            return true;
         }
 
         private bool AnimateRoadSideWalk(Construct roadSideWalk)
@@ -1502,7 +1493,7 @@ namespace HonkTrooper
 
         private bool SpawnRoadSideTrees()
         {
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 13; i++)
             {
                 RoadSideTree roadSideTree = new(
                     animateAction: AnimateRoadSideTree,
@@ -1520,35 +1511,30 @@ namespace HonkTrooper
             return true;
         }
 
-        private bool GenerateRoadSideTreeTop()
+        private bool GenerateRoadSideTree()
         {
-            if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideTree>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideTree roadSideTree)
+            if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideTree>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideTree roadSideTreeTop)
             {
-                roadSideTree.IsAnimating = true;
+                roadSideTreeTop.IsAnimating = true;
 
-                roadSideTree.SetPosition(
-                  left: (Constants.DEFAULT_SCENE_WIDTH / 2 - roadSideTree.Width) + 10,
-                  top: (roadSideTree.Height * -1.1) - 10,
+                roadSideTreeTop.SetPosition(
+                  left: (Constants.DEFAULT_SCENE_WIDTH / 2 - roadSideTreeTop.Width) + 10,
+                  top: (roadSideTreeTop.Height * -1.1) - 10,
                   z: 3);
 
-                GenerateDropShadow(source: roadSideTree);
+                GenerateDropShadow(source: roadSideTreeTop);
             }
 
-            return true;
-        }
-
-        private bool GenerateRoadSideTreeBottom()
-        {
-            if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideTree>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideTree roadSideTree)
+            if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideTree>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideTree roadSideTreeBottom)
             {
-                roadSideTree.IsAnimating = true;
+                roadSideTreeBottom.IsAnimating = true;
 
-                roadSideTree.SetPosition(
-                  left: (-1 * roadSideTree.Width),
+                roadSideTreeBottom.SetPosition(
+                  left: (-1 * roadSideTreeBottom.Width),
                   top: (Constants.DEFAULT_SCENE_HEIGHT / 3),
                   z: 4);
 
-                GenerateDropShadow(source: roadSideTree);
+                GenerateDropShadow(source: roadSideTreeBottom);
             }
 
             return true;
@@ -1584,7 +1570,7 @@ namespace HonkTrooper
 
         private bool SpawnRoadSideHedges()
         {
-            for (int i = 0; i < 11; i++)
+            for (int i = 0; i < 28; i++)
             {
                 RoadSideHedge roadSideHedge = new(
                     animateAction: AnimateRoadSideHedge,
@@ -1600,38 +1586,29 @@ namespace HonkTrooper
             return true;
         }
 
-        private bool GenerateRoadSideHedgeTop()
+        private bool GenerateRoadSideHedge()
         {
-            if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideHedge>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideHedge roadSideHedge)
+            if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideHedge>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideHedge roadSideHedgeTop)
             {
-                roadSideHedge.IsAnimating = true;
+                roadSideHedgeTop.IsAnimating = true;
 
-                roadSideHedge.SetPosition(
+                roadSideHedgeTop.SetPosition(
                   left: (Constants.DEFAULT_SCENE_WIDTH / 3.8) - 30,
-                  top: (roadSideHedge.Height * -1) - 30,
+                  top: (roadSideHedgeTop.Height * -1) - 30,
                   z: 2);
-
-                return true;
             }
 
-            return false;
-        }
-
-        private bool GenerateRoadSideHedgeBottom()
-        {
-            if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideHedge>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideHedge roadSideHedge)
+            if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideHedge>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideHedge roadSideHedgeBottom)
             {
-                roadSideHedge.IsAnimating = true;
+                roadSideHedgeBottom.IsAnimating = true;
 
-                roadSideHedge.SetPosition(
-                  left: (-1.1 * roadSideHedge.Width) - 10,
+                roadSideHedgeBottom.SetPosition(
+                  left: (-1.1 * roadSideHedgeBottom.Width) - 10,
                   top: (Constants.DEFAULT_SCENE_HEIGHT / 3.1) - 10,
                   z: 3);
-
-                return true;
             }
 
-            return false;
+            return true;
         }
 
         private bool AnimateRoadSideHedge(Construct roadSideHedge)
@@ -1664,7 +1641,7 @@ namespace HonkTrooper
 
         private bool SpawnRoadSideLamps()
         {
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 8; i++)
             {
                 RoadSideLamp roadSideLamp = new(
                     animateAction: AnimateRoadSideLamp,
@@ -1675,49 +1652,34 @@ namespace HonkTrooper
                     top: -3000);
 
                 _scene_game.AddToScene(roadSideLamp);
-
-                //SpawnDropShadow(source: roadSideLamp);
             }
 
             return true;
         }
 
-        private bool GenerateRoadSideLampTop()
+        private bool GenerateRoadSideLamp()
         {
-            if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideLamp>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideLamp roadSideLamp)
+            if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideLamp>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideLamp roadSideLampTop)
             {
-                roadSideLamp.IsAnimating = true;
+                roadSideLampTop.IsAnimating = true;
 
-                roadSideLamp.SetPosition(
-                  left: (Constants.DEFAULT_SCENE_WIDTH / 2.40 - roadSideLamp.Width) + 20,
-                  top: ((roadSideLamp.Height * 1.5) * -1) - 5,
+                roadSideLampTop.SetPosition(
+                  left: (Constants.DEFAULT_SCENE_WIDTH / 2.40 - roadSideLampTop.Width) + 20,
+                  top: ((roadSideLampTop.Height * 1.5) * -1) - 5,
                   z: 3);
-
-                //GenerateDropShadow(source: roadSideLamp);
-
-                return true;
             }
 
-            return false;
-        }
-
-        private bool GenerateRoadSideLampBottom()
-        {
-            if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideLamp>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideLamp roadSideLamp)
+            if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideLamp>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideLamp roadSideLampBottom)
             {
-                roadSideLamp.IsAnimating = true;
+                roadSideLampBottom.IsAnimating = true;
 
-                roadSideLamp.SetPosition(
-                  left: (-1.9 * roadSideLamp.Width),
+                roadSideLampBottom.SetPosition(
+                  left: (-1.9 * roadSideLampBottom.Width),
                   top: (Constants.DEFAULT_SCENE_HEIGHT / 3),
                   z: 4);
-
-                //GenerateDropShadow(source: roadSideLamp);
-
-                return true;
             }
 
-            return false;
+            return true;
         }
 
         private bool AnimateRoadSideLamp(Construct roadSideLamp)
@@ -1768,29 +1730,25 @@ namespace HonkTrooper
             return true;
         }
 
-        //private bool GenerateRoadSideLightBillboardTop()
-        //{
-        //    if (_scene_game.Children.OfType<RoadSideLightBillboard>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideLightBillboard roadSideLight)
-        //    {
-        //        roadSideLight.IsAnimating = true;
-
-        //        roadSideLight.SetPosition(
-        //          left: (Constants.DEFAULT_SCENE_WIDTH / 2.80 - roadSideLight.Width) + 15,
-        //          top: ((roadSideLight.Height * 1.5) * -1) + 5,
-        //          z: 4);
-
-        //        GenerateDropShadow(roadSideLight);
-
-        //        LoggerExtensions.Log("RoadSideLightBillboard generated.");
-
-        //        return true;
-        //    }
-
-        //    return false;
-        //}
-
-        private bool GenerateRoadSideLightBillboardBottom()
+        private bool GenerateRoadSideLightBillboard()
         {
+
+            //    if (_scene_game.Children.OfType<RoadSideLightBillboard>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideLightBillboard roadSideLight)
+            //    {
+            //        roadSideLight.IsAnimating = true;
+
+            //        roadSideLight.SetPosition(
+            //          left: (Constants.DEFAULT_SCENE_WIDTH / 2.80 - roadSideLight.Width) + 15,
+            //          top: ((roadSideLight.Height * 1.5) * -1) + 5,
+            //          z: 4);
+
+            //        GenerateDropShadow(roadSideLight);
+
+            //        LoggerExtensions.Log("RoadSideLightBillboard generated.");
+
+            //        return true;
+            //    }
+
             if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideLightBillboard>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideLightBillboard roadSideLight)
             {
                 roadSideLight.IsAnimating = true;
@@ -1799,13 +1757,9 @@ namespace HonkTrooper
                   left: (-3.5 * roadSideLight.Width) + 10,
                   top: (Constants.DEFAULT_SCENE_HEIGHT / 5.2) + 10,
                   z: 4);
-
-                //GenerateDropShadow(roadSideLight);
-
-                return true;
             }
 
-            return false;
+            return true;
         }
 
         private bool AnimateRoadSideLightBillboard(Construct roadSideLight)
@@ -1856,43 +1810,32 @@ namespace HonkTrooper
             return true;
         }
 
-        private bool GenerateRoadSideBillboardTop()
+        private bool GenerateRoadSideBillboard()
         {
-            if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideBillboard>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideBillboard roadSideBillboard)
+            if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideBillboard>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideBillboard roadSideBillboardTop)
             {
-                roadSideBillboard.IsAnimating = true;
+                roadSideBillboardTop.IsAnimating = true;
 
-                roadSideBillboard.SetPosition(
-                  left: (Constants.DEFAULT_SCENE_WIDTH / 2.5 - roadSideBillboard.Width) + 48,
-                  top: ((roadSideBillboard.Height * 1.5) * -1) - 10,
+                roadSideBillboardTop.SetPosition(
+                  left: (Constants.DEFAULT_SCENE_WIDTH / 2.5 - roadSideBillboardTop.Width) + 48,
+                  top: ((roadSideBillboardTop.Height * 1.5) * -1) - 10,
                   z: 4);
-
-                //GenerateDropShadow(roadSideBillboard);
-
-                return true;
             }
 
-            return false;
+            //    if (_scene_game.Children.OfType<RoadSideBillboard>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideBillboard tree)
+            //    {
+            //        tree.IsAnimating = true;
+
+            //        tree.SetPosition(
+            //          left: (-1.9 * tree.Width),
+            //          top: (Constants.DEFAULT_SCENE_HEIGHT / 3),
+            //          z: 4);
+
+            //        GenerateDropShadow(tree);
+            //    }
+
+            return true;
         }
-
-        //private bool GenerateRoadSideBillboardBottom()
-        //{
-        //    if (_scene_game.Children.OfType<RoadSideBillboard>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideBillboard tree)
-        //    {
-        //        tree.IsAnimating = true;
-
-        //        tree.SetPosition(
-        //          left: (-1.9 * tree.Width),
-        //          top: (Constants.DEFAULT_SCENE_HEIGHT / 3),
-        //          z: 4);
-
-        //        GenerateDropShadow(tree);
-
-        //        return true;
-        //    }
-
-        //    return false;
-        //}
 
         private bool AnimateRoadSideBillboard(Construct roadSideBillboard)
         {
@@ -1932,7 +1875,8 @@ namespace HonkTrooper
 
                 roadMark.SetPosition(
                     left: -3000,
-                    top: -3000);
+                    top: -3000,
+                    z: 0);
 
                 _scene_game.AddToScene(roadMark);
             }
@@ -1948,8 +1892,7 @@ namespace HonkTrooper
 
                 roadMark.SetPosition(
                   left: roadMark.Height * -1,
-                  top: roadMark.Height * -1,
-                  z: 0);
+                  top: roadMark.Height * -1);
 
                 return true;
             }
@@ -1974,6 +1917,69 @@ namespace HonkTrooper
                 roadMark.IsAnimating = false;
 
                 roadMark.SetPosition(
+                    left: -3000,
+                    top: -3000);
+            }
+
+            return true;
+        }
+
+        #endregion
+
+        #region ManholeCover
+
+        private bool SpawnManholeCovers()
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                ManholeCover manholeCover = new(
+                    animateAction: AnimateManholeCover,
+                    recycleAction: RecycleManholeCover);
+
+                manholeCover.SetPosition(
+                    left: -3000,
+                    top: -3000,
+                    z: 0);
+
+                _scene_game.AddToScene(manholeCover);
+            }
+
+            return true;
+        }
+
+        private bool GenerateManholeCover()
+        {
+            if (_scene_game.Children.OfType<ManholeCover>().FirstOrDefault(x => x.IsAnimating == false) is ManholeCover manholeCover)
+            {
+                manholeCover.IsAnimating = true;
+
+                manholeCover.SetPosition(
+                  left: (manholeCover.Height * -3),
+                  top: (manholeCover.Height * -1.5));
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimateManholeCover(Construct manholeCover)
+        {
+            ManholeCover manholeCover1 = manholeCover as ManholeCover;
+            var speed = manholeCover1.GetMovementSpeed();
+            manholeCover1.MoveDownRight(speed);
+            return true;
+        }
+
+        private bool RecycleManholeCover(Construct manholeCover)
+        {
+            var hitBox = manholeCover.GetHitBox();
+
+            if (hitBox.Top - 45 > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - manholeCover.Width > Constants.DEFAULT_SCENE_WIDTH)
+            {
+                manholeCover.IsAnimating = false;
+
+                manholeCover.SetPosition(
                     left: -3000,
                     top: -3000);
             }
@@ -3787,64 +3793,43 @@ namespace HonkTrooper
                 generationAction: GenerateRoadMark,
                 startUpAction: SpawnRoadMarks),
 
+            //new Generator(
+            //    generationDelay: 60,
+            //    generationAction: GenerateManholeCover,
+            //    startUpAction: SpawnManholeCovers),
+
             new Generator(
                 generationDelay: 72,
-                generationAction: GenerateRoadSideBillboardTop,
+                generationAction: GenerateRoadSideBillboard,
                 startUpAction: SpawnRoadSideBillboards),
 
             new Generator(
                 generationDelay: 36,
-                generationAction: GenerateRoadSideLampTop,
+                generationAction: GenerateRoadSideLamp,
                 startUpAction: SpawnRoadSideLamps),
 
             new Generator(
                 generationDelay: 36,
-                generationAction: GenerateRoadSideLampBottom,
-                startUpAction: SpawnRoadSideLamps),
-
-            //new Generator(
-            //    generationDelay: 36,
-            //    generationAction: GenerateRoadSideLightBillboardTop,
-            //    startUpAction: SpawnRoadSideLightBillboards),
-
-            new Generator(
-                generationDelay: 36,
-                generationAction: GenerateRoadSideLightBillboardBottom,
+                generationAction: GenerateRoadSideLightBillboard,
                 startUpAction: SpawnRoadSideLightBillboards),
 
             // add road side walks
             new Generator(
                 generationDelay: 18,
-                generationAction: GenerateRoadSideWalkTop,
-                startUpAction: SpawnRoadSideWalks),
-
-            new Generator(
-                generationDelay: 18,
-                generationAction: GenerateRoadSideWalkBottom,
+                generationAction: GenerateRoadSideWalk,
                 startUpAction: SpawnRoadSideWalks),
 
             // then add the top trees
             new Generator(
                 generationDelay: 18,
-                generationAction: GenerateRoadSideTreeTop,
+                generationAction: GenerateRoadSideTree,
                 startUpAction: SpawnRoadSideTrees),
 
-            // then add the bottom trees which will appear forward in z wrt to the vehicles
-            new Generator(
-                generationDelay: 18,
-                generationAction: GenerateRoadSideTreeBottom,
-                startUpAction: SpawnRoadSideTrees),
 
             // then add the top RoadSideHedges
             new Generator(
                 generationDelay: 9,
-                generationAction: GenerateRoadSideHedgeTop,
-                startUpAction: SpawnRoadSideHedges),
-
-            // then add the bottom RoadSideHedges which will appear forward in z wrt to the vehicles
-            new Generator(
-                generationDelay: 9,
-                generationAction: GenerateRoadSideHedgeBottom,
+                generationAction: GenerateRoadSideHedge,
                 startUpAction: SpawnRoadSideHedges),
 
             // then add the vehicles which will appear forward in z wrt the top trees
