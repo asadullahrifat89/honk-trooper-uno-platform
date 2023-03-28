@@ -848,7 +848,7 @@ namespace HonkTrooper
 
                     if (_game_controller.IsAttacking)
                     {
-                        if (UfoEnemyExists() || UfoBossExists() || ZombieBossExists())
+                        if (UfoEnemyExists() || AnyInAirBossExists())
                         {
                             if (_powerUp_health_bar.HasHealth)
                             {
@@ -2496,7 +2496,7 @@ namespace HonkTrooper
 
         private bool GenerateUfoEnemy()
         {
-            if (!UfoBossExists() && !ZombieBossExists() && !VehicleBossExists() &&
+            if (!AnyBossExists() &&
                 _enemy_threashold.ShouldRelease(_game_score_bar.GetScore()) &&
                 _scene_game.Children.OfType<UfoEnemy>().FirstOrDefault(x => x.IsAnimating == false) is UfoEnemy ufoEnemy)
             {
@@ -2718,7 +2718,7 @@ namespace HonkTrooper
 
         private bool GenerateVehicleEnemy()
         {
-            if (!UfoBossExists() && !VehicleBossExists() && !ZombieBossExists() && !_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<VehicleEnemy>().FirstOrDefault(x => x.IsAnimating == false) is VehicleEnemy vehicleEnemy)
+            if (!AnyBossExists() && !_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<VehicleEnemy>().FirstOrDefault(x => x.IsAnimating == false) is VehicleEnemy vehicleEnemy)
             {
                 vehicleEnemy.IsAnimating = true;
                 vehicleEnemy.Reset();
@@ -3366,6 +3366,20 @@ namespace HonkTrooper
 
         #endregion
 
+        #region Boss
+
+        private bool AnyBossExists()
+        {
+            return (UfoBossExists() || VehicleBossExists() || ZombieBossExists());
+        }
+
+        private bool AnyInAirBossExists()
+        {
+            return (UfoBossExists() || ZombieBossExists());
+        }
+
+        #endregion
+
         #region Honk
 
         private bool SpawnHonks()
@@ -3446,7 +3460,7 @@ namespace HonkTrooper
         {
             // if there are no UfoBosses or enemies in the scene the vehicles will honk
 
-            if (_scene_game.SceneState == SceneState.GAME_RUNNING && !UfoBossExists() && !UfoEnemyExists() && !VehicleBossExists())
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING && !UfoEnemyExists() && !AnyBossExists())
             {
                 return GenerateHonk(source);
             }
@@ -3491,7 +3505,7 @@ namespace HonkTrooper
 
         private bool GenerateCloud()
         {
-            if (!UfoBossExists() && !ZombieBossExists() && !VehicleBossExists() && _scene_game.Children.OfType<Cloud>().FirstOrDefault(x => x.IsAnimating == false) is Cloud cloud)
+            if (!AnyBossExists() && _scene_game.Children.OfType<Cloud>().FirstOrDefault(x => x.IsAnimating == false) is Cloud cloud)
             {
                 cloud.IsAnimating = true;
                 cloud.Reset();
@@ -3741,11 +3755,11 @@ namespace HonkTrooper
             return true;
         }
 
-        private bool GeneratePowerUpPickups()
+        private bool GeneratePowerUpPickup()
         {
             if (_scene_game.SceneState == SceneState.GAME_RUNNING)
             {
-                if ((UfoBossExists() || UfoEnemyExists() || ZombieBossExists()) && !_powerUp_health_bar.HasHealth) // if a flying boss or ufo enemy exists and currently player has no other power up
+                if ((AnyInAirBossExists() || UfoEnemyExists()) && !_powerUp_health_bar.HasHealth) // if any in air boss or enemy exists and currently player has no other power up
                 {
                     if (_scene_game.Children.OfType<PowerUpPickup>().FirstOrDefault(x => x.IsAnimating == false) is PowerUpPickup powerUpPickup)
                     {
@@ -3803,11 +3817,11 @@ namespace HonkTrooper
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
                     var hitbox = powerUpPickup.GetCloseHitBox();
-                                        
+
                     if (_player.GetCloseHitBox().IntersectsWith(hitbox))
                     {
                         powerUpPickup1.PickedUp();
-                                                
+
                         _powerUp_health_bar.Tag = powerUpPickup1.PowerUpType;
 
                         switch (powerUpPickup1.PowerUpType)
@@ -3817,7 +3831,7 @@ namespace HonkTrooper
                                     _powerUp_health_bar.SetMaxiumHealth(9);
                                     _powerUp_health_bar.SetValue(9);
                                 }
-                                break;                            
+                                break;
                             case PowerUpType.BULLS_EYE: // if bulls eye powerup, allow using a single shot of 12 bombs
                                 {
                                     _powerUp_health_bar.SetMaxiumHealth(12);
@@ -3827,7 +3841,7 @@ namespace HonkTrooper
                             default:
                                 break;
                         }
-                        
+
                         _powerUp_health_bar.SetIcon(powerUpPickup1.GetContentUri());
                         _powerUp_health_bar.SetBarColor(color: Colors.Green);
                     }
@@ -4050,7 +4064,7 @@ namespace HonkTrooper
 
             new Generator(
                 generationDelay: 600,
-                generationAction: GeneratePowerUpPickups,
+                generationAction: GeneratePowerUpPickup,
                 startUpAction: SpawnPowerUpPickups,
                 randomizeGenerationDelay: true)
                 );

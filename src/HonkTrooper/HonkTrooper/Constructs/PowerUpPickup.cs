@@ -86,6 +86,9 @@ namespace HonkTrooper
 
             PowerUpType = (PowerUpType)_random.Next(Enum.GetNames(typeof(PowerUpType)).Length);
 
+            //TODO: Comment this line upon testing completion : PowerUpType = PowerUpType.BULLS_EYE
+            PowerUpType = PowerUpType.BULLS_EYE;
+
             switch (PowerUpType)
             {
                 case PowerUpType.SEEKING_SNITCH:
@@ -105,7 +108,7 @@ namespace HonkTrooper
                     break;
                 default:
                     break;
-            }
+            }            
 
             SetChild(_content_image);
         }
