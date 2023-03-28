@@ -378,6 +378,7 @@ namespace HonkTrooper
                 ConstructType.VEHICLE_ENEMY_SMALL or
                 ConstructType.VEHICLE_BOSS or
                 ConstructType.UFO_BOSS or
+ConstructType.ZOMBIE_BOSS or
                 ConstructType.HONK or
                 ConstructType.PLAYER_ROCKET or
                 ConstructType.PLAYER_ROCKET_SEEKING or
@@ -400,6 +401,12 @@ namespace HonkTrooper
                 {
                     ufoBoss.IsAttacking = false;
                     ufoBoss.Health = 0;
+                }
+
+if (construct is ZombieBoss zombieBoss)
+                {
+                    zombieBoss.IsAttacking = false;
+                    zombieBoss.Health = 0;
                 }
 
                 if (construct is VehicleBoss vehicleboss)
