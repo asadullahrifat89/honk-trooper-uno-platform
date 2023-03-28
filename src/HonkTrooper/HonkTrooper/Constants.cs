@@ -34,6 +34,7 @@ namespace HonkTrooper
             new (ConstructType.PLAYER_ROCKET, 100, 100),
             new (ConstructType.PLAYER_HONK_BOMB, 90, 90),
             new (ConstructType.PLAYER_ROCKET_SEEKING, 100, 100),
+            new (ConstructType.PLAYER_ROCKET_BULLS_EYE, 100, 100),
 
             new (ConstructType.UFO_BOSS, 180, 180),
             new (ConstructType.UFO_BOSS_ROCKET, 100, 100),
@@ -144,8 +145,10 @@ namespace HonkTrooper
             new (ConstructType.PLAYER_HONK_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/trash_2.png")),
             new (ConstructType.PLAYER_HONK_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/trash_3.png")),
 
-            new (ConstructType.PLAYER_ROCKET_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_seeking_1.png")),
-            new (ConstructType.PLAYER_ROCKET_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_bomb_seeking_2.png")),
+            new (ConstructType.PLAYER_ROCKET_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_rocket_seeking_1.png")),
+            new (ConstructType.PLAYER_ROCKET_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_rocket_seeking_2.png")),
+
+            new (ConstructType.PLAYER_ROCKET_BULLS_EYE, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_rocket_bulls_eye_1.png")),
 
             new (ConstructType.BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Images/blast_1.png")),
             new (ConstructType.BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Images/blast_2.png")),
@@ -183,8 +186,9 @@ namespace HonkTrooper
             new (ConstructType.UFO_ENEMY_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/enemy_bomb.png")),
 
             new (ConstructType.HEALTH_PICKUP, new Uri("ms-appx:///HonkTrooper/Assets/Images/health_pickup.png")),
-            new (ConstructType.POWERUP_PICKUP_SEEKING_BALLS, new Uri("ms-appx:///HonkTrooper/Assets/Images/power_up_pickup_seeking_balls.png")),
-            new (ConstructType.POWERUP_PICKUP_FORCE_SHIELD, new Uri("ms-appx:///HonkTrooper/Assets/Images/power_up_pickup_force_shield.png")),
+            new (ConstructType.POWERUP_PICKUP_SEEKING_SNITCH, new Uri("ms-appx:///HonkTrooper/Assets/Images/powerup_pickup_seeking_snitch.png")),
+            new (ConstructType.POWERUP_PICKUP_ARMOR, new Uri("ms-appx:///HonkTrooper/Assets/Images/powerup_pickup_armor.png")),
+            new (ConstructType.POWERUP_PICKUP_BULLS_EYE, new Uri("ms-appx:///HonkTrooper/Assets/Images/powerup_pickup_bulls_eye.png")),
         };
 
         public static (SoundType SoundType, Uri Uri)[] SOUND_TEMPLATES = new (SoundType, Uri)[]
@@ -274,6 +278,7 @@ namespace HonkTrooper
 
         PLAYER_ROCKET,
         PLAYER_ROCKET_SEEKING,
+        PLAYER_ROCKET_BULLS_EYE,
         PLAYER_HONK_BOMB,
 
         VEHICLE_ENEMY_SMALL,
@@ -319,9 +324,12 @@ namespace HonkTrooper
         UFO_ENEMY_ROCKET,
 
         HEALTH_PICKUP,
+
         POWERUP_PICKUP,
-        POWERUP_PICKUP_SEEKING_BALLS,
-        POWERUP_PICKUP_FORCE_SHIELD,
+        POWERUP_PICKUP_SEEKING_SNITCH,
+        POWERUP_PICKUP_ARMOR,
+        POWERUP_PICKUP_BULLS_EYE,
+
         COLLECTABLE_PICKUP,
 
         TITLE_SCREEN,

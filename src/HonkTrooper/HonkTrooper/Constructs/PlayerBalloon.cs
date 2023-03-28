@@ -9,7 +9,6 @@ namespace HonkTrooper
     {
         #region Fields
 
-        private readonly Random _random;
         private Uri[] _player_uris;
         private Uri[] _player_attack_uris;
         private Uri[] _player_win_uris;
@@ -38,7 +37,8 @@ namespace HonkTrooper
 
         private MovementDirection _movementDirection;
 
-        private double _health_loss_recovery_Delay = 10;
+        private double _health_loss_recovery_Delay;
+        private int _health_loss_opacity_effect;
 
         #endregion
 
@@ -48,8 +48,6 @@ namespace HonkTrooper
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction)
         {
-            _random = new Random();
-
             ConstructType = ConstructType.PLAYER_BALLOON;
 
             var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.PLAYER_BALLOON);
@@ -94,7 +92,7 @@ namespace HonkTrooper
         #region Methods
 
         public void Reset()
-        {            
+        {
             Health = 100;
 
             _movementDirection = MovementDirection.None;
@@ -449,11 +447,11 @@ namespace HonkTrooper
 
         public void LooseHealth()
         {
-            if (_health_loss_recovery_Delay <= 0)
+            if (_health_loss_recovery_Delay <= 0) // only loose health if recovery delay is less that 0 as upon taking damage this is set to 10
             {
                 //TODO: set default  Health -= 5;
                 Health -= 5;
-                Opacity = 0.8;
+                Opacity = 0.7;
 
                 _audioStub.Play(SoundType.PLAYER_HEALTH_LOSS);
 
@@ -466,6 +464,22 @@ namespace HonkTrooper
             if (_health_loss_recovery_Delay > 0)
             {
                 _health_loss_recovery_Delay -= 0.1;
+
+                _health_loss_opacity_effect++; // blinking effect
+
+                if (_health_loss_opacity_effect > 2)
+                {
+                    if (Opacity != 1)
+                    {
+                        Opacity = 1;
+                    }
+                    else
+                    {
+                        Opacity = 0.7;
+                    }
+
+                    _health_loss_opacity_effect = 0;
+                }
             }
 
             if (_health_loss_recovery_Delay <= 0 && Opacity != 1)

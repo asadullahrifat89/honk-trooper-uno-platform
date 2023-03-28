@@ -11,7 +11,6 @@ namespace HonkTrooper
     {
         #region Fields
 
-        private readonly Random _random;
         private readonly Uri[] _bomb_uris;
         private readonly Uri[] _bomb_blast_uris;
 
@@ -19,6 +18,9 @@ namespace HonkTrooper
 
 
         private readonly AudioStub _audioStub;
+
+        private double _autoBlastDelay;
+        private readonly double _autoBlastDelayDefault = 25;
 
         #endregion
 
@@ -28,8 +30,6 @@ namespace HonkTrooper
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction)
         {
-            _random = new Random();
-
             _bomb_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_ROCKET_SEEKING).Select(x => x.Uri).ToArray();
             _bomb_blast_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BLAST).Select(x => x.Uri).ToArray();
 
@@ -61,7 +61,7 @@ namespace HonkTrooper
             IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE;
 
-            _audioStub = new AudioStub((SoundType.SEEKER_ROCKET_LAUNCH, 0.3, false), (SoundType.ROCKET_BLAST, 1, false));
+            _audioStub = new AudioStub((SoundType.SEEKER_ROCKET_LAUNCH, 0.7, false), (SoundType.ROCKET_BLAST, 1, false));
         }
 
         #endregion
@@ -69,8 +69,6 @@ namespace HonkTrooper
         #region Properties
 
         public bool IsBlasting { get; set; }
-
-        public double TimeLeftUntilBlast { get; set; }
 
         #endregion
 
@@ -91,7 +89,8 @@ namespace HonkTrooper
             SetRotation(0);
 
             IsBlasting = false;
-            TimeLeftUntilBlast = 25;
+
+            _autoBlastDelay = _autoBlastDelayDefault;
         }
 
         public void Reposition(PlayerBalloon player)
@@ -101,11 +100,11 @@ namespace HonkTrooper
                 top: player.GetBottom() - (40));
         }
 
-        public bool RunOutOfTimeToBlast()
+        public bool AutoBlast()
         {
-            TimeLeftUntilBlast -= 0.1;
+            _autoBlastDelay -= 0.1;
 
-            if (TimeLeftUntilBlast <= 0)
+            if (_autoBlastDelay <= 0)
                 return true;
 
             return false;

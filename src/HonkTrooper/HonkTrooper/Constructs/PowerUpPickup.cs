@@ -39,19 +39,27 @@ namespace HonkTrooper
 
             switch (PowerUpType)
             {
-                case PowerUpType.SEEKING_BALLS:
+                case PowerUpType.SEEKING_SNITCH:
                     {
                         _content_image = new Image()
                         {
-                            Source = new BitmapImage(uriSource: Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP_SEEKING_BALLS).Uri)
+                            Source = new BitmapImage(uriSource: Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP_SEEKING_SNITCH).Uri)
                         };
                     }
                     break;
-                case PowerUpType.FORCE_SHIELD:
+                case PowerUpType.ARMOR:
                     {
                         _content_image = new Image()
                         {
-                            Source = new BitmapImage(uriSource: Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP_FORCE_SHIELD).Uri)
+                            Source = new BitmapImage(uriSource: Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP_ARMOR).Uri)
+                        };
+                    }
+                    break;
+                case PowerUpType.BULLS_EYE:
+                    {
+                        _content_image = new Image()
+                        {
+                            Source = new BitmapImage(uriSource: Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP_BULLS_EYE).Uri)
                         };
                     }
                     break;
@@ -78,21 +86,29 @@ namespace HonkTrooper
 
             PowerUpType = (PowerUpType)_random.Next(Enum.GetNames(typeof(PowerUpType)).Length);
 
+            //TODO: Comment this line upon testing completion : PowerUpType = PowerUpType.BULLS_EYE
+            //PowerUpType = PowerUpType.BULLS_EYE;
+
             switch (PowerUpType)
             {
-                case PowerUpType.SEEKING_BALLS:
+                case PowerUpType.SEEKING_SNITCH:
                     {
-                        _content_image.Source = new BitmapImage(uriSource: Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP_SEEKING_BALLS).Uri);
+                        _content_image.Source = new BitmapImage(uriSource: Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP_SEEKING_SNITCH).Uri);
                     }
                     break;
-                case PowerUpType.FORCE_SHIELD:
+                case PowerUpType.ARMOR:
                     {
-                        _content_image.Source = new BitmapImage(uriSource: Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP_FORCE_SHIELD).Uri);
+                        _content_image.Source = new BitmapImage(uriSource: Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP_ARMOR).Uri);
+                    }
+                    break;
+                case PowerUpType.BULLS_EYE:
+                    {
+                        _content_image.Source = new BitmapImage(uriSource: Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP_BULLS_EYE).Uri);
                     }
                     break;
                 default:
                     break;
-            }
+            }            
 
             SetChild(_content_image);
         }
@@ -117,7 +133,8 @@ namespace HonkTrooper
 
     public enum PowerUpType
     {
-        SEEKING_BALLS,
-        FORCE_SHIELD,
+        SEEKING_SNITCH,
+        ARMOR,
+        BULLS_EYE,
     }
 }

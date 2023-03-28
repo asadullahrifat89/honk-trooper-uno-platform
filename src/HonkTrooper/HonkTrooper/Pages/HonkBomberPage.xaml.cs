@@ -848,12 +848,30 @@ namespace HonkTrooper
 
                     if (_game_controller.IsAttacking)
                     {
-                        if (UfoEnemyExists() || UfoBossExists() || ZombieBossExists())
+                        if (UfoEnemyExists() || AnyInAirBossExists())
                         {
-                            if (_powerUp_health_bar.HasHealth && (PowerUpType)_powerUp_health_bar.Tag == PowerUpType.SEEKING_BALLS)
-                                GeneratePlayerRocketSeeking();
+                            if (_powerUp_health_bar.HasHealth)
+                            {
+                                switch ((PowerUpType)_powerUp_health_bar.Tag)
+                                {
+                                    case PowerUpType.SEEKING_SNITCH:
+                                        {
+                                            GeneratePlayerRocketSeeking();
+                                        }
+                                        break;
+                                    case PowerUpType.BULLS_EYE:
+                                        {
+                                            GeneratePlayerRocketBullsEye();
+                                        }
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
                             else
+                            {
                                 GeneratePlayerRocket();
+                            }
                         }
                         else
                         {
@@ -872,7 +890,7 @@ namespace HonkTrooper
         {
             _player.SetPopping();
 
-            if (_powerUp_health_bar.HasHealth && (PowerUpType)_powerUp_health_bar.Tag == PowerUpType.FORCE_SHIELD)
+            if (_powerUp_health_bar.HasHealth && (PowerUpType)_powerUp_health_bar.Tag == PowerUpType.ARMOR)
             {
                 DepletePowerUp();
             }
@@ -1057,7 +1075,6 @@ namespace HonkTrooper
                 UfoBossRocketSeeking ufoBossRocketSeeking = _scene_game.Children.OfType<UfoBossRocketSeeking>()?.FirstOrDefault(x => x.IsAnimating && !x.IsBlasting && x.GetHitBox().IntersectsWith(playerDistantHitBox));
                 UfoBoss ufoBoss = _scene_game.Children.OfType<UfoBoss>()?.FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetHitBox().IntersectsWith(playerDistantHitBox));
                 ZombieBoss zombieBoss = _scene_game.Children.OfType<ZombieBoss>()?.FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetHitBox().IntersectsWith(playerDistantHitBox));
-
                 UfoEnemy ufoEnemy = _scene_game.Children.OfType<UfoEnemy>()?.FirstOrDefault(x => x.IsAnimating && !x.IsFadingComplete && x.GetHitBox().IntersectsWith(playerDistantHitBox));
 
                 // if not found then find random target
@@ -1093,8 +1110,6 @@ namespace HonkTrooper
         {
             PlayerRocket playerRocket1 = playerRocket as PlayerRocket;
 
-            var hitBox = playerRocket.GetCloseHitBox();
-
             var speed = playerRocket1.GetMovementSpeed();
 
             if (playerRocket1.AwaitMoveDownLeft)
@@ -1126,6 +1141,8 @@ namespace HonkTrooper
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
+                    var hitBox = playerRocket.GetCloseHitBox();
+
                     if (_scene_game.Children.OfType<UfoBossRocketSeeking>().FirstOrDefault(x => x.IsAnimating && !x.IsBlasting && x.GetCloseHitBox().IntersectsWith(hitBox)) is UfoBossRocketSeeking ufoBossRocketSeeking) // if player bomb touches UfoBoss's seeking bomb, it blasts
                     {
                         playerRocket1.SetBlast();
@@ -1220,7 +1237,7 @@ namespace HonkTrooper
 
                 GenerateDropShadow(source: playerRocketSeeking);
 
-                if (_powerUp_health_bar.HasHealth && (PowerUpType)_powerUp_health_bar.Tag == PowerUpType.SEEKING_BALLS)
+                if (_powerUp_health_bar.HasHealth && (PowerUpType)_powerUp_health_bar.Tag == PowerUpType.SEEKING_SNITCH)
                     DepletePowerUp();
 
                 return true;
@@ -1298,7 +1315,7 @@ namespace HonkTrooper
                         }
                     }
 
-                    if (playerRocketSeeking1.RunOutOfTimeToBlast())
+                    if (playerRocketSeeking1.AutoBlast())
                         playerRocketSeeking1.SetBlast();
                 }
             }
@@ -1325,11 +1342,162 @@ namespace HonkTrooper
             return false;
         }
 
-        private void DepletePowerUp()
+        #endregion
+
+        #region PlayerRocketBullsEye
+
+        private bool SpawnPlayerRocketBullsEyes()
         {
-            // use up the power up
-            if (_powerUp_health_bar.HasHealth)
-                _powerUp_health_bar.SetValue(_powerUp_health_bar.GetValue() - 1);
+            for (int i = 0; i < 3; i++)
+            {
+                PlayerRocketBullsEye playerRocketBullsEye = new(
+                    animateAction: AnimatePlayerRocketBullsEye,
+                    recycleAction: RecyclePlayerRocketBullsEye);
+
+                playerRocketBullsEye.SetPosition(
+                    left: -3000,
+                    top: -3000,
+                    z: 7);
+
+                _scene_game.AddToScene(playerRocketBullsEye);
+
+                SpawnDropShadow(source: playerRocketBullsEye);
+            }
+
+            return true;
+        }
+
+        private bool GeneratePlayerRocketBullsEye()
+        {
+            // generate a bulls eye bomb if one is not in scene
+
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING && !_scene_game.IsSlowMotionActivated &&
+                _scene_game.Children.OfType<PlayerRocketBullsEye>().FirstOrDefault(x => x.IsAnimating == false) is PlayerRocketBullsEye playerRocketBullsEye)
+            {
+                _player.SetAttackStance();
+
+                playerRocketBullsEye.Reset();
+                playerRocketBullsEye.IsAnimating = true;
+                playerRocketBullsEye.SetPopping();
+                playerRocketBullsEye.Reposition(player: _player);
+
+                GenerateDropShadow(source: playerRocketBullsEye);
+
+                var playerDistantHitBox = _player.GetDistantHitBox();
+
+                // get closest possible target
+                UfoBossRocketSeeking ufoBossRocketSeeking = _scene_game.Children.OfType<UfoBossRocketSeeking>()?.FirstOrDefault(x => x.IsAnimating && !x.IsBlasting && x.GetHitBox().IntersectsWith(playerDistantHitBox));
+                UfoBoss ufoBoss = _scene_game.Children.OfType<UfoBoss>()?.FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetHitBox().IntersectsWith(playerDistantHitBox));
+                ZombieBoss zombieBoss = _scene_game.Children.OfType<ZombieBoss>()?.FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetHitBox().IntersectsWith(playerDistantHitBox));
+                UfoEnemy ufoEnemy = _scene_game.Children.OfType<UfoEnemy>()?.FirstOrDefault(x => x.IsAnimating && !x.IsFadingComplete && x.GetHitBox().IntersectsWith(playerDistantHitBox));
+
+                // if not found then find random target
+                ufoBossRocketSeeking ??= _scene_game.Children.OfType<UfoBossRocketSeeking>().FirstOrDefault(x => x.IsAnimating && !x.IsBlasting);
+                ufoBoss ??= _scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking);
+                zombieBoss ??= _scene_game.Children.OfType<ZombieBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking);
+                ufoEnemy ??= _scene_game.Children.OfType<UfoEnemy>().FirstOrDefault(x => x.IsAnimating && !x.IsFadingComplete);
+
+                if (ufoEnemy is not null)
+                {
+                    playerRocketBullsEye.SetTarget(ufoEnemy.GetCloseHitBox());
+                }
+                else if (ufoBoss is not null)
+                {
+                    playerRocketBullsEye.SetTarget(ufoBoss.GetCloseHitBox());
+                }
+                else if (ufoBossRocketSeeking is not null)
+                {
+                    playerRocketBullsEye.SetTarget(ufoBossRocketSeeking.GetCloseHitBox());
+                }
+                else if (zombieBoss is not null)
+                {
+                    playerRocketBullsEye.SetTarget(zombieBoss.GetCloseHitBox());
+                }
+
+                if (_powerUp_health_bar.HasHealth && (PowerUpType)_powerUp_health_bar.Tag == PowerUpType.BULLS_EYE)
+                    DepletePowerUp();
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimatePlayerRocketBullsEye(Construct playerRocketBullsEye)
+        {
+            PlayerRocketBullsEye playerRocketBullsEye1 = playerRocketBullsEye as PlayerRocketBullsEye;
+
+            if (playerRocketBullsEye1.IsBlasting)
+            {
+                var speed = playerRocketBullsEye1.GetMovementSpeed();
+                playerRocketBullsEye1.MoveDownRight(speed);
+                playerRocketBullsEye.Expand();
+                playerRocketBullsEye.Fade(0.02);
+            }
+            else
+            {
+                playerRocketBullsEye.Pop();
+                playerRocketBullsEye.Rotate(rotationSpeed: 3.5);
+
+                if (_scene_game.SceneState == SceneState.GAME_RUNNING) // check if the rocket intersects with any target on its path
+                {
+                    var speed = playerRocketBullsEye1.GetMovementSpeed();
+                    playerRocketBullsEye1.Move();
+
+                    var hitbox = playerRocketBullsEye1.GetCloseHitBox();
+
+                    if (_scene_game.Children.OfType<UfoBossRocketSeeking>().FirstOrDefault(x => x.IsAnimating && !x.IsBlasting && x.GetCloseHitBox().IntersectsWith(hitbox)) is UfoBossRocketSeeking ufoBossRocketSeeking) // target UfoBossRocketSeeking
+                    {
+                        playerRocketBullsEye1.SetBlast();
+                        ufoBossRocketSeeking.SetBlast();
+
+                    }
+                    else if (_scene_game.Children.OfType<ZombieBossRocket>().FirstOrDefault(x => x.IsAnimating && x.GetCloseHitBox().IntersectsWith(hitbox)) is ZombieBossRocket zombieBossRocket) // target ZombieBossRocket
+                    {
+                        playerRocketBullsEye1.SetBlast();
+                        zombieBossRocket.LooseHealth();
+                    }
+                    else if (_scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetCloseHitBox().IntersectsWith(hitbox)) is UfoBoss ufoBoss) // target UfoBoss
+                    {
+                        playerRocketBullsEye1.SetBlast();
+                        LooseUfoBossHealth(ufoBoss);
+                    }
+                    else if (_scene_game.Children.OfType<ZombieBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetCloseHitBox().IntersectsWith(hitbox)) is ZombieBoss zombieBoss) // target ZombieBoss
+                    {
+                        playerRocketBullsEye1.SetBlast();
+                        LooseZombieBossHealth(zombieBoss);
+                    }
+                    else if (_scene_game.Children.OfType<UfoEnemy>().FirstOrDefault(x => x.IsAnimating && !x.IsFadingComplete && x.GetCloseHitBox().IntersectsWith(hitbox)) is UfoEnemy enemy) // target UfoEnemy
+                    {
+                        playerRocketBullsEye1.SetBlast();
+                        LooseUfoEnemyHealth(enemy);
+                    }
+
+                    if (playerRocketBullsEye1.AutoBlast())
+                        playerRocketBullsEye1.SetBlast();
+                }
+            }
+
+            return true;
+        }
+
+        private bool RecyclePlayerRocketBullsEye(Construct playerRocketBullsEye)
+        {
+            var hitbox = playerRocketBullsEye.GetHitBox();
+
+            // if bomb is blasted and faed or goes out of scene bounds
+            if (playerRocketBullsEye.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Bottom > Constants.DEFAULT_SCENE_HEIGHT)
+            {
+                playerRocketBullsEye.IsAnimating = false;
+
+                playerRocketBullsEye.SetPosition(
+                    left: -3000,
+                    top: -3000);
+
+                return true;
+            }
+
+            return false;
         }
 
         #endregion
@@ -1975,7 +2143,7 @@ namespace HonkTrooper
 
                 _scene_game.ActivateSlowMotion();
 
-                GenerateInterimScreen("Beware of Cyber Psycho");
+                GenerateInterimScreen("Beware of Crimson Saucer");
 
                 _scene_game.ToggleNightMode(true);
 
@@ -2266,7 +2434,7 @@ namespace HonkTrooper
                         }
                         else
                         {
-                            if (ufoBossRocketSeeking1.RunOutOfTimeToBlast())
+                            if (ufoBossRocketSeeking1.AutoBlast())
                                 ufoBossRocketSeeking1.SetBlast();
                         }
                     }
@@ -2326,7 +2494,7 @@ namespace HonkTrooper
 
         private bool GenerateUfoEnemy()
         {
-            if (!UfoBossExists() && !ZombieBossExists() && !VehicleBossExists() &&
+            if (!AnyBossExists() &&
                 _enemy_threashold.ShouldRelease(_game_score_bar.GetScore()) &&
                 _scene_game.Children.OfType<UfoEnemy>().FirstOrDefault(x => x.IsAnimating == false) is UfoEnemy ufoEnemy)
             {
@@ -2548,7 +2716,7 @@ namespace HonkTrooper
 
         private bool GenerateVehicleEnemy()
         {
-            if (!UfoBossExists() && !VehicleBossExists() && !ZombieBossExists() && !_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<VehicleEnemy>().FirstOrDefault(x => x.IsAnimating == false) is VehicleEnemy vehicleEnemy)
+            if (!AnyBossExists() && !_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<VehicleEnemy>().FirstOrDefault(x => x.IsAnimating == false) is VehicleEnemy vehicleEnemy)
             {
                 vehicleEnemy.IsAnimating = true;
                 vehicleEnemy.Reset();
@@ -3196,6 +3364,20 @@ namespace HonkTrooper
 
         #endregion
 
+        #region Boss
+
+        private bool AnyBossExists()
+        {
+            return (UfoBossExists() || VehicleBossExists() || ZombieBossExists());
+        }
+
+        private bool AnyInAirBossExists()
+        {
+            return (UfoBossExists() || ZombieBossExists());
+        }
+
+        #endregion
+
         #region Honk
 
         private bool SpawnHonks()
@@ -3276,7 +3458,7 @@ namespace HonkTrooper
         {
             // if there are no UfoBosses or enemies in the scene the vehicles will honk
 
-            if (_scene_game.SceneState == SceneState.GAME_RUNNING && !UfoBossExists() && !UfoEnemyExists() && !VehicleBossExists())
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING && !UfoEnemyExists() && !AnyBossExists())
             {
                 return GenerateHonk(source);
             }
@@ -3321,7 +3503,7 @@ namespace HonkTrooper
 
         private bool GenerateCloud()
         {
-            if (!UfoBossExists() && !ZombieBossExists() && !VehicleBossExists() && _scene_game.Children.OfType<Cloud>().FirstOrDefault(x => x.IsAnimating == false) is Cloud cloud)
+            if (!AnyBossExists() && _scene_game.Children.OfType<Cloud>().FirstOrDefault(x => x.IsAnimating == false) is Cloud cloud)
             {
                 cloud.IsAnimating = true;
                 cloud.Reset();
@@ -3571,11 +3753,11 @@ namespace HonkTrooper
             return true;
         }
 
-        private bool GeneratePowerUpPickups()
+        private bool GeneratePowerUpPickup()
         {
             if (_scene_game.SceneState == SceneState.GAME_RUNNING)
             {
-                if ((UfoBossExists() || UfoEnemyExists()) && !_powerUp_health_bar.HasHealth) // if a UfoBoss or enemy exists and currently player has no other power up
+                if ((AnyInAirBossExists() || UfoEnemyExists()) && !_powerUp_health_bar.HasHealth) // if any in air boss or enemy exists and currently player has no other power up
                 {
                     if (_scene_game.Children.OfType<PowerUpPickup>().FirstOrDefault(x => x.IsAnimating == false) is PowerUpPickup powerUpPickup)
                     {
@@ -3591,6 +3773,7 @@ namespace HonkTrooper
                             case 0:
                                 {
                                     var xLaneWidth = Constants.DEFAULT_SCENE_WIDTH / 4;
+
                                     powerUpPickup.SetPosition(
                                         left: _random.Next(Convert.ToInt32(xLaneWidth - powerUpPickup.Width)),
                                         top: powerUpPickup.Height * -1);
@@ -3599,6 +3782,7 @@ namespace HonkTrooper
                             case 1:
                                 {
                                     var yLaneWidth = (Constants.DEFAULT_SCENE_HEIGHT / 2) / 2;
+
                                     powerUpPickup.SetPosition(
                                         left: powerUpPickup.Width * -1,
                                         top: _random.Next(Convert.ToInt32(yLaneWidth)));
@@ -3634,15 +3818,30 @@ namespace HonkTrooper
                 {
                     var hitbox = powerUpPickup.GetCloseHitBox();
 
-                    // if player picks up seeking bomb pickup
                     if (_player.GetCloseHitBox().IntersectsWith(hitbox))
                     {
                         powerUpPickup1.PickedUp();
 
-                        // if seeking balls powerup, allow using a burst of 3 seeking bombs 3 times
                         _powerUp_health_bar.Tag = powerUpPickup1.PowerUpType;
-                        _powerUp_health_bar.SetMaxiumHealth(9);
-                        _powerUp_health_bar.SetValue(9);
+
+                        switch (powerUpPickup1.PowerUpType)
+                        {
+                            case PowerUpType.SEEKING_SNITCH: // if seeking snitch powerup, allow using a burst of 3 seeking bombs 3 times
+                                {
+                                    _powerUp_health_bar.SetMaxiumHealth(9);
+                                    _powerUp_health_bar.SetValue(9);
+                                }
+                                break;
+                            case PowerUpType.BULLS_EYE: // if bulls eye powerup, allow using a single shot of 20 bombs
+                                {
+                                    _powerUp_health_bar.SetMaxiumHealth(20);
+                                    _powerUp_health_bar.SetValue(20);
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+
                         _powerUp_health_bar.SetIcon(powerUpPickup1.GetContentUri());
                         _powerUp_health_bar.SetBarColor(color: Colors.Green);
                     }
@@ -3666,6 +3865,13 @@ namespace HonkTrooper
             }
 
             return true;
+        }
+
+        private void DepletePowerUp()
+        {
+            // use up the power up
+            if (_powerUp_health_bar.HasHealth)
+                _powerUp_health_bar.SetValue(_powerUp_health_bar.GetValue() - 1);
         }
 
         #endregion     
@@ -3835,6 +4041,11 @@ namespace HonkTrooper
                 startUpAction: SpawnPlayerRocketSeekings),
 
             new Generator(
+                generationDelay: 0,
+                generationAction: () => { return true; },
+                startUpAction: SpawnPlayerRocketBullsEyes),
+
+            new Generator(
                 generationDelay: 180,
                 generationAction: GenerateUfoEnemy,
                 startUpAction: SpawnUfoEnemys,
@@ -3852,8 +4063,8 @@ namespace HonkTrooper
                 randomizeGenerationDelay: true),
 
             new Generator(
-                generationDelay: 600,
-                generationAction: GeneratePowerUpPickups,
+                generationDelay: 500,
+                generationAction: GeneratePowerUpPickup,
                 startUpAction: SpawnPowerUpPickups,
                 randomizeGenerationDelay: true)
                 );
