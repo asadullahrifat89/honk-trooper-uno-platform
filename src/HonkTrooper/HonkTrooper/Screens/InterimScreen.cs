@@ -65,7 +65,7 @@ namespace HonkTrooper
 
         #region Methods
 
-        public void Reset()
+        public new void Reset()
         {
             _messageOnScreenDelay = _messageOnScreenDelayDefault;
         }

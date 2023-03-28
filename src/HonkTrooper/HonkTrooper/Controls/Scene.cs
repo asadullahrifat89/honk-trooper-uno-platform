@@ -8,15 +8,24 @@ using System.Threading;
 using Windows.Foundation;
 using Microsoft.UI.Xaml.Media.Animation;
 using System.Diagnostics;
+using Microsoft.UI;
 
 namespace HonkTrooper
 {
-    public partial class Scene : Canvas
+    public partial class Scene : Border
     {
         #region Fields
 
+        private readonly Canvas _canvas;
+
         private readonly Storyboard _storyboard;
         private readonly DoubleAnimation _doubleAnimation;
+
+        private readonly Storyboard _night_storyboard;
+        private readonly ColorAnimation _night_animation;
+
+        private readonly Storyboard _day_storyboard;
+        private readonly ColorAnimation _day_animation;
 
         private readonly CompositeTransform _compositeTransform = new()
         {
@@ -47,10 +56,41 @@ namespace HonkTrooper
 
         public Scene()
         {
-            RenderTransformOrigin = new Point(0, 0);
-            RenderTransform = _compositeTransform;
-            CanDrag = false;
-            Speed = Constants.DEFAULT_SCENE_SPEED;
+            #region Day Animation
+
+            _day_animation = new ColorAnimation()
+            {
+                Duration = new Duration(TimeSpan.FromSeconds(4)),
+                From = (App.Current.Resources["NightBackgroundColor"] as SolidColorBrush).Color,
+                To = (App.Current.Resources["DayBackgroundColor"] as SolidColorBrush).Color,
+            };
+
+            Storyboard.SetTarget(_day_animation, this);
+            Storyboard.SetTargetProperty(_day_animation, "Background.Color");
+
+            _day_storyboard = new Storyboard();
+            _day_storyboard.Children.Add(_day_animation);
+
+            #endregion
+
+            #region Night Animation
+
+            _night_animation = new ColorAnimation()
+            {
+                Duration = new Duration(TimeSpan.FromSeconds(4)),
+                From = (App.Current.Resources["DayBackgroundColor"] as SolidColorBrush).Color,
+                To = (App.Current.Resources["NightBackgroundColor"] as SolidColorBrush).Color,
+            };
+
+            Storyboard.SetTarget(_night_animation, this);
+            Storyboard.SetTargetProperty(_night_animation, "Background.Color");
+
+            _night_storyboard = new Storyboard();
+            _night_storyboard.Children.Add(_night_animation);
+
+            #endregion
+
+            #region Opacity Animation
 
             _doubleAnimation = new DoubleAnimation()
             {
@@ -63,10 +103,25 @@ namespace HonkTrooper
             Storyboard.SetTargetProperty(_doubleAnimation, "Opacity");
 
             _storyboard = new Storyboard();
-            _storyboard.Children.Add(_doubleAnimation);
+            _storyboard.Children.Add(_doubleAnimation); 
+
+            #endregion
+
+            CanDrag = false;
+
+            _canvas = new()
+            {
+                RenderTransformOrigin = new Point(0, 0),
+                RenderTransform = _compositeTransform,
+                Background = new SolidColorBrush(Colors.Transparent),
+            };           
+
+            Speed = Constants.DEFAULT_SCENE_SPEED;
 
             Loaded += Scene_Loaded;
             Unloaded += Scene_Unloaded;
+
+            this.Child = _canvas;
         }
 
         #endregion
@@ -80,6 +135,10 @@ namespace HonkTrooper
         public SceneState SceneState { get; set; } = SceneState.GAME_STOPPED;
 
         public double Speed { get; set; }
+
+        public bool IsInNightMode { get; set; }
+
+        public UIElementCollection Children => _canvas?.Children;
 
         #endregion
 
@@ -99,9 +158,21 @@ namespace HonkTrooper
 
         #region Methods
 
+        public void ToggleNightMode(bool toggle)
+        {
+            if (toggle)
+            {
+                _night_storyboard.Begin(); IsInNightMode = true;
+            }
+            else
+            {
+                _day_storyboard.Begin(); IsInNightMode = false;
+            }
+        }
+
         public void SetRenderTransformOrigin(double xy)
         {
-            RenderTransformOrigin = new Point(xy, xy);
+            _canvas.RenderTransformOrigin = new Point(xy, xy);
         }
 
         public void SetScaleTransform(double scaleXY)
@@ -117,7 +188,7 @@ namespace HonkTrooper
                 foreach (var construct in constructs)
                 {
                     construct.Scene = this;
-                    Children.Add(construct);
+                    _canvas.Children.Add(construct);
                 }
             }
         }
@@ -188,7 +259,7 @@ namespace HonkTrooper
 
         public void Clear()
         {
-            Children.Clear();
+            _canvas.Children.Clear();
 
             _generators.Clear();
             //_destroyables.Clear();
@@ -208,7 +279,7 @@ namespace HonkTrooper
             }
 
             // run action for each construct and add to destroyable if destroyable function returns true
-            foreach (Construct construct in Children.OfType<Construct>().Where(x => x.IsAnimating))
+            foreach (Construct construct in _canvas.Children.OfType<Construct>().Where(x => x.IsAnimating))
             {
                 construct.Animate();
                 construct.Recycle();
@@ -233,7 +304,7 @@ namespace HonkTrooper
 
                 var fps = _famesCount / 2;
 
-                LoggingExtensions.Log($"Scene: {Name} ~ Animating Objects: {Children.OfType<Construct>().Count(x => x.IsAnimating)} \n Total Objects: {Children.OfType<Construct>().Count()} ~ FPS: {fps}");
+                LoggingExtensions.Log($"Scene: {Name} ~ Animating Objects: {_canvas.Children.OfType<Construct>().Count(x => x.IsAnimating)} \n Total Objects: {_canvas.Children.OfType<Construct>().Count()} ~ FPS: {fps}");
 
                 _famesCount = 0;
             }

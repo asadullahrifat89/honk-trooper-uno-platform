@@ -29,6 +29,8 @@ namespace HonkTrooper
         {
             ConstructType = ConstructType.TITLE_SCREEN;
 
+            _audioStub = new AudioStub((SoundType.GAME_START, 1, false));
+
             var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.TITLE_SCREEN);
 
             var width = size.Width;
@@ -94,7 +96,6 @@ namespace HonkTrooper
 
             _title_text = new TextBlock()
             {
-                Text = "Honk Trooper",
                 FontSize = Constants.DEFAULT_GUI_FONT_SIZE,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 Margin = new Thickness(0, 0, 0, 5),
@@ -111,8 +112,7 @@ namespace HonkTrooper
 
             _sub_title_text = new TextBlock()
             {
-                Text = "Honk Trooper",
-                FontSize = Constants.DEFAULT_GUI_FONT_SIZE - 10,
+                FontSize = Constants.DEFAULT_GUI_FONT_SIZE - 5,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 Margin = new Thickness(0, 0, 0, 5),
                 Foreground = new SolidColorBrush(Colors.White),
@@ -129,9 +129,9 @@ namespace HonkTrooper
             Button playButton = new()
             {
                 Background = new SolidColorBrush(Colors.Goldenrod),
-                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE,
-                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 3,
-                CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS),
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE - 5,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 3.5,
+                CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS - 20),
                 Content = new SymbolIcon()
                 {
                     Symbol = Symbol.Play,
@@ -159,8 +159,6 @@ namespace HonkTrooper
 
             rootGrid.Children.Add(container);
             SetChild(rootGrid);
-
-            _audioStub = new AudioStub((SoundType.GAME_START, 1, false));
         }
 
         #endregion
