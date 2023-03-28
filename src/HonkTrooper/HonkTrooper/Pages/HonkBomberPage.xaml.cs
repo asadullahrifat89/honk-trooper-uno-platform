@@ -1381,8 +1381,6 @@ namespace HonkTrooper
                 playerRocketBullsEye.SetPopping();
                 playerRocketBullsEye.Reposition(player: _player);
 
-                //TODO: set bulls eye target point              
-
                 GenerateDropShadow(source: playerRocketBullsEye);
 
                 var playerDistantHitBox = _player.GetDistantHitBox();

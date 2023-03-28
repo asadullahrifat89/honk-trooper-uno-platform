@@ -156,7 +156,6 @@ namespace HonkTrooper
 
         public void Move()
         {
-            // TODO: seek the target in a straigh line
             Seek(target: _targetHitbox, doubleSpeed: true);
         }
 
