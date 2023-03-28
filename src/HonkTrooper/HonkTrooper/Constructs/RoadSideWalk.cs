@@ -25,7 +25,7 @@ namespace HonkTrooper
             AnimateAction = animateAction;
             RecycleAction = recycleAction;
 
-            BorderThickness = new Thickness(left: 30, top: 10, right: 10, bottom: 10);
+            BorderThickness = new Thickness(leftRight: 30, topBottom: 5);
 
             SetSkewY(36);
             SetRotation(-63.5);
