@@ -3832,10 +3832,10 @@ namespace HonkTrooper
                                     _powerUp_health_bar.SetValue(9);
                                 }
                                 break;
-                            case PowerUpType.BULLS_EYE: // if bulls eye powerup, allow using a single shot of 12 bombs
+                            case PowerUpType.BULLS_EYE: // if bulls eye powerup, allow using a single shot of 20 bombs
                                 {
-                                    _powerUp_health_bar.SetMaxiumHealth(12);
-                                    _powerUp_health_bar.SetValue(12);
+                                    _powerUp_health_bar.SetMaxiumHealth(20);
+                                    _powerUp_health_bar.SetValue(20);
                                 }
                                 break;
                             default:
