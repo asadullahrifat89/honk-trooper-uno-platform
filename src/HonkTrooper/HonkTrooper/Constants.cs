@@ -32,7 +32,7 @@ namespace HonkTrooper
         {
             new (ConstructType.PLAYER_BALLOON, 165, 165),
             new (ConstructType.PLAYER_ROCKET, 100, 100),
-            new (ConstructType.PLAYER_HONK_BOMB, 80, 80),
+            new (ConstructType.PLAYER_HONK_BOMB, 90, 90),
             new (ConstructType.PLAYER_ROCKET_SEEKING, 100, 100),
 
             new (ConstructType.UFO_BOSS, 180, 180),
@@ -40,7 +40,7 @@ namespace HonkTrooper
             new (ConstructType.UFO_BOSS_ROCKET_SEEKING, 100, 100),
 
             new (ConstructType.ZOMBIE_BOSS, 180, 180),
-            new (ConstructType.ZOMBIE_BOSS_ROCKET, 200, 200),
+            new (ConstructType.ZOMBIE_BOSS_ROCKET, 240, 240),
 
             new (ConstructType.UFO_ENEMY, 160, 160),
             new (ConstructType.UFO_ENEMY_ROCKET, 100, 100),
