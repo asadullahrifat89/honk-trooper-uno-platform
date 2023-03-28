@@ -108,8 +108,8 @@ namespace HonkTrooper
             SetScaleTransform(Constants.DEFAULT_BLAST_SHRINK_SCALE);
 
             BorderBrush = new SolidColorBrush(Colors.Crimson);
-            BorderThickness = new Microsoft.UI.Xaml.Thickness(Constants.DEFAULT_BLAST_RING_CORNER_RADIUS);
-            CornerRadius = new Microsoft.UI.Xaml.CornerRadius(50);
+            BorderThickness = new Microsoft.UI.Xaml.Thickness(Constants.DEFAULT_BLAST_RING_BORDER_THICKNESS);
+            CornerRadius = new Microsoft.UI.Xaml.CornerRadius(Constants.DEFAULT_BLAST_RING_CORNER_RADIUS);
 
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET - 1;
 
