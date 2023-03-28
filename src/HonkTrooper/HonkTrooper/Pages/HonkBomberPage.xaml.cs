@@ -602,7 +602,7 @@ namespace HonkTrooper
             if (_scene_main_menu.Children.OfType<PlayerSelectionScreen>().FirstOrDefault(x => x.IsAnimating == false) is PlayerSelectionScreen playerSelectionScreen)
             {
                 playerSelectionScreen.IsAnimating = true;
-                playerSelectionScreen.Reset();
+                //playerSelectionScreen.Reset();
                 playerSelectionScreen.Reposition();
 
                 return true;
@@ -668,7 +668,7 @@ namespace HonkTrooper
             if (_scene_main_menu.Children.OfType<PlayerHonkBombSelectionScreen>().FirstOrDefault(x => x.IsAnimating == false) is PlayerHonkBombSelectionScreen playerHonkBombSelectionScreen)
             {
                 playerHonkBombSelectionScreen.IsAnimating = true;
-                playerHonkBombSelectionScreen.Reset();
+                //playerHonkBombSelectionScreen.Reset();
                 playerHonkBombSelectionScreen.Reposition();
 
                 return true;
