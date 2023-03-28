@@ -38,7 +38,11 @@
             BorderBrush="#111111"
             BorderThickness="3" />-->
 
-        <Scene x:Name="GameScene" Background="{ThemeResource DayBackgroundColor}" />
+        <Scene
+            x:Name="GameScene"
+            Background="{ThemeResource DayBackgroundColor}"
+            BorderBrush="#111111"
+            BorderThickness="3" />
 
         <!--<Border
             x:Name="SunRayOverlay"
