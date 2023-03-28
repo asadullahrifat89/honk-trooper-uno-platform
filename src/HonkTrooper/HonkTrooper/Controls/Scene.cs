@@ -38,7 +38,7 @@ namespace HonkTrooper
 
 #if DEBUG
         private Stopwatch _stopwatch;
-        private TimeSpan _lastTicks;
+        private TimeSpan _lastElapsed;
         private int _famesCount;
 #endif
         #endregion
@@ -148,7 +148,7 @@ namespace HonkTrooper
                 _stopwatch = Stopwatch.StartNew();
                 _famesCount = 0;
 #endif
-                _lastTicks = TimeSpan.FromSeconds(0);
+                _lastElapsed = TimeSpan.FromSeconds(0);
 
                 _gameViewTimer = new PeriodicTimer(_frameTime);
 
@@ -227,12 +227,16 @@ namespace HonkTrooper
 
 #if DEBUG
             _famesCount++;
-            if (_stopwatch.Elapsed - _lastTicks > TimeSpan.FromSeconds(2))
+
+            if (_stopwatch.Elapsed - _lastElapsed > TimeSpan.FromSeconds(2))
             {
+                _lastElapsed = _stopwatch.Elapsed;
+
                 var fps = _famesCount / 2;
+
+                LoggingExtensions.Log($"Scene: {Name} ~ Animating Objects: {Children.OfType<Construct>().Count(x => x.IsAnimating)} ~ Total Objects: {Children.OfType<Construct>().Count()} ~ FPS: {fps}");
+
                 _famesCount = 0;
-                _lastTicks = _stopwatch.Elapsed;
-                LoggerExtensions.Log($"Scene: {Name} ~ Animating Objects: {Children.OfType<Construct>().Count(x => x.IsAnimating)} ~ Total Objects: {Children.OfType<Construct>().Count()} ~ FPS: {fps}");
             }
 #endif
         }

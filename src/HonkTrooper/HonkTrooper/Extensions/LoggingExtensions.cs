@@ -2,7 +2,7 @@
 
 namespace HonkTrooper
 {
-    public static class LoggerExtensions
+    public static class LoggingExtensions
     {
         public static void Log(string message)
         {

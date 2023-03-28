@@ -181,7 +181,7 @@ namespace HonkTrooper
             }
 
             RepositionHoveringTitleScreens();
-            LoggerExtensions.Log($"Width: {ScreenExtensions.Width} x Height: {ScreenExtensions.Height}");
+            LoggingExtensions.Log($"Width: {ScreenExtensions.Width} x Height: {ScreenExtensions.Height}");
         }
 
         private void DisplayInformation_OrientationChanged(DisplayInformation sender, object args)
@@ -232,7 +232,7 @@ namespace HonkTrooper
                 }
             }
 
-            LoggerExtensions.Log($"CurrentOrientation: {sender.CurrentOrientation}");
+            LoggingExtensions.Log($"CurrentOrientation: {sender.CurrentOrientation}");
         }
 
         #endregion
@@ -293,7 +293,7 @@ namespace HonkTrooper
 
         private void NewGame()
         {
-            LoggerExtensions.Log("New Game Started.");
+            LoggingExtensions.Log("New Game Started.");
             DayBackground.Background = App.Current.Resources["DayBackgroundColor"] as SolidColorBrush;
 
             _game_level = 0;
@@ -771,7 +771,7 @@ namespace HonkTrooper
 
             _scene_game.AddToScene(_player);
 
-            LoggerExtensions.Log($"Player Template: {playerTemplate}");
+            LoggingExtensions.Log($"Player Template: {playerTemplate}");
 
             return true;
         }
@@ -931,7 +931,7 @@ namespace HonkTrooper
                     playerHonkBomb.Reset();
                     playerHonkBomb.IsAnimating = true;
                     playerHonkBomb.IsGravitatingDownwards = true;
-                    playerHonkBomb.SetPopping();
+                    //playerHonkBomb.SetPopping();
                     playerHonkBomb.Reposition(player: _player);
 
                     GenerateDropShadow(source: playerHonkBomb);
@@ -956,12 +956,12 @@ namespace HonkTrooper
             if (playerHonkBomb1.IsBlasting)
             {
                 playerHonkBomb.Expand();
-                playerHonkBomb.Fade(0.02);
+                playerHonkBomb.Fade(0.03);
                 playerHonkBomb1.MoveDownRight(speed);
             }
             else
             {
-                playerHonkBomb.Pop();
+                //playerHonkBomb.Pop();
                 playerHonkBomb.SetLeft(playerHonkBomb.GetLeft() + speed);
                 playerHonkBomb.SetTop(playerHonkBomb.GetTop() + speed * 1.2);
 
@@ -1121,7 +1121,7 @@ namespace HonkTrooper
             if (playerRocket1.IsBlasting)
             {
                 playerRocket.Expand();
-                playerRocket.Fade(0.02);
+                playerRocket.Fade(0.03);
             }
             else
             {
@@ -1242,7 +1242,7 @@ namespace HonkTrooper
                 var speed = playerRocketSeeking1.GetMovementSpeed();
                 playerRocketSeeking1.MoveDownRight(speed);
                 playerRocketSeeking.Expand();
-                playerRocketSeeking.Fade(0.02);
+                playerRocketSeeking.Fade(0.03);
             }
             else
             {
@@ -2217,7 +2217,7 @@ namespace HonkTrooper
             if (ufoBossRocket1.IsBlasting)
             {
                 ufoBossRocket.Expand();
-                ufoBossRocket.Fade(0.02);
+                ufoBossRocket.Fade(0.03);
             }
             else
             {
@@ -2314,7 +2314,7 @@ namespace HonkTrooper
             if (ufoBossRocketSeeking1.IsBlasting)
             {
                 ufoBossRocketSeeking.Expand();
-                ufoBossRocketSeeking.Fade(0.02);
+                ufoBossRocketSeeking.Fade(0.03);
                 ufoBossRocketSeeking1.MoveDownRight(speed);
             }
             else
@@ -2549,7 +2549,7 @@ namespace HonkTrooper
             if (ufoEnemyRocket1.IsBlasting)
             {
                 ufoEnemyRocket.Expand();
-                ufoEnemyRocket.Fade(0.02);
+                ufoEnemyRocket.Fade(0.03);
             }
             else
             {
@@ -2895,7 +2895,7 @@ namespace HonkTrooper
             if (vehicleBossRocket1.IsBlasting)
             {
                 vehicleBossRocket.Expand();
-                vehicleBossRocket.Fade(0.02);
+                vehicleBossRocket.Fade(0.03);
             }
             else
             {
@@ -3150,7 +3150,7 @@ namespace HonkTrooper
             if (zombieBossRocket1.IsBlasting)
             {
                 zombieBossRocket.Expand();
-                zombieBossRocket.Fade(0.02);
+                zombieBossRocket.Fade(0.03);
             }
             else
             {
@@ -3967,7 +3967,7 @@ namespace HonkTrooper
         {
             var scaling = ScreenExtensions.GetScreenSpaceScaling();
 
-            LoggerExtensions.Log($"ScreenSpaceScaling: {scaling}");
+            LoggingExtensions.Log($"ScreenSpaceScaling: {scaling}");
 
             // resize the game scene
             _scene_game.Width = ScreenExtensions.Width;

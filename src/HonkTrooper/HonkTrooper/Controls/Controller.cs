@@ -727,7 +727,7 @@ namespace HonkTrooper
             if (Gyrometer is not null)
             {
                 IsGyrometerReadingsActive = false;
-                LoggerExtensions.Log($"Gyrometer detected.");
+                LoggingExtensions.Log($"Gyrometer detected.");
             }
 #endif
         }
@@ -739,7 +739,7 @@ namespace HonkTrooper
 
             if (Gyrometer is not null)
             {
-                LoggerExtensions.Log($"Gyrometer detected.");
+                LoggingExtensions.Log($"Gyrometer detected.");
                 DeactivateGyrometerReading();
             }
 #endif
@@ -792,9 +792,9 @@ namespace HonkTrooper
                 AngularVelocityY = args.Reading.AngularVelocityY;
                 AngularVelocityZ = args.Reading.AngularVelocityZ;
 
-                LoggerExtensions.Log($"AngularVelocityX: {AngularVelocityX}");
-                LoggerExtensions.Log($"AngularVelocityY: {AngularVelocityY}");
-                LoggerExtensions.Log($"AngularVelocityZ: {AngularVelocityZ}");
+                LoggingExtensions.Log($"AngularVelocityX: {AngularVelocityX}");
+                LoggingExtensions.Log($"AngularVelocityY: {AngularVelocityY}");
+                LoggingExtensions.Log($"AngularVelocityZ: {AngularVelocityZ}");
 
 #if __ANDROID__ || __IOS__
                 MoveThumbstickThumbWithGyrometer(AngularVelocityX / 1.6, AngularVelocityY * -1 / 1.6); // less sensitive on mobile
