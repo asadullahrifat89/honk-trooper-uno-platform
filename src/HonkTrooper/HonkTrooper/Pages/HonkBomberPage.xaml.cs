@@ -51,9 +51,9 @@ namespace HonkTrooper
         private readonly double _zombie_boss_threashold_limit = 85; // first appearance
         private readonly double _zombie_boss_threashold_limit_increase = 15;
 
-        //TODO: set defaults _enemy_threashold_limit = 125
-        private readonly double _enemy_threashold_limit = 125; // first appearance
-        private readonly double _enemy_threashold_limit_increase = 15;
+        //TODO: set defaults _enemy_threashold_limit = 35
+        private readonly double _enemy_threashold_limit = 35; // first appearance
+        private readonly double _enemy_threashold_limit_increase = 5;
 
         private double _enemy_kill_count;
         private readonly double _enemy_kill_count_limit = 20;
