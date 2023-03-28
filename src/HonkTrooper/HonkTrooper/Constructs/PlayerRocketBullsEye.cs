@@ -112,6 +112,8 @@ namespace HonkTrooper
             double playerMiddleX = left + Width / 2;
             double playerMiddleY = top + Height / 2;
 
+            var scaling = ScreenExtensions.GetScreenSpaceScaling();
+
             // move up
             if (target.Y < playerMiddleY)
             {
@@ -138,7 +140,7 @@ namespace HonkTrooper
                 var distance = Math.Abs(target.Y - playerMiddleY);
                 _targetHitbox.Y = target.Y + distance;
 
-                if (_targetHitbox.Y < Constants.DEFAULT_SCENE_WIDTH)
+                if (_targetHitbox.Y < Constants.DEFAULT_SCENE_HEIGHT * scaling)
                     _targetHitbox.Y += distance;
 
             }
@@ -149,7 +151,7 @@ namespace HonkTrooper
                 var distance = Math.Abs(target.X - playerMiddleX);
                 _targetHitbox.X = target.X + distance;
 
-                if (_targetHitbox.X < Constants.DEFAULT_SCENE_WIDTH)
+                if (_targetHitbox.X < Constants.DEFAULT_SCENE_WIDTH * scaling)
                     _targetHitbox.X += distance;
             }
         }

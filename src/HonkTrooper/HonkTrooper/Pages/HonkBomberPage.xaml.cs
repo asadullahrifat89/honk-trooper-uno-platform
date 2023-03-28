@@ -3773,6 +3773,7 @@ namespace HonkTrooper
                             case 0:
                                 {
                                     var xLaneWidth = Constants.DEFAULT_SCENE_WIDTH / 4;
+
                                     powerUpPickup.SetPosition(
                                         left: _random.Next(Convert.ToInt32(xLaneWidth - powerUpPickup.Width)),
                                         top: powerUpPickup.Height * -1);
@@ -3781,6 +3782,7 @@ namespace HonkTrooper
                             case 1:
                                 {
                                     var yLaneWidth = (Constants.DEFAULT_SCENE_HEIGHT / 2) / 2;
+
                                     powerUpPickup.SetPosition(
                                         left: powerUpPickup.Width * -1,
                                         top: _random.Next(Convert.ToInt32(yLaneWidth)));
@@ -4061,7 +4063,7 @@ namespace HonkTrooper
                 randomizeGenerationDelay: true),
 
             new Generator(
-                generationDelay: 600,
+                generationDelay: 500,
                 generationAction: GeneratePowerUpPickup,
                 startUpAction: SpawnPowerUpPickups,
                 randomizeGenerationDelay: true)
