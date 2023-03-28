@@ -2,6 +2,8 @@
 using System.Linq;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI;
 
 namespace HonkTrooper
 {
@@ -106,6 +108,10 @@ namespace HonkTrooper
             _audioStub.Play(SoundType.CRACKER_DROP);
 
             Opacity = 1;
+            BorderBrush = new SolidColorBrush(Colors.Transparent);
+            BorderThickness = new Microsoft.UI.Xaml.Thickness(0);
+            CornerRadius = new Microsoft.UI.Xaml.CornerRadius(0);
+
             SetScaleTransform(1);
             SetRotation(0);
 
@@ -125,17 +131,26 @@ namespace HonkTrooper
                     {
                         _audioStub.Play(SoundType.CRACKER_BLAST);
                         uri = ConstructExtensions.GetRandomContentUri(_blast_uris);
+
+                        BorderBrush = new SolidColorBrush(Colors.Goldenrod);
                     }
                     break;
                 case PlayerHonkBombTemplate.TrashCan:
                     {
                         _audioStub.Play(SoundType.TRASH_CAN_HIT);
                         uri = ConstructExtensions.GetRandomContentUri(_bang_uris);
+
+                        BorderBrush = new SolidColorBrush(Colors.GreenYellow);
                     }
                     break;
                 default:
                     break;
             }
+
+            SetScaleTransform(Constants.DEFAULT_BLAST_SHRINK_SCALE);
+
+            BorderThickness = new Microsoft.UI.Xaml.Thickness(Constants.DEFAULT_BLAST_RING_CORNER_RADIUS);
+            CornerRadius = new Microsoft.UI.Xaml.CornerRadius(50);
 
             _content_image.Source = new BitmapImage(uri);
             IsBlasting = true;
