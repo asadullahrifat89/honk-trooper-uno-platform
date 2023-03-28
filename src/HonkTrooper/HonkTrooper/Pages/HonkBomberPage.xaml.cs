@@ -1570,7 +1570,7 @@ namespace HonkTrooper
 
         private bool SpawnRoadSideHedges()
         {
-            for (int i = 0; i < 28; i++)
+            for (int i = 0; i < 15; i++)
             {
                 RoadSideHedge roadSideHedge = new(
                     animateAction: AnimateRoadSideHedge,
@@ -1603,8 +1603,8 @@ namespace HonkTrooper
                 roadSideHedgeBottom.IsAnimating = true;
 
                 roadSideHedgeBottom.SetPosition(
-                  left: (-1.1 * roadSideHedgeBottom.Width) - 10,
-                  top: (Constants.DEFAULT_SCENE_HEIGHT / 3.1) - 10,
+                  left: (-1.1 * roadSideHedgeBottom.Width) - 20,
+                  top: (Constants.DEFAULT_SCENE_HEIGHT / 3.1) - 20,
                   z: 3);
             }
 
@@ -3825,10 +3825,9 @@ namespace HonkTrooper
                 generationAction: GenerateRoadSideTree,
                 startUpAction: SpawnRoadSideTrees),
 
-
             // then add the top RoadSideHedges
             new Generator(
-                generationDelay: 9,
+                generationDelay: 18,
                 generationAction: GenerateRoadSideHedge,
                 startUpAction: SpawnRoadSideHedges),
 
