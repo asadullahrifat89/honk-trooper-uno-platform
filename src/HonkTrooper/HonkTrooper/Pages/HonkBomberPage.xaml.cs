@@ -952,7 +952,7 @@ namespace HonkTrooper
             if (playerHonkBomb1.IsBlasting)
             {
                 playerHonkBomb.Expand();
-                playerHonkBomb.Fade(0.03);
+                playerHonkBomb.Fade(0.02);
                 playerHonkBomb1.MoveDownRight(speed);
             }
             else
@@ -1117,7 +1117,7 @@ namespace HonkTrooper
             if (playerRocket1.IsBlasting)
             {
                 playerRocket.Expand();
-                playerRocket.Fade(0.03);
+                playerRocket.Fade(0.02);
             }
             else
             {
@@ -1238,7 +1238,7 @@ namespace HonkTrooper
                 var speed = playerRocketSeeking1.GetMovementSpeed();
                 playerRocketSeeking1.MoveDownRight(speed);
                 playerRocketSeeking.Expand();
-                playerRocketSeeking.Fade(0.03);
+                playerRocketSeeking.Fade(0.02);
             }
             else
             {
@@ -2212,7 +2212,7 @@ namespace HonkTrooper
             if (ufoBossRocket1.IsBlasting)
             {
                 ufoBossRocket.Expand();
-                ufoBossRocket.Fade(0.03);
+                ufoBossRocket.Fade(0.02);
             }
             else
             {
@@ -2309,7 +2309,7 @@ namespace HonkTrooper
             if (ufoBossRocketSeeking1.IsBlasting)
             {
                 ufoBossRocketSeeking.Expand();
-                ufoBossRocketSeeking.Fade(0.03);
+                ufoBossRocketSeeking.Fade(0.02);
                 ufoBossRocketSeeking1.MoveDownRight(speed);
             }
             else
@@ -2544,7 +2544,7 @@ namespace HonkTrooper
             if (ufoEnemyRocket1.IsBlasting)
             {
                 ufoEnemyRocket.Expand();
-                ufoEnemyRocket.Fade(0.03);
+                ufoEnemyRocket.Fade(0.02);
             }
             else
             {
@@ -2890,7 +2890,7 @@ namespace HonkTrooper
             if (vehicleBossRocket1.IsBlasting)
             {
                 vehicleBossRocket.Expand();
-                vehicleBossRocket.Fade(0.03);
+                vehicleBossRocket.Fade(0.02);
             }
             else
             {
@@ -3143,7 +3143,7 @@ namespace HonkTrooper
             if (zombieBossRocket1.IsBlasting)
             {
                 zombieBossRocket.Expand();
-                zombieBossRocket.Fade(0.03);
+                zombieBossRocket.Fade(0.02);
             }
             else
             {
