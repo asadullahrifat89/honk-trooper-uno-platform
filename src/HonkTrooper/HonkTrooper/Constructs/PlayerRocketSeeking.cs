@@ -113,6 +113,7 @@ namespace HonkTrooper
         {
             _audioStub.Play(SoundType.ROCKET_BLAST);
 
+            SetRotation(0);
             SetScaleTransform(Constants.DEFAULT_BLAST_SHRINK_SCALE);            
 
             BorderBrush = new SolidColorBrush(Colors.Crimson);
