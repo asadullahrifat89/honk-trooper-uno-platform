@@ -3575,7 +3575,7 @@ namespace HonkTrooper
         {
             if (_scene_game.SceneState == SceneState.GAME_RUNNING)
             {
-                if ((UfoBossExists() || UfoEnemyExists()) && !_powerUp_health_bar.HasHealth) // if a UfoBoss or enemy exists and currently player has no other power up
+                if ((UfoBossExists() || UfoEnemyExists() || ZombieBossExists()) && !_powerUp_health_bar.HasHealth) // if a flying boss or ufo enemy exists and currently player has no other power up
                 {
                     if (_scene_game.Children.OfType<PowerUpPickup>().FirstOrDefault(x => x.IsAnimating == false) is PowerUpPickup powerUpPickup)
                     {
