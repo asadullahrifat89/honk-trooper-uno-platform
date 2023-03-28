@@ -234,7 +234,7 @@ namespace HonkTrooper
 
                 var fps = _famesCount / 2;
 
-                LoggingExtensions.Log($"Scene: {Name} ~ Animating Objects: {Children.OfType<Construct>().Count(x => x.IsAnimating)} ~ Total Objects: {Children.OfType<Construct>().Count()} ~ FPS: {fps}");
+                LoggingExtensions.Log($"Scene: {Name} ~ Animating Objects: {Children.OfType<Construct>().Count(x => x.IsAnimating)} \n Total Objects: {Children.OfType<Construct>().Count()} ~ FPS: {fps}");
 
                 _famesCount = 0;
             }
