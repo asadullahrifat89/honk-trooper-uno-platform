@@ -145,14 +145,14 @@ namespace HonkTrooper
         {
             IsAttacking = true;
 
-            LoggerExtensions.Log("Space");
+            LoggingExtensions.Log("Space");
         }
 
         public void ActivatePause()
         {
             IsPausing = true;
 
-            LoggerExtensions.Log("Escape");
+            LoggingExtensions.Log("Escape");
         }
 
         public void ActivateMoveDown()
@@ -160,7 +160,7 @@ namespace HonkTrooper
             IsMoveDown = true;
             IsMoveUp = false;
 
-            LoggerExtensions.Log("Down");
+            LoggingExtensions.Log("Down");
         }
 
         public void ActivateMoveUp()
@@ -168,7 +168,7 @@ namespace HonkTrooper
             IsMoveUp = true;
             IsMoveDown = false;
 
-            LoggerExtensions.Log("Up");
+            LoggingExtensions.Log("Up");
         }
 
         public void ActivateMoveRight()
@@ -176,7 +176,7 @@ namespace HonkTrooper
             IsMoveLeft = false;
             IsMoveRight = true;
 
-            LoggerExtensions.Log("Right");
+            LoggingExtensions.Log("Right");
         }
 
         public void ActivateMoveLeft()
@@ -184,7 +184,7 @@ namespace HonkTrooper
             IsMoveLeft = true;
             IsMoveRight = false;
 
-            LoggerExtensions.Log("Left");
+            LoggingExtensions.Log("Left");
         }
 
         public void DeactivateAttack()
