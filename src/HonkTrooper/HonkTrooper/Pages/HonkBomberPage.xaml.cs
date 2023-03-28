@@ -1975,7 +1975,7 @@ namespace HonkTrooper
 
                 _scene_game.ActivateSlowMotion();
 
-                GenerateInterimScreen("Beware of Cyber Psycho");
+                GenerateInterimScreen("Beware of Crimson Saucer");
 
                 _scene_game.ToggleNightMode(true);
 
