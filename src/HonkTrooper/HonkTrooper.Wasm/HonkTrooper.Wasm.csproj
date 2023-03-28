@@ -31,7 +31,7 @@
     <Content Include="Assets\SplashScreen.png" />
     <Content Include="manifest.webmanifest" />
     <Content Include="Assets\AppIcon-*.png" />
-  </ItemGroup>
+  </ItemGroup>  
   <ItemGroup>
     <EmbeddedResource Include="WasmCSS\Fonts.css" />
     <EmbeddedResource Include="WasmScripts\AppManifest.js" />

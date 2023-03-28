@@ -22,7 +22,7 @@ namespace HonkTrooper
         /// </remarks>
         public App()
         {
-
+            Uno.UI.ApplicationHelper.RequestedCustomTheme = "Dark";
         }
 
         /// <summary>
