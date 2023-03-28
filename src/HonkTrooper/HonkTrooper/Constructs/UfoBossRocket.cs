@@ -2,6 +2,8 @@
 using System.Linq;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI;
 
 namespace HonkTrooper
 {
@@ -71,7 +73,12 @@ namespace HonkTrooper
 
             Opacity = 1;
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET + 2;
+
             SetScaleTransform(1);
+
+            BorderBrush = new SolidColorBrush(Colors.Transparent);
+            BorderThickness = new Microsoft.UI.Xaml.Thickness(0);
+            CornerRadius = new Microsoft.UI.Xaml.CornerRadius(0);
 
             IsBlasting = false;
 
@@ -98,6 +105,13 @@ namespace HonkTrooper
         {
             _audioStub.Play(SoundType.ROCKET_BLAST);
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET - 1;
+
+            SetScaleTransform(Constants.DEFAULT_BLAST_SHRINK_SCALE);
+
+            BorderBrush = new SolidColorBrush(Colors.Goldenrod);
+            BorderThickness = new Microsoft.UI.Xaml.Thickness(Constants.DEFAULT_BLAST_RING_CORNER_RADIUS);
+            CornerRadius = new Microsoft.UI.Xaml.CornerRadius(50);
+
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_blast_uris);
             _content_image.Source = new BitmapImage(uri);
 

@@ -24,6 +24,9 @@ namespace HonkTrooper
         public const double DEFAULT_SCENE_WIDTH = 1900;
         public const double DEFAULT_SCENE_HEIGHT = 940;
 
+        public const double DEFAULT_BLAST_RING_CORNER_RADIUS = 10;
+        public const double DEFAULT_BLAST_SHRINK_SCALE = 0.6;
+
 
         public static (ConstructType ConstructType, double Width, double Height)[] CONSTRUCT_SIZES = new (ConstructType, double, double)[]
         {
