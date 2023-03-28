@@ -850,10 +850,28 @@ namespace HonkTrooper
                     {
                         if (UfoEnemyExists() || UfoBossExists() || ZombieBossExists())
                         {
-                            if (_powerUp_health_bar.HasHealth && (PowerUpType)_powerUp_health_bar.Tag == PowerUpType.SEEKING_SNITCH)
-                                GeneratePlayerRocketSeeking();
+                            if (_powerUp_health_bar.HasHealth)
+                            {
+                                switch ((PowerUpType)_powerUp_health_bar.Tag)
+                                {
+                                    case PowerUpType.SEEKING_SNITCH:
+                                        {
+                                            GeneratePlayerRocketSeeking();
+                                        }
+                                        break;
+                                    case PowerUpType.BULLS_EYE:
+                                        {
+                                            // TODO: generate player rocket bulls eye
+                                        }
+                                        break;
+                                    default:
+                                        break;
+                                }
+                            }
                             else
+                            {
                                 GeneratePlayerRocket();
+                            }                                
                         }
                         else
                         {
