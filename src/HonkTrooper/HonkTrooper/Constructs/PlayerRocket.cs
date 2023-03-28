@@ -73,6 +73,11 @@ namespace HonkTrooper
             _audioStub.Play(SoundType.ROCKET_LAUNCH);
 
             Opacity = 1;
+
+
+            var uri = ConstructExtensions.GetRandomContentUri(_bomb_uris);
+            _content_image.Source = new BitmapImage(uri);
+
             SetScaleTransform(1);
 
             BorderBrush = new SolidColorBrush(Colors.Transparent);
@@ -81,9 +86,6 @@ namespace HonkTrooper
 
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET + 2;
             IsBlasting = false;
-
-            var uri = ConstructExtensions.GetRandomContentUri(_bomb_uris);
-            _content_image.Source = new BitmapImage(uri);
 
             AwaitMoveDownLeft = false;
             AwaitMoveUpRight = false;
