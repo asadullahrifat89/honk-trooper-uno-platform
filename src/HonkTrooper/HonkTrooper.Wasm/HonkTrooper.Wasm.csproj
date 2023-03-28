@@ -33,6 +33,9 @@
     <Content Include="Assets\AppIcon-*.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Remove="Assets\AppIcon-512.png" />
+  </ItemGroup>
+  <ItemGroup>
     <EmbeddedResource Include="WasmCSS\Fonts.css" />
     <EmbeddedResource Include="WasmScripts\AppManifest.js" />
   </ItemGroup>
