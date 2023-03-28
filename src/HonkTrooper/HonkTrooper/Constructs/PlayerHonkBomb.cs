@@ -52,6 +52,9 @@ namespace HonkTrooper
 
             SetChild(_content_image);
 
+            BorderThickness = new Microsoft.UI.Xaml.Thickness(Constants.DEFAULT_BLAST_RING_BORDER_THICKNESS);
+            CornerRadius = new Microsoft.UI.Xaml.CornerRadius(Constants.DEFAULT_BLAST_RING_CORNER_RADIUS);
+
             IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET + 1;
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE - 15;
@@ -70,6 +73,23 @@ namespace HonkTrooper
         #endregion
 
         #region Methods
+
+        public void Reset()
+        {
+            _audioStub.Play(SoundType.CRACKER_DROP);
+
+            Opacity = 1;
+
+            var uri = ConstructExtensions.GetRandomContentUri(_bomb_uris);
+            _content_image.Source = new BitmapImage(uri);
+
+            BorderBrush = new SolidColorBrush(Colors.Transparent);
+
+            SetScaleTransform(1);
+            SetRotation(0);
+
+            IsBlasting = false;
+        }
 
         public void SetHonkBombTemplate(PlayerHonkBombTemplate honkBombTemplate)
         {
@@ -101,26 +121,7 @@ namespace HonkTrooper
                 left: (player.GetLeft() + player.Width / 2) - Width / 2,
                 top: player.GetBottom() - (35),
                 z: 7);
-        }
-
-        public void Reset()
-        {
-            _audioStub.Play(SoundType.CRACKER_DROP);
-
-            Opacity = 1;
-
-            var uri = ConstructExtensions.GetRandomContentUri(_bomb_uris);
-            _content_image.Source = new BitmapImage(uri);
-
-            BorderBrush = new SolidColorBrush(Colors.Transparent);
-            BorderThickness = new Microsoft.UI.Xaml.Thickness(0);
-            CornerRadius = new Microsoft.UI.Xaml.CornerRadius(0);
-
-            SetScaleTransform(1);
-            SetRotation(0);
-
-            IsBlasting = false;          
-        }
+        }       
 
         public void SetBlast()
         {
@@ -149,9 +150,6 @@ namespace HonkTrooper
             }
 
             SetScaleTransform(Constants.DEFAULT_BLAST_SHRINK_SCALE);
-
-            BorderThickness = new Microsoft.UI.Xaml.Thickness(Constants.DEFAULT_BLAST_RING_BORDER_THICKNESS);
-            CornerRadius = new Microsoft.UI.Xaml.CornerRadius(Constants.DEFAULT_BLAST_RING_CORNER_RADIUS);
 
             _content_image.Source = new BitmapImage(uri);
             IsBlasting = true;

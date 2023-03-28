@@ -73,50 +73,8 @@ namespace HonkTrooper
 
         public static Rect GetCloseHitBox(this Construct Construct)
         {
-            var diviWidth = Construct.Width / 5;
-            var diviHeight = Construct.Height / 5;
-
-            var rect = new Rect(
-                x: Construct.GetLeft() + diviWidth,
-                y: Construct.GetTop() + diviHeight,
-                width: Construct.Width - diviWidth,
-                height: Construct.Height - diviHeight);
-
-            //Construct.SetHitBoxBorder(rect);
-
-            return rect;
-        }
-
-        public static Rect GetHorizontalHitBox(this Construct Construct)
-        {
-            /*
-             *   __________
-             *   |        |
-             *  =============
-             * ||     x     ||
-             *  =============
-             *   |        |
-             *   ----------
-             */
-
             var diviWidth = Construct.Width / 4;
-            var diviHeight = Construct.Height / 5;
-
-            var rect = new Rect(
-                x: Construct.GetLeft() - diviWidth,
-                y: Construct.GetTop(),
-                width: Construct.Width + diviWidth,
-                height: Construct.Height);
-
-            //Construct.SetHitBoxBorder(rect);
-
-            return rect;
-        }
-
-        public static Rect GetOverlappingHitBox(this Construct Construct)
-        {
-            var diviWidth = Construct.Width / 3;
-            var diviHeight = Construct.Height / 3;
+            var diviHeight = Construct.Height / 4;
 
             var rect = new Rect(
                 x: Construct.GetLeft() + diviWidth,
@@ -128,6 +86,32 @@ namespace HonkTrooper
 
             return rect;
         }
+
+        //public static Rect GetHorizontalHitBox(this Construct Construct)
+        //{
+        //    /*
+        //     *   __________
+        //     *   |        |
+        //     *  =============
+        //     * ||     x     ||
+        //     *  =============
+        //     *   |        |
+        //     *   ----------
+        //     */
+
+        //    var diviWidth = Construct.Width / 4;
+        //    var diviHeight = Construct.Height / 5;
+
+        //    var rect = new Rect(
+        //        x: Construct.GetLeft() - diviWidth,
+        //        y: Construct.GetTop(),
+        //        width: Construct.Width + diviWidth,
+        //        height: Construct.Height);
+
+        //    //Construct.SetHitBoxBorder(rect);
+
+        //    return rect;
+        //}      
 
         public static Rect GetDistantHitBox(this Construct Construct)
         {

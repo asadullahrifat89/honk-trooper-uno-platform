@@ -112,7 +112,7 @@ namespace HonkTrooper
 
             _sub_title_text = new TextBlock()
             {
-                FontSize = Constants.DEFAULT_GUI_FONT_SIZE - 5,
+                FontSize = Constants.DEFAULT_GUI_FONT_SIZE - 7,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 Margin = new Thickness(0, 0, 0, 5),
                 Foreground = new SolidColorBrush(Colors.White),

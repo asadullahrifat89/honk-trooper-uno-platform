@@ -54,6 +54,9 @@ namespace HonkTrooper
 
             SetChild(_content_image);
 
+            BorderThickness = new Microsoft.UI.Xaml.Thickness(Constants.DEFAULT_BLAST_RING_BORDER_THICKNESS);
+            CornerRadius = new Microsoft.UI.Xaml.CornerRadius(Constants.DEFAULT_BLAST_RING_CORNER_RADIUS);
+
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;
             IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE;
@@ -77,14 +80,12 @@ namespace HonkTrooper
         {
             _audioStub.Play(SoundType.SEEKER_ROCKET_LAUNCH);
 
-            Opacity = 1;           
+            Opacity = 1;
 
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_uris);
             _content_image.Source = new BitmapImage(uri);
 
             BorderBrush = new SolidColorBrush(Colors.Transparent);
-            BorderThickness = new Microsoft.UI.Xaml.Thickness(0);
-            CornerRadius = new Microsoft.UI.Xaml.CornerRadius(0);
 
             SetScaleTransform(1);
             SetRotation(0);
@@ -98,7 +99,7 @@ namespace HonkTrooper
             SetPosition(
                 left: (player.GetLeft() + player.Width / 2) - Width / 2,
                 top: player.GetBottom() - (40));
-        }     
+        }
 
         public bool RunOutOfTimeToBlast()
         {
@@ -115,11 +116,9 @@ namespace HonkTrooper
             _audioStub.Play(SoundType.ROCKET_BLAST);
 
             SetRotation(0);
-            SetScaleTransform(Constants.DEFAULT_BLAST_SHRINK_SCALE);            
+            SetScaleTransform(Constants.DEFAULT_BLAST_SHRINK_SCALE);
 
             BorderBrush = new SolidColorBrush(Colors.Crimson);
-            BorderThickness = new Microsoft.UI.Xaml.Thickness(Constants.DEFAULT_BLAST_RING_BORDER_THICKNESS);
-            CornerRadius = new Microsoft.UI.Xaml.CornerRadius(Constants.DEFAULT_BLAST_RING_CORNER_RADIUS);
 
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_blast_uris);
             _content_image.Source = new BitmapImage(uri);
