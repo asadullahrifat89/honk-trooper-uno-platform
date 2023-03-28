@@ -19,7 +19,7 @@ namespace HonkTrooper
         private readonly Image _content_image;
 
         private double _autoBlastDelay;
-        private readonly double _autoBlastDelayDefault = 25;
+        private readonly double _autoBlastDelayDefault = 15;
 
         private readonly AudioStub _audioStub;
 
@@ -64,7 +64,7 @@ namespace HonkTrooper
             IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE;
 
-            _audioStub = new AudioStub((SoundType.SEEKER_ROCKET_LAUNCH, 0.3, false), (SoundType.ROCKET_BLAST, 1, false));
+            _audioStub = new AudioStub((SoundType.SEEKER_ROCKET_LAUNCH, 0.7, false), (SoundType.ROCKET_BLAST, 1, false));
         }
 
         #endregion
@@ -117,6 +117,9 @@ namespace HonkTrooper
             {
                 var distance = Math.Abs(target.Y - playerMiddleY);
                 _targetHitbox.Y = target.Y - distance;
+
+                if (_targetHitbox.Y > 0)
+                    _targetHitbox.Y -= distance;
             }
 
             // move left
@@ -124,6 +127,9 @@ namespace HonkTrooper
             {
                 var distance = Math.Abs(target.X - playerMiddleX);
                 _targetHitbox.X = target.X - distance;
+
+                if (_targetHitbox.X > 0)
+                    _targetHitbox.X -= distance;
             }
 
             // move down
@@ -132,6 +138,9 @@ namespace HonkTrooper
                 var distance = Math.Abs(target.Y - playerMiddleY);
                 _targetHitbox.Y = target.Y + distance;
 
+                if (_targetHitbox.Y < Constants.DEFAULT_SCENE_WIDTH)
+                    _targetHitbox.Y += distance;
+
             }
 
             // move right
@@ -139,13 +148,16 @@ namespace HonkTrooper
             {
                 var distance = Math.Abs(target.X - playerMiddleX);
                 _targetHitbox.X = target.X + distance;
+
+                if (_targetHitbox.X < Constants.DEFAULT_SCENE_WIDTH)
+                    _targetHitbox.X += distance;
             }
         }
 
         public void Move()
         {
             // TODO: seek the target in a straigh line
-            Seek(_targetHitbox);
+            Seek(target: _targetHitbox, doubleSpeed: true);
         }
 
         public bool AutoBlast()
