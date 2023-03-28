@@ -46,5 +46,8 @@
   </ItemGroup>
   <ItemGroup>
     <UpToDateCheckInput Include="**\*.xaml" Exclude="bin\**\*.xaml;obj\**\*.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Assets\Images\powerup_pickup_bulls_eye.png" />
   </ItemGroup>   
 </Project>

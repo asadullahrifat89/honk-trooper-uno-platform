@@ -850,7 +850,7 @@ namespace HonkTrooper
                     {
                         if (UfoEnemyExists() || UfoBossExists() || ZombieBossExists())
                         {
-                            if (_powerUp_health_bar.HasHealth && (PowerUpType)_powerUp_health_bar.Tag == PowerUpType.SEEKING_BALLS)
+                            if (_powerUp_health_bar.HasHealth && (PowerUpType)_powerUp_health_bar.Tag == PowerUpType.SEEKING_SNITCH)
                                 GeneratePlayerRocketSeeking();
                             else
                                 GeneratePlayerRocket();
@@ -872,7 +872,7 @@ namespace HonkTrooper
         {
             _player.SetPopping();
 
-            if (_powerUp_health_bar.HasHealth && (PowerUpType)_powerUp_health_bar.Tag == PowerUpType.FORCE_SHIELD)
+            if (_powerUp_health_bar.HasHealth && (PowerUpType)_powerUp_health_bar.Tag == PowerUpType.ARMOR)
             {
                 DepletePowerUp();
             }
@@ -1220,7 +1220,7 @@ namespace HonkTrooper
 
                 GenerateDropShadow(source: playerRocketSeeking);
 
-                if (_powerUp_health_bar.HasHealth && (PowerUpType)_powerUp_health_bar.Tag == PowerUpType.SEEKING_BALLS)
+                if (_powerUp_health_bar.HasHealth && (PowerUpType)_powerUp_health_bar.Tag == PowerUpType.SEEKING_SNITCH)
                     DepletePowerUp();
 
                 return true;
