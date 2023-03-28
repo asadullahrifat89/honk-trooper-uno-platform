@@ -34,6 +34,7 @@ namespace HonkTrooper
             new (ConstructType.PLAYER_ROCKET, 100, 100),
             new (ConstructType.PLAYER_HONK_BOMB, 90, 90),
             new (ConstructType.PLAYER_ROCKET_SEEKING, 100, 100),
+            new (ConstructType.PLAYER_ROCKET_BULLS_EYE, 100, 100),
 
             new (ConstructType.UFO_BOSS, 180, 180),
             new (ConstructType.UFO_BOSS_ROCKET, 100, 100),
@@ -146,6 +147,8 @@ namespace HonkTrooper
 
             new (ConstructType.PLAYER_ROCKET_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_rocket_seeking_1.png")),
             new (ConstructType.PLAYER_ROCKET_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_rocket_seeking_2.png")),
+
+            new (ConstructType.PLAYER_ROCKET_BULLS_EYE, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_rocket_bulls_eye_1.png")),
 
             new (ConstructType.BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Images/blast_1.png")),
             new (ConstructType.BLAST, new Uri("ms-appx:///HonkTrooper/Assets/Images/blast_2.png")),
