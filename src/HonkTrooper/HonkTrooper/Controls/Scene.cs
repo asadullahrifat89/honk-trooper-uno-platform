@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading;
 using Windows.Foundation;
 using Microsoft.UI.Xaml.Media.Animation;
+using System.Diagnostics;
 
 namespace HonkTrooper
 {
@@ -35,6 +36,11 @@ namespace HonkTrooper
         private double _slowMotionDelay;
         private readonly double _slowMotionDelayDefault = 160;
 
+#if DEBUG
+        private Stopwatch _stopwatch;
+        private TimeSpan _lastTicks;
+        private int _famesCount;
+#endif
         #endregion
 
         #region Ctor
@@ -137,9 +143,13 @@ namespace HonkTrooper
         {
             if (!IsAnimating)
             {
-                //_stopwatch = Stopwatch.StartNew();
-
                 IsAnimating = true;
+#if DEBUG
+                _stopwatch = Stopwatch.StartNew();
+                _famesCount = 0;
+#endif
+                _lastTicks = TimeSpan.FromSeconds(0);
+
                 _gameViewTimer = new PeriodicTimer(_frameTime);
 
                 while (await _gameViewTimer.WaitForNextTickAsync())
@@ -153,8 +163,10 @@ namespace HonkTrooper
         {
             if (IsAnimating)
             {
-                //_stopwatch?.Stop();
                 IsAnimating = false;
+#if DEBUG
+                _stopwatch?.Reset();
+#endif
                 _gameViewTimer?.Dispose();
             }
         }
@@ -166,8 +178,10 @@ namespace HonkTrooper
 
         public void Stop()
         {
-            //_stopwatch?.Stop();
             IsAnimating = false;
+#if DEBUG
+            _stopwatch?.Stop();
+#endif
             _gameViewTimer?.Dispose();
 
             Clear();
@@ -180,6 +194,9 @@ namespace HonkTrooper
             _generators.Clear();
             //_destroyables.Clear();
 
+#if DEBUG
+            _stopwatch?.Stop();
+#endif
             _gameViewTimer?.Dispose();
         }
 
@@ -208,7 +225,16 @@ namespace HonkTrooper
 
             DepleteSlowMotion();
 
-            LoggerExtensions.Log($"Scene: {Name} ~ Animating Objects: {Children.OfType<Construct>().Count(x => x.IsAnimating)} ~ Total Objects: {Children.OfType<Construct>().Count()}");
+#if DEBUG
+            _famesCount++;
+            if (_stopwatch.Elapsed - _lastTicks > TimeSpan.FromSeconds(2))
+            {
+                var fps = _famesCount / 2;
+                _famesCount = 0;
+                _lastTicks = _stopwatch.Elapsed;
+                LoggerExtensions.Log($"Scene: {Name} ~ Animating Objects: {Children.OfType<Construct>().Count(x => x.IsAnimating)} ~ Total Objects: {Children.OfType<Construct>().Count()} ~ FPS: {fps}");
+            }
+#endif
         }
 
         public void ActivateSlowMotion()
