@@ -82,6 +82,9 @@ namespace HonkTrooper
             Opacity = 1;
             SetScaleTransform(1);
 
+            var uri = ConstructExtensions.GetRandomContentUri(_bomb_uris);
+            _content_image.Source = new BitmapImage(uri);
+
             BorderBrush = new SolidColorBrush(Colors.Transparent);
             BorderThickness = new Microsoft.UI.Xaml.Thickness(0);
             CornerRadius = new Microsoft.UI.Xaml.CornerRadius(0);
@@ -89,10 +92,7 @@ namespace HonkTrooper
             Health = _random.Next(1, 3) * 50;
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET + 1.5;
 
-            IsBlasting = false;
-
-            var uri = ConstructExtensions.GetRandomContentUri(_bomb_uris);
-            _content_image.Source = new BitmapImage(uri);
+            IsBlasting = false;          
 
             _autoBlastDelay = _autoBlastDelayDefault;
         }

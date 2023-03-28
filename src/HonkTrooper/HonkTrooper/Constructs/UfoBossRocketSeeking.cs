@@ -86,15 +86,15 @@ namespace HonkTrooper
 
             Opacity = 1;
 
-            SetScaleTransform(1);
-            SetRotation(0);
-
+            var uri = ConstructExtensions.GetRandomContentUri(_bomb_uris);
+            _content_image.Source = new BitmapImage(uri);
+          
             BorderBrush = new SolidColorBrush(Colors.Transparent);
             BorderThickness = new Microsoft.UI.Xaml.Thickness(0);
             CornerRadius = new Microsoft.UI.Xaml.CornerRadius(0);
 
-            var uri = ConstructExtensions.GetRandomContentUri(_bomb_uris);
-            _content_image.Source = new BitmapImage(uri);
+            SetScaleTransform(1);
+            SetRotation(0);
 
             IsBlasting = false;
             TimeLeftUntilBlast = 25;

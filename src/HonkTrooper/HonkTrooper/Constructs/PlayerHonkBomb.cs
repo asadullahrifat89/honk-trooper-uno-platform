@@ -108,6 +108,10 @@ namespace HonkTrooper
             _audioStub.Play(SoundType.CRACKER_DROP);
 
             Opacity = 1;
+
+            var uri = ConstructExtensions.GetRandomContentUri(_bomb_uris);
+            _content_image.Source = new BitmapImage(uri);
+
             BorderBrush = new SolidColorBrush(Colors.Transparent);
             BorderThickness = new Microsoft.UI.Xaml.Thickness(0);
             CornerRadius = new Microsoft.UI.Xaml.CornerRadius(0);
@@ -115,10 +119,7 @@ namespace HonkTrooper
             SetScaleTransform(1);
             SetRotation(0);
 
-            IsBlasting = false;
-
-            var uri = ConstructExtensions.GetRandomContentUri(_bomb_uris);
-            _content_image.Source = new BitmapImage(uri);
+            IsBlasting = false;          
         }
 
         public void SetBlast()
