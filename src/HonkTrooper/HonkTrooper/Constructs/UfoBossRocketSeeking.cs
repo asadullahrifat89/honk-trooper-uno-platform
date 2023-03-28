@@ -54,6 +54,9 @@ namespace HonkTrooper
 
             SetChild(_content_image);
 
+            BorderThickness = new Microsoft.UI.Xaml.Thickness(Constants.DEFAULT_BLAST_RING_BORDER_THICKNESS);
+            CornerRadius = new Microsoft.UI.Xaml.CornerRadius(Constants.DEFAULT_BLAST_RING_CORNER_RADIUS);
+
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;
             IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE;
@@ -73,32 +76,30 @@ namespace HonkTrooper
 
         #region Methods
 
-        public void Reposition(UfoBoss UfoBoss)
-        {
-            SetPosition(
-                left: (UfoBoss.GetLeft() + UfoBoss.Width / 2) - Width / 2,
-                top: UfoBoss.GetBottom() - (40));
-        }
-
         public void Reset()
         {
             _audioStub.Play(SoundType.SEEKER_ROCKET_LAUNCH);
 
             Opacity = 1;
 
-            SetScaleTransform(1);
-            SetRotation(0);
-
-            BorderBrush = new SolidColorBrush(Colors.Transparent);
-            BorderThickness = new Microsoft.UI.Xaml.Thickness(0);
-            CornerRadius = new Microsoft.UI.Xaml.CornerRadius(0);
-
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_uris);
             _content_image.Source = new BitmapImage(uri);
+
+            BorderBrush = new SolidColorBrush(Colors.Transparent);
+
+            SetScaleTransform(1);
+            SetRotation(0);
 
             IsBlasting = false;
             TimeLeftUntilBlast = 25;
         }
+
+        public void Reposition(UfoBoss UfoBoss)
+        {
+            SetPosition(
+                left: (UfoBoss.GetLeft() + UfoBoss.Width / 2) - Width / 2,
+                top: UfoBoss.GetBottom() - (40));
+        }       
 
         public bool RunOutOfTimeToBlast()
         {
@@ -117,9 +118,7 @@ namespace HonkTrooper
             SetRotation(0);
             SetScaleTransform(Constants.DEFAULT_BLAST_SHRINK_SCALE);
 
-            BorderBrush = new SolidColorBrush(Colors.Goldenrod);
-            BorderThickness = new Microsoft.UI.Xaml.Thickness(Constants.DEFAULT_BLAST_RING_BORDER_THICKNESS);
-            CornerRadius = new Microsoft.UI.Xaml.CornerRadius(Constants.DEFAULT_BLAST_RING_CORNER_RADIUS);
+            BorderBrush = new SolidColorBrush(Colors.Goldenrod);            
 
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_blast_uris);
             _content_image.Source = new BitmapImage(uri);

@@ -31,32 +31,30 @@ namespace HonkTrooper
         public static (ConstructType ConstructType, double Width, double Height)[] CONSTRUCT_SIZES = new (ConstructType, double, double)[]
         {
             new (ConstructType.PLAYER_BALLOON, 165, 165),
-            new (ConstructType.PLAYER_ROCKET, 80, 80),
-            new (ConstructType.PLAYER_HONK_BOMB, 70, 70),
-            new (ConstructType.PLAYER_ROCKET_SEEKING, 70, 70),
+            new (ConstructType.PLAYER_ROCKET, 100, 100),
+            new (ConstructType.PLAYER_HONK_BOMB, 90, 90),
+            new (ConstructType.PLAYER_ROCKET_SEEKING, 100, 100),
 
             new (ConstructType.UFO_BOSS, 180, 180),
-            new (ConstructType.UFO_BOSS_ROCKET, 80, 80),
-            new (ConstructType.UFO_BOSS_ROCKET_SEEKING, 80, 80),
+            new (ConstructType.UFO_BOSS_ROCKET, 100, 100),
+            new (ConstructType.UFO_BOSS_ROCKET_SEEKING, 100, 100),
 
             new (ConstructType.ZOMBIE_BOSS, 180, 180),
-            new (ConstructType.ZOMBIE_BOSS_ROCKET, 190, 190),
+            new (ConstructType.ZOMBIE_BOSS_ROCKET, 240, 240),
 
             new (ConstructType.UFO_ENEMY, 160, 160),
-            new (ConstructType.UFO_ENEMY_ROCKET, 60, 60),
+            new (ConstructType.UFO_ENEMY_ROCKET, 100, 100),
 
             new (ConstructType.VEHICLE_ENEMY_SMALL, 210, 210),
             new (ConstructType.VEHICLE_ENEMY_LARGE, 240, 240),
+
             new (ConstructType.VEHICLE_BOSS, 240, 240),
+            new (ConstructType.VEHICLE_BOSS_ROCKET, 120, 120),
 
-            new (ConstructType.VEHICLE_BOSS_ROCKET, 100, 100),
-
-            new (ConstructType.CLOUD, 260, 260),
-            new (ConstructType.MANHOLE_COVER, 80, 40),
+            new (ConstructType.CLOUD, 260, 260),            
             new (ConstructType.HONK, 90, 90),
 
             new (ConstructType.ROAD_MARK, 15, 60),
-            new (ConstructType.ROAD_SIDE_WALK_SLOPE, 15, 260),
 
             new (ConstructType.ROAD_SIDE_TREE, 190, 190),
             new (ConstructType.ROAD_SIDE_HEDGE, 170, 170),
@@ -121,9 +119,6 @@ namespace HonkTrooper
             new (ConstructType.HONK, new Uri("ms-appx:///HonkTrooper/Assets/Images/honk_1.png")),
             new (ConstructType.HONK, new Uri("ms-appx:///HonkTrooper/Assets/Images/honk_2.png")),
             new (ConstructType.HONK, new Uri("ms-appx:///HonkTrooper/Assets/Images/honk_3.png")),
-
-            new (ConstructType.MANHOLE_COVER, new Uri("ms-appx:///HonkTrooper/Assets/Images/manhole_1.png")),
-            new (ConstructType.MANHOLE_COVER, new Uri("ms-appx:///HonkTrooper/Assets/Images/manhole_2.png")),
 
             new (ConstructType.PLAYER_BALLOON, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_balloon_1_idle.png")),
             new (ConstructType.PLAYER_BALLOON_IDLE, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_balloon_1_idle.png")),
@@ -286,8 +281,7 @@ namespace HonkTrooper
         VEHICLE_BOSS,
 
         VEHICLE_BOSS_ROCKET,
-
-        ROAD_SIDE_WALK_SLOPE,
+                
         ROAD_MARK,
         ROAD_SIDE_WALK,
 
@@ -299,8 +293,7 @@ namespace HonkTrooper
 
         HONK,
 
-        CLOUD,
-        MANHOLE_COVER,
+        CLOUD,        
 
         BLAST,
         BANG,

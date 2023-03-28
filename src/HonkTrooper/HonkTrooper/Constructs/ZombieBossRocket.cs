@@ -57,6 +57,9 @@ namespace HonkTrooper
 
             SetChild(_content_image);
 
+            BorderThickness = new Microsoft.UI.Xaml.Thickness(Constants.DEFAULT_BLAST_RING_BORDER_THICKNESS);
+            CornerRadius = new Microsoft.UI.Xaml.CornerRadius(Constants.DEFAULT_BLAST_RING_CORNER_RADIUS * width);
+
             IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE + 10;
 
@@ -82,17 +85,15 @@ namespace HonkTrooper
             Opacity = 1;
             SetScaleTransform(1);
 
+            var uri = ConstructExtensions.GetRandomContentUri(_bomb_uris);
+            _content_image.Source = new BitmapImage(uri);
+
             BorderBrush = new SolidColorBrush(Colors.Transparent);
-            BorderThickness = new Microsoft.UI.Xaml.Thickness(0);
-            CornerRadius = new Microsoft.UI.Xaml.CornerRadius(0);
 
             Health = _random.Next(1, 3) * 50;
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET + 1.5;
 
             IsBlasting = false;
-
-            var uri = ConstructExtensions.GetRandomContentUri(_bomb_uris);
-            _content_image.Source = new BitmapImage(uri);
 
             _autoBlastDelay = _autoBlastDelayDefault;
         }
@@ -206,8 +207,6 @@ namespace HonkTrooper
             SetScaleTransform(Constants.DEFAULT_BLAST_SHRINK_SCALE - 0.2);
 
             BorderBrush = new SolidColorBrush(Colors.DarkGreen);
-            BorderThickness = new Microsoft.UI.Xaml.Thickness(Constants.DEFAULT_BLAST_RING_BORDER_THICKNESS);
-            CornerRadius = new Microsoft.UI.Xaml.CornerRadius(Constants.DEFAULT_BLAST_RING_CORNER_RADIUS);
 
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_blast_uris);
             _content_image.Source = new BitmapImage(uri);
