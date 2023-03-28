@@ -20,6 +20,9 @@ namespace HonkTrooper
 
         private readonly AudioStub _audioStub;
 
+        private double _autoBlastDelay;
+        private readonly double _autoBlastDelayDefault = 25;
+
         #endregion
 
         #region Ctor
@@ -70,8 +73,6 @@ namespace HonkTrooper
 
         public bool IsBlasting { get; set; }
 
-        public double TimeLeftUntilBlast { get; set; }
-
         #endregion
 
         #region Methods
@@ -91,7 +92,8 @@ namespace HonkTrooper
             SetRotation(0);
 
             IsBlasting = false;
-            TimeLeftUntilBlast = 25;
+
+            _autoBlastDelay = _autoBlastDelayDefault;
         }
 
         public void Reposition(PlayerBalloon player)
@@ -101,11 +103,11 @@ namespace HonkTrooper
                 top: player.GetBottom() - (40));
         }
 
-        public bool RunOutOfTimeToBlast()
+        public bool AutoBlast()
         {
-            TimeLeftUntilBlast -= 0.1;
+            _autoBlastDelay -= 0.1;
 
-            if (TimeLeftUntilBlast <= 0)
+            if (_autoBlastDelay <= 0)
                 return true;
 
             return false;

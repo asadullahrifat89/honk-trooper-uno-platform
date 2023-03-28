@@ -1,45 +1,46 @@
-﻿using System;
-using System.Linq;
-using Microsoft.UI.Xaml.Media.Imaging;
+﻿using Microsoft.UI;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
-using Microsoft.UI;
+using Microsoft.UI.Xaml.Media.Imaging;
+using System;
+using System.Linq;
+using Windows.Foundation;
 
 namespace HonkTrooper
 {
-    public partial class PlayerRocket : AnimableConstruct
+    public partial class PlayerRocketBullsEye : MovableConstruct
     {
         #region Fields
 
         private readonly Random _random;
-
         private readonly Uri[] _bomb_uris;
         private readonly Uri[] _bomb_blast_uris;
 
         private readonly Image _content_image;
 
-
         private double _autoBlastDelay;
-        private readonly double _autoBlastDelayDefault = 8;
+        private readonly double _autoBlastDelayDefault = 25;
 
         private readonly AudioStub _audioStub;
+
+        private Rect _targetHitbox;
 
         #endregion
 
         #region Ctor
 
-        public PlayerRocket(
-           Func<Construct, bool> animateAction,
-           Func<Construct, bool> recycleAction)
+        public PlayerRocketBullsEye(
+            Func<Construct, bool> animateAction,
+            Func<Construct, bool> recycleAction)
         {
             _random = new Random();
 
-            _bomb_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_ROCKET).Select(x => x.Uri).ToArray();
+            _bomb_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_ROCKET_BULLS_EYE).Select(x => x.Uri).ToArray();
             _bomb_blast_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BLAST).Select(x => x.Uri).ToArray();
 
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.PLAYER_ROCKET);
+            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.PLAYER_ROCKET_BULLS_EYE);
 
-            ConstructType = ConstructType.PLAYER_ROCKET;
+            ConstructType = ConstructType.PLAYER_ROCKET_BULLS_EYE;
 
             var width = size.Width;
             var height = size.Height;
@@ -61,11 +62,18 @@ namespace HonkTrooper
             BorderThickness = new Microsoft.UI.Xaml.Thickness(Constants.DEFAULT_BLAST_RING_BORDER_THICKNESS);
             CornerRadius = new Microsoft.UI.Xaml.CornerRadius(Constants.DEFAULT_BLAST_RING_CORNER_RADIUS);
 
+            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;
             IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
-            DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE + 10;
+            DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE;
 
-            _audioStub = new AudioStub((SoundType.ROCKET_LAUNCH, 0.3, false), (SoundType.ROCKET_BLAST, 1, false));
+            _audioStub = new AudioStub((SoundType.SEEKER_ROCKET_LAUNCH, 0.3, false), (SoundType.ROCKET_BLAST, 1, false));
         }
+
+        #endregion
+
+        #region Properties
+
+        public bool IsBlasting { get; set; }
 
         #endregion
 
@@ -73,26 +81,21 @@ namespace HonkTrooper
 
         public void Reset()
         {
-            _audioStub.Play(SoundType.ROCKET_LAUNCH);
+            _audioStub.Play(SoundType.SEEKER_ROCKET_LAUNCH);
 
             Opacity = 1;
 
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_uris);
             _content_image.Source = new BitmapImage(uri);
 
-            SetScaleTransform(1);
-
             BorderBrush = new SolidColorBrush(Colors.Transparent);
 
-            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET + 2;
-            IsBlasting = false;
+            SetScaleTransform(1);
+            SetRotation(0);
 
-            AwaitMoveDownLeft = false;
-            AwaitMoveUpRight = false;
+            IsBlasting = false;            
 
-            AwaitMoveUpLeft = false;
-            AwaitMoveDownRight = false;
-
+            _targetHitbox = new Rect(0, 0, 0, 0);
             _autoBlastDelay = _autoBlastDelayDefault;
         }
 
@@ -100,24 +103,17 @@ namespace HonkTrooper
         {
             SetPosition(
                 left: (player.GetLeft() + player.Width / 2) - Width / 2,
-                top: player.GetBottom() - (30));
+                top: player.GetBottom() - (40));
         }
 
-        public void SetBlast()
+        public void SetTarget(Rect targetHitbox)
         {
-            _audioStub.Play(SoundType.ROCKET_BLAST);
+            _targetHitbox = targetHitbox;
+        }
 
-            SetScaleTransform(Constants.DEFAULT_BLAST_SHRINK_SCALE);
-            SetRotation(0);
-
-            BorderBrush = new SolidColorBrush(Colors.Crimson);
-
-            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET - 1;
-
-            var uri = ConstructExtensions.GetRandomContentUri(_bomb_blast_uris);
-            _content_image.Source = new BitmapImage(uri);
-
-            IsBlasting = true;
+        public void Move()
+        {
+            // TODO: seek the target in a straigh line
         }
 
         public bool AutoBlast()
@@ -128,6 +124,20 @@ namespace HonkTrooper
                 return true;
 
             return false;
+        }
+
+        public void SetBlast()
+        {
+            _audioStub.Play(SoundType.ROCKET_BLAST);
+
+            SetRotation(0);
+            SetScaleTransform(Constants.DEFAULT_BLAST_SHRINK_SCALE);
+
+            BorderBrush = new SolidColorBrush(Colors.Crimson);
+
+            var uri = ConstructExtensions.GetRandomContentUri(_bomb_blast_uris);
+            _content_image.Source = new BitmapImage(uri);
+            IsBlasting = true;
         }
 
         #endregion
