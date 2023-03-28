@@ -11,10 +11,9 @@ namespace HonkTrooper
 
         private readonly Random _random;
         private readonly Uri[] _enemy_uris;
-        private double _attackDelay;
-        private double _honkDelay;
-
         private readonly Image _content_image;
+
+        private double _attackDelay;
 
         #endregion
 
@@ -57,10 +56,6 @@ namespace HonkTrooper
 
         #region Properties
 
-        public bool WillHonk { get; set; }
-
-        public bool WillAttack { get; set; }
-
         public double Health { get; set; }
 
         public bool IsDead => Health <= 0;
@@ -76,15 +71,7 @@ namespace HonkTrooper
 
             Health = 5 * _random.Next(4);
 
-            WillAttack = Convert.ToBoolean(_random.Next(2));
             WillHonk = Convert.ToBoolean(_random.Next(2));
-
-            // role dice again
-            if (!WillHonk && !WillAttack)
-            {
-                WillAttack = Convert.ToBoolean(_random.Next(2));
-                WillHonk = Convert.ToBoolean(_random.Next(2));
-            }
 
             if (WillHonk)
                 SetHonkDelay();
@@ -92,12 +79,12 @@ namespace HonkTrooper
             var uri = ConstructExtensions.GetRandomContentUri(_enemy_uris);
             _content_image.Source = new BitmapImage(uri);
 
-            SpeedOffset = _random.Next(-3, 2);
+            SpeedOffset = _random.Next(-2, 2);
         }
 
         public bool Attack()
         {
-            if (!IsDead && WillAttack)
+            if (!IsDead)
             {
                 _attackDelay--;
 
