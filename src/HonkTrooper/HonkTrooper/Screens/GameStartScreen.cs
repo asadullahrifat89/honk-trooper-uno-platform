@@ -29,6 +29,8 @@ namespace HonkTrooper
         {
             ConstructType = ConstructType.TITLE_SCREEN;
 
+            _audioStub = new AudioStub((SoundType.GAME_START, 1, false));
+
             var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.TITLE_SCREEN);
 
             var width = size.Width;
@@ -157,8 +159,6 @@ namespace HonkTrooper
 
             rootGrid.Children.Add(container);
             SetChild(rootGrid);
-
-            _audioStub = new AudioStub((SoundType.GAME_START, 1, false));
         }
 
         #endregion
