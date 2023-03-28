@@ -9,7 +9,6 @@ namespace HonkTrooper
     {
         #region Fields
 
-        private readonly Random _random;
         private Uri[] _player_uris;
         private Uri[] _player_attack_uris;
         private Uri[] _player_win_uris;
@@ -48,8 +47,6 @@ namespace HonkTrooper
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction)
         {
-            _random = new Random();
-
             ConstructType = ConstructType.PLAYER_BALLOON;
 
             var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.PLAYER_BALLOON);
@@ -94,7 +91,7 @@ namespace HonkTrooper
         #region Methods
 
         public void Reset()
-        {            
+        {
             Health = 100;
 
             _movementDirection = MovementDirection.None;

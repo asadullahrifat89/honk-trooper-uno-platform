@@ -12,10 +12,8 @@ namespace HonkTrooper
 
         #endregion
 
-        public bool Seek(Rect hitbox)
+        public void Seek(Rect target)
         {
-            bool hasMoved = false;
-
             double left = GetLeft();
             double top = GetTop();
 
@@ -23,50 +21,40 @@ namespace HonkTrooper
             double playerMiddleY = top + Height / 2;
 
             // move up
-            if (hitbox.Y < playerMiddleY - _grace)
+            if (target.Y < playerMiddleY - _grace)
             {
-                var distance = Math.Abs(hitbox.Y - playerMiddleY);
+                var distance = Math.Abs(target.Y - playerMiddleY);
                 double speed = CalculateSpeed(distance);
 
                 SetTop(top - speed);
-
-                hasMoved = true;
             }
 
             // move left
-            if (hitbox.X < playerMiddleX - _grace)
+            if (target.X < playerMiddleX - _grace)
             {
-                var distance = Math.Abs(hitbox.X - playerMiddleX);
+                var distance = Math.Abs(target.X - playerMiddleX);
                 double speed = CalculateSpeed(distance);
 
                 SetLeft(left - speed);
-
-                hasMoved = true;
             }
 
             // move down
-            if (hitbox.Y > playerMiddleY + _grace)
+            if (target.Y > playerMiddleY + _grace)
             {
-                var distance = Math.Abs(hitbox.Y - playerMiddleY);
+                var distance = Math.Abs(target.Y - playerMiddleY);
                 double speed = CalculateSpeed(distance);
 
                 SetTop(top + speed);
-
-                hasMoved = true;
             }
 
             // move right
-            if (hitbox.X > playerMiddleX + _grace)
+            if (target.X > playerMiddleX + _grace)
             {
-                var distance = Math.Abs(hitbox.X - playerMiddleX);
+                var distance = Math.Abs(target.X - playerMiddleX);
                 double speed = CalculateSpeed(distance);
 
                 SetLeft(left + speed);
-
-                hasMoved = true;
             }
-
-            return hasMoved;
         }
 
         private double CalculateSpeed(double distance)

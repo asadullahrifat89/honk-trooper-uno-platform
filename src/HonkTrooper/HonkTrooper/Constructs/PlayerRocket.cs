@@ -11,8 +11,6 @@ namespace HonkTrooper
     {
         #region Fields
 
-        private readonly Random _random;
-
         private readonly Uri[] _bomb_uris;
         private readonly Uri[] _bomb_blast_uris;
 
@@ -32,8 +30,6 @@ namespace HonkTrooper
            Func<Construct, bool> animateAction,
            Func<Construct, bool> recycleAction)
         {
-            _random = new Random();
-
             _bomb_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_ROCKET).Select(x => x.Uri).ToArray();
             _bomb_blast_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BLAST).Select(x => x.Uri).ToArray();
 

@@ -3,16 +3,16 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using Windows.Foundation;
 
 namespace HonkTrooper
 {
-    public partial class PlayerRocketBullsEye : MovableConstruct
+    public partial class PlayerRocketBullsEye : RocketSeeking
     {
         #region Fields
 
-        private readonly Random _random;
         private readonly Uri[] _bomb_uris;
         private readonly Uri[] _bomb_blast_uris;
 
@@ -33,8 +33,6 @@ namespace HonkTrooper
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction)
         {
-            _random = new Random();
-
             _bomb_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_ROCKET_BULLS_EYE).Select(x => x.Uri).ToArray();
             _bomb_blast_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BLAST).Select(x => x.Uri).ToArray();
 
@@ -93,7 +91,7 @@ namespace HonkTrooper
             SetScaleTransform(1);
             SetRotation(0);
 
-            IsBlasting = false;            
+            IsBlasting = false;
 
             _targetHitbox = new Rect(0, 0, 0, 0);
             _autoBlastDelay = _autoBlastDelayDefault;
@@ -106,18 +104,55 @@ namespace HonkTrooper
                 top: player.GetBottom() - (40));
         }
 
-        public void SetTarget(Rect targetHitbox)
+        public void SetTarget(Rect target)
         {
-            _targetHitbox = targetHitbox;
+            double left = GetLeft();
+            double top = GetTop();
+
+            double playerMiddleX = left + Width / 2;
+            double playerMiddleY = top + Height / 2;
+
+            // move up
+            if (target.Y < playerMiddleY)
+            {
+                var distance = Math.Abs(target.Y - playerMiddleY);
+                _targetHitbox.Y = target.Y - distance;
+            }
+
+            // move left
+            if (target.X < playerMiddleX)
+            {
+                var distance = Math.Abs(target.X - playerMiddleX);
+                _targetHitbox.X = target.X - distance;
+            }
+
+            // move down
+            if (target.Y > playerMiddleY)
+            {
+                var distance = Math.Abs(target.Y - playerMiddleY);
+                _targetHitbox.Y = target.Y + distance;
+
+            }
+
+            // move right
+            if (target.X > playerMiddleX)
+            {
+                var distance = Math.Abs(target.X - playerMiddleX);
+                _targetHitbox.X = target.X + distance;
+            }
         }
 
         public void Move()
         {
             // TODO: seek the target in a straigh line
+            Seek(_targetHitbox);
         }
 
         public bool AutoBlast()
         {
+            if (_targetHitbox.IntersectsWith(this.GetCloseHitBox())) // if target reached
+                return true;
+
             _autoBlastDelay -= 0.1;
 
             if (_autoBlastDelay <= 0)
