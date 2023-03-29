@@ -59,11 +59,11 @@ namespace HonkTrooper
 
         private double CalculateSpeed(double distance, bool doubleSpeed = false)
         {
-            var speed = distance / _lag;
+            var speed = distance / (doubleSpeed ? _lag * 0.5 : _lag);
 
             speed = speed < 4 ? 4 : speed;
 
-            return doubleSpeed ? speed * 1.3 : speed;
+            return speed;
         }
     }
 }

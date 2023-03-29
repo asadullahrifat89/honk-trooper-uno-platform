@@ -55,7 +55,7 @@ namespace HonkTrooper
         private readonly double _zombie_boss_threashold_limit_increase = 15;
 
         //TODO: set defaults _mafia_boss_threashold_limit = 100
-        private readonly double _mafia_boss_threashold_limit = 100; // first appearance
+        private readonly double _mafia_boss_threashold_limit = 12; // first appearance
         private readonly double _mafia_boss_threashold_limit_increase = 15;
 
         //TODO: set defaults _enemy_threashold_limit = 35
@@ -399,6 +399,7 @@ namespace HonkTrooper
                 ConstructType.UFO_ENEMY or
                 ConstructType.UFO_ENEMY_ROCKET or
                 ConstructType.VEHICLE_BOSS_ROCKET or
+                ConstructType.MAFIA_BOSS_ROCKET_BULLS_EYE or
                 ConstructType.POWERUP_PICKUP or
                 ConstructType.HEALTH_PICKUP))
             {
@@ -3540,7 +3541,7 @@ namespace HonkTrooper
 
         private bool SpawnMafiaBossRocketBullsEyes()
         {
-            for (int i = 0; i < 2; i++)
+            for (int i = 0; i < 4; i++)
             {
                 MafiaBossRocketBullsEye mafiaBossRocketBullsEye = new(
                     animateAction: AnimateMafiaBossRocketBullsEye,
@@ -3564,7 +3565,7 @@ namespace HonkTrooper
             // generate a seeking bomb if one is not in scene
             if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
                 _scene_game.Children.OfType<MafiaBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is MafiaBoss mafiaBoss &&
-                !_scene_game.Children.OfType<MafiaBossRocketBullsEye>().Any(x => x.IsAnimating) &&
+                //!_scene_game.Children.OfType<MafiaBossRocketBullsEye>().Any(x => x.IsAnimating) &&
                 _scene_game.Children.OfType<MafiaBossRocketBullsEye>().FirstOrDefault(x => x.IsAnimating == false) is MafiaBossRocketBullsEye mafiaBossRocketBullsEye)
             {
                 mafiaBossRocketBullsEye.Reset();
@@ -4430,7 +4431,7 @@ namespace HonkTrooper
                             randomizeGenerationDelay: true),
 
                         new Generator(
-                            generationDelay: 70,
+                            generationDelay: 30,
                             generationAction: GenerateMafiaBossRocketBullsEye,
                             startUpAction: SpawnMafiaBossRocketBullsEyes),
 
