@@ -405,10 +405,7 @@ namespace HonkTrooper
                 ConstructType.HEALTH_PICKUP))
             {
                 construct.IsAnimating = false;
-
-                construct.SetPosition(
-                     left: -3000,
-                     top: -3000);
+                construct.SetPosition(left: -3000, top: -3000);
 
                 if (construct is VehicleBoss vehicleboss)
                 {
@@ -1105,10 +1102,7 @@ namespace HonkTrooper
             {
                 playerHonkBomb.IsAnimating = false;
                 playerHonkBomb.IsGravitatingDownwards = false;
-
-                playerHonkBomb.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                playerHonkBomb.SetPosition(left: -3000, top: -3000);
 
                 return true;
             }
@@ -1285,10 +1279,7 @@ namespace HonkTrooper
             if (playerRocket.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 /*|| hitbox.Top < 0 || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT*/)
             {
                 playerRocket.IsAnimating = false;
-
-                playerRocket.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                playerRocket.SetPosition(left: -3000, top: -3000);
 
                 return true;
             }
@@ -1441,10 +1432,7 @@ namespace HonkTrooper
             if (playerRocketSeeking.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Bottom > Constants.DEFAULT_SCENE_HEIGHT)
             {
                 playerRocketSeeking.IsAnimating = false;
-
-                playerRocketSeeking.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                playerRocketSeeking.SetPosition(left: -3000, top: -3000);
 
                 return true;
             }
@@ -1614,10 +1602,7 @@ namespace HonkTrooper
             if (playerRocketBullsEye.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Bottom > Constants.DEFAULT_SCENE_HEIGHT)
             {
                 playerRocketBullsEye.IsAnimating = false;
-
-                playerRocketBullsEye.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                playerRocketBullsEye.SetPosition(left: -3000, top: -3000);
 
                 return true;
             }
@@ -1625,87 +1610,7 @@ namespace HonkTrooper
             return false;
         }
 
-        #endregion
-
-        #region RoadSideWalkSlope
-
-        //private bool SpawnRoadSideWalkSlopes()
-        //{
-        //    for (int i = 0; i < 10; i++)
-        //    {
-        //        RoadSideWalkSlope roadSideStripe = new(
-        //            animateAction: AnimateRoadSideWalkSlope,
-        //            recycleAction: RecycleRoadSideWalkSlope);
-
-        //        roadSideStripe.SetPosition(
-        //            left: -3000,
-        //            top: -3000);
-
-        //        _scene_game.AddToScene(roadSideStripe);
-        //    }
-
-        //    return true;
-        //}
-
-        //private bool GenerateRoadSideWalkSlopeTop()
-        //{
-        //    if (_scene_game.Children.OfType<RoadSideWalkSlope>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideWalkSlope roadSideStripe)
-        //    {
-        //        roadSideStripe.IsAnimating = true;
-
-        //        roadSideStripe.SetPosition(
-        //            left: (Constants.DEFAULT_SCENE_WIDTH / 5.4),
-        //            top: (roadSideStripe.Height * -1) - 16.5,
-        //            z: 0);
-
-        //        return true;
-        //    }
-
-        //    return false;
-        //}
-
-        //private bool GenerateRoadSideWalkSlopeBottom()
-        //{
-        //    if (_scene_game.Children.OfType<RoadSideWalkSlope>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideWalkSlope roadSideWalkSlope)
-        //    {
-        //        roadSideWalkSlope.IsAnimating = true;
-
-        //        roadSideWalkSlope.SetPosition(
-        //            left: (roadSideWalkSlope.Height * -1),
-        //            top: (Constants.DEFAULT_SCENE_HEIGHT / 2.1) - 4.5,
-        //            z: 0);
-
-        //        return true;
-        //    }
-
-        //    return false;
-        //}
-
-        //private bool AnimateRoadSideWalkSlope(Construct roadSideWalkSlope)
-        //{
-        //    RoadSideWalkSlope roadSideStripe1 = roadSideWalkSlope as RoadSideWalkSlope;
-        //    var speed = roadSideStripe1.GetMovementSpeed();
-        //    roadSideStripe1.MoveDownRight(speed);
-        //    return true;
-        //}
-
-        //private bool RecycleRoadSideWalkSlope(Construct roadSideWalkSlope)
-        //{
-        //    var hitBox = roadSideWalkSlope.GetHitBox();
-
-        //    if (hitBox.Top - roadSideWalkSlope.Height > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSideWalkSlope.Height > Constants.DEFAULT_SCENE_WIDTH)
-        //    {
-        //        roadSideWalkSlope.IsAnimating = false;
-
-        //        roadSideWalkSlope.SetPosition(
-        //            left: -3000,
-        //            top: -3000);
-        //    }
-
-        //    return true;
-        //}
-
-        #endregion
+        #endregion        
 
         #region RoadSideWalk
 
@@ -1767,10 +1672,7 @@ namespace HonkTrooper
             if (hitBox.Top - 45 > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSideWalk.Width > Constants.DEFAULT_SCENE_WIDTH)
             {
                 roadSideWalk.IsAnimating = false;
-
-                roadSideWalk.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                roadSideWalk.SetPosition(left: -3000, top: -3000);
             }
 
             return true;
@@ -1844,10 +1746,7 @@ namespace HonkTrooper
             if (hitBox.Top - 45 > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSideTree.Width > Constants.DEFAULT_SCENE_WIDTH)
             {
                 roadSideTree.IsAnimating = false;
-
-                roadSideTree.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                roadSideTree.SetPosition(left: -3000, top: -3000);
             }
 
             return true;
@@ -1915,10 +1814,7 @@ namespace HonkTrooper
             if (hitBox.Top - 45 > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSideHedge.Width > Constants.DEFAULT_SCENE_WIDTH)
             {
                 roadSideHedge.IsAnimating = false;
-
-                roadSideHedge.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                roadSideHedge.SetPosition(left: -3000, top: -3000);
             }
 
             return true;
@@ -1986,10 +1882,7 @@ namespace HonkTrooper
             if (hitBox.Top - 45 > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSideLamp.Width > Constants.DEFAULT_SCENE_WIDTH)
             {
                 roadSideLamp.IsAnimating = false;
-
-                roadSideLamp.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                roadSideLamp.SetPosition(left: -3000, top: -3000);
             }
 
             return true;
@@ -2066,10 +1959,7 @@ namespace HonkTrooper
             if (hitBox.Top - 45 > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSideLight.Width > Constants.DEFAULT_SCENE_WIDTH)
             {
                 roadSideLight.IsAnimating = false;
-
-                roadSideLight.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                roadSideLight.SetPosition(left: -3000, top: -3000);
             }
 
             return true;
@@ -2141,10 +2031,7 @@ namespace HonkTrooper
             if (hitBox.Top - 45 > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSideBillboard.Width > Constants.DEFAULT_SCENE_WIDTH)
             {
                 roadSideBillboard.IsAnimating = false;
-
-                roadSideBillboard.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                roadSideBillboard.SetPosition(left: -3000, top: -3000);
             }
 
             return true;
@@ -2204,10 +2091,7 @@ namespace HonkTrooper
             if (hitBox.Top - 45 > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadMark.Width > Constants.DEFAULT_SCENE_WIDTH)
             {
                 roadMark.IsAnimating = false;
-
-                roadMark.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                roadMark.SetPosition(left: -3000, top: -3000);
             }
 
             return true;
@@ -2333,10 +2217,7 @@ namespace HonkTrooper
             if (ufoBoss.IsShrinkingComplete)
             {
                 ufoBoss.IsAnimating = false;
-
-                ufoBoss.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                ufoBoss.SetPosition(left: -3000, top: -3000);
             }
 
             return true;
@@ -2473,10 +2354,7 @@ namespace HonkTrooper
             if (ufoBossRocket.IsFadingComplete /*|| hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT*/)
             {
                 ufoBossRocket.IsAnimating = false;
-
-                ufoBossRocket.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                ufoBossRocket.SetPosition(left: -3000, top: -3000);
 
                 return true;
             }
@@ -2581,10 +2459,7 @@ namespace HonkTrooper
             if (ufoBossRocketSeeking.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Bottom > Constants.DEFAULT_SCENE_HEIGHT)
             {
                 ufoBossRocketSeeking.IsAnimating = false;
-
-                ufoBossRocketSeeking.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                ufoBossRocketSeeking.SetPosition(left: -3000, top: -3000);
 
                 return true;
             }
@@ -2683,10 +2558,7 @@ namespace HonkTrooper
                 hitbox.Right < 0 || hitbox.Bottom < 0) // enemy is dead or goes out of bounds
             {
                 ufoEnemy.IsAnimating = false;
-
-                ufoEnemy.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                ufoEnemy.SetPosition(left: -3000, top: -3000);
             }
 
             return true;
@@ -2805,10 +2677,7 @@ namespace HonkTrooper
             if (ufoEnemyRocket.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Bottom > Constants.DEFAULT_SCENE_HEIGHT)
             {
                 ufoEnemyRocket.IsAnimating = false;
-
-                ufoEnemyRocket.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                ufoEnemyRocket.SetPosition(left: -3000, top: -3000);
 
                 return true;
             }
@@ -2880,10 +2749,7 @@ namespace HonkTrooper
             if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left > Constants.DEFAULT_SCENE_WIDTH)
             {
                 vehicleEnemy.IsAnimating = false;
-
-                vehicleEnemy.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                vehicleEnemy.SetPosition(left: -3000, top: -3000);
             }
 
             return true;
@@ -3023,10 +2889,7 @@ namespace HonkTrooper
             if (vehicleBoss1.IsDead && hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left > Constants.DEFAULT_SCENE_WIDTH)
             {
                 vehicleBoss.IsAnimating = false;
-
-                vehicleBoss.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                vehicleBoss.SetPosition(left: -3000, top: -3000);
             }
 
             return true;
@@ -3152,10 +3015,7 @@ namespace HonkTrooper
             {
                 vehicleBossRocket.IsAnimating = false;
                 vehicleBossRocket.IsGravitatingUpwards = false;
-
-                vehicleBossRocket.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                vehicleBossRocket.SetPosition(left: -3000, top: -3000);
 
                 return true;
             }
@@ -3280,10 +3140,7 @@ namespace HonkTrooper
             if (zombieBoss.IsShrinkingComplete)
             {
                 zombieBoss.IsAnimating = false;
-
-                zombieBoss.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                zombieBoss.SetPosition(left: -3000, top: -3000);
             }
 
             return true;
@@ -3406,10 +3263,7 @@ namespace HonkTrooper
             if (zombieBossRocket.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH * scaling || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT * scaling)
             {
                 zombieBossRocket.IsAnimating = false;
-
-                zombieBossRocket.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                zombieBossRocket.SetPosition(left: -3000, top: -3000);
 
                 return true;
             }
@@ -3537,10 +3391,7 @@ namespace HonkTrooper
             if (mafiaBoss.IsShrinkingComplete)
             {
                 mafiaBoss.IsAnimating = false;
-
-                mafiaBoss.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                mafiaBoss.SetPosition(left: -3000, top: -3000);
             }
 
             return true;
@@ -3677,10 +3528,7 @@ namespace HonkTrooper
             if (mafiaBossRocket.IsFadingComplete /*|| hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT*/)
             {
                 mafiaBossRocket.IsAnimating = false;
-
-                mafiaBossRocket.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                mafiaBossRocket.SetPosition(left: -3000, top: -3000);
 
                 return true;
             }
@@ -3787,10 +3635,7 @@ namespace HonkTrooper
             if (mafiaBossRocketBullsEye.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Bottom > Constants.DEFAULT_SCENE_HEIGHT)
             {
                 mafiaBossRocketBullsEye.IsAnimating = false;
-
-                mafiaBossRocketBullsEye.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                mafiaBossRocketBullsEye.SetPosition(left: -3000, top: -3000);
 
                 return true;
             }
@@ -3939,10 +3784,7 @@ namespace HonkTrooper
             if (honk.IsFadingComplete)
             {
                 honk.IsAnimating = false;
-
-                honk.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                honk.SetPosition(left: -3000, top: -3000);
             }
 
             return true;
@@ -4063,11 +3905,7 @@ namespace HonkTrooper
             if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left > Constants.DEFAULT_SCENE_WIDTH)
             {
                 cloud.IsAnimating = false;
-
-                cloud.SetPosition(
-                    left: -3000,
-                    top: -3000);
-
+                cloud.SetPosition(left: -3000, top: -3000);
             }
 
             return true;
@@ -4106,9 +3944,7 @@ namespace HonkTrooper
             if (!dropShadow1.IsParentConstructAnimating())
             {
                 dropShadow.IsAnimating = false;
-                dropShadow.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                dropShadow.SetPosition(left: -3000, top: -3000);
 
                 return true;
             }
@@ -4158,7 +3994,6 @@ namespace HonkTrooper
                 healthPickup.Reset();
 
                 var topOrLeft = _random.Next(2);
-
                 var lane = _random.Next(2);
 
                 switch (topOrLeft)
@@ -4226,11 +4061,8 @@ namespace HonkTrooper
 
             if (hitBox.Top - healthPickup.Height > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - healthPickup.Width > Constants.DEFAULT_SCENE_WIDTH || healthPickup.IsShrinkingComplete)
             {
-                healthPickup.SetPosition(
-                    left: -3000,
-                    top: -3000);
-
                 healthPickup.IsAnimating = false;
+                healthPickup.SetPosition(left: -3000, top: -3000);
             }
 
             return true;
@@ -4370,10 +4202,7 @@ namespace HonkTrooper
             if (hitBox.Top - powerUpPickup.Height > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - powerUpPickup.Width > Constants.DEFAULT_SCENE_WIDTH || powerUpPickup.IsShrinkingComplete)
             {
                 powerUpPickup.IsAnimating = false;
-
-                powerUpPickup.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                powerUpPickup.SetPosition(left: -3000, top: -3000);
             }
 
             return true;
@@ -4467,7 +4296,7 @@ namespace HonkTrooper
             _scene_game.AddToScene(
 
             #region Player
-                        
+
             new Generator(
                 generationDelay: 0,
                 generationAction: () => { return true; },
@@ -4496,7 +4325,7 @@ namespace HonkTrooper
             #endregion
 
             #region Road
-                        
+
             new Generator(
                 generationDelay: 20,
                 generationAction: GenerateRoadMark,
@@ -4535,7 +4364,7 @@ namespace HonkTrooper
             #endregion
 
             #region Vehicle Enemy
-                        
+
             new Generator(
                 generationDelay: 100,
                 generationAction: GenerateVehicleEnemy,
@@ -4549,7 +4378,7 @@ namespace HonkTrooper
             #endregion
 
             #region Sky
-                        
+
             new Generator(
                 generationDelay: 400,
                 generationAction: GenerateCloud,
@@ -4559,7 +4388,7 @@ namespace HonkTrooper
             #endregion
 
             #region Vehicle Boss
-                        
+
             new Generator(
                 generationDelay: 10,
                 generationAction: GenerateVehicleBoss,
@@ -4574,7 +4403,7 @@ namespace HonkTrooper
             #endregion
 
             #region Ufo Boss
-                        
+
             new Generator(
                 generationDelay: 10,
                 generationAction: GenerateUfoBoss,
@@ -4621,7 +4450,7 @@ namespace HonkTrooper
                 startUpAction: SpawnMafiaBossRockets),
 
             new Generator(
-                generationDelay: 40,
+                generationDelay: 45,
                 generationAction: GenerateMafiaBossRocketBullsEye,
                 startUpAction: SpawnMafiaBossRocketBullsEyes),
 
