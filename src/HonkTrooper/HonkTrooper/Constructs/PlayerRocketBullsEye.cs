@@ -109,15 +109,15 @@ namespace HonkTrooper
             double left = GetLeft();
             double top = GetTop();
 
-            double playerMiddleX = left + Width / 2;
-            double playerMiddleY = top + Height / 2;
+            double rocketMiddleX = left + Width / 2;
+            double rocketMiddleY = top + Height / 2;
 
             var scaling = ScreenExtensions.GetScreenSpaceScaling();
 
             // move up
-            if (target.Y < playerMiddleY)
+            if (target.Y < rocketMiddleY)
             {
-                var distance = Math.Abs(target.Y - playerMiddleY);
+                var distance = Math.Abs(target.Y - rocketMiddleY);
                 _targetHitbox.Y = target.Y - distance;
 
                 if (_targetHitbox.Y > 0)
@@ -125,9 +125,9 @@ namespace HonkTrooper
             }
 
             // move left
-            if (target.X < playerMiddleX)
+            if (target.X < rocketMiddleX)
             {
-                var distance = Math.Abs(target.X - playerMiddleX);
+                var distance = Math.Abs(target.X - rocketMiddleX);
                 _targetHitbox.X = target.X - distance;
 
                 if (_targetHitbox.X > 0)
@@ -135,9 +135,9 @@ namespace HonkTrooper
             }
 
             // move down
-            if (target.Y > playerMiddleY)
+            if (target.Y > rocketMiddleY)
             {
-                var distance = Math.Abs(target.Y - playerMiddleY);
+                var distance = Math.Abs(target.Y - rocketMiddleY);
                 _targetHitbox.Y = target.Y + distance;
 
                 if (_targetHitbox.Y < Constants.DEFAULT_SCENE_HEIGHT * scaling)
@@ -146,9 +146,9 @@ namespace HonkTrooper
             }
 
             // move right
-            if (target.X > playerMiddleX)
+            if (target.X > rocketMiddleX)
             {
-                var distance = Math.Abs(target.X - playerMiddleX);
+                var distance = Math.Abs(target.X - rocketMiddleX);
                 _targetHitbox.X = target.X + distance;
 
                 if (_targetHitbox.X < Constants.DEFAULT_SCENE_WIDTH * scaling)
