@@ -100,7 +100,7 @@ namespace HonkTrooper
         {
             SetPosition(
                 left: (mafiaBoss.GetLeft() + mafiaBoss.Width / 2) - Width / 2,
-                top: mafiaBoss.GetBottom() - (40));
+                top: mafiaBoss.GetTop() + Height / 2);
         }
 
         public void SetTarget(Rect target)
