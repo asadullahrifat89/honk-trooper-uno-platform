@@ -55,7 +55,7 @@ namespace HonkTrooper
         private readonly double _zombie_boss_threashold_limit_increase = 15;
 
         //TODO: set defaults _mafia_boss_threashold_limit = 100
-        private readonly double _mafia_boss_threashold_limit = 12; // first appearance
+        private readonly double _mafia_boss_threashold_limit = 100; // first appearance
         private readonly double _mafia_boss_threashold_limit_increase = 15;
 
         //TODO: set defaults _enemy_threashold_limit = 35
@@ -1159,14 +1159,19 @@ namespace HonkTrooper
 
                 // get closest possible target
                 UfoBossRocketSeeking ufoBossRocketSeeking = _scene_game.Children.OfType<UfoBossRocketSeeking>()?.FirstOrDefault(x => x.IsAnimating && !x.IsBlasting && x.GetHitBox().IntersectsWith(playerDistantHitBox));
+
                 UfoBoss ufoBoss = _scene_game.Children.OfType<UfoBoss>()?.FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetHitBox().IntersectsWith(playerDistantHitBox));
                 ZombieBoss zombieBoss = _scene_game.Children.OfType<ZombieBoss>()?.FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetHitBox().IntersectsWith(playerDistantHitBox));
+                MafiaBoss mafiaBoss = _scene_game.Children.OfType<MafiaBoss>()?.FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetHitBox().IntersectsWith(playerDistantHitBox));
+
                 UfoEnemy ufoEnemy = _scene_game.Children.OfType<UfoEnemy>()?.FirstOrDefault(x => x.IsAnimating && !x.IsFadingComplete && x.GetHitBox().IntersectsWith(playerDistantHitBox));
 
                 // if not found then find random target
                 ufoBossRocketSeeking ??= _scene_game.Children.OfType<UfoBossRocketSeeking>().FirstOrDefault(x => x.IsAnimating && !x.IsBlasting);
                 ufoBoss ??= _scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking);
                 zombieBoss ??= _scene_game.Children.OfType<ZombieBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking);
+                mafiaBoss ??= _scene_game.Children.OfType<MafiaBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking);
+
                 ufoEnemy ??= _scene_game.Children.OfType<UfoEnemy>().FirstOrDefault(x => x.IsAnimating && !x.IsFadingComplete);
 
                 if (ufoEnemy is not null)
@@ -1184,6 +1189,10 @@ namespace HonkTrooper
                 else if (zombieBoss is not null)
                 {
                     SetPlayerRocketDirection(source: _player, rocket: playerRocket, rocketTarget: zombieBoss);
+                }
+                else if (mafiaBoss is not null)
+                {
+                    SetPlayerRocketDirection(source: _player, rocket: playerRocket, rocketTarget: mafiaBoss);
                 }
 
                 return true;
@@ -1248,6 +1257,11 @@ namespace HonkTrooper
                     {
                         playerRocket1.SetBlast();
                         LooseZombieBossHealth(zombieBoss);
+                    }
+                    else if (_scene_game.Children.OfType<MafiaBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetCloseHitBox().IntersectsWith(hitBox)) is MafiaBoss mafiaBoss) // if player bomb touches MafiaBoss, it blasts, MafiaBoss looses health
+                    {
+                        playerRocket1.SetBlast();
+                        LooseMafiaBossHealth(mafiaBoss);
                     }
                     else if (_scene_game.Children.OfType<UfoEnemy>().FirstOrDefault(x => x.IsAnimating && !x.IsDead && x.GetCloseHitBox().IntersectsWith(hitBox)) is UfoEnemy ufoEnemy) // if player bomb touches enemy, it blasts, enemy looses health
                     {
@@ -1390,6 +1404,16 @@ namespace HonkTrooper
                             LooseZombieBossHealth(ZombieBoss);
                         }
                     }
+                    else if (_scene_game.Children.OfType<MafiaBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is MafiaBoss MafiaBoss) // target MafiaBoss
+                    {
+                        playerRocketSeeking1.Seek(MafiaBoss.GetCloseHitBox());
+
+                        if (playerRocketSeeking1.GetCloseHitBox().IntersectsWith(MafiaBoss.GetCloseHitBox()))
+                        {
+                            playerRocketSeeking1.SetBlast();
+                            LooseMafiaBossHealth(MafiaBoss);
+                        }
+                    }
                     else if (_scene_game.Children.OfType<UfoEnemy>().FirstOrDefault(x => x.IsAnimating && !x.IsFadingComplete) is UfoEnemy enemy) // target UfoEnemy
                     {
                         playerRocketSeeking1.Seek(enemy.GetCloseHitBox());
@@ -1473,14 +1497,20 @@ namespace HonkTrooper
 
                 // get closest possible target
                 UfoBossRocketSeeking ufoBossRocketSeeking = _scene_game.Children.OfType<UfoBossRocketSeeking>()?.FirstOrDefault(x => x.IsAnimating && !x.IsBlasting && x.GetHitBox().IntersectsWith(playerDistantHitBox));
+
                 UfoBoss ufoBoss = _scene_game.Children.OfType<UfoBoss>()?.FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetHitBox().IntersectsWith(playerDistantHitBox));
                 ZombieBoss zombieBoss = _scene_game.Children.OfType<ZombieBoss>()?.FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetHitBox().IntersectsWith(playerDistantHitBox));
+                MafiaBoss mafiaBoss = _scene_game.Children.OfType<MafiaBoss>()?.FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetHitBox().IntersectsWith(playerDistantHitBox));
+
                 UfoEnemy ufoEnemy = _scene_game.Children.OfType<UfoEnemy>()?.FirstOrDefault(x => x.IsAnimating && !x.IsFadingComplete && x.GetHitBox().IntersectsWith(playerDistantHitBox));
 
                 // if not found then find random target
                 ufoBossRocketSeeking ??= _scene_game.Children.OfType<UfoBossRocketSeeking>().FirstOrDefault(x => x.IsAnimating && !x.IsBlasting);
+
                 ufoBoss ??= _scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking);
                 zombieBoss ??= _scene_game.Children.OfType<ZombieBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking);
+                mafiaBoss ??= _scene_game.Children.OfType<MafiaBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking);
+
                 ufoEnemy ??= _scene_game.Children.OfType<UfoEnemy>().FirstOrDefault(x => x.IsAnimating && !x.IsFadingComplete);
 
                 if (ufoEnemy is not null)
@@ -1498,6 +1528,10 @@ namespace HonkTrooper
                 else if (zombieBoss is not null)
                 {
                     playerRocketBullsEye.SetTarget(zombieBoss.GetCloseHitBox());
+                }
+                else if (mafiaBoss is not null)
+                {
+                    playerRocketBullsEye.SetTarget(mafiaBoss.GetCloseHitBox());
                 }
 
                 if (_powerUp_health_bar.HasHealth && (PowerUpType)_powerUp_health_bar.Tag == PowerUpType.BULLS_EYE)
@@ -1552,6 +1586,11 @@ namespace HonkTrooper
                     {
                         playerRocketBullsEye1.SetBlast();
                         LooseZombieBossHealth(zombieBoss);
+                    }
+                    else if (_scene_game.Children.OfType<MafiaBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetCloseHitBox().IntersectsWith(hitbox)) is MafiaBoss mafiaBoss) // target MafiaBoss
+                    {
+                        playerRocketBullsEye1.SetBlast();
+                        LooseMafiaBossHealth(mafiaBoss);
                     }
                     else if (_scene_game.Children.OfType<UfoEnemy>().FirstOrDefault(x => x.IsAnimating && !x.IsFadingComplete && x.GetCloseHitBox().IntersectsWith(hitbox)) is UfoEnemy enemy) // target UfoEnemy
                     {
@@ -2359,7 +2398,7 @@ namespace HonkTrooper
 
         private bool GenerateUfoBossRocket()
         {
-            if (_scene_game.SceneState == SceneState.GAME_RUNNING && 
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
                 _scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is UfoBoss ufoBoss &&
                 _scene_game.Children.OfType<UfoBossRocket>().FirstOrDefault(x => x.IsAnimating == false) is UfoBossRocket ufoBossRocket)
             {
@@ -4427,166 +4466,198 @@ namespace HonkTrooper
             _scene_game.Clear();
             _scene_game.AddToScene(
 
-                        // add road marks
-                        new Generator(
-                            generationDelay: 20,
-                            generationAction: GenerateRoadMark,
-                            startUpAction: SpawnRoadMarks),
+            #region Player
+                        
+            new Generator(
+                generationDelay: 0,
+                generationAction: () => { return true; },
+                startUpAction: SpawnPlayerBalloon),
 
-                        new Generator(
-                            generationDelay: 72,
-                            generationAction: GenerateRoadSideBillboard,
-                            startUpAction: SpawnRoadSideBillboards),
+            new Generator(
+                generationDelay: 0,
+                generationAction: () => { return true; },
+                startUpAction: SpawnPlayerRockets),
 
-                        new Generator(
-                            generationDelay: 36,
-                            generationAction: GenerateRoadSideLamp,
-                            startUpAction: SpawnRoadSideLamps),
+            new Generator(
+                generationDelay: 0,
+                generationAction: () => { return true; },
+                startUpAction: SpawnPlayerHonkBombs),
 
-                        new Generator(
-                            generationDelay: 36,
-                            generationAction: GenerateRoadSideLightBillboard,
-                            startUpAction: SpawnRoadSideLightBillboards),
+            new Generator(
+                generationDelay: 0,
+                generationAction: () => { return true; },
+                startUpAction: SpawnPlayerRocketSeekings),
 
-                        // add road side walks
-                        new Generator(
-                            generationDelay: 18,
-                            generationAction: GenerateRoadSideWalk,
-                            startUpAction: SpawnRoadSideWalks),
+            new Generator(
+                generationDelay: 0,
+                generationAction: () => { return true; },
+                startUpAction: SpawnPlayerRocketBullsEyes),
 
-                        // then add the top trees
-                        new Generator(
-                            generationDelay: 18,
-                            generationAction: GenerateRoadSideTree,
-                            startUpAction: SpawnRoadSideTrees),
+            #endregion
 
-                        // then add the top RoadSideHedges
-                        new Generator(
-                            generationDelay: 18,
-                            generationAction: GenerateRoadSideHedge,
-                            startUpAction: SpawnRoadSideHedges),
+            #region Road
+                        
+            new Generator(
+                generationDelay: 20,
+                generationAction: GenerateRoadMark,
+                startUpAction: SpawnRoadMarks),
 
-                        // then add the vehicles which will appear forward in z wrt the top trees
-                        new Generator(
-                            generationDelay: 100,
-                            generationAction: GenerateVehicleEnemy,
-                            startUpAction: SpawnVehicleEnemys),
+            new Generator(
+                generationDelay: 72,
+                generationAction: GenerateRoadSideBillboard,
+                startUpAction: SpawnRoadSideBillboards),
 
-                        // add the honks which will appear forward in z wrt to everything on the road
-                        new Generator(
-                            generationDelay: 0,
-                            generationAction: () => { return true; },
-                            startUpAction: SpawnHonks),
+            new Generator(
+                generationDelay: 36,
+                generationAction: GenerateRoadSideLamp,
+                startUpAction: SpawnRoadSideLamps),
 
-                        // add the player in scene which will appear forward in z wrt to all else
-                        new Generator(
-                            generationDelay: 0,
-                            generationAction: () => { return true; },
-                            startUpAction: SpawnPlayerBalloon),
+            new Generator(
+                generationDelay: 36,
+                generationAction: GenerateRoadSideLightBillboard,
+                startUpAction: SpawnRoadSideLightBillboards),
 
-                        new Generator(
-                            generationDelay: 0,
-                            generationAction: () => { return true; },
-                            startUpAction: SpawnPlayerRockets),
+            new Generator(
+                generationDelay: 18,
+                generationAction: GenerateRoadSideWalk,
+                startUpAction: SpawnRoadSideWalks),
 
-                        new Generator(
-                            generationDelay: 0,
-                            generationAction: () => { return true; },
-                            startUpAction: SpawnPlayerHonkBombs),
+            new Generator(
+                generationDelay: 18,
+                generationAction: GenerateRoadSideTree,
+                startUpAction: SpawnRoadSideTrees),
 
-                        // add the clouds which are above the player z
-                        new Generator(
-                            generationDelay: 400,
-                            generationAction: GenerateCloud,
-                            startUpAction: SpawnClouds,
-                            randomizeGenerationDelay: true),
+            new Generator(
+                generationDelay: 18,
+                generationAction: GenerateRoadSideHedge,
+                startUpAction: SpawnRoadSideHedges),
 
-                        new Generator(
-                            generationDelay: 10,
-                            generationAction: GenerateVehicleBoss,
-                            startUpAction: SpawnVehicleBosses),
+            #endregion
 
-                        new Generator(
-                            generationDelay: 10,
-                            generationAction: GenerateUfoBoss,
-                            startUpAction: SpawnUfoBosses),
+            #region Vehicle Enemy
+                        
+            new Generator(
+                generationDelay: 100,
+                generationAction: GenerateVehicleEnemy,
+                startUpAction: SpawnVehicleEnemys),
 
-                        new Generator(
-                            generationDelay: 10,
-                            generationAction: GenerateZombieBoss,
-                            startUpAction: SpawnZombieBosses),
+            new Generator(
+                generationDelay: 0,
+                generationAction: () => { return true; },
+                startUpAction: SpawnHonks),
 
-                        new Generator(
-                            generationDelay: 10,
-                            generationAction: GenerateMafiaBoss,
-                            startUpAction: SpawnMafiaBosses),
+            #endregion
 
-                        new Generator(
-                            generationDelay: 50,
-                            generationAction: GenerateVehicleBossRocket,
-                            startUpAction: SpawnVehicleBossRockets,
-                            randomizeGenerationDelay: true),
+            #region Sky
+                        
+            new Generator(
+                generationDelay: 400,
+                generationAction: GenerateCloud,
+                startUpAction: SpawnClouds,
+                randomizeGenerationDelay: true),
 
-                        new Generator(
-                            generationDelay: 40,
-                            generationAction: GenerateUfoBossRocket,
-                            startUpAction: SpawnUfoBossRockets,
-                            randomizeGenerationDelay: true),
+            #endregion
 
-                        new Generator(
-                            generationDelay: 65,
-                            generationAction: GenerateMafiaBossRocket,
-                            startUpAction: SpawnMafiaBossRockets),
+            #region Vehicle Boss
+                        
+            new Generator(
+                generationDelay: 10,
+                generationAction: GenerateVehicleBoss,
+                startUpAction: SpawnVehicleBosses),
 
-                        new Generator(
-                            generationDelay: 30,
-                            generationAction: GenerateZombieBossRocketBlock,
-                            startUpAction: SpawnZombieBossRocketBlocks),
+            new Generator(
+                generationDelay: 50,
+                generationAction: GenerateVehicleBossRocket,
+                startUpAction: SpawnVehicleBossRockets,
+                randomizeGenerationDelay: true),
 
-                        new Generator(
-                            generationDelay: 200,
-                            generationAction: GenerateUfoBossRocketSeeking,
-                            startUpAction: SpawnUfoBossRocketSeekings,
-                            randomizeGenerationDelay: true),
+            #endregion
 
-                        new Generator(
-                            generationDelay: 35,
-                            generationAction: GenerateMafiaBossRocketBullsEye,
-                            startUpAction: SpawnMafiaBossRocketBullsEyes),
+            #region Ufo Boss
+                        
+            new Generator(
+                generationDelay: 10,
+                generationAction: GenerateUfoBoss,
+                startUpAction: SpawnUfoBosses),
 
-                        new Generator(
-                            generationDelay: 0,
-                            generationAction: () => { return true; },
-                            startUpAction: SpawnPlayerRocketSeekings),
+            new Generator(
+                generationDelay: 40,
+                generationAction: GenerateUfoBossRocket,
+                startUpAction: SpawnUfoBossRockets,
+                randomizeGenerationDelay: true),
 
-                        new Generator(
-                            generationDelay: 0,
-                            generationAction: () => { return true; },
-                            startUpAction: SpawnPlayerRocketBullsEyes),
+            new Generator(
+                generationDelay: 200,
+                generationAction: GenerateUfoBossRocketSeeking,
+                startUpAction: SpawnUfoBossRocketSeekings,
+                randomizeGenerationDelay: true),
 
-                        new Generator(
-                            generationDelay: 180,
-                            generationAction: GenerateUfoEnemy,
-                            startUpAction: SpawnUfoEnemys,
-                            randomizeGenerationDelay: true),
+            #endregion
 
-                        new Generator(
-                            generationDelay: 0,
-                            generationAction: () => { return true; },
-                            startUpAction: SpawnUfoEnemyRockets),
+            #region Zombie Boss
 
-                        new Generator(
-                            generationDelay: 500,
-                            generationAction: GenerateHealthPickups,
-                            startUpAction: SpawnHealthPickups,
-                            randomizeGenerationDelay: true),
+            new Generator(
+                generationDelay: 10,
+                generationAction: GenerateZombieBoss,
+                startUpAction: SpawnZombieBosses),
 
-                        new Generator(
-                            generationDelay: 500,
-                            generationAction: GeneratePowerUpPickup,
-                            startUpAction: SpawnPowerUpPickups,
-                            randomizeGenerationDelay: true)
-                            );
+            new Generator(
+                generationDelay: 30,
+                generationAction: GenerateZombieBossRocketBlock,
+                startUpAction: SpawnZombieBossRocketBlocks),
+
+            #endregion
+
+            #region Mafia Boss
+
+            new Generator(
+                generationDelay: 10,
+                generationAction: GenerateMafiaBoss,
+                startUpAction: SpawnMafiaBosses),
+
+            new Generator(
+                generationDelay: 75,
+                generationAction: GenerateMafiaBossRocket,
+                startUpAction: SpawnMafiaBossRockets),
+
+            new Generator(
+                generationDelay: 40,
+                generationAction: GenerateMafiaBossRocketBullsEye,
+                startUpAction: SpawnMafiaBossRocketBullsEyes),
+
+            #endregion
+
+            #region Ufo Enemy
+
+            new Generator(
+                generationDelay: 180,
+                generationAction: GenerateUfoEnemy,
+                startUpAction: SpawnUfoEnemys,
+                randomizeGenerationDelay: true),
+
+            new Generator(
+                generationDelay: 0,
+                generationAction: () => { return true; },
+                startUpAction: SpawnUfoEnemyRockets),
+
+            #endregion
+
+            #region Pickup
+
+            new Generator(
+                generationDelay: 500,
+                generationAction: GenerateHealthPickups,
+                startUpAction: SpawnHealthPickups,
+                randomizeGenerationDelay: true),
+
+            new Generator(
+                generationDelay: 500,
+                generationAction: GeneratePowerUpPickup,
+                startUpAction: SpawnPowerUpPickups,
+                randomizeGenerationDelay: true)
+                );
+
+            #endregion
         }
 
         private void SetSceneScaling()
