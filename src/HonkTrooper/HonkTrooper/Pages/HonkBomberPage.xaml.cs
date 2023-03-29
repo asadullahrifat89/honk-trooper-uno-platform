@@ -2358,19 +2358,34 @@ namespace HonkTrooper
 
         private bool GenerateUfoBossRocket()
         {
-            if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
-                _scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is UfoBoss ufoBoss &&
-                _scene_game.Children.OfType<UfoBossRocket>().FirstOrDefault(x => x.IsAnimating == false) is UfoBossRocket ufoBossRocket)
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING)
             {
-                ufoBossRocket.Reset();
-                ufoBossRocket.IsAnimating = true;
-                ufoBossRocket.SetPopping();
-                ufoBossRocket.Reposition(UfoBoss: ufoBoss);
+                if (_scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is UfoBoss ufoBoss &&
+                       _scene_game.Children.OfType<UfoBossRocket>().FirstOrDefault(x => x.IsAnimating == false) is UfoBossRocket ufoBossRocket)
+                {
+                    ufoBossRocket.Reset();
+                    ufoBossRocket.IsAnimating = true;
+                    ufoBossRocket.SetPopping();
+                    ufoBossRocket.Reposition(ufoBoss: ufoBoss);
 
-                GenerateDropShadow(source: ufoBossRocket);
-                SetUfoBossRocketDirection(source: ufoBoss, rocket: ufoBossRocket, rocketTarget: _player);
+                    GenerateDropShadow(source: ufoBossRocket);
+                    SetUfoBossRocketDirection(source: ufoBoss, rocket: ufoBossRocket, rocketTarget: _player);
 
-                return true;
+                    return true;
+                }
+                else if (_scene_game.Children.OfType<MafiaBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is MafiaBoss mafiaBoss &&
+                    _scene_game.Children.OfType<UfoBossRocket>().FirstOrDefault(x => x.IsAnimating == false) is UfoBossRocket mafiaBossRocket)
+                {
+                    mafiaBossRocket.Reset();
+                    mafiaBossRocket.IsAnimating = true;
+                    mafiaBossRocket.SetPopping();
+                    mafiaBossRocket.Reposition(ufoBoss: mafiaBoss);
+
+                    GenerateDropShadow(source: mafiaBossRocket);
+                    SetUfoBossRocketDirection(source: mafiaBoss, rocket: mafiaBossRocket, rocketTarget: _player);
+
+                    return true;
+                }
             }
 
             return false;
