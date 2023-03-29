@@ -118,7 +118,7 @@ namespace HonkTrooper
             new (ConstructType.VEHICLE_ENEMY_LARGE, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_large_4.png")),
             new (ConstructType.VEHICLE_ENEMY_LARGE, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_large_5.png")),
 
-            new (ConstructType.VEHICLE_BOSS_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_boss_rocket_1.png")),
+            new (ConstructType.VEHICLE_BOSS_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/vehicle_boss_rocket.png")),
 
             new (ConstructType.HONK, new Uri("ms-appx:///HonkTrooper/Assets/Images/honk_1.png")),
             new (ConstructType.HONK, new Uri("ms-appx:///HonkTrooper/Assets/Images/honk_2.png")),
@@ -175,9 +175,9 @@ namespace HonkTrooper
             new (ConstructType.ZOMBIE_BOSS_HIT, new Uri("ms-appx:///HonkTrooper/Assets/Images/zombie_boss_1_hit.png")),
             new (ConstructType.ZOMBIE_BOSS_WIN, new Uri("ms-appx:///HonkTrooper/Assets/Images/zombie_boss_1_win.png")),
 
-            new (ConstructType.UFO_BOSS_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_1.png")),
-            new (ConstructType.UFO_BOSS_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_2.png")),
-            new (ConstructType.UFO_BOSS_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/boss_bomb_3.png")),
+            new (ConstructType.UFO_BOSS_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/ufo_boss_rocket_1.png")),
+            new (ConstructType.UFO_BOSS_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/ufo_boss_rocket_2.png")),
+            new (ConstructType.UFO_BOSS_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/ufo_boss_rocket_3.png")),
 
             new (ConstructType.ZOMBIE_BOSS_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/zombie_boss_cube_1.png")),
             new (ConstructType.ZOMBIE_BOSS_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/zombie_boss_cube_2.png")),
