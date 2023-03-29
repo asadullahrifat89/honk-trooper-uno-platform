@@ -6,14 +6,14 @@ using Windows.Foundation;
 
 namespace HonkTrooper
 {
-    public partial class UfoBoss : AnimableConstruct
+    public partial class MafiaBoss : AnimableConstruct
     {
         #region Fields
 
         private readonly Random _random;
-        private readonly Uri[] _ufo_boss_idle_uris;
-        private readonly Uri[] _ufo_boss_hit_uris;
-        private readonly Uri[] _ufo_boss_win_uris;
+        private readonly Uri[] _mafia_boss_idle_uris;
+        private readonly Uri[] _mafia_boss_hit_uris;
+        private readonly Uri[] _mafia_boss_win_uris;
 
         private readonly double _grace = 7;
         private readonly double _lag = 125;
@@ -36,19 +36,19 @@ namespace HonkTrooper
 
         #region Ctor
 
-        public UfoBoss(
-            Func<Construct, bool> animateAction,
-            Func<Construct, bool> recycleAction)
+        public MafiaBoss(
+           Func<Construct, bool> animateAction,
+           Func<Construct, bool> recycleAction)
         {
-            ConstructType = ConstructType.UFO_BOSS;
+            ConstructType = ConstructType.MAFIA_BOSS;
 
             _random = new Random();
 
-            _ufo_boss_idle_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.UFO_BOSS_IDLE).Select(x => x.Uri).ToArray();
-            _ufo_boss_hit_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.UFO_BOSS_HIT).Select(x => x.Uri).ToArray();
-            _ufo_boss_win_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.UFO_BOSS_WIN).Select(x => x.Uri).ToArray();
+            _mafia_boss_idle_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.MAFIA_BOSS_IDLE).Select(x => x.Uri).ToArray();
+            _mafia_boss_hit_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.MAFIA_BOSS_HIT).Select(x => x.Uri).ToArray();
+            _mafia_boss_win_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.MAFIA_BOSS_WIN).Select(x => x.Uri).ToArray();
 
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.UFO_BOSS);
+            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.MAFIA_BOSS);
 
             var width = size.Width;
             var height = size.Height;
@@ -58,7 +58,7 @@ namespace HonkTrooper
 
             SetSize(width: width, height: height);
 
-            var uri = ConstructExtensions.GetRandomContentUri(_ufo_boss_idle_uris);
+            var uri = ConstructExtensions.GetRandomContentUri(_mafia_boss_idle_uris);
 
             _content_image = new Image()
             {
@@ -86,9 +86,9 @@ namespace HonkTrooper
 
         public bool IsDead => Health <= 0;
 
-        public UfoBossMovementPattern MovementPattern { get; set; }
+        public MafiaBossMovementPattern MovementPattern { get; set; }
 
-        private BossStance UfoBossStance { get; set; } = BossStance.Idle;
+        private BossStance MafiaBossStance { get; set; } = BossStance.Idle;
 
         #endregion
 
@@ -103,23 +103,28 @@ namespace HonkTrooper
             Opacity = 1;
             Health = 100;
             IsAttacking = false;
-            UfoBossStance = BossStance.Idle;
+            MafiaBossStance = BossStance.Idle;
 
             _movementDirection = MovementDirection.None;
 
-            var uri = ConstructExtensions.GetRandomContentUri(_ufo_boss_idle_uris);
+            var uri = ConstructExtensions.GetRandomContentUri(_mafia_boss_idle_uris);
             _content_image.Source = new BitmapImage(uriSource: uri);
 
             RandomizeMovementPattern();
             SetScaleTransform(1);
         }
 
+        private void PlaySoundLoop()
+        {
+            _audioStub.Play(SoundType.UFO_HOVERING);
+        }
+
         public void SetHitStance()
         {
-            if (UfoBossStance != BossStance.Win)
+            if (MafiaBossStance != BossStance.Win)
             {
-                UfoBossStance = BossStance.Hit;
-                var uri = ConstructExtensions.GetRandomContentUri(_ufo_boss_hit_uris);
+                MafiaBossStance = BossStance.Hit;
+                var uri = ConstructExtensions.GetRandomContentUri(_mafia_boss_hit_uris);
                 _content_image.Source = new BitmapImage(uriSource: uri);
                 _hitStanceDelay = _hitStanceDelayDefault;
             }
@@ -127,16 +132,16 @@ namespace HonkTrooper
 
         public void SetWinStance()
         {
-            UfoBossStance = BossStance.Win;
-            var uri = ConstructExtensions.GetRandomContentUri(_ufo_boss_win_uris);
+            MafiaBossStance = BossStance.Win;
+            var uri = ConstructExtensions.GetRandomContentUri(_mafia_boss_win_uris);
             _content_image.Source = new BitmapImage(uriSource: uri);
             _winStanceDelay = _winStanceDelayDefault;
         }
 
         public void SetIdleStance()
         {
-            UfoBossStance = BossStance.Idle;
-            var uri = ConstructExtensions.GetRandomContentUri(_ufo_boss_idle_uris);
+            MafiaBossStance = BossStance.Idle;
+            var uri = ConstructExtensions.GetRandomContentUri(_mafia_boss_idle_uris);
             _content_image.Source = new BitmapImage(uriSource: uri);
         }
 
@@ -184,41 +189,29 @@ namespace HonkTrooper
         }
 
         public void Move(
-            double speed,
-            double sceneWidth,
-            double sceneHeight,
-            Rect playerPoint)
+              double speed,
+              double sceneWidth,
+              double sceneHeight,
+              Rect playerPoint)
         {
             switch (MovementPattern)
             {
-                case UfoBossMovementPattern.PLAYER_SEEKING:
+                case MafiaBossMovementPattern.PLAYER_SEEKING:
                     SeekPlayer(playerPoint);
                     break;
-                case UfoBossMovementPattern.ISOMETRIC_SQUARE:
-                    MoveInIsometricSquares(
+                case MafiaBossMovementPattern.RECTANGULAR_SQUARE:
+                    MoveInRectangularSquares(
                         speed: speed,
                         sceneWidth: sceneWidth,
                         sceneHeight: sceneHeight);
                     break;
-                case UfoBossMovementPattern.UPRIGHT_DOWNLEFT:
-                    MoveUpRightDownLeft(
-                        speed: speed,
-                        sceneWidth: sceneWidth,
-                        sceneHeight: sceneHeight);
-                    break;
-                case UfoBossMovementPattern.UPLEFT_DOWNRIGHT:
-                    MoveUpLeftDownRight(
-                        speed: speed,
-                        sceneWidth: sceneWidth,
-                        sceneHeight: sceneHeight);
-                    break;
-                case UfoBossMovementPattern.RIGHT_LEFT:
+                case MafiaBossMovementPattern.RIGHT_LEFT:
                     MoveRightLeft(
                         speed: speed,
                         sceneWidth: sceneWidth,
                         sceneHeight: sceneHeight);
                     break;
-                case UfoBossMovementPattern.UP_DOWN:
+                case MafiaBossMovementPattern.UP_DOWN:
                     MoveUpDown(
                         speed: speed,
                         sceneWidth: sceneWidth,
@@ -227,9 +220,26 @@ namespace HonkTrooper
             }
         }
 
-        private void PlaySoundLoop()
+        private bool MoveInRectangularSquares(double speed, double sceneWidth, double sceneHeight)
         {
-            _audioStub.Play(SoundType.UFO_HOVERING);
+            _changeMovementPatternDelay -= 0.1;
+
+            if (_changeMovementPatternDelay < 0)
+            {
+                RandomizeMovementPattern();
+                return true;
+            }
+
+            if (IsAttacking && _movementDirection == MovementDirection.None)
+            {
+                _movementDirection = MovementDirection.UpRight;
+            }
+            else
+            {
+                IsAttacking = true;
+            }
+
+            return false;
         }
 
         private void SeekPlayer(Rect playerPoint)
@@ -288,171 +298,6 @@ namespace HonkTrooper
         {
             var flightSpeed = distance / _lag;
             return flightSpeed;
-        }
-
-        private bool MoveInIsometricSquares(double speed, double sceneWidth, double sceneHeight)
-        {
-            _changeMovementPatternDelay -= 0.1;
-
-            if (_changeMovementPatternDelay < 0)
-            {
-                RandomizeMovementPattern();
-                return true;
-            }
-
-            if (IsAttacking && _movementDirection == MovementDirection.None)
-            {
-                _movementDirection = MovementDirection.UpRight;
-            }
-            else
-            {
-                IsAttacking = true;
-            }
-
-            if (IsAttacking)
-            {
-                if (_movementDirection == MovementDirection.UpRight)
-                {
-                    MoveUpRight(speed);
-
-                    if (GetTop() < 0)
-                    {
-                        _movementDirection = MovementDirection.DownRight;
-                    }
-                }
-                else
-                {
-                    if (_movementDirection == MovementDirection.DownRight)
-                    {
-                        MoveDownRight(speed);
-
-                        if (GetRight() > sceneWidth || GetBottom() > sceneHeight)
-                        {
-                            _movementDirection = MovementDirection.DownLeft;
-                        }
-                    }
-                    else
-                    {
-                        if (_movementDirection == MovementDirection.DownLeft)
-                        {
-                            MoveDownLeft(speed);
-
-                            if (GetLeft() < 0 || GetBottom() > sceneHeight)
-                            {
-                                _movementDirection = MovementDirection.UpLeft;
-                            }
-                        }
-                        else
-                        {
-                            if (_movementDirection == MovementDirection.UpLeft)
-                            {
-                                MoveUpLeft(speed);
-
-                                if (GetTop() < 0 || GetLeft() < 0)
-                                {
-                                    _movementDirection = MovementDirection.UpRight;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            return false;
-        }
-
-        private bool MoveUpRightDownLeft(double speed, double sceneWidth, double sceneHeight)
-        {
-            _changeMovementPatternDelay -= 0.1;
-
-            if (_changeMovementPatternDelay < 0)
-            {
-                RandomizeMovementPattern();
-                return true;
-            }
-
-            if (IsAttacking && _movementDirection == MovementDirection.None)
-            {
-                _movementDirection = MovementDirection.UpRight;
-            }
-            else
-            {
-                IsAttacking = true;
-            }
-
-            if (IsAttacking)
-            {
-                if (_movementDirection == MovementDirection.UpRight)
-                {
-                    MoveUpRight(speed);
-
-                    if (GetTop() < 0 || GetLeft() > sceneWidth)
-                    {
-                        _movementDirection = MovementDirection.DownLeft;
-                    }
-                }
-                else
-                {
-                    if (_movementDirection == MovementDirection.DownLeft)
-                    {
-                        MoveDownLeft(speed);
-
-                        if (GetLeft() < 0 || GetBottom() > sceneHeight)
-                        {
-                            _movementDirection = MovementDirection.UpRight;
-                        }
-                    }
-                }
-            }
-
-            return false;
-        }
-
-        private bool MoveUpLeftDownRight(double speed, double sceneWidth, double sceneHeight)
-        {
-            _changeMovementPatternDelay -= 0.1;
-
-            if (_changeMovementPatternDelay < 0)
-            {
-                RandomizeMovementPattern();
-                return true;
-            }
-
-            if (IsAttacking && _movementDirection == MovementDirection.None)
-            {
-                _movementDirection = MovementDirection.UpLeft;
-            }
-            else
-            {
-                IsAttacking = true;
-            }
-
-            if (IsAttacking)
-            {
-                if (_movementDirection == MovementDirection.UpLeft)
-                {
-                    MoveUpLeft(speed);
-
-                    if (GetTop() < 0 || GetLeft() < 0)
-                    {
-                        _movementDirection = MovementDirection.DownRight;
-                    }
-                }
-                else
-                {
-                    if (_movementDirection == MovementDirection.DownRight)
-                    {
-                        MoveDownRight(speed);
-
-                        if (GetRight() > sceneWidth || GetBottom() > sceneHeight)
-                        {
-                            _movementDirection = MovementDirection.UpLeft;
-                        }
-                    }
-                }
-            }
-
-            return false;
         }
 
         private bool MoveRightLeft(double speed, double sceneWidth, double sceneHeight)
@@ -549,32 +394,21 @@ namespace HonkTrooper
             return false;
         }
 
-     
-
         private void RandomizeMovementPattern()
         {
             _changeMovementPatternDelay = _random.Next(40, 60);
             _movementDirection = MovementDirection.None;
-            MovementPattern = (UfoBossMovementPattern)_random.Next(Enum.GetNames(typeof(UfoBossMovementPattern)).Length);
+            MovementPattern = (MafiaBossMovementPattern)_random.Next(Enum.GetNames(typeof(MafiaBossMovementPattern)).Length);
         }
 
         #endregion
     }
 
-    public enum UfoBossMovementPattern
+    public enum MafiaBossMovementPattern
     {
         PLAYER_SEEKING,
-        ISOMETRIC_SQUARE,
-        UPRIGHT_DOWNLEFT,
-        UPLEFT_DOWNRIGHT,
+        RECTANGULAR_SQUARE,
         RIGHT_LEFT,
         UP_DOWN,
-    }
-
-    public enum BossStance
-    {
-        Idle,
-        Hit,
-        Win,
     }
 }

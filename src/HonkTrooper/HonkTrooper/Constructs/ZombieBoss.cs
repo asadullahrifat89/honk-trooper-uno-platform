@@ -68,9 +68,9 @@ namespace HonkTrooper
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE;
 
             _audioStub = new AudioStub(
-                (SoundType.UFO_BOSS_HOVERING, 0.8, true),
-                (SoundType.UFO_BOSS_ENTRY, 0.8, false),
-                (SoundType.UFO_BOSS_DEAD, 1, false));
+                (SoundType.UFO_HOVERING, 0.8, true),
+                (SoundType.BOSS_ENTRY, 0.8, false),
+                (SoundType.BOSS_DEAD, 1, false));
         }
 
         #endregion
@@ -91,7 +91,7 @@ namespace HonkTrooper
 
         public void Reset()
         {
-            _audioStub.Play(SoundType.UFO_BOSS_ENTRY);
+            _audioStub.Play(SoundType.BOSS_ENTRY);
 
             PlaySoundLoop();
 
@@ -111,7 +111,7 @@ namespace HonkTrooper
 
         private void PlaySoundLoop()
         {
-            _audioStub.Play(SoundType.UFO_BOSS_HOVERING);
+            _audioStub.Play(SoundType.UFO_HOVERING);
         }
 
         public void SetHitStance()
@@ -174,13 +174,13 @@ namespace HonkTrooper
             {
                 IsAttacking = false;
                 StopSoundLoop();
-                _audioStub.Play(SoundType.UFO_BOSS_DEAD);
+                _audioStub.Play(SoundType.BOSS_DEAD);
             }
         }
 
         public void StopSoundLoop()
         {
-            _audioStub.Stop(SoundType.UFO_BOSS_HOVERING);
+            _audioStub.Stop(SoundType.UFO_HOVERING);
         }
 
         public void Move(
