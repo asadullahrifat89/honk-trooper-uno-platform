@@ -182,11 +182,7 @@ namespace HonkTrooper
 
             new (ConstructType.ZOMBIE_BOSS_ROCKET_BLOCK, new Uri("ms-appx:///HonkTrooper/Assets/Images/zombie_boss_cube_1.png")),
             new (ConstructType.ZOMBIE_BOSS_ROCKET_BLOCK, new Uri("ms-appx:///HonkTrooper/Assets/Images/zombie_boss_cube_2.png")),
-            new (ConstructType.ZOMBIE_BOSS_ROCKET_BLOCK, new Uri("ms-appx:///HonkTrooper/Assets/Images/zombie_boss_cube_3.png")),
-
-            new (ConstructType.MAFIA_BOSS_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/mafia_boss_rocket_1.png")),
-            new (ConstructType.MAFIA_BOSS_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/mafia_boss_rocket_2.png")),
-            new (ConstructType.MAFIA_BOSS_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/mafia_boss_rocket_3.png")),
+            new (ConstructType.ZOMBIE_BOSS_ROCKET_BLOCK, new Uri("ms-appx:///HonkTrooper/Assets/Images/zombie_boss_cube_3.png")),          
 
             new (ConstructType.UFO_BOSS_ROCKET_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/ufo_boss_rocket_seeking.png")),
             new (ConstructType.MAFIA_BOSS_ROCKET_BULLS_EYE, new Uri("ms-appx:///HonkTrooper/Assets/Images/mafia_boss_rocket_bulls_eye.png")),
@@ -198,10 +194,14 @@ namespace HonkTrooper
 
             new (ConstructType.UFO_ENEMY_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/enemy_bomb.png")),
 
-            new (ConstructType.HEALTH_PICKUP, new Uri("ms-appx:///HonkTrooper/Assets/Images/health_pickup.png")),
-            new (ConstructType.POWERUP_PICKUP_SEEKING_SNITCH, new Uri("ms-appx:///HonkTrooper/Assets/Images/powerup_pickup_seeking_snitch.png")),
+            new (ConstructType.HEALTH_PICKUP, new Uri("ms-appx:///HonkTrooper/Assets/Images/health_pickup.png")),            
             new (ConstructType.POWERUP_PICKUP_ARMOR, new Uri("ms-appx:///HonkTrooper/Assets/Images/powerup_pickup_armor.png")),
             new (ConstructType.POWERUP_PICKUP_BULLS_EYE, new Uri("ms-appx:///HonkTrooper/Assets/Images/powerup_pickup_bulls_eye.png")),
+            new (ConstructType.POWERUP_PICKUP_SEEKING_SNITCH, new Uri("ms-appx:///HonkTrooper/Assets/Images/powerup_pickup_seeking_snitch.png")),
+
+            new (ConstructType.MAFIA_BOSS_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/mafia_boss_rocket_1.png")),
+            new (ConstructType.MAFIA_BOSS_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/mafia_boss_rocket_2.png")),
+            new (ConstructType.MAFIA_BOSS_ROCKET, new Uri("ms-appx:///HonkTrooper/Assets/Images/mafia_boss_rocket_3.png")),
         };
 
         public static (SoundType SoundType, Uri Uri)[] SOUND_TEMPLATES = new (SoundType, Uri)[]
