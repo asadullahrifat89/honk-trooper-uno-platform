@@ -64,7 +64,7 @@ namespace HonkTrooper
             IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE;
 
-            _audioStub = new AudioStub((SoundType.SEEKER_ROCKET_LAUNCH, 0.3, false), (SoundType.ROCKET_BLAST, 1, false));
+            _audioStub = new AudioStub((SoundType.BULLS_EYE_ROCKET_LAUNCH, 0.5, false), (SoundType.ROCKET_BLAST, 1, false));
         }
 
         #endregion
@@ -79,7 +79,7 @@ namespace HonkTrooper
 
         public void Reset()
         {
-            _audioStub.Play(SoundType.SEEKER_ROCKET_LAUNCH);
+            _audioStub.Play(SoundType.BULLS_EYE_ROCKET_LAUNCH);
 
             Opacity = 1;
 

@@ -46,5 +46,9 @@
   </ItemGroup>
   <ItemGroup>
     <UpToDateCheckInput Include="**\*.xaml" Exclude="bin\**\*.xaml;obj\**\*.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Assets\Sounds\bulls_eye_rocket_launch_1.mp3" />
+    <None Remove="Assets\Sounds\bulls_eye_rocket_launch_2.mp3" />
   </ItemGroup>  
 </Project>

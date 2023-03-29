@@ -229,6 +229,8 @@ namespace HonkTrooper
             new (SoundType.SEEKER_ROCKET_LAUNCH, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/seeker_rocket_launch_1.mp3")),
             new (SoundType.SEEKER_ROCKET_LAUNCH, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/seeker_rocket_launch_2.mp3")),
 
+            new (SoundType.BULLS_EYE_ROCKET_LAUNCH, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/bulls_eye_rocket_launch_1.mp3")),
+
             new (SoundType.AMBIENCE, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/ambience_1.mp3")),
             new (SoundType.AMBIENCE, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/ambience_2.mp3")),
             new (SoundType.AMBIENCE, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/ambience_3.mp3")),
@@ -367,6 +369,7 @@ namespace HonkTrooper
         CAR_HONK,
 
         SEEKER_ROCKET_LAUNCH,
+        BULLS_EYE_ROCKET_LAUNCH,
 
         AMBIENCE,
 
