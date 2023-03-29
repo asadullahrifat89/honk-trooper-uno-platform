@@ -232,11 +232,57 @@ namespace HonkTrooper
 
             if (IsAttacking && _movementDirection == MovementDirection.None)
             {
-                _movementDirection = MovementDirection.UpRight;
+                _movementDirection = MovementDirection.Up;
             }
             else
             {
                 IsAttacking = true;
+            }
+
+            if (_movementDirection == MovementDirection.Up)
+            {
+                MoveUp(speed);
+
+                if (GetTop() < 0)
+                {
+                    _movementDirection = MovementDirection.Right;
+                }
+            }
+            else
+            {
+                if (_movementDirection == MovementDirection.Right)
+                {
+                    MoveRight(speed);
+
+                    if (GetRight() > sceneWidth)
+                    {
+                        _movementDirection = MovementDirection.Down;
+                    }
+                }
+                else
+                {
+                    if (_movementDirection == MovementDirection.Down)
+                    {
+                        MoveDown(speed);
+
+                        if (GetBottom() > sceneHeight)
+                        {
+                            _movementDirection = MovementDirection.Left;
+                        }
+                    }
+                    else
+                    {
+                        if (_movementDirection == MovementDirection.Left)
+                        {
+                            MoveLeft(speed);
+
+                            if (GetLeft() < 0)
+                            {
+                                _movementDirection = MovementDirection.Up;
+                            }
+                        }
+                    }
+                }
             }
 
             return false;
