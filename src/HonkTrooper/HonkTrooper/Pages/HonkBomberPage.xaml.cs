@@ -331,7 +331,7 @@ namespace HonkTrooper
             SetupSetPlayerBalloon();
 
             GeneratePlayerBalloon();
-            RecycleLogicalConstructs();
+            RepositionConstructs();
 
             _scene_game.SceneState = SceneState.GAME_RUNNING;
             _scene_game.Play();
@@ -380,7 +380,7 @@ namespace HonkTrooper
             }
         }
 
-        private void RecycleLogicalConstructs()
+        private void RepositionConstructs()
         {
             foreach (var construct in _scene_game.Children.OfType<Construct>()
                 .Where(x => x.ConstructType is
@@ -399,6 +399,7 @@ namespace HonkTrooper
                 ConstructType.UFO_ENEMY or
                 ConstructType.UFO_ENEMY_ROCKET or
                 ConstructType.VEHICLE_BOSS_ROCKET or
+                ConstructType.MAFIA_BOSS_ROCKET or
                 ConstructType.MAFIA_BOSS_ROCKET_BULLS_EYE or
                 ConstructType.POWERUP_PICKUP or
                 ConstructType.HEALTH_PICKUP))
@@ -528,7 +529,7 @@ namespace HonkTrooper
                 _ = assetsLoadingScreen.PreloadAssets(() =>
                 {
                     RecycleAssetsLoadingScreen(assetsLoadingScreen);
-                    AddGameSceneConstructGenerators();
+                    AddGameSceneGenerators();
                     GenerateGameStartScreen(title: "Honk Trooper", subTitle: "-Stop Honkers, Save The City-");
 
                     if (!_scene_game.IsAnimating)
@@ -1233,7 +1234,7 @@ namespace HonkTrooper
                         playerRocket1.SetBlast();
                         ufoBossRocketSeeking.SetBlast();
                     }
-                    else if (_scene_game.Children.OfType<ZombieBossRocket>().FirstOrDefault(x => x.IsAnimating && !x.IsBlasting && x.GetCloseHitBox().IntersectsWith(hitBox)) is ZombieBossRocket zombieBossRocket) // if player bomb touches ZombieBoss's seeking bomb, it blasts
+                    else if (_scene_game.Children.OfType<ZombieBossRocketBlock>().FirstOrDefault(x => x.IsAnimating && !x.IsBlasting && x.GetCloseHitBox().IntersectsWith(hitBox)) is ZombieBossRocketBlock zombieBossRocket) // if player bomb touches ZombieBoss's seeking bomb, it blasts
                     {
                         playerRocket1.SetBlast();
                         zombieBossRocket.LooseHealth();
@@ -1359,7 +1360,7 @@ namespace HonkTrooper
                             ufoBossRocketSeeking.SetBlast();
                         }
                     }
-                    else if (_scene_game.Children.OfType<ZombieBossRocket>().FirstOrDefault(x => x.IsAnimating) is ZombieBossRocket zombieBossRocket) // target ZombieBossRocket
+                    else if (_scene_game.Children.OfType<ZombieBossRocketBlock>().FirstOrDefault(x => x.IsAnimating) is ZombieBossRocketBlock zombieBossRocket) // target ZombieBossRocketBlock
                     {
                         playerRocketSeeking1.Seek(zombieBossRocket.GetCloseHitBox());
 
@@ -1537,7 +1538,7 @@ namespace HonkTrooper
                         ufoBossRocketSeeking.SetBlast();
 
                     }
-                    else if (_scene_game.Children.OfType<ZombieBossRocket>().FirstOrDefault(x => x.IsAnimating && x.GetCloseHitBox().IntersectsWith(hitbox)) is ZombieBossRocket zombieBossRocket) // target ZombieBossRocket
+                    else if (_scene_game.Children.OfType<ZombieBossRocketBlock>().FirstOrDefault(x => x.IsAnimating && x.GetCloseHitBox().IntersectsWith(hitbox)) is ZombieBossRocketBlock zombieBossRocket) // target ZombieBossRocketBlock
                     {
                         playerRocketBullsEye1.SetBlast();
                         zombieBossRocket.LooseHealth();
@@ -2358,34 +2359,19 @@ namespace HonkTrooper
 
         private bool GenerateUfoBossRocket()
         {
-            if (_scene_game.SceneState == SceneState.GAME_RUNNING)
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING && 
+                _scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is UfoBoss ufoBoss &&
+                _scene_game.Children.OfType<UfoBossRocket>().FirstOrDefault(x => x.IsAnimating == false) is UfoBossRocket ufoBossRocket)
             {
-                if (_scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is UfoBoss ufoBoss &&
-                       _scene_game.Children.OfType<UfoBossRocket>().FirstOrDefault(x => x.IsAnimating == false) is UfoBossRocket ufoBossRocket)
-                {
-                    ufoBossRocket.Reset();
-                    ufoBossRocket.IsAnimating = true;
-                    ufoBossRocket.SetPopping();
-                    ufoBossRocket.Reposition(ufoBoss: ufoBoss);
+                ufoBossRocket.Reset();
+                ufoBossRocket.IsAnimating = true;
+                ufoBossRocket.SetPopping();
+                ufoBossRocket.Reposition(ufoBoss: ufoBoss);
 
-                    GenerateDropShadow(source: ufoBossRocket);
-                    SetUfoBossRocketDirection(source: ufoBoss, rocket: ufoBossRocket, rocketTarget: _player);
+                GenerateDropShadow(source: ufoBossRocket);
+                SetBossRocketDirection(source: ufoBoss, rocket: ufoBossRocket, rocketTarget: _player);
 
-                    return true;
-                }
-                else if (_scene_game.Children.OfType<MafiaBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is MafiaBoss mafiaBoss &&
-                    _scene_game.Children.OfType<UfoBossRocket>().FirstOrDefault(x => x.IsAnimating == false) is UfoBossRocket mafiaBossRocket)
-                {
-                    mafiaBossRocket.Reset();
-                    mafiaBossRocket.IsAnimating = true;
-                    mafiaBossRocket.SetPopping();
-                    mafiaBossRocket.Reposition(ufoBoss: mafiaBoss);
-
-                    GenerateDropShadow(source: mafiaBossRocket);
-                    SetUfoBossRocketDirection(source: mafiaBoss, rocket: mafiaBossRocket, rocketTarget: _player);
-
-                    return true;
-                }
+                return true;
             }
 
             return false;
@@ -3295,15 +3281,15 @@ namespace HonkTrooper
 
         #endregion
 
-        #region ZombieBossRocket
+        #region ZombieBossRocketBlock
 
-        private bool SpawnZombieBossRockets()
+        private bool SpawnZombieBossRocketBlocks()
         {
             for (int i = 0; i < 6; i++)
             {
-                ZombieBossRocket zombieBossRocket = new(
-                    animateAction: AnimateZombieBossRocket,
-                    recycleAction: RecycleZombieBossRocket);
+                ZombieBossRocketBlock zombieBossRocket = new(
+                    animateAction: AnimateZombieBossRocketBlock,
+                    recycleAction: RecycleZombieBossRocketBlock);
 
                 zombieBossRocket.SetPosition(
                     left: -3000,
@@ -3318,11 +3304,11 @@ namespace HonkTrooper
             return true;
         }
 
-        private bool GenerateZombieBossRocket()
+        private bool GenerateZombieBossRocketBlock()
         {
             if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
                 _scene_game.Children.OfType<ZombieBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is ZombieBoss zombieBoss &&
-                _scene_game.Children.OfType<ZombieBossRocket>().FirstOrDefault(x => x.IsAnimating == false) is ZombieBossRocket zombieBossRocket)
+                _scene_game.Children.OfType<ZombieBossRocketBlock>().FirstOrDefault(x => x.IsAnimating == false) is ZombieBossRocketBlock zombieBossRocket)
             {
                 zombieBossRocket.Reset();
                 zombieBossRocket.IsAnimating = true;
@@ -3337,9 +3323,9 @@ namespace HonkTrooper
             return false;
         }
 
-        private bool AnimateZombieBossRocket(Construct zombieBossRocket)
+        private bool AnimateZombieBossRocketBlock(Construct zombieBossRocket)
         {
-            ZombieBossRocket zombieBossRocket1 = zombieBossRocket as ZombieBossRocket;
+            ZombieBossRocketBlock zombieBossRocket1 = zombieBossRocket as ZombieBossRocketBlock;
 
             var speed = zombieBossRocket1.GetMovementSpeed();
 
@@ -3371,7 +3357,7 @@ namespace HonkTrooper
             return true;
         }
 
-        private bool RecycleZombieBossRocket(Construct zombieBossRocket)
+        private bool RecycleZombieBossRocketBlock(Construct zombieBossRocket)
         {
             var hitbox = zombieBossRocket.GetHitBox();
 
@@ -3552,6 +3538,119 @@ namespace HonkTrooper
 
         #endregion
 
+        #region MafiaBossRocket
+
+        private bool SpawnMafiaBossRockets()
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                MafiaBossRocket mafiaBossRocket = new(
+                    animateAction: AnimateMafiaBossRocket,
+                    recycleAction: RecycleMafiaBossRocket);
+
+                mafiaBossRocket.SetPosition(
+                    left: -3000,
+                    top: -3000,
+                    z: 7);
+
+                _scene_game.AddToScene(mafiaBossRocket);
+
+                SpawnDropShadow(source: mafiaBossRocket);
+            }
+
+            return true;
+        }
+
+        private bool GenerateMafiaBossRocket()
+        {
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
+                _scene_game.Children.OfType<MafiaBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is MafiaBoss mafiaBoss &&
+                _scene_game.Children.OfType<MafiaBossRocket>().FirstOrDefault(x => x.IsAnimating == false) is MafiaBossRocket mafiaBossRocket)
+            {
+                mafiaBossRocket.Reset();
+                mafiaBossRocket.IsAnimating = true;
+                mafiaBossRocket.SetPopping();
+                mafiaBossRocket.Reposition(mafiaBoss: mafiaBoss);
+
+                GenerateDropShadow(source: mafiaBossRocket);
+                SetBossRocketDirection(source: mafiaBoss, rocket: mafiaBossRocket, rocketTarget: _player);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimateMafiaBossRocket(Construct mafiaBossRocket)
+        {
+            MafiaBossRocket mafiaBossRocket1 = mafiaBossRocket as MafiaBossRocket;
+
+            var speed = mafiaBossRocket1.GetMovementSpeed();
+
+            if (mafiaBossRocket1.AwaitMoveDownLeft)
+            {
+                mafiaBossRocket1.MoveDownLeft(speed);
+            }
+            else if (mafiaBossRocket1.AwaitMoveUpRight)
+            {
+                mafiaBossRocket1.MoveUpRight(speed);
+            }
+            else if (mafiaBossRocket1.AwaitMoveUpLeft)
+            {
+                mafiaBossRocket1.MoveUpLeft(speed);
+            }
+            else if (mafiaBossRocket1.AwaitMoveDownRight)
+            {
+                mafiaBossRocket1.MoveDownRight(speed);
+            }
+
+            if (mafiaBossRocket1.IsBlasting)
+            {
+                mafiaBossRocket.Expand();
+                mafiaBossRocket.Fade(0.02);
+            }
+            else
+            {
+                mafiaBossRocket.Pop();
+                mafiaBossRocket1.Hover();
+
+                if (_scene_game.SceneState == SceneState.GAME_RUNNING)
+                {
+                    if (mafiaBossRocket.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
+                    {
+                        mafiaBossRocket1.SetBlast();
+                        LoosePlayerHealth();
+                    }
+
+                    if (mafiaBossRocket1.AutoBlast())
+                        mafiaBossRocket1.SetBlast();
+                }
+            }
+
+            return true;
+        }
+
+        private bool RecycleMafiaBossRocket(Construct mafiaBossRocket)
+        {
+            //var hitbox = bomb.GetHitBox();
+
+            // if bomb is blasted and faed or goes out of scene bounds
+            if (mafiaBossRocket.IsFadingComplete /*|| hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT*/)
+            {
+                mafiaBossRocket.IsAnimating = false;
+
+                mafiaBossRocket.SetPosition(
+                    left: -3000,
+                    top: -3000);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        #endregion                
+
         #region MafiaBossRocketBullsEye
 
         private bool SpawnMafiaBossRocketBullsEyes()
@@ -3697,7 +3796,7 @@ namespace HonkTrooper
             }
         }
 
-        private void SetUfoBossRocketDirection(Construct source, AnimableConstruct rocket, Construct rocketTarget)
+        private void SetBossRocketDirection(Construct source, AnimableConstruct rocket, Construct rocketTarget)
         {
             // rocket target is on the bottom right side of the UfoBoss
             if (rocketTarget.GetTop() > source.GetTop() && rocketTarget.GetLeft() > source.GetLeft())
@@ -4282,11 +4381,11 @@ namespace HonkTrooper
             _ufo_boss_health_bar.Reset();
             _game_score_bar.Reset();
 
-            AddMainMenuHoveringScreens();
+            AddMainMenuGenerators();
             _scene_main_menu.Play();
         }
 
-        private void AddMainMenuHoveringScreens()
+        private void AddMainMenuGenerators()
         {
             _scene_main_menu.Clear();
             _scene_main_menu.AddToScene(
@@ -4323,7 +4422,7 @@ namespace HonkTrooper
                             );
         }
 
-        private void AddGameSceneConstructGenerators()
+        private void AddGameSceneGenerators()
         {
             _scene_game.Clear();
             _scene_game.AddToScene(
@@ -4434,10 +4533,16 @@ namespace HonkTrooper
                             startUpAction: SpawnUfoBossRockets,
                             randomizeGenerationDelay: true),
 
+
+                        new Generator(
+                            generationDelay: 25,
+                            generationAction: GenerateMafiaBossRocket,
+                            startUpAction: SpawnMafiaBossRockets),
+
                         new Generator(
                             generationDelay: 30,
-                            generationAction: GenerateZombieBossRocket,
-                            startUpAction: SpawnZombieBossRockets),
+                            generationAction: GenerateZombieBossRocketBlock,
+                            startUpAction: SpawnZombieBossRocketBlocks),
 
                         new Generator(
                             generationDelay: 200,
