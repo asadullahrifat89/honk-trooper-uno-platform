@@ -95,11 +95,11 @@ namespace HonkTrooper
             _autoBlastDelay = _autoBlastDelayDefault;
         }
 
-        public void Reposition(UfoBoss UfoBoss)
+        public void Reposition(Construct ufoBoss)
         {
             SetPosition(
-                left: (UfoBoss.GetLeft() + UfoBoss.Width / 2) - Width / 2,
-                top: UfoBoss.GetBottom() - (75));
+                left: (ufoBoss.GetLeft() + ufoBoss.Width / 2) - Width / 2,
+                top: ufoBoss.GetBottom() - (75));
         }
 
         public void SetBlast()
