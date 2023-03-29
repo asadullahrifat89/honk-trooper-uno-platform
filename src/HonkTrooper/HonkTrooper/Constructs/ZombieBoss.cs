@@ -83,7 +83,7 @@ namespace HonkTrooper
 
         public bool IsDead => Health <= 0;
 
-        public BossStance ZombieBossStance { get; set; } = BossStance.Idle;
+        private BossStance ZombieBossStance { get; set; } = BossStance.Idle;
 
         #endregion
 
