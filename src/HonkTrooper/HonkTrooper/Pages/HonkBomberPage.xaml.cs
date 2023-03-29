@@ -3655,7 +3655,7 @@ namespace HonkTrooper
 
         private bool SpawnMafiaBossRocketBullsEyes()
         {
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 3; i++)
             {
                 MafiaBossRocketBullsEye mafiaBossRocketBullsEye = new(
                     animateAction: AnimateMafiaBossRocketBullsEye,
@@ -4533,9 +4533,8 @@ namespace HonkTrooper
                             startUpAction: SpawnUfoBossRockets,
                             randomizeGenerationDelay: true),
 
-
                         new Generator(
-                            generationDelay: 25,
+                            generationDelay: 65,
                             generationAction: GenerateMafiaBossRocket,
                             startUpAction: SpawnMafiaBossRockets),
 
@@ -4551,7 +4550,7 @@ namespace HonkTrooper
                             randomizeGenerationDelay: true),
 
                         new Generator(
-                            generationDelay: 30,
+                            generationDelay: 35,
                             generationAction: GenerateMafiaBossRocketBullsEye,
                             startUpAction: SpawnMafiaBossRocketBullsEyes),
 

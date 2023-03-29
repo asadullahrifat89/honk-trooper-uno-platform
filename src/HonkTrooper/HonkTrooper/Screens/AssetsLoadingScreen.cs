@@ -135,6 +135,9 @@ namespace HonkTrooper
 
         private async Task GetFileAsync(Uri uri)
         {
+#if DEBUG
+            LoggingExtensions.Log("GetFileAsync: " +uri.OriginalString);
+#endif
             await StorageFile.GetFileFromApplicationUriAsync(uri);
             _progressBar.Value++;
         }

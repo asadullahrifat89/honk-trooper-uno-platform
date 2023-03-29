@@ -105,7 +105,7 @@ namespace HonkTrooper
         public void SetBlast()
         {
             _audioStub.Play(SoundType.ROCKET_BLAST);
-            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET - 2;
+            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET - 3;
 
             SetScaleTransform(Constants.DEFAULT_BLAST_SHRINK_SCALE);
             SetRotation(0);
