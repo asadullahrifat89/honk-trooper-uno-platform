@@ -89,7 +89,7 @@ namespace HonkTrooper
 
         public UfoBossMovementPattern MovementPattern { get; set; }
 
-        public BossStance UfoBossStance { get; set; } = BossStance.Idle;
+        private BossStance UfoBossStance { get; set; } = BossStance.Idle;
 
         #endregion
 
