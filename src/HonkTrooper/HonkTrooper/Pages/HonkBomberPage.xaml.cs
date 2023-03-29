@@ -135,18 +135,17 @@ namespace HonkTrooper
                 ScreenExtensions.SetScreenOrientation(ScreenExtensions.RequiredScreenOrientation);
 
             SetController();
-            SetScene();
+            SetStage();
 
             SizeChanged += HonkBomberPage_SizeChanged;
 
-            if (ScreenExtensions.GetScreenOrienation() == ScreenExtensions.RequiredScreenOrientation)
+            if (ScreenExtensions.GetScreenOrienation() == ScreenExtensions.RequiredScreenOrientation) // if the screen is in desired orientation the show asset loading screen
             {
                 ScreenExtensions.EnterFullScreen(true);
 
-                await Task.Delay(1500);
+                GenerateAssetsLoadingScreen();
 
-                GenerateGameStartScreen("Honk Trooper", "-Stop Honkers, Save The City-");
-                _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
+                _audio_stub.Play(SoundType.GAME_START);
             }
             else
             {
@@ -196,10 +195,9 @@ namespace HonkTrooper
                         RecycleDisplayOrientationChangeScreen(DisplayOrientationChangeScreen);
 
                         _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
-                        GenerateGameStartScreen("Honk Trooper", "-Stop Honkers, Save The City-");
-
-                        _scene_game.Play();
                         _scene_main_menu.Play();
+
+                        GenerateAssetsLoadingScreen();
                     }
                 }
                 else // ask to change orientation
@@ -258,7 +256,7 @@ namespace HonkTrooper
             _game_controller.DeactivateGyrometerReading();
             _game_controller.SetDefaultThumbstickPosition();
 
-            GenerateGameStartScreen("Game Paused", "-Taking a break-");
+            GenerateGameStartScreen(title: "Game Paused", subTitle: "-Taking a break-");
 
             return true;
         }
@@ -403,7 +401,7 @@ ConstructType.ZOMBIE_BOSS or
                     ufoBoss.Health = 0;
                 }
 
-if (construct is ZombieBoss zombieBoss)
+                if (construct is ZombieBoss zombieBoss)
                 {
                     zombieBoss.IsAttacking = false;
                     zombieBoss.Health = 0;
@@ -476,6 +474,65 @@ if (construct is ZombieBoss zombieBoss)
         {
             displayOrientationChangeScreen.IsAnimating = false;
             displayOrientationChangeScreen.SetPosition(left: -3000, top: -3000);
+        }
+
+        #endregion
+
+        #region AssetsLoadingScreen
+
+        private bool SpawnAssetsLoadingScreen()
+        {
+            AssetsLoadingScreen assetsLoadingScreen = null;
+
+            assetsLoadingScreen = new(
+                animateAction: AnimateAssetsLoadingScreen,
+                recycleAction: (se) => { return true; });
+
+            assetsLoadingScreen.SetPosition(
+                left: -3000,
+                top: -3000);
+
+            _scene_main_menu.AddToScene(assetsLoadingScreen);
+
+            return true;
+        }
+
+        private bool GenerateAssetsLoadingScreen()
+        {
+            if (_scene_main_menu.Children.OfType<AssetsLoadingScreen>().FirstOrDefault(x => x.IsAnimating == false) is AssetsLoadingScreen assetsLoadingScreen)
+            {
+                assetsLoadingScreen.IsAnimating = true;
+                assetsLoadingScreen.Reposition();
+                assetsLoadingScreen.SetSubTitle("...Loading Assets...");
+                assetsLoadingScreen.PreloadAssets(() =>
+                {
+                    RecycleAssetsLoadingScreen(assetsLoadingScreen);
+                    AddGameSceneConstructGenerators();
+                    GenerateGameStartScreen(title: "Honk Trooper", subTitle: "-Stop Honkers, Save The City-");
+
+                    if (!_scene_game.IsAnimating)
+                        _scene_game.Play();
+
+                    _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
+                });
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimateAssetsLoadingScreen(Construct assetsLoadingScreen)
+        {
+            AssetsLoadingScreen screen1 = assetsLoadingScreen as AssetsLoadingScreen;
+            screen1.Hover();
+            return true;
+        }
+
+        private void RecycleAssetsLoadingScreen(AssetsLoadingScreen assetsLoadingScreen)
+        {
+            assetsLoadingScreen.IsAnimating = false;
+            assetsLoadingScreen.SetPosition(left: -3000, top: -3000);
         }
 
         #endregion
@@ -587,7 +644,7 @@ if (construct is ZombieBoss zombieBoss)
                 backAction: () =>
                 {
                     RecyclePlayerSelectionScreen(playerSelectionScreen);
-                    GenerateGameStartScreen("Honk Trooper", "-Stop Honkers, Save The City-");
+                    GenerateGameStartScreen(title: "Honk Trooper", subTitle: "-Stop Honkers, Save The City-");
                     return true;
                 });
 
@@ -3915,200 +3972,203 @@ if (construct is ZombieBoss zombieBoss)
 
         #region Scene
 
-        private void SetScene()
+        private void SetStage()
         {
-            _scene_game.Clear();
-            _scene_main_menu.Clear();
-
             _powerUp_health_bar.Reset();
             _ufo_boss_health_bar.Reset();
             _game_score_bar.Reset();
 
-            AddGeneratorsToScene();
-
-            if (ScreenExtensions.GetScreenOrienation() == ScreenExtensions.RequiredScreenOrientation)
-                _scene_game.Play();
-
+            AddMainMenuHoveringScreens();
             _scene_main_menu.Play();
         }
 
-        private void AddGeneratorsToScene()
+        private void AddMainMenuHoveringScreens()
         {
-            _scene_game.AddToScene(
-
-            // add road marks
-            new Generator(
-                generationDelay: 20,
-                generationAction: GenerateRoadMark,
-                startUpAction: SpawnRoadMarks),
-
-            new Generator(
-                generationDelay: 72,
-                generationAction: GenerateRoadSideBillboard,
-                startUpAction: SpawnRoadSideBillboards),
-
-            new Generator(
-                generationDelay: 36,
-                generationAction: GenerateRoadSideLamp,
-                startUpAction: SpawnRoadSideLamps),
-
-            new Generator(
-                generationDelay: 36,
-                generationAction: GenerateRoadSideLightBillboard,
-                startUpAction: SpawnRoadSideLightBillboards),
-
-            // add road side walks
-            new Generator(
-                generationDelay: 18,
-                generationAction: GenerateRoadSideWalk,
-                startUpAction: SpawnRoadSideWalks),
-
-            // then add the top trees
-            new Generator(
-                generationDelay: 18,
-                generationAction: GenerateRoadSideTree,
-                startUpAction: SpawnRoadSideTrees),
-
-            // then add the top RoadSideHedges
-            new Generator(
-                generationDelay: 18,
-                generationAction: GenerateRoadSideHedge,
-                startUpAction: SpawnRoadSideHedges),
-
-            // then add the vehicles which will appear forward in z wrt the top trees
-            new Generator(
-                generationDelay: 100,
-                generationAction: GenerateVehicleEnemy,
-                startUpAction: SpawnVehicleEnemys),
-
-            // add the honks which will appear forward in z wrt to everything on the road
-            new Generator(
-                generationDelay: 0,
-                generationAction: () => { return true; },
-                startUpAction: SpawnHonks),
-
-            // add the player in scene which will appear forward in z wrt to all else
-            new Generator(
-                generationDelay: 0,
-                generationAction: () => { return true; },
-                startUpAction: SpawnPlayerBalloon),
-
-            new Generator(
-                generationDelay: 0,
-                generationAction: () => { return true; },
-                startUpAction: SpawnPlayerRockets),
-
-            new Generator(
-                generationDelay: 0,
-                generationAction: () => { return true; },
-                startUpAction: SpawnPlayerHonkBombs),
-
-            // add the clouds which are above the player z
-            new Generator(
-                generationDelay: 400,
-                generationAction: GenerateCloud,
-                startUpAction: SpawnClouds,
-                randomizeGenerationDelay: true),
-
-            new Generator(
-                generationDelay: 10,
-                generationAction: GenerateUfoBoss,
-                startUpAction: SpawnUfoBosses),
-
-             new Generator(
-                generationDelay: 10,
-                generationAction: GenerateZombieBoss,
-                startUpAction: SpawnZombieBosses),
-
-            new Generator(
-                generationDelay: 10,
-                generationAction: GenerateVehicleBoss,
-                startUpAction: SpawnVehicleBosses),
-
-            new Generator(
-                generationDelay: 50,
-                generationAction: GenerateVehicleBossRocket,
-                startUpAction: SpawnVehicleBossRockets,
-                randomizeGenerationDelay: true),
-
-            new Generator(
-                generationDelay: 40,
-                generationAction: GenerateUfoBossRocket,
-                startUpAction: SpawnUfoBossRockets,
-                randomizeGenerationDelay: true),
-
-            new Generator(
-                generationDelay: 30,
-                generationAction: GenerateZombieBossRocket,
-                startUpAction: SpawnZombieBossRockets),
-
-            new Generator(
-                generationDelay: 200,
-                generationAction: GenerateUfoBossRocketSeeking,
-                startUpAction: SpawnUfoBossRocketSeekings,
-                randomizeGenerationDelay: true),
-
-            new Generator(
-                generationDelay: 0,
-                generationAction: () => { return true; },
-                startUpAction: SpawnPlayerRocketSeekings),
-
-            new Generator(
-                generationDelay: 0,
-                generationAction: () => { return true; },
-                startUpAction: SpawnPlayerRocketBullsEyes),
-
-            new Generator(
-                generationDelay: 180,
-                generationAction: GenerateUfoEnemy,
-                startUpAction: SpawnUfoEnemys,
-                randomizeGenerationDelay: true),
-
-                new Generator(
-                generationDelay: 0,
-                generationAction: () => { return true; },
-                startUpAction: SpawnUfoEnemyRockets),
-
-                new Generator(
-                generationDelay: 500,
-                generationAction: GenerateHealthPickups,
-                startUpAction: SpawnHealthPickups,
-                randomizeGenerationDelay: true),
-
-            new Generator(
-                generationDelay: 500,
-                generationAction: GeneratePowerUpPickup,
-                startUpAction: SpawnPowerUpPickups,
-                randomizeGenerationDelay: true)
-                );
-
+            _scene_main_menu.Clear();
             _scene_main_menu.AddToScene(
 
-            new Generator(
-                generationDelay: 0,
-                generationAction: () => { return true; },
-                startUpAction: SpawnInterimScreen),
+                        new Generator(
+                            generationDelay: 0,
+                            generationAction: () => { return true; },
+                            startUpAction: SpawnAssetsLoadingScreen),
 
-            new Generator(
-                generationDelay: 0,
-                generationAction: () => { return true; },
-                startUpAction: SpawnGameStartScreen),
+                        new Generator(
+                            generationDelay: 0,
+                            generationAction: () => { return true; },
+                            startUpAction: SpawnInterimScreen),
 
-            new Generator(
-                generationDelay: 0,
-                generationAction: () => { return true; },
-                startUpAction: SpawnPlayerSelectionScreen),
+                        new Generator(
+                            generationDelay: 0,
+                            generationAction: () => { return true; },
+                            startUpAction: SpawnGameStartScreen),
 
-            new Generator(
-                generationDelay: 0,
-                generationAction: () => { return true; },
-                startUpAction: SpawnPlayerHonkBombSelectionScreen),
+                        new Generator(
+                            generationDelay: 0,
+                            generationAction: () => { return true; },
+                            startUpAction: SpawnPlayerSelectionScreen),
 
-            new Generator(
-                generationDelay: 0,
-                generationAction: () => { return true; },
-                startUpAction: SpawnDisplayOrientationChangeScreen)
-                );
+                        new Generator(
+                            generationDelay: 0,
+                            generationAction: () => { return true; },
+                            startUpAction: SpawnPlayerHonkBombSelectionScreen),
+
+                        new Generator(
+                            generationDelay: 0,
+                            generationAction: () => { return true; },
+                            startUpAction: SpawnDisplayOrientationChangeScreen)
+                            );
+        }
+
+        private void AddGameSceneConstructGenerators()
+        {
+            _scene_game.Clear();
+            _scene_game.AddToScene(
+
+                        // add road marks
+                        new Generator(
+                            generationDelay: 20,
+                            generationAction: GenerateRoadMark,
+                            startUpAction: SpawnRoadMarks),
+
+                        new Generator(
+                            generationDelay: 72,
+                            generationAction: GenerateRoadSideBillboard,
+                            startUpAction: SpawnRoadSideBillboards),
+
+                        new Generator(
+                            generationDelay: 36,
+                            generationAction: GenerateRoadSideLamp,
+                            startUpAction: SpawnRoadSideLamps),
+
+                        new Generator(
+                            generationDelay: 36,
+                            generationAction: GenerateRoadSideLightBillboard,
+                            startUpAction: SpawnRoadSideLightBillboards),
+
+                        // add road side walks
+                        new Generator(
+                            generationDelay: 18,
+                            generationAction: GenerateRoadSideWalk,
+                            startUpAction: SpawnRoadSideWalks),
+
+                        // then add the top trees
+                        new Generator(
+                            generationDelay: 18,
+                            generationAction: GenerateRoadSideTree,
+                            startUpAction: SpawnRoadSideTrees),
+
+                        // then add the top RoadSideHedges
+                        new Generator(
+                            generationDelay: 18,
+                            generationAction: GenerateRoadSideHedge,
+                            startUpAction: SpawnRoadSideHedges),
+
+                        // then add the vehicles which will appear forward in z wrt the top trees
+                        new Generator(
+                            generationDelay: 100,
+                            generationAction: GenerateVehicleEnemy,
+                            startUpAction: SpawnVehicleEnemys),
+
+                        // add the honks which will appear forward in z wrt to everything on the road
+                        new Generator(
+                            generationDelay: 0,
+                            generationAction: () => { return true; },
+                            startUpAction: SpawnHonks),
+
+                        // add the player in scene which will appear forward in z wrt to all else
+                        new Generator(
+                            generationDelay: 0,
+                            generationAction: () => { return true; },
+                            startUpAction: SpawnPlayerBalloon),
+
+                        new Generator(
+                            generationDelay: 0,
+                            generationAction: () => { return true; },
+                            startUpAction: SpawnPlayerRockets),
+
+                        new Generator(
+                            generationDelay: 0,
+                            generationAction: () => { return true; },
+                            startUpAction: SpawnPlayerHonkBombs),
+
+                        // add the clouds which are above the player z
+                        new Generator(
+                            generationDelay: 400,
+                            generationAction: GenerateCloud,
+                            startUpAction: SpawnClouds,
+                            randomizeGenerationDelay: true),
+
+                        new Generator(
+                            generationDelay: 10,
+                            generationAction: GenerateUfoBoss,
+                            startUpAction: SpawnUfoBosses),
+
+                        new Generator(
+                            generationDelay: 10,
+                            generationAction: GenerateZombieBoss,
+                            startUpAction: SpawnZombieBosses),
+
+                        new Generator(
+                            generationDelay: 10,
+                            generationAction: GenerateVehicleBoss,
+                            startUpAction: SpawnVehicleBosses),
+
+                        new Generator(
+                            generationDelay: 50,
+                            generationAction: GenerateVehicleBossRocket,
+                            startUpAction: SpawnVehicleBossRockets,
+                            randomizeGenerationDelay: true),
+
+                        new Generator(
+                            generationDelay: 40,
+                            generationAction: GenerateUfoBossRocket,
+                            startUpAction: SpawnUfoBossRockets,
+                            randomizeGenerationDelay: true),
+
+                        new Generator(
+                            generationDelay: 30,
+                            generationAction: GenerateZombieBossRocket,
+                            startUpAction: SpawnZombieBossRockets),
+
+                        new Generator(
+                            generationDelay: 200,
+                            generationAction: GenerateUfoBossRocketSeeking,
+                            startUpAction: SpawnUfoBossRocketSeekings,
+                            randomizeGenerationDelay: true),
+
+                        new Generator(
+                            generationDelay: 0,
+                            generationAction: () => { return true; },
+                            startUpAction: SpawnPlayerRocketSeekings),
+
+                        new Generator(
+                            generationDelay: 0,
+                            generationAction: () => { return true; },
+                            startUpAction: SpawnPlayerRocketBullsEyes),
+
+                        new Generator(
+                            generationDelay: 180,
+                            generationAction: GenerateUfoEnemy,
+                            startUpAction: SpawnUfoEnemys,
+                            randomizeGenerationDelay: true),
+
+                        new Generator(
+                            generationDelay: 0,
+                            generationAction: () => { return true; },
+                            startUpAction: SpawnUfoEnemyRockets),
+
+                        new Generator(
+                            generationDelay: 500,
+                            generationAction: GenerateHealthPickups,
+                            startUpAction: SpawnHealthPickups,
+                            randomizeGenerationDelay: true),
+
+                        new Generator(
+                            generationDelay: 500,
+                            generationAction: GeneratePowerUpPickup,
+                            startUpAction: SpawnPowerUpPickups,
+                            randomizeGenerationDelay: true)
+                            );
         }
 
         private void SetSceneScaling()
