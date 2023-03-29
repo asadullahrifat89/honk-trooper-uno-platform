@@ -68,7 +68,7 @@ namespace HonkTrooper
 
             _progressBar = new()
             {
-                Width = 60,
+                Width = 200,
                 Height = 10,
                 Value = 0,
                 Maximum = 0,
