@@ -7,7 +7,7 @@ using Microsoft.UI;
 
 namespace HonkTrooper
 {
-    public partial class ZombieBossRocket : AnimableConstruct
+    public partial class ZombieBossRocketBlock : AnimableConstruct
     {
         #region Fields
 
@@ -27,18 +27,18 @@ namespace HonkTrooper
 
         #region Ctor
 
-        public ZombieBossRocket(
+        public ZombieBossRocketBlock(
           Func<Construct, bool> animateAction,
           Func<Construct, bool> recycleAction)
         {
-            ConstructType = ConstructType.ZOMBIE_BOSS_ROCKET;
+            ConstructType = ConstructType.ZOMBIE_BOSS_ROCKET_BLOCK;
 
             _random = new Random();
 
-            _bomb_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.ZOMBIE_BOSS_ROCKET).Select(x => x.Uri).ToArray();
+            _bomb_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.ZOMBIE_BOSS_ROCKET_BLOCK).Select(x => x.Uri).ToArray();
             _bomb_blast_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BLAST).Select(x => x.Uri).ToArray();
 
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.ZOMBIE_BOSS_ROCKET);
+            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.ZOMBIE_BOSS_ROCKET_BLOCK);
 
             var width = size.Width;
             var height = size.Height;

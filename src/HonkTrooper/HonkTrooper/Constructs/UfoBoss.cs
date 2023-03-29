@@ -68,13 +68,12 @@ namespace HonkTrooper
             SetChild(_content_image);
 
             IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
-            SpeedOffset = 0;
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE;
 
             _audioStub = new AudioStub(
-                (SoundType.UFO_BOSS_HOVERING, 0.8, true),
-                (SoundType.UFO_BOSS_ENTRY, 0.8, false),
-                (SoundType.UFO_BOSS_DEAD, 1, false));
+                (SoundType.UFO_HOVERING, 0.8, true),
+                (SoundType.BOSS_ENTRY, 0.8, false),
+                (SoundType.BOSS_DEAD, 1, false));
         }
 
         #endregion
@@ -97,7 +96,7 @@ namespace HonkTrooper
 
         public void Reset()
         {
-            _audioStub.Play(SoundType.UFO_BOSS_ENTRY);
+            _audioStub.Play(SoundType.BOSS_ENTRY);
 
             PlaySoundLoop();
 
@@ -134,7 +133,7 @@ namespace HonkTrooper
             _winStanceDelay = _winStanceDelayDefault;
         }
 
-        private void SetIdleStance()
+        public void SetIdleStance()
         {
             UfoBossStance = BossStance.Idle;
             var uri = ConstructExtensions.GetRandomContentUri(_ufo_boss_idle_uris);
@@ -175,13 +174,13 @@ namespace HonkTrooper
             {
                 IsAttacking = false;
                 StopSoundLoop();
-                _audioStub.Play(SoundType.UFO_BOSS_DEAD);
+                _audioStub.Play(SoundType.BOSS_DEAD);
             }
         }
 
         public void StopSoundLoop()
         {
-            _audioStub.Stop(SoundType.UFO_BOSS_HOVERING);
+            _audioStub.Stop(SoundType.UFO_HOVERING);
         }
 
         public void Move(
@@ -230,7 +229,7 @@ namespace HonkTrooper
 
         private void PlaySoundLoop()
         {
-            _audioStub.Play(SoundType.UFO_BOSS_HOVERING);
+            _audioStub.Play(SoundType.UFO_HOVERING);
         }
 
         private void SeekPlayer(Rect playerPoint)
@@ -283,6 +282,12 @@ namespace HonkTrooper
 
                 SetLeft(left + speed);
             }
+        }
+
+        private double GetFlightSpeed(double distance)
+        {
+            var flightSpeed = distance / _lag;
+            return flightSpeed;
         }
 
         private bool MoveInIsometricSquares(double speed, double sceneWidth, double sceneHeight)
@@ -522,7 +527,7 @@ namespace HonkTrooper
                 {
                     MoveUp(speed);
 
-                    if (GetTop() < 0)
+                    if (GetTop() - Height / 2 < 0)
                     {
                         _movementDirection = MovementDirection.Down;
                     }
@@ -544,11 +549,7 @@ namespace HonkTrooper
             return false;
         }
 
-        private double GetFlightSpeed(double distance)
-        {
-            var flightSpeed = distance / _lag;
-            return flightSpeed;
-        }
+
 
         private void RandomizeMovementPattern()
         {

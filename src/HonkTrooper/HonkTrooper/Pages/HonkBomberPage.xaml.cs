@@ -25,6 +25,7 @@ namespace HonkTrooper
         private readonly HealthBar _ufo_boss_health_bar;
         private readonly HealthBar _vehicle_boss_health_bar;
         private readonly HealthBar _zombie_boss_health_bar;
+        private readonly HealthBar _mafia_boss_health_bar;
 
         private readonly HealthBar _powerUp_health_bar;
         private readonly HealthBar _sound_pollution_health_bar;
@@ -35,7 +36,9 @@ namespace HonkTrooper
         private readonly Threashold _ufo_boss_threashold;
         private readonly Threashold _vehicle_boss_threashold;
         private readonly Threashold _zombie_boss_threashold;
-        private readonly Threashold _enemy_threashold;
+        private readonly Threashold _mafia_boss_threashold;
+
+        private readonly Threashold _ufo_enemy_threashold;
 
         private readonly double _sound_pollution_max_limit = 6; // max 3 vehicles or ufos honking to trigger sound pollution limit
 
@@ -48,17 +51,21 @@ namespace HonkTrooper
         private readonly double _ufo_boss_threashold_limit_increase = 15;
 
         //TODO: set defaults _zombie_boss_threashold_limit = 85
-        private readonly double _zombie_boss_threashold_limit = 85; // first appearance
+        private readonly double _zombie_boss_threashold_limit = 75; // first appearance
         private readonly double _zombie_boss_threashold_limit_increase = 15;
 
+        //TODO: set defaults _mafia_boss_threashold_limit = 100
+        private readonly double _mafia_boss_threashold_limit = 100; // first appearance
+        private readonly double _mafia_boss_threashold_limit_increase = 15;
+
         //TODO: set defaults _enemy_threashold_limit = 35
-        private readonly double _enemy_threashold_limit = 35; // first appearance
-        private readonly double _enemy_threashold_limit_increase = 5;
+        private readonly double _ufo_enemy_threashold_limit = 35; // first appearance
+        private readonly double _ufo_enemy_threashold_limit_increase = 5;
 
-        private double _enemy_kill_count;
-        private readonly double _enemy_kill_count_limit = 20;
+        private double _ufo_enemy_kill_count;
+        private readonly double _ufo_enemy_kill_count_limit = 20;
 
-        private bool _enemy_fleet_appeared;
+        private bool _ufo_enemy_fleet_appeared;
 
         private PlayerBalloon _player;
         private PlayerBalloonTemplate _selected_player_template;
@@ -83,6 +90,7 @@ namespace HonkTrooper
             _ufo_boss_health_bar = this.UfoBossHealthBar;
             _zombie_boss_health_bar = this.ZombieBossHealthBar;
             _vehicle_boss_health_bar = this.VehicleBossHealthBar;
+            _mafia_boss_health_bar = this.MafiaBossHealthBar;
 
             _powerUp_health_bar = this.PowerUpHealthBar;
             _sound_pollution_health_bar = this.SoundPollutionBar;
@@ -95,7 +103,9 @@ namespace HonkTrooper
             _ufo_boss_threashold = new Threashold(_ufo_boss_threashold_limit);
             _zombie_boss_threashold = new Threashold(_zombie_boss_threashold_limit);
             _vehicle_boss_threashold = new Threashold(_vehicle_boss_threashold_limit);
-            _enemy_threashold = new Threashold(_enemy_threashold_limit);
+            _mafia_boss_threashold = new Threashold(_mafia_boss_threashold_limit);
+
+            _ufo_enemy_threashold = new Threashold(_ufo_enemy_threashold_limit);
 
             ToggleHudVisibility(Visibility.Collapsed);
 
@@ -125,7 +135,7 @@ namespace HonkTrooper
 
         #region Events
 
-        private async void HonkBomberPage_Loaded(object sender, RoutedEventArgs e)
+        private void HonkBomberPage_Loaded(object sender, RoutedEventArgs e)
         {
             ScreenExtensions.DisplayInformation.OrientationChanged += DisplayInformation_OrientationChanged;
             ScreenExtensions.RequiredScreenOrientation = DisplayOrientations.Landscape;
@@ -302,6 +312,7 @@ namespace HonkTrooper
             _ufo_boss_health_bar.Reset();
             _vehicle_boss_health_bar.Reset();
             _zombie_boss_health_bar.Reset();
+            _mafia_boss_health_bar.Reset();
 
             _sound_pollution_health_bar.Reset();
             _sound_pollution_health_bar.SetMaxiumHealth(_sound_pollution_max_limit);
@@ -311,15 +322,16 @@ namespace HonkTrooper
             _ufo_boss_threashold.Reset(_ufo_boss_threashold_limit);
             _vehicle_boss_threashold.Reset(_vehicle_boss_threashold_limit);
             _zombie_boss_threashold.Reset(_zombie_boss_threashold_limit);
+            _mafia_boss_threashold.Reset(_mafia_boss_threashold_limit);
 
-            _enemy_threashold.Reset(_enemy_threashold_limit);
-            _enemy_kill_count = 0;
-            _enemy_fleet_appeared = false;
+            _ufo_enemy_threashold.Reset(_ufo_enemy_threashold_limit);
+            _ufo_enemy_kill_count = 0;
+            _ufo_enemy_fleet_appeared = false;
 
             SetupSetPlayerBalloon();
 
             GeneratePlayerBalloon();
-            RecycleLogicalConstructs();
+            RepositionConstructs();
 
             _scene_game.SceneState = SceneState.GAME_RUNNING;
             _scene_game.Play();
@@ -368,7 +380,7 @@ namespace HonkTrooper
             }
         }
 
-        private void RecycleLogicalConstructs()
+        private void RepositionConstructs()
         {
             foreach (var construct in _scene_game.Children.OfType<Construct>()
                 .Where(x => x.ConstructType is
@@ -376,7 +388,8 @@ namespace HonkTrooper
                 ConstructType.VEHICLE_ENEMY_SMALL or
                 ConstructType.VEHICLE_BOSS or
                 ConstructType.UFO_BOSS or
-ConstructType.ZOMBIE_BOSS or
+                ConstructType.ZOMBIE_BOSS or
+                ConstructType.MAFIA_BOSS or
                 ConstructType.HONK or
                 ConstructType.PLAYER_ROCKET or
                 ConstructType.PLAYER_ROCKET_SEEKING or
@@ -386,14 +399,19 @@ ConstructType.ZOMBIE_BOSS or
                 ConstructType.UFO_ENEMY or
                 ConstructType.UFO_ENEMY_ROCKET or
                 ConstructType.VEHICLE_BOSS_ROCKET or
+                ConstructType.MAFIA_BOSS_ROCKET or
+                ConstructType.MAFIA_BOSS_ROCKET_BULLS_EYE or
                 ConstructType.POWERUP_PICKUP or
                 ConstructType.HEALTH_PICKUP))
             {
                 construct.IsAnimating = false;
+                construct.SetPosition(left: -3000, top: -3000);
 
-                construct.SetPosition(
-                     left: -3000,
-                     top: -3000);
+                if (construct is VehicleBoss vehicleboss)
+                {
+                    vehicleboss.IsAttacking = false;
+                    vehicleboss.Health = 0;
+                }
 
                 if (construct is UfoBoss ufoBoss)
                 {
@@ -407,11 +425,12 @@ ConstructType.ZOMBIE_BOSS or
                     zombieBoss.Health = 0;
                 }
 
-                if (construct is VehicleBoss vehicleboss)
+                if (construct is MafiaBoss mafiaBoss)
                 {
-                    vehicleboss.IsAttacking = false;
-                    vehicleboss.Health = 0;
+                    mafiaBoss.IsAttacking = false;
+                    mafiaBoss.Health = 0;
                 }
+
             }
         }
 
@@ -504,10 +523,10 @@ ConstructType.ZOMBIE_BOSS or
                 assetsLoadingScreen.IsAnimating = true;
                 assetsLoadingScreen.Reposition();
                 assetsLoadingScreen.SetSubTitle("...Loading Assets...");
-                assetsLoadingScreen.PreloadAssets(() =>
+                _ = assetsLoadingScreen.PreloadAssets(() =>
                 {
                     RecycleAssetsLoadingScreen(assetsLoadingScreen);
-                    AddGameSceneConstructGenerators();
+                    AddGameSceneGenerators();
                     GenerateGameStartScreen(title: "Honk Trooper", subTitle: "-Stop Honkers, Save The City-");
 
                     if (!_scene_game.IsAnimating)
@@ -1083,10 +1102,7 @@ ConstructType.ZOMBIE_BOSS or
             {
                 playerHonkBomb.IsAnimating = false;
                 playerHonkBomb.IsGravitatingDownwards = false;
-
-                playerHonkBomb.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                playerHonkBomb.SetPosition(left: -3000, top: -3000);
 
                 return true;
             }
@@ -1137,14 +1153,19 @@ ConstructType.ZOMBIE_BOSS or
 
                 // get closest possible target
                 UfoBossRocketSeeking ufoBossRocketSeeking = _scene_game.Children.OfType<UfoBossRocketSeeking>()?.FirstOrDefault(x => x.IsAnimating && !x.IsBlasting && x.GetHitBox().IntersectsWith(playerDistantHitBox));
+
                 UfoBoss ufoBoss = _scene_game.Children.OfType<UfoBoss>()?.FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetHitBox().IntersectsWith(playerDistantHitBox));
                 ZombieBoss zombieBoss = _scene_game.Children.OfType<ZombieBoss>()?.FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetHitBox().IntersectsWith(playerDistantHitBox));
+                MafiaBoss mafiaBoss = _scene_game.Children.OfType<MafiaBoss>()?.FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetHitBox().IntersectsWith(playerDistantHitBox));
+
                 UfoEnemy ufoEnemy = _scene_game.Children.OfType<UfoEnemy>()?.FirstOrDefault(x => x.IsAnimating && !x.IsFadingComplete && x.GetHitBox().IntersectsWith(playerDistantHitBox));
 
                 // if not found then find random target
                 ufoBossRocketSeeking ??= _scene_game.Children.OfType<UfoBossRocketSeeking>().FirstOrDefault(x => x.IsAnimating && !x.IsBlasting);
                 ufoBoss ??= _scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking);
                 zombieBoss ??= _scene_game.Children.OfType<ZombieBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking);
+                mafiaBoss ??= _scene_game.Children.OfType<MafiaBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking);
+
                 ufoEnemy ??= _scene_game.Children.OfType<UfoEnemy>().FirstOrDefault(x => x.IsAnimating && !x.IsFadingComplete);
 
                 if (ufoEnemy is not null)
@@ -1162,6 +1183,10 @@ ConstructType.ZOMBIE_BOSS or
                 else if (zombieBoss is not null)
                 {
                     SetPlayerRocketDirection(source: _player, rocket: playerRocket, rocketTarget: zombieBoss);
+                }
+                else if (mafiaBoss is not null)
+                {
+                    SetPlayerRocketDirection(source: _player, rocket: playerRocket, rocketTarget: mafiaBoss);
                 }
 
                 return true;
@@ -1212,7 +1237,7 @@ ConstructType.ZOMBIE_BOSS or
                         playerRocket1.SetBlast();
                         ufoBossRocketSeeking.SetBlast();
                     }
-                    else if (_scene_game.Children.OfType<ZombieBossRocket>().FirstOrDefault(x => x.IsAnimating && !x.IsBlasting && x.GetCloseHitBox().IntersectsWith(hitBox)) is ZombieBossRocket zombieBossRocket) // if player bomb touches ZombieBoss's seeking bomb, it blasts
+                    else if (_scene_game.Children.OfType<ZombieBossRocketBlock>().FirstOrDefault(x => x.IsAnimating && !x.IsBlasting && x.GetCloseHitBox().IntersectsWith(hitBox)) is ZombieBossRocketBlock zombieBossRocket) // if player bomb touches ZombieBoss's seeking bomb, it blasts
                     {
                         playerRocket1.SetBlast();
                         zombieBossRocket.LooseHealth();
@@ -1226,6 +1251,11 @@ ConstructType.ZOMBIE_BOSS or
                     {
                         playerRocket1.SetBlast();
                         LooseZombieBossHealth(zombieBoss);
+                    }
+                    else if (_scene_game.Children.OfType<MafiaBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetCloseHitBox().IntersectsWith(hitBox)) is MafiaBoss mafiaBoss) // if player bomb touches MafiaBoss, it blasts, MafiaBoss looses health
+                    {
+                        playerRocket1.SetBlast();
+                        LooseMafiaBossHealth(mafiaBoss);
                     }
                     else if (_scene_game.Children.OfType<UfoEnemy>().FirstOrDefault(x => x.IsAnimating && !x.IsDead && x.GetCloseHitBox().IntersectsWith(hitBox)) is UfoEnemy ufoEnemy) // if player bomb touches enemy, it blasts, enemy looses health
                     {
@@ -1249,10 +1279,7 @@ ConstructType.ZOMBIE_BOSS or
             if (playerRocket.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 /*|| hitbox.Top < 0 || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT*/)
             {
                 playerRocket.IsAnimating = false;
-
-                playerRocket.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                playerRocket.SetPosition(left: -3000, top: -3000);
 
                 return true;
             }
@@ -1338,7 +1365,7 @@ ConstructType.ZOMBIE_BOSS or
                             ufoBossRocketSeeking.SetBlast();
                         }
                     }
-                    else if (_scene_game.Children.OfType<ZombieBossRocket>().FirstOrDefault(x => x.IsAnimating) is ZombieBossRocket zombieBossRocket) // target ZombieBossRocket
+                    else if (_scene_game.Children.OfType<ZombieBossRocketBlock>().FirstOrDefault(x => x.IsAnimating) is ZombieBossRocketBlock zombieBossRocket) // target ZombieBossRocketBlock
                     {
                         playerRocketSeeking1.Seek(zombieBossRocket.GetCloseHitBox());
 
@@ -1368,6 +1395,16 @@ ConstructType.ZOMBIE_BOSS or
                             LooseZombieBossHealth(ZombieBoss);
                         }
                     }
+                    else if (_scene_game.Children.OfType<MafiaBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is MafiaBoss MafiaBoss) // target MafiaBoss
+                    {
+                        playerRocketSeeking1.Seek(MafiaBoss.GetCloseHitBox());
+
+                        if (playerRocketSeeking1.GetCloseHitBox().IntersectsWith(MafiaBoss.GetCloseHitBox()))
+                        {
+                            playerRocketSeeking1.SetBlast();
+                            LooseMafiaBossHealth(MafiaBoss);
+                        }
+                    }
                     else if (_scene_game.Children.OfType<UfoEnemy>().FirstOrDefault(x => x.IsAnimating && !x.IsFadingComplete) is UfoEnemy enemy) // target UfoEnemy
                     {
                         playerRocketSeeking1.Seek(enemy.GetCloseHitBox());
@@ -1395,10 +1432,7 @@ ConstructType.ZOMBIE_BOSS or
             if (playerRocketSeeking.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Bottom > Constants.DEFAULT_SCENE_HEIGHT)
             {
                 playerRocketSeeking.IsAnimating = false;
-
-                playerRocketSeeking.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                playerRocketSeeking.SetPosition(left: -3000, top: -3000);
 
                 return true;
             }
@@ -1451,14 +1485,20 @@ ConstructType.ZOMBIE_BOSS or
 
                 // get closest possible target
                 UfoBossRocketSeeking ufoBossRocketSeeking = _scene_game.Children.OfType<UfoBossRocketSeeking>()?.FirstOrDefault(x => x.IsAnimating && !x.IsBlasting && x.GetHitBox().IntersectsWith(playerDistantHitBox));
+
                 UfoBoss ufoBoss = _scene_game.Children.OfType<UfoBoss>()?.FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetHitBox().IntersectsWith(playerDistantHitBox));
                 ZombieBoss zombieBoss = _scene_game.Children.OfType<ZombieBoss>()?.FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetHitBox().IntersectsWith(playerDistantHitBox));
+                MafiaBoss mafiaBoss = _scene_game.Children.OfType<MafiaBoss>()?.FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetHitBox().IntersectsWith(playerDistantHitBox));
+
                 UfoEnemy ufoEnemy = _scene_game.Children.OfType<UfoEnemy>()?.FirstOrDefault(x => x.IsAnimating && !x.IsFadingComplete && x.GetHitBox().IntersectsWith(playerDistantHitBox));
 
                 // if not found then find random target
                 ufoBossRocketSeeking ??= _scene_game.Children.OfType<UfoBossRocketSeeking>().FirstOrDefault(x => x.IsAnimating && !x.IsBlasting);
+
                 ufoBoss ??= _scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking);
                 zombieBoss ??= _scene_game.Children.OfType<ZombieBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking);
+                mafiaBoss ??= _scene_game.Children.OfType<MafiaBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking);
+
                 ufoEnemy ??= _scene_game.Children.OfType<UfoEnemy>().FirstOrDefault(x => x.IsAnimating && !x.IsFadingComplete);
 
                 if (ufoEnemy is not null)
@@ -1476,6 +1516,10 @@ ConstructType.ZOMBIE_BOSS or
                 else if (zombieBoss is not null)
                 {
                     playerRocketBullsEye.SetTarget(zombieBoss.GetCloseHitBox());
+                }
+                else if (mafiaBoss is not null)
+                {
+                    playerRocketBullsEye.SetTarget(mafiaBoss.GetCloseHitBox());
                 }
 
                 if (_powerUp_health_bar.HasHealth && (PowerUpType)_powerUp_health_bar.Tag == PowerUpType.BULLS_EYE)
@@ -1516,7 +1560,7 @@ ConstructType.ZOMBIE_BOSS or
                         ufoBossRocketSeeking.SetBlast();
 
                     }
-                    else if (_scene_game.Children.OfType<ZombieBossRocket>().FirstOrDefault(x => x.IsAnimating && x.GetCloseHitBox().IntersectsWith(hitbox)) is ZombieBossRocket zombieBossRocket) // target ZombieBossRocket
+                    else if (_scene_game.Children.OfType<ZombieBossRocketBlock>().FirstOrDefault(x => x.IsAnimating && x.GetCloseHitBox().IntersectsWith(hitbox)) is ZombieBossRocketBlock zombieBossRocket) // target ZombieBossRocketBlock
                     {
                         playerRocketBullsEye1.SetBlast();
                         zombieBossRocket.LooseHealth();
@@ -1530,6 +1574,11 @@ ConstructType.ZOMBIE_BOSS or
                     {
                         playerRocketBullsEye1.SetBlast();
                         LooseZombieBossHealth(zombieBoss);
+                    }
+                    else if (_scene_game.Children.OfType<MafiaBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetCloseHitBox().IntersectsWith(hitbox)) is MafiaBoss mafiaBoss) // target MafiaBoss
+                    {
+                        playerRocketBullsEye1.SetBlast();
+                        LooseMafiaBossHealth(mafiaBoss);
                     }
                     else if (_scene_game.Children.OfType<UfoEnemy>().FirstOrDefault(x => x.IsAnimating && !x.IsFadingComplete && x.GetCloseHitBox().IntersectsWith(hitbox)) is UfoEnemy enemy) // target UfoEnemy
                     {
@@ -1553,10 +1602,7 @@ ConstructType.ZOMBIE_BOSS or
             if (playerRocketBullsEye.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Bottom > Constants.DEFAULT_SCENE_HEIGHT)
             {
                 playerRocketBullsEye.IsAnimating = false;
-
-                playerRocketBullsEye.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                playerRocketBullsEye.SetPosition(left: -3000, top: -3000);
 
                 return true;
             }
@@ -1564,87 +1610,7 @@ ConstructType.ZOMBIE_BOSS or
             return false;
         }
 
-        #endregion
-
-        #region RoadSideWalkSlope
-
-        //private bool SpawnRoadSideWalkSlopes()
-        //{
-        //    for (int i = 0; i < 10; i++)
-        //    {
-        //        RoadSideWalkSlope roadSideStripe = new(
-        //            animateAction: AnimateRoadSideWalkSlope,
-        //            recycleAction: RecycleRoadSideWalkSlope);
-
-        //        roadSideStripe.SetPosition(
-        //            left: -3000,
-        //            top: -3000);
-
-        //        _scene_game.AddToScene(roadSideStripe);
-        //    }
-
-        //    return true;
-        //}
-
-        //private bool GenerateRoadSideWalkSlopeTop()
-        //{
-        //    if (_scene_game.Children.OfType<RoadSideWalkSlope>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideWalkSlope roadSideStripe)
-        //    {
-        //        roadSideStripe.IsAnimating = true;
-
-        //        roadSideStripe.SetPosition(
-        //            left: (Constants.DEFAULT_SCENE_WIDTH / 5.4),
-        //            top: (roadSideStripe.Height * -1) - 16.5,
-        //            z: 0);
-
-        //        return true;
-        //    }
-
-        //    return false;
-        //}
-
-        //private bool GenerateRoadSideWalkSlopeBottom()
-        //{
-        //    if (_scene_game.Children.OfType<RoadSideWalkSlope>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideWalkSlope roadSideWalkSlope)
-        //    {
-        //        roadSideWalkSlope.IsAnimating = true;
-
-        //        roadSideWalkSlope.SetPosition(
-        //            left: (roadSideWalkSlope.Height * -1),
-        //            top: (Constants.DEFAULT_SCENE_HEIGHT / 2.1) - 4.5,
-        //            z: 0);
-
-        //        return true;
-        //    }
-
-        //    return false;
-        //}
-
-        //private bool AnimateRoadSideWalkSlope(Construct roadSideWalkSlope)
-        //{
-        //    RoadSideWalkSlope roadSideStripe1 = roadSideWalkSlope as RoadSideWalkSlope;
-        //    var speed = roadSideStripe1.GetMovementSpeed();
-        //    roadSideStripe1.MoveDownRight(speed);
-        //    return true;
-        //}
-
-        //private bool RecycleRoadSideWalkSlope(Construct roadSideWalkSlope)
-        //{
-        //    var hitBox = roadSideWalkSlope.GetHitBox();
-
-        //    if (hitBox.Top - roadSideWalkSlope.Height > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSideWalkSlope.Height > Constants.DEFAULT_SCENE_WIDTH)
-        //    {
-        //        roadSideWalkSlope.IsAnimating = false;
-
-        //        roadSideWalkSlope.SetPosition(
-        //            left: -3000,
-        //            top: -3000);
-        //    }
-
-        //    return true;
-        //}
-
-        #endregion
+        #endregion        
 
         #region RoadSideWalk
 
@@ -1706,10 +1672,7 @@ ConstructType.ZOMBIE_BOSS or
             if (hitBox.Top - 45 > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSideWalk.Width > Constants.DEFAULT_SCENE_WIDTH)
             {
                 roadSideWalk.IsAnimating = false;
-
-                roadSideWalk.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                roadSideWalk.SetPosition(left: -3000, top: -3000);
             }
 
             return true;
@@ -1783,10 +1746,7 @@ ConstructType.ZOMBIE_BOSS or
             if (hitBox.Top - 45 > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSideTree.Width > Constants.DEFAULT_SCENE_WIDTH)
             {
                 roadSideTree.IsAnimating = false;
-
-                roadSideTree.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                roadSideTree.SetPosition(left: -3000, top: -3000);
             }
 
             return true;
@@ -1854,10 +1814,7 @@ ConstructType.ZOMBIE_BOSS or
             if (hitBox.Top - 45 > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSideHedge.Width > Constants.DEFAULT_SCENE_WIDTH)
             {
                 roadSideHedge.IsAnimating = false;
-
-                roadSideHedge.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                roadSideHedge.SetPosition(left: -3000, top: -3000);
             }
 
             return true;
@@ -1925,10 +1882,7 @@ ConstructType.ZOMBIE_BOSS or
             if (hitBox.Top - 45 > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSideLamp.Width > Constants.DEFAULT_SCENE_WIDTH)
             {
                 roadSideLamp.IsAnimating = false;
-
-                roadSideLamp.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                roadSideLamp.SetPosition(left: -3000, top: -3000);
             }
 
             return true;
@@ -2005,10 +1959,7 @@ ConstructType.ZOMBIE_BOSS or
             if (hitBox.Top - 45 > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSideLight.Width > Constants.DEFAULT_SCENE_WIDTH)
             {
                 roadSideLight.IsAnimating = false;
-
-                roadSideLight.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                roadSideLight.SetPosition(left: -3000, top: -3000);
             }
 
             return true;
@@ -2080,10 +2031,7 @@ ConstructType.ZOMBIE_BOSS or
             if (hitBox.Top - 45 > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadSideBillboard.Width > Constants.DEFAULT_SCENE_WIDTH)
             {
                 roadSideBillboard.IsAnimating = false;
-
-                roadSideBillboard.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                roadSideBillboard.SetPosition(left: -3000, top: -3000);
             }
 
             return true;
@@ -2143,10 +2091,7 @@ ConstructType.ZOMBIE_BOSS or
             if (hitBox.Top - 45 > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadMark.Width > Constants.DEFAULT_SCENE_WIDTH)
             {
                 roadMark.IsAnimating = false;
-
-                roadMark.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                roadMark.SetPosition(left: -3000, top: -3000);
             }
 
             return true;
@@ -2207,7 +2152,7 @@ ConstructType.ZOMBIE_BOSS or
 
                 _scene_game.ActivateSlowMotion();
 
-                GenerateInterimScreen("Beware of Crimson Saucer");
+                GenerateInterimScreen("Beware of Scarlet Saucer");
 
                 _scene_game.ToggleNightMode(true);
 
@@ -2272,10 +2217,7 @@ ConstructType.ZOMBIE_BOSS or
             if (ufoBoss.IsShrinkingComplete)
             {
                 ufoBoss.IsAnimating = false;
-
-                ufoBoss.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                ufoBoss.SetPosition(left: -3000, top: -3000);
             }
 
             return true;
@@ -2344,10 +2286,10 @@ ConstructType.ZOMBIE_BOSS or
                 ufoBossRocket.Reset();
                 ufoBossRocket.IsAnimating = true;
                 ufoBossRocket.SetPopping();
-                ufoBossRocket.Reposition(UfoBoss: ufoBoss);
+                ufoBossRocket.Reposition(ufoBoss: ufoBoss);
 
                 GenerateDropShadow(source: ufoBossRocket);
-                SetUfoBossRocketDirection(source: ufoBoss, rocket: ufoBossRocket, rocketTarget: _player);
+                SetBossRocketDirection(source: ufoBoss, rocket: ufoBossRocket, rocketTarget: _player);
 
                 return true;
             }
@@ -2412,10 +2354,7 @@ ConstructType.ZOMBIE_BOSS or
             if (ufoBossRocket.IsFadingComplete /*|| hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT*/)
             {
                 ufoBossRocket.IsAnimating = false;
-
-                ufoBossRocket.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                ufoBossRocket.SetPosition(left: -3000, top: -3000);
 
                 return true;
             }
@@ -2520,10 +2459,7 @@ ConstructType.ZOMBIE_BOSS or
             if (ufoBossRocketSeeking.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Bottom > Constants.DEFAULT_SCENE_HEIGHT)
             {
                 ufoBossRocketSeeking.IsAnimating = false;
-
-                ufoBossRocketSeeking.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                ufoBossRocketSeeking.SetPosition(left: -3000, top: -3000);
 
                 return true;
             }
@@ -2559,7 +2495,7 @@ ConstructType.ZOMBIE_BOSS or
         private bool GenerateUfoEnemy()
         {
             if (!AnyBossExists() &&
-                _enemy_threashold.ShouldRelease(_game_score_bar.GetScore()) &&
+                _ufo_enemy_threashold.ShouldRelease(_game_score_bar.GetScore()) &&
                 _scene_game.Children.OfType<UfoEnemy>().FirstOrDefault(x => x.IsAnimating == false) is UfoEnemy ufoEnemy)
             {
                 ufoEnemy.IsAnimating = true;
@@ -2568,13 +2504,13 @@ ConstructType.ZOMBIE_BOSS or
 
                 GenerateDropShadow(source: ufoEnemy);
 
-                if (!_enemy_fleet_appeared)
+                if (!_ufo_enemy_fleet_appeared)
                 {
                     _audio_stub.Play(SoundType.UFO_ENEMY_ENTRY);
 
                     GenerateInterimScreen("Beware of UFO Fleet");
                     _scene_game.ActivateSlowMotion();
-                    _enemy_fleet_appeared = true;
+                    _ufo_enemy_fleet_appeared = true;
                 }
 
                 return true;
@@ -2622,10 +2558,7 @@ ConstructType.ZOMBIE_BOSS or
                 hitbox.Right < 0 || hitbox.Bottom < 0) // enemy is dead or goes out of bounds
             {
                 ufoEnemy.IsAnimating = false;
-
-                ufoEnemy.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                ufoEnemy.SetPosition(left: -3000, top: -3000);
             }
 
             return true;
@@ -2640,13 +2573,13 @@ ConstructType.ZOMBIE_BOSS or
             {
                 _game_score_bar.GainScore(2);
 
-                _enemy_kill_count++;
+                _ufo_enemy_kill_count++;
 
-                if (_enemy_kill_count > _enemy_kill_count_limit) // after killing limited enemies increase the threadhold limit
+                if (_ufo_enemy_kill_count > _ufo_enemy_kill_count_limit) // after killing limited enemies increase the threadhold limit
                 {
-                    _enemy_threashold.IncreaseThreasholdLimit(increment: _enemy_threashold_limit_increase, currentPoint: _game_score_bar.GetScore());
-                    _enemy_kill_count = 0;
-                    _enemy_fleet_appeared = false;
+                    _ufo_enemy_threashold.IncreaseThreasholdLimit(increment: _ufo_enemy_threashold_limit_increase, currentPoint: _game_score_bar.GetScore());
+                    _ufo_enemy_kill_count = 0;
+                    _ufo_enemy_fleet_appeared = false;
 
                     LevelUp();
 
@@ -2744,10 +2677,7 @@ ConstructType.ZOMBIE_BOSS or
             if (ufoEnemyRocket.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Bottom > Constants.DEFAULT_SCENE_HEIGHT)
             {
                 ufoEnemyRocket.IsAnimating = false;
-
-                ufoEnemyRocket.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                ufoEnemyRocket.SetPosition(left: -3000, top: -3000);
 
                 return true;
             }
@@ -2819,10 +2749,7 @@ ConstructType.ZOMBIE_BOSS or
             if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left > Constants.DEFAULT_SCENE_WIDTH)
             {
                 vehicleEnemy.IsAnimating = false;
-
-                vehicleEnemy.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                vehicleEnemy.SetPosition(left: -3000, top: -3000);
             }
 
             return true;
@@ -2962,10 +2889,7 @@ ConstructType.ZOMBIE_BOSS or
             if (vehicleBoss1.IsDead && hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left > Constants.DEFAULT_SCENE_WIDTH)
             {
                 vehicleBoss.IsAnimating = false;
-
-                vehicleBoss.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                vehicleBoss.SetPosition(left: -3000, top: -3000);
             }
 
             return true;
@@ -3091,10 +3015,7 @@ ConstructType.ZOMBIE_BOSS or
             {
                 vehicleBossRocket.IsAnimating = false;
                 vehicleBossRocket.IsGravitatingUpwards = false;
-
-                vehicleBossRocket.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                vehicleBossRocket.SetPosition(left: -3000, top: -3000);
 
                 return true;
             }
@@ -3219,10 +3140,7 @@ ConstructType.ZOMBIE_BOSS or
             if (zombieBoss.IsShrinkingComplete)
             {
                 zombieBoss.IsAnimating = false;
-
-                zombieBoss.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                zombieBoss.SetPosition(left: -3000, top: -3000);
             }
 
             return true;
@@ -3259,15 +3177,15 @@ ConstructType.ZOMBIE_BOSS or
 
         #endregion
 
-        #region ZombieBossRocket
+        #region ZombieBossRocketBlock
 
-        private bool SpawnZombieBossRockets()
+        private bool SpawnZombieBossRocketBlocks()
         {
             for (int i = 0; i < 6; i++)
             {
-                ZombieBossRocket zombieBossRocket = new(
-                    animateAction: AnimateZombieBossRocket,
-                    recycleAction: RecycleZombieBossRocket);
+                ZombieBossRocketBlock zombieBossRocket = new(
+                    animateAction: AnimateZombieBossRocketBlock,
+                    recycleAction: RecycleZombieBossRocketBlock);
 
                 zombieBossRocket.SetPosition(
                     left: -3000,
@@ -3282,11 +3200,11 @@ ConstructType.ZOMBIE_BOSS or
             return true;
         }
 
-        private bool GenerateZombieBossRocket()
+        private bool GenerateZombieBossRocketBlock()
         {
             if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
                 _scene_game.Children.OfType<ZombieBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is ZombieBoss zombieBoss &&
-                _scene_game.Children.OfType<ZombieBossRocket>().FirstOrDefault(x => x.IsAnimating == false) is ZombieBossRocket zombieBossRocket)
+                _scene_game.Children.OfType<ZombieBossRocketBlock>().FirstOrDefault(x => x.IsAnimating == false) is ZombieBossRocketBlock zombieBossRocket)
             {
                 zombieBossRocket.Reset();
                 zombieBossRocket.IsAnimating = true;
@@ -3301,9 +3219,9 @@ ConstructType.ZOMBIE_BOSS or
             return false;
         }
 
-        private bool AnimateZombieBossRocket(Construct zombieBossRocket)
+        private bool AnimateZombieBossRocketBlock(Construct zombieBossRocket)
         {
-            ZombieBossRocket zombieBossRocket1 = zombieBossRocket as ZombieBossRocket;
+            ZombieBossRocketBlock zombieBossRocket1 = zombieBossRocket as ZombieBossRocketBlock;
 
             var speed = zombieBossRocket1.GetMovementSpeed();
 
@@ -3335,7 +3253,7 @@ ConstructType.ZOMBIE_BOSS or
             return true;
         }
 
-        private bool RecycleZombieBossRocket(Construct zombieBossRocket)
+        private bool RecycleZombieBossRocketBlock(Construct zombieBossRocket)
         {
             var hitbox = zombieBossRocket.GetHitBox();
 
@@ -3345,10 +3263,7 @@ ConstructType.ZOMBIE_BOSS or
             if (zombieBossRocket.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH * scaling || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT * scaling)
             {
                 zombieBossRocket.IsAnimating = false;
-
-                zombieBossRocket.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                zombieBossRocket.SetPosition(left: -3000, top: -3000);
 
                 return true;
             }
@@ -3357,6 +3272,378 @@ ConstructType.ZOMBIE_BOSS or
         }
 
         #endregion                
+
+        #region MafiaBoss
+
+        private bool SpawnMafiaBosses()
+        {
+            MafiaBoss mafiaBoss = new(
+                animateAction: AnimateMafiaBoss,
+                recycleAction: RecycleMafiaBoss);
+
+            mafiaBoss.SetPosition(
+                left: -3000,
+                top: -3000,
+                z: 8);
+
+            _scene_game.AddToScene(mafiaBoss);
+
+            SpawnDropShadow(source: mafiaBoss);
+
+            return true;
+        }
+
+        private bool GenerateMafiaBoss()
+        {
+            // if scene doesn't contain a MafiaBoss then pick a MafiaBoss and add to scene
+
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
+                _mafia_boss_threashold.ShouldRelease(_game_score_bar.GetScore()) && !MafiaBossExists() &&
+                _scene_game.Children.OfType<MafiaBoss>().FirstOrDefault(x => x.IsAnimating == false) is MafiaBoss mafiaBoss)
+            {
+                _audio_stub.Stop(SoundType.GAME_BACKGROUND_MUSIC);
+                //_audio_stub.Play(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
+                _audio_stub.SetVolume(SoundType.AMBIENCE, 0.2);
+
+                mafiaBoss.IsAnimating = true;
+
+                mafiaBoss.Reset();
+                mafiaBoss.SetPosition(
+                    left: 0,
+                    top: mafiaBoss.Height * -1);
+
+                GenerateDropShadow(source: mafiaBoss);
+
+                // set MafiaBoss health
+                mafiaBoss.Health = _mafia_boss_threashold.GetReleasePointDifference() * 1.5;
+
+                _mafia_boss_threashold.IncreaseThreasholdLimit(increment: _mafia_boss_threashold_limit_increase, currentPoint: _game_score_bar.GetScore());
+
+                _mafia_boss_health_bar.SetMaxiumHealth(mafiaBoss.Health);
+                _mafia_boss_health_bar.SetValue(mafiaBoss.Health);
+                _mafia_boss_health_bar.SetIcon(mafiaBoss.GetContentUri());
+                _mafia_boss_health_bar.SetBarColor(color: Colors.Crimson);
+
+                _scene_game.ActivateSlowMotion();
+
+                GenerateInterimScreen("Beware of Crimson Mafia");
+
+                _scene_game.ToggleNightMode(true);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimateMafiaBoss(Construct mafiaBoss)
+        {
+            MafiaBoss mafiaBoss1 = mafiaBoss as MafiaBoss;
+
+            if (mafiaBoss1.IsDead)
+            {
+                mafiaBoss.Shrink();
+            }
+            else
+            {
+                mafiaBoss.Pop();
+
+                mafiaBoss1.Hover();
+                mafiaBoss1.DepleteHitStance();
+                mafiaBoss1.DepleteWinStance();
+
+                if (_scene_game.SceneState == SceneState.GAME_RUNNING)
+                {
+                    var speed = mafiaBoss1.GetMovementSpeed();
+                    var scaling = ScreenExtensions.GetScreenSpaceScaling();
+
+                    if (mafiaBoss1.IsAttacking)
+                    {
+                        mafiaBoss1.Move(
+                            speed: speed,
+                            sceneWidth: Constants.DEFAULT_SCENE_WIDTH * scaling,
+                            sceneHeight: Constants.DEFAULT_SCENE_HEIGHT * scaling,
+                            playerPoint: _player.GetCloseHitBox());
+
+
+                        if (mafiaBoss1.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
+                        {
+                            LoosePlayerHealth();
+                        }
+                    }
+                    else
+                    {
+                        mafiaBoss1.MoveDownRight(speed);
+
+                        if (mafiaBoss.GetLeft() > (Constants.DEFAULT_SCENE_WIDTH * scaling / 3)) // bring MafiaBoss to a suitable distance from player and then start attacking
+                        {
+                            mafiaBoss1.IsAttacking = true;
+                        }
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        private bool RecycleMafiaBoss(Construct mafiaBoss)
+        {
+            if (mafiaBoss.IsShrinkingComplete)
+            {
+                mafiaBoss.IsAnimating = false;
+                mafiaBoss.SetPosition(left: -3000, top: -3000);
+            }
+
+            return true;
+        }
+
+        private void LooseMafiaBossHealth(MafiaBoss mafiaBoss)
+        {
+            mafiaBoss.SetPopping();
+            mafiaBoss.LooseHealth();
+            mafiaBoss.SetHitStance();
+
+            _mafia_boss_health_bar.SetValue(mafiaBoss.Health);
+
+            if (mafiaBoss.IsDead)
+            {
+                //_audio_stub.Stop(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
+                _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
+                _audio_stub.SetVolume(SoundType.AMBIENCE, 0.6);
+
+                _player.SetWinStance();
+                _game_score_bar.GainScore(3);
+
+                LevelUp();
+
+                _scene_game.ActivateSlowMotion();
+                _scene_game.ToggleNightMode(false);
+            }
+        }
+
+        private bool MafiaBossExists()
+        {
+            return _scene_game.Children.OfType<MafiaBoss>().Any(x => x.IsAnimating);
+        }
+
+        #endregion
+
+        #region MafiaBossRocket
+
+        private bool SpawnMafiaBossRockets()
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                MafiaBossRocket mafiaBossRocket = new(
+                    animateAction: AnimateMafiaBossRocket,
+                    recycleAction: RecycleMafiaBossRocket);
+
+                mafiaBossRocket.SetPosition(
+                    left: -3000,
+                    top: -3000,
+                    z: 7);
+
+                _scene_game.AddToScene(mafiaBossRocket);
+
+                SpawnDropShadow(source: mafiaBossRocket);
+            }
+
+            return true;
+        }
+
+        private bool GenerateMafiaBossRocket()
+        {
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
+                _scene_game.Children.OfType<MafiaBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is MafiaBoss mafiaBoss &&
+                _scene_game.Children.OfType<MafiaBossRocket>().FirstOrDefault(x => x.IsAnimating == false) is MafiaBossRocket mafiaBossRocket)
+            {
+                mafiaBossRocket.Reset();
+                mafiaBossRocket.IsAnimating = true;
+                mafiaBossRocket.SetPopping();
+                mafiaBossRocket.Reposition(mafiaBoss: mafiaBoss);
+
+                GenerateDropShadow(source: mafiaBossRocket);
+                SetBossRocketDirection(source: mafiaBoss, rocket: mafiaBossRocket, rocketTarget: _player);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimateMafiaBossRocket(Construct mafiaBossRocket)
+        {
+            MafiaBossRocket mafiaBossRocket1 = mafiaBossRocket as MafiaBossRocket;
+
+            var speed = mafiaBossRocket1.GetMovementSpeed();
+
+            if (mafiaBossRocket1.AwaitMoveDownLeft)
+            {
+                mafiaBossRocket1.MoveDownLeft(speed);
+            }
+            else if (mafiaBossRocket1.AwaitMoveUpRight)
+            {
+                mafiaBossRocket1.MoveUpRight(speed);
+            }
+            else if (mafiaBossRocket1.AwaitMoveUpLeft)
+            {
+                mafiaBossRocket1.MoveUpLeft(speed);
+            }
+            else if (mafiaBossRocket1.AwaitMoveDownRight)
+            {
+                mafiaBossRocket1.MoveDownRight(speed);
+            }
+
+            if (mafiaBossRocket1.IsBlasting)
+            {
+                mafiaBossRocket.Expand();
+                mafiaBossRocket.Fade(0.02);
+            }
+            else
+            {
+                mafiaBossRocket.Pop();
+                mafiaBossRocket1.Hover();
+
+                if (_scene_game.SceneState == SceneState.GAME_RUNNING)
+                {
+                    if (mafiaBossRocket.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
+                    {
+                        mafiaBossRocket1.SetBlast();
+                        LoosePlayerHealth();
+                    }
+
+                    if (mafiaBossRocket1.AutoBlast())
+                        mafiaBossRocket1.SetBlast();
+                }
+            }
+
+            return true;
+        }
+
+        private bool RecycleMafiaBossRocket(Construct mafiaBossRocket)
+        {
+            //var hitbox = bomb.GetHitBox();
+
+            // if bomb is blasted and faed or goes out of scene bounds
+            if (mafiaBossRocket.IsFadingComplete /*|| hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT*/)
+            {
+                mafiaBossRocket.IsAnimating = false;
+                mafiaBossRocket.SetPosition(left: -3000, top: -3000);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        #endregion                
+
+        #region MafiaBossRocketBullsEye
+
+        private bool SpawnMafiaBossRocketBullsEyes()
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                MafiaBossRocketBullsEye mafiaBossRocketBullsEye = new(
+                    animateAction: AnimateMafiaBossRocketBullsEye,
+                    recycleAction: RecycleMafiaBossRocketBullsEye);
+
+                mafiaBossRocketBullsEye.SetPosition(
+                    left: -3000,
+                    top: -3000,
+                    z: 7);
+
+                _scene_game.AddToScene(mafiaBossRocketBullsEye);
+
+                SpawnDropShadow(source: mafiaBossRocketBullsEye);
+            }
+
+            return true;
+        }
+
+        private bool GenerateMafiaBossRocketBullsEye()
+        {
+            // generate a seeking bomb if one is not in scene
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
+                _scene_game.Children.OfType<MafiaBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is MafiaBoss mafiaBoss &&
+                //!_scene_game.Children.OfType<MafiaBossRocketBullsEye>().Any(x => x.IsAnimating) &&
+                _scene_game.Children.OfType<MafiaBossRocketBullsEye>().FirstOrDefault(x => x.IsAnimating == false) is MafiaBossRocketBullsEye mafiaBossRocketBullsEye)
+            {
+                mafiaBossRocketBullsEye.Reset();
+                mafiaBossRocketBullsEye.IsAnimating = true;
+                mafiaBossRocketBullsEye.SetPopping();
+                mafiaBossRocketBullsEye.Reposition(mafiaBoss: mafiaBoss);
+                mafiaBossRocketBullsEye.SetTarget(_player.GetCloseHitBox());
+
+                GenerateDropShadow(source: mafiaBossRocketBullsEye);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool AnimateMafiaBossRocketBullsEye(Construct mafiaBossRocketBullsEye)
+        {
+            MafiaBossRocketBullsEye mafiaBossRocketBullsEye1 = mafiaBossRocketBullsEye as MafiaBossRocketBullsEye;
+
+            var speed = mafiaBossRocketBullsEye1.GetMovementSpeed();
+
+            if (mafiaBossRocketBullsEye1.IsBlasting)
+            {
+                mafiaBossRocketBullsEye.Expand();
+                mafiaBossRocketBullsEye.Fade(0.02);
+                mafiaBossRocketBullsEye1.MoveDownRight(speed);
+            }
+            else
+            {
+                mafiaBossRocketBullsEye.Pop();
+                mafiaBossRocketBullsEye.Rotate(rotationSpeed: 2.5);
+
+                if (_scene_game.SceneState == SceneState.GAME_RUNNING)
+                {
+                    if (_scene_game.Children.OfType<MafiaBoss>().Any(x => x.IsAnimating && x.IsAttacking))
+                    {
+                        mafiaBossRocketBullsEye1.Move();
+
+                        if (mafiaBossRocketBullsEye1.GetCloseHitBox().IntersectsWith(_player.GetCloseHitBox()))
+                        {
+                            mafiaBossRocketBullsEye1.SetBlast();
+                            LoosePlayerHealth();
+                        }
+                        else
+                        {
+                            if (mafiaBossRocketBullsEye1.AutoBlast())
+                                mafiaBossRocketBullsEye1.SetBlast();
+                        }
+                    }
+                    else
+                    {
+                        mafiaBossRocketBullsEye1.SetBlast();
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        private bool RecycleMafiaBossRocketBullsEye(Construct mafiaBossRocketBullsEye)
+        {
+            var hitbox = mafiaBossRocketBullsEye.GetHitBox();
+
+            // if bomb is blasted and faed or goes out of scene bounds
+            if (mafiaBossRocketBullsEye.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Bottom > Constants.DEFAULT_SCENE_HEIGHT)
+            {
+                mafiaBossRocketBullsEye.IsAnimating = false;
+                mafiaBossRocketBullsEye.SetPosition(left: -3000, top: -3000);
+
+                return true;
+            }
+
+            return false;
+        }
+
+        #endregion
 
         #region Rocket
 
@@ -3393,7 +3680,7 @@ ConstructType.ZOMBIE_BOSS or
             }
         }
 
-        private void SetUfoBossRocketDirection(Construct source, AnimableConstruct rocket, Construct rocketTarget)
+        private void SetBossRocketDirection(Construct source, AnimableConstruct rocket, Construct rocketTarget)
         {
             // rocket target is on the bottom right side of the UfoBoss
             if (rocketTarget.GetTop() > source.GetTop() && rocketTarget.GetLeft() > source.GetLeft())
@@ -3432,12 +3719,12 @@ ConstructType.ZOMBIE_BOSS or
 
         private bool AnyBossExists()
         {
-            return (UfoBossExists() || VehicleBossExists() || ZombieBossExists());
+            return (UfoBossExists() || VehicleBossExists() || ZombieBossExists() || MafiaBossExists());
         }
 
         private bool AnyInAirBossExists()
         {
-            return (UfoBossExists() || ZombieBossExists());
+            return (UfoBossExists() || ZombieBossExists() || MafiaBossExists());
         }
 
         #endregion
@@ -3497,10 +3784,7 @@ ConstructType.ZOMBIE_BOSS or
             if (honk.IsFadingComplete)
             {
                 honk.IsAnimating = false;
-
-                honk.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                honk.SetPosition(left: -3000, top: -3000);
             }
 
             return true;
@@ -3621,11 +3905,7 @@ ConstructType.ZOMBIE_BOSS or
             if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left > Constants.DEFAULT_SCENE_WIDTH)
             {
                 cloud.IsAnimating = false;
-
-                cloud.SetPosition(
-                    left: -3000,
-                    top: -3000);
-
+                cloud.SetPosition(left: -3000, top: -3000);
             }
 
             return true;
@@ -3664,9 +3944,7 @@ ConstructType.ZOMBIE_BOSS or
             if (!dropShadow1.IsParentConstructAnimating())
             {
                 dropShadow.IsAnimating = false;
-                dropShadow.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                dropShadow.SetPosition(left: -3000, top: -3000);
 
                 return true;
             }
@@ -3716,7 +3994,6 @@ ConstructType.ZOMBIE_BOSS or
                 healthPickup.Reset();
 
                 var topOrLeft = _random.Next(2);
-
                 var lane = _random.Next(2);
 
                 switch (topOrLeft)
@@ -3784,11 +4061,8 @@ ConstructType.ZOMBIE_BOSS or
 
             if (hitBox.Top - healthPickup.Height > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - healthPickup.Width > Constants.DEFAULT_SCENE_WIDTH || healthPickup.IsShrinkingComplete)
             {
-                healthPickup.SetPosition(
-                    left: -3000,
-                    top: -3000);
-
                 healthPickup.IsAnimating = false;
+                healthPickup.SetPosition(left: -3000, top: -3000);
             }
 
             return true;
@@ -3928,10 +4202,7 @@ ConstructType.ZOMBIE_BOSS or
             if (hitBox.Top - powerUpPickup.Height > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - powerUpPickup.Width > Constants.DEFAULT_SCENE_WIDTH || powerUpPickup.IsShrinkingComplete)
             {
                 powerUpPickup.IsAnimating = false;
-
-                powerUpPickup.SetPosition(
-                    left: -3000,
-                    top: -3000);
+                powerUpPickup.SetPosition(left: -3000, top: -3000);
             }
 
             return true;
@@ -3978,11 +4249,11 @@ ConstructType.ZOMBIE_BOSS or
             _ufo_boss_health_bar.Reset();
             _game_score_bar.Reset();
 
-            AddMainMenuHoveringScreens();
+            AddMainMenuGenerators();
             _scene_main_menu.Play();
         }
 
-        private void AddMainMenuHoveringScreens()
+        private void AddMainMenuGenerators()
         {
             _scene_main_menu.Clear();
             _scene_main_menu.AddToScene(
@@ -4019,156 +4290,203 @@ ConstructType.ZOMBIE_BOSS or
                             );
         }
 
-        private void AddGameSceneConstructGenerators()
+        private void AddGameSceneGenerators()
         {
             _scene_game.Clear();
             _scene_game.AddToScene(
 
-                        // add road marks
-                        new Generator(
-                            generationDelay: 20,
-                            generationAction: GenerateRoadMark,
-                            startUpAction: SpawnRoadMarks),
+            #region Player
 
-                        new Generator(
-                            generationDelay: 72,
-                            generationAction: GenerateRoadSideBillboard,
-                            startUpAction: SpawnRoadSideBillboards),
+            new Generator(
+                generationDelay: 0,
+                generationAction: () => { return true; },
+                startUpAction: SpawnPlayerBalloon),
 
-                        new Generator(
-                            generationDelay: 36,
-                            generationAction: GenerateRoadSideLamp,
-                            startUpAction: SpawnRoadSideLamps),
+            new Generator(
+                generationDelay: 0,
+                generationAction: () => { return true; },
+                startUpAction: SpawnPlayerRockets),
 
-                        new Generator(
-                            generationDelay: 36,
-                            generationAction: GenerateRoadSideLightBillboard,
-                            startUpAction: SpawnRoadSideLightBillboards),
+            new Generator(
+                generationDelay: 0,
+                generationAction: () => { return true; },
+                startUpAction: SpawnPlayerHonkBombs),
 
-                        // add road side walks
-                        new Generator(
-                            generationDelay: 18,
-                            generationAction: GenerateRoadSideWalk,
-                            startUpAction: SpawnRoadSideWalks),
+            new Generator(
+                generationDelay: 0,
+                generationAction: () => { return true; },
+                startUpAction: SpawnPlayerRocketSeekings),
 
-                        // then add the top trees
-                        new Generator(
-                            generationDelay: 18,
-                            generationAction: GenerateRoadSideTree,
-                            startUpAction: SpawnRoadSideTrees),
+            new Generator(
+                generationDelay: 0,
+                generationAction: () => { return true; },
+                startUpAction: SpawnPlayerRocketBullsEyes),
 
-                        // then add the top RoadSideHedges
-                        new Generator(
-                            generationDelay: 18,
-                            generationAction: GenerateRoadSideHedge,
-                            startUpAction: SpawnRoadSideHedges),
+            #endregion
 
-                        // then add the vehicles which will appear forward in z wrt the top trees
-                        new Generator(
-                            generationDelay: 100,
-                            generationAction: GenerateVehicleEnemy,
-                            startUpAction: SpawnVehicleEnemys),
+            #region Road
 
-                        // add the honks which will appear forward in z wrt to everything on the road
-                        new Generator(
-                            generationDelay: 0,
-                            generationAction: () => { return true; },
-                            startUpAction: SpawnHonks),
+            new Generator(
+                generationDelay: 20,
+                generationAction: GenerateRoadMark,
+                startUpAction: SpawnRoadMarks),
 
-                        // add the player in scene which will appear forward in z wrt to all else
-                        new Generator(
-                            generationDelay: 0,
-                            generationAction: () => { return true; },
-                            startUpAction: SpawnPlayerBalloon),
+            new Generator(
+                generationDelay: 72,
+                generationAction: GenerateRoadSideBillboard,
+                startUpAction: SpawnRoadSideBillboards),
 
-                        new Generator(
-                            generationDelay: 0,
-                            generationAction: () => { return true; },
-                            startUpAction: SpawnPlayerRockets),
+            new Generator(
+                generationDelay: 36,
+                generationAction: GenerateRoadSideLamp,
+                startUpAction: SpawnRoadSideLamps),
 
-                        new Generator(
-                            generationDelay: 0,
-                            generationAction: () => { return true; },
-                            startUpAction: SpawnPlayerHonkBombs),
+            new Generator(
+                generationDelay: 36,
+                generationAction: GenerateRoadSideLightBillboard,
+                startUpAction: SpawnRoadSideLightBillboards),
 
-                        // add the clouds which are above the player z
-                        new Generator(
-                            generationDelay: 400,
-                            generationAction: GenerateCloud,
-                            startUpAction: SpawnClouds,
-                            randomizeGenerationDelay: true),
+            new Generator(
+                generationDelay: 18,
+                generationAction: GenerateRoadSideWalk,
+                startUpAction: SpawnRoadSideWalks),
 
-                        new Generator(
-                            generationDelay: 10,
-                            generationAction: GenerateUfoBoss,
-                            startUpAction: SpawnUfoBosses),
+            new Generator(
+                generationDelay: 18,
+                generationAction: GenerateRoadSideTree,
+                startUpAction: SpawnRoadSideTrees),
 
-                        new Generator(
-                            generationDelay: 10,
-                            generationAction: GenerateZombieBoss,
-                            startUpAction: SpawnZombieBosses),
+            new Generator(
+                generationDelay: 18,
+                generationAction: GenerateRoadSideHedge,
+                startUpAction: SpawnRoadSideHedges),
 
-                        new Generator(
-                            generationDelay: 10,
-                            generationAction: GenerateVehicleBoss,
-                            startUpAction: SpawnVehicleBosses),
+            #endregion
 
-                        new Generator(
-                            generationDelay: 50,
-                            generationAction: GenerateVehicleBossRocket,
-                            startUpAction: SpawnVehicleBossRockets,
-                            randomizeGenerationDelay: true),
+            #region Vehicle Enemy
 
-                        new Generator(
-                            generationDelay: 40,
-                            generationAction: GenerateUfoBossRocket,
-                            startUpAction: SpawnUfoBossRockets,
-                            randomizeGenerationDelay: true),
+            new Generator(
+                generationDelay: 100,
+                generationAction: GenerateVehicleEnemy,
+                startUpAction: SpawnVehicleEnemys),
 
-                        new Generator(
-                            generationDelay: 30,
-                            generationAction: GenerateZombieBossRocket,
-                            startUpAction: SpawnZombieBossRockets),
+            new Generator(
+                generationDelay: 0,
+                generationAction: () => { return true; },
+                startUpAction: SpawnHonks),
 
-                        new Generator(
-                            generationDelay: 200,
-                            generationAction: GenerateUfoBossRocketSeeking,
-                            startUpAction: SpawnUfoBossRocketSeekings,
-                            randomizeGenerationDelay: true),
+            #endregion
 
-                        new Generator(
-                            generationDelay: 0,
-                            generationAction: () => { return true; },
-                            startUpAction: SpawnPlayerRocketSeekings),
+            #region Sky
 
-                        new Generator(
-                            generationDelay: 0,
-                            generationAction: () => { return true; },
-                            startUpAction: SpawnPlayerRocketBullsEyes),
+            new Generator(
+                generationDelay: 400,
+                generationAction: GenerateCloud,
+                startUpAction: SpawnClouds,
+                randomizeGenerationDelay: true),
 
-                        new Generator(
-                            generationDelay: 180,
-                            generationAction: GenerateUfoEnemy,
-                            startUpAction: SpawnUfoEnemys,
-                            randomizeGenerationDelay: true),
+            #endregion
 
-                        new Generator(
-                            generationDelay: 0,
-                            generationAction: () => { return true; },
-                            startUpAction: SpawnUfoEnemyRockets),
+            #region Vehicle Boss
 
-                        new Generator(
-                            generationDelay: 500,
-                            generationAction: GenerateHealthPickups,
-                            startUpAction: SpawnHealthPickups,
-                            randomizeGenerationDelay: true),
+            new Generator(
+                generationDelay: 10,
+                generationAction: GenerateVehicleBoss,
+                startUpAction: SpawnVehicleBosses),
 
-                        new Generator(
-                            generationDelay: 500,
-                            generationAction: GeneratePowerUpPickup,
-                            startUpAction: SpawnPowerUpPickups,
-                            randomizeGenerationDelay: true)
-                            );
+            new Generator(
+                generationDelay: 50,
+                generationAction: GenerateVehicleBossRocket,
+                startUpAction: SpawnVehicleBossRockets,
+                randomizeGenerationDelay: true),
+
+            #endregion
+
+            #region Ufo Boss
+
+            new Generator(
+                generationDelay: 10,
+                generationAction: GenerateUfoBoss,
+                startUpAction: SpawnUfoBosses),
+
+            new Generator(
+                generationDelay: 40,
+                generationAction: GenerateUfoBossRocket,
+                startUpAction: SpawnUfoBossRockets,
+                randomizeGenerationDelay: true),
+
+            new Generator(
+                generationDelay: 200,
+                generationAction: GenerateUfoBossRocketSeeking,
+                startUpAction: SpawnUfoBossRocketSeekings,
+                randomizeGenerationDelay: true),
+
+            #endregion
+
+            #region Zombie Boss
+
+            new Generator(
+                generationDelay: 10,
+                generationAction: GenerateZombieBoss,
+                startUpAction: SpawnZombieBosses),
+
+            new Generator(
+                generationDelay: 30,
+                generationAction: GenerateZombieBossRocketBlock,
+                startUpAction: SpawnZombieBossRocketBlocks),
+
+            #endregion
+
+            #region Mafia Boss
+
+            new Generator(
+                generationDelay: 10,
+                generationAction: GenerateMafiaBoss,
+                startUpAction: SpawnMafiaBosses),
+
+            new Generator(
+                generationDelay: 75,
+                generationAction: GenerateMafiaBossRocket,
+                startUpAction: SpawnMafiaBossRockets),
+
+            new Generator(
+                generationDelay: 45,
+                generationAction: GenerateMafiaBossRocketBullsEye,
+                startUpAction: SpawnMafiaBossRocketBullsEyes),
+
+            #endregion
+
+            #region Ufo Enemy
+
+            new Generator(
+                generationDelay: 180,
+                generationAction: GenerateUfoEnemy,
+                startUpAction: SpawnUfoEnemys,
+                randomizeGenerationDelay: true),
+
+            new Generator(
+                generationDelay: 0,
+                generationAction: () => { return true; },
+                startUpAction: SpawnUfoEnemyRockets),
+
+            #endregion
+
+            #region Pickup
+
+            new Generator(
+                generationDelay: 500,
+                generationAction: GenerateHealthPickups,
+                startUpAction: SpawnHealthPickups,
+                randomizeGenerationDelay: true),
+
+            new Generator(
+                generationDelay: 500,
+                generationAction: GeneratePowerUpPickup,
+                startUpAction: SpawnPowerUpPickups,
+                randomizeGenerationDelay: true)
+                );
+
+            #endregion
         }
 
         private void SetSceneScaling()

@@ -7,7 +7,7 @@ using Microsoft.UI;
 
 namespace HonkTrooper
 {
-    public partial class UfoBossRocket : AnimableConstruct
+    public partial class MafiaBossRocket : AnimableConstruct
     {
         #region Fields
 
@@ -27,18 +27,18 @@ namespace HonkTrooper
 
         #region Ctor
 
-        public UfoBossRocket(
+        public MafiaBossRocket(
            Func<Construct, bool> animateAction,
            Func<Construct, bool> recycleAction)
         {
-            ConstructType = ConstructType.UFO_BOSS_ROCKET;
+            ConstructType = ConstructType.MAFIA_BOSS_ROCKET;
 
             _random = new Random();
 
-            _bomb_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.UFO_BOSS_ROCKET).Select(x => x.Uri).ToArray();
+            _bomb_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.MAFIA_BOSS_ROCKET).Select(x => x.Uri).ToArray();
             _bomb_blast_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BLAST).Select(x => x.Uri).ToArray();
 
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.UFO_BOSS_ROCKET);
+            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.MAFIA_BOSS_ROCKET);
 
             var width = size.Width;
             var height = size.Height;
@@ -95,22 +95,22 @@ namespace HonkTrooper
             _autoBlastDelay = _autoBlastDelayDefault;
         }
 
-        public void Reposition(Construct ufoBoss)
+        public void Reposition(MafiaBoss mafiaBoss)
         {
             SetPosition(
-                left: (ufoBoss.GetLeft() + ufoBoss.Width / 2) - Width / 2,
-                top: ufoBoss.GetBottom() - (75));
+                left: (mafiaBoss.GetLeft() + mafiaBoss.Width / 2) - Width / 2,
+                top: mafiaBoss.GetBottom() - (75));
         }
 
         public void SetBlast()
         {
             _audioStub.Play(SoundType.ROCKET_BLAST);
-            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET - 1;
+            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET - 3;
 
             SetScaleTransform(Constants.DEFAULT_BLAST_SHRINK_SCALE);
             SetRotation(0);
 
-            BorderBrush = new SolidColorBrush(Colors.Goldenrod);
+            BorderBrush = new SolidColorBrush(Colors.Chocolate);
 
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_blast_uris);
             _content_image.Source = new BitmapImage(uri);

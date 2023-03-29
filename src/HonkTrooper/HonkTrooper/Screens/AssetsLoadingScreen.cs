@@ -115,7 +115,7 @@ namespace HonkTrooper
             _sub_title_text.Text = subTitle;
         }
 
-        public async void PreloadAssets(Action completed)
+        public async Task PreloadAssets(Action completed)
         {
             _progressBar.IsIndeterminate = false;
             _progressBar.ShowPaused = false;
@@ -135,6 +135,9 @@ namespace HonkTrooper
 
         private async Task GetFileAsync(Uri uri)
         {
+#if DEBUG
+            LoggingExtensions.Log("GetFileAsync: " +uri.OriginalString);
+#endif
             await StorageFile.GetFileFromApplicationUriAsync(uri);
             _progressBar.Value++;
         }
