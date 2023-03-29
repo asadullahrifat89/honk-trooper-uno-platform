@@ -115,7 +115,7 @@ namespace HonkTrooper
             _sub_title_text.Text = subTitle;
         }
 
-        public async void PreloadAssets(Action completed)
+        public async Task PreloadAssets(Action completed)
         {
             _progressBar.IsIndeterminate = false;
             _progressBar.ShowPaused = false;

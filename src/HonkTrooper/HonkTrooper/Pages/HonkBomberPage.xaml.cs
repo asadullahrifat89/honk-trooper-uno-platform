@@ -125,7 +125,7 @@ namespace HonkTrooper
 
         #region Events
 
-        private async void HonkBomberPage_Loaded(object sender, RoutedEventArgs e)
+        private void HonkBomberPage_Loaded(object sender, RoutedEventArgs e)
         {
             ScreenExtensions.DisplayInformation.OrientationChanged += DisplayInformation_OrientationChanged;
             ScreenExtensions.RequiredScreenOrientation = DisplayOrientations.Landscape;
@@ -504,7 +504,7 @@ ConstructType.ZOMBIE_BOSS or
                 assetsLoadingScreen.IsAnimating = true;
                 assetsLoadingScreen.Reposition();
                 assetsLoadingScreen.SetSubTitle("...Loading Assets...");
-                assetsLoadingScreen.PreloadAssets(() =>
+                _ = assetsLoadingScreen.PreloadAssets(() =>
                 {
                     RecycleAssetsLoadingScreen(assetsLoadingScreen);
                     AddGameSceneConstructGenerators();
