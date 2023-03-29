@@ -40,6 +40,9 @@ namespace HonkTrooper
             new (ConstructType.UFO_BOSS_ROCKET, 100, 100),
             new (ConstructType.UFO_BOSS_ROCKET_SEEKING, 100, 100),
 
+            new (ConstructType.MAFIA_BOSS, 180, 180),
+            new (ConstructType.MAFIA_BOSS_ROCKET, 100, 100),
+
             new (ConstructType.ZOMBIE_BOSS, 180, 180),
             new (ConstructType.ZOMBIE_BOSS_ROCKET, 240, 240),
 
@@ -52,7 +55,7 @@ namespace HonkTrooper
             new (ConstructType.VEHICLE_BOSS, 240, 240),
             new (ConstructType.VEHICLE_BOSS_ROCKET, 120, 120),
 
-            new (ConstructType.CLOUD, 260, 260),            
+            new (ConstructType.CLOUD, 260, 260),
             new (ConstructType.HONK, 90, 90),
 
             new (ConstructType.ROAD_MARK, 15, 60),
@@ -163,6 +166,10 @@ namespace HonkTrooper
             new (ConstructType.UFO_BOSS_IDLE, new Uri("ms-appx:///HonkTrooper/Assets/Images/ufo_boss_1_idle.png")),
             new (ConstructType.UFO_BOSS_HIT, new Uri("ms-appx:///HonkTrooper/Assets/Images/ufo_boss_1_hit.png")),
             new (ConstructType.UFO_BOSS_WIN, new Uri("ms-appx:///HonkTrooper/Assets/Images/ufo_boss_1_win.png")),
+
+            new (ConstructType.MAFIA_BOSS_IDLE, new Uri("ms-appx:///HonkTrooper/Assets/Images/mafia_boss_1_idle.png")),
+            new (ConstructType.MAFIA_BOSS_HIT, new Uri("ms-appx:///HonkTrooper/Assets/Images/mafia_boss_1_hit.png")),
+            new (ConstructType.MAFIA_BOSS_WIN, new Uri("ms-appx:///HonkTrooper/Assets/Images/mafia_boss_1_win.png")),
 
             new (ConstructType.ZOMBIE_BOSS_IDLE, new Uri("ms-appx:///HonkTrooper/Assets/Images/zombie_boss_1_idle.png")),
             new (ConstructType.ZOMBIE_BOSS_HIT, new Uri("ms-appx:///HonkTrooper/Assets/Images/zombie_boss_1_hit.png")),
@@ -286,7 +293,7 @@ namespace HonkTrooper
         VEHICLE_BOSS,
 
         VEHICLE_BOSS_ROCKET,
-                
+
         ROAD_MARK,
         ROAD_SIDE_WALK,
 
@@ -298,7 +305,7 @@ namespace HonkTrooper
 
         HONK,
 
-        CLOUD,        
+        CLOUD,
 
         BLAST,
         BANG,
@@ -310,15 +317,21 @@ namespace HonkTrooper
         UFO_BOSS_HIT,
         UFO_BOSS_WIN,
 
+        MAFIA_BOSS,
+        MAFIA_BOSS_IDLE,
+        MAFIA_BOSS_HIT,
+        MAFIA_BOSS_WIN,
+
         ZOMBIE_BOSS,
         ZOMBIE_BOSS_IDLE,
         ZOMBIE_BOSS_HIT,
         ZOMBIE_BOSS_WIN,
 
-        ZOMBIE_BOSS_ROCKET,
-
         UFO_BOSS_ROCKET,
         UFO_BOSS_ROCKET_SEEKING,
+
+        MAFIA_BOSS_ROCKET,
+        ZOMBIE_BOSS_ROCKET,
 
         UFO_ENEMY,
         UFO_ENEMY_ROCKET,
