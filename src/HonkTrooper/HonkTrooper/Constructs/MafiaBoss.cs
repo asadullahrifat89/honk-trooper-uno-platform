@@ -243,7 +243,7 @@ namespace HonkTrooper
             {
                 MoveUp(speed);
 
-                if (GetTop() - Height < 0)
+                if (GetTop() - Height / 2 < 0)
                 {
                     _movementDirection = MovementDirection.Right;
                 }
@@ -418,7 +418,7 @@ namespace HonkTrooper
                 {
                     MoveUp(speed);
 
-                    if (GetTop() < 0)
+                    if (GetTop() - Height / 2 < 0)
                     {
                         _movementDirection = MovementDirection.Down;
                     }

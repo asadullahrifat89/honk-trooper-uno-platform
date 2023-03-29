@@ -527,7 +527,7 @@ namespace HonkTrooper
                 {
                     MoveUp(speed);
 
-                    if (GetTop() < 0)
+                    if (GetTop() - Height / 2 < 0)
                     {
                         _movementDirection = MovementDirection.Down;
                     }
@@ -549,7 +549,7 @@ namespace HonkTrooper
             return false;
         }
 
-     
+
 
         private void RandomizeMovementPattern()
         {
