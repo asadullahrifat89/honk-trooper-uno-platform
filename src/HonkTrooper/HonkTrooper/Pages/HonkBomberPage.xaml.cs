@@ -25,6 +25,7 @@ namespace HonkTrooper
         private readonly HealthBar _ufo_boss_health_bar;
         private readonly HealthBar _vehicle_boss_health_bar;
         private readonly HealthBar _zombie_boss_health_bar;
+        private readonly HealthBar _mafia_boss_health_bar;
 
         private readonly HealthBar _powerUp_health_bar;
         private readonly HealthBar _sound_pollution_health_bar;
@@ -35,7 +36,9 @@ namespace HonkTrooper
         private readonly Threashold _ufo_boss_threashold;
         private readonly Threashold _vehicle_boss_threashold;
         private readonly Threashold _zombie_boss_threashold;
-        private readonly Threashold _enemy_threashold;
+        private readonly Threashold _mafia_boss_threashold;
+
+        private readonly Threashold _ufo_enemy_threashold;
 
         private readonly double _sound_pollution_max_limit = 6; // max 3 vehicles or ufos honking to trigger sound pollution limit
 
@@ -48,17 +51,21 @@ namespace HonkTrooper
         private readonly double _ufo_boss_threashold_limit_increase = 15;
 
         //TODO: set defaults _zombie_boss_threashold_limit = 85
-        private readonly double _zombie_boss_threashold_limit = 85; // first appearance
+        private readonly double _zombie_boss_threashold_limit = 75; // first appearance
         private readonly double _zombie_boss_threashold_limit_increase = 15;
 
+        //TODO: set defaults _mafia_boss_threashold_limit = 100
+        private readonly double _mafia_boss_threashold_limit = 100; // first appearance
+        private readonly double _mafia_boss_threashold_limit_increase = 15;
+
         //TODO: set defaults _enemy_threashold_limit = 35
-        private readonly double _enemy_threashold_limit = 35; // first appearance
-        private readonly double _enemy_threashold_limit_increase = 5;
+        private readonly double _ufo_enemy_threashold_limit = 35; // first appearance
+        private readonly double _ufo_enemy_threashold_limit_increase = 5;
 
-        private double _enemy_kill_count;
-        private readonly double _enemy_kill_count_limit = 20;
+        private double _ufo_enemy_kill_count;
+        private readonly double _ufo_enemy_kill_count_limit = 20;
 
-        private bool _enemy_fleet_appeared;
+        private bool _ufo_enemy_fleet_appeared;
 
         private PlayerBalloon _player;
         private PlayerBalloonTemplate _selected_player_template;
@@ -83,6 +90,7 @@ namespace HonkTrooper
             _ufo_boss_health_bar = this.UfoBossHealthBar;
             _zombie_boss_health_bar = this.ZombieBossHealthBar;
             _vehicle_boss_health_bar = this.VehicleBossHealthBar;
+            _mafia_boss_health_bar = this.MafiaBossHealthBar;
 
             _powerUp_health_bar = this.PowerUpHealthBar;
             _sound_pollution_health_bar = this.SoundPollutionBar;
@@ -95,7 +103,9 @@ namespace HonkTrooper
             _ufo_boss_threashold = new Threashold(_ufo_boss_threashold_limit);
             _zombie_boss_threashold = new Threashold(_zombie_boss_threashold_limit);
             _vehicle_boss_threashold = new Threashold(_vehicle_boss_threashold_limit);
-            _enemy_threashold = new Threashold(_enemy_threashold_limit);
+            _mafia_boss_threashold = new Threashold(_mafia_boss_threashold_limit);
+
+            _ufo_enemy_threashold = new Threashold(_ufo_enemy_threashold_limit);
 
             ToggleHudVisibility(Visibility.Collapsed);
 
@@ -302,6 +312,7 @@ namespace HonkTrooper
             _ufo_boss_health_bar.Reset();
             _vehicle_boss_health_bar.Reset();
             _zombie_boss_health_bar.Reset();
+            _mafia_boss_health_bar.Reset();
 
             _sound_pollution_health_bar.Reset();
             _sound_pollution_health_bar.SetMaxiumHealth(_sound_pollution_max_limit);
@@ -311,10 +322,11 @@ namespace HonkTrooper
             _ufo_boss_threashold.Reset(_ufo_boss_threashold_limit);
             _vehicle_boss_threashold.Reset(_vehicle_boss_threashold_limit);
             _zombie_boss_threashold.Reset(_zombie_boss_threashold_limit);
+            _mafia_boss_threashold.Reset(_mafia_boss_threashold_limit);
 
-            _enemy_threashold.Reset(_enemy_threashold_limit);
-            _enemy_kill_count = 0;
-            _enemy_fleet_appeared = false;
+            _ufo_enemy_threashold.Reset(_ufo_enemy_threashold_limit);
+            _ufo_enemy_kill_count = 0;
+            _ufo_enemy_fleet_appeared = false;
 
             SetupSetPlayerBalloon();
 
@@ -376,7 +388,8 @@ namespace HonkTrooper
                 ConstructType.VEHICLE_ENEMY_SMALL or
                 ConstructType.VEHICLE_BOSS or
                 ConstructType.UFO_BOSS or
-ConstructType.ZOMBIE_BOSS or
+                ConstructType.ZOMBIE_BOSS or
+                ConstructType.MAFIA_BOSS or
                 ConstructType.HONK or
                 ConstructType.PLAYER_ROCKET or
                 ConstructType.PLAYER_ROCKET_SEEKING or
@@ -395,6 +408,12 @@ ConstructType.ZOMBIE_BOSS or
                      left: -3000,
                      top: -3000);
 
+                if (construct is VehicleBoss vehicleboss)
+                {
+                    vehicleboss.IsAttacking = false;
+                    vehicleboss.Health = 0;
+                }
+
                 if (construct is UfoBoss ufoBoss)
                 {
                     ufoBoss.IsAttacking = false;
@@ -407,11 +426,12 @@ ConstructType.ZOMBIE_BOSS or
                     zombieBoss.Health = 0;
                 }
 
-                if (construct is VehicleBoss vehicleboss)
+                if (construct is MafiaBoss mafiaBoss)
                 {
-                    vehicleboss.IsAttacking = false;
-                    vehicleboss.Health = 0;
+                    mafiaBoss.IsAttacking = false;
+                    mafiaBoss.Health = 0;
                 }
+
             }
         }
 
@@ -2559,7 +2579,7 @@ ConstructType.ZOMBIE_BOSS or
         private bool GenerateUfoEnemy()
         {
             if (!AnyBossExists() &&
-                _enemy_threashold.ShouldRelease(_game_score_bar.GetScore()) &&
+                _ufo_enemy_threashold.ShouldRelease(_game_score_bar.GetScore()) &&
                 _scene_game.Children.OfType<UfoEnemy>().FirstOrDefault(x => x.IsAnimating == false) is UfoEnemy ufoEnemy)
             {
                 ufoEnemy.IsAnimating = true;
@@ -2568,13 +2588,13 @@ ConstructType.ZOMBIE_BOSS or
 
                 GenerateDropShadow(source: ufoEnemy);
 
-                if (!_enemy_fleet_appeared)
+                if (!_ufo_enemy_fleet_appeared)
                 {
                     _audio_stub.Play(SoundType.UFO_ENEMY_ENTRY);
 
                     GenerateInterimScreen("Beware of UFO Fleet");
                     _scene_game.ActivateSlowMotion();
-                    _enemy_fleet_appeared = true;
+                    _ufo_enemy_fleet_appeared = true;
                 }
 
                 return true;
@@ -2640,13 +2660,13 @@ ConstructType.ZOMBIE_BOSS or
             {
                 _game_score_bar.GainScore(2);
 
-                _enemy_kill_count++;
+                _ufo_enemy_kill_count++;
 
-                if (_enemy_kill_count > _enemy_kill_count_limit) // after killing limited enemies increase the threadhold limit
+                if (_ufo_enemy_kill_count > _ufo_enemy_kill_count_limit) // after killing limited enemies increase the threadhold limit
                 {
-                    _enemy_threashold.IncreaseThreasholdLimit(increment: _enemy_threashold_limit_increase, currentPoint: _game_score_bar.GetScore());
-                    _enemy_kill_count = 0;
-                    _enemy_fleet_appeared = false;
+                    _ufo_enemy_threashold.IncreaseThreasholdLimit(increment: _ufo_enemy_threashold_limit_increase, currentPoint: _game_score_bar.GetScore());
+                    _ufo_enemy_kill_count = 0;
+                    _ufo_enemy_fleet_appeared = false;
 
                     LevelUp();
 
