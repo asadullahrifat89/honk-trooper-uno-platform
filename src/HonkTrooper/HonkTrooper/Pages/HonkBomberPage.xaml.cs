@@ -465,10 +465,11 @@ namespace HonkTrooper
             return true;
         }
 
-        private bool GenerateFloatingNumber(Construct source)
+        private bool GenerateFloatingNumber(HealthyConstruct source)
         {
             if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<FloatingNumber>().FirstOrDefault(x => x.IsAnimating == false) is FloatingNumber floatingNumberTop)
             {
+                floatingNumberTop.Reset(source.HitPoint);
                 floatingNumberTop.IsAnimating = true;
                 floatingNumberTop.Reposition(source);
             }
@@ -479,9 +480,8 @@ namespace HonkTrooper
         private bool AnimateFloatingNumber(Construct floatingNumber)
         {
             FloatingNumber floatingNumber1 = floatingNumber as FloatingNumber;
-            var speed = floatingNumber1.GetMovementSpeed();
-            floatingNumber1.MoveUpRight(speed);
-            floatingNumber1.Fade();
+            floatingNumber1.Move();
+            floatingNumber1.DepleteOnScreenDelay();
             return true;
         }
 
@@ -489,7 +489,7 @@ namespace HonkTrooper
         {
             FloatingNumber floatingNumber1 = floatingNumber as FloatingNumber;
 
-            if (floatingNumber1.IsFadingComplete)
+            if (floatingNumber1.IsDepleted)
             {
                 floatingNumber.IsAnimating = false;
                 floatingNumber.SetPosition(left: -3000, top: -3000);
@@ -1032,6 +1032,8 @@ namespace HonkTrooper
             {
                 _player.LooseHealth();
                 _player.SetHitStance();
+
+                GenerateFloatingNumber(_player);
 
                 _player_health_bar.SetValue(_player.Health);
 
@@ -2610,7 +2612,7 @@ namespace HonkTrooper
         {
             var hitbox = ufoEnemy.GetHitBox();
 
-            if (ufoEnemy.IsShrinkingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Bottom < 0 || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT  ) // enemy is dead or goes out of bounds
+            if (ufoEnemy.IsShrinkingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Bottom < 0 || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT) // enemy is dead or goes out of bounds
             {
                 ufoEnemy.IsAnimating = false;
                 ufoEnemy.SetPosition(left: -3000, top: -3000);
@@ -2623,6 +2625,8 @@ namespace HonkTrooper
         {
             ufoEnemy.SetPopping();
             ufoEnemy.LooseHealth();
+
+            GenerateFloatingNumber(ufoEnemy);
 
             if (ufoEnemy.IsDead)
             {
@@ -2955,6 +2959,8 @@ namespace HonkTrooper
             vehicleBoss.SetPopping();
             vehicleBoss.LooseHealth();
 
+            GenerateFloatingNumber(vehicleBoss);
+
             _vehicle_boss_health_bar.SetValue(vehicleBoss.Health);
 
             if (vehicleBoss.IsDead)
@@ -3207,6 +3213,8 @@ namespace HonkTrooper
             zombieBoss.LooseHealth();
             zombieBoss.SetHitStance();
 
+            GenerateFloatingNumber(zombieBoss);
+
             _zombie_boss_health_bar.SetValue(zombieBoss.Health);
 
             if (zombieBoss.IsDead)
@@ -3457,6 +3465,8 @@ namespace HonkTrooper
             mafiaBoss.SetPopping();
             mafiaBoss.LooseHealth();
             mafiaBoss.SetHitStance();
+
+            GenerateFloatingNumber(mafiaBoss);
 
             _mafia_boss_health_bar.SetValue(mafiaBoss.Health);
 
