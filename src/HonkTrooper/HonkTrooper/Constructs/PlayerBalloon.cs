@@ -55,7 +55,7 @@ namespace HonkTrooper
 
             SetConstructSize();
 
-            _player_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BALLOON).Select(x => x.Uri).ToArray();
+            _player_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BALLOON_IDLE).Select(x => x.Uri).ToArray();
             var uri = ConstructExtensions.GetRandomContentUri(_player_uris);
 
             _content_image = new Image()
@@ -114,7 +114,7 @@ namespace HonkTrooper
             {
                 case PlayerBalloonTemplate.Blue:
                     {
-                        _player_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BALLOON && x.Uri.OriginalString.Contains("1")).Select(x => x.Uri).ToArray();
+                        _player_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BALLOON_IDLE && x.Uri.OriginalString.Contains("1")).Select(x => x.Uri).ToArray();
                         _player_win_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BALLOON_WIN && x.Uri.OriginalString.Contains("1")).Select(x => x.Uri).ToArray();
                         _player_hit_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BALLOON_HIT && x.Uri.OriginalString.Contains("1")).Select(x => x.Uri).ToArray();
                         _player_attack_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BALLOON_ATTACK && x.Uri.OriginalString.Contains("1")).Select(x => x.Uri).ToArray();
@@ -122,7 +122,7 @@ namespace HonkTrooper
                     break;
                 case PlayerBalloonTemplate.Red:
                     {
-                        _player_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BALLOON && x.Uri.OriginalString.Contains("2")).Select(x => x.Uri).ToArray();
+                        _player_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BALLOON_IDLE && x.Uri.OriginalString.Contains("2")).Select(x => x.Uri).ToArray();
                         _player_win_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BALLOON_WIN && x.Uri.OriginalString.Contains("2")).Select(x => x.Uri).ToArray();
                         _player_hit_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BALLOON_HIT && x.Uri.OriginalString.Contains("2")).Select(x => x.Uri).ToArray();
                         _player_attack_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BALLOON_ATTACK && x.Uri.OriginalString.Contains("2")).Select(x => x.Uri).ToArray();
