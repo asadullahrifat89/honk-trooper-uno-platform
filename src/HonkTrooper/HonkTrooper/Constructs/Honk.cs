@@ -49,7 +49,7 @@ namespace HonkTrooper
 
             SetChild(_content_image);
 
-            _audioStub = new AudioStub((SoundType.CAR_HONK, 0.5, false));
+            _audioStub = new AudioStub((SoundType.HONK, 0.5, false));
         }
 
         #endregion
@@ -58,7 +58,7 @@ namespace HonkTrooper
 
         public void Reset()
         {
-            _audioStub.Play(SoundType.CAR_HONK);
+            _audioStub.Play(SoundType.HONK);
             Opacity = 1;
         }
 
