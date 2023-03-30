@@ -8,47 +8,56 @@ namespace HonkTrooper
 {
     public partial class ScoreBar : Border
     {
-        #region Properties
+        #region Fields
 
-        private double Score { get; set; } = 0;
-
-        private TextBlock TextBlock { get; set; } = new TextBlock() { FontSize = 30, FontWeight = FontWeights.Bold, Foreground = new SolidColorBrush(Colors.White) };
+        private readonly TextBlock _textBlock;
+        private double _score;
 
         #endregion
+
+        #region Ctor
 
         public ScoreBar()
         {
             VerticalAlignment = VerticalAlignment.Center;
             HorizontalAlignment = HorizontalAlignment.Center;
 
-            this.Child = TextBlock;
+            _textBlock = new TextBlock() { FontSize = 30, FontWeight = FontWeights.Bold, Foreground = new SolidColorBrush(Colors.White) };
+
+            this.Child = _textBlock;
             GainScore(0);
-        }
+        } 
+
+        #endregion
+
+        #region Methods
 
         public void Reset()
         {
-            Score = 0;
-            TextBlock.Text = Score.ToString("0000");
+            _score = 0;
+            _textBlock.Text = _score.ToString("0000");
         }
 
         public void GainScore(int score)
         {
-            Score += score;
-            TextBlock.Text = Score.ToString("0000");
+            _score += score;
+            _textBlock.Text = _score.ToString("0000");
         }
 
         public void LooseScore(double score)
         {
-            if (Score > 1)
+            if (_score > 1)
             {
-                Score -= score;
-                TextBlock.Text = Score.ToString("0000");
+                _score -= score;
+                _textBlock.Text = _score.ToString("0000");
             }
         }
 
         public double GetScore()
         {
-            return Score;
-        }
+            return _score;
+        } 
+
+        #endregion
     }
 }
