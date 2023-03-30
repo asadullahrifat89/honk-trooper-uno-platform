@@ -88,20 +88,28 @@ namespace HonkTrooper
 
         public void Reset()
         {
-            SetScaleTransform(1);
+            SetScaleTransform(1);          
 
             SpeedOffset = _random.Next((int)Constants.DEFAULT_SPEED_OFFSET * -1, 0);
 
             WillHonk = Convert.ToBoolean(_random.Next(2));
 
             if (WillHonk)
+            {
+                Health = HitPoint * _random.Next(3);
                 SetHonkDelay();
+            }                
+        }
+
+        public void LooseHealth()
+        {
+            Health -= HitPoint;          
         }
 
         public void SetBlast()
         {
-            WillHonk = false;
-            SetPopping();
+            WillHonk = false;            
+
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET - 1;
 
             var willReact = _random.Next(2);
