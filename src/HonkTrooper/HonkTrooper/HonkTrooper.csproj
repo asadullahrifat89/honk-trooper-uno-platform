@@ -46,5 +46,9 @@
   </ItemGroup>
   <ItemGroup>
     <UpToDateCheckInput Include="**\*.xaml" Exclude="bin\**\*.xaml;obj\**\*.xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Assets\Images\side_walk_1.png" />
+    <None Remove="Assets\Images\side_walk_2.png" />
   </ItemGroup> 
 </Project>
