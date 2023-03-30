@@ -836,7 +836,10 @@ namespace HonkTrooper
                 //Opacity = 0.6
             };
 
-            AttackButton.Click += (s, e) => { ActivateAttack(); };
+            AttackButton.Click += (s, e) =>
+            {
+                ActivateAttack();
+            };
             this.Children.Add(AttackButton);
         }
 

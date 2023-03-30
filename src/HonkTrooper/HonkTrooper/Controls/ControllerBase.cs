@@ -55,12 +55,7 @@ namespace HonkTrooper
                     {
                         ActivateMoveDown();
                     }
-                    break;
-                //case Windows.System.VirtualKey.Enter:
-                //    {
-                //        ToggleScenePlayOrPause();
-                //    }
-                //    break;
+                    break;               
                 case Windows.System.VirtualKey.Escape:
                     {
                         ActivatePause();
