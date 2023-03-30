@@ -522,7 +522,7 @@ namespace HonkTrooper
                     RecycleAssetsLoadingScreen(assetsLoadingScreen);
                     AddGameSceneGenerators();
 
-                    await Task.Delay(1000);
+                    await Task.Delay(600);
 
                     GenerateGameStartScreen(title: "Honk Trooper", subTitle: "-Stop Honkers, Save The City-");
 
@@ -954,9 +954,7 @@ namespace HonkTrooper
                         else
                         {
                             GeneratePlayerHonkBomb();
-                        }
-
-                        _game_controller.IsAttacking = false;
+                        }                        
                     }
                 }
             }
