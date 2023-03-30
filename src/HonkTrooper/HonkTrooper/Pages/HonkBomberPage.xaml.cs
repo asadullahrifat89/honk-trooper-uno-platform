@@ -4262,36 +4262,36 @@ namespace HonkTrooper
             _scene_main_menu.Clear();
             _scene_main_menu.AddToScene(
 
-                        new Generator(
-                            generationDelay: 0,
-                            generationAction: () => { return true; },
-                            startUpAction: SpawnAssetsLoadingScreen),
+            new Generator(
+                generationDelay: 0,
+                generationAction: () => { return true; },
+                startUpAction: SpawnAssetsLoadingScreen),
 
-                        new Generator(
-                            generationDelay: 0,
-                            generationAction: () => { return true; },
-                            startUpAction: SpawnInterimScreen),
+            new Generator(
+                generationDelay: 0,
+                generationAction: () => { return true; },
+                startUpAction: SpawnInterimScreen),
 
-                        new Generator(
-                            generationDelay: 0,
-                            generationAction: () => { return true; },
-                            startUpAction: SpawnGameStartScreen),
+            new Generator(
+                generationDelay: 0,
+                generationAction: () => { return true; },
+                startUpAction: SpawnGameStartScreen),
 
-                        new Generator(
-                            generationDelay: 0,
-                            generationAction: () => { return true; },
-                            startUpAction: SpawnPlayerSelectionScreen),
+            new Generator(
+                generationDelay: 0,
+                generationAction: () => { return true; },
+                startUpAction: SpawnPlayerSelectionScreen),
 
-                        new Generator(
-                            generationDelay: 0,
-                            generationAction: () => { return true; },
-                            startUpAction: SpawnPlayerHonkBombSelectionScreen),
+            new Generator(
+                generationDelay: 0,
+                generationAction: () => { return true; },
+                startUpAction: SpawnPlayerHonkBombSelectionScreen),
 
-                        new Generator(
-                            generationDelay: 0,
-                            generationAction: () => { return true; },
-                            startUpAction: SpawnPromptOrientationChangeScreen)
-                            );
+            new Generator(
+                generationDelay: 0,
+                generationAction: () => { return true; },
+                startUpAction: SpawnPromptOrientationChangeScreen)
+                );
         }
 
         private void AddGameSceneGenerators()
@@ -4478,16 +4478,17 @@ namespace HonkTrooper
             #region Pickup
 
             new Generator(
-                generationDelay: 500,
+                generationDelay: 400,
                 generationAction: GenerateHealthPickups,
                 startUpAction: SpawnHealthPickups,
                 randomizeGenerationDelay: true),
 
             new Generator(
-                generationDelay: 500,
+                generationDelay: 400,
                 generationAction: GeneratePowerUpPickup,
                 startUpAction: SpawnPowerUpPickups,
                 randomizeGenerationDelay: true)
+
                 );
 
             #endregion
