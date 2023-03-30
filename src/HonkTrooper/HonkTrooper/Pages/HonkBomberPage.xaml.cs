@@ -338,14 +338,14 @@ namespace HonkTrooper
             _game_controller.ActivateGyrometerReading();
         }
 
-        private void ToggleNightMode(bool toggle)
+        private void ToggleNightMode(bool isNightMode)
         {
-            _scene_game.ToggleNightMode(toggle);
+            _scene_game.ToggleNightMode(isNightMode);
 
-            if (toggle)
-                this.AmbientLightingDayStoryboard.Begin();
-            else
+            if (isNightMode)
                 this.AmbientLightingNightStoryboard.Begin();
+            else
+                this.AmbientLightingDayStoryboard.Begin();
         }
 
         private void SetupSetPlayerBalloon()
@@ -2912,7 +2912,7 @@ namespace HonkTrooper
                 GenerateInterimScreen("Crazy Honker Arrived");
                 _scene_game.ActivateSlowMotion();
 
-                ToggleNightMode(true);
+                //ToggleNightMode(true);
 
                 return true;
             }
@@ -3006,7 +3006,7 @@ namespace HonkTrooper
 
                 _scene_game.ActivateSlowMotion();
 
-                ToggleNightMode(false);
+                //ToggleNightMode(false);
             }
         }
 
