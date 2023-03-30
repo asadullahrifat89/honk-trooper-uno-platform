@@ -13,8 +13,8 @@
         MaxWidth="1900"
         MaxHeight="940">
 
-        <!--<Grid.Resources>
-            <Storyboard x:Name="NightStoryboard">
+        <Grid.Resources>
+            <!--<Storyboard x:Name="NightStoryboard">
                 <ColorAnimation
                     Storyboard.TargetName="SceneBackground"
                     Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
@@ -29,14 +29,36 @@
                     From="#1f2326"
                     To="#5e6b73"
                     Duration="0:0:4" />
+            </Storyboard>-->
+            <Storyboard x:Name="AmbientLightingDayStoryboard">
+                <DoubleAnimation
+                    Storyboard.TargetName="SunRayOverlay"
+                    Storyboard.TargetProperty="(Border.Opacity)"
+                    From="0"
+                    To="1"
+                    Duration="0:0:5" />
+                <DoubleAnimation
+                    Storyboard.TargetName="MoonRayOverlay"
+                    Storyboard.TargetProperty="(Border.Opacity)"
+                    From="1"
+                    To="0"
+                    Duration="0:0:5" />
             </Storyboard>
-        </Grid.Resources>-->
-
-        <!--<Border
-            x:Name="SceneBackground"
-            Background="{ThemeResource DayBackgroundColor}"
-            BorderBrush="#111111"
-            BorderThickness="3" />-->
+            <Storyboard x:Name="AmbientLightingNightStoryboard">
+                <DoubleAnimation
+                    Storyboard.TargetName="SunRayOverlay"
+                    Storyboard.TargetProperty="(Border.Opacity)"
+                    From="1"
+                    To="0"
+                    Duration="0:0:5" />
+                <DoubleAnimation
+                    Storyboard.TargetName="MoonRayOverlay"
+                    Storyboard.TargetProperty="(Border.Opacity)"
+                    From="0"
+                    To="1"
+                    Duration="0:0:5" />
+            </Storyboard>
+        </Grid.Resources>
 
         <Scene
             x:Name="GameScene"
@@ -44,7 +66,18 @@
             BorderBrush="{ThemeResource BorderColor}"
             BorderThickness="3" />
 
-        <Border x:Name="SunRayOverlay" Visibility="Collapsed">
+        <Border x:Name="SunRayOverlay" Opacity="0">
+            <Border.Background>
+                <LinearGradientBrush Opacity="1.0" StartPoint="1,0" EndPoint="0.5,1">
+                    <GradientStop Offset="0.00" Color="Goldenrod" />
+                    <GradientStop Offset="0.20" Color="Transparent" />
+                    <GradientStop Offset="0.80" Color="Transparent" />
+                    <GradientStop Offset="1.00" Color="Goldenrod" />
+                </LinearGradientBrush>
+            </Border.Background>
+        </Border>
+
+        <Border x:Name="MoonRayOverlay" Opacity="0">
             <Border.Background>
                 <LinearGradientBrush Opacity="1.0" StartPoint="1,0" EndPoint="0.5,1">
                     <GradientStop Offset="0.00" Color="{ThemeResource BorderColor}" />
@@ -54,18 +87,6 @@
                 </LinearGradientBrush>
             </Border.Background>
         </Border>
-
-        <!--<Border
-            x:Name="SunRayOverlay2"
-            BorderBrush="#111111"
-            BorderThickness="3">
-            <Border.Background>
-                <LinearGradientBrush Opacity="1" StartPoint="0.5,1" EndPoint="1,0">
-                    <GradientStop Offset="0.00" Color="#191919" />
-                    <GradientStop Offset="0.20" Color="Transparent" />
-                </LinearGradientBrush>
-            </Border.Background>
-        </Border>-->
 
         <Scene x:Name="MainMenuScene" Background="Transparent" />
 
