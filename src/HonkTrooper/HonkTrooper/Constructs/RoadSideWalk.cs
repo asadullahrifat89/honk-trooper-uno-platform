@@ -46,9 +46,7 @@ namespace HonkTrooper
 
             SetChild(_content_image);
 
-            //BorderThickness = new Thickness(left: 20, top: 0, right: 2, bottom: 0);
             BorderBrush = App.Current.Resources["BorderColor"] as SolidColorBrush;
-
             BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS, 0);
 
             SetSkewY(36);
@@ -66,14 +64,11 @@ namespace HonkTrooper
         {
             if (Scene.IsInNightMode)
             {
-                //Background = App.Current.Resources["RoadSideWalkColor2"] as SolidColorBrush;
-                //BorderBrush = App.Current.Resources["RoadSideWalkBorderColor2"] as SolidColorBrush;
-
+                _content_image.Opacity = 0.2;
             }
             else
             {
-                //Background = App.Current.Resources["RoadSideWalkColor"] as SolidColorBrush;
-                //BorderBrush = App.Current.Resources["RoadSideWalkBorderColor"] as SolidColorBrush;
+                _content_image.Opacity = 1;
             }
         }
 

@@ -1644,7 +1644,7 @@ namespace HonkTrooper
                 roadSideWalkBottom.IsAnimating = true;
                 roadSideWalkBottom.SetPosition(
                     left: (roadSideWalkBottom.Height * -1.5) - 30,
-                    top: (Constants.DEFAULT_SCENE_HEIGHT / 5 + roadSideWalkBottom.Height / 2) - 50,
+                    top: (Constants.DEFAULT_SCENE_HEIGHT / 5 + roadSideWalkBottom.Height / 2) - 100,
                     z: 0);
             }
 
