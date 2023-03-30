@@ -16,15 +16,10 @@ namespace HonkTrooper
         {
             ConstructType = ConstructType.ROAD_MARK;
 
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.ROAD_MARK);
-
-            var width = size.Width;
-            var height = size.Height;
-
-            SetSize(width: width, height: height);
-
             AnimateAction = animateAction;
             RecycleAction = recycleAction;
+
+            SetConstructSize();
 
             Background = new SolidColorBrush(Colors.White);
             CornerRadius = new CornerRadius(5);

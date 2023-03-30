@@ -23,19 +23,14 @@ namespace HonkTrooper
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction)
         {
-            _random = new Random();
-
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.HEALTH_PICKUP);
-
             ConstructType = ConstructType.HEALTH_PICKUP;
-
-            var width = size.Width;
-            var height = size.Height;
 
             AnimateAction = animateAction;
             RecycleAction = recycleAction;
 
-            SetSize(width: width, height: height);
+            _random = new Random();
+
+            SetConstructSize();
 
             _content_image = new Image()
             {

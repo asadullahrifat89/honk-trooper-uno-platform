@@ -40,21 +40,16 @@ namespace HonkTrooper
         {
             ConstructType = ConstructType.UFO_BOSS;
 
+            AnimateAction = animateAction;
+            RecycleAction = recycleAction;
+
             _random = new Random();
 
             _ufo_boss_idle_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.UFO_BOSS_IDLE).Select(x => x.Uri).ToArray();
             _ufo_boss_hit_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.UFO_BOSS_HIT).Select(x => x.Uri).ToArray();
             _ufo_boss_win_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.UFO_BOSS_WIN).Select(x => x.Uri).ToArray();
-
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.UFO_BOSS);
-
-            var width = size.Width;
-            var height = size.Height;
-
-            AnimateAction = animateAction;
-            RecycleAction = recycleAction;
-
-            SetSize(width: width, height: height);
+            
+            SetConstructSize();
 
             var uri = ConstructExtensions.GetRandomContentUri(_ufo_boss_idle_uris);
 
@@ -85,7 +80,7 @@ namespace HonkTrooper
         {
             base.Reset();
 
-            UfoBossStance = BossStance.Idle;            
+            UfoBossStance = BossStance.Idle;
 
             var uri = ConstructExtensions.GetRandomContentUri(_ufo_boss_idle_uris);
             _content_image.Source = new BitmapImage(uriSource: uri);
