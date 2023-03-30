@@ -69,8 +69,8 @@
         <Border x:Name="SunRayOverlay" Opacity="0">
             <Border.Background>
                 <LinearGradientBrush Opacity="1.0" StartPoint="1,0" EndPoint="0.5,1">
-                    <GradientStop Offset="0.00" Color="Goldenrod" />
-                    <GradientStop Offset="0.20" Color="Transparent" />
+                    <GradientStop Offset="0.00" Color="Wheat" />
+                    <GradientStop Offset="0.30" Color="Transparent" />
                     <GradientStop Offset="0.80" Color="Transparent" />
                     <GradientStop Offset="1.00" Color="Gray" />
                 </LinearGradientBrush>
