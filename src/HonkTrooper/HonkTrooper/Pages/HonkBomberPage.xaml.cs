@@ -448,7 +448,7 @@ namespace HonkTrooper
 
         private bool SpawnFloatingNumbers()
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 15; i++)
             {
                 FloatingNumber floatingNumber = new(
                     animateAction: AnimateFloatingNumber,
@@ -998,6 +998,11 @@ namespace HonkTrooper
                                             GeneratePlayerRocketBullsEye();
                                         }
                                         break;
+                                    case PowerUpType.ARMOR:
+                                        {
+                                            GeneratePlayerRocket();
+                                        }
+                                        break;
                                     default:
                                         break;
                                 }
@@ -1146,7 +1151,7 @@ namespace HonkTrooper
             }
 
             return true;
-        }     
+        }
 
         private bool RecyclePlayerHonkBomb(Construct playerHonkBomb)
         {
@@ -1160,7 +1165,7 @@ namespace HonkTrooper
             }
 
             return false;
-        }      
+        }
 
         #endregion
 
@@ -2834,11 +2839,15 @@ namespace HonkTrooper
             vehicleEnemy.SetPopping();
             vehicleEnemy.LooseHealth();
 
-            if (vehicleEnemy.WillHonk && vehicleEnemy.IsDead)
+            if (vehicleEnemy.WillHonk)
             {
-                vehicleEnemy.SetBlast();
-                _game_score_bar.GainScore(2);
                 GenerateFloatingNumber(vehicleEnemy);
+
+                if (vehicleEnemy.IsDead)
+                {
+                    vehicleEnemy.SetBlast();
+                    _game_score_bar.GainScore(2);
+                }
             }
         }
 

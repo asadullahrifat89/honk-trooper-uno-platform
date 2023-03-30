@@ -63,7 +63,7 @@ namespace HonkTrooper
         {
             SetPosition(
                 left: (source.GetLeft() + source.Width / 2) - Width / 2,
-                top: source.GetTop() + source.Height / 2);
+                top: (source.GetTop() + source.Height / 2) - Height / 2);
         }
 
         public bool DepleteOnScreenDelay()
