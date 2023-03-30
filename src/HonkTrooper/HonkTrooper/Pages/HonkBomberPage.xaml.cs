@@ -151,10 +151,7 @@ namespace HonkTrooper
             if (ScreenExtensions.GetScreenOrienation() == ScreenExtensions.RequiredScreenOrientation) // if the screen is in desired orientation the show asset loading screen
             {
                 ScreenExtensions.EnterFullScreen(true);
-
                 GenerateAssetsLoadingScreen();
-
-                _audioStub.Play(SoundType.GAME_START);
             }
             else
             {
@@ -681,7 +678,7 @@ namespace HonkTrooper
                 gameStartScreen.Reposition();
 
                 if (_player is not null)
-                    gameStartScreen.SetContent(_player.GetContentUri());
+                    gameStartScreen.SetContent(ConstructExtensions.GetRandomContentUri(Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BALLOON).Select(x => x.Uri).ToArray()));
 
                 return true;
             }

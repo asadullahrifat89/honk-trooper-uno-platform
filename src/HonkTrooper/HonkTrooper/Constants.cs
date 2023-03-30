@@ -131,13 +131,13 @@ namespace HonkTrooper
             new (ConstructType.HONK, new Uri("ms-appx:///HonkTrooper/Assets/Images/honk_2.png")),
             new (ConstructType.HONK, new Uri("ms-appx:///HonkTrooper/Assets/Images/honk_3.png")),
 
-            new (ConstructType.PLAYER_BALLOON, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_balloon_1_idle.png")),
+            new (ConstructType.PLAYER_BALLOON, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_1_character.png")),
             new (ConstructType.PLAYER_BALLOON_IDLE, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_balloon_1_idle.png")),
             new (ConstructType.PLAYER_BALLOON_ATTACK, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_balloon_1_attack.png")),
             new (ConstructType.PLAYER_BALLOON_WIN, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_balloon_1_win.png")),
             new (ConstructType.PLAYER_BALLOON_HIT, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_balloon_1_hit.png")),
 
-            new (ConstructType.PLAYER_BALLOON, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_balloon_2_idle.png")),
+            new (ConstructType.PLAYER_BALLOON, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_2_character.png")),
             new (ConstructType.PLAYER_BALLOON_IDLE, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_balloon_2_idle.png")),
             new (ConstructType.PLAYER_BALLOON_ATTACK, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_balloon_2_attack.png")),
             new (ConstructType.PLAYER_BALLOON_WIN, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_balloon_2_win.png")),

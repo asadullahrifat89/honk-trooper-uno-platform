@@ -117,7 +117,8 @@ namespace HonkTrooper
 
             #region PlayerHonkBomb Select Buttons
 
-            var playerUris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_HONK_BOMB && x.Uri.OriginalString.Contains("2")).Select(x => x.Uri).ToArray();
+            var crackerUris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_HONK_BOMB && x.Uri.OriginalString.Contains("cracker")).Select(x => x.Uri).ToArray();
+            var trashUris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_HONK_BOMB && x.Uri.OriginalString.Contains("trash")).Select(x => x.Uri).ToArray();
 
             StackPanel playerTemplates = new()
             {
@@ -134,7 +135,7 @@ namespace HonkTrooper
             {
                 Width = 100,
                 Height = 100,
-                Source = new BitmapImage(playerUris[0]),
+                Source = new BitmapImage(crackerUris.Last()),
                 Stretch = Stretch.Uniform
             };
             player1btn.Checked += (s, e) =>
@@ -151,7 +152,7 @@ namespace HonkTrooper
             {
                 Width = 100,
                 Height = 100,
-                Source = new BitmapImage(playerUris[1]),
+                Source = new BitmapImage(trashUris.First()),
                 Stretch = Stretch.Uniform
             };
             player2btn.Checked += (s, e) =>
