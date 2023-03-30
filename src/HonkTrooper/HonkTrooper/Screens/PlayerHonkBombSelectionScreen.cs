@@ -102,7 +102,7 @@ namespace HonkTrooper
 
             _titleScreenText = new TextBlock()
             {
-                Text = "Select A Weapon",
+                Text = "Select Honk Busters",
                 FontSize = Constants.DEFAULT_GUI_FONT_SIZE - 5,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 Foreground = new SolidColorBrush(Colors.White),
@@ -116,9 +116,6 @@ namespace HonkTrooper
             #endregion
 
             #region PlayerHonkBomb Select Buttons
-
-            var crackerUris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_HONK_BOMB && x.Uri.OriginalString.Contains("cracker")).Select(x => x.Uri).ToArray();
-            var trashUris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_HONK_BOMB && x.Uri.OriginalString.Contains("trash")).Select(x => x.Uri).ToArray();
 
             StackPanel playerTemplates = new()
             {
@@ -135,7 +132,7 @@ namespace HonkTrooper
             {
                 Width = 100,
                 Height = 100,
-                Source = new BitmapImage(crackerUris.Last()),
+                Source = new BitmapImage(new Uri("ms-appx:///HonkTrooper/Assets/Images/crackers.png")),
                 Stretch = Stretch.Uniform
             };
             player1btn.Checked += (s, e) =>
@@ -152,7 +149,7 @@ namespace HonkTrooper
             {
                 Width = 100,
                 Height = 100,
-                Source = new BitmapImage(trashUris.First()),
+                Source = new BitmapImage(new Uri("ms-appx:///HonkTrooper/Assets/Images/trash_cans.png")),
                 Stretch = Stretch.Uniform
             };
             player2btn.Checked += (s, e) =>
