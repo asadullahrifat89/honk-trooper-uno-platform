@@ -76,19 +76,18 @@ namespace HonkTrooper
 
         public void Reset()
         {
-            _audioStub.Play(SoundType.CRACKER_DROP);
-
-            Opacity = 1;
+            IsBlasting = false;
 
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_uris);
             _content_image.Source = new BitmapImage(uri);
 
+            _audioStub.Play(SoundType.CRACKER_DROP);
+
+            Opacity = 1;
             BorderBrush = new SolidColorBrush(Colors.Transparent);
 
             SetScaleTransform(1);
             SetRotation(0);
-
-            IsBlasting = false;
         }
 
         public void SetHonkBombTemplate(PlayerHonkBombTemplate honkBombTemplate)
@@ -121,7 +120,7 @@ namespace HonkTrooper
                 left: (player.GetLeft() + player.Width / 2) - Width / 2,
                 top: player.GetBottom() - (35),
                 z: 7);
-        }       
+        }
 
         public void SetBlast()
         {

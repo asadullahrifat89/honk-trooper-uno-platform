@@ -954,7 +954,9 @@ namespace HonkTrooper
                         else
                         {
                             GeneratePlayerHonkBomb();
-                        }                        
+                        }
+
+                        _game_controller.DeactivateAttack();
                     }
                 }
             }
