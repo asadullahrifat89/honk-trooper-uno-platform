@@ -12,8 +12,8 @@
         {
             _audioStub = new AudioStub(
                (SoundType.UFO_HOVERING, 0.8, true),
-               (SoundType.BOSS_ENTRY, 0.8, false),
-               (SoundType.BOSS_DEAD, 1, false));
+               (SoundType.UFO_BOSS_ENTRY, 0.8, false),
+               (SoundType.UFO_BOSS_DEAD, 1, false));
         }
 
         #region Properties
@@ -26,7 +26,7 @@
 
         public void Reset()
         {
-            _audioStub.Play(SoundType.BOSS_ENTRY);
+            _audioStub.Play(SoundType.UFO_BOSS_ENTRY);
 
             PlaySoundLoop();
 
@@ -48,7 +48,7 @@
             {
                 IsAttacking = false;
                 StopSoundLoop();
-                _audioStub.Play(SoundType.BOSS_DEAD);
+                _audioStub.Play(SoundType.UFO_BOSS_DEAD);
             }
         }
 
