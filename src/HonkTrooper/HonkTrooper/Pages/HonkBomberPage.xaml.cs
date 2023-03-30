@@ -395,7 +395,8 @@ namespace HonkTrooper
                 ConstructType.MAFIA_BOSS_ROCKET or
                 ConstructType.MAFIA_BOSS_ROCKET_BULLS_EYE or
                 ConstructType.POWERUP_PICKUP or
-                ConstructType.HEALTH_PICKUP))
+                ConstructType.HEALTH_PICKUP or
+                ConstructType.FLOATING_NUMBER))
             {
                 construct.IsAnimating = false;
                 construct.SetPosition(left: -3000, top: -3000);
@@ -439,6 +440,62 @@ namespace HonkTrooper
         {
             _game_level++;
             GenerateInterimScreen($"LEVEL {_game_level} COMPLETE");
+        }
+
+        #endregion
+
+        #region FloatingNumber
+
+        private bool SpawnFloatingNumbers()
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                FloatingNumber floatingNumber = new(
+                    animateAction: AnimateFloatingNumber,
+                    recycleAction: RecycleFloatingNumber);
+
+                floatingNumber.SetPosition(
+                    left: -3000,
+                    top: -3000,
+                    z: 10);
+
+                _scene_game.AddToScene(floatingNumber);
+            }
+
+            return true;
+        }
+
+        private bool GenerateFloatingNumber(Construct source)
+        {
+            if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<FloatingNumber>().FirstOrDefault(x => x.IsAnimating == false) is FloatingNumber floatingNumberTop)
+            {
+                floatingNumberTop.IsAnimating = true;
+                floatingNumberTop.Reposition(source);
+            }
+
+            return true;
+        }
+
+        private bool AnimateFloatingNumber(Construct floatingNumber)
+        {
+            FloatingNumber floatingNumber1 = floatingNumber as FloatingNumber;
+            var speed = floatingNumber1.GetMovementSpeed();
+            floatingNumber1.MoveUpRight(speed);
+            floatingNumber1.Fade();
+            return true;
+        }
+
+        private bool RecycleFloatingNumber(Construct floatingNumber)
+        {
+            FloatingNumber floatingNumber1 = floatingNumber as FloatingNumber;
+
+            if (floatingNumber1.IsFadingComplete)
+            {
+                floatingNumber.IsAnimating = false;
+                floatingNumber.SetPosition(left: -3000, top: -3000);
+            }
+
+            return true;
         }
 
         #endregion
@@ -519,7 +576,7 @@ namespace HonkTrooper
                 _ = assetsLoadingScreen.PreloadAssets(async () =>
                 {
                     RecycleAssetsLoadingScreen(assetsLoadingScreen);
-                    AddGameSceneGenerators();
+                    AddGameConstructGenerators();
 
                     await Task.Delay(600);
 
@@ -1273,8 +1330,8 @@ namespace HonkTrooper
         {
             var hitbox = playerRocket.GetHitBox();
 
-            // if bomb is blasted and faed or goes out of scene bounds
-            if (playerRocket.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 /*|| hitbox.Top < 0 || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT*/)
+            // if bomb is blasted or goes out of scene bounds
+            if (playerRocket.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT)
             {
                 playerRocket.IsAnimating = false;
                 playerRocket.SetPosition(left: -3000, top: -3000);
@@ -2346,10 +2403,10 @@ namespace HonkTrooper
 
         private bool RecycleUfoBossRocket(Construct ufoBossRocket)
         {
-            //var hitbox = bomb.GetHitBox();
+            var hitbox = ufoBossRocket.GetHitBox();
 
             // if bomb is blasted and faed or goes out of scene bounds
-            if (ufoBossRocket.IsFadingComplete /*|| hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT*/)
+            if (ufoBossRocket.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT)
             {
                 ufoBossRocket.IsAnimating = false;
                 ufoBossRocket.SetPosition(left: -3000, top: -3000);
@@ -3006,10 +3063,10 @@ namespace HonkTrooper
 
         private bool RecycleVehicleBossRocket(Construct vehicleBossRocket)
         {
-            //var hitbox = bomb.GetHitBox();
+            var hitbox = vehicleBossRocket.GetHitBox();
 
             // if bomb is blasted and faed or goes out of scene bounds
-            if (vehicleBossRocket.IsFadingComplete /*|| hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT*/)
+            if (vehicleBossRocket.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT)
             {
                 vehicleBossRocket.IsAnimating = false;
                 vehicleBossRocket.IsGravitatingUpwards = false;
@@ -4294,7 +4351,7 @@ namespace HonkTrooper
                 );
         }
 
-        private void AddGameSceneGenerators()
+        private void AddGameConstructGenerators()
         {
             _scene_game.Clear();
             _scene_game.AddToScene(
@@ -4487,11 +4544,20 @@ namespace HonkTrooper
                 generationDelay: 400,
                 generationAction: GeneratePowerUpPickup,
                 startUpAction: SpawnPowerUpPickups,
-                randomizeGenerationDelay: true)
-
-                );
+                randomizeGenerationDelay: true),
 
             #endregion
+
+            #region Floating Number
+
+            new Generator(
+                generationDelay: 0,
+                generationAction: () => { return true; },
+                startUpAction: SpawnFloatingNumbers)
+
+            #endregion
+
+                );
         }
 
         private void SetSceneScaling()

@@ -22,15 +22,15 @@ namespace HonkTrooper
         {
             ConstructType = ConstructType.ROAD_SIDE_TREE;
 
+            AnimateAction = animateAction;
+            RecycleAction = recycleAction;
+
             _tree_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.ROAD_SIDE_TREE).Select(x => x.Uri).ToArray();
 
             var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.ROAD_SIDE_TREE);
 
             var width = size.Width;
             var height = size.Height;
-
-            AnimateAction = animateAction;
-            RecycleAction = recycleAction;
 
             SetSize(width: width, height: height);
 

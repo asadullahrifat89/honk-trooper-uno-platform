@@ -5,7 +5,7 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace HonkTrooper
 {
-    public partial class VehicleBoss : VehicleBase
+    public partial class VehicleBoss : VehicleBossBase
     {
         #region Fields
 
@@ -57,13 +57,7 @@ namespace HonkTrooper
 
         #endregion
 
-        #region Properties
-
-        public bool IsAttacking { get; set; }
-
-        public double Health { get; set; }
-
-        public bool IsDead => Health <= 0;
+        #region Properties      
 
         public VehicleBossMovementPattern MovementPattern { get; set; }
 
