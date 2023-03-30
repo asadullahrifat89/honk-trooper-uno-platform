@@ -16,7 +16,7 @@ namespace HonkTrooper
         private readonly ProgressBar _bar = new()
         {
             Width = 50,
-            Height = 5,
+            Height = 10,
             Value = 0,
             Maximum = 0,
             Minimum = 0,
