@@ -1644,7 +1644,7 @@ namespace HonkTrooper
                 roadSideWalkBottom.IsAnimating = true;
                 roadSideWalkBottom.SetPosition(
                     left: (roadSideWalkBottom.Height * -1.5) - 30,
-                    top: (Constants.DEFAULT_SCENE_HEIGHT / 5 + roadSideWalkBottom.Height / 2) - 100,
+                    top: (Constants.DEFAULT_SCENE_HEIGHT / 5 + roadSideWalkBottom.Height / 2) - 90,
                     z: 0);
             }
 
@@ -1990,7 +1990,7 @@ namespace HonkTrooper
                 roadSideBillboardTop.IsAnimating = true;
 
                 roadSideBillboardTop.SetPosition(
-                  left: (Constants.DEFAULT_SCENE_WIDTH / 2.5 - roadSideBillboardTop.Width) + 48,
+                  left: (Constants.DEFAULT_SCENE_WIDTH / 2.5 - roadSideBillboardTop.Width) + 25,
                   top: ((roadSideBillboardTop.Height * 1.5) * -1) - 10,
                   z: 4);
             }
