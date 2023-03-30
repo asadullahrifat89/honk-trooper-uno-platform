@@ -1,6 +1,8 @@
-﻿using Microsoft.UI.Xaml.Controls;
+﻿using Microsoft.UI;
+using Microsoft.UI.Text;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
 using System;
-using System.Linq;
 
 namespace HonkTrooper
 {
@@ -33,7 +35,7 @@ namespace HonkTrooper
 
             SetConstructSize();
 
-            _textBlock = new TextBlock() { FontSize = 20 };
+            _textBlock = new TextBlock() { FontWeight = FontWeights.Bold, Foreground = new SolidColorBrush(Colors.White), FontSize = 25 };
 
             SetChild(_textBlock);
             IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
@@ -102,12 +104,12 @@ namespace HonkTrooper
                     break;
                 default:
                     break;
-            }           
+            }
         }
 
         private void RandomizeMovementDirection()
-        {            
-            _movementDirection = (MovementDirection)_random.Next(1,Enum.GetNames(typeof(MovementDirection)).Length);
+        {
+            _movementDirection = (MovementDirection)_random.Next(1, Enum.GetNames(typeof(MovementDirection)).Length);
         }
 
         #endregion
