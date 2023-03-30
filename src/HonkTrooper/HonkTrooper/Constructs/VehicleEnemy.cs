@@ -88,7 +88,7 @@ namespace HonkTrooper
 
         public void Reset()
         {
-            SetScaleTransform(1);          
+            SetScaleTransform(1);
 
             SpeedOffset = _random.Next((int)Constants.DEFAULT_SPEED_OFFSET * -1, 0);
 
@@ -96,26 +96,26 @@ namespace HonkTrooper
 
             if (WillHonk)
             {
-                Health = HitPoint * _random.Next(3);
+                Health = HitPoint * _random.Next(4);
                 SetHonkDelay();
-            }                
+            }
         }
 
         public void LooseHealth()
         {
-            Health -= HitPoint;          
+            Health -= HitPoint;
         }
 
         public void SetBlast()
         {
-            WillHonk = false;            
+            WillHonk = false;
 
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET - 1;
 
-            var willReact = _random.Next(2);
+            //var willReact = _random.Next(2);
 
-            if (willReact > 0)
-                _audioStub.Play(SoundType.HONK_BUST_REACTION);
+            //if (willReact > 0)
+            _audioStub.Play(SoundType.HONK_BUST_REACTION);
         }
 
         #endregion
