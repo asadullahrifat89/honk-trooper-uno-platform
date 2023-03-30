@@ -578,12 +578,13 @@ namespace HonkTrooper
                     RecycleAssetsLoadingScreen(assetsLoadingScreen);
                     AddGameConstructGenerators();
 
-                    await Task.Delay(600);
+                    await Task.Delay(500);
 
                     GenerateGameStartScreen(title: "Honk Trooper", subTitle: "-Stop Honkers, Save The City-");
 
                     _scene_game.Play();
                     _audioStub.Play(SoundType.GAME_BACKGROUND_MUSIC);
+                    this.SunRayOverlay.Visibility = Visibility.Visible;
                 });
 
                 return true;
@@ -1691,7 +1692,7 @@ namespace HonkTrooper
 
         private bool GenerateRoadSideWalk()
         {
-            if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideWalk>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideWalk roadSideWalkTop)
+            if (/*!_scene_game.IsSlowMotionActivated &&*/ _scene_game.Children.OfType<RoadSideWalk>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideWalk roadSideWalkTop)
             {
                 roadSideWalkTop.Reset();
                 roadSideWalkTop.IsAnimating = true;
@@ -1701,7 +1702,7 @@ namespace HonkTrooper
                     z: 0);
             }
 
-            if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideWalk>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideWalk roadSideWalkBottom)
+            if (/*!_scene_game.IsSlowMotionActivated &&*/ _scene_game.Children.OfType<RoadSideWalk>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideWalk roadSideWalkBottom)
             {
                 roadSideWalkBottom.Reset();
                 roadSideWalkBottom.IsAnimating = true;
@@ -1718,7 +1719,7 @@ namespace HonkTrooper
         {
             RoadSideWalk roadSideWalk1 = roadSideWalk as RoadSideWalk;
             var speed = roadSideWalk1.GetMovementSpeed();
-            roadSideWalk1.MoveDownRight(speed);
+            roadSideWalk1.MoveDownRight(speed: speed);
             return true;
         }
 

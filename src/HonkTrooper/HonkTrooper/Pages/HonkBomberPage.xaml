@@ -44,19 +44,18 @@
             BorderBrush="{ThemeResource BorderColor}"
             BorderThickness="3" />
 
-        <!--<Border
-            x:Name="SunRayOverlay"
-            BorderBrush="#111111"
-            BorderThickness="3">
+        <Border x:Name="SunRayOverlay" Visibility="Collapsed">
             <Border.Background>
-                <LinearGradientBrush Opacity="1" StartPoint="1,0" EndPoint="0.5,1">
-                    <GradientStop Offset="0.00" Color="#191919" />
+                <LinearGradientBrush Opacity="1.0" StartPoint="1,0" EndPoint="0.5,1">
+                    <GradientStop Offset="0.00" Color="{ThemeResource BorderColor}" />
                     <GradientStop Offset="0.20" Color="Transparent" />
+                    <GradientStop Offset="0.80" Color="Transparent" />
+                    <GradientStop Offset="1.00" Color="{ThemeResource BorderColor}" />
                 </LinearGradientBrush>
             </Border.Background>
         </Border>
 
-        <Border
+        <!--<Border
             x:Name="SunRayOverlay2"
             BorderBrush="#111111"
             BorderThickness="3">
