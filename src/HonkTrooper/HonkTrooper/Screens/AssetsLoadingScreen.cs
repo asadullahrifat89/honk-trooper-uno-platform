@@ -17,6 +17,8 @@ namespace HonkTrooper
 
         private readonly TextBlock _sub_title_text;
 
+        private bool _assets_loaded;
+
         #endregion
 
         #region Ctor
@@ -117,26 +119,36 @@ namespace HonkTrooper
 
         public async Task PreloadAssets(Action completed)
         {
-            _progressBar.IsIndeterminate = false;
-            _progressBar.ShowPaused = false;
-            _progressBar.Value = 0;
-            _progressBar.Minimum = 0;
-
-            _progressBar.Maximum = Constants.CONSTRUCT_TEMPLATES.Length;
-
-            foreach (var template in Constants.CONSTRUCT_TEMPLATES)
+            if (_assets_loaded)
             {
-                await GetFileAsync(template.Uri);
-            }
-
-            if (_progressBar.Value == _progressBar.Maximum)
                 completed?.Invoke();
+            }
+            else
+            {
+                _progressBar.IsIndeterminate = false;
+                _progressBar.ShowPaused = false;
+                _progressBar.Value = 0;
+                _progressBar.Minimum = 0;
+
+                _progressBar.Maximum = Constants.CONSTRUCT_TEMPLATES.Length;
+
+                foreach (var template in Constants.CONSTRUCT_TEMPLATES)
+                {
+                    await GetFileAsync(template.Uri);
+                }
+
+                if (_progressBar.Value == _progressBar.Maximum)
+                {
+                    _assets_loaded = true;
+                    completed?.Invoke();
+                }
+            }
         }
 
         private async Task GetFileAsync(Uri uri)
         {
 #if DEBUG
-            LoggingExtensions.Log("GetFileAsync: " +uri.OriginalString);
+            LoggingExtensions.Log("GetFileAsync: " + uri.OriginalString);
 #endif
             await StorageFile.GetFileFromApplicationUriAsync(uri);
             _progressBar.Value++;

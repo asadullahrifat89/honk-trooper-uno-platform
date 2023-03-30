@@ -4,7 +4,6 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System;
-using System.Runtime.CompilerServices;
 using Windows.UI;
 
 namespace HonkTrooper
@@ -13,10 +12,10 @@ namespace HonkTrooper
     {
         #region Fields
 
-        private readonly ProgressBar _bar = new()
+        private readonly ProgressBar _progressBar = new()
         {
-            Width = 50,
-            Height = 5,
+            Width = 60,
+            Height = 10,
             Value = 0,
             Maximum = 0,
             Minimum = 0,
@@ -49,14 +48,14 @@ namespace HonkTrooper
             };
 
             _container.Children.Add(_icon);
-            _container.Children.Add(_bar);
+            _container.Children.Add(_progressBar);
 
             Child = _container;
 
             CornerRadius = new CornerRadius(5);
             //BorderThickness = new Thickness(4);
-            Background = new SolidColorBrush(Colors.Goldenrod);
-            BorderBrush = new SolidColorBrush(Colors.White);
+            //Background = new SolidColorBrush(Colors.Goldenrod);
+            //BorderBrush = new SolidColorBrush(Colors.White);
 
             Visibility = Visibility.Collapsed;
         }
@@ -65,7 +64,7 @@ namespace HonkTrooper
 
         #region Properties
 
-        public bool HasHealth => _bar.Value > 0;
+        public bool HasHealth => _progressBar.Value > 0;
 
         #endregion
 
@@ -78,28 +77,28 @@ namespace HonkTrooper
 
         public void SetMaxiumHealth(double value)
         {
-            _bar.Maximum = value;
+            _progressBar.Maximum = value;
         }
 
         public double GetMaxiumHealth()
         {
-            return _bar.Maximum;
+            return _progressBar.Maximum;
         }
 
         public void SetValue(double value)
         {
-            _bar.Value = value;
-            Visibility = _bar.Value > 0 ? Visibility.Visible : Visibility.Collapsed;
+            _progressBar.Value = value;
+            Visibility = _progressBar.Value > 0 ? Visibility.Visible : Visibility.Collapsed;
         }
 
         public void SetBarColor(Color color)
         {
-            _bar.Foreground = new SolidColorBrush(color);
+            _progressBar.Foreground = new SolidColorBrush(color);
         }
 
         public double GetValue()
         {
-            return _bar.Value;
+            return _progressBar.Value;
         }
 
         public void Reset()

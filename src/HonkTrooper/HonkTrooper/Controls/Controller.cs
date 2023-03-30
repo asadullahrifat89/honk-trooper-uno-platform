@@ -3,10 +3,8 @@ using Microsoft.UI.Input;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
-using System;
 using Windows.Devices.Sensors;
 using Windows.Foundation;
-using Windows.UI;
 
 namespace HonkTrooper
 {
@@ -120,11 +118,11 @@ namespace HonkTrooper
                 Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.55,
                 Background = new SolidColorBrush(Colors.Goldenrod),
                 CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS * sizeXY),
-                BorderBrush = new SolidColorBrush(Colors.White),
+                BorderBrush = App.Current.Resources["BorderColor"] as SolidColorBrush,
                 BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
                 HorizontalAlignment = HorizontalAlignment.Right,
                 VerticalAlignment = VerticalAlignment.Bottom,
-                Opacity = 0.3,
+                Opacity = 0.4,
             };
 
             //grid.Children.Add(Thumbstick);
@@ -270,7 +268,7 @@ namespace HonkTrooper
                 CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS * 2),
 
                 Background = new SolidColorBrush(Colors.Crimson),
-                BorderBrush = new SolidColorBrush(Colors.White),
+                BorderBrush = App.Current.Resources["BorderColor"] as SolidColorBrush,
                 BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
             };
 
@@ -823,18 +821,18 @@ namespace HonkTrooper
             AttackButton = new()
             {
                 Background = new SolidColorBrush(Colors.Crimson),
-                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.3,
-                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.3,
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.2,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.2,
                 CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS * 2),
                 Content = new SymbolIcon()
                 {
                     Symbol = Symbol.Placeholder,
                 },
-                BorderBrush = new SolidColorBrush(Colors.White),
+                BorderBrush = App.Current.Resources["BorderColor"] as SolidColorBrush,
                 BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
                 HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Bottom,
-                Margin = new Thickness(65, 75),
+                Margin = new Thickness(55, 55),
                 //Opacity = 0.6
             };
 

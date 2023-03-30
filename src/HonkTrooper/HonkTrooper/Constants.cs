@@ -64,10 +64,10 @@ namespace HonkTrooper
             new (ConstructType.ROAD_SIDE_TREE, 190, 190),
             new (ConstructType.ROAD_SIDE_HEDGE, 170, 170),
 
-            new (ConstructType.ROAD_SIDE_WALK, 270, 260),
+            new (ConstructType.ROAD_SIDE_WALK, 300, 300),
             new (ConstructType.ROAD_SIDE_LAMP, 150, 150),
             new (ConstructType.ROAD_SIDE_LIGHT_BILLBOARD, 150, 150),
-            new (ConstructType.ROAD_SIDE_BILLBOARD, 340, 340),
+            new (ConstructType.ROAD_SIDE_BILLBOARD, 300, 300),
 
             new (ConstructType.DROP_SHADOW, 60, 25),
 
@@ -85,13 +85,17 @@ namespace HonkTrooper
             new (ConstructType.ROAD_SIDE_TREE, new Uri("ms-appx:///HonkTrooper/Assets/Images/tree_3.png")),
             new (ConstructType.ROAD_SIDE_TREE, new Uri("ms-appx:///HonkTrooper/Assets/Images/tree_4.png")),
 
-            new (ConstructType.ROAD_SIDE_LAMP, new Uri("ms-appx:///HonkTrooper/Assets/Images/street_lamp_1.png")),
-            new (ConstructType.ROAD_SIDE_LAMP, new Uri("ms-appx:///HonkTrooper/Assets/Images/street_lamp_2.png")),
+            new (ConstructType.ROAD_SIDE_LAMP, new Uri("ms-appx:///HonkTrooper/Assets/Images/road_side_lamp_1.png")),
+            new (ConstructType.ROAD_SIDE_LAMP, new Uri("ms-appx:///HonkTrooper/Assets/Images/road_side_lamp_2.png")),
 
-            new (ConstructType.ROAD_SIDE_LIGHT_BILLBOARD, new Uri("ms-appx:///HonkTrooper/Assets/Images/street_billboard_1.png")),
+            new (ConstructType.ROAD_SIDE_LIGHT_BILLBOARD, new Uri("ms-appx:///HonkTrooper/Assets/Images/road_side_light_billboard_1.png")),
+            new (ConstructType.ROAD_SIDE_LIGHT_BILLBOARD, new Uri("ms-appx:///HonkTrooper/Assets/Images/road_side_light_billboard_2.png")),
+            new (ConstructType.ROAD_SIDE_LIGHT_BILLBOARD, new Uri("ms-appx:///HonkTrooper/Assets/Images/road_side_light_billboard_3.png")),
 
-            new (ConstructType.ROAD_SIDE_HEDGE, new Uri("ms-appx:///HonkTrooper/Assets/Images/hedge_1.png")),
-            new (ConstructType.ROAD_SIDE_HEDGE, new Uri("ms-appx:///HonkTrooper/Assets/Images/hedge_2.png")),
+            new (ConstructType.ROAD_SIDE_HEDGE, new Uri("ms-appx:///HonkTrooper/Assets/Images/road_side_hedge_1.png")),
+            new (ConstructType.ROAD_SIDE_HEDGE, new Uri("ms-appx:///HonkTrooper/Assets/Images/road_side_hedge_2.png")),
+
+            new (ConstructType.ROAD_SIDE_WALK, new Uri("ms-appx:///HonkTrooper/Assets/Images/road_side_walk.png")),            
 
             new (ConstructType.ROAD_SIDE_BILLBOARD, new Uri("ms-appx:///HonkTrooper/Assets/Images/billboard_1.png")),
             new (ConstructType.ROAD_SIDE_BILLBOARD, new Uri("ms-appx:///HonkTrooper/Assets/Images/billboard_2.png")),
@@ -146,8 +150,7 @@ namespace HonkTrooper
             new (ConstructType.PLAYER_HONK_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/cracker_3.png")),
 
             new (ConstructType.PLAYER_HONK_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/trash_1.png")),
-            new (ConstructType.PLAYER_HONK_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/trash_2.png")),
-            new (ConstructType.PLAYER_HONK_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/trash_3.png")),
+            new (ConstructType.PLAYER_HONK_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/trash_2.png")),            
 
             new (ConstructType.PLAYER_ROCKET_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_rocket_seeking_1.png")),
             new (ConstructType.PLAYER_ROCKET_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_rocket_seeking_2.png")),

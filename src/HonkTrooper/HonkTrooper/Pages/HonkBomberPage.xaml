@@ -41,7 +41,7 @@
         <Scene
             x:Name="GameScene"
             Background="{ThemeResource DayBackgroundColor}"
-            BorderBrush="#111111"
+            BorderBrush="{ThemeResource BorderColor}"
             BorderThickness="3" />
 
         <!--<Border
@@ -82,12 +82,6 @@
             HorizontalAlignment="Center"
             VerticalAlignment="Top" />
 
-        <HealthBar
-            x:Name="SoundPollutionBar"
-            Margin="0,15"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Bottom" />
-
         <StackPanel
             x:Name="HealthBars"
             Margin="5"
@@ -112,7 +106,8 @@
                 VerticalAlignment="Top" />
             <StackPanel VerticalAlignment="Top" Orientation="Vertical">
                 <HealthBar x:Name="PlayerHealthBar" Margin="5" />
-                <HealthBar x:Name="PowerUpHealthBar" Margin="5,0,5,5" />
+                <HealthBar x:Name="PowerUpHealthBar" Margin="5" />
+                <HealthBar x:Name="SoundPollutionBar" Margin="5" />
             </StackPanel>
         </StackPanel>
 

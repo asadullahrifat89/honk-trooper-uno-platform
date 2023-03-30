@@ -1,5 +1,7 @@
-﻿using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml;
+﻿using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Imaging;
 using System;
 using System.Linq;
 
@@ -7,6 +9,13 @@ namespace HonkTrooper
 {
     public partial class RoadSideWalk : MovableConstruct
     {
+        #region Fields
+
+        private readonly Image _content_image;
+        private readonly Uri[] _side_walk_uris;
+
+        #endregion
+
         #region Ctor
 
         public RoadSideWalk(
@@ -14,6 +23,8 @@ namespace HonkTrooper
             Func<Construct, bool> recycleAction)
         {
             ConstructType = ConstructType.ROAD_SIDE_WALK;
+
+            _side_walk_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.ROAD_SIDE_WALK).Select(x => x.Uri).ToArray();
 
             var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.ROAD_SIDE_WALK);
 
@@ -25,7 +36,18 @@ namespace HonkTrooper
             AnimateAction = animateAction;
             RecycleAction = recycleAction;
 
-            BorderThickness = new Thickness(left: 30, top: 10, right: 10, bottom: 10);
+            var uri = ConstructExtensions.GetRandomContentUri(_side_walk_uris);
+
+            _content_image = new Image()
+            {
+                Source = new BitmapImage(uriSource: uri),
+                Stretch = Stretch.Fill
+            };
+
+            SetChild(_content_image);
+
+            BorderBrush = App.Current.Resources["BorderColor"] as SolidColorBrush;
+            BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS, 0);
 
             SetSkewY(36);
             SetRotation(-63.5);
@@ -42,13 +64,11 @@ namespace HonkTrooper
         {
             if (Scene.IsInNightMode)
             {
-                Background = App.Current.Resources["RoadSideWalkColor2"] as SolidColorBrush;
-                BorderBrush = App.Current.Resources["RoadSideWalkBorderColor2"] as SolidColorBrush;
+                _content_image.Opacity = 0.2;
             }
             else
             {
-                Background = App.Current.Resources["RoadSideWalkColor"] as SolidColorBrush;
-                BorderBrush = App.Current.Resources["RoadSideWalkBorderColor"] as SolidColorBrush;
+                _content_image.Opacity = 1;
             }
         }
 
