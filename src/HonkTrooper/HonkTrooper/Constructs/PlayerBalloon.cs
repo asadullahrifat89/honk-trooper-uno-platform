@@ -83,6 +83,8 @@ namespace HonkTrooper
 
         public double Health { get; set; }
 
+        public double HitPoint { get; set; } = 5;
+
         public bool IsDead => Health <= 0;
 
         public PlayerBalloonStance PlayerBalloonStance { get; set; } = PlayerBalloonStance.Idle;
@@ -449,8 +451,8 @@ namespace HonkTrooper
         {
             if (_health_loss_recovery_Delay <= 0) // only loose health if recovery delay is less that 0 as upon taking damage this is set to 10
             {
-                //TODO: set default  Health -= 5;
-                Health -= 5;
+                //TODO: set default  Health -= HitPoint;
+                Health -= HitPoint;
                 Opacity = 0.7;
 
                 _audioStub.Play(SoundType.PLAYER_HEALTH_LOSS);
@@ -488,7 +490,7 @@ namespace HonkTrooper
 
         public void GainHealth()
         {
-            Health += 15;
+            Health += HitPoint * 3;
         }
 
         #endregion        

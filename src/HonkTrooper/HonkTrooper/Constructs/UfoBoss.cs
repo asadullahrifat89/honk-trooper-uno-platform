@@ -6,7 +6,7 @@ using Windows.Foundation;
 
 namespace HonkTrooper
 {
-    public partial class UfoBoss : AnimableConstruct
+    public partial class UfoBoss : UfoBossBase
     {
         #region Fields
 
@@ -79,12 +79,6 @@ namespace HonkTrooper
         #endregion
 
         #region Properties
-
-        public bool IsAttacking { get; set; }
-
-        public double Health { get; set; }
-
-        public bool IsDead => Health <= 0;
 
         public UfoBossMovementPattern MovementPattern { get; set; }
 
@@ -168,7 +162,7 @@ namespace HonkTrooper
 
         public void LooseHealth()
         {
-            Health -= 5;
+            Health -= HitPoint;
 
             if (IsDead)
             {
@@ -548,8 +542,6 @@ namespace HonkTrooper
 
             return false;
         }
-
-
 
         private void RandomizeMovementPattern()
         {
