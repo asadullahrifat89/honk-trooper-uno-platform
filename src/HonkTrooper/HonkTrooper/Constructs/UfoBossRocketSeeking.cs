@@ -30,22 +30,17 @@ namespace HonkTrooper
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction)
         {
+            ConstructType = ConstructType.UFO_BOSS_ROCKET_SEEKING;
+
+            AnimateAction = animateAction;
+            RecycleAction = recycleAction;
+
             _random = new Random();
 
             _bomb_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.UFO_BOSS_ROCKET_SEEKING).Select(x => x.Uri).ToArray();
             _bomb_blast_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BLAST).Select(x => x.Uri).ToArray();
 
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.UFO_BOSS_ROCKET_SEEKING);
-
-            ConstructType = ConstructType.UFO_BOSS_ROCKET_SEEKING;
-
-            var width = size.Width;
-            var height = size.Height;
-
-            AnimateAction = animateAction;
-            RecycleAction = recycleAction;
-
-            SetSize(width: width, height: height);
+            SetConstructSize();
 
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_uris);
 
@@ -99,7 +94,7 @@ namespace HonkTrooper
             SetPosition(
                 left: (UfoBoss.GetLeft() + UfoBoss.Width / 2) - Width / 2,
                 top: UfoBoss.GetBottom() - (40));
-        }       
+        }
 
         public bool AutoBlast()
         {
@@ -118,7 +113,7 @@ namespace HonkTrooper
             SetRotation(0);
             SetScaleTransform(Constants.DEFAULT_BLAST_SHRINK_SCALE);
 
-            BorderBrush = new SolidColorBrush(Colors.Goldenrod);            
+            BorderBrush = new SolidColorBrush(Colors.Goldenrod);
 
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_blast_uris);
             _content_image.Source = new BitmapImage(uri);

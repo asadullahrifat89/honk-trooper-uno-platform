@@ -23,12 +23,7 @@ namespace HonkTrooper
             AnimateAction = animateAction;
             RecycleAction = recycleAction;
 
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.FLOATING_NUMBER);
-
-            var width = size.Width;
-            var height = size.Height;
-
-            SetSize(width: width, height: height);
+            SetConstructSize();
 
             _textBlock = new TextBlock();
 
@@ -41,6 +36,11 @@ namespace HonkTrooper
         #endregion
 
         #region Methods
+
+        public void Reset(double number)
+        {
+            _textBlock.Text = number.ToString("00");
+        }
 
         public void Reposition(Construct source)
         {

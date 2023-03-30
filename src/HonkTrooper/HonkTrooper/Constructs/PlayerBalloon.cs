@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace HonkTrooper
 {
-    public partial class PlayerBalloon : AnimableConstruct
+    public partial class PlayerBalloon : HealthyConstruct
     {
         #region Fields
 
@@ -50,15 +50,10 @@ namespace HonkTrooper
         {
             ConstructType = ConstructType.PLAYER_BALLOON;
 
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.PLAYER_BALLOON);
-
-            var width = size.Width;
-            var height = size.Height;
-
             AnimateAction = animateAction;
             RecycleAction = recycleAction;
 
-            SetSize(width: width, height: height);
+            SetConstructSize();
 
             _player_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BALLOON).Select(x => x.Uri).ToArray();
             var uri = ConstructExtensions.GetRandomContentUri(_player_uris);
@@ -80,12 +75,6 @@ namespace HonkTrooper
         #endregion
 
         #region Properties
-
-        public double Health { get; set; }
-
-        public double HitPoint { get; set; } = 5;
-
-        public bool IsDead => Health <= 0;
 
         public PlayerBalloonStance PlayerBalloonStance { get; set; } = PlayerBalloonStance.Idle;
 

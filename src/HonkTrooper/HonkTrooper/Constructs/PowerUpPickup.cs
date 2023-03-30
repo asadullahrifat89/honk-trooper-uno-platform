@@ -21,19 +21,14 @@ namespace HonkTrooper
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction)
         {
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP);
-
             ConstructType = ConstructType.POWERUP_PICKUP;
-
-            _random = new Random();
-
-            var width = size.Width;
-            var height = size.Height;
 
             AnimateAction = animateAction;
             RecycleAction = recycleAction;
 
-            SetSize(width: width, height: height);
+            _random = new Random();
+
+            SetConstructSize();
 
             PowerUpType = (PowerUpType)_random.Next(Enum.GetNames(typeof(PowerUpType)).Length);
 
@@ -108,7 +103,7 @@ namespace HonkTrooper
                     break;
                 default:
                     break;
-            }            
+            }
 
             SetChild(_content_image);
         }

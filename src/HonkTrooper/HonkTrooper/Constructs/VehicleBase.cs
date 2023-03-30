@@ -2,7 +2,7 @@
 
 namespace HonkTrooper
 {
-    public partial class VehicleBase : AnimableConstruct
+    public partial class VehicleBase : HealthyConstruct
     {
         #region Fields
 

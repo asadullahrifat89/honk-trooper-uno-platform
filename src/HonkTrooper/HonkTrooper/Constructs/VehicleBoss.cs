@@ -29,19 +29,14 @@ namespace HonkTrooper
         {
             ConstructType = ConstructType.VEHICLE_BOSS;
 
+            AnimateAction = animateAction;
+            RecycleAction = recycleAction;
+
             _random = new Random();
 
             _vehicle_boss_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.VEHICLE_ENEMY_LARGE).Select(x => x.Uri).ToArray();
 
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.VEHICLE_BOSS);
-
-            var width = size.Width;
-            var height = size.Height;
-
-            AnimateAction = animateAction;
-            RecycleAction = recycleAction;
-
-            SetSize(width: width, height: height);
+            SetConstructSize();
 
             var uri = ConstructExtensions.GetRandomContentUri(_vehicle_boss_uris);
 

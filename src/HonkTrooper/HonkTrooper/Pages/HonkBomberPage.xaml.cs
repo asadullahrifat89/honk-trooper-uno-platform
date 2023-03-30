@@ -2284,6 +2284,8 @@ namespace HonkTrooper
             ufoBoss.LooseHealth();
             ufoBoss.SetHitStance();
 
+            GenerateFloatingNumber(ufoBoss);
+
             _ufo_boss_health_bar.SetValue(ufoBoss.Health);
 
             if (ufoBoss.IsDead)

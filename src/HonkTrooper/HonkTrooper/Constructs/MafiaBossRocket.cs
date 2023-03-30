@@ -33,20 +33,16 @@ namespace HonkTrooper
         {
             ConstructType = ConstructType.MAFIA_BOSS_ROCKET;
 
-            _random = new Random();
-
-            _bomb_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.MAFIA_BOSS_ROCKET).Select(x => x.Uri).ToArray();
-            _bomb_blast_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BLAST).Select(x => x.Uri).ToArray();
-
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.MAFIA_BOSS_ROCKET);
-
-            var width = size.Width;
-            var height = size.Height;
 
             AnimateAction = animateAction;
             RecycleAction = recycleAction;
 
-            SetSize(width: width, height: height);
+            _random = new Random();
+
+            _bomb_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.MAFIA_BOSS_ROCKET).Select(x => x.Uri).ToArray();
+            _bomb_blast_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BLAST).Select(x => x.Uri).ToArray();
+            
+            SetConstructSize();
 
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_uris);
 

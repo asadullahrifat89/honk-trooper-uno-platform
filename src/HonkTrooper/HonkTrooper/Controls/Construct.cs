@@ -1,5 +1,6 @@
 ﻿using Microsoft.UI.Xaml;
 using System;
+using System.Linq;
 
 namespace HonkTrooper
 {
@@ -59,6 +60,19 @@ namespace HonkTrooper
         public void SetChild(UIElement uIElement)
         {
             Child = uIElement;
+        }
+
+        public void SetConstructSize()
+        {
+            if (ConstructType != ConstructType.NONE)
+            {
+                var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType);
+
+                var width = size.Width;
+                var height = size.Height;
+
+                SetSize(width: width, height: height);
+            }
         }
 
         #endregion
