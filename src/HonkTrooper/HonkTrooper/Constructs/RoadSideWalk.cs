@@ -26,12 +26,7 @@ namespace HonkTrooper
 
             _side_walk_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.ROAD_SIDE_WALK).Select(x => x.Uri).ToArray();
 
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.ROAD_SIDE_WALK);
-
-            var width = size.Width;
-            var height = size.Height;
-
-            SetSize(width: width, height: height);
+            SetConstructSize();
 
             AnimateAction = animateAction;
             RecycleAction = recycleAction;

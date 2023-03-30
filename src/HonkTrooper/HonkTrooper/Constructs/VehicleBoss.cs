@@ -5,7 +5,7 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace HonkTrooper
 {
-    public partial class VehicleBoss : VehicleBase
+    public partial class VehicleBoss : VehicleBossBase
     {
         #region Fields
 
@@ -29,19 +29,14 @@ namespace HonkTrooper
         {
             ConstructType = ConstructType.VEHICLE_BOSS;
 
+            AnimateAction = animateAction;
+            RecycleAction = recycleAction;
+
             _random = new Random();
 
             _vehicle_boss_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.VEHICLE_ENEMY_LARGE).Select(x => x.Uri).ToArray();
 
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.VEHICLE_BOSS);
-
-            var width = size.Width;
-            var height = size.Height;
-
-            AnimateAction = animateAction;
-            RecycleAction = recycleAction;
-
-            SetSize(width: width, height: height);
+            SetConstructSize();
 
             var uri = ConstructExtensions.GetRandomContentUri(_vehicle_boss_uris);
 
@@ -57,13 +52,7 @@ namespace HonkTrooper
 
         #endregion
 
-        #region Properties
-
-        public bool IsAttacking { get; set; }
-
-        public double Health { get; set; }
-
-        public bool IsDead => Health <= 0;
+        #region Properties      
 
         public VehicleBossMovementPattern MovementPattern { get; set; }
 
@@ -71,13 +60,9 @@ namespace HonkTrooper
 
         #region Methods
 
-        public void Reset()
+        public new void Reset()
         {
-            Opacity = 1;
-            Health = 100;
-
-            IsAttacking = false;
-            WillHonk = true;
+            base.Reset();
 
             var uri = ConstructExtensions.GetRandomContentUri(_vehicle_boss_uris);
             _content_image.Source = new BitmapImage(uri);
@@ -85,17 +70,6 @@ namespace HonkTrooper
             RandomizeMovementPattern();
             SetScaleTransform(1);
             SetHonkDelay();
-        }
-
-        public void LooseHealth()
-        {
-            Health -= 5;
-
-            if (IsDead)
-            {
-                SpeedOffset = Constants.DEFAULT_SPEED_OFFSET - 1;
-                IsAttacking = false;
-            }
         }
 
         private void RandomizeMovementPattern()

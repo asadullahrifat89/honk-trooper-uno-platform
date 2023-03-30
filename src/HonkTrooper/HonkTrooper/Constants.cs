@@ -58,6 +58,7 @@ namespace HonkTrooper
 
             new (ConstructType.CLOUD, 260, 260),
             new (ConstructType.HONK, 90, 90),
+            new (ConstructType.FLOATING_NUMBER, 50, 50),
 
             new (ConstructType.ROAD_MARK, 15, 60),
 
@@ -382,6 +383,7 @@ namespace HonkTrooper
         POWERUP_PICKUP_BULLS_EYE,
 
         COLLECTABLE_PICKUP,
+        FLOATING_NUMBER,
 
         TITLE_SCREEN,
         INTERIM_SCREEN,

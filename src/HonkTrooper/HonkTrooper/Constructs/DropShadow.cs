@@ -24,17 +24,10 @@ namespace HonkTrooper
         {
             ConstructType = ConstructType.DROP_SHADOW;
 
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.DROP_SHADOW);
-
-            var width = size.Width;
-            var height = size.Height;
-
             AnimateAction = animateAction;
             RecycleAction = recycleAction;
 
-            Height = 25;
-
-            SetSize(width: width, height: height);
+            SetConstructSize();
 
             Background = new SolidColorBrush(Colors.Black);
             CornerRadius = new CornerRadius(100);

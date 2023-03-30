@@ -24,6 +24,9 @@ namespace HonkTrooper
             Func<Construct, bool> animateAction,
             Func<Construct, bool> recycleAction)
         {
+            AnimateAction = animateAction;
+            RecycleAction = recycleAction;
+
             _random = new Random();
 
             _vehicle_small_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.VEHICLE_ENEMY_SMALL).Select(x => x.Uri).ToArray();
@@ -33,26 +36,17 @@ namespace HonkTrooper
 
             var vehicleType = _random.Next(2);
 
-            (ConstructType ConstructType, double Height, double Width) size;
             Uri uri;
 
             switch (vehicleType)
             {
                 case 0:
                     {
-                        size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.VEHICLE_ENEMY_SMALL);
-
-                        uri = ConstructExtensions.GetRandomContentUri(_vehicle_small_uris);
-
                         ConstructType = ConstructType.VEHICLE_ENEMY_SMALL;
 
-                        var width = size.Width;
-                        var height = size.Height;
+                        SetConstructSize();
 
-                        SetSize(width: width, height: height);
-
-                        AnimateAction = animateAction;
-                        RecycleAction = recycleAction;
+                        uri = ConstructExtensions.GetRandomContentUri(_vehicle_small_uris);
 
                         var content = new Image()
                         {
@@ -63,19 +57,11 @@ namespace HonkTrooper
                     break;
                 case 1:
                     {
-                        size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.VEHICLE_ENEMY_LARGE);
-
-                        uri = ConstructExtensions.GetRandomContentUri(_vehicle_large_uris);
-
                         ConstructType = ConstructType.VEHICLE_ENEMY_LARGE;
 
-                        var width = size.Width;
-                        var height = size.Height;
+                        SetConstructSize();
 
-                        SetSize(width: width, height: height);
-
-                        AnimateAction = animateAction;
-                        RecycleAction = recycleAction;
+                        uri = ConstructExtensions.GetRandomContentUri(_vehicle_large_uris);
 
                         var content = new Image()
                         {
@@ -109,19 +95,27 @@ namespace HonkTrooper
             WillHonk = Convert.ToBoolean(_random.Next(2));
 
             if (WillHonk)
+            {
+                Health = HitPoint * _random.Next(4);
                 SetHonkDelay();
+            }
+        }
+
+        public void LooseHealth()
+        {
+            Health -= HitPoint;
         }
 
         public void SetBlast()
         {
             WillHonk = false;
-            SetPopping();
+
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET - 1;
 
-            var willReact = _random.Next(2);
+            //var willReact = _random.Next(2);
 
-            if (willReact > 0)
-                _audioStub.Play(SoundType.HONK_BUST_REACTION);
+            //if (willReact > 0)
+            _audioStub.Play(SoundType.HONK_BUST_REACTION);
         }
 
         #endregion

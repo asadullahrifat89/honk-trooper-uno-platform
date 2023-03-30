@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace HonkTrooper
 {
-    public partial class PlayerBalloon : AnimableConstruct
+    public partial class PlayerBalloon : HealthyConstruct
     {
         #region Fields
 
@@ -50,15 +50,10 @@ namespace HonkTrooper
         {
             ConstructType = ConstructType.PLAYER_BALLOON;
 
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.PLAYER_BALLOON);
-
-            var width = size.Width;
-            var height = size.Height;
-
             AnimateAction = animateAction;
             RecycleAction = recycleAction;
 
-            SetSize(width: width, height: height);
+            SetConstructSize();
 
             _player_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BALLOON).Select(x => x.Uri).ToArray();
             var uri = ConstructExtensions.GetRandomContentUri(_player_uris);
@@ -80,10 +75,6 @@ namespace HonkTrooper
         #endregion
 
         #region Properties
-
-        public double Health { get; set; }
-
-        public bool IsDead => Health <= 0;
 
         public PlayerBalloonStance PlayerBalloonStance { get; set; } = PlayerBalloonStance.Idle;
 
@@ -449,8 +440,8 @@ namespace HonkTrooper
         {
             if (_health_loss_recovery_Delay <= 0) // only loose health if recovery delay is less that 0 as upon taking damage this is set to 10
             {
-                //TODO: set default  Health -= 5;
-                Health -= 5;
+                //TODO: set default  Health -= HitPoint;
+                Health -= HitPoint;
                 Opacity = 0.7;
 
                 _audioStub.Play(SoundType.PLAYER_HEALTH_LOSS);
@@ -488,7 +479,7 @@ namespace HonkTrooper
 
         public void GainHealth()
         {
-            Health += 15;
+            Health += HitPoint * 3;
         }
 
         #endregion        

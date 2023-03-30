@@ -25,19 +25,14 @@ namespace HonkTrooper
         {
             ConstructType = ConstructType.UFO_ENEMY;
 
+            AnimateAction = animateAction;
+            RecycleAction = recycleAction;
+
             _random = new Random();
 
             _enemy_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.UFO_ENEMY).Select(x => x.Uri).ToArray();
 
-            var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType.UFO_ENEMY);
-
-            var width = size.Width;
-            var height = size.Height;
-
-            AnimateAction = animateAction;
-            RecycleAction = recycleAction;
-
-            SetSize(width: width, height: height);
+            SetConstructSize();
 
             var uri = ConstructExtensions.GetRandomContentUri(_enemy_uris);
 
@@ -52,15 +47,7 @@ namespace HonkTrooper
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE;
         }
 
-        #endregion
-
-        #region Properties
-
-        public double Health { get; set; }
-
-        public bool IsDead => Health <= 0;
-
-        #endregion
+        #endregion     
 
         #region Methods
 
@@ -69,7 +56,7 @@ namespace HonkTrooper
             Opacity = 1;
             SetScaleTransform(1);
 
-            Health = 5 * _random.Next(4);
+            Health = HitPoint * _random.Next(4);
 
             WillHonk = Convert.ToBoolean(_random.Next(2));
 
