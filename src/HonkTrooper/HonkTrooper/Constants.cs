@@ -67,7 +67,7 @@ namespace HonkTrooper
             new (ConstructType.ROAD_SIDE_WALK, 300, 300),
             new (ConstructType.ROAD_SIDE_LAMP, 150, 150),
             new (ConstructType.ROAD_SIDE_LIGHT_BILLBOARD, 150, 150),
-            new (ConstructType.ROAD_SIDE_BILLBOARD, 310, 310),
+            new (ConstructType.ROAD_SIDE_BILLBOARD, 300, 300),
 
             new (ConstructType.DROP_SHADOW, 60, 25),
 
