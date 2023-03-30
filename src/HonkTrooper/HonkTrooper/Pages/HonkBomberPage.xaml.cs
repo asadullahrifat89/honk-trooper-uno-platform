@@ -117,7 +117,8 @@ namespace HonkTrooper
                 (SoundType.GAME_START, 1, false),
                 (SoundType.GAME_PAUSE, 1, false),
                 (SoundType.GAME_OVER, 1, false),
-                (SoundType.UFO_ENEMY_ENTRY, 1, false));
+                (SoundType.UFO_ENEMY_ENTRY, 1, false),
+                (SoundType.HONK_BUST_REACTION, 1, false));
 
             ScreenExtensions.Width = Constants.DEFAULT_SCENE_WIDTH;
             ScreenExtensions.Height = Constants.DEFAULT_SCENE_HEIGHT;
@@ -1071,6 +1072,7 @@ namespace HonkTrooper
                         {
                             vehicle.SetBlast();
                             _game_score_bar.GainScore(2);
+                            _audio_stub.Play(SoundType.HONK_BUST_REACTION);
                         }
 
                         if (_scene_game.Children.OfType<VehicleBoss>()
@@ -1845,7 +1847,7 @@ namespace HonkTrooper
                 roadSideLampTop.SetPosition(
                   left: (Constants.DEFAULT_SCENE_WIDTH / 3 - roadSideLampTop.Width) - 100,
                   top: ((roadSideLampTop.Height * 1.5) * -1) - 50,
-                  z: 4);
+                  z: 3);
             }
 
             if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideLamp>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideLamp roadSideLampBottom)
