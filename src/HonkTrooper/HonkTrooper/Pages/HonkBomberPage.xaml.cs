@@ -242,7 +242,7 @@ namespace HonkTrooper
 
             _audioStub.Pause(SoundType.AMBIENCE);
 
-            if (VehicleBossExists())
+            if (AnyBossExists())
             {
                 _audioStub.Pause(SoundType.BOSS_BACKGROUND_MUSIC);
             }
@@ -268,7 +268,7 @@ namespace HonkTrooper
         {
             _audioStub.Resume(SoundType.AMBIENCE);
 
-            if (VehicleBossExists())
+            if (AnyBossExists())
             {
                 _audioStub.Resume(SoundType.BOSS_BACKGROUND_MUSIC);
             }
@@ -2185,7 +2185,7 @@ namespace HonkTrooper
                 _scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating == false) is UfoBoss ufoBoss)
             {
                 _audioStub.Stop(SoundType.GAME_BACKGROUND_MUSIC);
-                //_audio_stub.Play(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
+                _audioStub.Play(SoundType.BOSS_BACKGROUND_MUSIC);
                 _audioStub.SetVolume(SoundType.AMBIENCE, 0.2);
 
                 ufoBoss.IsAnimating = true;
@@ -2292,7 +2292,7 @@ namespace HonkTrooper
 
             if (ufoBoss.IsDead)
             {
-                //_audio_stub.Stop(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
+                _audioStub.Stop(SoundType.BOSS_BACKGROUND_MUSIC);
                 _audioStub.Play(SoundType.GAME_BACKGROUND_MUSIC);
                 _audioStub.SetVolume(SoundType.AMBIENCE, 0.6);
 
@@ -3132,7 +3132,7 @@ namespace HonkTrooper
                 _scene_game.Children.OfType<ZombieBoss>().FirstOrDefault(x => x.IsAnimating == false) is ZombieBoss zombieBoss)
             {
                 _audioStub.Stop(SoundType.GAME_BACKGROUND_MUSIC);
-                //_audio_stub.Play(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
+                _audioStub.Play(SoundType.BOSS_BACKGROUND_MUSIC);
                 _audioStub.SetVolume(SoundType.AMBIENCE, 0.2);
 
                 zombieBoss.IsAnimating = true;
@@ -3236,7 +3236,7 @@ namespace HonkTrooper
 
             if (zombieBoss.IsDead)
             {
-                //_audio_stub.Stop(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
+                _audioStub.Stop(SoundType.BOSS_BACKGROUND_MUSIC);
                 _audioStub.Play(SoundType.GAME_BACKGROUND_MUSIC);
                 _audioStub.SetVolume(SoundType.AMBIENCE, 0.6);
 
@@ -3382,7 +3382,7 @@ namespace HonkTrooper
                 _scene_game.Children.OfType<MafiaBoss>().FirstOrDefault(x => x.IsAnimating == false) is MafiaBoss mafiaBoss)
             {
                 _audioStub.Stop(SoundType.GAME_BACKGROUND_MUSIC);
-                //_audio_stub.Play(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
+                _audioStub.Play(SoundType.BOSS_BACKGROUND_MUSIC);
                 _audioStub.SetVolume(SoundType.AMBIENCE, 0.2);
 
                 mafiaBoss.IsAnimating = true;
@@ -3489,7 +3489,7 @@ namespace HonkTrooper
 
             if (mafiaBoss.IsDead)
             {
-                //_audio_stub.Stop(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
+                _audioStub.Stop(SoundType.BOSS_BACKGROUND_MUSIC);
                 _audioStub.Play(SoundType.GAME_BACKGROUND_MUSIC);
                 _audioStub.SetVolume(SoundType.AMBIENCE, 0.6);
 
