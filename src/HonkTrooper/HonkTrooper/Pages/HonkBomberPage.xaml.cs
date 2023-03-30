@@ -1704,7 +1704,7 @@ namespace HonkTrooper
 
                 roadSideTreeTop.SetPosition(
                   left: (Constants.DEFAULT_SCENE_WIDTH / 2 - roadSideTreeTop.Width) + 10,
-                  top: (roadSideTreeTop.Height * -1.1) - 10,
+                  top: (roadSideTreeTop.Height * -1.1) - 20,
                   z: 3);
 
                 GenerateDropShadow(source: roadSideTreeTop);
