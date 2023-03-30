@@ -72,7 +72,7 @@
                     <GradientStop Offset="0.00" Color="Goldenrod" />
                     <GradientStop Offset="0.20" Color="Transparent" />
                     <GradientStop Offset="0.80" Color="Transparent" />
-                    <GradientStop Offset="1.00" Color="Goldenrod" />
+                    <GradientStop Offset="1.00" Color="Gray" />
                 </LinearGradientBrush>
             </Border.Background>
         </Border>
