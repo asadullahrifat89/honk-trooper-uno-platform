@@ -153,6 +153,7 @@ namespace HonkTrooper
 
             new (ConstructType.PLAYER_HONK_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/trash_1.png")),
             new (ConstructType.PLAYER_HONK_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/trash_2.png")),
+            new (ConstructType.PLAYER_HONK_BOMB, new Uri("ms-appx:///HonkTrooper/Assets/Images/trash_3.png")),
 
             new (ConstructType.PLAYER_ROCKET_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_rocket_seeking_1.png")),
             new (ConstructType.PLAYER_ROCKET_SEEKING, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_rocket_seeking_2.png")),
