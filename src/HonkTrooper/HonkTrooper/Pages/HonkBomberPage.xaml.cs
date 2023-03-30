@@ -159,7 +159,7 @@ namespace HonkTrooper
             }
             else
             {
-                GenerateDisplayOrientationChangeScreen();
+                GeneratePromptOrientationChangeScreen();
             }
         }
 
@@ -191,8 +191,7 @@ namespace HonkTrooper
         {
             if (_scene_game.SceneState == SceneState.GAME_RUNNING) // if screen orientation is changed while game is running, pause the game
             {
-                if (_scene_game.IsAnimating)
-                    PauseGame();
+                PauseGame();
             }
             else
             {
@@ -200,23 +199,18 @@ namespace HonkTrooper
 
                 if (ScreenExtensions.GetScreenOrienation() == ScreenExtensions.RequiredScreenOrientation)
                 {
-                    if (_scene_main_menu.Children.OfType<DisplayOrientationChangeScreen>().FirstOrDefault(x => x.IsAnimating) is DisplayOrientationChangeScreen DisplayOrientationChangeScreen)
+                    if (_scene_main_menu.Children.OfType<PromptOrientationChangeScreen>().FirstOrDefault(x => x.IsAnimating) is PromptOrientationChangeScreen promptOrientationChangeScreen)
                     {
-                        RecycleDisplayOrientationChangeScreen(DisplayOrientationChangeScreen);
-
-                        _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
+                        RecyclePromptOrientationChangeScreen(promptOrientationChangeScreen);
                         _scene_main_menu.Play();
-
                         GenerateAssetsLoadingScreen();
                     }
                 }
                 else // ask to change orientation
                 {
-                    if (_scene_game.IsAnimating)
-                        _scene_game.Pause();
-
-                    if (!_scene_main_menu.IsAnimating)
-                        _scene_main_menu.Play();
+                    _scene_game.Pause();
+                    _scene_main_menu.Play();
+                    _audio_stub.Pause(SoundType.GAME_BACKGROUND_MUSIC);
 
                     foreach (var hoveringTitleScreen in _scene_main_menu.Children.OfType<HoveringTitleScreen>().Where(x => x.IsAnimating))
                     {
@@ -230,7 +224,7 @@ namespace HonkTrooper
                         construct.SetPosition(left: -3000, top: -3000);
                     }
 
-                    GenerateDisplayOrientationChangeScreen();
+                    GeneratePromptOrientationChangeScreen();
                 }
             }
 
@@ -450,31 +444,31 @@ namespace HonkTrooper
 
         #endregion
 
-        #region DisplayOrientationChangeScreen
+        #region PromptOrientationChangeScreen
 
-        private bool SpawnDisplayOrientationChangeScreen()
+        private bool SpawnPromptOrientationChangeScreen()
         {
-            DisplayOrientationChangeScreen displayOrientationChangeScreen = null;
+            PromptOrientationChangeScreen promptOrientationChangeScreen = null;
 
-            displayOrientationChangeScreen = new(
-                animateAction: AnimateDisplayOrientationChangeScreen,
+            promptOrientationChangeScreen = new(
+                animateAction: AnimatePromptOrientationChangeScreen,
                 recycleAction: (se) => { return true; });
 
-            displayOrientationChangeScreen.SetPosition(
+            promptOrientationChangeScreen.SetPosition(
                 left: -3000,
                 top: -3000);
 
-            _scene_main_menu.AddToScene(displayOrientationChangeScreen);
+            _scene_main_menu.AddToScene(promptOrientationChangeScreen);
 
             return true;
         }
 
-        private bool GenerateDisplayOrientationChangeScreen()
+        private bool GeneratePromptOrientationChangeScreen()
         {
-            if (_scene_main_menu.Children.OfType<DisplayOrientationChangeScreen>().FirstOrDefault(x => x.IsAnimating == false) is DisplayOrientationChangeScreen displayOrientationChangeScreen)
+            if (_scene_main_menu.Children.OfType<PromptOrientationChangeScreen>().FirstOrDefault(x => x.IsAnimating == false) is PromptOrientationChangeScreen promptOrientationChangeScreen)
             {
-                displayOrientationChangeScreen.IsAnimating = true;
-                displayOrientationChangeScreen.Reposition();
+                promptOrientationChangeScreen.IsAnimating = true;
+                promptOrientationChangeScreen.Reposition();
 
                 return true;
             }
@@ -482,17 +476,17 @@ namespace HonkTrooper
             return false;
         }
 
-        private bool AnimateDisplayOrientationChangeScreen(Construct displayOrientationChangeScreen)
+        private bool AnimatePromptOrientationChangeScreen(Construct promptOrientationChangeScreen)
         {
-            DisplayOrientationChangeScreen screen1 = displayOrientationChangeScreen as DisplayOrientationChangeScreen;
+            PromptOrientationChangeScreen screen1 = promptOrientationChangeScreen as PromptOrientationChangeScreen;
             screen1.Hover();
             return true;
         }
 
-        private void RecycleDisplayOrientationChangeScreen(DisplayOrientationChangeScreen displayOrientationChangeScreen)
+        private void RecyclePromptOrientationChangeScreen(PromptOrientationChangeScreen promptOrientationChangeScreen)
         {
-            displayOrientationChangeScreen.IsAnimating = false;
-            displayOrientationChangeScreen.SetPosition(left: -3000, top: -3000);
+            promptOrientationChangeScreen.IsAnimating = false;
+            promptOrientationChangeScreen.SetPosition(left: -3000, top: -3000);
         }
 
         #endregion
@@ -522,16 +516,17 @@ namespace HonkTrooper
             {
                 assetsLoadingScreen.IsAnimating = true;
                 assetsLoadingScreen.Reposition();
-                assetsLoadingScreen.SetSubTitle("...Loading Assets...");
-                _ = assetsLoadingScreen.PreloadAssets(() =>
+                assetsLoadingScreen.SetSubTitle("... Loading Assets ...");
+                _ = assetsLoadingScreen.PreloadAssets(async () =>
                 {
                     RecycleAssetsLoadingScreen(assetsLoadingScreen);
                     AddGameSceneGenerators();
+
+                    await Task.Delay(1000);
+
                     GenerateGameStartScreen(title: "Honk Trooper", subTitle: "-Stop Honkers, Save The City-");
 
-                    if (!_scene_game.IsAnimating)
-                        _scene_game.Play();
-
+                    _scene_game.Play();
                     _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
                 });
 
@@ -4286,7 +4281,7 @@ namespace HonkTrooper
                         new Generator(
                             generationDelay: 0,
                             generationAction: () => { return true; },
-                            startUpAction: SpawnDisplayOrientationChangeScreen)
+                            startUpAction: SpawnPromptOrientationChangeScreen)
                             );
         }
 
