@@ -50,10 +50,10 @@ namespace HonkTrooper
             new (ConstructType.UFO_ENEMY, 160, 160),
             new (ConstructType.UFO_ENEMY_ROCKET, 100, 100),
 
-            new (ConstructType.VEHICLE_ENEMY_SMALL, 210, 210),
-            new (ConstructType.VEHICLE_ENEMY_LARGE, 240, 240),
+            new (ConstructType.VEHICLE_ENEMY_SMALL, 230, 230),
+            new (ConstructType.VEHICLE_ENEMY_LARGE, 260, 260),
 
-            new (ConstructType.VEHICLE_BOSS, 240, 240),
+            new (ConstructType.VEHICLE_BOSS, 260, 260),
             new (ConstructType.VEHICLE_BOSS_ROCKET, 120, 120),
 
             new (ConstructType.CLOUD, 260, 260),
