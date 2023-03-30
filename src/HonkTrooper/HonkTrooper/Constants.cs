@@ -257,6 +257,7 @@ namespace HonkTrooper
             new (SoundType.HONK_BUST_REACTION, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/honk_bust_reaction_20.mp3")),
             new (SoundType.HONK_BUST_REACTION, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/honk_bust_reaction_21.mp3")),
             new (SoundType.HONK_BUST_REACTION, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/honk_bust_reaction_22.mp3")),
+            new (SoundType.HONK_BUST_REACTION, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/honk_bust_reaction_23.mp3")),
 
             new (SoundType.SEEKER_ROCKET_LAUNCH, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/seeker_rocket_launch_1.mp3")),
             new (SoundType.SEEKER_ROCKET_LAUNCH, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/seeker_rocket_launch_2.mp3")),
