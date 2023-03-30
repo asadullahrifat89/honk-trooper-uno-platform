@@ -2912,6 +2912,8 @@ namespace HonkTrooper
                 GenerateInterimScreen("Crazy Honker Arrived");
                 _scene_game.ActivateSlowMotion();
 
+                ToggleNightMode(true);
+
                 return true;
             }
 
@@ -3003,6 +3005,8 @@ namespace HonkTrooper
                 LevelUp();
 
                 _scene_game.ActivateSlowMotion();
+
+                ToggleNightMode(false);
             }
         }
 
