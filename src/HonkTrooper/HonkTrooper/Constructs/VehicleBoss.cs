@@ -65,13 +65,9 @@ namespace HonkTrooper
 
         #region Methods
 
-        public void Reset()
+        public new void Reset()
         {
-            Opacity = 1;
-            Health = 100;
-
-            IsAttacking = false;
-            WillHonk = true;
+            base.Reset();
 
             var uri = ConstructExtensions.GetRandomContentUri(_vehicle_boss_uris);
             _content_image.Source = new BitmapImage(uri);
@@ -79,17 +75,6 @@ namespace HonkTrooper
             RandomizeMovementPattern();
             SetScaleTransform(1);
             SetHonkDelay();
-        }
-
-        public void LooseHealth()
-        {
-            Health -= 5;
-
-            if (IsDead)
-            {
-                SpeedOffset = Constants.DEFAULT_SPEED_OFFSET - 1;
-                IsAttacking = false;
-            }
         }
 
         private void RandomizeMovementPattern()

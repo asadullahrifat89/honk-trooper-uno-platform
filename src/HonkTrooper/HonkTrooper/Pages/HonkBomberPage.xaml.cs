@@ -1331,7 +1331,7 @@ namespace HonkTrooper
             var hitbox = playerRocket.GetHitBox();
 
             // if bomb is blasted or goes out of scene bounds
-            if (playerRocket.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT)
+            if (playerRocket.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Bottom < 0 || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT)
             {
                 playerRocket.IsAnimating = false;
                 playerRocket.SetPosition(left: -3000, top: -3000);
@@ -1484,7 +1484,7 @@ namespace HonkTrooper
             var hitbox = playerRocketSeeking.GetHitBox();
 
             // if bomb is blasted and faed or goes out of scene bounds
-            if (playerRocketSeeking.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Bottom > Constants.DEFAULT_SCENE_HEIGHT)
+            if (playerRocketSeeking.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Bottom < 0 || hitbox.Bottom > Constants.DEFAULT_SCENE_HEIGHT)
             {
                 playerRocketSeeking.IsAnimating = false;
                 playerRocketSeeking.SetPosition(left: -3000, top: -3000);
@@ -1654,7 +1654,7 @@ namespace HonkTrooper
             var hitbox = playerRocketBullsEye.GetHitBox();
 
             // if bomb is blasted and faed or goes out of scene bounds
-            if (playerRocketBullsEye.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Bottom > Constants.DEFAULT_SCENE_HEIGHT)
+            if (playerRocketBullsEye.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Bottom < 0 || hitbox.Bottom > Constants.DEFAULT_SCENE_HEIGHT)
             {
                 playerRocketBullsEye.IsAnimating = false;
                 playerRocketBullsEye.SetPosition(left: -3000, top: -3000);
@@ -2406,7 +2406,7 @@ namespace HonkTrooper
             var hitbox = ufoBossRocket.GetHitBox();
 
             // if bomb is blasted and faed or goes out of scene bounds
-            if (ufoBossRocket.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT)
+            if (ufoBossRocket.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Bottom < 0 || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT)
             {
                 ufoBossRocket.IsAnimating = false;
                 ufoBossRocket.SetPosition(left: -3000, top: -3000);
@@ -2511,7 +2511,7 @@ namespace HonkTrooper
             var hitbox = ufoBossRocketSeeking.GetHitBox();
 
             // if bomb is blasted and faed or goes out of scene bounds
-            if (ufoBossRocketSeeking.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Bottom > Constants.DEFAULT_SCENE_HEIGHT)
+            if (ufoBossRocketSeeking.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Bottom < 0 || hitbox.Bottom > Constants.DEFAULT_SCENE_HEIGHT)
             {
                 ufoBossRocketSeeking.IsAnimating = false;
                 ufoBossRocketSeeking.SetPosition(left: -3000, top: -3000);
@@ -2608,9 +2608,7 @@ namespace HonkTrooper
         {
             var hitbox = ufoEnemy.GetHitBox();
 
-            if (ufoEnemy.IsShrinkingComplete ||
-                hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT ||
-                hitbox.Right < 0 || hitbox.Bottom < 0) // enemy is dead or goes out of bounds
+            if (ufoEnemy.IsShrinkingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Bottom < 0 || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT  ) // enemy is dead or goes out of bounds
             {
                 ufoEnemy.IsAnimating = false;
                 ufoEnemy.SetPosition(left: -3000, top: -3000);
@@ -2729,7 +2727,7 @@ namespace HonkTrooper
             var hitbox = ufoEnemyRocket.GetHitBox();
 
             // if bomb is blasted and faed or goes out of scene bounds
-            if (ufoEnemyRocket.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Bottom > Constants.DEFAULT_SCENE_HEIGHT)
+            if (ufoEnemyRocket.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Bottom < 0 || hitbox.Bottom > Constants.DEFAULT_SCENE_HEIGHT)
             {
                 ufoEnemyRocket.IsAnimating = false;
                 ufoEnemyRocket.SetPosition(left: -3000, top: -3000);
@@ -3066,7 +3064,7 @@ namespace HonkTrooper
             var hitbox = vehicleBossRocket.GetHitBox();
 
             // if bomb is blasted and faed or goes out of scene bounds
-            if (vehicleBossRocket.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT)
+            if (vehicleBossRocket.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Bottom < 0 || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT)
             {
                 vehicleBossRocket.IsAnimating = false;
                 vehicleBossRocket.IsGravitatingUpwards = false;
@@ -3577,10 +3575,10 @@ namespace HonkTrooper
 
         private bool RecycleMafiaBossRocket(Construct mafiaBossRocket)
         {
-            //var hitbox = bomb.GetHitBox();
+            var hitbox = mafiaBossRocket.GetHitBox();
 
             // if bomb is blasted and faed or goes out of scene bounds
-            if (mafiaBossRocket.IsFadingComplete /*|| hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT*/)
+            if (mafiaBossRocket.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Bottom < 0 || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT)
             {
                 mafiaBossRocket.IsAnimating = false;
                 mafiaBossRocket.SetPosition(left: -3000, top: -3000);
@@ -3687,7 +3685,7 @@ namespace HonkTrooper
             var hitbox = mafiaBossRocketBullsEye.GetHitBox();
 
             // if bomb is blasted and faed or goes out of scene bounds
-            if (mafiaBossRocketBullsEye.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Top < 0 || hitbox.Bottom > Constants.DEFAULT_SCENE_HEIGHT)
+            if (mafiaBossRocketBullsEye.IsFadingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Bottom < 0 || hitbox.Bottom > Constants.DEFAULT_SCENE_HEIGHT)
             {
                 mafiaBossRocketBullsEye.IsAnimating = false;
                 mafiaBossRocketBullsEye.SetPosition(left: -3000, top: -3000);

@@ -28,8 +28,6 @@ namespace HonkTrooper
         private double _winStanceDelay;
         private readonly double _winStanceDelayDefault = 8;
 
-        private readonly AudioStub _audioStub;
-
         private MovementDirection _movementDirection;
 
         #endregion
@@ -69,11 +67,6 @@ namespace HonkTrooper
 
             IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE;
-
-            _audioStub = new AudioStub(
-                (SoundType.UFO_HOVERING, 0.8, true),
-                (SoundType.BOSS_ENTRY, 0.8, false),
-                (SoundType.BOSS_DEAD, 1, false));
         }
 
         #endregion
@@ -88,18 +81,11 @@ namespace HonkTrooper
 
         #region Methods
 
-        public void Reset()
+        public new void Reset()
         {
-            _audioStub.Play(SoundType.BOSS_ENTRY);
+            base.Reset();
 
-            PlaySoundLoop();
-
-            Opacity = 1;
-            Health = 100;
-            IsAttacking = false;
-            UfoBossStance = BossStance.Idle;
-
-            _movementDirection = MovementDirection.None;
+            UfoBossStance = BossStance.Idle;            
 
             var uri = ConstructExtensions.GetRandomContentUri(_ufo_boss_idle_uris);
             _content_image.Source = new BitmapImage(uriSource: uri);
@@ -160,23 +146,6 @@ namespace HonkTrooper
             }
         }
 
-        public void LooseHealth()
-        {
-            Health -= HitPoint;
-
-            if (IsDead)
-            {
-                IsAttacking = false;
-                StopSoundLoop();
-                _audioStub.Play(SoundType.BOSS_DEAD);
-            }
-        }
-
-        public void StopSoundLoop()
-        {
-            _audioStub.Stop(SoundType.UFO_HOVERING);
-        }
-
         public void Move(
             double speed,
             double sceneWidth,
@@ -219,11 +188,6 @@ namespace HonkTrooper
                         sceneHeight: sceneHeight);
                     break;
             }
-        }
-
-        private void PlaySoundLoop()
-        {
-            _audioStub.Play(SoundType.UFO_HOVERING);
         }
 
         private void SeekPlayer(Rect playerPoint)
