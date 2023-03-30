@@ -59,7 +59,7 @@ namespace HonkTrooper
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET + 1;
             DropShadowDistance = Constants.DEFAULT_DROP_SHADOW_DISTANCE - 15;
 
-            _audioStub = new AudioStub((SoundType.CRACKER_DROP, 0.3, false), (SoundType.CRACKER_BLAST, 1, false), (SoundType.TRASH_CAN_HIT, 1, false));
+            _audioStub = new AudioStub((SoundType.CRACKER_DROP, 0.3, false), (SoundType.CRACKER_BLAST, 0.8, false), (SoundType.TRASH_CAN_HIT, 1, false));
         }
 
         #endregion
@@ -76,19 +76,18 @@ namespace HonkTrooper
 
         public void Reset()
         {
-            _audioStub.Play(SoundType.CRACKER_DROP);
-
-            Opacity = 1;
+            IsBlasting = false;
 
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_uris);
             _content_image.Source = new BitmapImage(uri);
 
+            _audioStub.Play(SoundType.CRACKER_DROP);
+
+            Opacity = 1;
             BorderBrush = new SolidColorBrush(Colors.Transparent);
 
             SetScaleTransform(1);
             SetRotation(0);
-
-            IsBlasting = false;
         }
 
         public void SetHonkBombTemplate(PlayerHonkBombTemplate honkBombTemplate)
@@ -121,7 +120,7 @@ namespace HonkTrooper
                 left: (player.GetLeft() + player.Width / 2) - Width / 2,
                 top: player.GetBottom() - (35),
                 z: 7);
-        }       
+        }
 
         public void SetBlast()
         {

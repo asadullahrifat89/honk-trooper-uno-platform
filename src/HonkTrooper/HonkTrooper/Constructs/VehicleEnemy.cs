@@ -14,6 +14,8 @@ namespace HonkTrooper
         private readonly Uri[] _vehicle_small_uris;
         private readonly Uri[] _vehicle_large_uris;
 
+        private readonly AudioStub _audioStub;
+
         #endregion
 
         #region Ctor
@@ -90,6 +92,8 @@ namespace HonkTrooper
 
             if (WillHonk)
                 SetHonkDelay();
+
+            _audioStub = new AudioStub((SoundType.HONK_BUST_REACTION, 1, false));
         }
 
         #endregion     
@@ -113,6 +117,11 @@ namespace HonkTrooper
             WillHonk = false;
             SetPopping();
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET - 1;
+
+            var willReact = _random.Next(2);
+
+            if (willReact > 0)
+                _audioStub.Play(SoundType.HONK_BUST_REACTION);
         }
 
         #endregion

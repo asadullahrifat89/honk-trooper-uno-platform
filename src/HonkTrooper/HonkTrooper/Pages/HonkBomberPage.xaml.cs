@@ -71,7 +71,7 @@ namespace HonkTrooper
         private PlayerHonkBombTemplate _selected_player_honk_bomb_template;
         private int _game_level;
 
-        private readonly AudioStub _audio_stub;
+        private readonly AudioStub _audioStub;
 
         #endregion
 
@@ -110,7 +110,7 @@ namespace HonkTrooper
 
             _random = new Random();
 
-            _audio_stub = new AudioStub(
+            _audioStub = new AudioStub(
                 (SoundType.GAME_BACKGROUND_MUSIC, 0.5, true),
                 (SoundType.BOSS_BACKGROUND_MUSIC, 0.5, true),
                 (SoundType.AMBIENCE, 0.6, true),
@@ -154,7 +154,7 @@ namespace HonkTrooper
 
                 GenerateAssetsLoadingScreen();
 
-                _audio_stub.Play(SoundType.GAME_START);
+                _audioStub.Play(SoundType.GAME_START);
             }
             else
             {
@@ -209,7 +209,7 @@ namespace HonkTrooper
                 {
                     _scene_game.Pause();
                     _scene_main_menu.Play();
-                    _audio_stub.Pause(SoundType.GAME_BACKGROUND_MUSIC);
+                    _audioStub.Pause(SoundType.GAME_BACKGROUND_MUSIC);
 
                     foreach (var hoveringTitleScreen in _scene_main_menu.Children.OfType<HoveringTitleScreen>().Where(x => x.IsAnimating))
                     {
@@ -238,17 +238,17 @@ namespace HonkTrooper
 
         private bool PauseGame()
         {
-            _audio_stub.Play(SoundType.GAME_PAUSE);
+            _audioStub.Play(SoundType.GAME_PAUSE);
 
-            _audio_stub.Pause(SoundType.AMBIENCE);
+            _audioStub.Pause(SoundType.AMBIENCE);
 
             if (VehicleBossExists())
             {
-                _audio_stub.Pause(SoundType.BOSS_BACKGROUND_MUSIC);
+                _audioStub.Pause(SoundType.BOSS_BACKGROUND_MUSIC);
             }
             else
             {
-                _audio_stub.Pause(SoundType.GAME_BACKGROUND_MUSIC);
+                _audioStub.Pause(SoundType.GAME_BACKGROUND_MUSIC);
             }
 
             ToggleHudVisibility(Visibility.Collapsed);
@@ -266,15 +266,15 @@ namespace HonkTrooper
 
         private void ResumeGame()
         {
-            _audio_stub.Resume(SoundType.AMBIENCE);
+            _audioStub.Resume(SoundType.AMBIENCE);
 
             if (VehicleBossExists())
             {
-                _audio_stub.Resume(SoundType.BOSS_BACKGROUND_MUSIC);
+                _audioStub.Resume(SoundType.BOSS_BACKGROUND_MUSIC);
             }
             else
             {
-                _audio_stub.Resume(SoundType.GAME_BACKGROUND_MUSIC);
+                _audioStub.Resume(SoundType.GAME_BACKGROUND_MUSIC);
             }
 
             ToggleHudVisibility(Visibility.Visible);
@@ -295,7 +295,7 @@ namespace HonkTrooper
 
             _game_level = 0;
 
-            _audio_stub.Play(SoundType.AMBIENCE, SoundType.GAME_BACKGROUND_MUSIC);
+            _audioStub.Play(SoundType.AMBIENCE, SoundType.GAME_BACKGROUND_MUSIC);
 
             _game_controller.Reset();
 
@@ -353,7 +353,7 @@ namespace HonkTrooper
             // if player is dead game keeps playing in the background but scene state goes to game over
             if (_player.IsDead)
             {
-                _audio_stub.Stop(SoundType.AMBIENCE, SoundType.GAME_BACKGROUND_MUSIC, SoundType.BOSS_BACKGROUND_MUSIC);
+                _audioStub.Stop(SoundType.AMBIENCE, SoundType.GAME_BACKGROUND_MUSIC, SoundType.BOSS_BACKGROUND_MUSIC);
 
                 if (_scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating) is UfoBoss ufoBoss)
                 {
@@ -361,7 +361,7 @@ namespace HonkTrooper
                     ufoBoss.StopSoundLoop();
                 }
 
-                _audio_stub.Play(SoundType.GAME_OVER);
+                _audioStub.Play(SoundType.GAME_OVER);
 
                 _scene_main_menu.Play();
                 _scene_game.SceneState = SceneState.GAME_STOPPED;
@@ -521,12 +521,12 @@ namespace HonkTrooper
                     RecycleAssetsLoadingScreen(assetsLoadingScreen);
                     AddGameSceneGenerators();
 
-                    await Task.Delay(1000);
+                    await Task.Delay(600);
 
                     GenerateGameStartScreen(title: "Honk Trooper", subTitle: "-Stop Honkers, Save The City-");
 
                     _scene_game.Play();
-                    _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
+                    _audioStub.Play(SoundType.GAME_BACKGROUND_MUSIC);
                 });
 
                 return true;
@@ -955,7 +955,7 @@ namespace HonkTrooper
                             GeneratePlayerHonkBomb();
                         }
 
-                        _game_controller.IsAttacking = false;
+                        _game_controller.DeactivateAttack();
                     }
                 }
             }
@@ -1066,11 +1066,15 @@ namespace HonkTrooper
                     if (drpShdwHitBox.IntersectsWith(fireCrackerHitBox) && playerHonkBomb.GetBottom() > dropShadow.GetBottom())  // start blast animation when the bomb touches it's shadow
                     {
                         if (_scene_game.Children.OfType<VehicleEnemy>()
-                            .Where(x => x.IsAnimating && x.WillHonk)
+                            .Where(x => x.IsAnimating /*&& x.WillHonk*/)
                             .FirstOrDefault(x => x.GetCloseHitBox().IntersectsWith(fireCrackerHitBox)) is VehicleEnemy vehicle) // while in blast check if it intersects with any vehicle, if it does then the vehicle stops honking and slows down
                         {
-                            vehicle.SetBlast();
-                            _game_score_bar.GainScore(2);
+                            if (vehicle.WillHonk)
+                            {
+                                _game_score_bar.GainScore(2);
+                            }
+
+                            vehicle.SetBlast();                           
                         }
 
                         if (_scene_game.Children.OfType<VehicleBoss>()
@@ -1845,7 +1849,7 @@ namespace HonkTrooper
                 roadSideLampTop.SetPosition(
                   left: (Constants.DEFAULT_SCENE_WIDTH / 3 - roadSideLampTop.Width) - 100,
                   top: ((roadSideLampTop.Height * 1.5) * -1) - 50,
-                  z: 4);
+                  z: 3);
             }
 
             if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideLamp>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideLamp roadSideLampBottom)
@@ -2121,9 +2125,9 @@ namespace HonkTrooper
                 _ufo_boss_threashold.ShouldRelease(_game_score_bar.GetScore()) && !UfoBossExists() &&
                 _scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating == false) is UfoBoss ufoBoss)
             {
-                _audio_stub.Stop(SoundType.GAME_BACKGROUND_MUSIC);
+                _audioStub.Stop(SoundType.GAME_BACKGROUND_MUSIC);
                 //_audio_stub.Play(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
-                _audio_stub.SetVolume(SoundType.AMBIENCE, 0.2);
+                _audioStub.SetVolume(SoundType.AMBIENCE, 0.2);
 
                 ufoBoss.IsAnimating = true;
 
@@ -2228,8 +2232,8 @@ namespace HonkTrooper
             if (ufoBoss.IsDead)
             {
                 //_audio_stub.Stop(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
-                _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
-                _audio_stub.SetVolume(SoundType.AMBIENCE, 0.6);
+                _audioStub.Play(SoundType.GAME_BACKGROUND_MUSIC);
+                _audioStub.SetVolume(SoundType.AMBIENCE, 0.6);
 
                 _player.SetWinStance();
                 _game_score_bar.GainScore(3);
@@ -2500,7 +2504,7 @@ namespace HonkTrooper
 
                 if (!_ufo_enemy_fleet_appeared)
                 {
-                    _audio_stub.Play(SoundType.UFO_ENEMY_ENTRY);
+                    _audioStub.Play(SoundType.UFO_ENEMY_ENTRY);
 
                     GenerateInterimScreen("Beware of UFO Fleet");
                     _scene_game.ActivateSlowMotion();
@@ -2797,9 +2801,9 @@ namespace HonkTrooper
                 _vehicle_boss_threashold.ShouldRelease(_game_score_bar.GetScore()) && !VehicleBossExists() &&
                 _scene_game.Children.OfType<VehicleBoss>().FirstOrDefault(x => x.IsAnimating == false) is VehicleBoss vehicleBoss)
             {
-                _audio_stub.Stop(SoundType.GAME_BACKGROUND_MUSIC);
-                _audio_stub.Play(SoundType.BOSS_BACKGROUND_MUSIC);
-                _audio_stub.SetVolume(SoundType.AMBIENCE, 0.4);
+                _audioStub.Stop(SoundType.GAME_BACKGROUND_MUSIC);
+                _audioStub.Play(SoundType.BOSS_BACKGROUND_MUSIC);
+                _audioStub.SetVolume(SoundType.AMBIENCE, 0.4);
 
                 vehicleBoss.IsAnimating = true;
 
@@ -2898,9 +2902,9 @@ namespace HonkTrooper
 
             if (vehicleBoss.IsDead)
             {
-                _audio_stub.Stop(SoundType.BOSS_BACKGROUND_MUSIC);
-                _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
-                _audio_stub.SetVolume(SoundType.AMBIENCE, 0.6);
+                _audioStub.Stop(SoundType.BOSS_BACKGROUND_MUSIC);
+                _audioStub.Play(SoundType.GAME_BACKGROUND_MUSIC);
+                _audioStub.SetVolume(SoundType.AMBIENCE, 0.6);
 
                 _player.SetWinStance();
                 _game_score_bar.GainScore(3);
@@ -3047,9 +3051,9 @@ namespace HonkTrooper
                 _zombie_boss_threashold.ShouldRelease(_game_score_bar.GetScore()) && !ZombieBossExists() &&
                 _scene_game.Children.OfType<ZombieBoss>().FirstOrDefault(x => x.IsAnimating == false) is ZombieBoss zombieBoss)
             {
-                _audio_stub.Stop(SoundType.GAME_BACKGROUND_MUSIC);
+                _audioStub.Stop(SoundType.GAME_BACKGROUND_MUSIC);
                 //_audio_stub.Play(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
-                _audio_stub.SetVolume(SoundType.AMBIENCE, 0.2);
+                _audioStub.SetVolume(SoundType.AMBIENCE, 0.2);
 
                 zombieBoss.IsAnimating = true;
 
@@ -3151,8 +3155,8 @@ namespace HonkTrooper
             if (zombieBoss.IsDead)
             {
                 //_audio_stub.Stop(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
-                _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
-                _audio_stub.SetVolume(SoundType.AMBIENCE, 0.6);
+                _audioStub.Play(SoundType.GAME_BACKGROUND_MUSIC);
+                _audioStub.SetVolume(SoundType.AMBIENCE, 0.6);
 
                 _player.SetWinStance();
                 _game_score_bar.GainScore(3);
@@ -3295,9 +3299,9 @@ namespace HonkTrooper
                 _mafia_boss_threashold.ShouldRelease(_game_score_bar.GetScore()) && !MafiaBossExists() &&
                 _scene_game.Children.OfType<MafiaBoss>().FirstOrDefault(x => x.IsAnimating == false) is MafiaBoss mafiaBoss)
             {
-                _audio_stub.Stop(SoundType.GAME_BACKGROUND_MUSIC);
+                _audioStub.Stop(SoundType.GAME_BACKGROUND_MUSIC);
                 //_audio_stub.Play(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
-                _audio_stub.SetVolume(SoundType.AMBIENCE, 0.2);
+                _audioStub.SetVolume(SoundType.AMBIENCE, 0.2);
 
                 mafiaBoss.IsAnimating = true;
 
@@ -3402,8 +3406,8 @@ namespace HonkTrooper
             if (mafiaBoss.IsDead)
             {
                 //_audio_stub.Stop(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
-                _audio_stub.Play(SoundType.GAME_BACKGROUND_MUSIC);
-                _audio_stub.SetVolume(SoundType.AMBIENCE, 0.6);
+                _audioStub.Play(SoundType.GAME_BACKGROUND_MUSIC);
+                _audioStub.SetVolume(SoundType.AMBIENCE, 0.6);
 
                 _player.SetWinStance();
                 _game_score_bar.GainScore(3);

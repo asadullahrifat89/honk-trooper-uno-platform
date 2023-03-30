@@ -32,7 +32,7 @@ namespace HonkTrooper
         {
             var topOrLeft = _random.Next(2); // generate top and left corner lane wise vehicles
             var lane = _random.Next(2); // generate number of lanes based of screen height
-            var randomY = _random.Next(-10, 10);
+            var randomY = _random.Next(-5, 5);
 
             switch (topOrLeft)
             {
