@@ -1074,7 +1074,7 @@ namespace HonkTrooper
                                 _game_score_bar.GainScore(2);
                             }
 
-                            vehicle.SetBlast();                           
+                            vehicle.SetBlast();
                         }
 
                         if (_scene_game.Children.OfType<VehicleBoss>()
@@ -4166,18 +4166,24 @@ namespace HonkTrooper
                                 {
                                     _powerUp_health_bar.SetMaxiumHealth(9);
                                     _powerUp_health_bar.SetValue(9);
+
+                                    GenerateInterimScreen("Seeking Snitch +9");
                                 }
                                 break;
                             case PowerUpType.BULLS_EYE: // if bulls eye powerup, allow using a single shot of 20 bombs
                                 {
                                     _powerUp_health_bar.SetMaxiumHealth(20);
                                     _powerUp_health_bar.SetValue(20);
+
+                                    GenerateInterimScreen("Bylls Eye +20");
                                 }
                                 break;
                             case PowerUpType.ARMOR:
                                 {
                                     _powerUp_health_bar.SetMaxiumHealth(10); // if armor powerup then take additional 10 hits
                                     _powerUp_health_bar.SetValue(10);
+
+                                    GenerateInterimScreen("Armor +10");
                                 }
                                 break;
                             default:
