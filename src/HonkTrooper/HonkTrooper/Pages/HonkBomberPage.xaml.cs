@@ -1160,20 +1160,7 @@ namespace HonkTrooper
             }
 
             return false;
-        }
-
-        private void LooseVehicleEnemyHealth(VehicleEnemy vehicleEnemy)
-        {
-            vehicleEnemy.SetPopping();
-            vehicleEnemy.LooseHealth();
-
-            if (vehicleEnemy.WillHonk && vehicleEnemy.IsDead)
-            {
-                vehicleEnemy.SetBlast();
-                _game_score_bar.GainScore(2);
-                GenerateFloatingNumber(vehicleEnemy);
-            }
-        }
+        }      
 
         #endregion
 
@@ -2839,6 +2826,19 @@ namespace HonkTrooper
                 {
                     collidingVehicleEnemy.SpeedOffset = vehicleEnemy.SpeedOffset;
                 }
+            }
+        }
+
+        private void LooseVehicleEnemyHealth(VehicleEnemy vehicleEnemy)
+        {
+            vehicleEnemy.SetPopping();
+            vehicleEnemy.LooseHealth();
+
+            if (vehicleEnemy.WillHonk && vehicleEnemy.IsDead)
+            {
+                vehicleEnemy.SetBlast();
+                _game_score_bar.GainScore(2);
+                GenerateFloatingNumber(vehicleEnemy);
             }
         }
 
