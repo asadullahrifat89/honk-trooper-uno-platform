@@ -242,7 +242,7 @@ namespace HonkTrooper
 
             _audioStub.Pause(SoundType.AMBIENCE);
 
-            if (VehicleBossExists())
+            if (AnyBossExists())
             {
                 _audioStub.Pause(SoundType.BOSS_BACKGROUND_MUSIC);
             }
@@ -268,7 +268,7 @@ namespace HonkTrooper
         {
             _audioStub.Resume(SoundType.AMBIENCE);
 
-            if (VehicleBossExists())
+            if (AnyBossExists())
             {
                 _audioStub.Resume(SoundType.BOSS_BACKGROUND_MUSIC);
             }
@@ -291,7 +291,7 @@ namespace HonkTrooper
             LoggingExtensions.Log("New game dtarted.");
 
             if (_scene_game.IsInNightMode)
-                _scene_game.ToggleNightMode(false);
+                ToggleNightMode(false);
 
             _game_level = 0;
 
@@ -336,6 +336,16 @@ namespace HonkTrooper
             _game_controller.FocusAttackButton();
             _game_controller.SetDefaultThumbstickPosition();
             _game_controller.ActivateGyrometerReading();
+        }
+
+        private void ToggleNightMode(bool isNightMode)
+        {
+            _scene_game.ToggleNightMode(isNightMode);
+
+            if (isNightMode)
+                this.AmbientLightingNightStoryboard.Begin();
+            else
+                this.AmbientLightingDayStoryboard.Begin();
         }
 
         private void SetupSetPlayerBalloon()
@@ -578,12 +588,13 @@ namespace HonkTrooper
                     RecycleAssetsLoadingScreen(assetsLoadingScreen);
                     AddGameConstructGenerators();
 
-                    await Task.Delay(600);
+                    await Task.Delay(500);
 
                     GenerateGameStartScreen(title: "Honk Trooper", subTitle: "-Stop Honkers, Save The City-");
 
                     _scene_game.Play();
                     _audioStub.Play(SoundType.GAME_BACKGROUND_MUSIC);
+                    this.AmbientLightingDayStoryboard.Begin();
                 });
 
                 return true;
@@ -1691,7 +1702,7 @@ namespace HonkTrooper
 
         private bool GenerateRoadSideWalk()
         {
-            if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideWalk>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideWalk roadSideWalkTop)
+            if (/*!_scene_game.IsSlowMotionActivated &&*/ _scene_game.Children.OfType<RoadSideWalk>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideWalk roadSideWalkTop)
             {
                 roadSideWalkTop.Reset();
                 roadSideWalkTop.IsAnimating = true;
@@ -1701,7 +1712,7 @@ namespace HonkTrooper
                     z: 0);
             }
 
-            if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideWalk>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideWalk roadSideWalkBottom)
+            if (/*!_scene_game.IsSlowMotionActivated &&*/ _scene_game.Children.OfType<RoadSideWalk>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideWalk roadSideWalkBottom)
             {
                 roadSideWalkBottom.Reset();
                 roadSideWalkBottom.IsAnimating = true;
@@ -1718,7 +1729,7 @@ namespace HonkTrooper
         {
             RoadSideWalk roadSideWalk1 = roadSideWalk as RoadSideWalk;
             var speed = roadSideWalk1.GetMovementSpeed();
-            roadSideWalk1.MoveDownRight(speed);
+            roadSideWalk1.MoveDownRight(speed: speed);
             return true;
         }
 
@@ -2185,7 +2196,7 @@ namespace HonkTrooper
                 _scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating == false) is UfoBoss ufoBoss)
             {
                 _audioStub.Stop(SoundType.GAME_BACKGROUND_MUSIC);
-                //_audio_stub.Play(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
+                _audioStub.Play(SoundType.BOSS_BACKGROUND_MUSIC);
                 _audioStub.SetVolume(SoundType.AMBIENCE, 0.2);
 
                 ufoBoss.IsAnimating = true;
@@ -2211,7 +2222,7 @@ namespace HonkTrooper
 
                 GenerateInterimScreen("Beware of Scarlet Saucer");
 
-                _scene_game.ToggleNightMode(true);
+                ToggleNightMode(true);
 
                 return true;
             }
@@ -2292,7 +2303,7 @@ namespace HonkTrooper
 
             if (ufoBoss.IsDead)
             {
-                //_audio_stub.Stop(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
+                _audioStub.Stop(SoundType.BOSS_BACKGROUND_MUSIC);
                 _audioStub.Play(SoundType.GAME_BACKGROUND_MUSIC);
                 _audioStub.SetVolume(SoundType.AMBIENCE, 0.6);
 
@@ -2302,7 +2313,7 @@ namespace HonkTrooper
                 LevelUp();
 
                 _scene_game.ActivateSlowMotion();
-                _scene_game.ToggleNightMode(false);
+                ToggleNightMode(false);
             }
         }
 
@@ -2901,6 +2912,8 @@ namespace HonkTrooper
                 GenerateInterimScreen("Crazy Honker Arrived");
                 _scene_game.ActivateSlowMotion();
 
+                //ToggleNightMode(true);
+
                 return true;
             }
 
@@ -2992,6 +3005,8 @@ namespace HonkTrooper
                 LevelUp();
 
                 _scene_game.ActivateSlowMotion();
+
+                //ToggleNightMode(false);
             }
         }
 
@@ -3132,7 +3147,7 @@ namespace HonkTrooper
                 _scene_game.Children.OfType<ZombieBoss>().FirstOrDefault(x => x.IsAnimating == false) is ZombieBoss zombieBoss)
             {
                 _audioStub.Stop(SoundType.GAME_BACKGROUND_MUSIC);
-                //_audio_stub.Play(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
+                _audioStub.Play(SoundType.BOSS_BACKGROUND_MUSIC);
                 _audioStub.SetVolume(SoundType.AMBIENCE, 0.2);
 
                 zombieBoss.IsAnimating = true;
@@ -3155,7 +3170,7 @@ namespace HonkTrooper
                 _zombie_boss_health_bar.SetBarColor(color: Colors.Crimson);
 
                 _scene_game.ActivateSlowMotion();
-                _scene_game.ToggleNightMode(true);
+                ToggleNightMode(true);
 
                 GenerateInterimScreen("Beware of Blocks Zombie");
 
@@ -3236,7 +3251,7 @@ namespace HonkTrooper
 
             if (zombieBoss.IsDead)
             {
-                //_audio_stub.Stop(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
+                _audioStub.Stop(SoundType.BOSS_BACKGROUND_MUSIC);
                 _audioStub.Play(SoundType.GAME_BACKGROUND_MUSIC);
                 _audioStub.SetVolume(SoundType.AMBIENCE, 0.6);
 
@@ -3246,7 +3261,7 @@ namespace HonkTrooper
                 LevelUp();
 
                 _scene_game.ActivateSlowMotion();
-                _scene_game.ToggleNightMode(false);
+                ToggleNightMode(false);
             }
         }
 
@@ -3382,7 +3397,7 @@ namespace HonkTrooper
                 _scene_game.Children.OfType<MafiaBoss>().FirstOrDefault(x => x.IsAnimating == false) is MafiaBoss mafiaBoss)
             {
                 _audioStub.Stop(SoundType.GAME_BACKGROUND_MUSIC);
-                //_audio_stub.Play(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
+                _audioStub.Play(SoundType.BOSS_BACKGROUND_MUSIC);
                 _audioStub.SetVolume(SoundType.AMBIENCE, 0.2);
 
                 mafiaBoss.IsAnimating = true;
@@ -3408,7 +3423,7 @@ namespace HonkTrooper
 
                 GenerateInterimScreen("Beware of Crimson Mafia");
 
-                _scene_game.ToggleNightMode(true);
+                ToggleNightMode(true);
 
                 return true;
             }
@@ -3489,7 +3504,7 @@ namespace HonkTrooper
 
             if (mafiaBoss.IsDead)
             {
-                //_audio_stub.Stop(SoundType.UFO_BOSS_BACKGROUND_MUSIC);
+                _audioStub.Stop(SoundType.BOSS_BACKGROUND_MUSIC);
                 _audioStub.Play(SoundType.GAME_BACKGROUND_MUSIC);
                 _audioStub.SetVolume(SoundType.AMBIENCE, 0.6);
 
@@ -3499,7 +3514,7 @@ namespace HonkTrooper
                 LevelUp();
 
                 _scene_game.ActivateSlowMotion();
-                _scene_game.ToggleNightMode(false);
+                ToggleNightMode(false);
             }
         }
 

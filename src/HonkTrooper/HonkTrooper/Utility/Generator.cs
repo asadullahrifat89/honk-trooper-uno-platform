@@ -43,7 +43,7 @@ namespace HonkTrooper
         {
             if (_generationDelay > 0)
             {
-                _generationDelayInCount -= Scene.IsSlowMotionActivated ? 1 / Constants.DEFAULT_SLOW_MOTION_REDUCTION_FACTOR : 1;
+                _generationDelayInCount -= Scene.IsSlowMotionActivated ? 0.5 : 1;
 
                 if (_generationDelayInCount <= 0)
                 {

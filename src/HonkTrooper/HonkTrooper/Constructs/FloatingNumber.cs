@@ -35,7 +35,7 @@ namespace HonkTrooper
 
             SetConstructSize();
 
-            _textBlock = new TextBlock() { FontWeight = FontWeights.Bold, Foreground = new SolidColorBrush(Colors.White), FontSize = 25 };
+            _textBlock = new TextBlock() { FontWeight = FontWeights.Bold, Foreground = new SolidColorBrush(Colors.White), FontSize = Constants.DEFAULT_GUI_FONT_SIZE - 3 };
 
             SetChild(_textBlock);
             IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
@@ -75,32 +75,33 @@ namespace HonkTrooper
         public void Move()
         {
             var speed = GetMovementSpeed();
+            speed = speed / 3;
 
             switch (_movementDirection)
             {
                 case MovementDirection.Up:
-                    MoveUp(speed / 2.5);
+                    MoveUp(speed);
                     break;
                 case MovementDirection.UpLeft:
-                    MoveUpLeft(speed / 2.5);
+                    MoveUpLeft(speed);
                     break;
                 case MovementDirection.UpRight:
-                    MoveUpRight(speed / 2.5);
+                    MoveUpRight(speed);
                     break;
                 case MovementDirection.Down:
-                    MoveDown(speed / 2.5);
+                    MoveDown(speed);
                     break;
                 case MovementDirection.DownLeft:
-                    MoveDownLeft(speed / 2.5);
+                    MoveDownLeft(speed);
                     break;
                 case MovementDirection.DownRight:
-                    MoveDownRight(speed / 2.5);
+                    MoveDownRight(speed);
                     break;
                 case MovementDirection.Right:
-                    MoveRight(speed / 2.5);
+                    MoveRight(speed);
                     break;
                 case MovementDirection.Left:
-                    MoveLeft(speed / 2.5);
+                    MoveLeft(speed);
                     break;
                 default:
                     break;
