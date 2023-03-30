@@ -1843,9 +1843,9 @@ namespace HonkTrooper
                 roadSideLampTop.IsAnimating = true;
 
                 roadSideLampTop.SetPosition(
-                  left: (Constants.DEFAULT_SCENE_WIDTH / 2.40 - roadSideLampTop.Width) + 20,
-                  top: ((roadSideLampTop.Height * 1.5) * -1) - 5,
-                  z: 3);
+                  left: (Constants.DEFAULT_SCENE_WIDTH / 3 - roadSideLampTop.Width) - 100,
+                  top: ((roadSideLampTop.Height * 1.5) * -1) - 50,
+                  z: 4);
             }
 
             if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideLamp>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideLamp roadSideLampBottom)
@@ -1991,7 +1991,7 @@ namespace HonkTrooper
 
                 roadSideBillboardTop.SetPosition(
                   left: (Constants.DEFAULT_SCENE_WIDTH / 2.5 - roadSideBillboardTop.Width) + 25,
-                  top: ((roadSideBillboardTop.Height * 1.5) * -1) - 10,
+                  top: (roadSideBillboardTop.Height * -1.6),
                   z: 4);
             }
 
