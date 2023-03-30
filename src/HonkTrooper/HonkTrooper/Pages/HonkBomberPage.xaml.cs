@@ -1126,14 +1126,9 @@ namespace HonkTrooper
                     {
                         if (_scene_game.Children.OfType<VehicleEnemy>()
                             .Where(x => x.IsAnimating /*&& x.WillHonk*/)
-                            .FirstOrDefault(x => x.GetCloseHitBox().IntersectsWith(fireCrackerHitBox)) is VehicleEnemy vehicle) // while in blast check if it intersects with any vehicle, if it does then the vehicle stops honking and slows down
+                            .FirstOrDefault(x => x.GetCloseHitBox().IntersectsWith(fireCrackerHitBox)) is VehicleEnemy vehicleEnemy) // while in blast check if it intersects with any vehicle, if it does then the vehicle stops honking and slows down
                         {
-                            if (vehicle.WillHonk)
-                            {
-                                _game_score_bar.GainScore(2);
-                            }
-
-                            vehicle.SetBlast();
+                            LooseVehicleEnemyHealth(vehicleEnemy);
                         }
 
                         if (_scene_game.Children.OfType<VehicleBoss>()
@@ -1151,7 +1146,7 @@ namespace HonkTrooper
             }
 
             return true;
-        }
+        }     
 
         private bool RecyclePlayerHonkBomb(Construct playerHonkBomb)
         {
@@ -1165,6 +1160,19 @@ namespace HonkTrooper
             }
 
             return false;
+        }
+
+        private void LooseVehicleEnemyHealth(VehicleEnemy vehicleEnemy)
+        {
+            vehicleEnemy.SetPopping();
+            vehicleEnemy.LooseHealth();
+
+            if (vehicleEnemy.WillHonk && vehicleEnemy.IsDead)
+            {
+                vehicleEnemy.SetBlast();
+                _game_score_bar.GainScore(2);
+                GenerateFloatingNumber(vehicleEnemy);
+            }
         }
 
         #endregion

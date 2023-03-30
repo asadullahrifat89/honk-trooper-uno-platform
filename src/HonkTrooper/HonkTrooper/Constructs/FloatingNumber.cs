@@ -14,7 +14,7 @@ namespace HonkTrooper
         private readonly TextBlock _textBlock;
 
         private double _messageOnScreenDelay;
-        private readonly double _messageOnScreenDelayDefault = 6;
+        private readonly double _messageOnScreenDelayDefault = 5;
 
         private MovementDirection _movementDirection;
 
@@ -79,28 +79,28 @@ namespace HonkTrooper
             switch (_movementDirection)
             {
                 case MovementDirection.Up:
-                    MoveUp(speed / 2);
+                    MoveUp(speed / 2.5);
                     break;
                 case MovementDirection.UpLeft:
-                    MoveUpLeft(speed / 2);
+                    MoveUpLeft(speed / 2.5);
                     break;
                 case MovementDirection.UpRight:
-                    MoveUpRight(speed / 2);
+                    MoveUpRight(speed / 2.5);
                     break;
                 case MovementDirection.Down:
-                    MoveDown(speed / 2);
+                    MoveDown(speed / 2.5);
                     break;
                 case MovementDirection.DownLeft:
-                    MoveDownLeft(speed / 2);
+                    MoveDownLeft(speed / 2.5);
                     break;
                 case MovementDirection.DownRight:
-                    MoveDownRight(speed / 2);
+                    MoveDownRight(speed / 2.5);
                     break;
                 case MovementDirection.Right:
-                    MoveRight(speed / 2);
+                    MoveRight(speed / 2.5);
                     break;
                 case MovementDirection.Left:
-                    MoveLeft(speed / 2);
+                    MoveLeft(speed / 2.5);
                     break;
                 default:
                     break;
