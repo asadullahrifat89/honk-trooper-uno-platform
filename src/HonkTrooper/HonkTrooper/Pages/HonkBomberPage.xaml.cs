@@ -291,7 +291,7 @@ namespace HonkTrooper
             LoggingExtensions.Log("New game dtarted.");
 
             if (_scene_game.IsInNightMode)
-                _scene_game.ToggleNightMode(false);
+                ToggleNightMode(false);
 
             _game_level = 0;
 
@@ -336,6 +336,16 @@ namespace HonkTrooper
             _game_controller.FocusAttackButton();
             _game_controller.SetDefaultThumbstickPosition();
             _game_controller.ActivateGyrometerReading();
+        }
+
+        private void ToggleNightMode(bool toggle)
+        {
+            _scene_game.ToggleNightMode(toggle);
+
+            if (toggle)
+                this.AmbientLightingDayStoryboard.Begin();
+            else
+                this.AmbientLightingNightStoryboard.Begin();
         }
 
         private void SetupSetPlayerBalloon()
@@ -584,7 +594,7 @@ namespace HonkTrooper
 
                     _scene_game.Play();
                     _audioStub.Play(SoundType.GAME_BACKGROUND_MUSIC);
-                    this.SunRayOverlay.Visibility = Visibility.Visible;
+                    this.AmbientLightingDayStoryboard.Begin();
                 });
 
                 return true;
@@ -2212,7 +2222,7 @@ namespace HonkTrooper
 
                 GenerateInterimScreen("Beware of Scarlet Saucer");
 
-                _scene_game.ToggleNightMode(true);
+                ToggleNightMode(true);
 
                 return true;
             }
@@ -2303,7 +2313,7 @@ namespace HonkTrooper
                 LevelUp();
 
                 _scene_game.ActivateSlowMotion();
-                _scene_game.ToggleNightMode(false);
+                ToggleNightMode(false);
             }
         }
 
@@ -3156,7 +3166,7 @@ namespace HonkTrooper
                 _zombie_boss_health_bar.SetBarColor(color: Colors.Crimson);
 
                 _scene_game.ActivateSlowMotion();
-                _scene_game.ToggleNightMode(true);
+                ToggleNightMode(true);
 
                 GenerateInterimScreen("Beware of Blocks Zombie");
 
@@ -3247,7 +3257,7 @@ namespace HonkTrooper
                 LevelUp();
 
                 _scene_game.ActivateSlowMotion();
-                _scene_game.ToggleNightMode(false);
+                ToggleNightMode(false);
             }
         }
 
@@ -3409,7 +3419,7 @@ namespace HonkTrooper
 
                 GenerateInterimScreen("Beware of Crimson Mafia");
 
-                _scene_game.ToggleNightMode(true);
+                ToggleNightMode(true);
 
                 return true;
             }
@@ -3500,7 +3510,7 @@ namespace HonkTrooper
                 LevelUp();
 
                 _scene_game.ActivateSlowMotion();
-                _scene_game.ToggleNightMode(false);
+                ToggleNightMode(false);
             }
         }
 
