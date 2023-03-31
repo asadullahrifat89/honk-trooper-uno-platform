@@ -2,6 +2,7 @@
 using System.Linq;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Controls;
+using CommunityToolkit.WinUI.UI.Controls;
 
 namespace HonkTrooper
 {
@@ -14,7 +15,7 @@ namespace HonkTrooper
         private readonly Uri[] _vehicle_small_uris;
         private readonly Uri[] _vehicle_large_uris;
 
-        private readonly Image _content_image;
+        private readonly ImageEx _content_image;
         private readonly BitmapImage _bitmapImage;
 
         private readonly AudioStub _audioStub;
@@ -67,7 +68,7 @@ namespace HonkTrooper
                     break;
             }
 
-            _content_image = new Image()
+            _content_image = new()
             {
                 Source = _bitmapImage,
                 Height = this.Height,

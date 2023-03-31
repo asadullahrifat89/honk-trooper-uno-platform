@@ -1,4 +1,5 @@
-﻿using Microsoft.UI;
+﻿using CommunityToolkit.WinUI.UI.Controls;
+using Microsoft.UI;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
@@ -14,7 +15,7 @@ namespace HonkTrooper
         private readonly Uri[] _bomb_uris;
         private readonly Uri[] _bomb_blast_uris;
 
-        private readonly Image _content_image;
+        private readonly ImageEx _content_image;
         private readonly BitmapImage _bitmapImage;
 
         private readonly AudioStub _audioStub;
@@ -43,7 +44,7 @@ namespace HonkTrooper
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_uris);
             _bitmapImage = new BitmapImage(uriSource: uri);
 
-            _content_image = new Image()
+            _content_image = new ()
             {
                 Source = _bitmapImage,
                 Height = this.Height,

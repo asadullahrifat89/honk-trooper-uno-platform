@@ -1,4 +1,5 @@
-﻿using Microsoft.UI;
+﻿using CommunityToolkit.WinUI.UI.Controls;
+using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
@@ -14,7 +15,7 @@ namespace HonkTrooper
 
         private readonly TextBlock _title_text;
         private readonly TextBlock _sub_title_text;
-        private readonly Image _content_image;
+        private readonly ImageEx _content_image;
 
         private readonly AudioStub _audioStub;
 
@@ -76,7 +77,7 @@ namespace HonkTrooper
 
             var uri = ConstructExtensions.GetRandomContentUri(playerUris);
 
-            _content_image = new Image()
+            _content_image = new()
             {
                 Source = new BitmapImage(uriSource: uri),
                 HorizontalAlignment = HorizontalAlignment.Center,
