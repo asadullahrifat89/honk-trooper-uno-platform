@@ -11,7 +11,9 @@ namespace HonkTrooper
 
         private readonly Random _random;
         private readonly Uri[] _enemy_uris;
+
         private readonly Image _content_image;
+        private readonly BitmapImage _bitmapImage;
 
         private double _attackDelay;
 
@@ -35,10 +37,11 @@ namespace HonkTrooper
             SetConstructSize();
 
             var uri = ConstructExtensions.GetRandomContentUri(_enemy_uris);
+            _bitmapImage = new BitmapImage(uriSource: uri);
 
             _content_image = new Image()
             {
-                Source = new BitmapImage(uriSource: uri)
+                Source = _bitmapImage
             };
 
             SetChild(_content_image);
@@ -64,7 +67,7 @@ namespace HonkTrooper
                 SetHonkDelay();
 
             var uri = ConstructExtensions.GetRandomContentUri(_enemy_uris);
-            _content_image.Source = new BitmapImage(uri);
+            _bitmapImage.UriSource = uri;
 
             SpeedOffset = _random.Next(-2, 2);
         }

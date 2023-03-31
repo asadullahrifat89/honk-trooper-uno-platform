@@ -9,10 +9,10 @@ namespace HonkTrooper
     {
         #region Fields
 
-        private readonly Random _random;
         private readonly Uri[] _honk_uris;
 
         private readonly Image _content_image;
+        private readonly BitmapImage _bitmapImage;
 
         private readonly AudioStub _audioStub;
 
@@ -29,17 +29,16 @@ namespace HonkTrooper
             AnimateAction = animateAction;
             RecycleAction = recycleAction;
 
-            _random = new Random();
-
             _honk_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.HONK).Select(x => x.Uri).ToArray();
 
             SetConstructSize();
 
             var uri = ConstructExtensions.GetRandomContentUri(_honk_uris);
+            _bitmapImage = new BitmapImage(uriSource: uri);
 
             _content_image = new Image()
             {
-                Source = new BitmapImage(uriSource: uri)
+                Source = _bitmapImage
             };
 
             SetChild(_content_image);

@@ -15,7 +15,7 @@ namespace HonkTrooper
         private readonly Uri[] _bomb_blast_uris;
 
         private readonly Image _content_image;
-
+        private readonly BitmapImage _bitmapImage;
 
         private readonly AudioStub _audioStub;
 
@@ -41,10 +41,11 @@ namespace HonkTrooper
             SetConstructSize();
 
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_uris);
+            _bitmapImage = new BitmapImage(uriSource: uri);
 
             _content_image = new Image()
             {
-                Source = new BitmapImage(uriSource: uri)
+                Source = _bitmapImage
             };
 
             SetChild(_content_image);
@@ -76,7 +77,7 @@ namespace HonkTrooper
             Opacity = 1;
 
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_uris);
-            _content_image.Source = new BitmapImage(uri);
+            _bitmapImage.UriSource = uri;
 
             BorderBrush = new SolidColorBrush(Colors.Transparent);
 
@@ -115,7 +116,7 @@ namespace HonkTrooper
             BorderBrush = new SolidColorBrush(Colors.Crimson);
 
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_blast_uris);
-            _content_image.Source = new BitmapImage(uri);
+            _bitmapImage.UriSource = uri;
             IsBlasting = true;
         }
 

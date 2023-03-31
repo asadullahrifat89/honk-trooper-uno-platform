@@ -13,6 +13,7 @@ namespace HonkTrooper
         private readonly Uri[] _cloud_uris;
 
         private readonly Image _content_image;
+        private readonly BitmapImage _bitmapImage;
 
         #endregion
 
@@ -34,10 +35,10 @@ namespace HonkTrooper
             SetConstructSize();
 
             var uri = ConstructExtensions.GetRandomContentUri(_cloud_uris);
-
+            _bitmapImage = new BitmapImage(uriSource: uri);
             _content_image = new Image()
             {
-                Source = new BitmapImage(uriSource: uri)
+                Source = _bitmapImage
             };
 
             SetChild(_content_image);
@@ -56,7 +57,7 @@ namespace HonkTrooper
             SpeedOffset = _random.Next(-3, 3);
 
             var uri = ConstructExtensions.GetRandomContentUri(_cloud_uris);
-            _content_image.Source = new BitmapImage(uri);
+            _bitmapImage.UriSource = uri;
         }
 
         #endregion

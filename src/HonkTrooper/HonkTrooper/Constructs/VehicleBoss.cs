@@ -12,8 +12,8 @@ namespace HonkTrooper
         private readonly Random _random;
         private readonly Uri[] _vehicle_boss_uris;
 
-
         private readonly Image _content_image;
+        private readonly BitmapImage _bitmapImage;
 
         private MovementDirection _movementDirection;
 
@@ -39,10 +39,11 @@ namespace HonkTrooper
             SetConstructSize();
 
             var uri = ConstructExtensions.GetRandomContentUri(_vehicle_boss_uris);
+            _bitmapImage = new BitmapImage(uriSource: uri);
 
             _content_image = new Image()
             {
-                Source = new BitmapImage(uriSource: uri)
+                Source = _bitmapImage
             };
 
             SetChild(_content_image);
@@ -65,7 +66,7 @@ namespace HonkTrooper
             base.Reset();
 
             var uri = ConstructExtensions.GetRandomContentUri(_vehicle_boss_uris);
-            _content_image.Source = new BitmapImage(uri);
+            _bitmapImage.UriSource = uri;
 
             RandomizeMovementPattern();
             SetScaleTransform(1);

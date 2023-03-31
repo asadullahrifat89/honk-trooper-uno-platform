@@ -16,6 +16,7 @@ namespace HonkTrooper
         private readonly Uri[] _bang_uris;
 
         private readonly Image _content_image;
+        private readonly BitmapImage _bitmapImage;
 
         private readonly AudioStub _audioStub;
 
@@ -39,10 +40,11 @@ namespace HonkTrooper
             SetConstructSize();
 
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_uris);
+            _bitmapImage = new BitmapImage(uriSource: uri);
 
             _content_image = new Image()
             {
-                Source = new BitmapImage(uriSource: uri)
+                Source = _bitmapImage
             };
 
             SetChild(_content_image);
@@ -74,7 +76,7 @@ namespace HonkTrooper
             IsBlasting = false;
 
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_uris);
-            _content_image.Source = new BitmapImage(uri);
+            _bitmapImage.UriSource = uri;
 
             _audioStub.Play(SoundType.CRACKER_DROP);
 
@@ -106,7 +108,7 @@ namespace HonkTrooper
             }
 
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_uris);
-            _content_image.Source = new BitmapImage(uriSource: uri);
+            _bitmapImage.UriSource = uri;
         }
 
         public void Reposition(PlayerBalloon player)
@@ -145,7 +147,7 @@ namespace HonkTrooper
 
             SetScaleTransform(Constants.DEFAULT_BLAST_SHRINK_SCALE);
 
-            _content_image.Source = new BitmapImage(uri);
+            _bitmapImage.UriSource = uri;
             IsBlasting = true;
         }
 
