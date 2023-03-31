@@ -33,7 +33,12 @@ namespace HonkTrooper
 
                     if (response.IsSuccessStatusCode)
                     {
+                        var content = response.Content.ReadAsByteArrayAsync();
                         progressBar.Value++;
+
+#if DEBUG
+                        LoggingExtensions.Log("image source: " + source);
+#endif
                     }
                 }
 #endif
