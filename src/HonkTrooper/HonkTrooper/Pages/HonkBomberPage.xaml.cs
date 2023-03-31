@@ -2108,7 +2108,7 @@ namespace HonkTrooper
 
         private bool SpawnRoadMarks()
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 6; i++)
             {
                 RoadMark roadMark = new(
                     animateAction: AnimateRoadMark,
@@ -2132,7 +2132,7 @@ namespace HonkTrooper
                 roadMark.IsAnimating = true;
 
                 roadMark.SetPosition(
-                  left: roadMark.Height * -1,
+                  left: roadMark.Height * -1.4,
                   top: roadMark.Height * -1);
 
                 return true;
@@ -2153,7 +2153,7 @@ namespace HonkTrooper
         {
             var hitBox = roadMark.GetHitBox();
 
-            if (hitBox.Top - 45 > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadMark.Width > Constants.DEFAULT_SCENE_WIDTH)
+            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left > Constants.DEFAULT_SCENE_WIDTH)
             {
                 roadMark.IsAnimating = false;
                 roadMark.SetPosition(left: -3000, top: -3000);
@@ -3926,7 +3926,7 @@ namespace HonkTrooper
 
         private bool SpawnClouds()
         {
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 3; i++)
             {
                 Cloud cloud = new(
                     animateAction: AnimateCloud,
@@ -4427,7 +4427,7 @@ namespace HonkTrooper
             #region Road
 
             new Generator(
-                generationDelay: 20,
+                generationDelay: 43,
                 generationAction: GenerateRoadMark,
                 startUpAction: SpawnRoadMarks),
 
