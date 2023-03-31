@@ -1749,7 +1749,7 @@ namespace HonkTrooper
 
         private bool SpawnRoadSideTrees()
         {
-            for (int i = 0; i < 12; i++)
+            for (int i = 0; i < 11; i++)
             {
                 RoadSideTree roadSideTree = new(
                     animateAction: AnimateRoadSideTree,
@@ -1761,7 +1761,7 @@ namespace HonkTrooper
 
                 _scene_game.AddToScene(roadSideTree);
 
-                SpawnDropShadow(source: roadSideTree);
+                //SpawnDropShadow(source: roadSideTree);
             }
 
             return true;
@@ -1774,11 +1774,11 @@ namespace HonkTrooper
                 roadSideTreeTop.IsAnimating = true;
 
                 roadSideTreeTop.SetPosition(
-                  left: (Constants.DEFAULT_SCENE_WIDTH / 2 - roadSideTreeTop.Width) + 10,
-                  top: (roadSideTreeTop.Height * -1.1) - 20,
+                  left: (Constants.DEFAULT_SCENE_WIDTH / 5),
+                  top: (roadSideTreeTop.Height * -1.1),
                   z: 3);
 
-                GenerateDropShadow(source: roadSideTreeTop);
+                //GenerateDropShadow(source: roadSideTreeTop);
             }
 
             if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideTree>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideTree roadSideTreeBottom)
@@ -1786,11 +1786,11 @@ namespace HonkTrooper
                 roadSideTreeBottom.IsAnimating = true;
 
                 roadSideTreeBottom.SetPosition(
-                  left: (-1 * roadSideTreeBottom.Width),
-                  top: (Constants.DEFAULT_SCENE_HEIGHT / 2.8),
+                  left: (roadSideTreeBottom.Width * -1.1),
+                  top: (Constants.DEFAULT_SCENE_HEIGHT / 7.8),
                   z: 4);
 
-                GenerateDropShadow(source: roadSideTreeBottom);
+                //GenerateDropShadow(source: roadSideTreeBottom);
             }
 
             return true;
@@ -4452,7 +4452,7 @@ namespace HonkTrooper
                 startUpAction: SpawnRoadSideWalks),
 
             new Generator(
-                generationDelay: 18,
+                generationDelay: 30,
                 generationAction: GenerateRoadSideTree,
                 startUpAction: SpawnRoadSideTrees),
 
