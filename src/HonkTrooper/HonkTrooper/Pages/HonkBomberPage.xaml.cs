@@ -149,20 +149,25 @@ namespace HonkTrooper
             SetController();
 
             AddMainMenuGenerators();
-            _scene_main_menu.Play();
 
             _scene_game_assets_loaded = false;
 
             SizeChanged += HonkBomberPage_SizeChanged;
 
+            _scene_main_menu.Play();
+
             if (ScreenExtensions.GetScreenOrienation() == ScreenExtensions.RequiredScreenOrientation) // if the screen is in desired orientation the show asset loading screen
             {
                 ScreenExtensions.EnterFullScreen(true);
-                                
+
                 if (!_scene_game_assets_loaded)
+                {
                     GenerateAssetsLoadingScreen(); // load assets
+                }
                 else
+                {
                     await OpenGame(); // if assets loading complete then show game start screen
+                }                   
             }
             else
             {
@@ -469,6 +474,7 @@ namespace HonkTrooper
         private async Task OpenGame()
         {
             _scene_game.Play();
+            _scene_main_menu.Play();
 
             ToggleNightMode(false);
 
@@ -619,6 +625,7 @@ namespace HonkTrooper
                     {
                         if (!_scene_game_assets_loaded)
                         {
+                            _scene_main_menu.Pause(); // stop the timer as game constructs are being added to the game scene which is an expensive task
                             AddGameConstructGenerators();
 
                             await Task.Delay(500);
