@@ -84,6 +84,7 @@ namespace HonkTrooper
             };
 
             Speed = Constants.DEFAULT_SCENE_SPEED;
+            SceneState = SceneState.GAME_STOPPED;
 
             Loaded += Scene_Loaded;
             Unloaded += Scene_Unloaded;
@@ -97,13 +98,15 @@ namespace HonkTrooper
 
         public bool IsAnimating { get; set; }
 
-        public bool IsSlowMotionActivated => _slowMotionDelay > 0;
-
-        public SceneState SceneState { get; set; } = SceneState.GAME_STOPPED;
-
         public double Speed { get; set; }
 
         public bool IsInNightMode { get; set; }
+
+        public SceneState SceneState { get; set; }
+
+        public bool IsSlowMotionActivated => _slowMotionDelay > 0;
+
+        public bool GeneratorsExist => _generators.Any();
 
         public UIElementCollection Children => _canvas?.Children;
 

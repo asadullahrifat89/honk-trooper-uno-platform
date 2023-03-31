@@ -74,8 +74,6 @@ namespace HonkTrooper
 
         private readonly AudioStub _audioStub;
 
-        private bool _scene_game_assets_loaded;
-
         #endregion
 
         #region Ctor
@@ -148,26 +146,22 @@ namespace HonkTrooper
 
             SetController();
 
-            AddMainMenuGenerators();
-
-            _scene_game_assets_loaded = false;
+            AddMainMenuSceneGenerators();
 
             SizeChanged += HonkBomberPage_SizeChanged;
-
-            _scene_main_menu.Play();
 
             if (ScreenExtensions.GetScreenOrienation() == ScreenExtensions.RequiredScreenOrientation) // if the screen is in desired orientation the show asset loading screen
             {
                 ScreenExtensions.EnterFullScreen(true);
 
-                if (!_scene_game_assets_loaded)
+                if (!_scene_game.GeneratorsExist)
                 {
-                    GenerateAssetsLoadingScreen(); // load assets
+                    GenerateAssetsLoadingScreen(); // if generators are not added to game scene, show the assets loading screen
                 }
                 else
                 {
-                    await OpenGame(); // if assets loading complete then show game start screen
-                }                   
+                    await OpenGame(); // if generators added to game scene then show game start screen on page loaded
+                }
             }
             else
             {
@@ -214,14 +208,14 @@ namespace HonkTrooper
                     if (_scene_main_menu.Children.OfType<PromptOrientationChangeScreen>().FirstOrDefault(x => x.IsAnimating) is PromptOrientationChangeScreen promptOrientationChangeScreen)
                     {
                         RecyclePromptOrientationChangeScreen(promptOrientationChangeScreen);
-                        _scene_main_menu.Play();
                         GenerateAssetsLoadingScreen();
                     }
                 }
                 else // ask to change orientation
                 {
                     _scene_game.Pause();
-                    _scene_main_menu.Play();
+                    _scene_main_menu.Pause();
+
                     _audioStub.Pause(SoundType.GAME_BACKGROUND_MUSIC);
 
                     foreach (var hoveringTitleScreen in _scene_main_menu.Children.OfType<HoveringTitleScreen>().Where(x => x.IsAnimating))
@@ -623,11 +617,9 @@ namespace HonkTrooper
 
                     if (ScreenExtensions.DisplayInformation.CurrentOrientation == ScreenExtensions.RequiredScreenOrientation)
                     {
-                        if (!_scene_game_assets_loaded)
+                        if (!_scene_game.GeneratorsExist)
                         {
-                            _scene_main_menu.Pause(); // stop the timer as game constructs are being added to the game scene which is an expensive task
-                            AddGameConstructGenerators();
-
+                            AddGameSceneGenerators();
                             await Task.Delay(500);
                             await OpenGame();
                         }
@@ -4395,44 +4387,7 @@ namespace HonkTrooper
 
         #region Scene
 
-        private void AddMainMenuGenerators()
-        {
-            _scene_main_menu.Clear();
-            _scene_main_menu.AddToScene(
-
-            new Generator(
-                generationDelay: 0,
-                generationAction: () => { return true; },
-                startUpAction: SpawnAssetsLoadingScreen),
-
-            new Generator(
-                generationDelay: 0,
-                generationAction: () => { return true; },
-                startUpAction: SpawnInterimScreen),
-
-            new Generator(
-                generationDelay: 0,
-                generationAction: () => { return true; },
-                startUpAction: SpawnGameStartScreen),
-
-            new Generator(
-                generationDelay: 0,
-                generationAction: () => { return true; },
-                startUpAction: SpawnPlayerCharacterSelectionScreen),
-
-            new Generator(
-                generationDelay: 0,
-                generationAction: () => { return true; },
-                startUpAction: SpawnPlayerHonkBombSelectionScreen),
-
-            new Generator(
-                generationDelay: 0,
-                generationAction: () => { return true; },
-                startUpAction: SpawnPromptOrientationChangeScreen)
-                );
-        }
-
-        private void AddGameConstructGenerators()
+        private void AddGameSceneGenerators()
         {
             _scene_game.Clear();
             _scene_game.AddToScene(
@@ -4637,8 +4592,43 @@ namespace HonkTrooper
             #endregion
 
                 );
+        }
 
-            _scene_game_assets_loaded = true;
+        private void AddMainMenuSceneGenerators()
+        {
+            _scene_main_menu.Clear();
+            _scene_main_menu.AddToScene(
+
+            new Generator(
+                generationDelay: 0,
+                generationAction: () => { return true; },
+                startUpAction: SpawnAssetsLoadingScreen),
+
+            new Generator(
+                generationDelay: 0,
+                generationAction: () => { return true; },
+                startUpAction: SpawnInterimScreen),
+
+            new Generator(
+                generationDelay: 0,
+                generationAction: () => { return true; },
+                startUpAction: SpawnGameStartScreen),
+
+            new Generator(
+                generationDelay: 0,
+                generationAction: () => { return true; },
+                startUpAction: SpawnPlayerCharacterSelectionScreen),
+
+            new Generator(
+                generationDelay: 0,
+                generationAction: () => { return true; },
+                startUpAction: SpawnPlayerHonkBombSelectionScreen),
+
+            new Generator(
+                generationDelay: 0,
+                generationAction: () => { return true; },
+                startUpAction: SpawnPromptOrientationChangeScreen)
+                );
         }
 
         private void SetSceneScaling()
