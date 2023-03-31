@@ -56,7 +56,7 @@ namespace HonkTrooper
             {
                 Background = new SolidColorBrush(Colors.DeepSkyBlue),
                 CornerRadius = new CornerRadius(15),
-                Opacity = 0.7,
+                Opacity = 0.8,
                 //BorderBrush = new SolidColorBrush(Colors.White),
                 //BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
             });
@@ -129,11 +129,13 @@ namespace HonkTrooper
             ToggleButton player1btn = new() { Margin = new Thickness(5), CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS - 10) };
             ToggleButton player2btn = new() { Margin = new Thickness(5), CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS - 10) };
 
+            var uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BALLOON).Select(x => x.Uri).ToArray();
+
             player1btn.Content = new ImageEx()
             {
                 Width = 100,
                 Height = 100,
-                Source = new BitmapImage(new Uri("ms-appx:///HonkTrooper/Assets/Images/crackers.png")),
+                Source = new BitmapImage(uris[0]),
                 Stretch = Stretch.Uniform
             };
             player1btn.Checked += (s, e) =>
@@ -150,7 +152,7 @@ namespace HonkTrooper
             {
                 Width = 100,
                 Height = 100,
-                Source = new BitmapImage(new Uri("ms-appx:///HonkTrooper/Assets/Images/trash_cans.png")),
+                Source = new BitmapImage(uris[1]),
                 Stretch = Stretch.Uniform
             };
             player2btn.Checked += (s, e) =>

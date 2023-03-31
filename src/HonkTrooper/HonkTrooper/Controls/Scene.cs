@@ -54,7 +54,7 @@ namespace HonkTrooper
 
             _doubleAnimation = new DoubleAnimation()
             {
-                Duration = new Duration(TimeSpan.FromSeconds(7)),
+                Duration = new Duration(TimeSpan.FromSeconds(4)),
                 From = 0,
                 To = 1,
             };
