@@ -178,7 +178,9 @@ namespace HonkTrooper
                 this.RegisterHtmlEventHandler("ended", EndedEvent);
             }
 
-            LoggingExtensions.Log("source: " + uri + " volume: " + volume.ToString() + " loop: " + loop.ToString().ToLower());
+#if DEBUG
+            // LoggingExtensions.Log("source: " + uri + " volume: " + volume.ToString() + " loop: " + loop.ToString().ToLower()); 
+#endif
         }
 
         public void SetSource(Uri uri)
@@ -186,8 +188,6 @@ namespace HonkTrooper
             var source = $"{_baseUrl}/{uri.AbsoluteUri.Replace("ms-appx:///", "")}";
 
             this.ExecuteJavascript($"element.src = \"{source}\"; ");
-
-            LoggingExtensions.Log("source: " + source);
         }
 
         public void SetLoop(bool loop)
