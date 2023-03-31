@@ -134,10 +134,7 @@ namespace HonkTrooper
 
                 _progressBar.Maximum = Constants.CONSTRUCT_TEMPLATES.Length;
 
-                foreach (var template in Constants.CONSTRUCT_TEMPLATES)
-                {
-                    await GetFileAsync(template.Uri);
-                }
+                await AssetsPreCache.PreloadImageAssets(_progressBar);
 
                 if (_progressBar.Value == _progressBar.Maximum)
                 {
@@ -146,21 +143,6 @@ namespace HonkTrooper
                     completed?.Invoke();
                 }
             }
-        }
-
-        private async Task GetFileAsync(Uri uri)
-        {
-#if DEBUG
-            LoggingExtensions.Log("GetFileAsync: " + uri.OriginalString);
-#endif
-            //await StorageFile.GetFileFromApplicationUriAsync(uri);
-
-            //var image = new BitmapImage();
-            //image.UriSource = new Uri("https://example.com/image.png");
-
-            await ImageCache.Instance.PreCacheAsync(uri);            
-
-            _progressBar.Value++;
         }
 
         #endregion
