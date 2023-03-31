@@ -33,9 +33,11 @@ namespace HonkTrooper
 
                     if (response.IsSuccessStatusCode)
                     {
-                        var content = response.Content.ReadAsByteArrayAsync();
-                        progressBar.Value++;
-
+                        var content = await response.Content.ReadAsByteArrayAsync();
+                        if (content is not null && content.Length > 0)
+                        {
+                            progressBar.Value++;
+                        }
 #if DEBUG
                         LoggingExtensions.Log("image source: " + source);
 #endif
