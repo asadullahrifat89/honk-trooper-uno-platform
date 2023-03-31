@@ -47,7 +47,7 @@ namespace HonkTrooper
             {
                 //Background = new SolidColorBrush(Colors.Goldenrod),
                 CornerRadius = new CornerRadius(15),
-                Opacity = 0.6,
+                Opacity = 0.7,
                 //BorderBrush = new SolidColorBrush(Colors.White),
                 //BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
             });
