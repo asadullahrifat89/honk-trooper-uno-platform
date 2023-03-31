@@ -1,4 +1,5 @@
-﻿using Microsoft.UI.Xaml;
+﻿using CommunityToolkit.WinUI.UI.Controls;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
@@ -21,13 +22,8 @@ namespace HonkTrooper
             Margin = new Thickness(0, 0, 5, 0)
         };
 
-        private readonly Image _icon = new()
-        {
-            Height = 30,
-            Width = 30,
-            Stretch = Stretch.Uniform,
-            Margin = new Thickness(5)
-        };
+        private readonly ImageEx _content_image;
+        private readonly BitmapImage _bitmapImage;
 
         private readonly StackPanel _container;
 
@@ -46,7 +42,18 @@ namespace HonkTrooper
                 Orientation = Orientation.Horizontal
             };
 
-            _container.Children.Add(_icon);
+            _bitmapImage = new BitmapImage();
+
+            _content_image = new()
+            {
+                Height = 30,
+                Width = 30,
+                Stretch = Stretch.Uniform,
+                Margin = new Thickness(5),
+                Source = _bitmapImage,
+            };
+
+            _container.Children.Add(_content_image);
             _container.Children.Add(_progressBar);
 
             Child = _container;
@@ -71,7 +78,7 @@ namespace HonkTrooper
 
         public void SetIcon(Uri uri)
         {
-            _icon.Source = new BitmapImage(uri);
+            _bitmapImage.UriSource = uri;
         }
 
         public void SetMaxiumHealth(double value)

@@ -38,17 +38,18 @@ namespace HonkTrooper
 
             _bomb_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.MAFIA_BOSS_ROCKET).Select(x => x.Uri).ToArray();
             _bomb_blast_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BLAST).Select(x => x.Uri).ToArray();
-            
+
             SetConstructSize();
 
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_uris);
             _bitmapImage = new BitmapImage(uriSource: uri);
 
-            _content_image = new ()
+            _content_image = new()
             {
                 Source = _bitmapImage,
                 Height = this.Height,
                 Width = this.Width,
+                IsCacheEnabled = true,
             };
 
             SetChild(_content_image);

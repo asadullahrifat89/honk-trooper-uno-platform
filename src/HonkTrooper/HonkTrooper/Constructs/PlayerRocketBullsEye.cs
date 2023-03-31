@@ -47,11 +47,12 @@ namespace HonkTrooper
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_uris);
             _bitmapImage = new BitmapImage(uriSource: uri);
 
-            _content_image = new ()
+            _content_image = new()
             {
                 Source = _bitmapImage,
                 Height = this.Height,
                 Width = this.Width,
+                IsCacheEnabled = true,
             };
 
             SetChild(_content_image);

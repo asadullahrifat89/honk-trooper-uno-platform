@@ -40,6 +40,7 @@ namespace HonkTrooper
                 Source = _bitmapImage,
                 Height = this.Height,
                 Width = this.Width,
+                IsCacheEnabled = true,
             };
 
             SetChild(_content_image);
