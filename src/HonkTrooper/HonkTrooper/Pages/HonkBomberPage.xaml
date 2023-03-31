@@ -58,7 +58,7 @@
 
         <Scene
             x:Name="GameScene"
-            Background="{ThemeResource DayBackgroundColor}"
+            Background="{ThemeResource NightBackgroundColor}"
             BorderBrush="{ThemeResource BorderColor}"
             BorderThickness="3" />
 

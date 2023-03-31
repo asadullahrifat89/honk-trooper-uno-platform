@@ -6,6 +6,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Graphics.Display;
+using Windows.UI.Core;
 
 namespace HonkTrooper
 {
@@ -590,12 +591,20 @@ namespace HonkTrooper
                 _ = assetsLoadingScreen.PreloadAssets(async () =>
                 {
                     RecycleAssetsLoadingScreen(assetsLoadingScreen);
-                    AddGameConstructGenerators();
+
+                    await Task.Delay(500);
+
+                    await base.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, delegate
+                    {
+                        AddGameConstructGenerators();
+                    });
 
                     _scene_game.Play();
+
                     ToggleNightMode(false);
 
                     await Task.Delay(500);
+
                     GenerateGameStartScreen(title: "Honk Trooper", subTitle: "-Stop Honkers, Save The City-");
 
                     _audioStub.Play(SoundType.GAME_BACKGROUND_MUSIC);
