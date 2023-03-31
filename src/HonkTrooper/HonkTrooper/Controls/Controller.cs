@@ -118,7 +118,7 @@ namespace HonkTrooper
                 Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.55,
                 Background = new SolidColorBrush(Colors.Goldenrod),
                 CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS * sizeXY),
-                BorderBrush = App.Current.Resources["BorderColor"] as SolidColorBrush,
+                BorderBrush = Application.Current.Resources["BorderColor"] as SolidColorBrush,
                 BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
                 HorizontalAlignment = HorizontalAlignment.Right,
                 VerticalAlignment = VerticalAlignment.Bottom,
@@ -268,7 +268,7 @@ namespace HonkTrooper
                 CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS * 2),
 
                 Background = new SolidColorBrush(Colors.Crimson),
-                BorderBrush = App.Current.Resources["BorderColor"] as SolidColorBrush,
+                BorderBrush = Application.Current.Resources["BorderColor"] as SolidColorBrush,
                 BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
             };
 
@@ -479,8 +479,8 @@ namespace HonkTrooper
                 DeactivateMoveLeft();
             };
 
-            Grid.SetRow(upLeft, 0);
-            Grid.SetColumn(upLeft, 0);
+            SetRow(upLeft, 0);
+            SetColumn(upLeft, 0);
 
             #endregion
 
@@ -506,8 +506,8 @@ namespace HonkTrooper
             up.PointerEntered += (s, e) => { ActivateMoveUp(); };
             up.PointerExited += (s, e) => { DeactivateMoveUp(); };
 
-            Grid.SetRow(up, 0);
-            Grid.SetColumn(up, 1);
+            SetRow(up, 0);
+            SetColumn(up, 1);
 
             #endregion
 
@@ -541,8 +541,8 @@ namespace HonkTrooper
                 DeactivateMoveRight();
             };
 
-            Grid.SetRow(upRight, 0);
-            Grid.SetColumn(upRight, 2);
+            SetRow(upRight, 0);
+            SetColumn(upRight, 2);
 
             #endregion
 
@@ -568,8 +568,8 @@ namespace HonkTrooper
             left.PointerEntered += (s, e) => { ActivateMoveLeft(); };
             left.PointerExited += (s, e) => { DeactivateMoveLeft(); };
 
-            Grid.SetRow(left, 1);
-            Grid.SetColumn(left, 0);
+            SetRow(left, 1);
+            SetColumn(left, 0);
 
             #endregion
 
@@ -595,8 +595,8 @@ namespace HonkTrooper
             right.PointerEntered += (s, e) => { ActivateMoveRight(); };
             right.PointerExited += (s, e) => { DeactivateMoveRight(); };
 
-            Grid.SetRow(right, 1);
-            Grid.SetColumn(right, 2);
+            SetRow(right, 1);
+            SetColumn(right, 2);
 
             #endregion
 
@@ -630,8 +630,8 @@ namespace HonkTrooper
                 DeactivateMoveLeft();
             };
 
-            Grid.SetRow(downLeft, 2);
-            Grid.SetColumn(downLeft, 0);
+            SetRow(downLeft, 2);
+            SetColumn(downLeft, 0);
 
             #endregion
 
@@ -657,8 +657,8 @@ namespace HonkTrooper
             down.PointerEntered += (s, e) => { ActivateMoveDown(); };
             down.PointerExited += (s, e) => { DeactivateMoveDown(); };
 
-            Grid.SetRow(down, 2);
-            Grid.SetColumn(down, 1);
+            SetRow(down, 2);
+            SetColumn(down, 1);
 
             #endregion
 
@@ -692,8 +692,8 @@ namespace HonkTrooper
                 DeactivateMoveRight();
             };
 
-            Grid.SetRow(downRight, 2);
-            Grid.SetColumn(downRight, 2);
+            SetRow(downRight, 2);
+            SetColumn(downRight, 2);
 
             #endregion
 
@@ -828,7 +828,7 @@ namespace HonkTrooper
                 {
                     Symbol = Symbol.Placeholder,
                 },
-                BorderBrush = App.Current.Resources["BorderColor"] as SolidColorBrush,
+                BorderBrush = Application.Current.Resources["BorderColor"] as SolidColorBrush,
                 BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
                 HorizontalAlignment = HorizontalAlignment.Left,
                 VerticalAlignment = VerticalAlignment.Bottom,

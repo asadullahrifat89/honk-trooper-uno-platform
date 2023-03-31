@@ -924,14 +924,14 @@ namespace HonkTrooper
             {
                 case PlayerBalloonTemplate.Blue:
                     {
-                        _game_controller.SetAttackButtonColor(App.Current.Resources["PlayerBlueAccentColor"] as SolidColorBrush);
-                        _game_controller.SetThumbstickThumbColor(App.Current.Resources["PlayerBlueAccentColor"] as SolidColorBrush);
+                        _game_controller.SetAttackButtonColor(Application.Current.Resources["PlayerBlueAccentColor"] as SolidColorBrush);
+                        _game_controller.SetThumbstickThumbColor(Application.Current.Resources["PlayerBlueAccentColor"] as SolidColorBrush);
                     }
                     break;
                 case PlayerBalloonTemplate.Red:
                     {
-                        _game_controller.SetAttackButtonColor(App.Current.Resources["PlayerRedAccentColor"] as SolidColorBrush);
-                        _game_controller.SetThumbstickThumbColor(App.Current.Resources["PlayerRedAccentColor"] as SolidColorBrush);
+                        _game_controller.SetAttackButtonColor(Application.Current.Resources["PlayerRedAccentColor"] as SolidColorBrush);
+                        _game_controller.SetThumbstickThumbColor(Application.Current.Resources["PlayerRedAccentColor"] as SolidColorBrush);
                     }
                     break;
                 default:
@@ -1091,8 +1091,8 @@ namespace HonkTrooper
                 {
                     _player.SetAttackStance();
 
-                    playerHonkBomb.Reset();                    
-                    playerHonkBomb.IsGravitatingDownwards = true;                    
+                    playerHonkBomb.Reset();
+                    playerHonkBomb.IsGravitatingDownwards = true;
                     playerHonkBomb.Reposition(player: _player);
                     playerHonkBomb.IsAnimating = true;
 
