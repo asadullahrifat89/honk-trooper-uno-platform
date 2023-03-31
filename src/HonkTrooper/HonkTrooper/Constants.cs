@@ -62,7 +62,7 @@ namespace HonkTrooper
 
             new (ConstructType.ROAD_MARK, 512, 512),            
 
-            new (ConstructType.ROAD_SIDE_TREE, 190, 190),
+            new (ConstructType.ROAD_SIDE_TREE, 470, 470),
             new (ConstructType.ROAD_SIDE_HEDGE, 170, 170),
 
             new (ConstructType.ROAD_SIDE_WALK, 300, 300),
@@ -85,8 +85,8 @@ namespace HonkTrooper
 
             new (ConstructType.ROAD_SIDE_TREE, new Uri("ms-appx:///HonkTrooper/Assets/Images/tree_1.png")),
             new (ConstructType.ROAD_SIDE_TREE, new Uri("ms-appx:///HonkTrooper/Assets/Images/tree_2.png")),
-            new (ConstructType.ROAD_SIDE_TREE, new Uri("ms-appx:///HonkTrooper/Assets/Images/tree_3.png")),
-            new (ConstructType.ROAD_SIDE_TREE, new Uri("ms-appx:///HonkTrooper/Assets/Images/tree_4.png")),
+            //new (ConstructType.ROAD_SIDE_TREE, new Uri("ms-appx:///HonkTrooper/Assets/Images/tree_3.png")),
+            //new (ConstructType.ROAD_SIDE_TREE, new Uri("ms-appx:///HonkTrooper/Assets/Images/tree_4.png")),
 
             new (ConstructType.ROAD_SIDE_LAMP, new Uri("ms-appx:///HonkTrooper/Assets/Images/road_side_lamp_1.png")),
             new (ConstructType.ROAD_SIDE_LAMP, new Uri("ms-appx:///HonkTrooper/Assets/Images/road_side_lamp_2.png")),
