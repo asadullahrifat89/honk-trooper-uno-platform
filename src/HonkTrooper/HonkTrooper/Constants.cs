@@ -45,7 +45,7 @@ namespace HonkTrooper
             new (ConstructType.MAFIA_BOSS_ROCKET_BULLS_EYE, 100, 100),
 
             new (ConstructType.ZOMBIE_BOSS, 180, 180),
-            new (ConstructType.ZOMBIE_BOSS_ROCKET_BLOCK, 240, 240),
+            new (ConstructType.ZOMBIE_BOSS_ROCKET_BLOCK, 220, 220),
 
             new (ConstructType.UFO_ENEMY, 160, 160),
             new (ConstructType.UFO_ENEMY_ROCKET, 100, 100),

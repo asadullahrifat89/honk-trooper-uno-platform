@@ -98,7 +98,7 @@ namespace HonkTrooper
 
             if (WillHonk)
             {
-                Health = HitPoint * _random.Next(4);
+                Health = HitPoint * _random.Next(3);
                 SetHonkDelay();
             }
         }
