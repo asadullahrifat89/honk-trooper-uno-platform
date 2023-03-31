@@ -1091,11 +1091,10 @@ namespace HonkTrooper
                 {
                     _player.SetAttackStance();
 
-                    playerHonkBomb.Reset();
-                    playerHonkBomb.IsAnimating = true;
-                    playerHonkBomb.IsGravitatingDownwards = true;
-                    //playerHonkBomb.SetPopping();
+                    playerHonkBomb.Reset();                    
+                    playerHonkBomb.IsGravitatingDownwards = true;                    
                     playerHonkBomb.Reposition(player: _player);
+                    playerHonkBomb.IsAnimating = true;
 
                     GenerateDropShadow(source: playerHonkBomb);
 
