@@ -455,7 +455,7 @@ namespace HonkTrooper
 
         private bool SpawnFloatingNumbers()
         {
-            for (int i = 0; i < 15; i++)
+            for (int i = 0; i < 5; i++)
             {
                 FloatingNumber floatingNumber = new(
                     animateAction: AnimateFloatingNumber,
@@ -476,9 +476,9 @@ namespace HonkTrooper
         {
             if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<FloatingNumber>().FirstOrDefault(x => x.IsAnimating == false) is FloatingNumber floatingNumberTop)
             {
-                floatingNumberTop.Reset(source.HitPoint);
-                floatingNumberTop.IsAnimating = true;
+                floatingNumberTop.Reset(source.HitPoint);                
                 floatingNumberTop.Reposition(source);
+                floatingNumberTop.IsAnimating = true;
             }
 
             return true;
@@ -1181,7 +1181,7 @@ namespace HonkTrooper
 
         private bool SpawnPlayerRockets()
         {
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 3; i++)
             {
                 PlayerRocket playerRocket = new(
                     animateAction: AnimatePlayerRocket,
@@ -1681,7 +1681,7 @@ namespace HonkTrooper
 
         private bool SpawnRoadSideWalks()
         {
-            for (int i = 0; i < 16; i++)
+            for (int i = 0; i < 15; i++)
             {
                 RoadSideWalk roadSideWalk = new(
                 animateAction: AnimateRoadSideWalk,
@@ -1749,7 +1749,7 @@ namespace HonkTrooper
 
         private bool SpawnRoadSideTrees()
         {
-            for (int i = 0; i < 13; i++)
+            for (int i = 0; i < 12; i++)
             {
                 RoadSideTree roadSideTree = new(
                     animateAction: AnimateRoadSideTree,
@@ -1891,7 +1891,7 @@ namespace HonkTrooper
 
         private bool SpawnRoadSideLamps()
         {
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 7; i++)
             {
                 RoadSideLamp roadSideLamp = new(
                     animateAction: AnimateRoadSideLamp,
@@ -2620,7 +2620,7 @@ namespace HonkTrooper
         {
             var hitbox = ufoEnemy.GetHitBox();
 
-            if (ufoEnemy.IsShrinkingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Right < 0 || hitbox.Bottom < 0 || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT) // enemy is dead or goes out of bounds
+            if (ufoEnemy.IsShrinkingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH /*|| hitbox.Right < 0 || hitbox.Bottom < 0 */|| hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT) // enemy is dead or goes out of bounds
             {
                 ufoEnemy.IsAnimating = false;
                 ufoEnemy.SetPosition(left: -3000, top: -3000);
@@ -2666,7 +2666,7 @@ namespace HonkTrooper
 
         private bool SpawnUfoEnemyRockets()
         {
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 7; i++)
             {
                 UfoEnemyRocket ufoEnemyRocket = new(
                     animateAction: AnimateUfoEnemyRocket,
@@ -2758,7 +2758,7 @@ namespace HonkTrooper
 
         private bool SpawnVehicleEnemys()
         {
-            for (int i = 0; i < 8; i++)
+            for (int i = 0; i < 7; i++)
             {
                 VehicleEnemy vehicleEnemy = new(
                     animateAction: AnimateVehicleEnemy,
@@ -3273,7 +3273,7 @@ namespace HonkTrooper
 
         private bool SpawnZombieBossRocketBlocks()
         {
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < 5; i++)
             {
                 ZombieBossRocketBlock zombieBossRocket = new(
                     animateAction: AnimateZombieBossRocketBlock,
