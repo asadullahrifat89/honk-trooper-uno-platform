@@ -104,8 +104,7 @@ namespace HonkTrooper
 
             SetPosition(
                left: ((Constants.DEFAULT_SCENE_WIDTH / 2 - Width / 2) * scaling),
-               top: ((Constants.DEFAULT_SCENE_HEIGHT / 2 - Height / 2) * scaling) - 150,
-               z: 6);
+               top: ((Constants.DEFAULT_SCENE_HEIGHT / 2 - Height / 2) * scaling) - 150);
         }
 
         public void SetPlayerTemplate(PlayerBalloonTemplate playerTemplate)

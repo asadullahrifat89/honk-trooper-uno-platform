@@ -49,7 +49,7 @@ namespace HonkTrooper
         private readonly double _ufo_boss_threashold_limit = 50; // first appearance
         private readonly double _ufo_boss_threashold_limit_increase = 15;
 
-        //TODO: set defaults _zombie_boss_threashold_limit = 85
+        //TODO: set defaults _zombie_boss_threashold_limit = 75
         private readonly double _zombie_boss_threashold_limit = 75; // first appearance
         private readonly double _zombie_boss_threashold_limit_increase = 15;
 
@@ -335,16 +335,6 @@ namespace HonkTrooper
             _game_controller.ActivateGyrometerReading();
         }
 
-        private void ToggleNightMode(bool isNightMode)
-        {
-            _scene_game.ToggleNightMode(isNightMode);
-
-            if (isNightMode)
-                this.AmbientLightingNightStoryboard.Begin();
-            else
-                this.AmbientLightingDayStoryboard.Begin();
-        }
-
         private void SetupSetPlayerBalloon()
         {
             _player.SetPlayerTemplate(_selected_player_template); // change player template
@@ -449,6 +439,22 @@ namespace HonkTrooper
             GenerateInterimScreen($"LEVEL {_game_level} COMPLETE");
         }
 
+        private void ToggleNightMode(bool isNightMode)
+        {
+            _scene_game.ToggleNightMode(isNightMode);
+
+            if (_scene_game.IsInNightMode)
+            {
+                this.NightToDayStoryboard.Stop();
+                this.DayToNightStoryboard.Begin();
+            }
+            else
+            {
+                this.DayToNightStoryboard.Stop();
+                this.NightToDayStoryboard.Begin();
+            }
+        }
+
         #endregion
 
         #region FloatingNumber
@@ -519,7 +525,8 @@ namespace HonkTrooper
 
             promptOrientationChangeScreen.SetPosition(
                 left: -3000,
-                top: -3000);
+                top: -3000,
+                z: 10);
 
             _scene_main_menu.AddToScene(promptOrientationChangeScreen);
 
@@ -566,7 +573,8 @@ namespace HonkTrooper
 
             assetsLoadingScreen.SetPosition(
                 left: -3000,
-                top: -3000);
+                top: -3000,
+                z: 10);
 
             _scene_main_menu.AddToScene(assetsLoadingScreen);
 
@@ -585,13 +593,13 @@ namespace HonkTrooper
                     RecycleAssetsLoadingScreen(assetsLoadingScreen);
                     AddGameConstructGenerators();
 
-                    await Task.Delay(500);
+                    _scene_game.Play();
+                    ToggleNightMode(false);
 
+                    await Task.Delay(500);
                     GenerateGameStartScreen(title: "Honk Trooper", subTitle: "-Stop Honkers, Save The City-");
 
-                    _scene_game.Play();
                     _audioStub.Play(SoundType.GAME_BACKGROUND_MUSIC);
-                    this.AmbientLightingDayStoryboard.Begin();
                 });
 
                 return true;
@@ -660,7 +668,8 @@ namespace HonkTrooper
 
             gameStartScreen.SetPosition(
                 left: -3000,
-                top: -3000);
+                top: -3000,
+                z: 10);
 
             _scene_main_menu.AddToScene(gameStartScreen);
 
@@ -728,7 +737,8 @@ namespace HonkTrooper
 
             playerSelectionScreen.SetPosition(
                 left: -3000,
-                top: -3000);
+                top: -3000,
+                z: 10);
 
             _scene_main_menu.AddToScene(playerSelectionScreen);
 
@@ -794,7 +804,8 @@ namespace HonkTrooper
 
             playerHonkBombSelectionScreen.SetPosition(
                 left: -3000,
-                top: -3000);
+                top: -3000,
+                z: 10);
 
             _scene_main_menu.AddToScene(playerHonkBombSelectionScreen);
 
@@ -842,7 +853,8 @@ namespace HonkTrooper
 
             interimScreen.SetPosition(
                 left: -3000,
-                top: -3000);
+                top: -3000,
+                z: 10);
 
             _scene_main_menu.AddToScene(interimScreen);
 
@@ -903,7 +915,8 @@ namespace HonkTrooper
 
             _player.SetPosition(
                   left: -3000,
-                  top: -3000);
+                  top: -3000,
+                  z: 7);
 
             SpawnDropShadow(source: _player);
 
@@ -924,14 +937,14 @@ namespace HonkTrooper
             {
                 case PlayerBalloonTemplate.Blue:
                     {
-                        _game_controller.SetAttackButtonColor(App.Current.Resources["PlayerBlueAccentColor"] as SolidColorBrush);
-                        _game_controller.SetThumbstickThumbColor(App.Current.Resources["PlayerBlueAccentColor"] as SolidColorBrush);
+                        _game_controller.SetAttackButtonColor(Application.Current.Resources["PlayerBlueAccentColor"] as SolidColorBrush);
+                        _game_controller.SetThumbstickThumbColor(Application.Current.Resources["PlayerBlueAccentColor"] as SolidColorBrush);
                     }
                     break;
                 case PlayerBalloonTemplate.Red:
                     {
-                        _game_controller.SetAttackButtonColor(App.Current.Resources["PlayerRedAccentColor"] as SolidColorBrush);
-                        _game_controller.SetThumbstickThumbColor(App.Current.Resources["PlayerRedAccentColor"] as SolidColorBrush);
+                        _game_controller.SetAttackButtonColor(Application.Current.Resources["PlayerRedAccentColor"] as SolidColorBrush);
+                        _game_controller.SetThumbstickThumbColor(Application.Current.Resources["PlayerRedAccentColor"] as SolidColorBrush);
                     }
                     break;
                 default:
@@ -1091,8 +1104,8 @@ namespace HonkTrooper
                 {
                     _player.SetAttackStance();
 
-                    playerHonkBomb.Reset();                    
-                    playerHonkBomb.IsGravitatingDownwards = true;                    
+                    playerHonkBomb.Reset();
+                    playerHonkBomb.IsGravitatingDownwards = true;
                     playerHonkBomb.Reposition(player: _player);
                     playerHonkBomb.IsAnimating = true;
 
@@ -3822,7 +3835,8 @@ namespace HonkTrooper
 
                 honk.SetPosition(
                     left: -3000,
-                    top: -3000);
+                    top: -3000,
+                    z: 5);
 
                 _scene_game.AddToScene(honk);
             }
@@ -4561,12 +4575,12 @@ namespace HonkTrooper
             #region Pickup
 
             new Generator(
-                generationDelay: 500,
+                generationDelay: 800,
                 generationAction: GenerateHealthPickups,
                 startUpAction: SpawnHealthPickups),
 
             new Generator(
-                generationDelay: 500,
+                generationDelay: 800,
                 generationAction: GeneratePowerUpPickup,
                 startUpAction: SpawnPowerUpPickups),
 

@@ -46,7 +46,7 @@ namespace HonkTrooper
 
             SetChild(_content_image);
 
-            BorderBrush = App.Current.Resources["BorderColor"] as SolidColorBrush;
+            BorderBrush = Application.Current.Resources["BorderColor"] as SolidColorBrush;
             BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS, 0);
 
             SetSkewY(36);

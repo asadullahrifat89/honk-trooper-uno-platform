@@ -21,12 +21,6 @@ namespace HonkTrooper
         private readonly Storyboard _opacity_storyboard;
         private readonly DoubleAnimation _doubleAnimation;
 
-        private readonly Storyboard _night_storyboard;
-        private readonly ColorAnimation _night_animation;
-
-        private readonly Storyboard _day_storyboard;
-        private readonly ColorAnimation _day_animation;
-
         private readonly CompositeTransform _compositeTransform = new()
         {
             CenterX = 0.5,
@@ -82,49 +76,51 @@ namespace HonkTrooper
 
             #region Day Animation
 
-            _day_animation = new ColorAnimation()
-            {
-                Duration = new Duration(TimeSpan.FromSeconds(4)),
-                From = (App.Current.Resources["NightBackgroundColor"] as SolidColorBrush).Color,
-                To = (App.Current.Resources["DayBackgroundColor"] as SolidColorBrush).Color,
-            };
+            //            _night_to_day_animation = new ColorAnimation()
+            //            {
+            //                Duration = new Duration(TimeSpan.FromSeconds(4)),
+            //                From = (Application.Current.Resources["NightBackgroundColor"] as SolidColorBrush).Color, // night
+            //                To = (Application.Current.Resources["DayBackgroundColor"] as SolidColorBrush).Color, // day
+            //            };
 
-            Storyboard.SetTarget(_day_animation, this);
-            Storyboard.SetTargetProperty(_day_animation, "Background.Color");
+            //            Storyboard.SetTarget(_night_to_day_animation, this);
+            //            Storyboard.SetTargetProperty(_night_to_day_animation, "Background.Color");
 
-            _day_storyboard = new Storyboard();
-            _day_storyboard.Children.Add(_day_animation);
-            _day_storyboard.Completed += (s, e) =>
-            {
-                _day_storyboard.Stop();
-#if DEBUG
-                LoggingExtensions.Log($"Scene: _day_storyboard -> Completed");
-#endif
-            };
+            //            _night_to_day_storyboard = new Storyboard();
+            //            _night_to_day_storyboard.Children.Add(_night_to_day_animation);
+            //            _night_to_day_storyboard.Completed += (s, e) =>
+            //            {
+            //                //_night_to_day_storyboard.Stop();
+            //                //this.Background = Application.Current.Resources["DayBackgroundColor"] as SolidColorBrush;
+            //#if DEBUG
+            //                LoggingExtensions.Log($"Scene: _day_storyboard -> Completed");
+            //#endif
+            //            };
 
             #endregion
 
             #region Night Animation
 
-            _night_animation = new ColorAnimation()
-            {
-                Duration = new Duration(TimeSpan.FromSeconds(4)),
-                From = (App.Current.Resources["DayBackgroundColor"] as SolidColorBrush).Color,
-                To = (App.Current.Resources["NightBackgroundColor"] as SolidColorBrush).Color,
-            };
+            //            _day_to_night_animation = new ColorAnimation()
+            //            {
+            //                Duration = new Duration(TimeSpan.FromSeconds(4)),
+            //                From = (Application.Current.Resources["DayBackgroundColor"] as SolidColorBrush).Color, // day
+            //                To = (Application.Current.Resources["NightBackgroundColor"] as SolidColorBrush).Color, // night
+            //            };
 
-            Storyboard.SetTarget(_night_animation, this);
-            Storyboard.SetTargetProperty(_night_animation, "Background.Color");
+            //            Storyboard.SetTarget(_day_to_night_animation, this);
+            //            Storyboard.SetTargetProperty(_day_to_night_animation, "Background.Color");
 
-            _night_storyboard = new Storyboard();
-            _night_storyboard.Children.Add(_night_animation);
-            _night_storyboard.Completed += (s, e) =>
-            {
-                _night_storyboard.Stop();
-#if DEBUG
-                LoggingExtensions.Log($"Scene: _night_storyboard -> Completed");
-#endif
-            };
+            //            _day_to_night_storyboard = new Storyboard();
+            //            _day_to_night_storyboard.Children.Add(_day_to_night_animation);
+            //            _day_to_night_storyboard.Completed += (s, e) =>
+            //            {
+            //                //_day_to_night_storyboard.Stop();
+            //                //this.Background = Application.Current.Resources["NightBackgroundColor"] as SolidColorBrush;
+            //#if DEBUG
+            //                LoggingExtensions.Log($"Scene: _night_storyboard -> Completed");
+            //#endif
+            //            };
 
             #endregion
 
@@ -179,16 +175,9 @@ namespace HonkTrooper
 
         #region Methods
 
-        public void ToggleNightMode(bool toggle)
+        public void ToggleNightMode(bool isNightMode)
         {
-            if (toggle)
-            {
-                _night_storyboard.Begin(); IsInNightMode = true;
-            }
-            else
-            {
-                _day_storyboard.Begin(); IsInNightMode = false;
-            }
+            IsInNightMode = isNightMode;
         }
 
         public void SetRenderTransformOrigin(double xy)

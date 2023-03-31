@@ -64,8 +64,7 @@ namespace HonkTrooper
 
             SetPosition(
                 left: hitBox.Left - source.Width / 3,
-                top: hitBox.Top - (25),
-                z: 5);
+                top: hitBox.Top - (25));
         }
 
         #endregion
