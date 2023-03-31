@@ -31,10 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <WasmShellEnableAotProfile Include="aot.profile" />
-  </ItemGroup>
-  <ItemGroup>
-    <WasmShellMonoEnvironment Include="MONO_GC_PARAMS" Value="soft-heap-limit=512m,nursery-size=64m,evacuation-threshold=66,major=marksweep" />
-  </ItemGroup>
+  </ItemGroup>  
   <ItemGroup>
     <Content Include="Assets\SplashScreen.png" />
     <Content Include="manifest.webmanifest" />
