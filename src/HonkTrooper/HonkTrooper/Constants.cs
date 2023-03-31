@@ -60,7 +60,7 @@ namespace HonkTrooper
             new (ConstructType.HONK, 90, 90),
             new (ConstructType.FLOATING_NUMBER, 50, 50),
 
-            new (ConstructType.ROAD_MARK, 15, 60),
+            new (ConstructType.ROAD_MARK, 512, 512),            
 
             new (ConstructType.ROAD_SIDE_TREE, 190, 190),
             new (ConstructType.ROAD_SIDE_HEDGE, 170, 170),
@@ -81,6 +81,8 @@ namespace HonkTrooper
 
         public static (ConstructType ConstructType, Uri Uri)[] CONSTRUCT_TEMPLATES = new (ConstructType, Uri)[]
         {
+            new (ConstructType.ROAD_MARK, new Uri("ms-appx:///HonkTrooper/Assets/Images/road_marks.png")),
+
             new (ConstructType.ROAD_SIDE_TREE, new Uri("ms-appx:///HonkTrooper/Assets/Images/tree_1.png")),
             new (ConstructType.ROAD_SIDE_TREE, new Uri("ms-appx:///HonkTrooper/Assets/Images/tree_2.png")),
             new (ConstructType.ROAD_SIDE_TREE, new Uri("ms-appx:///HonkTrooper/Assets/Images/tree_3.png")),
