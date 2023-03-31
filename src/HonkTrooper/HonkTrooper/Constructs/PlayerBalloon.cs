@@ -57,13 +57,15 @@ namespace HonkTrooper
             SetConstructSize();
 
             _player_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BALLOON_IDLE).Select(x => x.Uri).ToArray();
-            
+
             var uri = ConstructExtensions.GetRandomContentUri(_player_uris);
             _bitmapImage = new BitmapImage(uriSource: uri);
 
             _content_image = new Image()
             {
-                Source = _bitmapImage
+                Source = _bitmapImage,
+                Height = this.Height,
+                Width = this.Width
             };
 
             SetChild(_content_image);
