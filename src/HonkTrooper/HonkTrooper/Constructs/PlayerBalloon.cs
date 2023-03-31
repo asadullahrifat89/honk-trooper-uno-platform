@@ -32,6 +32,7 @@ namespace HonkTrooper
         private readonly double _hitStanceDelayDefault = 1.5;
 
         private readonly Image _content_image;
+        private readonly BitmapImage _bitmapImage;
 
         private readonly AudioStub _audioStub;
 
@@ -56,11 +57,13 @@ namespace HonkTrooper
             SetConstructSize();
 
             _player_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BALLOON_IDLE).Select(x => x.Uri).ToArray();
+            
             var uri = ConstructExtensions.GetRandomContentUri(_player_uris);
+            _bitmapImage = new BitmapImage(uriSource: uri);
 
             _content_image = new Image()
             {
-                Source = new BitmapImage(uriSource: uri)
+                Source = _bitmapImage
             };
 
             SetChild(_content_image);
@@ -95,11 +98,6 @@ namespace HonkTrooper
 
         public void Reposition()
         {
-            //SetPosition(
-            //    left: (Scene.Width / 2) - Width / 2,
-            //    top: (Scene.Height / 2 - Height / 2) - 150,
-            //    z: 6);
-
             var scaling = ScreenExtensions.GetScreenSpaceScaling();
 
             SetPosition(
@@ -133,22 +131,26 @@ namespace HonkTrooper
             }
 
             var uri = ConstructExtensions.GetRandomContentUri(_player_uris);
-            _content_image.Source = new BitmapImage(uriSource: uri);
+            _bitmapImage.UriSource = uri;
         }
 
         public void SetAttackStance()
         {
             PlayerBalloonStance = PlayerBalloonStance.Attack;
+
             var uri = ConstructExtensions.GetRandomContentUri(_player_attack_uris);
-            _content_image.Source = new BitmapImage(uriSource: uri);
+            _bitmapImage.UriSource = uri;
+
             _attackStanceDelay = _attackStanceDelayDefault;
         }
 
         public void SetWinStance()
         {
             PlayerBalloonStance = PlayerBalloonStance.Win;
+
             var uri = ConstructExtensions.GetRandomContentUri(_player_win_uris);
-            _content_image.Source = new BitmapImage(uriSource: uri);
+            _bitmapImage.UriSource = uri;
+
             _winStanceDelay = _winStanceDelayDefault;
         }
 
@@ -157,8 +159,10 @@ namespace HonkTrooper
             if (PlayerBalloonStance != PlayerBalloonStance.Win)
             {
                 PlayerBalloonStance = PlayerBalloonStance.Hit;
+
                 var uri = ConstructExtensions.GetRandomContentUri(_player_hit_uris);
-                _content_image.Source = new BitmapImage(uriSource: uri);
+                _bitmapImage.UriSource = uri;
+
                 _hitStanceDelay = _hitStanceDelayDefault;
             }
         }
@@ -166,8 +170,9 @@ namespace HonkTrooper
         private void SetIdleStance()
         {
             PlayerBalloonStance = PlayerBalloonStance.Idle;
+
             var uri = ConstructExtensions.GetRandomContentUri(_player_uris);
-            _content_image.Source = new BitmapImage(uriSource: uri);
+            _bitmapImage.UriSource = uri;
         }
 
 

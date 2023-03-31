@@ -10,6 +10,8 @@ namespace HonkTrooper
         #region Fields
 
         private readonly Image _content_image;
+        private readonly BitmapImage _bitmapImage;
+
         private readonly Uri[] _billboard_uris;
 
         #endregion
@@ -30,10 +32,11 @@ namespace HonkTrooper
             SetConstructSize();
 
             var uri = ConstructExtensions.GetRandomContentUri(_billboard_uris);
+            _bitmapImage = new BitmapImage(uriSource: uri);
 
             _content_image = new Image()
             {
-                Source = new BitmapImage(uriSource: uri)
+                Source = _bitmapImage
             };
 
             SetChild(_content_image);
@@ -42,12 +45,6 @@ namespace HonkTrooper
             IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
             DropShadowDistance = -10;
         }
-
-        #endregion
-
-        #region Methods
-
-
 
         #endregion
     }

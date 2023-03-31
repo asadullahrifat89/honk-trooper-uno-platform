@@ -9,9 +9,10 @@ namespace HonkTrooper
     {
         #region Fields
 
-        private readonly Random _random;
-        private readonly Image _content_image;
+        private readonly Uri[] _health_uris;
 
+        private readonly Image _content_image;
+        private readonly BitmapImage _bitmapImage;
 
         private readonly AudioStub _audioStub;
 
@@ -26,15 +27,18 @@ namespace HonkTrooper
             ConstructType = ConstructType.HEALTH_PICKUP;
 
             AnimateAction = animateAction;
-            RecycleAction = recycleAction;
-
-            _random = new Random();
+            RecycleAction = recycleAction;           
 
             SetConstructSize();
 
+            _health_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.HEALTH_PICKUP).Select(x => x.Uri).ToArray();
+
+            var uri = ConstructExtensions.GetRandomContentUri(_health_uris);
+            _bitmapImage = new BitmapImage(uriSource: uri);
+
             _content_image = new Image()
             {
-                Source = new BitmapImage(uriSource: Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.HEALTH_PICKUP).Uri)
+                Source = _bitmapImage
             };
 
             SetChild(_content_image);

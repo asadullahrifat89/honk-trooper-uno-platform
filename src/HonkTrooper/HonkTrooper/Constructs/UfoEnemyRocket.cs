@@ -11,12 +11,11 @@ namespace HonkTrooper
     {
         #region Fields
 
-        private readonly Random _random;
-
         private readonly Uri[] _bomb_uris;
         private readonly Uri[] _bomb_blast_uris;
 
         private readonly Image _content_image;
+        private readonly BitmapImage _bitmapImage;
 
         private double _autoBlastDelay;
         private readonly double _autoBlastDelayDefault = 12;
@@ -36,18 +35,17 @@ namespace HonkTrooper
             AnimateAction = animateAction;
             RecycleAction = recycleAction;
 
-            _random = new Random();
-
             _bomb_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.UFO_ENEMY_ROCKET).Select(x => x.Uri).ToArray();
             _bomb_blast_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BLAST).Select(x => x.Uri).ToArray();
 
             SetConstructSize();
 
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_uris);
+            _bitmapImage = new BitmapImage(uriSource: uri);
 
             _content_image = new Image()
             {
-                Source = new BitmapImage(uriSource: uri)
+                Source = _bitmapImage
             };
 
             SetChild(_content_image);
@@ -79,7 +77,7 @@ namespace HonkTrooper
             IsBlasting = false;
 
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_uris);
-            _content_image.Source = new BitmapImage(uri);
+           _bitmapImage.UriSource = uri;
 
             _autoBlastDelay = _autoBlastDelayDefault;
         }
@@ -101,7 +99,7 @@ namespace HonkTrooper
             BorderBrush = new SolidColorBrush(Colors.Goldenrod);
 
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_blast_uris);
-            _content_image.Source = new BitmapImage(uri);
+           _bitmapImage.UriSource = uri;
 
             IsBlasting = true;
         }
