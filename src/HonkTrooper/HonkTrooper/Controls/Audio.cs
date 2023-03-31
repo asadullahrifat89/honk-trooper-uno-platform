@@ -179,7 +179,7 @@ namespace HonkTrooper
             }
 
 #if DEBUG
-            LoggingExtensions.Log("source: " + uri + " volume: " + volume.ToString() + " loop: " + loop.ToString().ToLower());
+            LoggingExtensions.Log("audio source: " + uri + " volume: " + volume.ToString() + " loop: " + loop.ToString().ToLower());
 #endif
         }
 

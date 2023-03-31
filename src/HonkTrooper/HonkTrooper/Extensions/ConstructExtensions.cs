@@ -1,6 +1,8 @@
-﻿using Microsoft.UI.Xaml.Controls;
+﻿using CommunityToolkit.WinUI.UI;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System;
+using System.Threading.Tasks;
 using Windows.Foundation;
 
 namespace HonkTrooper
