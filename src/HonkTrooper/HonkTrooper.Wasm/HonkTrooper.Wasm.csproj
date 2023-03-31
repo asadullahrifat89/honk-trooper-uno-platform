@@ -15,23 +15,31 @@
 		-->
     <WasmShellILLinkerEnabled>false</WasmShellILLinkerEnabled>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">    
     <!-- XAML Resource trimming https://aka.platform.uno/xaml-trimming -->
     <!--<UnoXamlResourcesTrimming>true</UnoXamlResourcesTrimming>-->
+    
     <!-- Improve performance with AOT builds https://aka.platform.uno/wasm-aot -->
     <WasmShellMonoRuntimeExecutionMode>InterpreterAndAOT</WasmShellMonoRuntimeExecutionMode>
+    
     <!-- Temporarily uncomment to generate an AOT profile https://aka.platform.uno/wasm-aot-profile -->
     <!--<WasmShellGenerateAOTProfile>true</WasmShellGenerateAOTProfile>-->
-    <WasmPWAManifestFile>manifest.webmanifest</WasmPWAManifestFile>
+    <WasmPWAManifestFile>manifest.webmanifest</WasmPWAManifestFile>    
+  </PropertyGroup>
+  <PropertyGroup>
+    <UnoDragDropExternalSupport>false</UnoDragDropExternalSupport>
   </PropertyGroup>
   <ItemGroup>
     <WasmShellEnableAotProfile Include="aot.profile" />
   </ItemGroup>
   <ItemGroup>
+    <WasmShellMonoEnvironment Include="MONO_GC_PARAMS" Value="soft-heap-limit=512m,nursery-size=64m,evacuation-threshold=66,major=marksweep" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="Assets\SplashScreen.png" />
     <Content Include="manifest.webmanifest" />
     <Content Include="Assets\AppIcon-*.png" />
-  </ItemGroup>  
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="WasmCSS\Fonts.css" />
     <EmbeddedResource Include="WasmScripts\AppManifest.js" />

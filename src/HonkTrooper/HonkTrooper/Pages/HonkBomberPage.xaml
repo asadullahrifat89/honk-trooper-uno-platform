@@ -14,22 +14,6 @@
         MaxHeight="940">
 
         <Grid.Resources>
-            <!--<Storyboard x:Name="NightStoryboard">
-                <ColorAnimation
-                    Storyboard.TargetName="SceneBackground"
-                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                    From="#5e6b73"
-                    To="#1f2326"
-                    Duration="0:0:4" />
-            </Storyboard>
-            <Storyboard x:Name="DayStoryboard">
-                <ColorAnimation
-                    Storyboard.TargetName="SceneBackground"
-                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
-                    From="#1f2326"
-                    To="#5e6b73"
-                    Duration="0:0:4" />
-            </Storyboard>-->
             <Storyboard x:Name="AmbientLightingDayStoryboard">
                 <DoubleAnimation
                     Storyboard.TargetName="SunRayOverlay"

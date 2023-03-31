@@ -18,7 +18,7 @@ namespace HonkTrooper
 
         private readonly Canvas _canvas;
 
-        private readonly Storyboard _storyboard;
+        private readonly Storyboard _opacity_storyboard;
         private readonly DoubleAnimation _doubleAnimation;
 
         private readonly Storyboard _night_storyboard;
@@ -56,6 +56,30 @@ namespace HonkTrooper
 
         public Scene()
         {
+            #region Opacity Animation
+
+            _doubleAnimation = new DoubleAnimation()
+            {
+                Duration = new Duration(TimeSpan.FromSeconds(7)),
+                From = 0,
+                To = 1,
+            };
+
+            Storyboard.SetTarget(_doubleAnimation, this);
+            Storyboard.SetTargetProperty(_doubleAnimation, "Opacity");
+
+            _opacity_storyboard = new Storyboard();
+            _opacity_storyboard.Children.Add(_doubleAnimation);
+            _opacity_storyboard.Completed += (s, e) =>
+            {
+                _opacity_storyboard.Stop();
+#if DEBUG
+                LoggingExtensions.Log($"Scene: _opacity_storyboard -> Completed");
+#endif
+            };
+
+            #endregion
+
             #region Day Animation
 
             _day_animation = new ColorAnimation()
@@ -70,6 +94,13 @@ namespace HonkTrooper
 
             _day_storyboard = new Storyboard();
             _day_storyboard.Children.Add(_day_animation);
+            _day_storyboard.Completed += (s, e) =>
+            {
+                _day_storyboard.Stop();
+#if DEBUG
+                LoggingExtensions.Log($"Scene: _day_storyboard -> Completed");
+#endif
+            };
 
             #endregion
 
@@ -87,23 +118,13 @@ namespace HonkTrooper
 
             _night_storyboard = new Storyboard();
             _night_storyboard.Children.Add(_night_animation);
-
-            #endregion
-
-            #region Opacity Animation
-
-            _doubleAnimation = new DoubleAnimation()
+            _night_storyboard.Completed += (s, e) =>
             {
-                Duration = new Duration(TimeSpan.FromSeconds(7)),
-                From = 0,
-                To = 1,
+                _night_storyboard.Stop();
+#if DEBUG
+                LoggingExtensions.Log($"Scene: _night_storyboard -> Completed");
+#endif
             };
-
-            Storyboard.SetTarget(_doubleAnimation, this);
-            Storyboard.SetTargetProperty(_doubleAnimation, "Opacity");
-
-            _storyboard = new Storyboard();
-            _storyboard.Children.Add(_doubleAnimation); 
 
             #endregion
 
@@ -114,7 +135,7 @@ namespace HonkTrooper
                 RenderTransformOrigin = new Point(0, 0),
                 RenderTransform = _compositeTransform,
                 Background = new SolidColorBrush(Colors.Transparent),
-            };           
+            };
 
             Speed = Constants.DEFAULT_SCENE_SPEED;
 
@@ -146,7 +167,7 @@ namespace HonkTrooper
 
         private void Scene_Loaded(object sender, RoutedEventArgs e)
         {
-            _storyboard.Begin();
+            _opacity_storyboard.Begin();
         }
 
         private void Scene_Unloaded(object sender, RoutedEventArgs e)
@@ -287,7 +308,7 @@ namespace HonkTrooper
 
             // remove the destroyables from the scene
             //foreach (Construct destroyable in _destroyables)
-            //{
+            //{as
             //    Children.Remove(destroyable);
             //}
 
@@ -304,7 +325,7 @@ namespace HonkTrooper
 
                 var fps = _famesCount / 2;
 
-                LoggingExtensions.Log($"Scene: {Name} ~ Animating Objects: {_canvas.Children.OfType<Construct>().Count(x => x.IsAnimating)} \n Total Objects: {_canvas.Children.OfType<Construct>().Count()} ~ FPS: {fps}");
+                //LoggingExtensions.Log($"Scene: {Name} ~ Animating Objects: {_canvas.Children.OfType<Construct>().Count(x => x.IsAnimating)} \n Total Objects: {_canvas.Children.OfType<Construct>().Count()} ~ FPS: {fps}");
 
                 _famesCount = 0;
             }
