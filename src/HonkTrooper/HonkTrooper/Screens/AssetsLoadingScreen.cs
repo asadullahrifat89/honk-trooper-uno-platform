@@ -1,7 +1,9 @@
-﻿using Microsoft.UI;
+﻿using CommunityToolkit.WinUI.UI;
+using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Imaging;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -149,9 +151,15 @@ namespace HonkTrooper
         private async Task GetFileAsync(Uri uri)
         {
 #if DEBUG
-            // LoggingExtensions.Log("GetFileAsync: " + uri.OriginalString);
+            LoggingExtensions.Log("GetFileAsync: " + uri.OriginalString);
 #endif
-            await StorageFile.GetFileFromApplicationUriAsync(uri);
+            //await StorageFile.GetFileFromApplicationUriAsync(uri);
+
+            //var image = new BitmapImage();
+            //image.UriSource = new Uri("https://example.com/image.png");
+
+            await ImageCache.Instance.PreCacheAsync(uri);            
+
             _progressBar.Value++;
         }
 

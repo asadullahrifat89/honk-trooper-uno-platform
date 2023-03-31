@@ -159,7 +159,7 @@ namespace HonkTrooper
             bool loop = false,
             Action trackEnded = null)
         {
-            var indexUrl = Uno.Foundation.WebAssemblyRuntime.InvokeJS("window.location.href;");
+            var indexUrl = "./"; //Uno.Foundation.WebAssemblyRuntime.InvokeJS("window.location.href;");
             var appPackageId = Environment.GetEnvironmentVariable("UNO_BOOTSTRAP_APP_BASE");
 
             _baseUrl = $"{indexUrl}{appPackageId}";
@@ -179,7 +179,7 @@ namespace HonkTrooper
             }
 
 #if DEBUG
-            // LoggingExtensions.Log("source: " + uri + " volume: " + volume.ToString() + " loop: " + loop.ToString().ToLower()); 
+            LoggingExtensions.Log("source: " + uri + " volume: " + volume.ToString() + " loop: " + loop.ToString().ToLower());
 #endif
         }
 
