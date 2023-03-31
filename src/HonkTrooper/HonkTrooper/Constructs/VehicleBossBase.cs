@@ -2,10 +2,6 @@
 {
     public partial class VehicleBossBase : VehicleBase
     {
-        #region Fields
-
-        #endregion
-
         #region Properties
 
         public bool IsAttacking { get; set; }

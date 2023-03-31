@@ -15,7 +15,7 @@ namespace HonkTrooper
         private readonly Uri[] _bomb_blast_uris;
 
         private readonly Image _content_image;
-
+        private readonly BitmapImage _bitmapImage;
 
         private double _autoBlastDelay;
         private readonly double _autoBlastDelayDefault = 8;
@@ -41,10 +41,11 @@ namespace HonkTrooper
             SetConstructSize();
 
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_uris);
+            _bitmapImage = new BitmapImage(uriSource: uri);
 
             _content_image = new Image()
             {
-                Source = new BitmapImage(uriSource: uri)
+                Source = _bitmapImage
             };
 
             SetChild(_content_image);
@@ -69,7 +70,7 @@ namespace HonkTrooper
             Opacity = 1;
 
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_uris);
-            _content_image.Source = new BitmapImage(uri);
+            _bitmapImage.UriSource = uri;
 
             SetScaleTransform(1);
 
@@ -106,7 +107,7 @@ namespace HonkTrooper
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET - 1;
 
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_blast_uris);
-            _content_image.Source = new BitmapImage(uri);
+            _bitmapImage.UriSource = uri;
 
             IsBlasting = true;
         }

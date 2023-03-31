@@ -21,6 +21,7 @@ namespace HonkTrooper
         private double _changeMovementPatternDelay;
 
         private readonly Image _content_image;
+        private readonly BitmapImage _bitmapImage;
 
         private double _hitStanceDelay;
         private readonly double _hitStanceDelayDefault = 1.5;
@@ -52,10 +53,11 @@ namespace HonkTrooper
             SetConstructSize();
 
             var uri = ConstructExtensions.GetRandomContentUri(_ufo_boss_idle_uris);
+            _bitmapImage = new BitmapImage(uriSource: uri);
 
             _content_image = new Image()
             {
-                Source = new BitmapImage(uriSource: uri)
+                Source = _bitmapImage
             };
 
             SetChild(_content_image);
@@ -83,7 +85,7 @@ namespace HonkTrooper
             UfoBossStance = BossStance.Idle;
 
             var uri = ConstructExtensions.GetRandomContentUri(_ufo_boss_idle_uris);
-            _content_image.Source = new BitmapImage(uriSource: uri);
+            _bitmapImage.UriSource = uri;
 
             RandomizeMovementPattern();
             SetScaleTransform(1);
@@ -94,8 +96,10 @@ namespace HonkTrooper
             if (UfoBossStance != BossStance.Win)
             {
                 UfoBossStance = BossStance.Hit;
+
                 var uri = ConstructExtensions.GetRandomContentUri(_ufo_boss_hit_uris);
-                _content_image.Source = new BitmapImage(uriSource: uri);
+                _bitmapImage.UriSource = uri;
+
                 _hitStanceDelay = _hitStanceDelayDefault;
             }
         }
@@ -104,7 +108,7 @@ namespace HonkTrooper
         {
             UfoBossStance = BossStance.Win;
             var uri = ConstructExtensions.GetRandomContentUri(_ufo_boss_win_uris);
-            _content_image.Source = new BitmapImage(uriSource: uri);
+            _bitmapImage.UriSource = uri;
             _winStanceDelay = _winStanceDelayDefault;
         }
 
@@ -112,7 +116,7 @@ namespace HonkTrooper
         {
             UfoBossStance = BossStance.Idle;
             var uri = ConstructExtensions.GetRandomContentUri(_ufo_boss_idle_uris);
-            _content_image.Source = new BitmapImage(uriSource: uri);
+            _bitmapImage.UriSource = uri;
         }
 
         public void DepleteWinStance()

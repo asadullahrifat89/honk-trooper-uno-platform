@@ -14,6 +14,9 @@ namespace HonkTrooper
         private readonly Uri[] _vehicle_small_uris;
         private readonly Uri[] _vehicle_large_uris;
 
+        private readonly Image _content_image;
+        private readonly BitmapImage _bitmapImage;
+
         private readonly AudioStub _audioStub;
 
         #endregion
@@ -47,12 +50,7 @@ namespace HonkTrooper
                         SetConstructSize();
 
                         uri = ConstructExtensions.GetRandomContentUri(_vehicle_small_uris);
-
-                        var content = new Image()
-                        {
-                            Source = new BitmapImage(uriSource: uri)
-                        };
-                        SetChild(content);
+                        _bitmapImage = new BitmapImage(uriSource: uri);
                     }
                     break;
                 case 1:
@@ -62,17 +60,19 @@ namespace HonkTrooper
                         SetConstructSize();
 
                         uri = ConstructExtensions.GetRandomContentUri(_vehicle_large_uris);
-
-                        var content = new Image()
-                        {
-                            Source = new BitmapImage(uriSource: uri)
-                        };
-                        SetChild(content);
+                        _bitmapImage = new BitmapImage(uriSource: uri);
                     }
                     break;
                 default:
                     break;
             }
+
+            _content_image = new Image()
+            {
+                Source = _bitmapImage
+            };
+
+            SetChild(_content_image);
 
             IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
 

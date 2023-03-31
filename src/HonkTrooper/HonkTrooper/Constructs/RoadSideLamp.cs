@@ -10,6 +10,8 @@ namespace HonkTrooper
         #region Fields
 
         private readonly Image _content_image;
+        private readonly BitmapImage _bitmapImage;
+
         private readonly Uri[] _tree_uris;
 
         #endregion
@@ -30,10 +32,11 @@ namespace HonkTrooper
             SetConstructSize();
 
             var uri = ConstructExtensions.GetRandomContentUri(_tree_uris);
+            _bitmapImage = new BitmapImage(uriSource: uri);
 
             _content_image = new Image()
             {
-                Source = new BitmapImage(uriSource: uri)
+                Source = _bitmapImage
             };
 
             SetChild(_content_image);

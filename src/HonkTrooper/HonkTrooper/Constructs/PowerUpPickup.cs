@@ -11,6 +11,7 @@ namespace HonkTrooper
 
         private readonly Random _random;
         private readonly Image _content_image;
+        private readonly BitmapImage _bitmapImage;
 
         private readonly AudioStub _audioStub;
         #endregion
@@ -36,31 +37,27 @@ namespace HonkTrooper
             {
                 case PowerUpType.SEEKING_SNITCH:
                     {
-                        _content_image = new Image()
-                        {
-                            Source = new BitmapImage(uriSource: Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP_SEEKING_SNITCH).Uri)
-                        };
+                        _bitmapImage = new BitmapImage(uriSource: Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP_SEEKING_SNITCH).Uri);
                     }
                     break;
                 case PowerUpType.ARMOR:
                     {
-                        _content_image = new Image()
-                        {
-                            Source = new BitmapImage(uriSource: Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP_ARMOR).Uri)
-                        };
+                        _bitmapImage = new BitmapImage(uriSource: Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP_ARMOR).Uri);
                     }
                     break;
                 case PowerUpType.BULLS_EYE:
                     {
-                        _content_image = new Image()
-                        {
-                            Source = new BitmapImage(uriSource: Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP_BULLS_EYE).Uri)
-                        };
+                        _bitmapImage = new BitmapImage(uriSource: Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP_BULLS_EYE).Uri);
                     }
                     break;
                 default:
                     break;
             }
+
+            _content_image = new Image()
+            {
+                Source = _bitmapImage
+            };
 
             SetChild(_content_image);
 
@@ -82,31 +79,26 @@ namespace HonkTrooper
 
             PowerUpType = (PowerUpType)_random.Next(Enum.GetNames(typeof(PowerUpType)).Length);
 
-            //TODO: Comment this line upon testing completion : PowerUpType = PowerUpType.BULLS_EYE
-            //PowerUpType = PowerUpType.BULLS_EYE;
-
             switch (PowerUpType)
             {
                 case PowerUpType.SEEKING_SNITCH:
                     {
-                        _content_image.Source = new BitmapImage(uriSource: Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP_SEEKING_SNITCH).Uri);
+                        _bitmapImage.UriSource = Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP_SEEKING_SNITCH).Uri;
                     }
                     break;
                 case PowerUpType.ARMOR:
                     {
-                        _content_image.Source = new BitmapImage(uriSource: Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP_ARMOR).Uri);
+                        _bitmapImage.UriSource = Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP_ARMOR).Uri;
                     }
                     break;
                 case PowerUpType.BULLS_EYE:
                     {
-                        _content_image.Source = new BitmapImage(uriSource: Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP_BULLS_EYE).Uri);
+                        _bitmapImage.UriSource = Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP_BULLS_EYE).Uri;
                     }
                     break;
                 default:
                     break;
             }
-
-            SetChild(_content_image);
         }
 
         public void PickedUp()
