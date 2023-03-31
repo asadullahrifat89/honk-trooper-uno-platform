@@ -476,7 +476,7 @@ namespace HonkTrooper
         {
             if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<FloatingNumber>().FirstOrDefault(x => x.IsAnimating == false) is FloatingNumber floatingNumberTop)
             {
-                floatingNumberTop.Reset(source.HitPoint);                
+                floatingNumberTop.Reset(source.HitPoint);
                 floatingNumberTop.Reposition(source);
                 floatingNumberTop.IsAnimating = true;
             }
@@ -4153,7 +4153,7 @@ namespace HonkTrooper
         {
             var hitBox = healthPickup.GetHitBox();
 
-            if (hitBox.Top - healthPickup.Height > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - healthPickup.Width > Constants.DEFAULT_SCENE_WIDTH || healthPickup.IsShrinkingComplete)
+            if (healthPickup.IsShrinkingComplete || hitBox.Top - healthPickup.Height > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - healthPickup.Width > Constants.DEFAULT_SCENE_WIDTH) // if object is out side of bottom right corner
             {
                 healthPickup.IsAnimating = false;
                 healthPickup.SetPosition(left: -3000, top: -3000);

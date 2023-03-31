@@ -58,6 +58,7 @@ namespace HonkTrooper
         public void Reset()
         {
             IsPickedUp = false;
+            SetScaleTransform(1);
         }
 
         public void PickedUp()
