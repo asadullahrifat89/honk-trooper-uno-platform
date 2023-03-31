@@ -23,7 +23,7 @@ namespace HonkTrooper
 
         public static void EnterFullScreen(bool toggleFullScreen)
         {
-#if !DEBUG
+//#if !DEBUG
             if (ApplicationView is not null)
             {
                 if (toggleFullScreen)
@@ -35,7 +35,7 @@ namespace HonkTrooper
                     ApplicationView.ExitFullScreenMode();
                 }
             }
-#endif
+//#endif
         }
 
         public static void SetScreenOrientation(DisplayOrientations displayOrientation)
