@@ -1316,7 +1316,7 @@ namespace HonkTrooper
                     else if (_scene_game.Children.OfType<ZombieBossRocketBlock>().FirstOrDefault(x => x.IsAnimating && !x.IsBlasting && x.GetCloseHitBox().IntersectsWith(hitBox)) is ZombieBossRocketBlock zombieBossRocket) // if player bomb touches ZombieBoss's seeking bomb, it blasts
                     {
                         playerRocket1.SetBlast();
-                        zombieBossRocket.LooseHealth();
+                        LooseZombieBossRocketBlockHealth(zombieBossRocket);
                     }
                     else if (_scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetCloseHitBox().IntersectsWith(hitBox)) is UfoBoss ufoBoss) // if player bomb touches UfoBoss, it blasts, UfoBoss looses health
                     {
@@ -2533,6 +2533,11 @@ namespace HonkTrooper
             return false;
         }
 
+        private void LooseUfoBossRocketSeekingHealth(UfoBossRocketSeeking ufoBossRocketSeeking)
+        {
+
+        }
+
         #endregion
 
         #region UfoEnemy
@@ -3360,6 +3365,12 @@ namespace HonkTrooper
             }
 
             return false;
+        }
+
+        private void LooseZombieBossRocketBlockHealth(ZombieBossRocketBlock zombieBossRocket)
+        {
+            zombieBossRocket.LooseHealth();
+            GenerateFloatingNumber(zombieBossRocket);
         }
 
         #endregion                
