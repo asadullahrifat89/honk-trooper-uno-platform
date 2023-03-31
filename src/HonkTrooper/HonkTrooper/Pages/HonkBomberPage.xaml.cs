@@ -74,6 +74,8 @@ namespace HonkTrooper
 
         private readonly AudioStub _audioStub;
 
+        private bool _scene_game_assets_loaded;
+
         #endregion
 
         #region Ctor
@@ -135,7 +137,7 @@ namespace HonkTrooper
 
         #region Events
 
-        private void HonkBomberPage_Loaded(object sender, RoutedEventArgs e)
+        private async void HonkBomberPage_Loaded(object sender, RoutedEventArgs e)
         {
             ScreenExtensions.DisplayInformation.OrientationChanged += DisplayInformation_OrientationChanged;
             ScreenExtensions.RequiredScreenOrientation = DisplayOrientations.Landscape;
@@ -145,14 +147,22 @@ namespace HonkTrooper
                 ScreenExtensions.SetScreenOrientation(ScreenExtensions.RequiredScreenOrientation);
 
             SetController();
-            SetStage();
+
+            AddMainMenuGenerators();
+            _scene_main_menu.Play();
+
+            _scene_game_assets_loaded = false;
 
             SizeChanged += HonkBomberPage_SizeChanged;
 
             if (ScreenExtensions.GetScreenOrienation() == ScreenExtensions.RequiredScreenOrientation) // if the screen is in desired orientation the show asset loading screen
             {
                 ScreenExtensions.EnterFullScreen(true);
-                GenerateAssetsLoadingScreen();
+                                
+                if (!_scene_game_assets_loaded)
+                    GenerateAssetsLoadingScreen(); // load assets
+                else
+                    await OpenGame(); // if assets loading complete then show game start screen
             }
             else
             {
@@ -456,6 +466,19 @@ namespace HonkTrooper
             }
         }
 
+        private async Task OpenGame()
+        {
+            _scene_game.Play();
+
+            ToggleNightMode(false);
+
+            await Task.Delay(500);
+
+            GenerateGameStartScreen(title: "Honk Trooper", subTitle: "-Stop Honkers, Save The City-");
+
+            _audioStub.Play(SoundType.GAME_BACKGROUND_MUSIC);
+        }
+
         #endregion
 
         #region FloatingNumber
@@ -592,22 +615,24 @@ namespace HonkTrooper
                 {
                     RecycleAssetsLoadingScreen(assetsLoadingScreen);
 
-                    await Task.Delay(500);
-
-                    await base.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, delegate
+                    if (ScreenExtensions.DisplayInformation.CurrentOrientation == ScreenExtensions.RequiredScreenOrientation)
                     {
-                        AddGameConstructGenerators();
-                    });
+                        if (!_scene_game_assets_loaded)
+                        {
+                            AddGameConstructGenerators();
 
-                    _scene_game.Play();
-
-                    ToggleNightMode(false);
-
-                    await Task.Delay(500);
-
-                    GenerateGameStartScreen(title: "Honk Trooper", subTitle: "-Stop Honkers, Save The City-");
-
-                    _audioStub.Play(SoundType.GAME_BACKGROUND_MUSIC);
+                            await Task.Delay(500);
+                            await OpenGame();
+                        }
+                        else
+                        {
+                            await OpenGame();
+                        }
+                    }
+                    else
+                    {
+                        GeneratePromptOrientationChangeScreen();
+                    }
                 });
 
                 return true;
@@ -4363,16 +4388,6 @@ namespace HonkTrooper
 
         #region Scene
 
-        private void SetStage()
-        {
-            _powerUp_health_bar.Reset();
-            _ufo_boss_health_bar.Reset();
-            _game_score_bar.Reset();
-
-            AddMainMenuGenerators();
-            _scene_main_menu.Play();
-        }
-
         private void AddMainMenuGenerators()
         {
             _scene_main_menu.Clear();
@@ -4615,6 +4630,8 @@ namespace HonkTrooper
             #endregion
 
                 );
+
+            _scene_game_assets_loaded = true;
         }
 
         private void SetSceneScaling()
