@@ -4427,7 +4427,7 @@ namespace HonkTrooper
             #region Road
 
             new Generator(
-                generationDelay: 43,
+                generationDelay: 38,
                 generationAction: GenerateRoadMark,
                 startUpAction: SpawnRoadMarks),
 

@@ -37,7 +37,10 @@ namespace HonkTrooper
             };
 
             SetChild(_content_image);
-                        
+
+            SetSkewY(36);
+            SetRotation(-63.5);
+
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;
             IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
         }
