@@ -39,7 +39,9 @@ namespace HonkTrooper
             _content_image = new Image()
             {
                 Source = _bitmapImage,
-                Stretch = Stretch.Fill
+                Stretch = Stretch.Fill,
+                Height = this.Height,
+                Width = this.Width,
             };
 
             SetChild(_content_image);
