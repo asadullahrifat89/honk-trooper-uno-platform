@@ -78,6 +78,7 @@ namespace HonkTrooper
         public void Reset()
         {
             IsPickedUp = false;
+            SetScaleTransform(1);
 
             PowerUpType = (PowerUpType)_random.Next(Enum.GetNames(typeof(PowerUpType)).Length);
 

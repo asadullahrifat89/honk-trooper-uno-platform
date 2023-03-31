@@ -476,7 +476,7 @@ namespace HonkTrooper
         {
             if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<FloatingNumber>().FirstOrDefault(x => x.IsAnimating == false) is FloatingNumber floatingNumberTop)
             {
-                floatingNumberTop.Reset(source.HitPoint);                
+                floatingNumberTop.Reset(source.HitPoint);
                 floatingNumberTop.Reposition(source);
                 floatingNumberTop.IsAnimating = true;
             }
@@ -2108,7 +2108,7 @@ namespace HonkTrooper
 
         private bool SpawnRoadMarks()
         {
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 6; i++)
             {
                 RoadMark roadMark = new(
                     animateAction: AnimateRoadMark,
@@ -2132,7 +2132,7 @@ namespace HonkTrooper
                 roadMark.IsAnimating = true;
 
                 roadMark.SetPosition(
-                  left: roadMark.Height * -1,
+                  left: roadMark.Height * -1.5,
                   top: roadMark.Height * -1);
 
                 return true;
@@ -2153,7 +2153,7 @@ namespace HonkTrooper
         {
             var hitBox = roadMark.GetHitBox();
 
-            if (hitBox.Top - 45 > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - roadMark.Width > Constants.DEFAULT_SCENE_WIDTH)
+            if (hitBox.Top > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left > Constants.DEFAULT_SCENE_WIDTH)
             {
                 roadMark.IsAnimating = false;
                 roadMark.SetPosition(left: -3000, top: -3000);
@@ -3926,7 +3926,7 @@ namespace HonkTrooper
 
         private bool SpawnClouds()
         {
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 3; i++)
             {
                 Cloud cloud = new(
                     animateAction: AnimateCloud,
@@ -4153,7 +4153,7 @@ namespace HonkTrooper
         {
             var hitBox = healthPickup.GetHitBox();
 
-            if (hitBox.Top - healthPickup.Height > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - healthPickup.Width > Constants.DEFAULT_SCENE_WIDTH || healthPickup.IsShrinkingComplete)
+            if (healthPickup.IsShrinkingComplete || hitBox.Top - healthPickup.Height > Constants.DEFAULT_SCENE_HEIGHT || hitBox.Left - healthPickup.Width > Constants.DEFAULT_SCENE_WIDTH) // if object is out side of bottom right corner
             {
                 healthPickup.IsAnimating = false;
                 healthPickup.SetPosition(left: -3000, top: -3000);
@@ -4427,7 +4427,7 @@ namespace HonkTrooper
             #region Road
 
             new Generator(
-                generationDelay: 20,
+                generationDelay: 38,
                 generationAction: GenerateRoadMark,
                 startUpAction: SpawnRoadMarks),
 

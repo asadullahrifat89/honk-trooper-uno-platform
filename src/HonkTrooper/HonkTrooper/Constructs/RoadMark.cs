@@ -1,6 +1,5 @@
-﻿using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml;
-using Microsoft.UI;
+﻿using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media.Imaging;
 using System;
 using System.Linq;
 
@@ -8,6 +7,13 @@ namespace HonkTrooper
 {
     public partial class RoadMark : MovableConstruct
     {
+        #region Fields
+
+        private readonly Image _content_image;
+        private readonly Uri[] _tree_uris;
+
+        #endregion
+
         #region Ctor
 
         public RoadMark(
@@ -19,16 +25,24 @@ namespace HonkTrooper
             AnimateAction = animateAction;
             RecycleAction = recycleAction;
 
+            _tree_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.ROAD_MARK).Select(x => x.Uri).ToArray();
+
             SetConstructSize();
 
-            Background = new SolidColorBrush(Colors.White);
-            CornerRadius = new CornerRadius(5);
+            var uri = ConstructExtensions.GetRandomContentUri(_tree_uris);
 
-            SetSkewY(42);
+            _content_image = new Image()
+            {
+                Source = new BitmapImage(uriSource: uri)
+            };
+
+            SetChild(_content_image);
+
+            SetSkewY(36);
             SetRotation(-63.5);
 
-            IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;
+            IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
         }
 
         #endregion
