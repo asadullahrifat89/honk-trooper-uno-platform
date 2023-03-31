@@ -85,6 +85,7 @@ namespace HonkTrooper
                 Margin = new Thickness(0, 10, 0, 5),
                 Height = 110,
                 Width = 110,
+                IsCacheEnabled = true,
             };
 
             Grid.SetRow(_content_image, 0);
