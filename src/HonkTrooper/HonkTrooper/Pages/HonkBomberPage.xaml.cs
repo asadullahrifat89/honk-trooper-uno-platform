@@ -647,7 +647,7 @@ namespace HonkTrooper
                         if (ScreenExtensions.RequiredScreenOrientation == ScreenExtensions.GetScreenOrienation())
                         {
                             RecycleGameStartScreen(gameStartScreen);
-                            GeneratePlayerSelectionScreen();
+                            GeneratePlayerCharacterSelectionScreen();
                             ScreenExtensions.EnterFullScreen(true);
                         }
                         else
@@ -718,48 +718,48 @@ namespace HonkTrooper
 
         #endregion
 
-        #region PlayerSelectionScreen
+        #region PlayerCharacterSelectionScreen
 
-        private bool SpawnPlayerSelectionScreen()
+        private bool SpawnPlayerCharacterSelectionScreen()
         {
-            PlayerSelectionScreen playerSelectionScreen = null;
+            PlayerCharacterSelectionScreen playerCharacterSelectionScreen = null;
 
-            playerSelectionScreen = new(
-                animateAction: AnimatePlayerSelectionScreen,
+            playerCharacterSelectionScreen = new(
+                animateAction: AnimatePlayerCharacterSelectionScreen,
                 recycleAction: (se) => { return true; },
                 playAction: (int playerTemplate) =>
                 {
                     _selected_player_template = (PlayerBalloonTemplate)playerTemplate;
 
-                    RecyclePlayerSelectionScreen(playerSelectionScreen);
+                    RecyclePlayerCharacterSelectionScreen(playerCharacterSelectionScreen);
                     GeneratePlayerHonkBombSelectionScreen();
 
                     return true;
                 },
                 backAction: () =>
                 {
-                    RecyclePlayerSelectionScreen(playerSelectionScreen);
+                    RecyclePlayerCharacterSelectionScreen(playerCharacterSelectionScreen);
                     GenerateGameStartScreen(title: "Honk Trooper", subTitle: "-Stop Honkers, Save The City-");
                     return true;
                 });
 
-            playerSelectionScreen.SetPosition(
+            playerCharacterSelectionScreen.SetPosition(
                 left: -3000,
                 top: -3000,
                 z: 10);
 
-            _scene_main_menu.AddToScene(playerSelectionScreen);
+            _scene_main_menu.AddToScene(playerCharacterSelectionScreen);
 
             return true;
         }
 
-        private bool GeneratePlayerSelectionScreen()
+        private bool GeneratePlayerCharacterSelectionScreen()
         {
-            if (_scene_main_menu.Children.OfType<PlayerSelectionScreen>().FirstOrDefault(x => x.IsAnimating == false) is PlayerSelectionScreen playerSelectionScreen)
+            if (_scene_main_menu.Children.OfType<PlayerCharacterSelectionScreen>().FirstOrDefault(x => x.IsAnimating == false) is PlayerCharacterSelectionScreen playerCharacterSelectionScreen)
             {
-                playerSelectionScreen.IsAnimating = true;
-                //playerSelectionScreen.Reset();
-                playerSelectionScreen.Reposition();
+                playerCharacterSelectionScreen.IsAnimating = true;
+                //playerCharacterSelectionScreen.Reset();
+                playerCharacterSelectionScreen.Reposition();
 
                 return true;
             }
@@ -767,17 +767,17 @@ namespace HonkTrooper
             return false;
         }
 
-        private bool AnimatePlayerSelectionScreen(Construct playerSelectionScreen)
+        private bool AnimatePlayerCharacterSelectionScreen(Construct playerCharacterSelectionScreen)
         {
-            PlayerSelectionScreen screen1 = playerSelectionScreen as PlayerSelectionScreen;
+            PlayerCharacterSelectionScreen screen1 = playerCharacterSelectionScreen as PlayerCharacterSelectionScreen;
             screen1.Hover();
             return true;
         }
 
-        private void RecyclePlayerSelectionScreen(PlayerSelectionScreen playerSelectionScreen)
+        private void RecyclePlayerCharacterSelectionScreen(PlayerCharacterSelectionScreen playerCharacterSelectionScreen)
         {
-            playerSelectionScreen.IsAnimating = false;
-            playerSelectionScreen.SetPosition(left: -3000, top: -3000);
+            playerCharacterSelectionScreen.IsAnimating = false;
+            playerCharacterSelectionScreen.SetPosition(left: -3000, top: -3000);
         }
 
         #endregion
@@ -806,7 +806,7 @@ namespace HonkTrooper
                 backAction: () =>
                 {
                     RecyclePlayerHonkBombSelectionScreen(playerHonkBombSelectionScreen);
-                    GeneratePlayerSelectionScreen();
+                    GeneratePlayerCharacterSelectionScreen();
                     return true;
                 });
 
@@ -4396,7 +4396,7 @@ namespace HonkTrooper
             new Generator(
                 generationDelay: 0,
                 generationAction: () => { return true; },
-                startUpAction: SpawnPlayerSelectionScreen),
+                startUpAction: SpawnPlayerCharacterSelectionScreen),
 
             new Generator(
                 generationDelay: 0,

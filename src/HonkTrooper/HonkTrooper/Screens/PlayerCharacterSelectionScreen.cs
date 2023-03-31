@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace HonkTrooper
 {
-    public partial class PlayerSelectionScreen : HoveringTitleScreen
+    public partial class PlayerCharacterSelectionScreen : HoveringTitleScreen
     {
         #region Fields
 
@@ -22,7 +22,7 @@ namespace HonkTrooper
 
         #region Ctor
 
-        public PlayerSelectionScreen
+        public PlayerCharacterSelectionScreen
            (Func<Construct, bool> animateAction,
            Func<Construct, bool> recycleAction,
            Func<int, bool> playAction,
