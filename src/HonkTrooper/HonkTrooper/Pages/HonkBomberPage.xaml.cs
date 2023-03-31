@@ -4562,16 +4562,14 @@ namespace HonkTrooper
             #region Pickup
 
             new Generator(
-                generationDelay: 400,
+                generationDelay: 500,
                 generationAction: GenerateHealthPickups,
-                startUpAction: SpawnHealthPickups,
-                randomizeGenerationDelay: true),
+                startUpAction: SpawnHealthPickups),
 
             new Generator(
-                generationDelay: 400,
+                generationDelay: 500,
                 generationAction: GeneratePowerUpPickup,
-                startUpAction: SpawnPowerUpPickups,
-                randomizeGenerationDelay: true),
+                startUpAction: SpawnPowerUpPickups),
 
             #endregion
 
