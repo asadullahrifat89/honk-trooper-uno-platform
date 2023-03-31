@@ -46,7 +46,7 @@ namespace HonkTrooper
             _zombie_boss_idle_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.ZOMBIE_BOSS_IDLE).Select(x => x.Uri).ToArray();
             _zombie_boss_hit_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.ZOMBIE_BOSS_HIT).Select(x => x.Uri).ToArray();
             _zombie_boss_win_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.ZOMBIE_BOSS_WIN).Select(x => x.Uri).ToArray();
-            
+
             SetConstructSize();
 
             var uri = ConstructExtensions.GetRandomContentUri(_zombie_boss_idle_uris);
@@ -57,6 +57,7 @@ namespace HonkTrooper
                 Source = _bitmapImage,
                 Height = this.Height,
                 Width = this.Width,
+                IsCacheEnabled = true,
             };
 
             SetChild(_content_image);
