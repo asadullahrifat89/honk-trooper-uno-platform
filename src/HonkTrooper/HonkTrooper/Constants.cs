@@ -28,6 +28,8 @@ namespace HonkTrooper
         public const double DEFAULT_BLAST_RING_BORDER_THICKNESS = 10;
         public const double DEFAULT_BLAST_SHRINK_SCALE = 0.4;
 
+        public const double DEFAULT_HOVERING_SCREEN_OPACITY = 0.9;
+
         public static (ConstructType ConstructType, double Width, double Height)[] CONSTRUCT_SIZES = new (ConstructType, double, double)[]
         {
             new (ConstructType.PLAYER_BALLOON, 165, 165),
@@ -132,6 +134,9 @@ namespace HonkTrooper
             new (ConstructType.HONK, new Uri("ms-appx:///HonkTrooper/Assets/Images/honk_1.png")),
             new (ConstructType.HONK, new Uri("ms-appx:///HonkTrooper/Assets/Images/honk_2.png")),
             new (ConstructType.HONK, new Uri("ms-appx:///HonkTrooper/Assets/Images/honk_3.png")),
+
+            new (ConstructType.HONK_BUSTER, new Uri("ms-appx:///HonkTrooper/Assets/Images/honk_buster_1.png")),
+            new (ConstructType.HONK_BUSTER, new Uri("ms-appx:///HonkTrooper/Assets/Images/honk_buster_2.png")),
 
             new (ConstructType.PLAYER_BALLOON, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_1_character.png")),
             new (ConstructType.PLAYER_BALLOON_IDLE, new Uri("ms-appx:///HonkTrooper/Assets/Images/player_balloon_1_idle.png")),
@@ -345,6 +350,7 @@ namespace HonkTrooper
         ROAD_SIDE_BILLBOARD,
 
         HONK,
+        HONK_BUSTER,
 
         CLOUD,
 
