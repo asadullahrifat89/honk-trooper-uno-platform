@@ -80,7 +80,7 @@ namespace HonkTrooper
             IsBlasting = false;
 
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_uris);
-           _bitmapImage.UriSource = uri;
+            _bitmapImage.UriSource = uri;
 
             _autoBlastDelay = _autoBlastDelayDefault;
         }
@@ -102,7 +102,7 @@ namespace HonkTrooper
             BorderBrush = new SolidColorBrush(Colors.Goldenrod);
 
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_blast_uris);
-           _bitmapImage.UriSource = uri;
+            _bitmapImage.UriSource = uri;
 
             IsBlasting = true;
         }
