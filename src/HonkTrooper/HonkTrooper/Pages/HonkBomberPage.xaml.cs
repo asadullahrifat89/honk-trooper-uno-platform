@@ -2132,7 +2132,7 @@ namespace HonkTrooper
                 roadMark.IsAnimating = true;
 
                 roadMark.SetPosition(
-                  left: roadMark.Height * -1.4,
+                  left: roadMark.Height * -1.5,
                   top: roadMark.Height * -1);
 
                 return true;
