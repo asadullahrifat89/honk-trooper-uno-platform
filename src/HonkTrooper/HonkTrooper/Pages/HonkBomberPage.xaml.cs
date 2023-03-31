@@ -2620,7 +2620,7 @@ namespace HonkTrooper
         {
             var hitbox = ufoEnemy.GetHitBox();
 
-            if (ufoEnemy.IsShrinkingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH /*|| hitbox.Right < 0 || hitbox.Bottom < 0 */|| hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT) // enemy is dead or goes out of bounds
+            if (ufoEnemy.IsShrinkingComplete || hitbox.Left > Constants.DEFAULT_SCENE_WIDTH || hitbox.Top > Constants.DEFAULT_SCENE_HEIGHT) // enemy is dead or goes out of bottom right corner
             {
                 ufoEnemy.IsAnimating = false;
                 ufoEnemy.SetPosition(left: -3000, top: -3000);
