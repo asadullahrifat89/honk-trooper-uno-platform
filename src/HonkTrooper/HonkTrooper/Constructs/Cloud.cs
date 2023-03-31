@@ -38,7 +38,9 @@ namespace HonkTrooper
             _bitmapImage = new BitmapImage(uriSource: uri);
             _content_image = new Image()
             {
-                Source = _bitmapImage
+                Source = _bitmapImage,
+                Height = this.Height,
+                Width = this.Width,
             };
 
             SetChild(_content_image);

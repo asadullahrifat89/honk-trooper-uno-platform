@@ -8,7 +8,7 @@ namespace HonkTrooper
     {
         #region Fields
 
-        private readonly Storyboard _storyboard;
+        private readonly Storyboard _opacity_storyboard;
         private readonly DoubleAnimation _doubleAnimation;
 
         #endregion
@@ -27,8 +27,15 @@ namespace HonkTrooper
             Storyboard.SetTarget(_doubleAnimation, this);
             Storyboard.SetTargetProperty(_doubleAnimation, "Opacity");
 
-            _storyboard = new Storyboard();
-            _storyboard.Children.Add(_doubleAnimation);
+            _opacity_storyboard = new Storyboard();
+            _opacity_storyboard.Children.Add(_doubleAnimation);
+            _opacity_storyboard.Completed += (s, e) =>
+            {
+                _opacity_storyboard.Stop();
+#if DEBUG
+                LoggingExtensions.Log($"HoveringTitleScreen: _opacity_storyboard -> Completed"); 
+#endif
+            };
         }
 
         #endregion
@@ -37,7 +44,7 @@ namespace HonkTrooper
 
         public void Reset()
         {
-            _storyboard.Begin();
+            _opacity_storyboard.Begin();
         }
 
         public void Reposition()
