@@ -1,4 +1,5 @@
-﻿using Microsoft.UI.Xaml.Controls;
+﻿using CommunityToolkit.WinUI.UI.Controls;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System;
 using System.Linq;
@@ -31,7 +32,7 @@ namespace HonkTrooper
         private double _hitStanceDelay;
         private readonly double _hitStanceDelayDefault = 1.5;
 
-        private readonly Image _content_image;
+        private readonly ImageEx _content_image;
         private readonly BitmapImage _bitmapImage;
 
         private readonly AudioStub _audioStub;
@@ -61,7 +62,7 @@ namespace HonkTrooper
             var uri = ConstructExtensions.GetRandomContentUri(_player_uris);
             _bitmapImage = new BitmapImage(uriSource: uri);
 
-            _content_image = new Image()
+            _content_image = new ()
             {
                 Source = _bitmapImage,
                 Height = this.Height,

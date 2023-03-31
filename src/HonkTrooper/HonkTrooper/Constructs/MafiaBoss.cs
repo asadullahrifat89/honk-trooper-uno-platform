@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Controls;
 using Windows.Foundation;
+using CommunityToolkit.WinUI.UI.Controls;
 
 namespace HonkTrooper
 {
@@ -20,7 +21,7 @@ namespace HonkTrooper
 
         private double _changeMovementPatternDelay;
 
-        private readonly Image _content_image;
+        private readonly ImageEx _content_image;
         private readonly BitmapImage _bitmapImage;
 
         private double _hitStanceDelay;
@@ -55,7 +56,7 @@ namespace HonkTrooper
             var uri = ConstructExtensions.GetRandomContentUri(_mafia_boss_idle_uris);
             _bitmapImage = new BitmapImage(uriSource: uri);
 
-            _content_image = new Image()
+            _content_image = new ()
             {
                 Source = _bitmapImage,
                 Height = this.Height,
