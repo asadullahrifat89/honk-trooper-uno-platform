@@ -8,7 +8,7 @@ using CommunityToolkit.WinUI.UI.Controls;
 
 namespace HonkTrooper
 {
-    public partial class ZombieBossRocketBlock : AnimableConstruct
+    public partial class ZombieBossRocketBlock : HealthyConstruct
     {
         #region Fields
 
@@ -71,8 +71,6 @@ namespace HonkTrooper
 
         #region Properties
 
-        public double Health { get; set; }
-
         public bool IsDestroyed => Health <= 0;
 
         #endregion
@@ -91,7 +89,7 @@ namespace HonkTrooper
 
             BorderBrush = new SolidColorBrush(Colors.Transparent);
 
-            Health = _random.Next(1, 3) * 50;
+            Health = HitPoint * _random.Next(3);
             SpeedOffset = Constants.DEFAULT_SPEED_OFFSET + 1.5;
 
             IsBlasting = false;
@@ -192,7 +190,7 @@ namespace HonkTrooper
 
         public void LooseHealth()
         {
-            Health -= 50;
+            Health -= HitPoint;
 
             if (IsDestroyed)
             {

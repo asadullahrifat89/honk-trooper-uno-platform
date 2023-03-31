@@ -6,6 +6,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Graphics.Display;
+using Windows.UI.Core;
 
 namespace HonkTrooper
 {
@@ -590,12 +591,20 @@ namespace HonkTrooper
                 _ = assetsLoadingScreen.PreloadAssets(async () =>
                 {
                     RecycleAssetsLoadingScreen(assetsLoadingScreen);
-                    AddGameConstructGenerators();
+
+                    await Task.Delay(500);
+
+                    await base.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, delegate
+                    {
+                        AddGameConstructGenerators();
+                    });
 
                     _scene_game.Play();
+
                     ToggleNightMode(false);
 
                     await Task.Delay(500);
+
                     GenerateGameStartScreen(title: "Honk Trooper", subTitle: "-Stop Honkers, Save The City-");
 
                     _audioStub.Play(SoundType.GAME_BACKGROUND_MUSIC);
@@ -638,7 +647,7 @@ namespace HonkTrooper
                         if (ScreenExtensions.RequiredScreenOrientation == ScreenExtensions.GetScreenOrienation())
                         {
                             RecycleGameStartScreen(gameStartScreen);
-                            GeneratePlayerSelectionScreen();
+                            GeneratePlayerCharacterSelectionScreen();
                             ScreenExtensions.EnterFullScreen(true);
                         }
                         else
@@ -709,48 +718,48 @@ namespace HonkTrooper
 
         #endregion
 
-        #region PlayerSelectionScreen
+        #region PlayerCharacterSelectionScreen
 
-        private bool SpawnPlayerSelectionScreen()
+        private bool SpawnPlayerCharacterSelectionScreen()
         {
-            PlayerSelectionScreen playerSelectionScreen = null;
+            PlayerCharacterSelectionScreen playerCharacterSelectionScreen = null;
 
-            playerSelectionScreen = new(
-                animateAction: AnimatePlayerSelectionScreen,
+            playerCharacterSelectionScreen = new(
+                animateAction: AnimatePlayerCharacterSelectionScreen,
                 recycleAction: (se) => { return true; },
                 playAction: (int playerTemplate) =>
                 {
                     _selected_player_template = (PlayerBalloonTemplate)playerTemplate;
 
-                    RecyclePlayerSelectionScreen(playerSelectionScreen);
+                    RecyclePlayerCharacterSelectionScreen(playerCharacterSelectionScreen);
                     GeneratePlayerHonkBombSelectionScreen();
 
                     return true;
                 },
                 backAction: () =>
                 {
-                    RecyclePlayerSelectionScreen(playerSelectionScreen);
+                    RecyclePlayerCharacterSelectionScreen(playerCharacterSelectionScreen);
                     GenerateGameStartScreen(title: "Honk Trooper", subTitle: "-Stop Honkers, Save The City-");
                     return true;
                 });
 
-            playerSelectionScreen.SetPosition(
+            playerCharacterSelectionScreen.SetPosition(
                 left: -3000,
                 top: -3000,
                 z: 10);
 
-            _scene_main_menu.AddToScene(playerSelectionScreen);
+            _scene_main_menu.AddToScene(playerCharacterSelectionScreen);
 
             return true;
         }
 
-        private bool GeneratePlayerSelectionScreen()
+        private bool GeneratePlayerCharacterSelectionScreen()
         {
-            if (_scene_main_menu.Children.OfType<PlayerSelectionScreen>().FirstOrDefault(x => x.IsAnimating == false) is PlayerSelectionScreen playerSelectionScreen)
+            if (_scene_main_menu.Children.OfType<PlayerCharacterSelectionScreen>().FirstOrDefault(x => x.IsAnimating == false) is PlayerCharacterSelectionScreen playerCharacterSelectionScreen)
             {
-                playerSelectionScreen.IsAnimating = true;
-                //playerSelectionScreen.Reset();
-                playerSelectionScreen.Reposition();
+                playerCharacterSelectionScreen.IsAnimating = true;
+                //playerCharacterSelectionScreen.Reset();
+                playerCharacterSelectionScreen.Reposition();
 
                 return true;
             }
@@ -758,17 +767,17 @@ namespace HonkTrooper
             return false;
         }
 
-        private bool AnimatePlayerSelectionScreen(Construct playerSelectionScreen)
+        private bool AnimatePlayerCharacterSelectionScreen(Construct playerCharacterSelectionScreen)
         {
-            PlayerSelectionScreen screen1 = playerSelectionScreen as PlayerSelectionScreen;
+            PlayerCharacterSelectionScreen screen1 = playerCharacterSelectionScreen as PlayerCharacterSelectionScreen;
             screen1.Hover();
             return true;
         }
 
-        private void RecyclePlayerSelectionScreen(PlayerSelectionScreen playerSelectionScreen)
+        private void RecyclePlayerCharacterSelectionScreen(PlayerCharacterSelectionScreen playerCharacterSelectionScreen)
         {
-            playerSelectionScreen.IsAnimating = false;
-            playerSelectionScreen.SetPosition(left: -3000, top: -3000);
+            playerCharacterSelectionScreen.IsAnimating = false;
+            playerCharacterSelectionScreen.SetPosition(left: -3000, top: -3000);
         }
 
         #endregion
@@ -797,7 +806,7 @@ namespace HonkTrooper
                 backAction: () =>
                 {
                     RecyclePlayerHonkBombSelectionScreen(playerHonkBombSelectionScreen);
-                    GeneratePlayerSelectionScreen();
+                    GeneratePlayerCharacterSelectionScreen();
                     return true;
                 });
 
@@ -1316,7 +1325,7 @@ namespace HonkTrooper
                     else if (_scene_game.Children.OfType<ZombieBossRocketBlock>().FirstOrDefault(x => x.IsAnimating && !x.IsBlasting && x.GetCloseHitBox().IntersectsWith(hitBox)) is ZombieBossRocketBlock zombieBossRocket) // if player bomb touches ZombieBoss's seeking bomb, it blasts
                     {
                         playerRocket1.SetBlast();
-                        zombieBossRocket.LooseHealth();
+                        LooseZombieBossRocketBlockHealth(zombieBossRocket);
                     }
                     else if (_scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking && x.GetCloseHitBox().IntersectsWith(hitBox)) is UfoBoss ufoBoss) // if player bomb touches UfoBoss, it blasts, UfoBoss looses health
                     {
@@ -2533,6 +2542,11 @@ namespace HonkTrooper
             return false;
         }
 
+        private void LooseUfoBossRocketSeekingHealth(UfoBossRocketSeeking ufoBossRocketSeeking)
+        {
+
+        }
+
         #endregion
 
         #region UfoEnemy
@@ -3360,6 +3374,12 @@ namespace HonkTrooper
             }
 
             return false;
+        }
+
+        private void LooseZombieBossRocketBlockHealth(ZombieBossRocketBlock zombieBossRocket)
+        {
+            zombieBossRocket.LooseHealth();
+            GenerateFloatingNumber(zombieBossRocket);
         }
 
         #endregion                
@@ -4376,7 +4396,7 @@ namespace HonkTrooper
             new Generator(
                 generationDelay: 0,
                 generationAction: () => { return true; },
-                startUpAction: SpawnPlayerSelectionScreen),
+                startUpAction: SpawnPlayerCharacterSelectionScreen),
 
             new Generator(
                 generationDelay: 0,

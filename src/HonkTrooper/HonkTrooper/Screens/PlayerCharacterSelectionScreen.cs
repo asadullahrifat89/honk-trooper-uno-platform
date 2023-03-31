@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace HonkTrooper
 {
-    public partial class PlayerSelectionScreen : HoveringTitleScreen
+    public partial class PlayerCharacterSelectionScreen : HoveringTitleScreen
     {
         #region Fields
 
@@ -22,7 +22,7 @@ namespace HonkTrooper
 
         #region Ctor
 
-        public PlayerSelectionScreen
+        public PlayerCharacterSelectionScreen
            (Func<Construct, bool> animateAction,
            Func<Construct, bool> recycleAction,
            Func<int, bool> playAction,
@@ -56,7 +56,7 @@ namespace HonkTrooper
             {
                 Background = new SolidColorBrush(Colors.DeepSkyBlue),
                 CornerRadius = new CornerRadius(15),
-                Opacity = 0.7,
+                Opacity = Constants.DEFAULT_HOVERING_SCREEN_OPACITY,
                 //BorderBrush = new SolidColorBrush(Colors.White),
                 //BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
             });

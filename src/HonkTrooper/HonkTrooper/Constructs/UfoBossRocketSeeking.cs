@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.WinUI.UI.Controls;
 using Microsoft.UI;
-using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System;
@@ -65,13 +64,11 @@ namespace HonkTrooper
         }
 
         #endregion
-
         #region Properties
 
         public bool IsBlasting { get; set; }
 
         #endregion
-
         #region Methods
 
         public void Reset()
