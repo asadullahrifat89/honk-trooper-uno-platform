@@ -49,7 +49,7 @@ namespace HonkTrooper
         private readonly double _ufo_boss_threashold_limit = 50; // first appearance
         private readonly double _ufo_boss_threashold_limit_increase = 15;
 
-        //TODO: set defaults _zombie_boss_threashold_limit = 85
+        //TODO: set defaults _zombie_boss_threashold_limit = 75
         private readonly double _zombie_boss_threashold_limit = 75; // first appearance
         private readonly double _zombie_boss_threashold_limit_increase = 15;
 
@@ -340,9 +340,9 @@ namespace HonkTrooper
             _scene_game.ToggleNightMode(isNightMode);
 
             if (isNightMode)
-                this.AmbientLightingNightStoryboard.Begin();
+                this.DayToNightStoryboard.Begin();
             else
-                this.AmbientLightingDayStoryboard.Begin();
+                this.NightToDayStoryboard.Begin();
         }
 
         private void SetupSetPlayerBalloon()
@@ -591,7 +591,7 @@ namespace HonkTrooper
 
                     _scene_game.Play();
                     _audioStub.Play(SoundType.GAME_BACKGROUND_MUSIC);
-                    this.AmbientLightingDayStoryboard.Begin();
+                    this.NightToDayStoryboard.Begin();
                 });
 
                 return true;

@@ -14,21 +14,27 @@
         MaxHeight="940">
 
         <Grid.Resources>
-            <Storyboard x:Name="AmbientLightingDayStoryboard">
-                <DoubleAnimation
-                    Storyboard.TargetName="SunRayOverlay"
-                    Storyboard.TargetProperty="(Border.Opacity)"
-                    From="0"
-                    To="1"
-                    Duration="0:0:5" />
+            <Storyboard x:Name="NightToDayStoryboard">
                 <DoubleAnimation
                     Storyboard.TargetName="MoonRayOverlay"
                     Storyboard.TargetProperty="(Border.Opacity)"
                     From="1"
                     To="0"
                     Duration="0:0:5" />
+                <DoubleAnimation
+                    Storyboard.TargetName="SunRayOverlay"
+                    Storyboard.TargetProperty="(Border.Opacity)"
+                    From="0"
+                    To="1"
+                    Duration="0:0:5" />
+                <ColorAnimation
+                    Storyboard.TargetName="GameScene"
+                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                    From="#1f2326"
+                    To="#5e6b73"
+                    Duration="0:0:4" />
             </Storyboard>
-            <Storyboard x:Name="AmbientLightingNightStoryboard">
+            <Storyboard x:Name="DayToNightStoryboard">
                 <DoubleAnimation
                     Storyboard.TargetName="SunRayOverlay"
                     Storyboard.TargetProperty="(Border.Opacity)"
@@ -41,6 +47,12 @@
                     From="0"
                     To="1"
                     Duration="0:0:5" />
+                <ColorAnimation
+                    Storyboard.TargetName="GameScene"
+                    Storyboard.TargetProperty="(Border.Background).(SolidColorBrush.Color)"
+                    From="#5e6b73"
+                    To="#1f2326"
+                    Duration="0:0:4" />
             </Storyboard>
         </Grid.Resources>
 
