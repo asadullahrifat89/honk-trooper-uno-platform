@@ -587,7 +587,6 @@ namespace HonkTrooper
             {
                 assetsLoadingScreen.IsAnimating = true;
                 assetsLoadingScreen.Reposition();
-                assetsLoadingScreen.SetSubTitle("... Loading Assets ...");
                 _ = assetsLoadingScreen.PreloadAssets(async () =>
                 {
                     RecycleAssetsLoadingScreen(assetsLoadingScreen);

@@ -9,12 +9,16 @@ namespace HonkTrooper
 {
     public static class AssetsPreCache
     {
-        public static async Task PreloadImageAssets(ProgressBar progressBar)
+        public static async Task PreloadImageAssets(Func<bool> progressAction)
         {
             try
             {
 #if __ANDROID__ || __IOS__
-                return;
+                foreach (var template in Constants.CONSTRUCT_TEMPLATES)
+                {
+                    await LoadImageAsync(template.Uri);
+                    progressAction();
+                }
 #else
                 using HttpClient httpClient = new();
 
@@ -35,8 +39,8 @@ namespace HonkTrooper
                     {
                         var content = await response.Content.ReadAsByteArrayAsync();
                         if (content is not null && content.Length > 0)
-                        {
-                            progressBar.Value++;
+                        {   
+                            progressAction();
                         }
 #if DEBUG
                         LoggingExtensions.Log("image source: " + source);
