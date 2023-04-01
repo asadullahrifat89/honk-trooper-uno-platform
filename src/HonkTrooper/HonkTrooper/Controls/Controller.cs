@@ -8,7 +8,7 @@ using Windows.Foundation;
 
 namespace HonkTrooper
 {
-    public partial class Controller : ControllerBase
+    public partial class Controller : ControllerElement
     {
         #region Fields
 

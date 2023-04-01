@@ -4,7 +4,8 @@ using Windows.Foundation;
 
 namespace HonkTrooper
 {
-    public partial class ControllerBase : Grid
+    public partial class ControllerElement
+        : Grid
     {
         #region Fields
 
