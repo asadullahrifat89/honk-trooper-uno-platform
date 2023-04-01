@@ -24,8 +24,8 @@ namespace HonkTrooper
         #region Ctor
 
         public AssetsLoadingScreen(
-            Func<Construct, bool> animateAction,
-            Func<Construct, bool> recycleAction)
+            Action<Construct> animateAction,
+            Action<Construct> recycleAction)
         {
             ConstructType = ConstructType.TITLE_SCREEN;
 
@@ -137,8 +137,7 @@ namespace HonkTrooper
                 await AssetsPreCache.PreloadImageAssets(() =>
                 {
                     _progressBar.Value++;
-                    //SetSubTitle($"... Loading Assets ({_progressBar.Value:00}/{_progressBar.Maximum:00}) ...");
-                    return true;
+                    //SetSubTitle($"... Loading Assets ({_progressBar.Value:00}/{_progressBar.Maximum:00}) ...");                    
                 });
 
                 if (_progressBar.Value == _progressBar.Maximum)

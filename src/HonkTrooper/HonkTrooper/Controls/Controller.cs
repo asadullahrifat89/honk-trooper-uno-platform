@@ -846,11 +846,7 @@ namespace HonkTrooper
         #endregion
 
         #region Pause
-
-        //public void SetPauseAction(Func<bool> pauseAction)
-        //{
-        //    PauseAction = pauseAction;
-        //}
+        
 
         private void SetPauseButton()
         {

@@ -27,8 +27,8 @@ namespace HonkTrooper
         #region Ctor
 
         public UfoBossRocketSeeking(
-            Func<Construct, bool> animateAction,
-            Func<Construct, bool> recycleAction)
+            Action<Construct> animateAction,
+            Action<Construct> recycleAction)
         {
             ConstructType = ConstructType.UFO_BOSS_ROCKET_SEEKING;
 

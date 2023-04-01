@@ -6,7 +6,7 @@ namespace HonkTrooper
 {
     public static class AssetsPreCache
     {
-        public static async Task PreloadImageAssets(Func<bool> progressAction)
+        public static async Task PreloadImageAssets(Action progressAction)
         {
             try
             {

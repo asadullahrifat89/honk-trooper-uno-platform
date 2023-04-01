@@ -23,8 +23,8 @@ namespace HonkTrooper
         #region Ctor
 
         public UfoEnemy(
-            Func<Construct, bool> animateAction,
-            Func<Construct, bool> recycleAction)
+            Action<Construct> animateAction,
+            Action<Construct> recycleAction)
         {
             ConstructType = ConstructType.UFO_ENEMY;
 

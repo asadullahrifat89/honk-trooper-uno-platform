@@ -16,7 +16,7 @@ namespace HonkTrooper
 
         #region Properties
 
-        private Func<bool> GenerationAction { get; set; }
+        private Action GenerationAction { get; set; }
 
         public Scene Scene { get; set; }
 
@@ -24,8 +24,8 @@ namespace HonkTrooper
 
         public Generator(
             int generationDelay,
-            Func<bool> generationAction,
-            Func<bool> startUpAction,
+            Action generationAction,
+            Action startUpAction,
             bool randomizeGenerationDelay = false)
         {
             _randomizeGenerationDelay = randomizeGenerationDelay;

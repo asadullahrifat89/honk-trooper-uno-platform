@@ -21,8 +21,8 @@ namespace HonkTrooper
         #region Ctor
 
         public Cloud(
-            Func<Construct, bool> animateAction,
-            Func<Construct, bool> recycleAction)
+            Action<Construct> animateAction,
+            Action<Construct> recycleAction)
         {
             ConstructType = ConstructType.CLOUD;
 

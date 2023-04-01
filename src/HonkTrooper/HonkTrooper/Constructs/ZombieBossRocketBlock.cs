@@ -30,8 +30,8 @@ namespace HonkTrooper
         #region Ctor
 
         public ZombieBossRocketBlock(
-          Func<Construct, bool> animateAction,
-          Func<Construct, bool> recycleAction)
+          Action<Construct> animateAction,
+          Action<Construct> recycleAction)
         {
             ConstructType = ConstructType.ZOMBIE_BOSS_ROCKET_BLOCK;
 
