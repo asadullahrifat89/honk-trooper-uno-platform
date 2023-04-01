@@ -135,7 +135,7 @@ namespace HonkTrooper
 
         #region Events
 
-        private async void HonkBomberPage_Loaded(object sender, RoutedEventArgs e)
+        private void HonkBomberPage_Loaded(object sender, RoutedEventArgs e)
         {
             ScreenExtensions.DisplayInformation.OrientationChanged += DisplayInformation_OrientationChanged;
             ScreenExtensions.RequiredScreenOrientation = DisplayOrientations.Landscape;
@@ -154,14 +154,7 @@ namespace HonkTrooper
             {
                 ScreenExtensions.EnterFullScreen(true);
 
-                if (!_scene_game.GeneratorsExist)
-                {
-                    await GenerateAssetsLoadingScreen(); // if generators are not added to game scene, show the assets loading screen
-                }
-                else
-                {
-                    await OpenGame(); // if generators added to game scene then show game start screen on page loaded
-                }
+                GenerateAssetsLoadingScreen(); // if generators are not added to game scene, show the assets loading screen               
             }
             else
             {
@@ -193,7 +186,7 @@ namespace HonkTrooper
             LoggingExtensions.Log($"Width: {ScreenExtensions.Width} x Height: {ScreenExtensions.Height}");
         }
 
-        private async void DisplayInformation_OrientationChanged(DisplayInformation sender, object args)
+        private void DisplayInformation_OrientationChanged(DisplayInformation sender, object args)
         {
             if (_scene_game.SceneState == SceneState.GAME_RUNNING) // if screen orientation is changed while game is running, pause the game
             {
@@ -208,7 +201,7 @@ namespace HonkTrooper
                     if (_scene_main_menu.Children.OfType<PromptOrientationChangeScreen>().FirstOrDefault(x => x.IsAnimating) is PromptOrientationChangeScreen promptOrientationChangeScreen)
                     {
                         RecyclePromptOrientationChangeScreen(promptOrientationChangeScreen);
-                        await GenerateAssetsLoadingScreen();
+                        GenerateAssetsLoadingScreen();
                     }
                 }
                 else // ask to change orientation
@@ -589,7 +582,7 @@ namespace HonkTrooper
             _scene_main_menu.AddToScene(assetsLoadingScreen);
         }
 
-        private async Task GenerateAssetsLoadingScreen()
+        private void GenerateAssetsLoadingScreen()
         {
             if (_scene_main_menu.Children.OfType<AssetsLoadingScreen>().FirstOrDefault(x => x.IsAnimating == false) is AssetsLoadingScreen assetsLoadingScreen)
             {
@@ -597,7 +590,7 @@ namespace HonkTrooper
                 assetsLoadingScreen.Reposition();
                 assetsLoadingScreen.SetSubTitle($"... Loading Assets ...");
 
-                await assetsLoadingScreen.PreloadAssets(async () =>
+                _ = assetsLoadingScreen.PreloadAssets(async () =>
                 {
                     RecycleAssetsLoadingScreen(assetsLoadingScreen);
 
@@ -3631,7 +3624,7 @@ namespace HonkTrooper
 
             if (_scene_game.SceneState == SceneState.GAME_RUNNING && !UfoBossExists())
             {
-                 GenerateHonk(source);
+                GenerateHonk(source);
             }
         }
 
