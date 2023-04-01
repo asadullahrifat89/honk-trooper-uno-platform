@@ -132,104 +132,6 @@ namespace HonkTrooper
 
         #endregion
 
-        #region Events
-
-        private void HonkBomberPage_Loaded(object sender, RoutedEventArgs e)
-        {
-            ScreenExtensions.DisplayInformation.OrientationChanged += DisplayInformation_OrientationChanged;
-            ScreenExtensions.SetRequiredDisplayOrientations(DisplayOrientations.Landscape, DisplayOrientations.LandscapeFlipped);
-
-            // set display orientation to required orientation
-            if (!ScreenExtensions.IsScreenInRequiredOrientation())
-                ScreenExtensions.ChangeDisplayOrientationAsRequired();
-
-            SetController();
-
-            PrepareMainMenuScene();
-
-            SizeChanged += HonkBomberPage_SizeChanged;
-
-            if (ScreenExtensions.IsScreenInRequiredOrientation()) // if the screen is in desired orientation the show asset loading screen
-            {
-                ScreenExtensions.EnterFullScreen(true);
-                GenerateAssetsLoadingScreen(); // if generators are not added to game scene, show the assets loading screen               
-            }
-            else
-            {
-                GeneratePromptOrientationChangeScreen();
-            }
-        }
-
-        private void HonkBomberPage_Unloaded(object sender, RoutedEventArgs e)
-        {
-            SizeChanged -= HonkBomberPage_SizeChanged;
-            ScreenExtensions.DisplayInformation.OrientationChanged -= DisplayInformation_OrientationChanged;
-            UnsetController();
-        }
-
-        private void HonkBomberPage_SizeChanged(object sender, SizeChangedEventArgs args)
-        {
-            ScreenExtensions.Width = args.NewSize.Width <= Constants.DEFAULT_SCENE_WIDTH ? args.NewSize.Width : Constants.DEFAULT_SCENE_WIDTH;
-            ScreenExtensions.Height = args.NewSize.Height <= Constants.DEFAULT_SCENE_HEIGHT ? args.NewSize.Height : Constants.DEFAULT_SCENE_HEIGHT;
-
-            SetSceneScaling();
-
-            if (_scene_game.SceneState == SceneState.GAME_RUNNING)
-            {
-                _player.Reposition();
-                GenerateDropShadow(source: _player);
-            }
-
-            RepositionHoveringTitleScreens();
-            LoggingExtensions.Log($"Width: {ScreenExtensions.Width} x Height: {ScreenExtensions.Height}");
-        }
-
-        private void DisplayInformation_OrientationChanged(DisplayInformation sender, object args)
-        {
-            if (_scene_game.SceneState == SceneState.GAME_RUNNING) // if screen orientation is changed while game is running, pause the game
-            {
-                PauseGame();
-            }
-            else
-            {
-                ScreenExtensions.EnterFullScreen(true);
-
-                if (ScreenExtensions.IsScreenInRequiredOrientation())
-                {
-                    if (_scene_main_menu.Children.OfType<PromptOrientationChangeScreen>().FirstOrDefault(x => x.IsAnimating) is PromptOrientationChangeScreen promptOrientationChangeScreen)
-                    {
-                        RecyclePromptOrientationChangeScreen(promptOrientationChangeScreen);
-                        GenerateAssetsLoadingScreen();
-                    }
-                }
-                else // ask to change orientation
-                {
-                    _scene_game.Pause();
-                    _scene_main_menu.Pause();
-
-                    _audioStub.Pause(SoundType.GAME_BACKGROUND_MUSIC);
-
-                    foreach (var hoveringTitleScreen in _scene_main_menu.Children.OfType<HoveringTitleScreen>().Where(x => x.IsAnimating))
-                    {
-                        hoveringTitleScreen.IsAnimating = false;
-                        hoveringTitleScreen.SetPosition(left: -3000, top: -3000);
-                    }
-
-                    foreach (var construct in _scene_game.Children.OfType<Construct>())
-                    {
-                        construct.IsAnimating = false;
-                        construct.SetPosition(left: -3000, top: -3000);
-                    }
-
-                    GeneratePromptOrientationChangeScreen();
-                }
-            }
-
-            LoggingExtensions.Log($"CurrentOrientation: {sender.CurrentOrientation}");
-        }
-
-        #endregion
-
         #region Methods
 
         #region Game
@@ -4264,6 +4166,116 @@ namespace HonkTrooper
 
         #endregion
 
-        #endregion        
+        #endregion
+
+        #region Events
+
+        #region Load
+
+        private void HonkBomberPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            ScreenExtensions.DisplayInformation.OrientationChanged += DisplayInformation_OrientationChanged;
+            ScreenExtensions.SetRequiredDisplayOrientations(DisplayOrientations.Landscape, DisplayOrientations.LandscapeFlipped);
+
+            // set display orientation to required orientation
+            if (!ScreenExtensions.IsScreenInRequiredOrientation())
+                ScreenExtensions.ChangeDisplayOrientationAsRequired();
+
+            SetController();
+
+            PrepareMainMenuScene();
+
+            SizeChanged += HonkBomberPage_SizeChanged;
+
+            if (ScreenExtensions.IsScreenInRequiredOrientation()) // if the screen is in desired orientation the show asset loading screen
+            {
+                ScreenExtensions.EnterFullScreen(true);
+                GenerateAssetsLoadingScreen(); // if generators are not added to game scene, show the assets loading screen               
+            }
+            else
+            {
+                GeneratePromptOrientationChangeScreen();
+            }
+        }
+
+        private void HonkBomberPage_Unloaded(object sender, RoutedEventArgs e)
+        {
+            SizeChanged -= HonkBomberPage_SizeChanged;
+            ScreenExtensions.DisplayInformation.OrientationChanged -= DisplayInformation_OrientationChanged;
+            UnsetController();
+        }
+
+        #endregion
+
+        #region Size
+
+        private void HonkBomberPage_SizeChanged(object sender, SizeChangedEventArgs args)
+        {
+            ScreenExtensions.Width = args.NewSize.Width <= Constants.DEFAULT_SCENE_WIDTH ? args.NewSize.Width : Constants.DEFAULT_SCENE_WIDTH;
+            ScreenExtensions.Height = args.NewSize.Height <= Constants.DEFAULT_SCENE_HEIGHT ? args.NewSize.Height : Constants.DEFAULT_SCENE_HEIGHT;
+
+            SetSceneScaling();
+
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING)
+            {
+                _player.Reposition();
+                GenerateDropShadow(source: _player);
+            }
+
+            RepositionHoveringTitleScreens();
+            LoggingExtensions.Log($"Width: {ScreenExtensions.Width} x Height: {ScreenExtensions.Height}");
+        }
+
+        #endregion
+
+        #region Orientation
+        
+        private void DisplayInformation_OrientationChanged(DisplayInformation sender, object args)
+        {
+            if (_scene_game.SceneState == SceneState.GAME_RUNNING) // if screen orientation is changed while game is running, pause the game
+            {
+                PauseGame();
+            }
+            else
+            {
+                ScreenExtensions.EnterFullScreen(true);
+
+                if (ScreenExtensions.IsScreenInRequiredOrientation())
+                {
+                    if (_scene_main_menu.Children.OfType<PromptOrientationChangeScreen>().FirstOrDefault(x => x.IsAnimating) is PromptOrientationChangeScreen promptOrientationChangeScreen)
+                    {
+                        RecyclePromptOrientationChangeScreen(promptOrientationChangeScreen);
+                        GenerateAssetsLoadingScreen();
+                    }
+                }
+                else // ask to change orientation
+                {
+                    _scene_game.Pause();
+                    _scene_main_menu.Pause();
+
+                    _audioStub.Pause(SoundType.GAME_BACKGROUND_MUSIC);
+
+                    foreach (var hoveringTitleScreen in _scene_main_menu.Children.OfType<HoveringTitleScreen>().Where(x => x.IsAnimating))
+                    {
+                        hoveringTitleScreen.IsAnimating = false;
+                        hoveringTitleScreen.SetPosition(left: -3000, top: -3000);
+                    }
+
+                    foreach (var construct in _scene_game.Children.OfType<Construct>())
+                    {
+                        construct.IsAnimating = false;
+                        construct.SetPosition(left: -3000, top: -3000);
+                    }
+
+                    GeneratePromptOrientationChangeScreen();
+                }
+            }
+
+            LoggingExtensions.Log($"CurrentOrientation: {sender.CurrentOrientation}");
+        } 
+
+        #endregion
+
+        #endregion
     }
 }
