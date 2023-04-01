@@ -1,6 +1,5 @@
-﻿using CommunityToolkit.WinUI.UI.Controls;
+﻿using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System;
@@ -12,7 +11,7 @@ namespace HonkTrooper
     {
         #region Fields
 
-        private readonly ImageEx _content_image;
+        private readonly Image _content_image;
         private readonly BitmapImage _bitmapImage;
 
         private readonly Uri[] _side_walk_uris;
@@ -43,7 +42,7 @@ namespace HonkTrooper
                 Stretch = Stretch.Fill,
                 Height = this.Height,
                 Width = this.Width,
-                IsCacheEnabled = true,
+                
             };
 
             SetChild(_content_image);

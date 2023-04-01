@@ -1,5 +1,4 @@
-﻿using CommunityToolkit.WinUI.UI.Controls;
-using Microsoft.UI.Xaml.Controls;
+﻿using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System;
 using System.Linq;
@@ -11,7 +10,7 @@ namespace HonkTrooper
         #region Fields
 
         private readonly Random _random;
-        private readonly ImageEx _content_image;
+        private readonly Image _content_image;
         private readonly BitmapImage _bitmapImage;
 
         private readonly AudioStub _audioStub;
@@ -60,7 +59,7 @@ namespace HonkTrooper
                 Source = _bitmapImage,
                 Height = this.Height,
                 Width = this.Width,
-                IsCacheEnabled = true,
+                
             };
 
             SetChild(_content_image);

@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.WinUI.UI.Controls;
+﻿using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -15,7 +15,7 @@ namespace HonkTrooper
 
         private readonly TextBlock _title_text;
         private readonly TextBlock _sub_title_text;
-        private readonly ImageEx _content_image;
+        private readonly Image _content_image;
 
         private readonly AudioStub _audioStub;
 
@@ -85,7 +85,7 @@ namespace HonkTrooper
                 Margin = new Thickness(0, 10, 0, 5),
                 Height = 110,
                 Width = 110,
-                IsCacheEnabled = true,
+                
             };
 
             Grid.SetRow(_content_image, 0);
