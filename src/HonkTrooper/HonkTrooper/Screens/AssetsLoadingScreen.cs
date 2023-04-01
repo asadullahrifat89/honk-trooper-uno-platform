@@ -143,7 +143,7 @@ namespace HonkTrooper
 
                 if (_progressBar.Value == _progressBar.Maximum)
                 {
-                    await Task.Delay(700);
+                    await Task.Delay(300);
                     _assets_loaded = true;
                     completed?.Invoke();
                 }
