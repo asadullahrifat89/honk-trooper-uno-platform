@@ -4,11 +4,9 @@ namespace HonkTrooper
 {
     static class Constants
     {
-        public const double DEFAULT_FRAME_TIME = 19.5;
+        public const double DEFAULT_FRAME_TIME = 19;
 
         public const int DEFAULT_CONSTRUCT_SPEED = 6;
-        //public const int DEFAULT_CONSTRUCT_SPEED = 2;
-        //public const double DEFAULT_SCENE_SPEED = 4;
 
         public const double DEFAULT_SLOW_MOTION_REDUCTION_FACTOR = 4;
         public const double DEFAULT_ISOMETRIC_DISPLACEMENT = 0.5;
@@ -29,7 +27,7 @@ namespace HonkTrooper
         public const double DEFAULT_BLAST_RING_BORDER_THICKNESS = 10;
         public const double DEFAULT_BLAST_SHRINK_SCALE = 0.4;
 
-        public const double DEFAULT_ROCKET_SIZE = 80;
+        public const double DEFAULT_ROCKET_SIZE = 85;
 
         public const double DEFAULT_HOVERING_SCREEN_OPACITY = 0.9;
 
@@ -37,7 +35,7 @@ namespace HonkTrooper
         {
             new (ConstructType.PLAYER_BALLOON, 165, 165),
             new (ConstructType.PLAYER_ROCKET, DEFAULT_ROCKET_SIZE, DEFAULT_ROCKET_SIZE),
-            new (ConstructType.PLAYER_HONK_BOMB, DEFAULT_ROCKET_SIZE, DEFAULT_ROCKET_SIZE),
+            new (ConstructType.PLAYER_HONK_BOMB, DEFAULT_ROCKET_SIZE - 20, DEFAULT_ROCKET_SIZE - 20),
             new (ConstructType.PLAYER_ROCKET_SEEKING, DEFAULT_ROCKET_SIZE, DEFAULT_ROCKET_SIZE),
             new (ConstructType.PLAYER_ROCKET_BULLS_EYE, DEFAULT_ROCKET_SIZE, DEFAULT_ROCKET_SIZE),
 
@@ -59,7 +57,7 @@ namespace HonkTrooper
             new (ConstructType.VEHICLE_ENEMY_LARGE, 260, 260),
 
             new (ConstructType.VEHICLE_BOSS, 260, 260),
-            new (ConstructType.VEHICLE_BOSS_ROCKET, DEFAULT_ROCKET_SIZE + 20, DEFAULT_ROCKET_SIZE + 20),
+            new (ConstructType.VEHICLE_BOSS_ROCKET, DEFAULT_ROCKET_SIZE + 15, DEFAULT_ROCKET_SIZE + 15),
 
             new (ConstructType.CLOUD, 260, 260),
             new (ConstructType.HONK, 90, 90),

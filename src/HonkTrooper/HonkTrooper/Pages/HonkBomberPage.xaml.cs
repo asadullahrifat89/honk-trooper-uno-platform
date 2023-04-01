@@ -1011,6 +1011,7 @@ namespace HonkTrooper
             if (_powerUp_health_bar.HasHealth && (PowerUpType)_powerUp_health_bar.Tag == PowerUpType.ARMOR)
             {
                 DepletePowerUp();
+                GenerateFloatingNumber(_player);
             }
             else
             {
@@ -1021,8 +1022,22 @@ namespace HonkTrooper
 
                 _player_health_bar.SetValue(_player.Health);
 
-                if (_scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is UfoBoss ufoBoss)
-                    ufoBoss.SetWinStance();
+                if (_scene_game.Children.OfType<Construct>().FirstOrDefault(x => x.IsAnimating &&
+                    (x.ConstructType == ConstructType.UFO_BOSS || x.ConstructType == ConstructType.ZOMBIE_BOSS || x.ConstructType == ConstructType.MAFIA_BOSS)) is Construct boss)
+                {
+                    if (boss is UfoBoss ufo)
+                    {
+                        ufo.SetWinStance();
+                    }
+                    else if (boss is ZombieBoss zombie)
+                    {
+                        zombie.SetWinStance();
+                    }
+                    else if (boss is MafiaBoss mafia)
+                    {
+                        mafia.SetWinStance();
+                    }
+                }
 
                 GameOver();
             }
@@ -4247,7 +4262,7 @@ namespace HonkTrooper
             SpawnGameStartScreen();
             SpawnPlayerCharacterSelectionScreen();
             SpawnPlayerHonkBombSelectionScreen();
-            SpawnPromptOrientationChangeScreen();           
+            SpawnPromptOrientationChangeScreen();
         }
 
         private void SetSceneScaling()
