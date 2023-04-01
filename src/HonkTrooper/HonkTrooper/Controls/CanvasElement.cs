@@ -1,5 +1,4 @@
-﻿using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
+﻿using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using System;
 using Windows.Foundation;
@@ -51,6 +50,11 @@ namespace HonkTrooper
         /// Returns true if shrinked.
         /// </summary>
         public bool IsShrinkingComplete => GetScaleX() <= 0 || GetScaleY() <= 0;
+
+        /// <summary>
+        /// Returns true of expanded.
+        /// </summary>
+        public bool IsExpandingComplete => GetScaleX() >= 2 || GetScaleY() >= 2;
 
         /// <summary>
         /// Only animated by the scene if set to true.

@@ -56,7 +56,7 @@ namespace HonkTrooper
                     {
                         ActivateMoveDown();
                     }
-                    break;               
+                    break;
                 case Windows.System.VirtualKey.Escape:
                     {
                         ActivatePause();
@@ -96,11 +96,11 @@ namespace HonkTrooper
                         DeactivateMoveDown();
                     }
                     break;
-                case Windows.System.VirtualKey.Space:
-                    {
-                        DeactivateAttack();
-                    }
-                    break;
+                //case Windows.System.VirtualKey.Space:
+                //    {
+                //        DeactivateAttack();
+                //    }
+                //    break;
                 default:
                     break;
             }
