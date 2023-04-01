@@ -14,9 +14,7 @@ namespace HonkTrooper
         private readonly Uri[] _vehicle_small_uris;
         private readonly Uri[] _vehicle_large_uris;
 
-        private readonly Image _content_image;
-        private readonly BitmapImage _bitmapImage;
-
+        private readonly ImgageElement _content_image;
         private MovementDirection _movementDirection;
 
         private double _changeMovementPatternDelay;
@@ -60,14 +58,7 @@ namespace HonkTrooper
                     break;
             }
 
-            _bitmapImage = new BitmapImage(uriSource: uri);
-
-            _content_image = new()
-            {
-                Source = _bitmapImage,
-                Height = this.Height,
-                Width = this.Width,
-            };
+            _content_image = new(uri: uri, width: this.Width, height: this.Height);
 
             SetChild(_content_image);
 
@@ -109,7 +100,7 @@ namespace HonkTrooper
                     break;
             }
 
-            _bitmapImage.UriSource = uri;
+            _content_image.SetSource(uri);
 
             RandomizeMovementPattern();
             SetScaleTransform(1);

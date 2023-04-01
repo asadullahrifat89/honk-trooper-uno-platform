@@ -10,9 +10,7 @@ namespace HonkTrooper
         #region Fields
 
         private readonly Random _random;
-        private readonly Image _content_image;
-        private readonly BitmapImage _bitmapImage;
-
+        private readonly ImgageElement _content_image;
         private readonly AudioStub _audioStub;
         #endregion
 
@@ -33,34 +31,30 @@ namespace HonkTrooper
 
             PowerUpType = (PowerUpType)_random.Next(Enum.GetNames(typeof(PowerUpType)).Length);
 
+            Uri uri = null;
+
             switch (PowerUpType)
             {
                 case PowerUpType.SEEKING_SNITCH:
                     {
-                        _bitmapImage = new BitmapImage(uriSource: Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP_SEEKING_SNITCH).Uri);
+                        uri = Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP_SEEKING_SNITCH).Uri;
                     }
                     break;
                 case PowerUpType.ARMOR:
                     {
-                        _bitmapImage = new BitmapImage(uriSource: Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP_ARMOR).Uri);
+                        uri = Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP_ARMOR).Uri;
                     }
                     break;
                 case PowerUpType.BULLS_EYE:
                     {
-                        _bitmapImage = new BitmapImage(uriSource: Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP_BULLS_EYE).Uri);
+                        uri = Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP_BULLS_EYE).Uri;
                     }
                     break;
                 default:
                     break;
             }
 
-            _content_image = new()
-            {
-                Source = _bitmapImage,
-                Height = this.Height,
-                Width = this.Width,
-
-            };
+            _content_image = new(uri: uri, width: this.Width, height: this.Height);
 
             SetChild(_content_image);
 
@@ -82,26 +76,30 @@ namespace HonkTrooper
 
             PowerUpType = (PowerUpType)_random.Next(Enum.GetNames(typeof(PowerUpType)).Length);
 
+            Uri uri = null;
+
             switch (PowerUpType)
             {
                 case PowerUpType.SEEKING_SNITCH:
                     {
-                        _bitmapImage.UriSource = Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP_SEEKING_SNITCH).Uri;
+                        uri = Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP_SEEKING_SNITCH).Uri;
                     }
                     break;
                 case PowerUpType.ARMOR:
                     {
-                        _bitmapImage.UriSource = Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP_ARMOR).Uri;
+                        uri = Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP_ARMOR).Uri;
                     }
                     break;
                 case PowerUpType.BULLS_EYE:
                     {
-                        _bitmapImage.UriSource = Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP_BULLS_EYE).Uri;
+                        uri = Constants.CONSTRUCT_TEMPLATES.FirstOrDefault(x => x.ConstructType == ConstructType.POWERUP_PICKUP_BULLS_EYE).Uri;
                     }
                     break;
                 default:
                     break;
             }
+
+            _content_image.SetSource(uri);
         }
 
         public void PickedUp()

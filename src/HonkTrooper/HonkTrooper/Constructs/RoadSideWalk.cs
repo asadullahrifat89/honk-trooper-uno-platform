@@ -11,9 +11,7 @@ namespace HonkTrooper
     {
         #region Fields
 
-        private readonly Image _content_image;
-        private readonly BitmapImage _bitmapImage;
-
+        private readonly ImgageElement _content_image;
         private readonly Uri[] _side_walk_uris;
 
         #endregion
@@ -34,16 +32,7 @@ namespace HonkTrooper
             RecycleAction = recycleAction;
 
             var uri = ConstructExtensions.GetRandomContentUri(_side_walk_uris);
-            _bitmapImage = new BitmapImage(uriSource: uri);
-
-            _content_image = new()
-            {
-                Source = _bitmapImage,
-                Stretch = Stretch.Fill,
-                Height = this.Height,
-                Width = this.Width,
-
-            };
+            _content_image = new(uri: uri, width: this.Width, height: this.Height);
 
             SetChild(_content_image);
 

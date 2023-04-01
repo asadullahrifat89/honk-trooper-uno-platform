@@ -13,8 +13,7 @@ namespace HonkTrooper
         private readonly Uri[] _bomb_uris;
         private readonly Uri[] _bomb_blast_uris;
 
-        private readonly Image _content_image;
-        private readonly BitmapImage _bitmapImage;
+        private readonly ImgageElement _content_image;        
 
         private double _autoBlastDelay;
         private readonly double _autoBlastDelayDefault = 15;
@@ -42,15 +41,7 @@ namespace HonkTrooper
             SetConstructSize(ConstructType);
 
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_uris);
-            _bitmapImage = new BitmapImage(uriSource: uri);
-
-            _content_image = new()
-            {
-                Source = _bitmapImage,
-                Height = this.Height,
-                Width = this.Width,
-
-            };
+            _content_image = new(uri: uri, width: this.Width, height: this.Height);
 
             SetChild(_content_image);
 
@@ -81,7 +72,7 @@ namespace HonkTrooper
             Opacity = 1;
 
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_uris);
-            _bitmapImage.UriSource = uri;
+            _content_image.SetSource(uri);
 
             //BorderBrush = new SolidColorBrush(Colors.Transparent);
 
@@ -181,7 +172,7 @@ namespace HonkTrooper
             //BorderBrush = new SolidColorBrush(Colors.Chocolate);
 
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_blast_uris);
-            _bitmapImage.UriSource = uri;
+            _content_image.SetSource(uri);
             IsBlasting = true;
         }
 
