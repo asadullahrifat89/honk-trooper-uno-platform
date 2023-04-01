@@ -8,12 +8,10 @@ namespace HonkTrooper
     public partial class Cloud : AnimableConstruct
     {
         #region Fields
-
-        private readonly Random _random;
+                
+        private readonly ImgageElement _content_image;
         private readonly Uri[] _cloud_uris;
-
-        private readonly Image _content_image;
-        private readonly BitmapImage _bitmapImage;
+        private readonly Random _random;
 
         #endregion
 
@@ -35,14 +33,7 @@ namespace HonkTrooper
             SetConstructSize(ConstructType);
 
             var uri = ConstructExtensions.GetRandomContentUri(_cloud_uris);
-            _bitmapImage = new BitmapImage(uriSource: uri);
-            _content_image = new()
-            {
-                Source = _bitmapImage,
-                Height = this.Height,
-                Width = this.Width,
-
-            };
+            _content_image = new(uri: uri, width: this.Width, height: this.Height);
 
             SetChild(_content_image);
 
@@ -60,7 +51,7 @@ namespace HonkTrooper
             Speed = _random.Next(Constants.DEFAULT_CONSTRUCT_SPEED - 2, Constants.DEFAULT_CONSTRUCT_SPEED);
 
             var uri = ConstructExtensions.GetRandomContentUri(_cloud_uris);
-            _bitmapImage.UriSource = uri;
+            _content_image.SetSource(uri);
         }
 
         #endregion
