@@ -1,6 +1,4 @@
-﻿using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media.Imaging;
-using System;
+﻿using System;
 using System.Linq;
 
 namespace HonkTrooper
@@ -8,7 +6,7 @@ namespace HonkTrooper
     public partial class Cloud : AnimableConstruct
     {
         #region Fields
-                
+
         private readonly ImageElement _content_image;
         private readonly Uri[] _cloud_uris;
         private readonly Random _random;
