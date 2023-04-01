@@ -117,11 +117,11 @@ namespace HonkTrooper
             _sub_title_text.Text = subTitle;
         }
 
-        public async Task PreloadAssets(Action completed)
+        public async Task PreloadAssets(Func<Task<bool>> preloadedAction)
         {
             if (_assets_loaded)
             {
-                completed?.Invoke();
+                await preloadedAction();
             }
             else
             {
@@ -145,7 +145,7 @@ namespace HonkTrooper
                 {
                     await Task.Delay(300);
                     _assets_loaded = true;
-                    completed?.Invoke();
+                    await preloadedAction();
                 }
             }
         }
