@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace HonkTrooper
 {
-    public partial class Construct : ConstructBase
+    public partial class Construct : CanvasElement
     {
         public Construct()
         {
@@ -47,11 +47,6 @@ namespace HonkTrooper
 
         #region Methods
 
-        public double GetMovementSpeed()
-        {
-            return Speed;
-        }
-
         public void Animate()
         {
             AnimateAction(this);
@@ -62,9 +57,10 @@ namespace HonkTrooper
             RecycleAction(this);
         }
 
-        public void SetChild(UIElement uIElement)
+        public void SetChild(UIElement content)
         {
-            Child = uIElement;
+            Child = content;
+            //Content = content;
         }
 
         public void SetConstructSize()

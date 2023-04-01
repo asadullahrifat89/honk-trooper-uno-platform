@@ -6,7 +6,6 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Graphics.Display;
-using Windows.UI.Core;
 
 namespace HonkTrooper
 {
@@ -954,7 +953,7 @@ namespace HonkTrooper
                     }
 
                     var scaling = ScreenExtensions.GetScreenSpaceScaling();
-                    var speed = _player.GetMovementSpeed();
+                    var speed = _player.Speed;
 
                     _player.Move(
                         speed: speed,
@@ -1012,6 +1011,7 @@ namespace HonkTrooper
             if (_powerUp_health_bar.HasHealth && (PowerUpType)_powerUp_health_bar.Tag == PowerUpType.ARMOR)
             {
                 DepletePowerUp();
+                GenerateFloatingNumber(_player);
             }
             else
             {
@@ -1022,8 +1022,22 @@ namespace HonkTrooper
 
                 _player_health_bar.SetValue(_player.Health);
 
-                if (_scene_game.Children.OfType<UfoBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is UfoBoss ufoBoss)
-                    ufoBoss.SetWinStance();
+                if (_scene_game.Children.OfType<Construct>().FirstOrDefault(x => x.IsAnimating &&
+                    (x.ConstructType == ConstructType.UFO_BOSS || x.ConstructType == ConstructType.ZOMBIE_BOSS || x.ConstructType == ConstructType.MAFIA_BOSS)) is Construct boss)
+                {
+                    if (boss is UfoBoss ufo)
+                    {
+                        ufo.SetWinStance();
+                    }
+                    else if (boss is ZombieBoss zombie)
+                    {
+                        zombie.SetWinStance();
+                    }
+                    else if (boss is MafiaBoss mafia)
+                    {
+                        mafia.SetWinStance();
+                    }
+                }
 
                 GameOver();
             }
@@ -1079,7 +1093,7 @@ namespace HonkTrooper
         {
             PlayerHonkBomb playerHonkBomb1 = playerHonkBomb as PlayerHonkBomb;
 
-            var speed = playerHonkBomb1.GetMovementSpeed();
+            var speed = playerHonkBomb1.Speed;
 
             if (playerHonkBomb1.IsBlasting)
             {
@@ -1217,7 +1231,7 @@ namespace HonkTrooper
         {
             PlayerRocket playerRocket1 = playerRocket as PlayerRocket;
 
-            var speed = playerRocket1.GetMovementSpeed();
+            var speed = playerRocket1.Speed;
 
             if (playerRocket1.AwaitMoveDownLeft)
             {
@@ -1349,7 +1363,7 @@ namespace HonkTrooper
 
             if (playerRocketSeeking1.IsBlasting)
             {
-                var speed = playerRocketSeeking1.GetMovementSpeed();
+                var speed = playerRocketSeeking1.Speed;
                 playerRocketSeeking1.MoveDownRight(speed);
                 playerRocketSeeking.Expand();
                 playerRocketSeeking.Fade(0.02);
@@ -1531,7 +1545,7 @@ namespace HonkTrooper
 
             if (playerRocketBullsEye1.IsBlasting)
             {
-                var speed = playerRocketBullsEye1.GetMovementSpeed();
+                var speed = playerRocketBullsEye1.Speed;
                 playerRocketBullsEye1.MoveDownRight(speed);
                 playerRocketBullsEye.Expand();
                 playerRocketBullsEye.Fade(0.02);
@@ -1543,7 +1557,7 @@ namespace HonkTrooper
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING) // check if the rocket intersects with any target on its path
                 {
-                    var speed = playerRocketBullsEye1.GetMovementSpeed();
+                    var speed = playerRocketBullsEye1.Speed;
                     playerRocketBullsEye1.Move();
 
                     var hitbox = playerRocketBullsEye1.GetCloseHitBox();
@@ -1644,7 +1658,7 @@ namespace HonkTrooper
         private void AnimateRoadSideWalk(Construct roadSideWalk)
         {
             RoadSideWalk roadSideWalk1 = roadSideWalk as RoadSideWalk;
-            var speed = roadSideWalk1.GetMovementSpeed();
+            var speed = roadSideWalk1.Speed;
             roadSideWalk1.MoveDownRight(speed: speed);
         }
 
@@ -1711,7 +1725,7 @@ namespace HonkTrooper
         private void AnimateRoadSideTree(Construct roadSideTree)
         {
             RoadSideTree roadSideTree1 = roadSideTree as RoadSideTree;
-            var speed = roadSideTree1.GetMovementSpeed();
+            var speed = roadSideTree1.Speed;
             roadSideTree1.MoveDownRight(speed);
         }
 
@@ -1772,7 +1786,7 @@ namespace HonkTrooper
         private void AnimateRoadSideHedge(Construct roadSideHedge)
         {
             RoadSideHedge roadSideHedge1 = roadSideHedge as RoadSideHedge;
-            var speed = roadSideHedge1.GetMovementSpeed();
+            var speed = roadSideHedge1.Speed;
             roadSideHedge1.MoveDownRight(speed);
         }
 
@@ -1833,7 +1847,7 @@ namespace HonkTrooper
         private void AnimateRoadSideLamp(Construct roadSideLamp)
         {
             RoadSideLamp roadSideLamp1 = roadSideLamp as RoadSideLamp;
-            var speed = roadSideLamp1.GetMovementSpeed();
+            var speed = roadSideLamp1.Speed;
             roadSideLamp1.MoveDownRight(speed);
         }
 
@@ -1886,7 +1900,7 @@ namespace HonkTrooper
         private void AnimateRoadSideBillboard(Construct roadSideBillboard)
         {
             RoadSideBillboard roadSideBillboard1 = roadSideBillboard as RoadSideBillboard;
-            var speed = roadSideBillboard1.GetMovementSpeed();
+            var speed = roadSideBillboard1.Speed;
             roadSideBillboard1.MoveDownRight(speed);
         }
 
@@ -1956,7 +1970,7 @@ namespace HonkTrooper
         private void AnimateRoadSideLightBillboard(Construct roadSideLight)
         {
             RoadSideLightBillboard roadSideLight1 = roadSideLight as RoadSideLightBillboard;
-            var speed = roadSideLight1.GetMovementSpeed();
+            var speed = roadSideLight1.Speed;
             roadSideLight1.MoveDownRight(speed);
         }
 
@@ -2007,7 +2021,7 @@ namespace HonkTrooper
         private void AnimateRoadMark(Construct roadMark)
         {
             RoadMark roadMark1 = roadMark as RoadMark;
-            var speed = roadMark1.GetMovementSpeed();
+            var speed = roadMark1.Speed;
             roadMark1.MoveDownRight(speed);
         }
 
@@ -2099,7 +2113,7 @@ namespace HonkTrooper
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
-                    var speed = ufoBoss1.GetMovementSpeed();
+                    var speed = ufoBoss1.Speed;
                     var scaling = ScreenExtensions.GetScreenSpaceScaling();
 
                     if (ufoBoss1.IsAttacking)
@@ -2212,7 +2226,7 @@ namespace HonkTrooper
         {
             UfoBossRocket ufoBossRocket1 = ufoBossRocket as UfoBossRocket;
 
-            var speed = ufoBossRocket1.GetMovementSpeed();
+            var speed = ufoBossRocket1.Speed;
 
             if (ufoBossRocket1.AwaitMoveDownLeft)
             {
@@ -2311,7 +2325,7 @@ namespace HonkTrooper
         {
             UfoBossRocketSeeking ufoBossRocketSeeking1 = ufoBossRocketSeeking as UfoBossRocketSeeking;
 
-            var speed = ufoBossRocketSeeking1.GetMovementSpeed();
+            var speed = ufoBossRocketSeeking1.Speed;
 
             if (ufoBossRocketSeeking1.IsBlasting)
             {
@@ -2419,7 +2433,7 @@ namespace HonkTrooper
                 ufoEnemy1.Hover();
                 ufoEnemy1.Pop();
 
-                var speed = ufoEnemy1.GetMovementSpeed();
+                var speed = ufoEnemy1.Speed;
 
                 ufoEnemy1.MoveDownRight(speed);
 
@@ -2517,7 +2531,7 @@ namespace HonkTrooper
         {
             UfoEnemyRocket ufoEnemyRocket1 = ufoEnemyRocket as UfoEnemyRocket;
 
-            var speed = ufoEnemyRocket1.GetMovementSpeed();
+            var speed = ufoEnemyRocket1.Speed;
             ufoEnemyRocket1.MoveDownRight(speed);
 
             if (ufoEnemyRocket1.IsBlasting)
@@ -2594,7 +2608,7 @@ namespace HonkTrooper
             vehicleEnemy.Pop();
             vehicleEnemy1.Vibrate();
 
-            var speed = vehicleEnemy1.GetMovementSpeed();
+            var speed = vehicleEnemy1.Speed;
             vehicleEnemy1.MoveDownRight(speed);
 
             if (_scene_game.SceneState == SceneState.GAME_RUNNING)
@@ -2712,7 +2726,7 @@ namespace HonkTrooper
         {
             VehicleBoss vehicleBoss1 = vehicleBoss as VehicleBoss;
 
-            var speed = vehicleBoss1.GetMovementSpeed();
+            var speed = vehicleBoss1.Speed;
 
             if (vehicleBoss1.IsDead)
             {
@@ -2842,7 +2856,7 @@ namespace HonkTrooper
         {
             VehicleBossRocket vehicleBossRocket1 = vehicleBossRocket as VehicleBossRocket;
 
-            var speed = vehicleBossRocket1.GetMovementSpeed();
+            var speed = vehicleBossRocket1.Speed;
 
             if (vehicleBossRocket1.AwaitMoveUpRight)
             {
@@ -2962,7 +2976,7 @@ namespace HonkTrooper
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
-                    var speed = zombieBoss1.GetMovementSpeed();
+                    var speed = zombieBoss1.Speed;
                     var scaling = ScreenExtensions.GetScreenSpaceScaling();
 
                     if (zombieBoss1.IsAttacking)
@@ -3072,7 +3086,7 @@ namespace HonkTrooper
         {
             ZombieBossRocketBlock zombieBossRocket1 = zombieBossRocket as ZombieBossRocketBlock;
 
-            var speed = zombieBossRocket1.GetMovementSpeed();
+            var speed = zombieBossRocket1.Speed;
 
             zombieBossRocket1.MoveDownRight(speed);
 
@@ -3197,7 +3211,7 @@ namespace HonkTrooper
 
                 if (_scene_game.SceneState == SceneState.GAME_RUNNING)
                 {
-                    var speed = mafiaBoss1.GetMovementSpeed();
+                    var speed = mafiaBoss1.Speed;
                     var scaling = ScreenExtensions.GetScreenSpaceScaling();
 
                     if (mafiaBoss1.IsAttacking)
@@ -3310,7 +3324,7 @@ namespace HonkTrooper
         {
             MafiaBossRocket mafiaBossRocket1 = mafiaBossRocket as MafiaBossRocket;
 
-            var speed = mafiaBossRocket1.GetMovementSpeed();
+            var speed = mafiaBossRocket1.Speed;
 
             if (mafiaBossRocket1.AwaitMoveDownLeft)
             {
@@ -3410,7 +3424,7 @@ namespace HonkTrooper
         {
             MafiaBossRocketBullsEye mafiaBossRocketBullsEye1 = mafiaBossRocketBullsEye as MafiaBossRocketBullsEye;
 
-            var speed = mafiaBossRocketBullsEye1.GetMovementSpeed();
+            var speed = mafiaBossRocketBullsEye1.Speed;
 
             if (mafiaBossRocketBullsEye1.IsBlasting)
             {
@@ -3690,7 +3704,7 @@ namespace HonkTrooper
             Cloud cloud1 = cloud as Cloud;
             cloud1.Hover();
 
-            var speed = cloud1.GetMovementSpeed();
+            var speed = cloud1.Speed;
             cloud1.MoveDownRight(speed);
         }
 
@@ -3809,7 +3823,7 @@ namespace HonkTrooper
         {
             HealthPickup healthPickup1 = healthPickup as HealthPickup;
 
-            var speed = healthPickup1.GetMovementSpeed();
+            var speed = healthPickup1.Speed;
 
             if (healthPickup1.IsPickedUp)
             {
@@ -3913,7 +3927,7 @@ namespace HonkTrooper
         {
             PowerUpPickup powerUpPickup1 = powerUpPickup as PowerUpPickup;
 
-            var speed = powerUpPickup1.GetMovementSpeed();
+            var speed = powerUpPickup1.Speed;
 
             if (powerUpPickup1.IsPickedUp)
             {
@@ -4248,7 +4262,7 @@ namespace HonkTrooper
             SpawnGameStartScreen();
             SpawnPlayerCharacterSelectionScreen();
             SpawnPlayerHonkBombSelectionScreen();
-            SpawnPromptOrientationChangeScreen();           
+            SpawnPromptOrientationChangeScreen();
         }
 
         private void SetSceneScaling()

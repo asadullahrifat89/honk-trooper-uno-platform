@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.WinUI.UI.Controls;
+﻿using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
@@ -131,7 +131,7 @@ namespace HonkTrooper
             ToggleButton player1btn = new() { Margin = new Thickness(5), CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS - 10) };
             ToggleButton player2btn = new() { Margin = new Thickness(5), CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS - 10) };
 
-            player1btn.Content = new ImageEx()
+            player1btn.Content = new Image()
             {
                 Width = 100,
                 Height = 100,
@@ -148,7 +148,7 @@ namespace HonkTrooper
 
             playerTemplates.Children.Add(player1btn);
 
-            player2btn.Content = new ImageEx()
+            player2btn.Content = new Image()
             {
                 Width = 100,
                 Height = 100,

@@ -2,7 +2,6 @@
 using System.Linq;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Controls;
-using CommunityToolkit.WinUI.UI.Controls;
 
 namespace HonkTrooper
 {
@@ -13,7 +12,7 @@ namespace HonkTrooper
         private readonly Random _random;
         private readonly Uri[] _vehicle_boss_uris;
 
-        private readonly ImageEx _content_image;
+        private readonly Image _content_image;
         private readonly BitmapImage _bitmapImage;
 
         private MovementDirection _movementDirection;
@@ -47,7 +46,7 @@ namespace HonkTrooper
                 Source = _bitmapImage,
                 Height = this.Height,
                 Width = this.Width,
-                IsCacheEnabled = true,
+                
             };
 
             SetChild(_content_image);

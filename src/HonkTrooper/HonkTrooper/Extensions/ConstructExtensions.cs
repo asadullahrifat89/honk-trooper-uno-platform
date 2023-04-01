@@ -1,9 +1,6 @@
-﻿using CommunityToolkit.WinUI.UI;
-using CommunityToolkit.WinUI.UI.Controls;
-using Microsoft.UI.Xaml.Controls;
+﻿using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System;
-using System.Threading.Tasks;
 using Windows.Foundation;
 
 namespace HonkTrooper
@@ -16,7 +13,7 @@ namespace HonkTrooper
 
         public static Uri GetContentUri(this Construct construct)
         {
-            if (construct.Child is not null && construct.Child is ImageEx image)
+            if (construct.Child is not null && construct.Child is Image image)
             {
                 var bitmapImage = image.Source as BitmapImage;
                 return bitmapImage.UriSource;
