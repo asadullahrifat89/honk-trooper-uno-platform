@@ -2626,13 +2626,13 @@ namespace HonkTrooper
             {
                 var hitBox = vehicleEnemy.GetHitBox();
 
-                if (collidingVehicleEnemy.SpeedOffset > vehicleEnemy.SpeedOffset) // colliding vehicleEnemy is faster
+                if (collidingVehicleEnemy.Speed > vehicleEnemy.Speed) // colliding vehicleEnemy is faster
                 {
-                    vehicleEnemy.SpeedOffset = collidingVehicleEnemy.SpeedOffset;
+                    vehicleEnemy.Speed = collidingVehicleEnemy.Speed;
                 }
-                else if (vehicleEnemy.SpeedOffset > collidingVehicleEnemy.SpeedOffset) // vehicleEnemy is faster
+                else if (vehicleEnemy.Speed > collidingVehicleEnemy.Speed) // vehicleEnemy is faster
                 {
-                    collidingVehicleEnemy.SpeedOffset = vehicleEnemy.SpeedOffset;
+                    collidingVehicleEnemy.Speed = vehicleEnemy.Speed;
                 }
             }
         }

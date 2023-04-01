@@ -73,7 +73,7 @@ namespace HonkTrooper
             var uri = ConstructExtensions.GetRandomContentUri(_enemy_uris);
             _bitmapImage.UriSource = uri;
 
-            SpeedOffset = _random.Next(-2, 2);
+            Speed = _random.Next(Constants.DEFAULT_CONSTRUCT_SPEED - 2, Constants.DEFAULT_CONSTRUCT_SPEED);
         }
 
         public bool Attack()

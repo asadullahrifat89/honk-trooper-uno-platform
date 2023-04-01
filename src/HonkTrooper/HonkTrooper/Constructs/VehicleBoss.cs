@@ -79,7 +79,7 @@ namespace HonkTrooper
 
         private void RandomizeMovementPattern()
         {
-            SpeedOffset = _random.Next((int)Constants.DEFAULT_SPEED_OFFSET, 4);
+            Speed = _random.Next(Constants.DEFAULT_CONSTRUCT_SPEED, Constants.DEFAULT_CONSTRUCT_SPEED + 2);
             MovementPattern = (VehicleBossMovementPattern)_random.Next(Enum.GetNames(typeof(VehicleBossMovementPattern)).Length);
 
             _changeMovementPatternDelay = _random.Next(40, 60);

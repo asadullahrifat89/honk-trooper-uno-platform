@@ -55,7 +55,7 @@ namespace HonkTrooper
             SetRotation(-63.5);
 
             IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
-            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;
+            Speed = Constants.DEFAULT_CONSTRUCT_SPEED;
         }
 
         #endregion

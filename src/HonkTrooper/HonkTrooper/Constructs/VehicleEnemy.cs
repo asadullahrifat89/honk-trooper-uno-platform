@@ -94,7 +94,7 @@ namespace HonkTrooper
         {
             SetScaleTransform(1);
 
-            SpeedOffset = _random.Next((int)Constants.DEFAULT_SPEED_OFFSET * -1, 0);
+            Speed = _random.Next(Constants.DEFAULT_CONSTRUCT_SPEED - 4, Constants.DEFAULT_CONSTRUCT_SPEED - 2);
 
             WillHonk = Convert.ToBoolean(_random.Next(2));
 
@@ -114,7 +114,7 @@ namespace HonkTrooper
         {
             WillHonk = false;
 
-            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET - 1;
+            Speed = Constants.DEFAULT_CONSTRUCT_SPEED - 1;
 
             //var willReact = _random.Next(2);
 

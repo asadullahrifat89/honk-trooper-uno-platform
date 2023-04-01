@@ -81,7 +81,6 @@ namespace HonkTrooper
                 Background = new SolidColorBrush(Colors.Transparent),
             };
 
-            Speed = Constants.DEFAULT_SCENE_SPEED;
             SceneState = SceneState.GAME_STOPPED;
 
             Loaded += Scene_Loaded;
@@ -94,9 +93,7 @@ namespace HonkTrooper
 
         #region Properties
 
-        public bool IsAnimating { get; set; }
-
-        public double Speed { get; set; }
+        public bool IsAnimating { get; set; }       
 
         public bool IsInNightMode { get; set; }
 

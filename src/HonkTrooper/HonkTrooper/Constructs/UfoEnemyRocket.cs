@@ -73,7 +73,7 @@ namespace HonkTrooper
             _audioStub.Play(SoundType.ORB_LAUNCH);
 
             Opacity = 1;
-            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET + 2;
+            Speed = Constants.DEFAULT_CONSTRUCT_SPEED + 2;
             SetScaleTransform(1);
 
             BorderBrush = new SolidColorBrush(Colors.Transparent);
@@ -96,7 +96,7 @@ namespace HonkTrooper
         public void SetBlast()
         {
             _audioStub.Play(SoundType.ROCKET_BLAST);
-            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET - 1;
+            Speed = Constants.DEFAULT_CONSTRUCT_SPEED - 1;
 
             SetScaleTransform(Constants.DEFAULT_BLAST_SHRINK_SCALE);
 

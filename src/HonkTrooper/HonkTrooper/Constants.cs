@@ -6,8 +6,9 @@ namespace HonkTrooper
     {
         public const double DEFAULT_FRAME_TIME = 19.5;
 
-        public const double DEFAULT_SPEED_OFFSET = 2;
-        public const double DEFAULT_SCENE_SPEED = 4;
+        public const int DEFAULT_CONSTRUCT_SPEED = 6;
+        //public const int DEFAULT_CONSTRUCT_SPEED = 2;
+        //public const double DEFAULT_SCENE_SPEED = 4;
 
         public const double DEFAULT_SLOW_MOTION_REDUCTION_FACTOR = 4;
         public const double DEFAULT_ISOMETRIC_DISPLACEMENT = 0.5;
