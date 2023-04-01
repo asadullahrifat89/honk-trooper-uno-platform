@@ -14,7 +14,7 @@ namespace HonkTrooper
 
         private readonly TextBlock _title_text;
         private readonly TextBlock _sub_title_text;
-        private readonly Image _content_image;
+        private readonly ImageElement _content_image;
 
         private readonly AudioStub _audioStub;
 
@@ -75,16 +75,11 @@ namespace HonkTrooper
             var playerUris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BALLOON).Select(x => x.Uri).ToArray();
 
             var uri = ConstructExtensions.GetRandomContentUri(playerUris);
-
-            _content_image = new()
+            _content_image = new(uri: uri, width: 110, height: 110)
             {
-                Source = new BitmapImage(uriSource: uri),
                 HorizontalAlignment = HorizontalAlignment.Center,
                 Stretch = Stretch.Uniform,
-                Margin = new Thickness(0, 10, 0, 5),
-                Height = 110,
-                Width = 110,
-
+                Margin = new Thickness(0, 10, 0, 5)
             };
 
             Grid.SetRow(_content_image, 0);
