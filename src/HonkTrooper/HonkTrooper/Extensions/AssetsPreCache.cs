@@ -12,7 +12,7 @@ namespace HonkTrooper
             {
 #if __ANDROID__ || __IOS__
                 foreach (var template in Constants.CONSTRUCT_TEMPLATES)
-                {                    
+                {
                     progressAction();
                 }
 #else

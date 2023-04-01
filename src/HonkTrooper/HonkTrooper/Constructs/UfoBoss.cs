@@ -1,8 +1,8 @@
-﻿using System;
-using System.Linq;
+﻿using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Imaging;
+using System;
+using System.Linq;
 using Windows.Foundation;
-using Microsoft.UI.Xaml.Controls;
 
 namespace HonkTrooper
 {
@@ -50,7 +50,7 @@ namespace HonkTrooper
             _ufo_boss_hit_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.UFO_BOSS_HIT).Select(x => x.Uri).ToArray();
             _ufo_boss_win_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.UFO_BOSS_WIN).Select(x => x.Uri).ToArray();
 
-            SetConstructSize();
+            SetConstructSize(ConstructType);
 
             var uri = ConstructExtensions.GetRandomContentUri(_ufo_boss_idle_uris);
             _bitmapImage = new BitmapImage(uriSource: uri);
@@ -60,7 +60,7 @@ namespace HonkTrooper
                 Source = _bitmapImage,
                 Height = this.Height,
                 Width = this.Width,
-                
+
             };
 
             SetChild(_content_image);

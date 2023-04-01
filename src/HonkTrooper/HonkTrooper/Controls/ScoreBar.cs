@@ -26,7 +26,7 @@ namespace HonkTrooper
 
             this.Child = _textBlock;
             GainScore(0);
-        } 
+        }
 
         #endregion
 
@@ -56,7 +56,7 @@ namespace HonkTrooper
         public double GetScore()
         {
             return _score;
-        } 
+        }
 
         #endregion
     }

@@ -1,8 +1,7 @@
-﻿using Microsoft.UI.Xaml.Media;
+﻿using Microsoft.UI;
 using Microsoft.UI.Xaml;
-using Microsoft.UI;
+using Microsoft.UI.Xaml.Media;
 using System;
-using Microsoft.UI.Xaml.Controls;
 
 namespace HonkTrooper
 {
@@ -10,7 +9,7 @@ namespace HonkTrooper
     {
         #region Fields
 
-        
+
         #endregion
 
         #region Properties
@@ -36,7 +35,7 @@ namespace HonkTrooper
             CornerRadius = new CornerRadius(100);
             Opacity = 0.3;
 
-            SetConstructSize();
+            SetConstructSize(ConstructType);
 
             Speed = Constants.DEFAULT_CONSTRUCT_SPEED;
             IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;

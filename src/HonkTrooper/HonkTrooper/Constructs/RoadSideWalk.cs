@@ -1,5 +1,5 @@
-﻿using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml;
+﻿using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System;
@@ -28,7 +28,7 @@ namespace HonkTrooper
 
             _side_walk_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.ROAD_SIDE_WALK).Select(x => x.Uri).ToArray();
 
-            SetConstructSize();
+            SetConstructSize(ConstructType);
 
             AnimateAction = animateAction;
             RecycleAction = recycleAction;
@@ -42,7 +42,7 @@ namespace HonkTrooper
                 Stretch = Stretch.Fill,
                 Height = this.Height,
                 Width = this.Width,
-                
+
             };
 
             SetChild(_content_image);

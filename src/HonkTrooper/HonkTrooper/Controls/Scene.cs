@@ -1,14 +1,14 @@
-﻿using Microsoft.UI.Xaml;
+﻿using Microsoft.UI;
+using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
+using Microsoft.UI.Xaml.Media.Animation;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using Windows.Foundation;
-using Microsoft.UI.Xaml.Media.Animation;
-using System.Diagnostics;
-using Microsoft.UI;
 
 namespace HonkTrooper
 {
@@ -93,7 +93,7 @@ namespace HonkTrooper
 
         #region Properties
 
-        public bool IsAnimating { get; set; }       
+        public bool IsAnimating { get; set; }
 
         public bool IsInNightMode { get; set; }
 
@@ -235,7 +235,7 @@ namespace HonkTrooper
             {
                 generator.Generate();
             }
-            
+
             foreach (Construct construct in Children.Where(x => x.IsAnimating))
             {
                 construct.Animate();

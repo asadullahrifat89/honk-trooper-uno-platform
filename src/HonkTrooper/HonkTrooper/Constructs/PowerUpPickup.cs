@@ -29,7 +29,7 @@ namespace HonkTrooper
 
             _random = new Random();
 
-            SetConstructSize();
+            SetConstructSize(ConstructType);
 
             PowerUpType = (PowerUpType)_random.Next(Enum.GetNames(typeof(PowerUpType)).Length);
 
@@ -59,7 +59,7 @@ namespace HonkTrooper
                 Source = _bitmapImage,
                 Height = this.Height,
                 Width = this.Width,
-                
+
             };
 
             SetChild(_content_image);

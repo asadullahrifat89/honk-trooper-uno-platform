@@ -1,9 +1,7 @@
-﻿using System;
-using System.Linq;
+﻿using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Imaging;
-using Microsoft.UI.Xaml.Media;
-using Microsoft.UI;
-using Microsoft.UI.Xaml.Controls;
+using System;
+using System.Linq;
 
 namespace HonkTrooper
 {
@@ -42,7 +40,7 @@ namespace HonkTrooper
             _bomb_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.ZOMBIE_BOSS_ROCKET_BLOCK).Select(x => x.Uri).ToArray();
             _bomb_blast_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BLAST).Select(x => x.Uri).ToArray();
 
-            SetConstructSize();
+            SetConstructSize(ConstructType);
 
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_uris);
             _bitmapImage = new BitmapImage(uriSource: uri);
@@ -52,7 +50,7 @@ namespace HonkTrooper
                 Source = _bitmapImage,
                 Height = this.Height,
                 Width = this.Width,
-                
+
             };
 
             SetChild(_content_image);
