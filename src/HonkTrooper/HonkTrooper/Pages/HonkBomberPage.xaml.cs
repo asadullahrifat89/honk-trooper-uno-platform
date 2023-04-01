@@ -135,7 +135,7 @@ namespace HonkTrooper
 
         #region Events
 
-        private void HonkBomberPage_Loaded(object sender, RoutedEventArgs e)
+        private async void HonkBomberPage_Loaded(object sender, RoutedEventArgs e)
         {
             ScreenExtensions.DisplayInformation.OrientationChanged += DisplayInformation_OrientationChanged;
             ScreenExtensions.RequiredScreenOrientation = DisplayOrientations.Landscape;
@@ -145,14 +145,23 @@ namespace HonkTrooper
                 ScreenExtensions.SetScreenOrientation(ScreenExtensions.RequiredScreenOrientation);
 
             SetController();
-            SetStage();
+
+            AddMainMenuSceneGenerators();
 
             SizeChanged += HonkBomberPage_SizeChanged;
 
             if (ScreenExtensions.GetScreenOrienation() == ScreenExtensions.RequiredScreenOrientation) // if the screen is in desired orientation the show asset loading screen
             {
                 ScreenExtensions.EnterFullScreen(true);
-                GenerateAssetsLoadingScreen();
+
+                if (!_scene_game.GeneratorsExist)
+                {
+                    GenerateAssetsLoadingScreen(); // if generators are not added to game scene, show the assets loading screen
+                }
+                else
+                {
+                    await OpenGame(); // if generators added to game scene then show game start screen on page loaded
+                }
             }
             else
             {
@@ -199,14 +208,14 @@ namespace HonkTrooper
                     if (_scene_main_menu.Children.OfType<PromptOrientationChangeScreen>().FirstOrDefault(x => x.IsAnimating) is PromptOrientationChangeScreen promptOrientationChangeScreen)
                     {
                         RecyclePromptOrientationChangeScreen(promptOrientationChangeScreen);
-                        _scene_main_menu.Play();
                         GenerateAssetsLoadingScreen();
                     }
                 }
                 else // ask to change orientation
                 {
                     _scene_game.Pause();
-                    _scene_main_menu.Play();
+                    _scene_main_menu.Pause();
+
                     _audioStub.Pause(SoundType.GAME_BACKGROUND_MUSIC);
 
                     foreach (var hoveringTitleScreen in _scene_main_menu.Children.OfType<HoveringTitleScreen>().Where(x => x.IsAnimating))
@@ -456,6 +465,20 @@ namespace HonkTrooper
             }
         }
 
+        private async Task OpenGame()
+        {
+            _scene_game.Play();
+            _scene_main_menu.Play();
+
+            ToggleNightMode(false);
+
+            await Task.Delay(500);
+
+            GenerateGameStartScreen(title: "Honk Trooper", subTitle: "-Stop Honkers, Save The City-");
+
+            _audioStub.Play(SoundType.GAME_BACKGROUND_MUSIC);
+        }
+
         #endregion
 
         #region FloatingNumber
@@ -592,22 +615,23 @@ namespace HonkTrooper
                 {
                     RecycleAssetsLoadingScreen(assetsLoadingScreen);
 
-                    await Task.Delay(500);
-
-                    await base.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, delegate
+                    if (ScreenExtensions.DisplayInformation.CurrentOrientation == ScreenExtensions.RequiredScreenOrientation)
                     {
-                        AddGameConstructGenerators();
-                    });
-
-                    _scene_game.Play();
-
-                    ToggleNightMode(false);
-
-                    await Task.Delay(500);
-
-                    GenerateGameStartScreen(title: "Honk Trooper", subTitle: "-Stop Honkers, Save The City-");
-
-                    _audioStub.Play(SoundType.GAME_BACKGROUND_MUSIC);
+                        if (!_scene_game.GeneratorsExist)
+                        {
+                            AddGameSceneGenerators();
+                            await Task.Delay(500);
+                            await OpenGame();
+                        }
+                        else
+                        {
+                            await OpenGame();
+                        }
+                    }
+                    else
+                    {
+                        GeneratePromptOrientationChangeScreen();
+                    }
                 });
 
                 return true;
@@ -4363,54 +4387,7 @@ namespace HonkTrooper
 
         #region Scene
 
-        private void SetStage()
-        {
-            _powerUp_health_bar.Reset();
-            _ufo_boss_health_bar.Reset();
-            _game_score_bar.Reset();
-
-            AddMainMenuGenerators();
-            _scene_main_menu.Play();
-        }
-
-        private void AddMainMenuGenerators()
-        {
-            _scene_main_menu.Clear();
-            _scene_main_menu.AddToScene(
-
-            new Generator(
-                generationDelay: 0,
-                generationAction: () => { return true; },
-                startUpAction: SpawnAssetsLoadingScreen),
-
-            new Generator(
-                generationDelay: 0,
-                generationAction: () => { return true; },
-                startUpAction: SpawnInterimScreen),
-
-            new Generator(
-                generationDelay: 0,
-                generationAction: () => { return true; },
-                startUpAction: SpawnGameStartScreen),
-
-            new Generator(
-                generationDelay: 0,
-                generationAction: () => { return true; },
-                startUpAction: SpawnPlayerCharacterSelectionScreen),
-
-            new Generator(
-                generationDelay: 0,
-                generationAction: () => { return true; },
-                startUpAction: SpawnPlayerHonkBombSelectionScreen),
-
-            new Generator(
-                generationDelay: 0,
-                generationAction: () => { return true; },
-                startUpAction: SpawnPromptOrientationChangeScreen)
-                );
-        }
-
-        private void AddGameConstructGenerators()
+        private void AddGameSceneGenerators()
         {
             _scene_game.Clear();
             _scene_game.AddToScene(
@@ -4614,6 +4591,43 @@ namespace HonkTrooper
 
             #endregion
 
+                );
+        }
+
+        private void AddMainMenuSceneGenerators()
+        {
+            _scene_main_menu.Clear();
+            _scene_main_menu.AddToScene(
+
+            new Generator(
+                generationDelay: 0,
+                generationAction: () => { return true; },
+                startUpAction: SpawnAssetsLoadingScreen),
+
+            new Generator(
+                generationDelay: 0,
+                generationAction: () => { return true; },
+                startUpAction: SpawnInterimScreen),
+
+            new Generator(
+                generationDelay: 0,
+                generationAction: () => { return true; },
+                startUpAction: SpawnGameStartScreen),
+
+            new Generator(
+                generationDelay: 0,
+                generationAction: () => { return true; },
+                startUpAction: SpawnPlayerCharacterSelectionScreen),
+
+            new Generator(
+                generationDelay: 0,
+                generationAction: () => { return true; },
+                startUpAction: SpawnPlayerHonkBombSelectionScreen),
+
+            new Generator(
+                generationDelay: 0,
+                generationAction: () => { return true; },
+                startUpAction: SpawnPromptOrientationChangeScreen)
                 );
         }
 
