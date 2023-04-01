@@ -25,7 +25,6 @@ namespace HonkTrooper
         public Generator(
             int delay,
             Action elaspedAction,
-            Action spawnedAction,
             bool scramble = false)
         {
             _randomizeGenerationDelay = scramble;
@@ -34,7 +33,6 @@ namespace HonkTrooper
             _generationDelayInCount = _generationDelay;
 
             GenerationAction = elaspedAction;
-            spawnedAction();
         }
 
         #region Methods
