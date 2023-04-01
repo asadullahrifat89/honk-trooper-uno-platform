@@ -146,7 +146,7 @@ namespace HonkTrooper
 
             SetController();
 
-            AddMainMenuSceneGenerators();
+            PrepareMainMenuScene();
 
             SizeChanged += HonkBomberPage_SizeChanged;
 
@@ -597,7 +597,7 @@ namespace HonkTrooper
                     {
                         if (!_scene_game.GeneratorsExist)
                         {
-                            AddGameSceneGenerators();
+                            PrepareGameScene();
                             await Task.Delay(500);
                             await OpenGame();
                         }
@@ -4016,184 +4016,211 @@ namespace HonkTrooper
 
         #region Scene
 
-        private void AddGameSceneGenerators()
+        private void PrepareGameScene()
         {
             _scene_game.Clear();
-            _scene_game.AddToScene(
 
             #region Player
 
-            new Generator(
-                delay: 0,
-                elaspedAction: () => { },
-                spawnedAction: SpawnPlayerBalloon),
+            SpawnPlayerBalloon();
+            SpawnPlayerRockets();
+            SpawnPlayerHonkBombs();
+            SpawnPlayerRocketSeekings();
+            SpawnPlayerRocketBullsEyes();
 
-            new Generator(
-                delay: 0,
-                elaspedAction: () => { },
-                spawnedAction: SpawnPlayerRockets),
+            #endregion
 
-            new Generator(
-                delay: 0,
-                elaspedAction: () => { },
-                spawnedAction: SpawnPlayerHonkBombs),
+            #region UfoEnemy
 
-            new Generator(
-                delay: 0,
-                elaspedAction: () => { },
-                spawnedAction: SpawnPlayerRocketSeekings),
+            SpawnUfoEnemys();
+            SpawnUfoEnemyRockets();
 
-            new Generator(
-                delay: 0,
-                elaspedAction: () => { },
-                spawnedAction: SpawnPlayerRocketBullsEyes),
+            #endregion
+
+            #region UfoBoss
+
+            SpawnUfoBosses();
+            SpawnUfoBossRockets();
+            SpawnUfoBossRocketSeekings();
+
+            #endregion
+
+            #region FloatingNumber
+
+            SpawnFloatingNumbers();
+
+            #endregion
+
+            #region Pickup
+
+            SpawnHealthPickups();
+            SpawnPowerUpPickups();
 
             #endregion
 
             #region Road
 
+            SpawnRoadMarks();
+            SpawnRoadSideBillboards();
+            SpawnRoadSideLamps();
+            SpawnRoadSideLightBillboards();
+            SpawnRoadSideWalks();
+            SpawnRoadSideTrees();
+            SpawnRoadSideHedges();
+
+            #endregion
+
+            #region Cloud
+
+            SpawnClouds();
+
+            #endregion
+
+            #region VehicleEnemy
+
+            SpawnVehicleEnemys();
+            SpawnHonks();
+
+            #endregion
+
+            #region VehicleBoss
+
+            SpawnVehicleBosses();
+            SpawnVehicleBossRockets();
+
+            #endregion
+
+            #region ZombieBoss
+
+            SpawnZombieBosses();
+            SpawnZombieBossRocketBlocks();
+
+            #endregion
+
+            #region MafiaBoss
+
+            SpawnMafiaBosses();
+            SpawnMafiaBossRockets();
+            SpawnMafiaBossRocketBullsEyes();
+
+            #endregion
+
+            _scene_game.AddToScene(
+
+            #region Road
+
             new Generator(
                 delay: 38,
-                elaspedAction: GenerateRoadMark,
-                spawnedAction: SpawnRoadMarks),
+                elaspedAction: GenerateRoadMark),
 
             new Generator(
                 delay: 72,
-                elaspedAction: GenerateRoadSideBillboard,
-                spawnedAction: SpawnRoadSideBillboards),
+                elaspedAction: GenerateRoadSideBillboard),
 
             new Generator(
                 delay: 36,
-                elaspedAction: GenerateRoadSideLamp,
-                spawnedAction: SpawnRoadSideLamps),
+                elaspedAction: GenerateRoadSideLamp),
 
             new Generator(
                 delay: 36,
-                elaspedAction: GenerateRoadSideLightBillboard,
-                spawnedAction: SpawnRoadSideLightBillboards),
+                elaspedAction: GenerateRoadSideLightBillboard),
 
             new Generator(
                 delay: 18,
-                elaspedAction: GenerateRoadSideWalk,
-                spawnedAction: SpawnRoadSideWalks),
+                elaspedAction: GenerateRoadSideWalk),
 
             new Generator(
                 delay: 30,
-                elaspedAction: GenerateRoadSideTree,
-                spawnedAction: SpawnRoadSideTrees),
+                elaspedAction: GenerateRoadSideTree),
 
             new Generator(
                 delay: 38,
-                elaspedAction: GenerateRoadSideHedge,
-                spawnedAction: SpawnRoadSideHedges),
+                elaspedAction: GenerateRoadSideHedge),
 
             #endregion
 
-            #region Vehicle Enemy
+            #region VehicleEnemy
 
             new Generator(
                 delay: 100,
-                elaspedAction: GenerateVehicleEnemy,
-                spawnedAction: SpawnVehicleEnemys),
-
-            new Generator(
-                delay: 0,
-                elaspedAction: () => { },
-                spawnedAction: SpawnHonks),
+                elaspedAction: GenerateVehicleEnemy),
 
             #endregion
 
-            #region Sky
+            #region Cloud
 
             new Generator(
                 delay: 400,
                 elaspedAction: GenerateCloud,
-                spawnedAction: SpawnClouds,
                 scramble: true),
 
             #endregion
 
-            #region Vehicle Boss
+            #region VehicleBoss
 
             new Generator(
                 delay: 10,
-                elaspedAction: GenerateVehicleBoss,
-                spawnedAction: SpawnVehicleBosses),
+                elaspedAction: GenerateVehicleBoss),
 
             new Generator(
                 delay: 50,
                 elaspedAction: GenerateVehicleBossRocket,
-                spawnedAction: SpawnVehicleBossRockets,
                 scramble: true),
 
             #endregion
 
-            #region Ufo Boss
+            #region UfoBoss
 
             new Generator(
                 delay: 10,
-                elaspedAction: GenerateUfoBoss,
-                spawnedAction: SpawnUfoBosses),
+                elaspedAction: GenerateUfoBoss),
 
             new Generator(
                 delay: 40,
                 elaspedAction: GenerateUfoBossRocket,
-                spawnedAction: SpawnUfoBossRockets,
                 scramble: true),
 
             new Generator(
                 delay: 200,
                 elaspedAction: GenerateUfoBossRocketSeeking,
-                spawnedAction: SpawnUfoBossRocketSeekings,
                 scramble: true),
 
             #endregion
 
-            #region Zombie Boss
+            #region ZombieBoss
 
             new Generator(
                 delay: 10,
-                elaspedAction: GenerateZombieBoss,
-                spawnedAction: SpawnZombieBosses),
+                elaspedAction: GenerateZombieBoss),
 
             new Generator(
                 delay: 30,
-                elaspedAction: GenerateZombieBossRocketBlock,
-                spawnedAction: SpawnZombieBossRocketBlocks),
+                elaspedAction: GenerateZombieBossRocketBlock),
 
             #endregion
 
-            #region Mafia Boss
+            #region MafiaBoss
 
             new Generator(
                 delay: 10,
-                elaspedAction: GenerateMafiaBoss,
-                spawnedAction: SpawnMafiaBosses),
+                elaspedAction: GenerateMafiaBoss),
 
             new Generator(
                 delay: 75,
-                elaspedAction: GenerateMafiaBossRocket,
-                spawnedAction: SpawnMafiaBossRockets),
+                elaspedAction: GenerateMafiaBossRocket),
 
             new Generator(
                 delay: 45,
-                elaspedAction: GenerateMafiaBossRocketBullsEye,
-                spawnedAction: SpawnMafiaBossRocketBullsEyes),
+                elaspedAction: GenerateMafiaBossRocketBullsEye),
 
             #endregion
 
-            #region Ufo Enemy
+            #region UfoEnemy
 
             new Generator(
                 delay: 180,
                 elaspedAction: GenerateUfoEnemy,
-                spawnedAction: SpawnUfoEnemys,
                 scramble: true),
-
-            new Generator(
-                delay: 0,
-                elaspedAction: () => { },
-                spawnedAction: SpawnUfoEnemyRockets),
 
             #endregion
 
@@ -4201,63 +4228,27 @@ namespace HonkTrooper
 
             new Generator(
                 delay: 800,
-                elaspedAction: GenerateHealthPickups,
-                spawnedAction: SpawnHealthPickups),
+                elaspedAction: GenerateHealthPickups),
 
             new Generator(
                 delay: 800,
-                elaspedAction: GeneratePowerUpPickup,
-                spawnedAction: SpawnPowerUpPickups),
-
-            #endregion
-
-            #region Floating Number
-
-            new Generator(
-                delay: 0,
-                elaspedAction: () => { },
-                spawnedAction: SpawnFloatingNumbers)
+                elaspedAction: GeneratePowerUpPickup)
 
             #endregion
 
                 );
         }
 
-        private void AddMainMenuSceneGenerators()
+        private void PrepareMainMenuScene()
         {
             _scene_main_menu.Clear();
-            _scene_main_menu.AddToScene(
 
-            new Generator(
-                delay: 0,
-                elaspedAction: () => { },
-                spawnedAction: SpawnAssetsLoadingScreen),
-
-            new Generator(
-                delay: 0,
-                elaspedAction: () => { },
-                spawnedAction: SpawnInterimScreen),
-
-            new Generator(
-                delay: 0,
-                elaspedAction: () => { },
-                spawnedAction: SpawnGameStartScreen),
-
-            new Generator(
-                delay: 0,
-                elaspedAction: () => { },
-                spawnedAction: SpawnPlayerCharacterSelectionScreen),
-
-            new Generator(
-                delay: 0,
-                elaspedAction: () => { },
-                spawnedAction: SpawnPlayerHonkBombSelectionScreen),
-
-            new Generator(
-                delay: 0,
-                elaspedAction: () => { },
-                spawnedAction: SpawnPromptOrientationChangeScreen)
-                );
+            SpawnAssetsLoadingScreen();
+            SpawnInterimScreen();
+            SpawnGameStartScreen();
+            SpawnPlayerCharacterSelectionScreen();
+            SpawnPlayerHonkBombSelectionScreen();
+            SpawnPromptOrientationChangeScreen();           
         }
 
         private void SetSceneScaling()
