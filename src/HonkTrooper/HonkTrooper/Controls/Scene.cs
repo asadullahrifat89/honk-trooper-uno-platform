@@ -103,7 +103,7 @@ namespace HonkTrooper
 
         public bool GeneratorsExist => _generators.Any();
 
-        public UIElementCollection Children => _canvas?.Children;
+        public IEnumerable<Construct> Children => _canvas?.Children.OfType<Construct>();
 
         #endregion
 
@@ -182,7 +182,7 @@ namespace HonkTrooper
 
                 while (await _gameViewTimer.WaitForNextTickAsync())
                 {
-                    Run();
+                    UpdateFrame();
                 }
             }
         }
@@ -228,16 +228,15 @@ namespace HonkTrooper
             _gameViewTimer?.Dispose();
         }
 
-        private void Run()
+        private void UpdateFrame()
         {
             // generate new constructs in scene from generators
             foreach (Generator generator in _generators)
             {
                 generator.Generate();
             }
-
-            // run action for each construct and add to destroyable if destroyable function returns true
-            foreach (Construct construct in _canvas.Children.OfType<Construct>().Where(x => x.IsAnimating))
+            
+            foreach (Construct construct in Children.Where(x => x.IsAnimating))
             {
                 construct.Animate();
                 construct.Recycle();
@@ -246,7 +245,7 @@ namespace HonkTrooper
             // remove the destroyables from the scene
             foreach (Construct destroyable in _destroyables)
             {
-                Children.Remove(destroyable);
+                _canvas.Children.Remove(destroyable);
             }
 
             _destroyables.Clear();
@@ -262,7 +261,7 @@ namespace HonkTrooper
 
                 var fps = _famesCount / 2;
 
-                LoggingExtensions.Log($"Scene: {Name} ~ Generators: {_generators.Count} ~ Animating Objects: {_canvas.Children.OfType<Construct>().Count(x => x.IsAnimating)} \n Total Objects: {_canvas.Children.Count()} ~ FPS: {fps}");
+                LoggingExtensions.Log($"Scene: {Name} ~ Generators: {_generators.Count} ~ Animating Objects: {Children.Count(x => x.IsAnimating)} \n Total Objects: {Children.Count()} ~ FPS: {fps}");
 
                 _famesCount = 0;
             }

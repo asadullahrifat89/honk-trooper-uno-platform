@@ -3,7 +3,7 @@ using System;
 
 namespace HonkTrooper
 {
-    public partial class AudioBase : FrameworkElement
+    public partial class AudioElement : FrameworkElement
     {
         #region Properties
 

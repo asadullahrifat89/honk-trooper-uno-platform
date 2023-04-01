@@ -10,7 +10,7 @@ namespace HonkTrooper
 
 #if __ANDROID__ || __IOS__
 
-    public partial class Audio : AudioBase
+    public partial class Audio : AudioElement
     {
         //private readonly MediaPlayerElement _player;
 
@@ -126,7 +126,7 @@ namespace HonkTrooper
 #else
 
     [HtmlElement("audio")]
-    public partial class Audio : AudioBase
+    public partial class Audio : AudioElement
     {
         #region Fields
 
