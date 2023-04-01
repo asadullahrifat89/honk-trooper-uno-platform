@@ -52,6 +52,11 @@ namespace HonkTrooper
         public bool IsShrinkingComplete => GetScaleX() <= 0 || GetScaleY() <= 0;
 
         /// <summary>
+        /// Returns true of expanded.
+        /// </summary>
+        public bool IsExpandingComplete => GetScaleX() >= 2 || GetScaleY() >= 2;
+
+        /// <summary>
         /// Only animated by the scene if set to true.
         /// </summary>
         public bool IsAnimating { get; set; }
