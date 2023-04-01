@@ -26,8 +26,8 @@ namespace HonkTrooper
         #region Ctor
 
         public PlayerHonkBomb(
-            Func<Construct, bool> animateAction,
-            Func<Construct, bool> recycleAction)
+            Action<Construct> animateAction,
+            Action<Construct> recycleAction)
         {
             ConstructType = ConstructType.PLAYER_HONK_BOMB;
 

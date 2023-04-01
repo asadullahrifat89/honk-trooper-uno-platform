@@ -24,9 +24,9 @@ namespace HonkTrooper
         #region Ctor
 
         public GameStartScreen
-            (Func<Construct, bool> animateAction,
-            Func<Construct, bool> recycleAction,
-            Func<bool> playAction)
+            (Action<Construct> animateAction,
+            Action<Construct> recycleAction,
+            Action playAction)
         {
             ConstructType = ConstructType.TITLE_SCREEN;
 

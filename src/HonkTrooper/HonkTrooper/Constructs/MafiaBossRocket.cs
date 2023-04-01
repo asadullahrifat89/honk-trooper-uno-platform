@@ -28,8 +28,8 @@ namespace HonkTrooper
         #region Ctor
 
         public MafiaBossRocket(
-           Func<Construct, bool> animateAction,
-           Func<Construct, bool> recycleAction)
+           Action<Construct> animateAction,
+           Action<Construct> recycleAction)
         {
             ConstructType = ConstructType.MAFIA_BOSS_ROCKET;
 

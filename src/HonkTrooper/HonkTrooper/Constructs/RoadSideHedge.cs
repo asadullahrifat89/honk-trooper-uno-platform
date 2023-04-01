@@ -20,8 +20,8 @@ namespace HonkTrooper
         #region Ctor
 
         public RoadSideHedge(
-            Func<Construct, bool> animateAction,
-            Func<Construct, bool> recycleAction)
+            Action<Construct> animateAction,
+            Action<Construct> recycleAction)
         {
             ConstructType = ConstructType.ROAD_SIDE_HEDGE;
 

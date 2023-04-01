@@ -19,8 +19,8 @@ namespace HonkTrooper
         #region Ctor
 
         public DropShadow(
-            Func<Construct, bool> animateAction,
-            Func<Construct, bool> recycleAction)
+            Action<Construct> animateAction,
+            Action<Construct> recycleAction)
         {
             ConstructType = ConstructType.DROP_SHADOW;
 
