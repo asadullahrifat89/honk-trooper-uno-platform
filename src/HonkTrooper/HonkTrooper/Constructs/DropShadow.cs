@@ -2,7 +2,6 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI;
 using System;
-using System.Linq;
 
 namespace HonkTrooper
 {

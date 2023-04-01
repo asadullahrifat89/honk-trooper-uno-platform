@@ -6,7 +6,6 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Graphics.Display;
-using Windows.UI.Core;
 
 namespace HonkTrooper
 {

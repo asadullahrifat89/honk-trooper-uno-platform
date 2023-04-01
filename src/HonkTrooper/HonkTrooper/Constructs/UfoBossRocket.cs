@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.UI.Xaml.Media.Imaging;
-using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI;
 using CommunityToolkit.WinUI.UI.Controls;
