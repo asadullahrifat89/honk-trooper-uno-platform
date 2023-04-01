@@ -58,7 +58,7 @@ namespace HonkTrooper
                 left: (ParentConstruct.GetLeft() + ParentConstruct.Width / 2) - Width / 2,
                 top: ParentConstruct.GetBottom() + (ParentConstruct.DropShadowDistance));
 
-            ParentConstructSpeed = ParentConstruct.GetMovementSpeed();
+            ParentConstructSpeed = ParentConstruct.Speed;
 
             Height = 25;
             Width = ParentConstruct.Width * 0.5;

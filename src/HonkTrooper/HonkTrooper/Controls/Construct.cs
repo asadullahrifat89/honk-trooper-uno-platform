@@ -47,11 +47,6 @@ namespace HonkTrooper
 
         #region Methods
 
-        public double GetMovementSpeed()
-        {
-            return Speed;
-        }
-
         public void Animate()
         {
             AnimateAction(this);

@@ -43,7 +43,6 @@ namespace HonkTrooper
 
         #endregion
 
-
         #region Properties
 
         public bool IsDepleted => _messageOnScreenDelay <= 0;
@@ -74,8 +73,8 @@ namespace HonkTrooper
 
         public void Move()
         {
-            var speed = GetMovementSpeed();
-            speed = speed / 3;
+            var speed = Speed;
+            speed /= 3;
 
             switch (_movementDirection)
             {
