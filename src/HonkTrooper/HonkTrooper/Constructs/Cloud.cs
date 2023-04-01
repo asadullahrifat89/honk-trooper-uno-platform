@@ -32,7 +32,7 @@ namespace HonkTrooper
 
             _cloud_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.CLOUD).Select(x => x.Uri).ToArray();
 
-            SetConstructSize();
+            SetConstructSize(ConstructType);
 
             var uri = ConstructExtensions.GetRandomContentUri(_cloud_uris);
             _bitmapImage = new BitmapImage(uriSource: uri);

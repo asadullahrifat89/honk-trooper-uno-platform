@@ -39,33 +39,30 @@ namespace HonkTrooper
 
             var vehicleType = _random.Next(2);
 
-            Uri uri;
+            Uri uri = null;
 
             switch (vehicleType)
             {
                 case 0:
                     {
                         ConstructType = ConstructType.VEHICLE_ENEMY_SMALL;
-
-                        SetConstructSize();
-
+                        SetConstructSize(ConstructType.VEHICLE_ENEMY_SMALL);
                         uri = ConstructExtensions.GetRandomContentUri(_vehicle_small_uris);
-                        _bitmapImage = new BitmapImage(uriSource: uri);
+                        
                     }
                     break;
                 case 1:
                     {
                         ConstructType = ConstructType.VEHICLE_ENEMY_LARGE;
-
-                        SetConstructSize();
-
+                        SetConstructSize(ConstructType.VEHICLE_ENEMY_LARGE);
                         uri = ConstructExtensions.GetRandomContentUri(_vehicle_large_uris);
-                        _bitmapImage = new BitmapImage(uriSource: uri);
                     }
                     break;
                 default:
                     break;
             }
+
+            _bitmapImage = new BitmapImage(uriSource: uri);
 
             _content_image = new()
             {

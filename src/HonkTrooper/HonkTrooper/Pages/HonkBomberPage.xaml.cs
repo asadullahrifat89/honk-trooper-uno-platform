@@ -3256,8 +3256,7 @@ namespace HonkTrooper
         {
             // generate a seeking bomb if one is not in scene
             if (_scene_game.SceneState == SceneState.GAME_RUNNING &&
-                _scene_game.Children.OfType<MafiaBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is MafiaBoss mafiaBoss &&
-                //!_scene_game.Children.OfType<MafiaBossRocketBullsEye>().Any(x => x.IsAnimating) &&
+                _scene_game.Children.OfType<MafiaBoss>().FirstOrDefault(x => x.IsAnimating && x.IsAttacking) is MafiaBoss mafiaBoss &&                
                 _scene_game.Children.OfType<MafiaBossRocketBullsEye>().FirstOrDefault(x => x.IsAnimating == false) is MafiaBossRocketBullsEye mafiaBossRocketBullsEye)
             {
                 mafiaBossRocketBullsEye.Reset();
@@ -4072,7 +4071,7 @@ namespace HonkTrooper
             SpawnHonks();
 
             _scene_game.AddToScene(new Generator(
-                delay: 100,
+                delay: 95,
                 elaspedAction: GenerateVehicleEnemy));
 
             #endregion

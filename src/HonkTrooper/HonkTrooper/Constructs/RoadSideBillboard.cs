@@ -29,7 +29,7 @@ namespace HonkTrooper
 
             _billboard_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.ROAD_SIDE_BILLBOARD).Select(x => x.Uri).ToArray();
 
-            SetConstructSize();
+            SetConstructSize(ConstructType);
 
             var uri = ConstructExtensions.GetRandomContentUri(_billboard_uris);
             _bitmapImage = new BitmapImage(uriSource: uri);

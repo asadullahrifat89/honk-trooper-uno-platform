@@ -60,14 +60,13 @@ namespace HonkTrooper
         public void SetChild(UIElement content)
         {
             Child = content;
-            //Content = content;
         }
 
-        public void SetConstructSize()
+        public void SetConstructSize(ConstructType constructType)
         {
             if (ConstructType != ConstructType.NONE)
             {
-                var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == ConstructType);
+                var size = Constants.CONSTRUCT_SIZES.FirstOrDefault(x => x.ConstructType == constructType);
 
                 var width = size.Width;
                 var height = size.Height;

@@ -10,7 +10,9 @@ namespace HonkTrooper
         #region Fields
 
         private readonly Random _random;
-        private readonly Uri[] _vehicle_boss_uris;
+
+        private readonly Uri[] _vehicle_small_uris;
+        private readonly Uri[] _vehicle_large_uris;
 
         private readonly Image _content_image;
         private readonly BitmapImage _bitmapImage;
@@ -34,11 +36,30 @@ namespace HonkTrooper
 
             _random = new Random();
 
-            _vehicle_boss_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.VEHICLE_ENEMY_LARGE).Select(x => x.Uri).ToArray();
+            _vehicle_small_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.VEHICLE_ENEMY_SMALL).Select(x => x.Uri).ToArray();
+            _vehicle_large_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.VEHICLE_ENEMY_LARGE).Select(x => x.Uri).ToArray();
 
-            SetConstructSize();
+            var vehicleType = _random.Next(2);
+            Uri uri = null;
 
-            var uri = ConstructExtensions.GetRandomContentUri(_vehicle_boss_uris);
+            switch (vehicleType)
+            {
+                case 0:
+                    {
+                        SetConstructSize(ConstructType.VEHICLE_ENEMY_SMALL);
+                        uri = ConstructExtensions.GetRandomContentUri(_vehicle_small_uris);
+                    }
+                    break;
+                case 1:
+                    {
+                        SetConstructSize(ConstructType.VEHICLE_ENEMY_LARGE);
+                        uri = ConstructExtensions.GetRandomContentUri(_vehicle_large_uris);
+                    }
+                    break;
+                default:
+                    break;
+            }
+
             _bitmapImage = new BitmapImage(uriSource: uri);
 
             _content_image = new()
@@ -46,7 +67,6 @@ namespace HonkTrooper
                 Source = _bitmapImage,
                 Height = this.Height,
                 Width = this.Width,
-
             };
 
             SetChild(_content_image);
@@ -68,7 +88,27 @@ namespace HonkTrooper
         {
             base.Reset();
 
-            var uri = ConstructExtensions.GetRandomContentUri(_vehicle_boss_uris);
+            var vehicleType = _random.Next(2);
+            Uri uri = null;
+
+            switch (vehicleType)
+            {
+                case 0:
+                    {
+                        SetConstructSize(ConstructType.VEHICLE_ENEMY_SMALL);
+                        uri = ConstructExtensions.GetRandomContentUri(_vehicle_small_uris);
+                    }
+                    break;
+                case 1:
+                    {
+                        SetConstructSize(ConstructType.VEHICLE_ENEMY_LARGE);
+                        uri = ConstructExtensions.GetRandomContentUri(_vehicle_large_uris);
+                    }
+                    break;
+                default:
+                    break;
+            }
+
             _bitmapImage.UriSource = uri;
 
             RandomizeMovementPattern();

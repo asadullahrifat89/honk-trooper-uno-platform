@@ -33,7 +33,7 @@ namespace HonkTrooper
 
             _random = new Random();
 
-            SetConstructSize();
+            SetConstructSize(ConstructType);
 
             _textBlock = new TextBlock() { FontWeight = FontWeights.Bold, Foreground = new SolidColorBrush(Colors.White), FontSize = Constants.DEFAULT_GUI_FONT_SIZE - 3 };
 

@@ -35,7 +35,7 @@ namespace HonkTrooper
             _blast_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BLAST).Select(x => x.Uri).ToArray();
             _bang_uris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.BANG).Select(x => x.Uri).ToArray();
 
-            SetConstructSize();
+            SetConstructSize(ConstructType);
 
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_uris);
             _bitmapImage = new BitmapImage(uriSource: uri);
