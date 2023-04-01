@@ -35,7 +35,7 @@ namespace HonkTrooper
         {
             new (ConstructType.PLAYER_BALLOON, 165, 165),
             new (ConstructType.PLAYER_ROCKET, DEFAULT_ROCKET_SIZE, DEFAULT_ROCKET_SIZE),
-            new (ConstructType.PLAYER_HONK_BOMB, DEFAULT_ROCKET_SIZE - 20, DEFAULT_ROCKET_SIZE - 20),
+            new (ConstructType.PLAYER_HONK_BOMB, DEFAULT_ROCKET_SIZE - 25, DEFAULT_ROCKET_SIZE - 25),
             new (ConstructType.PLAYER_ROCKET_SEEKING, DEFAULT_ROCKET_SIZE, DEFAULT_ROCKET_SIZE),
             new (ConstructType.PLAYER_ROCKET_BULLS_EYE, DEFAULT_ROCKET_SIZE, DEFAULT_ROCKET_SIZE),
 

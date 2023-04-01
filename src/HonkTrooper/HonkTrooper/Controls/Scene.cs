@@ -182,7 +182,7 @@ namespace HonkTrooper
 
                 while (await _gameViewTimer.WaitForNextTickAsync())
                 {
-                    Run();
+                    UpdateFrame();
                 }
             }
         }
@@ -228,15 +228,14 @@ namespace HonkTrooper
             _gameViewTimer?.Dispose();
         }
 
-        private void Run()
+        private void UpdateFrame()
         {
             // generate new constructs in scene from generators
             foreach (Generator generator in _generators)
             {
                 generator.Generate();
             }
-
-            // run action for each construct and add to destroyable if destroyable function returns true
+            
             foreach (Construct construct in Children.Where(x => x.IsAnimating))
             {
                 construct.Animate();
