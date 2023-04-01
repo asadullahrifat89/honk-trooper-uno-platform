@@ -2614,7 +2614,7 @@ namespace HonkTrooper
         #endregion
 
         #region VehicleBoss
-        
+
         #region VehicleBoss
 
         private void SpawnVehicleBosses()
@@ -2847,7 +2847,7 @@ namespace HonkTrooper
         #endregion
 
         #region ZombieBoss
-        
+
         #region ZombieBoss
 
         private void SpawnZombieBosses()
@@ -3084,7 +3084,7 @@ namespace HonkTrooper
         #endregion
 
         #region MafiaBoss
-        
+
         #region MafiaBoss
 
         private void SpawnMafiaBosses()
@@ -3716,7 +3716,7 @@ namespace HonkTrooper
         #endregion
 
         #region Pickup
-        
+
         #region HealthPickup
 
         private void SpawnHealthPickups()
@@ -4054,6 +4054,12 @@ namespace HonkTrooper
             SpawnUfoEnemys();
             SpawnUfoEnemyRockets();
 
+            _scene_game.AddToScene(
+            new Generator(
+                delay: 180,
+                elaspedAction: GenerateUfoEnemy,
+                scramble: true));
+
             #endregion
 
             #region UfoBoss
@@ -4061,6 +4067,23 @@ namespace HonkTrooper
             SpawnUfoBosses();
             SpawnUfoBossRockets();
             SpawnUfoBossRocketSeekings();
+
+            _scene_game.AddToScene(
+
+            new Generator(
+                delay: 10,
+                elaspedAction: GenerateUfoBoss),
+
+            new Generator(
+                delay: 40,
+                elaspedAction: GenerateUfoBossRocket,
+                scramble: true),
+
+            new Generator(
+                delay: 200,
+                elaspedAction: GenerateUfoBossRocketSeeking,
+                scramble: true)
+                );
 
             #endregion
 
@@ -4075,6 +4098,16 @@ namespace HonkTrooper
             SpawnHealthPickups();
             SpawnPowerUpPickups();
 
+            _scene_game.AddToScene(
+
+            new Generator(
+                delay: 800,
+                elaspedAction: GenerateHealthPickups),
+
+            new Generator(
+                delay: 800,
+                elaspedAction: GeneratePowerUpPickup));
+
             #endregion
 
             #region Road
@@ -4087,46 +4120,7 @@ namespace HonkTrooper
             SpawnRoadSideTrees();
             SpawnRoadSideHedges();
 
-            #endregion
-
-            #region Cloud
-
-            SpawnClouds();
-
-            #endregion
-
-            #region VehicleEnemy
-
-            SpawnVehicleEnemys();
-            SpawnHonks();
-
-            #endregion
-
-            #region VehicleBoss
-
-            SpawnVehicleBosses();
-            SpawnVehicleBossRockets();
-
-            #endregion
-
-            #region ZombieBoss
-
-            SpawnZombieBosses();
-            SpawnZombieBossRocketBlocks();
-
-            #endregion
-
-            #region MafiaBoss
-
-            SpawnMafiaBosses();
-            SpawnMafiaBossRockets();
-            SpawnMafiaBossRocketBullsEyes();
-
-            #endregion
-
             _scene_game.AddToScene(
-
-            #region Road
 
             new Generator(
                 delay: 38,
@@ -4154,29 +4148,39 @@ namespace HonkTrooper
 
             new Generator(
                 delay: 38,
-                elaspedAction: GenerateRoadSideHedge),
-
-            #endregion
-
-            #region VehicleEnemy
-
-            new Generator(
-                delay: 100,
-                elaspedAction: GenerateVehicleEnemy),
+                elaspedAction: GenerateRoadSideHedge));
 
             #endregion
 
             #region Cloud
 
+            SpawnClouds();
+
+            _scene_game.AddToScene(
             new Generator(
                 delay: 400,
                 elaspedAction: GenerateCloud,
-                scramble: true),
+                scramble: true));
+
+            #endregion
+
+            #region VehicleEnemy
+
+            SpawnVehicleEnemys();
+            SpawnHonks();
+
+            _scene_game.AddToScene(new Generator(
+                delay: 100,
+                elaspedAction: GenerateVehicleEnemy));
 
             #endregion
 
             #region VehicleBoss
 
+            SpawnVehicleBosses();
+            SpawnVehicleBossRockets();
+
+            _scene_game.AddToScene(
             new Generator(
                 delay: 10,
                 elaspedAction: GenerateVehicleBoss),
@@ -4184,42 +4188,34 @@ namespace HonkTrooper
             new Generator(
                 delay: 50,
                 elaspedAction: GenerateVehicleBossRocket,
-                scramble: true),
-
-            #endregion
-
-            #region UfoBoss
-
-            new Generator(
-                delay: 10,
-                elaspedAction: GenerateUfoBoss),
-
-            new Generator(
-                delay: 40,
-                elaspedAction: GenerateUfoBossRocket,
-                scramble: true),
-
-            new Generator(
-                delay: 200,
-                elaspedAction: GenerateUfoBossRocketSeeking,
-                scramble: true),
+                scramble: true));
 
             #endregion
 
             #region ZombieBoss
 
+            SpawnZombieBosses();
+            SpawnZombieBossRocketBlocks();
+
+            _scene_game.AddToScene(
             new Generator(
                 delay: 10,
                 elaspedAction: GenerateZombieBoss),
 
             new Generator(
                 delay: 30,
-                elaspedAction: GenerateZombieBossRocketBlock),
+                elaspedAction: GenerateZombieBossRocketBlock)
+            );
 
             #endregion
 
             #region MafiaBoss
 
+            SpawnMafiaBosses();
+            SpawnMafiaBossRockets();
+            SpawnMafiaBossRocketBullsEyes();
+
+            _scene_game.AddToScene(
             new Generator(
                 delay: 10,
                 elaspedAction: GenerateMafiaBoss),
@@ -4230,32 +4226,9 @@ namespace HonkTrooper
 
             new Generator(
                 delay: 45,
-                elaspedAction: GenerateMafiaBossRocketBullsEye),
+                elaspedAction: GenerateMafiaBossRocketBullsEye));
 
             #endregion
-
-            #region UfoEnemy
-
-            new Generator(
-                delay: 180,
-                elaspedAction: GenerateUfoEnemy,
-                scramble: true),
-
-            #endregion
-
-            #region Pickup
-
-            new Generator(
-                delay: 800,
-                elaspedAction: GenerateHealthPickups),
-
-            new Generator(
-                delay: 800,
-                elaspedAction: GeneratePowerUpPickup)
-
-            #endregion
-
-                );
         }
 
         private void PrepareMainMenuScene()
