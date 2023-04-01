@@ -37,9 +37,8 @@ namespace HonkTrooper
                         {
                             progressAction();
                         }
-#if DEBUG
+
                         LoggingExtensions.Log("image source: " + source);
-#endif
                     }
                 }
 #endif
