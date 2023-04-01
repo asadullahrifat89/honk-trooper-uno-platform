@@ -132,12 +132,12 @@ namespace HonkTrooper
 
                 _progressBar.Maximum = Constants.CONSTRUCT_TEMPLATES.Length;
 
-                //SetSubTitle($"... Loading Assets ({_progressBar.Value:00}/{_progressBar.Maximum:00}) ...");
+                SetSubTitle($"... Loading Assets ({_progressBar.Value:00}/{_progressBar.Maximum:00}) ...");
 
                 await AssetsPreCache.PreloadImageAssets(() =>
                 {
                     _progressBar.Value++;
-                    //SetSubTitle($"... Loading Assets ({_progressBar.Value:00}/{_progressBar.Maximum:00}) ...");                    
+                    SetSubTitle($"... Loading Assets ({_progressBar.Value:00}/{_progressBar.Maximum:00}) ...");                    
                 });
 
                 if (_progressBar.Value == _progressBar.Maximum)
