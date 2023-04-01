@@ -472,54 +472,7 @@ namespace HonkTrooper
 
         #endregion
 
-        #region FloatingNumber
-
-        private void SpawnFloatingNumbers()
-        {
-            for (int i = 0; i < 5; i++)
-            {
-                FloatingNumber floatingNumber = new(
-                    animateAction: AnimateFloatingNumber,
-                    recycleAction: RecycleFloatingNumber);
-
-                floatingNumber.SetPosition(
-                    left: -3000,
-                    top: -3000,
-                    z: 10);
-
-                _scene_game.AddToScene(floatingNumber);
-            }
-        }
-
-        private void GenerateFloatingNumber(HealthyConstruct source)
-        {
-            if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<FloatingNumber>().FirstOrDefault(x => x.IsAnimating == false) is FloatingNumber floatingNumberTop)
-            {
-                floatingNumberTop.Reset(source.HitPoint);
-                floatingNumberTop.Reposition(source);
-                floatingNumberTop.IsAnimating = true;
-            }
-        }
-
-        private void AnimateFloatingNumber(Construct floatingNumber)
-        {
-            FloatingNumber floatingNumber1 = floatingNumber as FloatingNumber;
-            floatingNumber1.Move();
-            floatingNumber1.DepleteOnScreenDelay();
-        }
-
-        private void RecycleFloatingNumber(Construct floatingNumber)
-        {
-            FloatingNumber floatingNumber1 = floatingNumber as FloatingNumber;
-
-            if (floatingNumber1.IsDepleted)
-            {
-                floatingNumber.IsAnimating = false;
-                floatingNumber.SetPosition(left: -3000, top: -3000);
-            }
-        }
-
-        #endregion
+        #region Screen
 
         #region PromptOrientationChangeScreen
 
@@ -543,8 +496,8 @@ namespace HonkTrooper
         {
             if (_scene_main_menu.Children.OfType<PromptOrientationChangeScreen>().FirstOrDefault(x => x.IsAnimating == false) is PromptOrientationChangeScreen promptOrientationChangeScreen)
             {
-                promptOrientationChangeScreen.IsAnimating = true;
                 promptOrientationChangeScreen.Reposition();
+                promptOrientationChangeScreen.IsAnimating = true;
             }
         }
 
@@ -584,9 +537,9 @@ namespace HonkTrooper
         {
             if (_scene_main_menu.Children.OfType<AssetsLoadingScreen>().FirstOrDefault(x => x.IsAnimating == false) is AssetsLoadingScreen assetsLoadingScreen)
             {
-                assetsLoadingScreen.IsAnimating = true;
                 assetsLoadingScreen.Reposition();
                 assetsLoadingScreen.SetSubTitle($"... Loading Assets ...");
+                assetsLoadingScreen.IsAnimating = true;
 
                 _ = assetsLoadingScreen.PreloadAssets(async () =>
                 {
@@ -680,14 +633,12 @@ namespace HonkTrooper
         {
             if (_scene_main_menu.Children.OfType<GameStartScreen>().FirstOrDefault(x => x.IsAnimating == false) is GameStartScreen gameStartScreen)
             {
-                gameStartScreen.IsAnimating = true;
                 gameStartScreen.SetTitle(title);
                 gameStartScreen.SetSubTitle(subTitle);
                 gameStartScreen.Reposition();
                 gameStartScreen.Reset();
-
-                if (_player is not null)
-                    gameStartScreen.SetContent(ConstructExtensions.GetRandomContentUri(Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BALLOON).Select(x => x.Uri).ToArray()));
+                gameStartScreen.IsAnimating = true;
+                gameStartScreen.SetContent(ConstructExtensions.GetRandomContentUri(Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BALLOON).Select(x => x.Uri).ToArray()));
             }
         }
 
@@ -739,9 +690,9 @@ namespace HonkTrooper
         {
             if (_scene_main_menu.Children.OfType<PlayerCharacterSelectionScreen>().FirstOrDefault(x => x.IsAnimating == false) is PlayerCharacterSelectionScreen playerCharacterSelectionScreen)
             {
-                playerCharacterSelectionScreen.IsAnimating = true;
                 //playerCharacterSelectionScreen.Reset();
                 playerCharacterSelectionScreen.Reposition();
+                playerCharacterSelectionScreen.IsAnimating = true;
             }
         }
 
@@ -796,9 +747,9 @@ namespace HonkTrooper
         {
             if (_scene_main_menu.Children.OfType<PlayerHonkBombSelectionScreen>().FirstOrDefault(x => x.IsAnimating == false) is PlayerHonkBombSelectionScreen playerHonkBombSelectionScreen)
             {
-                playerHonkBombSelectionScreen.IsAnimating = true;
                 //playerHonkBombSelectionScreen.Reset();
                 playerHonkBombSelectionScreen.Reposition();
+                playerHonkBombSelectionScreen.IsAnimating = true;
             }
         }
 
@@ -838,10 +789,10 @@ namespace HonkTrooper
         {
             if (_scene_main_menu.Children.OfType<InterimScreen>().FirstOrDefault(x => x.IsAnimating == false) is InterimScreen interimScreen)
             {
-                interimScreen.IsAnimating = true;
                 interimScreen.SetTitle(title);
                 interimScreen.Reposition();
                 interimScreen.Reset();
+                interimScreen.IsAnimating = true;
 
                 _scene_main_menu.Play();
             }
@@ -865,7 +816,11 @@ namespace HonkTrooper
             }
         }
 
+        #endregion 
+
         #endregion
+
+        #region Player
 
         #region PlayerBalloon
 
@@ -891,9 +846,9 @@ namespace HonkTrooper
 
         private void GeneratePlayerBalloon()
         {
-            _player.IsAnimating = true;
             _player.Reset();
             _player.Reposition();
+            _player.IsAnimating = true;
 
             switch (_selected_player_template)
             {
@@ -1179,9 +1134,9 @@ namespace HonkTrooper
                 _player.SetAttackStance();
 
                 playerRocket.Reset();
-                playerRocket.IsAnimating = true;
                 playerRocket.SetPopping();
                 playerRocket.Reposition(player: _player);
+                playerRocket.IsAnimating = true;
 
                 GenerateDropShadow(source: playerRocket);
 
@@ -1346,9 +1301,9 @@ namespace HonkTrooper
                 _player.SetAttackStance();
 
                 playerRocketSeeking.Reset();
-                playerRocketSeeking.IsAnimating = true;
                 playerRocketSeeking.SetPopping();
                 playerRocketSeeking.Reposition(player: _player);
+                playerRocketSeeking.IsAnimating = true;
 
                 GenerateDropShadow(source: playerRocketSeeking);
 
@@ -1487,9 +1442,9 @@ namespace HonkTrooper
                 _player.SetAttackStance();
 
                 playerRocketBullsEye.Reset();
-                playerRocketBullsEye.IsAnimating = true;
                 playerRocketBullsEye.SetPopping();
                 playerRocketBullsEye.Reposition(player: _player);
+                playerRocketBullsEye.IsAnimating = true;
 
                 GenerateDropShadow(source: playerRocketBullsEye);
 
@@ -1612,7 +1567,11 @@ namespace HonkTrooper
             }
         }
 
-        #endregion        
+        #endregion
+
+        #endregion
+
+        #region Road
 
         #region RoadSideWalk
 
@@ -1637,21 +1596,21 @@ namespace HonkTrooper
             if (/*!_scene_game.IsSlowMotionActivated &&*/ _scene_game.Children.OfType<RoadSideWalk>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideWalk roadSideWalkTop)
             {
                 roadSideWalkTop.Reset();
-                roadSideWalkTop.IsAnimating = true;
                 roadSideWalkTop.SetPosition(
                     left: (Constants.DEFAULT_SCENE_WIDTH / 2.25 - roadSideWalkTop.Width),
                     top: roadSideWalkTop.Height * -1,
                     z: 0);
+                roadSideWalkTop.IsAnimating = true;
             }
 
             if (/*!_scene_game.IsSlowMotionActivated &&*/ _scene_game.Children.OfType<RoadSideWalk>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideWalk roadSideWalkBottom)
             {
                 roadSideWalkBottom.Reset();
-                roadSideWalkBottom.IsAnimating = true;
                 roadSideWalkBottom.SetPosition(
                     left: (roadSideWalkBottom.Height * -1.5) - 30,
                     top: (Constants.DEFAULT_SCENE_HEIGHT / 5 + roadSideWalkBottom.Height / 2) - 90,
                     z: 0);
+                roadSideWalkBottom.IsAnimating = true;
             }
         }
 
@@ -1699,24 +1658,23 @@ namespace HonkTrooper
         {
             if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideTree>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideTree roadSideTreeTop)
             {
-                roadSideTreeTop.IsAnimating = true;
-
                 roadSideTreeTop.SetPosition(
                   left: (Constants.DEFAULT_SCENE_WIDTH / 5),
                   top: (roadSideTreeTop.Height * -1.1),
                   z: 3);
+                roadSideTreeTop.IsAnimating = true;
+
 
                 //GenerateDropShadow(source: roadSideTreeTop);
             }
 
             if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideTree>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideTree roadSideTreeBottom)
             {
-                roadSideTreeBottom.IsAnimating = true;
-
                 roadSideTreeBottom.SetPosition(
                   left: (roadSideTreeBottom.Width * -1.1),
                   top: (Constants.DEFAULT_SCENE_HEIGHT / 7.8),
                   z: 5);
+                roadSideTreeBottom.IsAnimating = true;
 
                 //GenerateDropShadow(source: roadSideTreeBottom);
             }
@@ -1764,22 +1722,20 @@ namespace HonkTrooper
         {
             if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideHedge>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideHedge roadSideHedgeTop)
             {
-                roadSideHedgeTop.IsAnimating = true;
-
                 roadSideHedgeTop.SetPosition(
                   left: (Constants.DEFAULT_SCENE_WIDTH / 20),
                   top: (roadSideHedgeTop.Height * -1.1),
                   z: 3);
+                roadSideHedgeTop.IsAnimating = true;
             }
 
             if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideHedge>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideHedge roadSideHedgeBottom)
             {
-                roadSideHedgeBottom.IsAnimating = true;
-
                 roadSideHedgeBottom.SetPosition(
                   left: (roadSideHedgeBottom.Width * -1.1),
                   top: (Constants.DEFAULT_SCENE_HEIGHT / 7.9),
                   z: 3);
+                roadSideHedgeBottom.IsAnimating = true;
             }
         }
 
@@ -1825,22 +1781,20 @@ namespace HonkTrooper
         {
             if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideLamp>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideLamp roadSideLampTop)
             {
-                roadSideLampTop.IsAnimating = true;
-
                 roadSideLampTop.SetPosition(
                   left: (Constants.DEFAULT_SCENE_WIDTH / 3 - roadSideLampTop.Width) - 100,
                   top: ((roadSideLampTop.Height * 1.5) * -1) - 50,
                   z: 4);
+                roadSideLampTop.IsAnimating = true;
             }
 
             if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideLamp>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideLamp roadSideLampBottom)
             {
-                roadSideLampBottom.IsAnimating = true;
-
                 roadSideLampBottom.SetPosition(
                   left: (-1.9 * roadSideLampBottom.Width),
                   top: (Constants.DEFAULT_SCENE_HEIGHT / 4.3),
                   z: 5);
+                roadSideLampBottom.IsAnimating = true;
             }
         }
 
@@ -1889,11 +1843,10 @@ namespace HonkTrooper
         {
             if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideBillboard>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideBillboard roadSideBillboardTop)
             {
-                roadSideBillboardTop.IsAnimating = true;
-
                 roadSideBillboardTop.SetPosition(
                   left: (Constants.DEFAULT_SCENE_WIDTH / 3.1),
                   top: (roadSideBillboardTop.Height * -1.1));
+                roadSideBillboardTop.IsAnimating = true;
             }
         }
 
@@ -1939,31 +1892,13 @@ namespace HonkTrooper
 
         private void GenerateRoadSideLightBillboard()
         {
-
-            //    if (_scene_game.Children.OfType<RoadSideLightBillboard>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideLightBillboard roadSideLight)
-            //    {
-            //        roadSideLight.IsAnimating = true;
-
-            //        roadSideLight.SetPosition(
-            //          left: (Constants.DEFAULT_SCENE_WIDTH / 2.80 - roadSideLight.Width) + 15,
-            //          top: ((roadSideLight.Height * 1.5) * -1) + 5,
-            //          z: 4);
-
-            //        GenerateDropShadow(roadSideLight);
-
-            //        LoggerExtensions.Log("RoadSideLightBillboard generated.");
-
-            //        return true;
-            //    }
-
             if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<RoadSideLightBillboard>().FirstOrDefault(x => x.IsAnimating == false) is RoadSideLightBillboard roadSideLight)
             {
-                roadSideLight.IsAnimating = true;
-
                 roadSideLight.SetPosition(
                   left: (-3.5 * roadSideLight.Width) + 10,
                   top: (Constants.DEFAULT_SCENE_HEIGHT / 5.2) + 10,
                   z: 4);
+                roadSideLight.IsAnimating = true;
             }
         }
 
@@ -2010,11 +1945,10 @@ namespace HonkTrooper
         {
             if (_scene_game.Children.OfType<RoadMark>().FirstOrDefault(x => x.IsAnimating == false) is RoadMark roadMark)
             {
-                roadMark.IsAnimating = true;
-
                 roadMark.SetPosition(
                   left: roadMark.Height * -1.5,
                   top: roadMark.Height * -1);
+                roadMark.IsAnimating = true;
             }
         }
 
@@ -2037,6 +1971,10 @@ namespace HonkTrooper
         }
 
         #endregion
+
+        #endregion
+
+        #region UfoBoss
 
         #region UfoBoss
 
@@ -2068,12 +2006,11 @@ namespace HonkTrooper
                 _audioStub.Play(SoundType.BOSS_BACKGROUND_MUSIC);
                 _audioStub.SetVolume(SoundType.AMBIENCE, 0.2);
 
-                ufoBoss.IsAnimating = true;
-
                 ufoBoss.Reset();
                 ufoBoss.SetPosition(
                     left: 0,
                     top: ufoBoss.Height * -1);
+                ufoBoss.IsAnimating = true;
 
                 GenerateDropShadow(source: ufoBoss);
 
@@ -2213,9 +2150,9 @@ namespace HonkTrooper
                 _scene_game.Children.OfType<UfoBossRocket>().FirstOrDefault(x => x.IsAnimating == false) is UfoBossRocket ufoBossRocket)
             {
                 ufoBossRocket.Reset();
-                ufoBossRocket.IsAnimating = true;
                 ufoBossRocket.SetPopping();
                 ufoBossRocket.Reposition(ufoBoss: ufoBoss);
+                ufoBossRocket.IsAnimating = true;
 
                 GenerateDropShadow(source: ufoBossRocket);
                 SetBossRocketDirection(source: ufoBoss, rocket: ufoBossRocket, rocketTarget: _player);
@@ -2313,9 +2250,9 @@ namespace HonkTrooper
                 _scene_game.Children.OfType<UfoBossRocketSeeking>().FirstOrDefault(x => x.IsAnimating == false) is UfoBossRocketSeeking ufoBossRocketSeeking)
             {
                 ufoBossRocketSeeking.Reset();
-                ufoBossRocketSeeking.IsAnimating = true;
                 ufoBossRocketSeeking.SetPopping();
                 ufoBossRocketSeeking.Reposition(UfoBoss: ufoBoss);
+                ufoBossRocketSeeking.IsAnimating = true;
 
                 GenerateDropShadow(source: ufoBossRocketSeeking);
             }
@@ -2376,6 +2313,10 @@ namespace HonkTrooper
 
         #endregion
 
+        #endregion
+
+        #region UfoEnemy
+
         #region UfoEnemy
 
         private void SpawnUfoEnemys()
@@ -2403,9 +2344,9 @@ namespace HonkTrooper
                 _ufo_enemy_threashold.ShouldRelease(_game_score_bar.GetScore()) &&
                 _scene_game.Children.OfType<UfoEnemy>().FirstOrDefault(x => x.IsAnimating == false) is UfoEnemy ufoEnemy)
             {
-                ufoEnemy.IsAnimating = true;
                 ufoEnemy.Reset();
                 ufoEnemy.Reposition();
+                ufoEnemy.IsAnimating = true;
 
                 GenerateDropShadow(source: ufoEnemy);
 
@@ -2519,9 +2460,9 @@ namespace HonkTrooper
                 _scene_game.Children.OfType<UfoEnemyRocket>().FirstOrDefault(x => x.IsAnimating == false) is UfoEnemyRocket ufoEnemyRocket)
             {
                 ufoEnemyRocket.Reset();
-                ufoEnemyRocket.IsAnimating = true;
                 ufoEnemyRocket.SetPopping();
                 ufoEnemyRocket.Reposition(ufoEnemy: ufoEnemy);
+                ufoEnemyRocket.IsAnimating = true;
 
                 GenerateDropShadow(source: ufoEnemyRocket);
             }
@@ -2570,6 +2511,8 @@ namespace HonkTrooper
             }
         }
 
+        #endregion 
+
         #endregion
 
         #region VehicleEnemy
@@ -2595,9 +2538,9 @@ namespace HonkTrooper
         {
             if (!AnyBossExists() && !_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<VehicleEnemy>().FirstOrDefault(x => x.IsAnimating == false) is VehicleEnemy vehicleEnemy)
             {
-                vehicleEnemy.IsAnimating = true;
                 vehicleEnemy.Reset();
                 vehicleEnemy.Reposition();
+                vehicleEnemy.IsAnimating = true;
             }
         }
 
@@ -2668,8 +2611,10 @@ namespace HonkTrooper
             }
         }
 
-        #endregion        
+        #endregion
 
+        #region VehicleBoss
+        
         #region VehicleBoss
 
         private void SpawnVehicleBosses()
@@ -2699,11 +2644,9 @@ namespace HonkTrooper
                     _audioStub.Play(SoundType.BOSS_BACKGROUND_MUSIC);
                     _audioStub.SetVolume(SoundType.AMBIENCE, 0.4);
 
-                    vehicleBoss.IsAnimating = true;
-
                     vehicleBoss.Reset();
                     vehicleBoss.Reposition();
-
+                    vehicleBoss.IsAnimating = true;
                     // set VehicleBoss health
                     vehicleBoss.Health = _vehicle_boss_threashold.GetReleasePointDifference() * 1.5;
 
@@ -2841,12 +2784,11 @@ namespace HonkTrooper
                 _scene_game.Children.OfType<VehicleBossRocket>().FirstOrDefault(x => x.IsAnimating == false) is VehicleBossRocket vehicleBossRocket)
             {
                 vehicleBossRocket.Reset();
-                vehicleBossRocket.IsAnimating = true;
-                vehicleBossRocket.IsGravitatingUpwards = true;
-                vehicleBossRocket.SetPopping();
-
                 vehicleBossRocket.Reposition(vehicleBoss: vehicleBoss);
+                vehicleBossRocket.SetPopping();
+                vehicleBossRocket.IsGravitatingUpwards = true;
                 vehicleBossRocket.AwaitMoveUpRight = true;
+                vehicleBossRocket.IsAnimating = true;
 
                 GenerateDropShadow(source: vehicleBossRocket);
             }
@@ -2902,6 +2844,10 @@ namespace HonkTrooper
 
         #endregion
 
+        #endregion
+
+        #region ZombieBoss
+        
         #region ZombieBoss
 
         private void SpawnZombieBosses()
@@ -2932,12 +2878,11 @@ namespace HonkTrooper
                 _audioStub.Play(SoundType.BOSS_BACKGROUND_MUSIC);
                 _audioStub.SetVolume(SoundType.AMBIENCE, 0.2);
 
-                zombieBoss.IsAnimating = true;
-
                 zombieBoss.Reset();
                 zombieBoss.SetPosition(
                     left: 0,
                     top: zombieBoss.Height * -1);
+                zombieBoss.IsAnimating = true;
 
                 GenerateDropShadow(source: zombieBoss);
 
@@ -3074,9 +3019,9 @@ namespace HonkTrooper
                 _scene_game.Children.OfType<ZombieBossRocketBlock>().FirstOrDefault(x => x.IsAnimating == false) is ZombieBossRocketBlock zombieBossRocket)
             {
                 zombieBossRocket.Reset();
-                zombieBossRocket.IsAnimating = true;
                 zombieBossRocket.SetPopping();
                 zombieBossRocket.Reposition();
+                zombieBossRocket.IsAnimating = true;
 
                 GenerateDropShadow(source: zombieBossRocket);
             }
@@ -3134,8 +3079,12 @@ namespace HonkTrooper
             GenerateFloatingNumber(zombieBossRocket);
         }
 
-        #endregion                
+        #endregion
 
+        #endregion
+
+        #region MafiaBoss
+        
         #region MafiaBoss
 
         private void SpawnMafiaBosses()
@@ -3166,12 +3115,11 @@ namespace HonkTrooper
                 _audioStub.Play(SoundType.BOSS_BACKGROUND_MUSIC);
                 _audioStub.SetVolume(SoundType.AMBIENCE, 0.2);
 
-                mafiaBoss.IsAnimating = true;
-
                 mafiaBoss.Reset();
                 mafiaBoss.SetPosition(
                     left: 0,
                     top: mafiaBoss.Height * -1);
+                mafiaBoss.IsAnimating = true;
 
                 GenerateDropShadow(source: mafiaBoss);
 
@@ -3311,9 +3259,9 @@ namespace HonkTrooper
                 _scene_game.Children.OfType<MafiaBossRocket>().FirstOrDefault(x => x.IsAnimating == false) is MafiaBossRocket mafiaBossRocket)
             {
                 mafiaBossRocket.Reset();
-                mafiaBossRocket.IsAnimating = true;
                 mafiaBossRocket.SetPopping();
                 mafiaBossRocket.Reposition(mafiaBoss: mafiaBoss);
+                mafiaBossRocket.IsAnimating = true;
 
                 GenerateDropShadow(source: mafiaBossRocket);
                 SetBossRocketDirection(source: mafiaBoss, rocket: mafiaBossRocket, rocketTarget: _player);
@@ -3411,10 +3359,10 @@ namespace HonkTrooper
                 _scene_game.Children.OfType<MafiaBossRocketBullsEye>().FirstOrDefault(x => x.IsAnimating == false) is MafiaBossRocketBullsEye mafiaBossRocketBullsEye)
             {
                 mafiaBossRocketBullsEye.Reset();
-                mafiaBossRocketBullsEye.IsAnimating = true;
                 mafiaBossRocketBullsEye.SetPopping();
                 mafiaBossRocketBullsEye.Reposition(mafiaBoss: mafiaBoss);
                 mafiaBossRocketBullsEye.SetTarget(_player.GetCloseHitBox());
+                mafiaBossRocketBullsEye.IsAnimating = true;
 
                 GenerateDropShadow(source: mafiaBossRocketBullsEye);
             }
@@ -3473,6 +3421,8 @@ namespace HonkTrooper
                 mafiaBossRocketBullsEye.SetPosition(left: -3000, top: -3000);
             }
         }
+
+        #endregion 
 
         #endregion
 
@@ -3583,7 +3533,6 @@ namespace HonkTrooper
         {
             if (_scene_game.Children.OfType<Honk>().FirstOrDefault(x => x.IsAnimating == false) is Honk honk)
             {
-                honk.IsAnimating = true;
                 honk.SetPopping();
 
                 honk.Reset();
@@ -3595,6 +3544,7 @@ namespace HonkTrooper
                 honk.SetZ(source.GetZ() + 1);
 
                 source.SetPopping();
+                honk.IsAnimating = true;
             }
         }
 
@@ -3668,7 +3618,6 @@ namespace HonkTrooper
         {
             if (!AnyBossExists() && _scene_game.Children.OfType<Cloud>().FirstOrDefault(x => x.IsAnimating == false) is Cloud cloud)
             {
-                cloud.IsAnimating = true;
                 cloud.Reset();
 
                 var topOrLeft = _random.Next(2);
@@ -3696,6 +3645,7 @@ namespace HonkTrooper
                     default:
                         break;
                 }
+                cloud.IsAnimating = true;
             }
         }
 
@@ -3757,14 +3707,16 @@ namespace HonkTrooper
         {
             if (_scene_game.Children.OfType<DropShadow>().FirstOrDefault(x => x.Id == source.Id) is DropShadow dropShadow)
             {
-                dropShadow.IsAnimating = true;
                 dropShadow.SetZ(source.GetZ() - 2);
                 dropShadow.Reset();
+                dropShadow.IsAnimating = true;
             }
         }
 
         #endregion
 
+        #region Pickup
+        
         #region HealthPickup
 
         private void SpawnHealthPickups()
@@ -3789,7 +3741,6 @@ namespace HonkTrooper
             if (_scene_game.SceneState == SceneState.GAME_RUNNING && HealthPickup.ShouldGenerate(_player.Health) &&
                 _scene_game.Children.OfType<HealthPickup>().FirstOrDefault(x => x.IsAnimating == false) is HealthPickup healthPickup)
             {
-                healthPickup.IsAnimating = true;
                 healthPickup.Reset();
 
                 var topOrLeft = _random.Next(2);
@@ -3816,6 +3767,8 @@ namespace HonkTrooper
                     default:
                         break;
                 }
+
+                healthPickup.IsAnimating = true;
             }
         }
 
@@ -3888,7 +3841,6 @@ namespace HonkTrooper
                 {
                     if (_scene_game.Children.OfType<PowerUpPickup>().FirstOrDefault(x => x.IsAnimating == false) is PowerUpPickup powerUpPickup)
                     {
-                        powerUpPickup.IsAnimating = true;
                         powerUpPickup.Reset();
 
                         var topOrLeft = _random.Next(2);
@@ -3918,6 +3870,8 @@ namespace HonkTrooper
                             default:
                                 break;
                         }
+
+                        powerUpPickup.IsAnimating = true;
                     }
                 }
             }
@@ -4002,7 +3956,58 @@ namespace HonkTrooper
                 _powerUp_health_bar.SetValue(_powerUp_health_bar.GetValue() - 1);
         }
 
-        #endregion     
+        #endregion      
+
+        #endregion
+
+        #region FloatingNumber
+
+        private void SpawnFloatingNumbers()
+        {
+            for (int i = 0; i < 5; i++)
+            {
+                FloatingNumber floatingNumber = new(
+                    animateAction: AnimateFloatingNumber,
+                    recycleAction: RecycleFloatingNumber);
+
+                floatingNumber.SetPosition(
+                    left: -3000,
+                    top: -3000,
+                    z: 10);
+
+                _scene_game.AddToScene(floatingNumber);
+            }
+        }
+
+        private void GenerateFloatingNumber(HealthyConstruct source)
+        {
+            if (!_scene_game.IsSlowMotionActivated && _scene_game.Children.OfType<FloatingNumber>().FirstOrDefault(x => x.IsAnimating == false) is FloatingNumber floatingNumberTop)
+            {
+                floatingNumberTop.Reset(source.HitPoint);
+                floatingNumberTop.Reposition(source);
+                floatingNumberTop.IsAnimating = true;
+            }
+        }
+
+        private void AnimateFloatingNumber(Construct floatingNumber)
+        {
+            FloatingNumber floatingNumber1 = floatingNumber as FloatingNumber;
+            floatingNumber1.Move();
+            floatingNumber1.DepleteOnScreenDelay();
+        }
+
+        private void RecycleFloatingNumber(Construct floatingNumber)
+        {
+            FloatingNumber floatingNumber1 = floatingNumber as FloatingNumber;
+
+            if (floatingNumber1.IsDepleted)
+            {
+                floatingNumber.IsAnimating = false;
+                floatingNumber.SetPosition(left: -3000, top: -3000);
+            }
+        }
+
+        #endregion
 
         #region Controller
 
