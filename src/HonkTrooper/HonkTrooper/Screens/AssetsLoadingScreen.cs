@@ -112,16 +112,16 @@ namespace HonkTrooper
 
         #region Methods
 
-        private void SetSubTitle(string subTitle)
+        public void SetSubTitle(string subTitle)
         {
             _sub_title_text.Text = subTitle;
         }
 
-        public async Task PreloadAssets(Func<Task<bool>> preloadedAction)
+        public async Task PreloadAssets(Action preloadedAction)
         {
             if (_assets_loaded)
             {
-                await preloadedAction();
+                preloadedAction();
             }
             else
             {
@@ -132,12 +132,12 @@ namespace HonkTrooper
 
                 _progressBar.Maximum = Constants.CONSTRUCT_TEMPLATES.Length;
 
-                SetSubTitle($"... Loading Assets ({_progressBar.Value:00}/{_progressBar.Maximum:00}) ...");
+                //SetSubTitle($"... Loading Assets ({_progressBar.Value:00}/{_progressBar.Maximum:00}) ...");
 
                 await AssetsPreCache.PreloadImageAssets(() =>
                 {
                     _progressBar.Value++;
-                    SetSubTitle($"... Loading Assets ({_progressBar.Value:00}/{_progressBar.Maximum:00}) ...");
+                    //SetSubTitle($"... Loading Assets ({_progressBar.Value:00}/{_progressBar.Maximum:00}) ...");
                     return true;
                 });
 
@@ -145,7 +145,7 @@ namespace HonkTrooper
                 {
                     await Task.Delay(300);
                     _assets_loaded = true;
-                    await preloadedAction();
+                    preloadedAction();
                 }
             }
         }
