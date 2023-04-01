@@ -3,7 +3,7 @@ using System.Linq;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI;
-using CommunityToolkit.WinUI.UI.Controls;
+using Microsoft.UI.Xaml.Controls;
 
 namespace HonkTrooper
 {
@@ -15,7 +15,7 @@ namespace HonkTrooper
         private readonly Uri[] _blast_uris;
         private readonly Uri[] _bang_uris;
 
-        private readonly ImageEx _content_image;
+        private readonly Image _content_image;
         private readonly BitmapImage _bitmapImage;
 
         private readonly AudioStub _audioStub;
@@ -47,13 +47,13 @@ namespace HonkTrooper
                 Source = _bitmapImage,
                 Height = this.Height,
                 Width = this.Width,
-                IsCacheEnabled = true,
+                
             };
 
             SetChild(_content_image);
 
-            BorderThickness = new Microsoft.UI.Xaml.Thickness(Constants.DEFAULT_BLAST_RING_BORDER_THICKNESS);
-            CornerRadius = new Microsoft.UI.Xaml.CornerRadius(Constants.DEFAULT_BLAST_RING_CORNER_RADIUS);
+            //BorderThickness = new Microsoft.UI.Xaml.Thickness(Constants.DEFAULT_BLAST_RING_BORDER_THICKNESS);
+            //CornerRadius = new Microsoft.UI.Xaml.CornerRadius(Constants.DEFAULT_BLAST_RING_CORNER_RADIUS);
 
             IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
             Speed = Constants.DEFAULT_CONSTRUCT_SPEED + 1;
@@ -84,7 +84,7 @@ namespace HonkTrooper
             _audioStub.Play(SoundType.CRACKER_DROP);
 
             Opacity = 1;
-            BorderBrush = new SolidColorBrush(Colors.Transparent);
+            //BorderBrush = new SolidColorBrush(Colors.Transparent);
 
             SetScaleTransform(1);
             SetRotation(0);
@@ -132,7 +132,7 @@ namespace HonkTrooper
                         _audioStub.Play(SoundType.CRACKER_BLAST);
                         uri = ConstructExtensions.GetRandomContentUri(_blast_uris);
 
-                        BorderBrush = new SolidColorBrush(Colors.Goldenrod);
+                        //BorderBrush = new SolidColorBrush(Colors.Goldenrod);
                     }
                     break;
                 case PlayerHonkBombTemplate.TrashCan:
@@ -140,7 +140,7 @@ namespace HonkTrooper
                         _audioStub.Play(SoundType.TRASH_CAN_HIT);
                         uri = ConstructExtensions.GetRandomContentUri(_bang_uris);
 
-                        BorderBrush = new SolidColorBrush(Colors.GreenYellow);
+                        //BorderBrush = new SolidColorBrush(Colors.GreenYellow);
                     }
                     break;
                 default:

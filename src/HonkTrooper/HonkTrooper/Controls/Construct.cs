@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace HonkTrooper
 {
-    public partial class Construct : ConstructBase
+    public partial class Construct : CanvasElement
     {
         public Construct()
         {
@@ -57,9 +57,10 @@ namespace HonkTrooper
             RecycleAction(this);
         }
 
-        public void SetChild(UIElement uIElement)
+        public void SetChild(UIElement content)
         {
-            Child = uIElement;
+            Child = content;
+            //Content = content;
         }
 
         public void SetConstructSize()

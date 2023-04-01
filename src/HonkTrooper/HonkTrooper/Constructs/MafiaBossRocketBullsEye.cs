@@ -1,4 +1,4 @@
-﻿using CommunityToolkit.WinUI.UI.Controls;
+﻿using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
@@ -15,7 +15,7 @@ namespace HonkTrooper
         private readonly Uri[] _bomb_uris;
         private readonly Uri[] _bomb_blast_uris;
 
-        private readonly ImageEx _content_image;
+        private readonly Image _content_image;
         private readonly BitmapImage _bitmapImage;
 
         private double _autoBlastDelay;
@@ -51,13 +51,13 @@ namespace HonkTrooper
                 Source = _bitmapImage,
                 Height = this.Height,
                 Width = this.Width,
-                IsCacheEnabled = true,
+                
             };
 
             SetChild(_content_image);
 
-            BorderThickness = new Microsoft.UI.Xaml.Thickness(Constants.DEFAULT_BLAST_RING_BORDER_THICKNESS);
-            CornerRadius = new Microsoft.UI.Xaml.CornerRadius(Constants.DEFAULT_BLAST_RING_CORNER_RADIUS);
+            //BorderThickness = new Microsoft.UI.Xaml.Thickness(Constants.DEFAULT_BLAST_RING_BORDER_THICKNESS);
+            //CornerRadius = new Microsoft.UI.Xaml.CornerRadius(Constants.DEFAULT_BLAST_RING_CORNER_RADIUS);
 
             Speed = Constants.DEFAULT_CONSTRUCT_SPEED;
             IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
@@ -85,7 +85,7 @@ namespace HonkTrooper
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_uris);
             _bitmapImage.UriSource = uri;
 
-            BorderBrush = new SolidColorBrush(Colors.Transparent);
+            //BorderBrush = new SolidColorBrush(Colors.Transparent);
 
             SetScaleTransform(1);
             SetRotation(0);
@@ -180,7 +180,7 @@ namespace HonkTrooper
             SetRotation(0);
             SetScaleTransform(Constants.DEFAULT_BLAST_SHRINK_SCALE);
 
-            BorderBrush = new SolidColorBrush(Colors.Chocolate);
+            //BorderBrush = new SolidColorBrush(Colors.Chocolate);
 
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_blast_uris);
             _bitmapImage.UriSource = uri;

@@ -1,11 +1,12 @@
-﻿using Microsoft.UI.Xaml.Controls;
+﻿using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using System;
 using Windows.Foundation;
 
 namespace HonkTrooper
 {
-    public partial class ConstructBase : Border
+    public partial class CanvasElement : Border
     {
         #region Fields
 
@@ -25,7 +26,7 @@ namespace HonkTrooper
 
         #region Ctor
 
-        public ConstructBase()
+        public CanvasElement()
         {
             RenderTransformOrigin = new Point(0.5, 0.5);
             RenderTransform = _compositeTransform;
@@ -189,7 +190,7 @@ namespace HonkTrooper
         {
             Opacity -= 0.005;
         }
-        
+
         public void Fade(double fade)
         {
             Opacity -= fade;
@@ -283,7 +284,7 @@ namespace HonkTrooper
             {
                 if (_compositeTransform.Rotation < 0)
                 {
-                    _compositeTransform.Rotation += rotationSpeed;                    
+                    _compositeTransform.Rotation += rotationSpeed;
                     return;
                 }
 

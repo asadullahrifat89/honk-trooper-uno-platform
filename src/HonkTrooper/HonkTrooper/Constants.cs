@@ -29,41 +29,43 @@ namespace HonkTrooper
         public const double DEFAULT_BLAST_RING_BORDER_THICKNESS = 10;
         public const double DEFAULT_BLAST_SHRINK_SCALE = 0.4;
 
+        public const double DEFAULT_ROCKET_SIZE = 80;
+
         public const double DEFAULT_HOVERING_SCREEN_OPACITY = 0.9;
 
         public static (ConstructType ConstructType, double Width, double Height)[] CONSTRUCT_SIZES = new (ConstructType, double, double)[]
         {
             new (ConstructType.PLAYER_BALLOON, 165, 165),
-            new (ConstructType.PLAYER_ROCKET, 100, 100),
-            new (ConstructType.PLAYER_HONK_BOMB, 90, 90),
-            new (ConstructType.PLAYER_ROCKET_SEEKING, 100, 100),
-            new (ConstructType.PLAYER_ROCKET_BULLS_EYE, 100, 100),
+            new (ConstructType.PLAYER_ROCKET, DEFAULT_ROCKET_SIZE, DEFAULT_ROCKET_SIZE),
+            new (ConstructType.PLAYER_HONK_BOMB, DEFAULT_ROCKET_SIZE, DEFAULT_ROCKET_SIZE),
+            new (ConstructType.PLAYER_ROCKET_SEEKING, DEFAULT_ROCKET_SIZE, DEFAULT_ROCKET_SIZE),
+            new (ConstructType.PLAYER_ROCKET_BULLS_EYE, DEFAULT_ROCKET_SIZE, DEFAULT_ROCKET_SIZE),
 
             new (ConstructType.UFO_BOSS, 180, 180),
-            new (ConstructType.UFO_BOSS_ROCKET, 100, 100),
-            new (ConstructType.UFO_BOSS_ROCKET_SEEKING, 100, 100),
+            new (ConstructType.UFO_BOSS_ROCKET, DEFAULT_ROCKET_SIZE, DEFAULT_ROCKET_SIZE),
+            new (ConstructType.UFO_BOSS_ROCKET_SEEKING, DEFAULT_ROCKET_SIZE, DEFAULT_ROCKET_SIZE),
 
             new (ConstructType.MAFIA_BOSS, 180, 180),
-            new (ConstructType.MAFIA_BOSS_ROCKET, 100, 100),
-            new (ConstructType.MAFIA_BOSS_ROCKET_BULLS_EYE, 100, 100),
+            new (ConstructType.MAFIA_BOSS_ROCKET, DEFAULT_ROCKET_SIZE, DEFAULT_ROCKET_SIZE),
+            new (ConstructType.MAFIA_BOSS_ROCKET_BULLS_EYE, DEFAULT_ROCKET_SIZE, DEFAULT_ROCKET_SIZE),
 
             new (ConstructType.ZOMBIE_BOSS, 180, 180),
-            new (ConstructType.ZOMBIE_BOSS_ROCKET_BLOCK, 220, 220),
+            new (ConstructType.ZOMBIE_BOSS_ROCKET_BLOCK, 200, 200),
 
             new (ConstructType.UFO_ENEMY, 160, 160),
-            new (ConstructType.UFO_ENEMY_ROCKET, 100, 100),
+            new (ConstructType.UFO_ENEMY_ROCKET, DEFAULT_ROCKET_SIZE, DEFAULT_ROCKET_SIZE),
 
             new (ConstructType.VEHICLE_ENEMY_SMALL, 230, 230),
             new (ConstructType.VEHICLE_ENEMY_LARGE, 260, 260),
 
             new (ConstructType.VEHICLE_BOSS, 260, 260),
-            new (ConstructType.VEHICLE_BOSS_ROCKET, 120, 120),
+            new (ConstructType.VEHICLE_BOSS_ROCKET, DEFAULT_ROCKET_SIZE + 20, DEFAULT_ROCKET_SIZE + 20),
 
             new (ConstructType.CLOUD, 260, 260),
             new (ConstructType.HONK, 90, 90),
             new (ConstructType.FLOATING_NUMBER, 50, 50),
 
-            new (ConstructType.ROAD_MARK, 512, 512),            
+            new (ConstructType.ROAD_MARK, 512, 512),
 
             new (ConstructType.ROAD_SIDE_TREE, 470, 470),
             new (ConstructType.ROAD_SIDE_HEDGE, 470, 470),
@@ -88,8 +90,6 @@ namespace HonkTrooper
 
             new (ConstructType.ROAD_SIDE_TREE, new Uri("ms-appx:///HonkTrooper/Assets/Images/tree_1.png")),
             new (ConstructType.ROAD_SIDE_TREE, new Uri("ms-appx:///HonkTrooper/Assets/Images/tree_2.png")),
-            //new (ConstructType.ROAD_SIDE_TREE, new Uri("ms-appx:///HonkTrooper/Assets/Images/tree_3.png")),
-            //new (ConstructType.ROAD_SIDE_TREE, new Uri("ms-appx:///HonkTrooper/Assets/Images/tree_4.png")),
 
             new (ConstructType.ROAD_SIDE_LAMP, new Uri("ms-appx:///HonkTrooper/Assets/Images/road_side_lamp_1.png")),
             new (ConstructType.ROAD_SIDE_LAMP, new Uri("ms-appx:///HonkTrooper/Assets/Images/road_side_lamp_2.png")),
@@ -99,10 +99,8 @@ namespace HonkTrooper
             new (ConstructType.ROAD_SIDE_LIGHT_BILLBOARD, new Uri("ms-appx:///HonkTrooper/Assets/Images/road_side_light_billboard_3.png")),
 
             new (ConstructType.ROAD_SIDE_HEDGE, new Uri("ms-appx:///HonkTrooper/Assets/Images/road_side_hedge_1.png")),
-            //new (ConstructType.ROAD_SIDE_HEDGE, new Uri("ms-appx:///HonkTrooper/Assets/Images/road_side_hedge_2.png")),
 
             new (ConstructType.ROAD_SIDE_WALK, new Uri("ms-appx:///HonkTrooper/Assets/Images/road_side_walk_1.png")),
-            //new (ConstructType.ROAD_SIDE_WALK, new Uri("ms-appx:///HonkTrooper/Assets/Images/road_side_walk_2.png")),
 
             new (ConstructType.ROAD_SIDE_BILLBOARD, new Uri("ms-appx:///HonkTrooper/Assets/Images/billboard_1.png")),
             new (ConstructType.ROAD_SIDE_BILLBOARD, new Uri("ms-appx:///HonkTrooper/Assets/Images/billboard_2.png")),
@@ -315,7 +313,6 @@ namespace HonkTrooper
             new (SoundType.ORB_LAUNCH, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/orb_launch.mp3")),
 
             new (SoundType.LEVEL_UP, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/level_up.mp3")),
-
             new (SoundType.OPTION_SELECT, new Uri("ms-appx:///HonkTrooper/Assets/Sounds/option_select.mp3")),
         };
     }

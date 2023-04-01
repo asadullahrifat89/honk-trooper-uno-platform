@@ -2,11 +2,17 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI;
 using System;
+using Microsoft.UI.Xaml.Controls;
 
 namespace HonkTrooper
 {
     public partial class DropShadow : MovableConstruct
     {
+        #region Fields
+
+        
+        #endregion
+
         #region Properties
 
         private Construct ParentConstruct { get; set; }
@@ -26,11 +32,11 @@ namespace HonkTrooper
             AnimateAction = animateAction;
             RecycleAction = recycleAction;
 
-            SetConstructSize();
-
             Background = new SolidColorBrush(Colors.Black);
             CornerRadius = new CornerRadius(100);
             Opacity = 0.3;
+
+            SetConstructSize();
 
             Speed = Constants.DEFAULT_CONSTRUCT_SPEED;
             IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.UI.Xaml.Media.Imaging;
-using CommunityToolkit.WinUI.UI.Controls;
+using Microsoft.UI.Xaml.Controls;
 
 namespace HonkTrooper
 {
@@ -12,7 +12,7 @@ namespace HonkTrooper
         private readonly Random _random;
         private readonly Uri[] _cloud_uris;
 
-        private readonly ImageEx _content_image;
+        private readonly Image _content_image;
         private readonly BitmapImage _bitmapImage;
 
         #endregion
@@ -41,7 +41,7 @@ namespace HonkTrooper
                 Source = _bitmapImage,
                 Height = this.Height,
                 Width = this.Width,
-                IsCacheEnabled = true,
+                
             };
 
             SetChild(_content_image);
