@@ -25,7 +25,7 @@
 
             if (IsDead)
             {
-                SpeedOffset = Constants.DEFAULT_SPEED_OFFSET - 1;
+                Speed = Constants.DEFAULT_CONSTRUCT_SPEED - 1;
                 IsAttacking = false;
             }
         }

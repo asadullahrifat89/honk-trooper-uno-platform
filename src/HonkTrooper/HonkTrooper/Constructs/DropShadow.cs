@@ -33,7 +33,7 @@ namespace HonkTrooper
             CornerRadius = new CornerRadius(100);
             Opacity = 0.3;
 
-            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;
+            Speed = Constants.DEFAULT_CONSTRUCT_SPEED;
             IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
         }
 

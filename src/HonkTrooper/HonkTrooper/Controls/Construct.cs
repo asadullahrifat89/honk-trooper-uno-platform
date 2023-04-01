@@ -6,6 +6,11 @@ namespace HonkTrooper
 {
     public partial class Construct : ConstructBase
     {
+        public Construct()
+        {
+            Speed = Constants.DEFAULT_CONSTRUCT_SPEED;
+        }
+
         #region Properties
 
         /// <summary>
@@ -24,9 +29,9 @@ namespace HonkTrooper
         public Action<Construct> RecycleAction { get; set; }
 
         /// <summary>
-        /// Adds an offset while animating this construct with the scene speed.
+        /// Sets the movement speed.
         /// </summary>
-        public double SpeedOffset { get; set; } = 0;
+        public double Speed { get; set; }
 
         /// <summary>
         /// Displacement value that determines isometric movement.
@@ -44,7 +49,7 @@ namespace HonkTrooper
 
         public double GetMovementSpeed()
         {
-            return Scene.Speed + SpeedOffset;
+            return Speed;
         }
 
         public void Animate()
