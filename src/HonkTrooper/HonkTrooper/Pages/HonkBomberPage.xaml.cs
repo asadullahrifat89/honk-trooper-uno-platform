@@ -4229,7 +4229,7 @@ namespace HonkTrooper
         #endregion
 
         #region Orientation
-        
+
         private void DisplayInformation_OrientationChanged(DisplayInformation sender, object args)
         {
             if (_scene_game.SceneState == SceneState.GAME_RUNNING) // if screen orientation is changed while game is running, pause the game
@@ -4272,7 +4272,7 @@ namespace HonkTrooper
             }
 
             LoggingExtensions.Log($"CurrentOrientation: {sender.CurrentOrientation}");
-        } 
+        }
 
         #endregion
 

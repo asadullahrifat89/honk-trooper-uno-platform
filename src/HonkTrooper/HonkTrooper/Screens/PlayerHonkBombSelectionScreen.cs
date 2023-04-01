@@ -1,6 +1,6 @@
-﻿using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI;
+﻿using Microsoft.UI;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
@@ -128,7 +128,7 @@ namespace HonkTrooper
             ToggleButton player1btn = new() { Margin = new Thickness(5), CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS - 10) };
             ToggleButton player2btn = new() { Margin = new Thickness(5), CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS - 10) };
 
-            var crackerUris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.HONK_BUSTER).Select(x => x.Uri).ToArray();            
+            var crackerUris = Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.HONK_BUSTER).Select(x => x.Uri).ToArray();
 
             player1btn.Content = new Image()
             {

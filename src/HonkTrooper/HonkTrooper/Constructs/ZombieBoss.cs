@@ -1,7 +1,7 @@
-﻿using System;
-using System.Linq;
+﻿using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media.Imaging;
-using Microsoft.UI.Xaml.Controls;
+using System;
+using System.Linq;
 
 namespace HonkTrooper
 {
@@ -56,7 +56,7 @@ namespace HonkTrooper
                 Source = _bitmapImage,
                 Height = this.Height,
                 Width = this.Width,
-                
+
             };
 
             SetChild(_content_image);

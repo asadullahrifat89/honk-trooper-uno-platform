@@ -55,7 +55,7 @@ namespace HonkTrooper
                                         left: (xLaneWidth - Width / 1.5),
                                         top: (Height * -1) + randomY);
                                 }
-                                break;                          
+                                break;
                             default:
                                 break;
                         }
@@ -80,7 +80,7 @@ namespace HonkTrooper
                                         left: Width * -1,
                                         top: (yLaneHeight - Height / 3) + randomY);
                                 }
-                                break;                           
+                                break;
                             default:
                                 break;
                         }
@@ -90,7 +90,7 @@ namespace HonkTrooper
                     break;
             }
         }
-      
+
         public bool Honk()
         {
             if (WillHonk)

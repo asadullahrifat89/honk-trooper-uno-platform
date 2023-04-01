@@ -49,7 +49,7 @@ namespace HonkTrooper
                 Source = _bitmapImage,
                 Height = this.Height,
                 Width = this.Width,
-                
+
             };
 
             SetChild(_content_image);

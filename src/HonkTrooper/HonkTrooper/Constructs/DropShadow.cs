@@ -1,6 +1,6 @@
-﻿using Microsoft.UI.Xaml.Media;
+﻿using Microsoft.UI;
 using Microsoft.UI.Xaml;
-using Microsoft.UI;
+using Microsoft.UI.Xaml.Media;
 using System;
 
 namespace HonkTrooper
@@ -9,7 +9,7 @@ namespace HonkTrooper
     {
         #region Fields
 
-        
+
         #endregion
 
         #region Properties

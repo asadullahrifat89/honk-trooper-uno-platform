@@ -846,7 +846,7 @@ namespace HonkTrooper
         #endregion
 
         #region Pause
-        
+
 
         private void SetPauseButton()
         {
