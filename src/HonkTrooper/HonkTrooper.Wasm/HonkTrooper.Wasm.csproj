@@ -24,6 +24,7 @@
 
     <!-- Temporarily uncomment to generate an AOT profile https://aka.platform.uno/wasm-aot-profile -->
     <!--<WasmShellGenerateAOTProfile>true</WasmShellGenerateAOTProfile>-->
+
     <WasmPWAManifestFile>manifest.webmanifest</WasmPWAManifestFile>
   </PropertyGroup>
   <PropertyGroup>
