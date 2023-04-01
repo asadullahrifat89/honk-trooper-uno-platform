@@ -33,7 +33,7 @@ namespace HonkTrooper
         private PeriodicTimer _gameViewTimer;
         private readonly TimeSpan _frameTime = TimeSpan.FromMilliseconds(Constants.DEFAULT_FRAME_TIME);
 
-        //private readonly List<Construct> _destroyables = new();
+        private readonly List<Construct> _destroyables = new();
         private readonly List<Generator> _generators = new();
 
         private double _slowMotionDelay;
@@ -166,10 +166,10 @@ namespace HonkTrooper
             }
         }
 
-        //public void DisposeFromScene(Construct construct)
-        //{
-        //    _destroyables.Add(construct);
-        //}
+        public void DisposeFromScene(Construct construct)
+        {
+            _destroyables.Add(construct);
+        }
 
         public async void Play()
         {
@@ -223,7 +223,7 @@ namespace HonkTrooper
             _canvas.Children.Clear();
 
             _generators.Clear();
-            //_destroyables.Clear();
+            _destroyables.Clear();
 
 #if DEBUG
             _stopwatch?.Stop();
@@ -247,12 +247,12 @@ namespace HonkTrooper
             }
 
             // remove the destroyables from the scene
-            //foreach (Construct destroyable in _destroyables)
-            //{as
-            //    Children.Remove(destroyable);
-            //}
+            foreach (Construct destroyable in _destroyables)
+            {
+                Children.Remove(destroyable);
+            }
 
-            //_destroyables.Clear();
+            _destroyables.Clear();
 
             DepleteSlowMotion();
 
