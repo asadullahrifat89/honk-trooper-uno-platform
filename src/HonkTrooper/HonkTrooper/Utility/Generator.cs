@@ -23,18 +23,18 @@ namespace HonkTrooper
         #endregion
 
         public Generator(
-            int generationDelay,
-            Action generationAction,
-            Action startUpAction,
-            bool randomizeGenerationDelay = false)
+            int delay,
+            Action elaspedAction,
+            Action spawnedAction,
+            bool scramble = false)
         {
-            _randomizeGenerationDelay = randomizeGenerationDelay;
-            _generationDelay = generationDelay;
+            _randomizeGenerationDelay = scramble;
+            _generationDelay = delay;
 
             _generationDelayInCount = _generationDelay;
 
-            GenerationAction = generationAction;
-            startUpAction();
+            GenerationAction = elaspedAction;
+            spawnedAction();
         }
 
         #region Methods
