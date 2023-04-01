@@ -1,4 +1,5 @@
-﻿using Windows.Graphics.Display;
+﻿using System.Linq;
+using Windows.Graphics.Display;
 using Windows.UI.ViewManagement;
 
 namespace HonkTrooper
@@ -13,17 +14,32 @@ namespace HonkTrooper
 
         public static DisplayInformation DisplayInformation => DisplayInformation.GetForCurrentView();
 
-        public static ApplicationView ApplicationView => ApplicationView.GetForCurrentView();
+        private static ApplicationView ApplicationView => ApplicationView.GetForCurrentView();
 
-        public static DisplayOrientations RequiredScreenOrientation { get; set; }
+        private static DisplayOrientations[] RequiredScreenOrientations { get; set; }
 
         #endregion
 
         #region Methods
 
+        public static void SetRequiredDisplayOrientations(params DisplayOrientations[] displayOrientations)
+        {
+            RequiredScreenOrientations = displayOrientations;
+        }
+
+        public static void ChangeDisplayOrientationAsRequired()
+        {
+            SetScreenOrientation(RequiredScreenOrientations.FirstOrDefault());
+        }
+
+        public static bool IsScreenInRequiredOrientation()
+        {
+            return RequiredScreenOrientations.Any(x => x == DisplayInformation.CurrentOrientation);
+        }
+
         public static void EnterFullScreen(bool toggleFullScreen)
         {
-//#if !DEBUG
+            //#if !DEBUG
             if (ApplicationView is not null)
             {
                 if (toggleFullScreen)
@@ -35,22 +51,7 @@ namespace HonkTrooper
                     ApplicationView.ExitFullScreenMode();
                 }
             }
-//#endif
-        }
-
-        public static void SetScreenOrientation(DisplayOrientations displayOrientation)
-        {
-            var currentOrientation = DisplayInformation?.CurrentOrientation;
-
-            LoggingExtensions.Log($"{currentOrientation}");
-
-            if (currentOrientation is not null && currentOrientation != displayOrientation)
-                DisplayInformation.AutoRotationPreferences = displayOrientation;
-        }
-
-        public static DisplayOrientations? GetScreenOrienation()
-        {
-            return DisplayInformation?.CurrentOrientation;
+            //#endif
         }
 
         public static double GetScreenSpaceScaling()
@@ -72,6 +73,16 @@ namespace HonkTrooper
             };
         }
 
-#endregion
+        private static void SetScreenOrientation(DisplayOrientations displayOrientation)
+        {
+            var currentOrientation = DisplayInformation?.CurrentOrientation;
+
+            LoggingExtensions.Log($"{currentOrientation}");
+
+            if (currentOrientation is not null && currentOrientation != displayOrientation)
+                DisplayInformation.AutoRotationPreferences = displayOrientation;
+        }
+
+        #endregion
     }
 }

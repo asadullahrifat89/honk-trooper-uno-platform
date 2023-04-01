@@ -178,9 +178,7 @@ namespace HonkTrooper
                 this.RegisterHtmlEventHandler("ended", EndedEvent);
             }
 
-#if DEBUG
             LoggingExtensions.Log("audio source: " + uri + " volume: " + volume.ToString() + " loop: " + loop.ToString().ToLower());
-#endif
         }
 
         public void SetSource(Uri uri)
