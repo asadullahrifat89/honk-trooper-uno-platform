@@ -5,11 +5,11 @@ using System;
 
 namespace HonkTrooper
 {
-    public partial class ImgageElement : Image
-    {
+    public partial class ImageElement : Image
+    {        
         private readonly BitmapImage _bitmapImage;
 
-        public ImgageElement(Uri uri, double width, double height)
+        public ImageElement(Uri uri, double width, double height)
         {
             _bitmapImage = new BitmapImage(uriSource: uri);
             Source = _bitmapImage;
@@ -21,6 +21,11 @@ namespace HonkTrooper
         public void SetSource(Uri uri)
         {
             _bitmapImage.UriSource = uri;
+        }
+
+        public Uri GetSourceUri()
+        {
+            return _bitmapImage.UriSource;
         }
     }
 }

@@ -11,7 +11,7 @@ namespace HonkTrooper
     {
         #region Fields
 
-        private readonly ImgageElement _content_image;
+        private readonly ImageElement _content_image;
         private readonly Uri[] _side_walk_uris;
 
         #endregion

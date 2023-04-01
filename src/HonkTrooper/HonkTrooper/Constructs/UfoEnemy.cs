@@ -12,7 +12,7 @@ namespace HonkTrooper
         private readonly Random _random;
         private readonly Uri[] _enemy_uris;
 
-        private readonly ImgageElement _content_image;
+        private readonly ImageElement _content_image;
 
         private double _attackDelay;
 

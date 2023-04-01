@@ -31,7 +31,7 @@ namespace HonkTrooper
         private double _hitStanceDelay;
         private readonly double _hitStanceDelayDefault = 1.5;
 
-        private readonly ImgageElement _content_image;
+        private readonly ImageElement _content_image;
         private readonly AudioStub _audioStub;
 
         private MovementDirection _movementDirection;

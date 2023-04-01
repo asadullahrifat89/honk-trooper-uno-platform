@@ -13,7 +13,7 @@ namespace HonkTrooper
         private readonly Uri[] _blast_uris;
         private readonly Uri[] _bang_uris;
 
-        private readonly ImgageElement _content_image;
+        private readonly ImageElement _content_image;
         private readonly AudioStub _audioStub;
 
         #endregion

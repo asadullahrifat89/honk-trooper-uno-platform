@@ -10,7 +10,7 @@ namespace HonkTrooper
         #region Fields
 
         private readonly Random _random;
-        private readonly ImgageElement _content_image;
+        private readonly ImageElement _content_image;
         private readonly AudioStub _audioStub;
         #endregion
 

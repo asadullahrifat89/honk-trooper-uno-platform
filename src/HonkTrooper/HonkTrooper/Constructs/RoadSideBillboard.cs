@@ -9,7 +9,7 @@ namespace HonkTrooper
     {
         #region Fields
 
-        private readonly ImgageElement _content_image;
+        private readonly ImageElement _content_image;
         private readonly Uri[] _billboard_uris;
 
         #endregion

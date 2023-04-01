@@ -10,7 +10,7 @@ namespace HonkTrooper
         #region Fields
 
         private readonly Uri[] _health_uris;
-        private readonly ImgageElement _content_image;
+        private readonly ImageElement _content_image;
         private readonly AudioStub _audioStub;
 
         #endregion

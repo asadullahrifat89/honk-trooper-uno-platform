@@ -13,10 +13,9 @@ namespace HonkTrooper
 
         public static Uri GetContentUri(this Construct construct)
         {
-            if (construct.Child is not null && construct.Child is Image image)
+            if (construct.Child is not null && construct.Child is ImageElement image)
             {
-                var bitmapImage = image.Source as BitmapImage;
-                return bitmapImage.UriSource;
+                return image.GetSourceUri();
             }
             else
             {

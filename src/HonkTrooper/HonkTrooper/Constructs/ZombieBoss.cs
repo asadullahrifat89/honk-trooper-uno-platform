@@ -16,7 +16,7 @@ namespace HonkTrooper
 
         private double _changeMovementPatternDelay;
 
-        private readonly ImgageElement _content_image;
+        private readonly ImageElement _content_image;
 
         private double _hitStanceDelay;
         private readonly double _hitStanceDelayDefault = 1.5;
