@@ -80,7 +80,7 @@ namespace HonkTrooper
 
             BorderBrush = new SolidColorBrush(Colors.Transparent);
 
-            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET + 2;
+            Speed = Constants.DEFAULT_CONSTRUCT_SPEED + 2;
             IsBlasting = false;
 
             AwaitMoveDownLeft = false;
@@ -108,7 +108,7 @@ namespace HonkTrooper
 
             BorderBrush = new SolidColorBrush(Colors.Crimson);
 
-            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET - 1;
+            Speed = Constants.DEFAULT_CONSTRUCT_SPEED - 1;
 
             var uri = ConstructExtensions.GetRandomContentUri(_bomb_blast_uris);
             _bitmapImage.UriSource = uri;

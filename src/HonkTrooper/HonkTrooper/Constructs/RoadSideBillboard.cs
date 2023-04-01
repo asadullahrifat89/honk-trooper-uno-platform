@@ -45,7 +45,7 @@ namespace HonkTrooper
 
             SetChild(_content_image);
 
-            SpeedOffset = Constants.DEFAULT_SPEED_OFFSET;
+            Speed = Constants.DEFAULT_CONSTRUCT_SPEED;
             IsometricDisplacement = Constants.DEFAULT_ISOMETRIC_DISPLACEMENT;
             DropShadowDistance = -10;
         }
