@@ -10,10 +10,7 @@ namespace HonkTrooper
         #region Fields
 
         private readonly Uri[] _honk_uris;
-
-        private readonly Image _content_image;
-        private readonly BitmapImage _bitmapImage;
-
+        private readonly ImgageElement _content_image;
         private readonly AudioStub _audioStub;
 
         #endregion
@@ -34,15 +31,7 @@ namespace HonkTrooper
             SetConstructSize(ConstructType);
 
             var uri = ConstructExtensions.GetRandomContentUri(_honk_uris);
-            _bitmapImage = new BitmapImage(uriSource: uri);
-
-            _content_image = new()
-            {
-                Source = _bitmapImage,
-                Height = this.Height,
-                Width = this.Width,
-
-            };
+            _content_image = new(uri: uri, width: this.Width, height: this.Height);
 
             SetChild(_content_image);
 
