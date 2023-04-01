@@ -605,12 +605,13 @@ namespace HonkTrooper
             return true;
         }
 
-        private async Task<bool> GenerateAssetsLoadingScreen()
+        private async Task GenerateAssetsLoadingScreen()
         {
             if (_scene_main_menu.Children.OfType<AssetsLoadingScreen>().FirstOrDefault(x => x.IsAnimating == false) is AssetsLoadingScreen assetsLoadingScreen)
             {
                 assetsLoadingScreen.IsAnimating = true;
                 assetsLoadingScreen.Reposition();
+                assetsLoadingScreen.SetSubTitle($"... Loading Assets ...");
 
                 await assetsLoadingScreen.PreloadAssets(async () =>
                 {
@@ -633,14 +634,8 @@ namespace HonkTrooper
                     {
                         GeneratePromptOrientationChangeScreen();
                     }
-
-                    return true;
                 });
-
-                return true;
             }
-
-            return false;
         }
 
         private bool AnimateAssetsLoadingScreen(Construct assetsLoadingScreen)
