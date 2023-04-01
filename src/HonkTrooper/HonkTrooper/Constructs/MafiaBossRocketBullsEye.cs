@@ -31,8 +31,8 @@ namespace HonkTrooper
         #region Ctor
 
         public MafiaBossRocketBullsEye(
-            Func<Construct, bool> animateAction,
-            Func<Construct, bool> recycleAction)
+            Action<Construct> animateAction,
+            Action<Construct> recycleAction)
         {
             ConstructType = ConstructType.MAFIA_BOSS_ROCKET_BULLS_EYE;
 

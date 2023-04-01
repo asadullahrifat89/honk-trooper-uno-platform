@@ -16,12 +16,12 @@ namespace HonkTrooper
         /// <summary>
         /// Animation function.
         /// </summary>
-        public Func<Construct, bool> AnimateAction { get; set; }
+        public Action<Construct> AnimateAction { get; set; }
 
         /// <summary>
         /// Recycling function.
         /// </summary>
-        public Func<Construct, bool> RecycleAction { get; set; }
+        public Action<Construct> RecycleAction { get; set; }
 
         /// <summary>
         /// Adds an offset while animating this construct with the scene speed.

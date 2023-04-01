@@ -25,8 +25,8 @@ namespace HonkTrooper
         #region Ctor
 
         public VehicleEnemy(
-            Func<Construct, bool> animateAction,
-            Func<Construct, bool> recycleAction)
+            Action<Construct> animateAction,
+            Action<Construct> recycleAction)
         {
             AnimateAction = animateAction;
             RecycleAction = recycleAction;
