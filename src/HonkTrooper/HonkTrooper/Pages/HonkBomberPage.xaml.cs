@@ -156,7 +156,7 @@ namespace HonkTrooper
 
                 if (!_scene_game.GeneratorsExist)
                 {
-                    GenerateAssetsLoadingScreen(); // if generators are not added to game scene, show the assets loading screen
+                    await GenerateAssetsLoadingScreen(); // if generators are not added to game scene, show the assets loading screen
                 }
                 else
                 {
@@ -193,7 +193,7 @@ namespace HonkTrooper
             LoggingExtensions.Log($"Width: {ScreenExtensions.Width} x Height: {ScreenExtensions.Height}");
         }
 
-        private void DisplayInformation_OrientationChanged(DisplayInformation sender, object args)
+        private async void DisplayInformation_OrientationChanged(DisplayInformation sender, object args)
         {
             if (_scene_game.SceneState == SceneState.GAME_RUNNING) // if screen orientation is changed while game is running, pause the game
             {
@@ -208,7 +208,7 @@ namespace HonkTrooper
                     if (_scene_main_menu.Children.OfType<PromptOrientationChangeScreen>().FirstOrDefault(x => x.IsAnimating) is PromptOrientationChangeScreen promptOrientationChangeScreen)
                     {
                         RecyclePromptOrientationChangeScreen(promptOrientationChangeScreen);
-                        GenerateAssetsLoadingScreen();
+                        await GenerateAssetsLoadingScreen();
                     }
                 }
                 else // ask to change orientation
@@ -605,13 +605,14 @@ namespace HonkTrooper
             return true;
         }
 
-        private bool GenerateAssetsLoadingScreen()
+        private async Task<bool> GenerateAssetsLoadingScreen()
         {
             if (_scene_main_menu.Children.OfType<AssetsLoadingScreen>().FirstOrDefault(x => x.IsAnimating == false) is AssetsLoadingScreen assetsLoadingScreen)
             {
                 assetsLoadingScreen.IsAnimating = true;
                 assetsLoadingScreen.Reposition();
-                _ = assetsLoadingScreen.PreloadAssets(async () =>
+
+                await assetsLoadingScreen.PreloadAssets(async () =>
                 {
                     RecycleAssetsLoadingScreen(assetsLoadingScreen);
 
@@ -632,6 +633,8 @@ namespace HonkTrooper
                     {
                         GeneratePromptOrientationChangeScreen();
                     }
+
+                    return true;
                 });
 
                 return true;
