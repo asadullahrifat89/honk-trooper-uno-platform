@@ -139,47 +139,35 @@ namespace HonkTrooper
         public void ActivateAttack()
         {
             IsAttacking = true;
-
-            LoggingExtensions.Log("Space");
         }
 
         public void ActivatePause()
         {
             IsPausing = true;
-
-            LoggingExtensions.Log("Escape");
         }
 
         public void ActivateMoveDown()
         {
             IsMoveDown = true;
             IsMoveUp = false;
-
-            LoggingExtensions.Log("Down");
         }
 
         public void ActivateMoveUp()
         {
             IsMoveUp = true;
             IsMoveDown = false;
-
-            LoggingExtensions.Log("Up");
         }
 
         public void ActivateMoveRight()
         {
             IsMoveLeft = false;
             IsMoveRight = true;
-
-            LoggingExtensions.Log("Right");
         }
 
         public void ActivateMoveLeft()
         {
             IsMoveLeft = true;
             IsMoveRight = false;
-
-            LoggingExtensions.Log("Left");
         }
 
         public void DeactivateAttack()

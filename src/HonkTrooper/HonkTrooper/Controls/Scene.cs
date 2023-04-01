@@ -67,9 +67,7 @@ namespace HonkTrooper
             _opacity_storyboard.Completed += (s, e) =>
             {
                 _opacity_storyboard.Stop();
-#if DEBUG
                 LoggingExtensions.Log($"Scene: _opacity_storyboard -> Completed");
-#endif
             };
 
             #endregion

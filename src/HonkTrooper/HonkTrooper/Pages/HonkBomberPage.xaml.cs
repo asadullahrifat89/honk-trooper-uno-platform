@@ -138,11 +138,11 @@ namespace HonkTrooper
         private void HonkBomberPage_Loaded(object sender, RoutedEventArgs e)
         {
             ScreenExtensions.DisplayInformation.OrientationChanged += DisplayInformation_OrientationChanged;
-            ScreenExtensions.RequiredScreenOrientation = DisplayOrientations.Landscape;
+            ScreenExtensions.SetRequiredDisplayOrientations(DisplayOrientations.Landscape, DisplayOrientations.LandscapeFlipped);
 
             // set display orientation to required orientation
-            if (ScreenExtensions.GetScreenOrienation() != ScreenExtensions.RequiredScreenOrientation)
-                ScreenExtensions.SetScreenOrientation(ScreenExtensions.RequiredScreenOrientation);
+            if (!ScreenExtensions.IsScreenInRequiredOrientation())
+                ScreenExtensions.ChangeDisplayOrientationAsRequired();
 
             SetController();
 
@@ -150,10 +150,9 @@ namespace HonkTrooper
 
             SizeChanged += HonkBomberPage_SizeChanged;
 
-            if (ScreenExtensions.GetScreenOrienation() == ScreenExtensions.RequiredScreenOrientation) // if the screen is in desired orientation the show asset loading screen
+            if (ScreenExtensions.IsScreenInRequiredOrientation()) // if the screen is in desired orientation the show asset loading screen
             {
                 ScreenExtensions.EnterFullScreen(true);
-
                 GenerateAssetsLoadingScreen(); // if generators are not added to game scene, show the assets loading screen               
             }
             else
@@ -196,7 +195,7 @@ namespace HonkTrooper
             {
                 ScreenExtensions.EnterFullScreen(true);
 
-                if (ScreenExtensions.GetScreenOrienation() == ScreenExtensions.RequiredScreenOrientation)
+                if (ScreenExtensions.IsScreenInRequiredOrientation())
                 {
                     if (_scene_main_menu.Children.OfType<PromptOrientationChangeScreen>().FirstOrDefault(x => x.IsAnimating) is PromptOrientationChangeScreen promptOrientationChangeScreen)
                     {
@@ -594,7 +593,7 @@ namespace HonkTrooper
                 {
                     RecycleAssetsLoadingScreen(assetsLoadingScreen);
 
-                    if (ScreenExtensions.DisplayInformation.CurrentOrientation == ScreenExtensions.RequiredScreenOrientation)
+                    if (ScreenExtensions.IsScreenInRequiredOrientation())
                     {
                         if (!_scene_game.GeneratorsExist)
                         {
@@ -642,7 +641,7 @@ namespace HonkTrooper
                 {
                     if (_scene_game.SceneState == SceneState.GAME_STOPPED)
                     {
-                        if (ScreenExtensions.RequiredScreenOrientation == ScreenExtensions.GetScreenOrienation())
+                        if (ScreenExtensions.IsScreenInRequiredOrientation())
                         {
                             RecycleGameStartScreen(gameStartScreen);
                             GeneratePlayerCharacterSelectionScreen();
@@ -650,21 +649,21 @@ namespace HonkTrooper
                         }
                         else
                         {
-                            ScreenExtensions.SetScreenOrientation(ScreenExtensions.RequiredScreenOrientation);
+                            ScreenExtensions.ChangeDisplayOrientationAsRequired();
                         }
                     }
                     else
                     {
                         if (!_scene_game.IsAnimating)
                         {
-                            if (ScreenExtensions.RequiredScreenOrientation == ScreenExtensions.GetScreenOrienation())
+                            if (ScreenExtensions.IsScreenInRequiredOrientation())
                             {
                                 ResumeGame();
                                 RecycleGameStartScreen(gameStartScreen);
                             }
                             else
                             {
-                                ScreenExtensions.SetScreenOrientation(ScreenExtensions.RequiredScreenOrientation);
+                                ScreenExtensions.ChangeDisplayOrientationAsRequired();
                             }
                         }
                     }
@@ -685,8 +684,8 @@ namespace HonkTrooper
                 gameStartScreen.IsAnimating = true;
                 gameStartScreen.SetTitle(title);
                 gameStartScreen.SetSubTitle(subTitle);
-                gameStartScreen.Reset();
                 gameStartScreen.Reposition();
+                gameStartScreen.Reset();
 
                 if (_player is not null)
                     gameStartScreen.SetContent(ConstructExtensions.GetRandomContentUri(Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BALLOON).Select(x => x.Uri).ToArray()));
