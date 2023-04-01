@@ -2996,8 +2996,6 @@ namespace HonkTrooper
                 }
             }
 
-            //LoggerExtensions.Log($"Vehicle boss at: x: {vehicleBoss1.GetLeft()} y: {vehicleBoss1.GetTop()}.");
-
             return true;
         }
 
