@@ -955,7 +955,7 @@ namespace HonkTrooper
             if (playerHonkBomb1.IsBlasting)
             {
                 playerHonkBomb.Expand();
-                playerHonkBomb.Fade(0.02);
+                playerHonkBomb.Fade(Constants.DEFAULT_BLAST_FADE_SCALE);
                 playerHonkBomb1.MoveDownRight(speed);
             }
             else
@@ -1110,7 +1110,7 @@ namespace HonkTrooper
             if (playerRocket1.IsBlasting)
             {
                 playerRocket.Expand();
-                playerRocket.Fade(0.02);
+                playerRocket.Fade(Constants.DEFAULT_BLAST_FADE_SCALE);
             }
             else
             {
@@ -1223,7 +1223,7 @@ namespace HonkTrooper
                 var speed = playerRocketSeeking1.Speed;
                 playerRocketSeeking1.MoveDownRight(speed);
                 playerRocketSeeking.Expand();
-                playerRocketSeeking.Fade(0.02);
+                playerRocketSeeking.Fade(Constants.DEFAULT_BLAST_FADE_SCALE);
             }
             else
             {
@@ -1405,7 +1405,7 @@ namespace HonkTrooper
                 var speed = playerRocketBullsEye1.Speed;
                 playerRocketBullsEye1.MoveDownRight(speed);
                 playerRocketBullsEye.Expand();
-                playerRocketBullsEye.Fade(0.02);
+                playerRocketBullsEye.Fade(Constants.DEFAULT_BLAST_FADE_SCALE);
             }
             else
             {
@@ -2087,7 +2087,7 @@ namespace HonkTrooper
             if (ufoBossRocket1.IsBlasting)
             {
                 ufoBossRocket.Expand();
-                ufoBossRocket.Fade(0.02);
+                ufoBossRocket.Fade(Constants.DEFAULT_BLAST_FADE_SCALE);
             }
             else
             {
@@ -2169,7 +2169,7 @@ namespace HonkTrooper
             if (ufoBossRocketSeeking1.IsBlasting)
             {
                 ufoBossRocketSeeking.Expand();
-                ufoBossRocketSeeking.Fade(0.02);
+                ufoBossRocketSeeking.Fade(Constants.DEFAULT_BLAST_FADE_SCALE);
                 ufoBossRocketSeeking1.MoveDownRight(speed);
             }
             else
@@ -2380,7 +2380,7 @@ namespace HonkTrooper
             if (ufoEnemyRocket1.IsBlasting)
             {
                 ufoEnemyRocket.Expand();
-                ufoEnemyRocket.Fade(0.02);
+                ufoEnemyRocket.Fade(Constants.DEFAULT_BLAST_FADE_SCALE);
             }
             else
             {
@@ -2710,7 +2710,7 @@ namespace HonkTrooper
             if (vehicleBossRocket1.IsBlasting)
             {
                 vehicleBossRocket.Expand();
-                vehicleBossRocket.Fade(0.02);
+                vehicleBossRocket.Fade(Constants.DEFAULT_BLAST_FADE_SCALE);
             }
             else
             {
@@ -2940,7 +2940,7 @@ namespace HonkTrooper
             if (zombieBossRocket1.IsBlasting)
             {
                 zombieBossRocket.Expand();
-                zombieBossRocket.Fade(0.02);
+                zombieBossRocket.Fade(Constants.DEFAULT_BLAST_FADE_SCALE);
             }
             else
             {
@@ -3196,7 +3196,7 @@ namespace HonkTrooper
             if (mafiaBossRocket1.IsBlasting)
             {
                 mafiaBossRocket.Expand();
-                mafiaBossRocket.Fade(0.02);
+                mafiaBossRocket.Fade(Constants.DEFAULT_BLAST_FADE_SCALE);
             }
             else
             {
@@ -3279,7 +3279,7 @@ namespace HonkTrooper
             if (mafiaBossRocketBullsEye1.IsBlasting)
             {
                 mafiaBossRocketBullsEye.Expand();
-                mafiaBossRocketBullsEye.Fade(0.02);
+                mafiaBossRocketBullsEye.Fade(Constants.DEFAULT_BLAST_FADE_SCALE);
                 mafiaBossRocketBullsEye1.MoveDownRight(speed);
             }
             else
