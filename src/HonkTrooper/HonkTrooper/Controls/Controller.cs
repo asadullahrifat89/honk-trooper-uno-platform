@@ -28,7 +28,7 @@ namespace HonkTrooper
 
         private Button AttackButton { get; set; }
 
-        private Canvas Thumbstick { get; set; }
+        private Canvas ThumbstickCanvas { get; set; }
 
         private Construct ThumbstickThumb { get; set; }
 
@@ -92,16 +92,25 @@ namespace HonkTrooper
 
         public void SetDefaultThumbstickPosition()
         {
-            ThumbstickThumb?.SetPosition(
+            ThumbstickThumb.SetPosition(
                 left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.30,
                 top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.30);
+            ThumbstickThumb.Update();
+        }
+
+        private void SetThumbstickThumbPosition(PointerPoint point)
+        {
+            ThumbstickThumb.SetPosition(
+                left: point.Position.X - ThumbstickThumb.Width / 2,
+                top: point.Position.Y - ThumbstickThumb.Height / 2);
+            ThumbstickThumb.Update();
         }
 
         private void SetThumbstick()
         {
             var sizeXY = 3.5;
 
-            Thumbstick = new Canvas()
+            ThumbstickCanvas = new Canvas()
             {
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * sizeXY,
                 Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * sizeXY,
@@ -272,39 +281,48 @@ namespace HonkTrooper
                 BorderThickness = new Thickness(Constants.DEFAULT_CONTROLLER_KEY_BORDER_THICKNESS),
             };
 
-            neutralZone.SetPosition(left: Thumbstick.Width / 2 - neutralZone.Width / 2, top: Thumbstick.Height / 2 - neutralZone.Height / 2);
-            Thumbstick.Children.Add(neutralZone);
+            neutralZone.SetPosition(left: ThumbstickCanvas.Width / 2 - neutralZone.Width / 2, top: ThumbstickCanvas.Height / 2 - neutralZone.Height / 2);
+            ThumbstickCanvas.Children.Add(neutralZone);
+            neutralZone.Update();
 
             ThumbstickUpLeft.SetPosition(left: 0, top: 0);
-            Thumbstick.Children.Add(ThumbstickUpLeft);
+            ThumbstickCanvas.Children.Add(ThumbstickUpLeft);
+            ThumbstickUpLeft.Update();
 
             ThumbstickUp.SetPosition(left: 0 * 1.25, top: 0);
-            Thumbstick.Children.Add(ThumbstickUp);
+            ThumbstickCanvas.Children.Add(ThumbstickUp);
+            ThumbstickUp.Update();
 
             ThumbstickUpRight.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2 * 1.25, top: 0);
-            Thumbstick.Children.Add(ThumbstickUpRight);
+            ThumbstickCanvas.Children.Add(ThumbstickUpRight);
+            ThumbstickUpRight.Update();
 
             ThumbstickLeft.SetPosition(left: 0, top: 0);
-            Thumbstick.Children.Add(ThumbstickLeft);
+            ThumbstickCanvas.Children.Add(ThumbstickLeft);
+            ThumbstickLeft.Update();
 
             ThumbstickRight.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2 * 1.25, top: 0);
-            Thumbstick.Children.Add(ThumbstickRight);
+            ThumbstickCanvas.Children.Add(ThumbstickRight);
+            ThumbstickRight.Update();
 
             ThumbstickDownLeft.SetPosition(left: 0, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2 * 1.25);
-            Thumbstick.Children.Add(ThumbstickDownLeft);
+            ThumbstickCanvas.Children.Add(ThumbstickDownLeft);
+            ThumbstickDownLeft.Update();
 
             ThumbstickDown.SetPosition(left: 0 * 1.25, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2 * 1.25);
-            Thumbstick.Children.Add(ThumbstickDown);
+            ThumbstickCanvas.Children.Add(ThumbstickDown);
+            ThumbstickDown.Update();
 
             ThumbstickDownRight.SetPosition(left: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2 * 1.25, top: Constants.DEFAULT_CONTROLLER_KEY_SIZE * 2 * 1.25);
-            Thumbstick.Children.Add(ThumbstickDownRight);
+            ThumbstickCanvas.Children.Add(ThumbstickDownRight);
+            ThumbstickDownRight.Update();
 
             SetDefaultThumbstickPosition();
-            Thumbstick.Children.Add(ThumbstickThumb);
+            ThumbstickCanvas.Children.Add(ThumbstickThumb);
 
-            Thumbstick.PointerPressed += (s, e) =>
+            ThumbstickCanvas.PointerPressed += (s, e) =>
             {
-                var point = e.GetCurrentPoint(Thumbstick);
+                var point = e.GetCurrentPoint(ThumbstickCanvas);
                 SetThumbstickThumbPosition(point);
 
                 DeactivateMoveUp();
@@ -315,16 +333,16 @@ namespace HonkTrooper
                 IsThumbstickGripActive = true;
                 ActivateThumbstick();
             };
-            Thumbstick.PointerMoved += (s, e) =>
+            ThumbstickCanvas.PointerMoved += (s, e) =>
             {
                 if (IsThumbstickGripActive)
                 {
-                    var point = e.GetCurrentPoint(Thumbstick);
+                    var point = e.GetCurrentPoint(ThumbstickCanvas);
                     SetThumbstickThumbPosition(point);
                     ActivateThumbstick();
                 }
             };
-            Thumbstick.PointerReleased += (s, e) =>
+            ThumbstickCanvas.PointerReleased += (s, e) =>
             {
                 DeactivateMoveUp();
                 DeactivateMoveDown();
@@ -335,14 +353,7 @@ namespace HonkTrooper
                 SetDefaultThumbstickPosition();
             };
 
-            this.Children.Add(Thumbstick);
-        }
-
-        private void SetThumbstickThumbPosition(PointerPoint point)
-        {
-            ThumbstickThumb?.SetPosition(
-                left: point.Position.X - ThumbstickThumb.Width / 2,
-                top: point.Position.Y - ThumbstickThumb.Height / 2);
+            this.Children.Add(ThumbstickCanvas);
         }
 
         private void ActivateThumbstick()
@@ -773,10 +784,10 @@ namespace HonkTrooper
 
         private void MoveThumbstickThumbWithGyrometer(double speedX, double speedY)
         {
-            if (ThumbstickThumb.GetLeft() + speedX > 0 && ThumbstickThumb.GetRight() + speedX < Thumbstick.Width)
+            if (ThumbstickThumb.GetLeft() + speedX > 0 && ThumbstickThumb.GetRight() + speedX < ThumbstickCanvas.Width)
                 ThumbstickThumb.SetLeft(ThumbstickThumb.GetLeft() + speedX);
 
-            if (ThumbstickThumb.GetTop() + speedY > 0 && ThumbstickThumb.GetBottom() + speedY < Thumbstick.Height)
+            if (ThumbstickThumb.GetTop() + speedY > 0 && ThumbstickThumb.GetBottom() + speedY < ThumbstickCanvas.Height)
                 ThumbstickThumb.SetTop(ThumbstickThumb.GetTop() + speedY);
 
             ActivateThumbstick();

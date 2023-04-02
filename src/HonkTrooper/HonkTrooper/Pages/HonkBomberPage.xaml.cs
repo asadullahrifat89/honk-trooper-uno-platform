@@ -300,6 +300,7 @@ namespace HonkTrooper
             {
                 construct.IsAnimating = false;
                 construct.SetPosition(left: -3000, top: -3000);
+                construct.Update();
 
                 if (construct is VehicleBoss vehicleboss)
                 {

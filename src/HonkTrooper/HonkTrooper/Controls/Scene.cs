@@ -239,6 +239,7 @@ namespace HonkTrooper
             foreach (Construct construct in Children.Where(x => x.IsAnimating))
             {
                 construct.Animate();
+                construct.Update();
                 construct.Recycle();
             }
 

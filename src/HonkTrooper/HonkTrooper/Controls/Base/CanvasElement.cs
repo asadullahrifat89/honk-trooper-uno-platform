@@ -59,7 +59,22 @@ namespace HonkTrooper
         /// <summary>
         /// Only animated by the scene if set to true.
         /// </summary>
-        public bool IsAnimating { get; set; }
+        //public bool IsAnimating { get; set; }
+
+        private bool _IsAnimating;
+
+        public bool IsAnimating
+        {
+            get { return _IsAnimating; }
+            set
+            {
+                _IsAnimating = value;
+                if (_IsAnimating)
+                    this.Visibility = Microsoft.UI.Xaml.Visibility.Visible;
+                else
+                    this.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
+            }
+        }
 
         /// <summary>
         /// The distance from this construct at which a shadow should appear.
@@ -81,61 +96,73 @@ namespace HonkTrooper
         /// </summary>
         private bool IsAwaitingPop { get; set; }
 
+        public double X { get; set; }
+        public double Y { get; set; }
+
+        public int Z { get; set; }
+
         #endregion
 
         #region Methods
 
         public double GetTop()
         {
-            return Canvas.GetTop(this);
+            return Y;
         }
 
         public double GetBottom()
         {
-            return Canvas.GetTop(this) + Height;
+            return Y + Height;
         }
 
         public double GetLeft()
         {
-            return Canvas.GetLeft(this);
+            return X;
         }
 
         public double GetRight()
         {
-            return Canvas.GetLeft(this) + Width;
+            return X + Width;
         }
 
         public int GetZ()
         {
-            return Canvas.GetZIndex(this);
+            return Z;
         }
 
         public void SetTop(double top)
         {
-            Canvas.SetTop(this, top);
+            Y = top;
         }
 
         public void SetLeft(double left)
         {
-            Canvas.SetLeft(this, left);
+            X = left;
         }
 
         public void SetZ(int z)
         {
-            Canvas.SetZIndex(this, z);
+            Z = z;
         }
 
         public void SetPosition(double left, double top)
         {
-            Canvas.SetTop(this, top);
-            Canvas.SetLeft(this, left);
+            Y = top;
+            X = left;
         }
 
         public void SetPosition(double left, double top, int z)
         {
-            Canvas.SetTop(this, top);
-            Canvas.SetLeft(this, left);
-            Canvas.SetZIndex(this, z);
+            Y = top;
+            X = left;
+            Z = z;
+        }
+
+        public void Update()
+        {
+            Canvas.SetTop(this, Y);
+            Canvas.SetLeft(this, X);
+            Canvas.SetZIndex(this, Z);
         }
 
         public void SetScaleTransform(double scaleXY)

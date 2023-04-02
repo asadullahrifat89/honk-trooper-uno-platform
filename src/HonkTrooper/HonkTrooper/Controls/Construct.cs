@@ -1,4 +1,5 @@
 ﻿using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 using System;
 using System.Linq;
 
@@ -46,6 +47,12 @@ namespace HonkTrooper
         #endregion
 
         #region Methods
+
+        public void Hide()
+        {
+            Canvas.SetLeft(this, -3000);
+            Canvas.SetTop(this, -3000);
+        }
 
         public void Animate()
         {
