@@ -69,10 +69,12 @@ namespace HonkTrooper
             set
             {
                 _IsAnimating = value;
-                if (_IsAnimating)
-                    this.Visibility = Microsoft.UI.Xaml.Visibility.Visible;
-                else
-                    this.Visibility = Microsoft.UI.Xaml.Visibility.Collapsed;
+
+                if (!_IsAnimating)
+                {
+                    Canvas.SetLeft(this,-3000);
+                    Canvas.SetTop(this, -3000);
+                }
             }
         }
 

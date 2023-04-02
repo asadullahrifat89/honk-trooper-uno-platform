@@ -146,6 +146,7 @@ namespace HonkTrooper
                 foreach (var construct in constructs)
                 {
                     construct.Scene = this;
+                    construct.IsAnimating = false;
                     _canvas.Children.Add(construct);
                 }
             }

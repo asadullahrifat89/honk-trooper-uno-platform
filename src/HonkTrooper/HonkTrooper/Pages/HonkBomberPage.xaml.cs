@@ -325,7 +325,6 @@ namespace HonkTrooper
                     mafiaBoss.IsAttacking = false;
                     mafiaBoss.Health = 0;
                 }
-
             }
         }
 
