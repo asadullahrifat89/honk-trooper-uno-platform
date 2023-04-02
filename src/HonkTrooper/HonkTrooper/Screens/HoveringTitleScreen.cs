@@ -46,11 +46,11 @@ namespace HonkTrooper
             _opacity_storyboard.Begin();
         }
 
-        public void Reposition(double sceneWidth, double sceneHeight)
+        public void Reposition()
         {
             SetPosition(
-               left: (((sceneWidth / 4) * 2) - Width / 2),
-               top: ((sceneHeight / 2) - Height / 2));
+                left: (((Scene.Width / 4) * 2) - Width / 2),
+                top: ((Scene.Height / 2) - Height / 2));
         }
 
         #endregion

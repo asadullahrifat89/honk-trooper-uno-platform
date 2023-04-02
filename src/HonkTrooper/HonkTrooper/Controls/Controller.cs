@@ -26,7 +26,9 @@ namespace HonkTrooper
 
         private Button PauseButton { get; set; }
 
-        private Button AttackButton { get; set; }
+        private Button FocusButton { get; set; }
+
+        private Border AttackButton { get; set; }
 
         private Canvas ThumbstickCanvas { get; set; }
 
@@ -72,6 +74,7 @@ namespace HonkTrooper
 
             SetAttackButton();
             SetPauseButton();
+            SetFocusButton();
 
             KeyUp += Controller_KeyUp;
             KeyDown += Controller_KeyDown;
@@ -822,9 +825,9 @@ namespace HonkTrooper
             AttackButton.Background = color;
         }
 
-        public void FocusAttackButton()
+        public void FocusController()
         {
-            AttackButton.Focus(FocusState.Programmatic);
+            FocusButton.Focus(FocusState.Programmatic);
         }
 
         private void SetAttackButton()
@@ -835,7 +838,7 @@ namespace HonkTrooper
                 Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.2,
                 Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.2,
                 CornerRadius = new CornerRadius(Constants.DEFAULT_CONTROLLER_KEY_CORNER_RADIUS * 2),
-                Content = new SymbolIcon()
+                Child = new SymbolIcon()
                 {
                     Symbol = Symbol.Placeholder,
                 },
@@ -847,11 +850,27 @@ namespace HonkTrooper
                 //Opacity = 0.6
             };
 
-            AttackButton.Click += (s, e) =>
+            AttackButton.PointerPressed += (s, e) =>
             {
                 ActivateAttack();
             };
             this.Children.Add(AttackButton);
+        }
+
+        private void SetFocusButton()
+        {
+            FocusButton = new()
+            {
+                Height = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.2,
+                Width = Constants.DEFAULT_CONTROLLER_KEY_SIZE * 1.2,
+                Margin = new Thickness(300, 300),
+                Opacity = 0.0
+            };
+            FocusButton.Click += (s, e) =>
+            {
+                ActivateAttack();
+            };
+            this.Children.Add(FocusButton);
         }
 
         #endregion
