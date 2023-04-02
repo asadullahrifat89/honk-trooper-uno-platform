@@ -1,3 +1,8 @@
+`This repository is ARCHIVED and is not maintained anymore.`
+
+For the latest code, pls visit this repo instead:
+https://github.com/asadullahrifat89/honk-buster-game-uno-platform
+
 # Honk-Trooper
 
 An isometric arcade bomber shooter game built with Uno Platform & WebAssembly.
