@@ -1,7 +1,5 @@
 ﻿using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Media.Imaging;
 using System;
 using System.Linq;
 
@@ -11,7 +9,7 @@ namespace HonkTrooper
     {
         #region Fields
 
-        private readonly ImgageElement _content_image;
+        private readonly ImageElement _content_image;
         private readonly Uri[] _side_walk_uris;
 
         #endregion

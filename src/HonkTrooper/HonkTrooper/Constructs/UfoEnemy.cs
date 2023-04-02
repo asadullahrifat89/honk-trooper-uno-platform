@@ -1,6 +1,4 @@
-﻿using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media.Imaging;
-using System;
+﻿using System;
 using System.Linq;
 
 namespace HonkTrooper
@@ -12,7 +10,7 @@ namespace HonkTrooper
         private readonly Random _random;
         private readonly Uri[] _enemy_uris;
 
-        private readonly ImgageElement _content_image;
+        private readonly ImageElement _content_image;
 
         private double _attackDelay;
 

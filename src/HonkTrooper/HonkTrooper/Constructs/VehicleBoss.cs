@@ -1,6 +1,4 @@
-﻿using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media.Imaging;
-using System;
+﻿using System;
 using System.Linq;
 
 namespace HonkTrooper
@@ -14,7 +12,7 @@ namespace HonkTrooper
         private readonly Uri[] _vehicle_small_uris;
         private readonly Uri[] _vehicle_large_uris;
 
-        private readonly ImgageElement _content_image;
+        private readonly ImageElement _content_image;
         private MovementDirection _movementDirection;
 
         private double _changeMovementPatternDelay;

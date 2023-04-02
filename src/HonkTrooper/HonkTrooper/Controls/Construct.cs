@@ -39,13 +39,13 @@ namespace HonkTrooper
         public double IsometricDisplacement { get; set; }
 
         /// <summary>
-        /// The scene to which this construct is visible in.
+        /// The scene in which this construct exists.
         /// </summary>
         public Scene Scene { get; set; }
 
         #endregion
 
-        #region Methods
+        #region Methods      
 
         public void Animate()
         {

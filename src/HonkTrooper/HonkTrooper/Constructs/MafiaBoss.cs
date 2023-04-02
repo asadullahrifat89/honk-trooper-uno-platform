@@ -1,6 +1,4 @@
-﻿using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media.Imaging;
-using System;
+﻿using System;
 using System.Linq;
 using Windows.Foundation;
 
@@ -20,7 +18,7 @@ namespace HonkTrooper
 
         private double _changeMovementPatternDelay;
 
-        private readonly ImgageElement _content_image;
+        private readonly ImageElement _content_image;
 
         private double _hitStanceDelay;
         private readonly double _hitStanceDelayDefault = 1.5;
@@ -79,7 +77,7 @@ namespace HonkTrooper
             MafiaBossStance = BossStance.Idle;
 
             var uri = ConstructExtensions.GetRandomContentUri(_mafia_boss_idle_uris);
-             _content_image.SetSource(uri);
+            _content_image.SetSource(uri);
 
             RandomizeMovementPattern();
             SetScaleTransform(1);
@@ -92,7 +90,7 @@ namespace HonkTrooper
                 MafiaBossStance = BossStance.Hit;
 
                 var uri = ConstructExtensions.GetRandomContentUri(_mafia_boss_hit_uris);
-                 _content_image.SetSource(uri);
+                _content_image.SetSource(uri);
 
                 _hitStanceDelay = _hitStanceDelayDefault;
             }
@@ -102,7 +100,7 @@ namespace HonkTrooper
         {
             MafiaBossStance = BossStance.Win;
             var uri = ConstructExtensions.GetRandomContentUri(_mafia_boss_win_uris);
-             _content_image.SetSource(uri);
+            _content_image.SetSource(uri);
             _winStanceDelay = _winStanceDelayDefault;
         }
 
@@ -110,7 +108,7 @@ namespace HonkTrooper
         {
             MafiaBossStance = BossStance.Idle;
             var uri = ConstructExtensions.GetRandomContentUri(_mafia_boss_idle_uris);
-             _content_image.SetSource(uri);
+            _content_image.SetSource(uri);
         }
 
         public void DepleteWinStance()
