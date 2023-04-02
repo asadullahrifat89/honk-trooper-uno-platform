@@ -46,13 +46,7 @@ namespace HonkTrooper
 
         #endregion
 
-        #region Methods
-
-        public void Hide()
-        {
-            Canvas.SetLeft(this, -3000);
-            Canvas.SetTop(this, -3000);
-        }
+        #region Methods      
 
         public void Animate()
         {
