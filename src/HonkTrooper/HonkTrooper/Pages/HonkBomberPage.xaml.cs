@@ -330,7 +330,7 @@ namespace HonkTrooper
         {
             foreach (var screen in _scene_main_menu.Children.OfType<HoveringTitleScreen>().Where(x => x.IsAnimating))
             {
-                screen.Reposition();
+                screen.Reposition(_scene_main_menu.Width, _scene_main_menu.Height);
             }
         }
 
@@ -393,7 +393,7 @@ namespace HonkTrooper
         {
             if (_scene_main_menu.Children.OfType<PromptOrientationChangeScreen>().FirstOrDefault(x => x.IsAnimating == false) is PromptOrientationChangeScreen promptOrientationChangeScreen)
             {
-                promptOrientationChangeScreen.Reposition();
+                promptOrientationChangeScreen.Reposition(_scene_main_menu.Width, _scene_main_menu.Height);
                 promptOrientationChangeScreen.IsAnimating = true;
             }
         }
@@ -430,7 +430,7 @@ namespace HonkTrooper
         {
             if (_scene_main_menu.Children.OfType<AssetsLoadingScreen>().FirstOrDefault(x => x.IsAnimating == false) is AssetsLoadingScreen assetsLoadingScreen)
             {
-                assetsLoadingScreen.Reposition();
+                assetsLoadingScreen.Reposition(_scene_main_menu.Width, _scene_main_menu.Height);
                 assetsLoadingScreen.SetSubTitle($"... Loading Assets ...");
                 assetsLoadingScreen.IsAnimating = true;
 
@@ -524,7 +524,7 @@ namespace HonkTrooper
             {
                 gameStartScreen.SetTitle(title);
                 gameStartScreen.SetSubTitle(subTitle);
-                gameStartScreen.Reposition();
+                gameStartScreen.Reposition(_scene_main_menu.Width, _scene_main_menu.Height);
                 gameStartScreen.Reset();
                 gameStartScreen.IsAnimating = true;
                 gameStartScreen.SetContent(ConstructExtensions.GetRandomContentUri(Constants.CONSTRUCT_TEMPLATES.Where(x => x.ConstructType == ConstructType.PLAYER_BALLOON).Select(x => x.Uri).ToArray()));
@@ -576,7 +576,7 @@ namespace HonkTrooper
             if (_scene_main_menu.Children.OfType<PlayerCharacterSelectionScreen>().FirstOrDefault(x => x.IsAnimating == false) is PlayerCharacterSelectionScreen playerCharacterSelectionScreen)
             {
                 //playerCharacterSelectionScreen.Reset();
-                playerCharacterSelectionScreen.Reposition();
+                playerCharacterSelectionScreen.Reposition(_scene_main_menu.Width, _scene_main_menu.Height);
                 playerCharacterSelectionScreen.IsAnimating = true;
             }
         }
@@ -629,7 +629,7 @@ namespace HonkTrooper
             if (_scene_main_menu.Children.OfType<PlayerHonkBombSelectionScreen>().FirstOrDefault(x => x.IsAnimating == false) is PlayerHonkBombSelectionScreen playerHonkBombSelectionScreen)
             {
                 //playerHonkBombSelectionScreen.Reset();
-                playerHonkBombSelectionScreen.Reposition();
+                playerHonkBombSelectionScreen.Reposition(_scene_main_menu.Width, _scene_main_menu.Height);
                 playerHonkBombSelectionScreen.IsAnimating = true;
             }
         }
@@ -667,7 +667,7 @@ namespace HonkTrooper
             if (_scene_main_menu.Children.OfType<InterimScreen>().FirstOrDefault(x => x.IsAnimating == false) is InterimScreen interimScreen)
             {
                 interimScreen.SetTitle(title);
-                interimScreen.Reposition();
+                interimScreen.Reposition(_scene_main_menu.Width, _scene_main_menu.Height);
                 interimScreen.Reset();
                 interimScreen.IsAnimating = true;
 
