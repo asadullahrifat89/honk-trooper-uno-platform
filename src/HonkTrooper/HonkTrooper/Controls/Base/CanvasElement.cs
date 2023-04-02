@@ -30,6 +30,7 @@ namespace HonkTrooper
             RenderTransformOrigin = new Point(0.5, 0.5);
             RenderTransform = _compositeTransform;
             CanDrag = false;
+            IsAnimating = false;
         }
 
         #endregion
