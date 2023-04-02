@@ -99,9 +99,19 @@ namespace HonkTrooper
         /// </summary>
         private bool IsAwaitingPop { get; set; }
 
+        /// <summary>
+        /// The canvas X position of the element.
+        /// </summary>
         public double X { get; set; }
+
+        /// <summary>
+        /// The canvas Y position of the element.
+        /// </summary>
         public double Y { get; set; }
 
+        /// <summary>
+        /// The canvas X order of the element.
+        /// </summary>
         public int Z { get; set; }
 
         #endregion
