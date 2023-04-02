@@ -1,6 +1,4 @@
-﻿using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media.Imaging;
-using System;
+﻿using System;
 using System.Linq;
 
 namespace HonkTrooper
@@ -14,7 +12,7 @@ namespace HonkTrooper
         private readonly Uri[] _vehicle_small_uris;
         private readonly Uri[] _vehicle_large_uris;
 
-        private readonly ImgageElement _content_image;
+        private readonly ImageElement _content_image;
         private readonly AudioStub _audioStub;
 
         #endregion
@@ -46,7 +44,7 @@ namespace HonkTrooper
                         ConstructType = ConstructType.VEHICLE_ENEMY_SMALL;
                         SetConstructSize(ConstructType.VEHICLE_ENEMY_SMALL);
                         uri = ConstructExtensions.GetRandomContentUri(_vehicle_small_uris);
-                        
+
                     }
                     break;
                 case 1:

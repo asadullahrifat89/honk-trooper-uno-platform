@@ -1,6 +1,4 @@
-﻿using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media.Imaging;
-using System;
+﻿using System;
 using System.Linq;
 using Windows.Foundation;
 
@@ -13,7 +11,7 @@ namespace HonkTrooper
         private readonly Uri[] _bomb_uris;
         private readonly Uri[] _bomb_blast_uris;
 
-        private readonly ImgageElement _content_image;        
+        private readonly ImageElement _content_image;
 
         private double _autoBlastDelay;
         private readonly double _autoBlastDelayDefault = 15;
